@@ -10,11 +10,11 @@
     "story:dev": "histoire dev",
     "story:build": "histoire build",
     "story:preview": "histoire preview",
-    "bootstrap": "lerna bootstrap"
+    "bootstrap": "lerna bootstrap",
+    "create": "node ./scripts/index.mjs"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.10.7",
-    "@types/lodash": "^4.14.186",
     "@vitejs/plugin-vue": "^3.1.2",
     "autoprefixer": "^10.4.12",
     "histoire": "^0.10.7",
@@ -29,6 +29,8 @@
     "vue-tsc": "^0.40.13"
   },
   "dependencies": {
-    "vue": "^3.2.40"
+    "vue": "^3.2.40",
+    "@types/inquirer": "^9.0.2",
+    "@types/lodash": "^4.14.186"
   }
 }
