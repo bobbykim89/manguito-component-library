@@ -1,5 +1,5 @@
-import { d as defineComponent, r as resolveComponent, o as openBlock, c as createBlock, w as withCtx, a as createBaseVNode, b as renderSlot, n as normalizeClass, e as withKeys, m as mergeProps, f as watch, s as scrollIntoView, g as onMounted, u as useCssVars, h as unref, i as computed, j as useRoute, k as ref, l as createElementBlock, p as createVNode, I as Icon, t as toDisplayString, q as createCommentVNode, v as createRouter, x as createWebHistory, y as createWebHashHistory, z as defineStore, A as useStorage, F as Fragment, B as renderList, C as onUnmounted, D as withModifiers, E as normalizeStyle, G as useEventListener, H as isRef, J as resolveDirective, K as withDirectives, L as useMediaQuery, T as Transition, M as createTextVNode, N as pushScopeId, O as popScopeId, P as defineAsyncComponent, Q as vShow, R as reactive, S as useTitle, U as createApp, V as createPinia, W as plugin } from "./vendor.d87ab8f6.js";
-import { _ as __vitePreload, h as histoireConfig, i as isDark, c as customLogos, t as toggleDark, f as files, m as mapFile, a as tree, b as _sfc_main$e } from "./GenericMountStory.f4d87e2a.js";
+import { d as defineComponent, r as resolveComponent, o as openBlock, c as createBlock, w as withCtx, a as createBaseVNode, b as renderSlot, n as normalizeClass, e as withKeys, m as mergeProps, f as watch, s as scrollIntoView, g as onMounted, u as useCssVars, h as unref, i as computed, j as useRoute, k as ref, l as createElementBlock, p as createVNode, I as Icon, t as toDisplayString, q as createCommentVNode, v as createRouter, x as createWebHistory, y as createWebHashHistory, z as defineStore, A as useStorage, F as Fragment, B as renderList, C as onUnmounted, D as withModifiers, E as normalizeStyle, G as useEventListener, H as isRef, J as resolveDirective, K as withDirectives, L as useMediaQuery, T as Transition, M as createTextVNode, N as pushScopeId, O as popScopeId, P as defineAsyncComponent, Q as vShow, R as reactive, S as useTitle, U as createApp, V as createPinia, W as plugin } from "./vendor.0614ad87.js";
+import { _ as __vitePreload, h as histoireConfig, i as isDark, c as customLogos, t as toggleDark, f as files, m as mapFile, a as tree, b as _sfc_main$e } from "./GenericMountStory.8715cc4d.js";
 const style = "";
 const $histoireThemeResolved = "";
 var _export_sfc = (sfc, props) => {
@@ -160,12 +160,12 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: () => __vitePreload(() => import("./HomeView.3d0c3710.js"), true ? ["assets/HomeView.3d0c3710.js","assets/GenericMountStory.f4d87e2a.js","assets/vendor.d87ab8f6.js"] : void 0)
+      component: () => __vitePreload(() => import("./HomeView.9ce1ce92.js"), true ? ["assets/HomeView.9ce1ce92.js","assets/GenericMountStory.8715cc4d.js","assets/vendor.0614ad87.js"] : void 0)
     },
     {
       path: "/story/:storyId",
       name: "story",
-      component: () => __vitePreload(() => import("./StoryView.bc9e4a6f.js"), true ? ["assets/StoryView.bc9e4a6f.js","assets/vendor.d87ab8f6.js","assets/BaseEmpty.d7d631bf.js","assets/state.bff456be.js","assets/GenericMountStory.f4d87e2a.js"] : void 0)
+      component: () => __vitePreload(() => import("./StoryView.be8b15d7.js"), true ? ["assets/StoryView.be8b15d7.js","assets/vendor.0614ad87.js","assets/BaseEmpty.2ce25206.js","assets/state.89ba25f6.js","assets/GenericMountStory.8715cc4d.js"] : void 0)
     }
   ]
 });
@@ -943,7 +943,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   },
   setup(__props, { emit }) {
     const SearchPane = defineAsyncComponent({
-      loader: () => __vitePreload(() => import("./SearchPane.5e4b309f.js"), true ? ["assets/SearchPane.5e4b309f.js","assets/GenericMountStory.f4d87e2a.js","assets/vendor.d87ab8f6.js","assets/BaseEmpty.d7d631bf.js"] : void 0),
+      loader: () => __vitePreload(() => import("./SearchPane.41394cc3.js"), true ? ["assets/SearchPane.41394cc3.js","assets/GenericMountStory.8715cc4d.js","assets/vendor.0614ad87.js","assets/BaseEmpty.2ce25206.js"] : void 0),
       loadingComponent: _sfc_main$3,
       delay: 0
     });
