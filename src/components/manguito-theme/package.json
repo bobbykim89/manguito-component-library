@@ -1,0 +1,14 @@
+{
+  "name": "manguito-theme",
+  "version": "0.1.0",
+  "description": "main theme file for manguito components library",
+  "main": "index.ts",
+  "keywords": [
+    "manguito-theme",
+    "vue3",
+    "component",
+    "library"
+  ],
+  "author": "Bobby Kim",
+  "license": "ISC"
+}
