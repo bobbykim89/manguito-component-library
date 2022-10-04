@@ -1,7 +1,7 @@
 {
-  "name": "@mcl/manguito-theme",
+  "name": "@mcl/btn",
   "version": "0.1.0",
-  "description": "main theme file for manguito components library",
+  "description": "",
   "type": "module",
   "main": "index.ts",
   "author": {

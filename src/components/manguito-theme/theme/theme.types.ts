@@ -16,6 +16,17 @@ export type ColorPalette =
   | 'dark-4'
   | 'black'
   | 'white'
+// Available spacings
+export type SpacingLevel =
+  | '3xs'
+  | '2xs'
+  | 'xs'
+  | 'sm'
+  | 'md'
+  | 'lg'
+  | 'xl'
+  | '2xl'
+  | '3xl'
 // Available heading levels
 export type HeadingLevel = 'h1' | 'h2' | 'h3' | 'h4'
 // Available heading sizes
