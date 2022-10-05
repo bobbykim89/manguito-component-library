@@ -8,5 +8,8 @@
     "name": "Bobby Kim",
     "url": "https://www.devbobbykim.com/"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@mcl/manguito-theme": "^0.1.0"
+  }
 }
