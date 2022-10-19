@@ -4,7 +4,10 @@ const mclTheme = {
     sm: '14px',
     md: '16px',
     lg: '18px',
-    xl: '24px',
+    xl: '20px',
+  },
+  container: {
+    center: true,
   },
   extend: {
     colors: {

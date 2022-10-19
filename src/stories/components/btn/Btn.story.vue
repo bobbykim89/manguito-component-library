@@ -5,13 +5,7 @@ import type {
   ColorPalette,
   BodyText,
 } from '@/components/manguito-theme/theme/theme.types'
-
-defineComponent({
-  name: 'Btn',
-  components: {
-    btn: Btn,
-  },
-})
+import { colors, bodyTextSize, buttonSize } from '@/assets/options'
 
 type ButtonSize = 'small' | 'medium' | 'large'
 
@@ -30,28 +24,6 @@ const state = reactive<{
   block: false,
   rounded: false,
 })
-
-const colors = [
-  'primary',
-  'secondary',
-  'success',
-  'info',
-  'warning',
-  'danger',
-  'light-1',
-  'light-2',
-  'light-3',
-  'light-4',
-  'dark-1',
-  'dark-2',
-  'dark-3',
-  'dark-4',
-  'black',
-  'white',
-]
-
-const bodyTextSize = ['xs', 'sm', 'md', 'lg', 'xl']
-const buttonSize = ['small', 'medium', 'large']
 </script>
 
 <template>
@@ -66,19 +38,19 @@ const buttonSize = ['small', 'medium', 'large']
     >
     <template #controls>
       <HstText title="Text" v-model="state.text" />
-      <HstSelect title="Button Color" v-model="state.color" :options="colors" />
+      <HstSelect title="color" v-model="state.color" :options="colors" />
       <HstSelect
-        title="Text Size"
+        title="text-size"
         v-model="state.textSize"
         :options="bodyTextSize"
       />
       <HstSelect
-        title="Button Size"
+        title="button size"
         v-model="state.buttonSize"
         :options="buttonSize"
       />
-      <HstCheckbox title="Full Width" v-model="state.block" />
-      <HstCheckbox title="Rounded Corner" v-model="state.rounded" />
+      <HstCheckbox title="is-block" v-model="state.block" />
+      <HstCheckbox title="rounded" v-model="state.rounded" />
     </template>
   </Story>
 </template>

@@ -67,7 +67,7 @@ const bodyTextSize: BodyTextClass = {
   sm: { size: '14px', class: 'text-sm' },
   md: { size: '16px', class: 'text-md' },
   lg: { size: '18px', class: 'text-lg' },
-  xl: { size: '24px', class: 'text-xl' },
+  xl: { size: '20px', class: 'text-xl' },
 }
 
 const generateFontColor = (input: ColorPalette): string => {
@@ -108,7 +108,7 @@ const generateRandomBg = (size: string): string => {
             {{ index }}
           </h3>
         </div>
-        <div class="bg-primary h-lg" :class="color"></div>
+        <div class="h-lg" :class="color"></div>
       </div>
     </Variant>
     <!-- spading section -->

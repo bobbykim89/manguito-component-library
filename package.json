@@ -1,6 +1,6 @@
 {
   "name": "manguito-components-library",
-  "private": true,
+  "private": false,
   "type": "module",
   "author": {
     "name": "Bobby Kim",
