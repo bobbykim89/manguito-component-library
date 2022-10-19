@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { defineComponent, defineProps, withDefaults } from 'vue'
+import { defineComponent, withDefaults } from 'vue'
 
 defineComponent({
   name: '{%componentName%}',
 })
 
-withDefaults(
+const props = withDefaults(
   defineProps<{}>(),
   {}
 )

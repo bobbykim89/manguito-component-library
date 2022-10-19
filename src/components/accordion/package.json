@@ -1,13 +1,15 @@
 {
-  "name": "@mcl/manguito-theme",
+  "name": "@mcl/accordion",
   "version": "0.1.0",
-  "description": "main theme file for manguito components library",
+  "description": "",
   "type": "module",
-  "private": false,
   "main": "index.ts",
   "author": {
     "name": "Bobby Kim",
     "url": "https://www.devbobbykim.com/"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@mcl/manguito-theme": "^0.1.0"
+  }
 }

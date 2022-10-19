@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import { defineComponent, defineProps, withDefaults, defineEmits } from 'vue'
+import { withDefaults } from 'vue'
 import type {
   ColorPalette,
   BodyText,
 } from '@mcl/manguito-theme/theme/theme.types'
 import generateClass from '@mcl/manguito-theme'
-
-defineComponent({
-  name: 'Btn',
-})
 
 type ButtonSize = 'small' | 'medium' | 'large'
 
@@ -60,8 +56,6 @@ const buttonConfig = (
   } else {
     buttonSize = 'px-5 py-2.5'
   }
-
-  console.log(generateClass('BODYTEXT', textSize))
 
   return `${generateClass(
     'BGCOLOR',
