@@ -88,6 +88,12 @@ const state = reactive<{
         v-model="state.borderColor"
         :options="colors"
       />
+      <HstSelect title="bg-color" v-model="state.bgColor" :options="colors" />
+      <HstSelect
+        title="slot-bg-color"
+        v-model="state.slotBgColor"
+        :options="colors"
+      />
       <HstCheckbox title="rounded" v-model="state.rounded" />
       <HstCheckbox title="display-highlight" v-model="state.displayHighlight" />
       <HstSelect
@@ -113,12 +119,6 @@ const state = reactive<{
       <HstSelect
         title="icon-color"
         v-model="state.iconColor"
-        :options="colors"
-      />
-      <HstSelect title="bg-color" v-model="state.bgColor" :options="colors" />
-      <HstSelect
-        title="slot-bg-color"
-        v-model="state.slotBgColor"
         :options="colors"
       />
       <HstTextarea v-model="state.slotText" title="Slot Text" />

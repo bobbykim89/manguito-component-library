@@ -2859,7 +2859,7 @@ function renderList$1(source, renderItem, cache2, index) {
   }
   return ret;
 }
-function renderSlot(slots, name, props = {}, fallback, noSlotted) {
+function renderSlot$1(slots, name, props = {}, fallback, noSlotted) {
   if (currentRenderingInstance$1.isCE || currentRenderingInstance$1.parent && isAsyncWrapper$1(currentRenderingInstance$1.parent) && currentRenderingInstance$1.parent.isCE) {
     return createVNode$1("slot", name === "default" ? null : { name }, fallback && fallback());
   }
@@ -2872,7 +2872,7 @@ function renderSlot(slots, name, props = {}, fallback, noSlotted) {
     slot._d = false;
   }
   openBlock$1();
-  const validSlotContent = slot && ensureValidVNode(slot(props));
+  const validSlotContent = slot && ensureValidVNode$1(slot(props));
   const rendered = createBlock$1(Fragment$1, { key: props.key || `_${name}` }, validSlotContent || (fallback ? fallback() : []), validSlotContent && slots._ === 1 ? 64 : -2);
   if (!noSlotted && rendered.scopeId) {
     rendered.slotScopeIds = [rendered.scopeId + "-s"];
@@ -2882,13 +2882,13 @@ function renderSlot(slots, name, props = {}, fallback, noSlotted) {
   }
   return rendered;
 }
-function ensureValidVNode(vnodes) {
+function ensureValidVNode$1(vnodes) {
   return vnodes.some((child) => {
     if (!isVNode$1(child))
       return true;
     if (child.type === Comment$1)
       return false;
-    if (child.type === Fragment$1 && !ensureValidVNode(child.children))
+    if (child.type === Fragment$1 && !ensureValidVNode$1(child.children))
       return false;
     return true;
   }) ? vnodes : null;
@@ -5335,7 +5335,7 @@ function createStaticVNode(content, numberOfNodes) {
   vnode.staticCount = numberOfNodes;
   return vnode;
 }
-function createCommentVNode(text = "", asBlock = false) {
+function createCommentVNode$1(text = "", asBlock = false) {
   return asBlock ? (openBlock$1(), createBlock$1(Comment$1, null, text)) : createVNode$1(Comment$1, null, text);
 }
 function normalizeVNode$1(child) {
@@ -10373,7 +10373,7 @@ function _sfc_render$3(_ctx, _cache, $props, $setup, $data, $options) {
       "v-popper--shown": _ctx.slotData.isShown
     }])
   }, [
-    renderSlot(_ctx.$slots, "default", normalizeProps(guardReactiveProps$1(_ctx.slotData)))
+    renderSlot$1(_ctx.$slots, "default", normalizeProps(guardReactiveProps$1(_ctx.slotData)))
   ], 2);
 }
 var Popper$1 = /* @__PURE__ */ _export_sfc(_sfc_main$6$1, [["render", _sfc_render$3]]);
@@ -10581,13 +10581,13 @@ function _sfc_render$2(_ctx, _cache, $props, $setup, $data, $options) {
       createBaseVNode$1("div", _hoisted_2$1$1, [
         _ctx.mounted ? (openBlock$1(), createElementBlock$1(Fragment$1, { key: 0 }, [
           createBaseVNode$1("div", null, [
-            renderSlot(_ctx.$slots, "default")
+            renderSlot$1(_ctx.$slots, "default")
           ]),
           _ctx.handleResize ? (openBlock$1(), createBlock$1(_component_ResizeObserver, {
             key: 0,
             onNotify: _cache[1] || (_cache[1] = ($event) => _ctx.$emit("resize", $event))
-          })) : createCommentVNode("", true)
-        ], 64)) : createCommentVNode("", true)
+          })) : createCommentVNode$1("", true)
+        ], 64)) : createCommentVNode$1("", true)
       ], 512),
       createBaseVNode$1("div", {
         ref: "arrow",
@@ -10670,7 +10670,7 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
       classes,
       result
     }) => [
-      renderSlot(_ctx.$slots, "default", {
+      renderSlot$1(_ctx.$slots, "default", {
         shown: isShown,
         show,
         hide
@@ -10690,7 +10690,7 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
         onResize
       }, {
         default: withCtx$1(() => [
-          renderSlot(_ctx.$slots, "popper", {
+          renderSlot$1(_ctx.$slots, "popper", {
             shown: isShown,
             hide
           })
@@ -13959,6 +13959,42 @@ function renderList(source, renderItem, cache2, index) {
   }
   return ret;
 }
+function renderSlot(slots, name, props = {}, fallback, noSlotted) {
+  if (currentRenderingInstance.isCE || currentRenderingInstance.parent && isAsyncWrapper(currentRenderingInstance.parent) && currentRenderingInstance.parent.isCE) {
+    return createVNode("slot", name === "default" ? null : { name }, fallback && fallback());
+  }
+  let slot = slots[name];
+  if (slot && slot.length > 1) {
+    warn$1(`SSR-optimized slot function detected in a non-SSR-optimized render function. You need to mark this component with $dynamic-slots in the parent template.`);
+    slot = () => [];
+  }
+  if (slot && slot._c) {
+    slot._d = false;
+  }
+  openBlock();
+  const validSlotContent = slot && ensureValidVNode(slot(props));
+  const rendered = createBlock(Fragment, {
+    key: props.key || validSlotContent && validSlotContent.key || `_${name}`
+  }, validSlotContent || (fallback ? fallback() : []), validSlotContent && slots._ === 1 ? 64 : -2);
+  if (!noSlotted && rendered.scopeId) {
+    rendered.slotScopeIds = [rendered.scopeId + "-s"];
+  }
+  if (slot && slot._c) {
+    slot._d = true;
+  }
+  return rendered;
+}
+function ensureValidVNode(vnodes) {
+  return vnodes.some((child) => {
+    if (!isVNode(child))
+      return true;
+    if (child.type === Comment)
+      return false;
+    if (child.type === Fragment && !ensureValidVNode(child.children))
+      return false;
+    return true;
+  }) ? vnodes : null;
+}
 const getPublicInstance = (i) => {
   if (!i)
     return null;
@@ -16407,6 +16443,9 @@ function deepCloneVNode(vnode) {
 }
 function createTextVNode(text = " ", flag = 0) {
   return createVNode(Text, null, text, flag);
+}
+function createCommentVNode(text = "", asBlock = false) {
+  return asBlock ? (openBlock(), createBlock(Comment, null, text)) : createVNode(Comment, null, text);
 }
 function normalizeVNode(child) {
   if (child == null || typeof child === "boolean") {
@@ -20253,9 +20292,9 @@ const _sfc_main$c = /* @__PURE__ */ defineComponent$1({
         ]),
         createBaseVNode$1("span", _hoisted_3$6, [
           createBaseVNode$1("span", _hoisted_4$4, [
-            renderSlot(_ctx.$slots, "default")
+            renderSlot$1(_ctx.$slots, "default")
           ]),
-          renderSlot(_ctx.$slots, "actions")
+          renderSlot$1(_ctx.$slots, "actions")
         ])
       ]);
     };
@@ -20309,7 +20348,7 @@ const _sfc_main$b = /* @__PURE__ */ defineComponent$1({
         ]
       }, {
         actions: withCtx$1(() => [
-          renderSlot(_ctx.$slots, "actions")
+          renderSlot$1(_ctx.$slots, "actions")
         ]),
         default: withCtx$1(() => [
           createBaseVNode$1("div", _hoisted_1$8, [
@@ -20364,7 +20403,7 @@ const _sfc_main$a = /* @__PURE__ */ defineComponent$1({
         onClick: _cache[1] || (_cache[1] = ($event) => input.value.focus())
       }, {
         actions: withCtx$1(() => [
-          renderSlot(_ctx.$slots, "actions")
+          renderSlot$1(_ctx.$slots, "actions")
         ]),
         default: withCtx$1(() => [
           createBaseVNode$1("input", mergeProps$1({
@@ -20445,7 +20484,7 @@ const _sfc_main$9 = /* @__PURE__ */ defineComponent$1({
         onMousedown: onMouseDown
       }, {
         actions: withCtx$1(() => [
-          renderSlot(_ctx.$slots, "actions")
+          renderSlot$1(_ctx.$slots, "actions")
         ]),
         default: withCtx$1(() => [
           withDirectives(createBaseVNode$1("input", mergeProps$1({
@@ -20545,7 +20584,7 @@ const _sfc_main$8 = /* @__PURE__ */ defineComponent$1({
               style: normalizeStyle$1(unref$1(tooltipStyle))
             }, null, 4)), [
               [unref$1(VTooltip), { content: __props.modelValue.toString(), shown: true, distance: 16, delay: 0 }]
-            ]) : createCommentVNode("", true)
+            ]) : createCommentVNode$1("", true)
           ])
         ]),
         _: 1
@@ -20577,7 +20616,7 @@ const _sfc_main$7 = /* @__PURE__ */ defineComponent$1({
         onClick: _cache[1] || (_cache[1] = ($event) => input.value.focus())
       }, {
         actions: withCtx$1(() => [
-          renderSlot(_ctx.$slots, "actions")
+          renderSlot$1(_ctx.$slots, "actions")
         ]),
         default: withCtx$1(() => [
           createBaseVNode$1("textarea", mergeProps$1({
@@ -20649,7 +20688,7 @@ const _sfc_main$6 = /* @__PURE__ */ defineComponent$1({
         default: withCtx$1(() => [
           createBaseVNode$1("div", _hoisted_1$4, [
             createBaseVNode$1("div", _hoisted_2$4, [
-              renderSlot(_ctx.$slots, "default", { label: unref$1(selectedLabel) }, () => [
+              renderSlot$1(_ctx.$slots, "default", { label: unref$1(selectedLabel) }, () => [
                 createTextVNode$1(toDisplayString$1(unref$1(selectedLabel)), 1)
               ])
             ]),
@@ -20683,7 +20722,7 @@ const _sfc_main$5 = /* @__PURE__ */ defineComponent$1({
         style: normalizeStyle$1(_ctx.$attrs.style)
       }, {
         actions: withCtx$1(() => [
-          renderSlot(_ctx.$slots, "actions")
+          renderSlot$1(_ctx.$slots, "actions")
         ]),
         default: withCtx$1(() => [
           createVNode$1(_sfc_main$6, {
@@ -20785,7 +20824,7 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent$1({
             onMouseenter: ($event) => hover.value = shade.key,
             onMouseleave: _cache[0] || (_cache[0] = ($event) => hover.value = null)
           }, [
-            renderSlot(_ctx.$slots, "default", {
+            renderSlot$1(_ctx.$slots, "default", {
               color: shade.color
             }, () => [
               createBaseVNode$1("div", {
@@ -20806,7 +20845,7 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent$1({
                   key: 0,
                   content: shade.name,
                   class: "htw-flex-none"
-                }, null, 8, ["content"])) : createCommentVNode("", true)
+                }, null, 8, ["content"])) : createCommentVNode$1("", true)
               ]),
               createBaseVNode$1("div", _hoisted_5$2, [
                 withDirectives((openBlock$1(), createElementBlock$1("pre", _hoisted_6$1, [
@@ -20818,12 +20857,12 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent$1({
                   key: 0,
                   content: shade.color,
                   class: "htw-flex-none"
-                }, null, 8, ["content"])) : createCommentVNode("", true)
+                }, null, 8, ["content"])) : createCommentVNode$1("", true)
               ])
             ])
           ], 40, _hoisted_2$3);
         }), 128))
-      ])) : createCommentVNode("", true);
+      ])) : createCommentVNode$1("", true);
     };
   }
 });
@@ -20865,7 +20904,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent$1({
           onMouseenter: ($event) => hover.value = token.key,
           onMouseleave: _cache[0] || (_cache[0] = ($event) => hover.value = null)
         }, [
-          renderSlot(_ctx.$slots, "default", { token }),
+          renderSlot$1(_ctx.$slots, "default", { token }),
           createBaseVNode$1("div", _hoisted_2$2, [
             createBaseVNode$1("div", _hoisted_3$2, [
               createBaseVNode$1("pre", _hoisted_4$1, toDisplayString$1(token.name), 1),
@@ -20873,7 +20912,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent$1({
                 key: 0,
                 content: token.name,
                 class: "htw-flex-none"
-              }, null, 8, ["content"])) : createCommentVNode("", true)
+              }, null, 8, ["content"])) : createCommentVNode$1("", true)
             ]),
             createBaseVNode$1("div", _hoisted_5$1, [
               createBaseVNode$1("pre", _hoisted_6, toDisplayString$1(token.value), 1),
@@ -20881,7 +20920,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent$1({
                 key: 0,
                 content: typeof token.value === "string" ? token.value : JSON.stringify(token.value),
                 class: "htw-flex-none"
-              }, null, 8, ["content"])) : createCommentVNode("", true)
+              }, null, 8, ["content"])) : createCommentVNode$1("", true)
             ])
           ])
         ], 40, _hoisted_1$2);
@@ -20934,7 +20973,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent$1({
             onMouseenter: ($event) => hover.value = token.key,
             onMouseleave: _cache[0] || (_cache[0] = ($event) => hover.value = null)
           }, [
-            renderSlot(_ctx.$slots, "default", { token }),
+            renderSlot$1(_ctx.$slots, "default", { token }),
             createBaseVNode$1("div", null, [
               createBaseVNode$1("div", _hoisted_2$1, [
                 withDirectives((openBlock$1(), createElementBlock$1("pre", _hoisted_3$1, [
@@ -20946,7 +20985,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent$1({
                   key: 0,
                   content: token.name,
                   class: "htw-flex-none"
-                }, null, 8, ["content"])) : createCommentVNode("", true)
+                }, null, 8, ["content"])) : createCommentVNode$1("", true)
               ]),
               createBaseVNode$1("div", _hoisted_4, [
                 withDirectives((openBlock$1(), createElementBlock$1("pre", _hoisted_5, [
@@ -20958,7 +20997,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent$1({
                   key: 0,
                   content: typeof token.value === "string" ? token.value : JSON.stringify(token.value),
                   class: "htw-flex-none"
-                }, null, 8, ["content"])) : createCommentVNode("", true)
+                }, null, 8, ["content"])) : createCommentVNode$1("", true)
               ])
             ])
           ], 40, _hoisted_1$1);
@@ -21008,7 +21047,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent$1({
         style: normalizeStyle$1(_ctx.$attrs.style)
       }, {
         actions: withCtx$1(() => [
-          renderSlot(_ctx.$slots, "actions")
+          renderSlot$1(_ctx.$slots, "actions")
         ]),
         default: withCtx$1(() => [
           createBaseVNode$1("div", _hoisted_1, [
@@ -21093,7 +21132,10 @@ const config = markRaw$1({
       "sm": "14px",
       "md": "16px",
       "lg": "18px",
-      "xl": "24px"
+      "xl": "20px"
+    },
+    "container": {
+      "center": true
     },
     "screens": {
       "sm": "640px",
@@ -23145,7 +23187,6 @@ const config = markRaw$1({
       "150": "1.5",
       "200": "2"
     },
-    "container": {},
     "content": {
       "none": "none"
     },
@@ -27519,7 +27560,10 @@ const config = markRaw$1({
         "sm": "14px",
         "md": "16px",
         "lg": "18px",
-        "xl": "24px"
+        "xl": "20px"
+      },
+      "container": {
+        "center": true
       },
       "extend": {
         "colors": {
@@ -27597,7 +27641,7 @@ function mountApp({ el, state, onUnmount }, render2) {
     app.unmount();
   });
 }
-const Comp1 = {
+const Comp3 = {
   id: "tailwind",
   title: "Tailwind",
   group: "design-system",
@@ -37395,7 +37439,7 @@ export {
   createPinia as V,
   plugin as W,
   defineAsyncComponent as X,
-  Comp1 as Y,
+  Comp3 as Y,
   useDark as Z,
   useToggle as _,
   createBaseVNode$1 as a,
@@ -37409,14 +37453,21 @@ export {
   useResizeObserver as a7,
   vModelText$1 as a8,
   createStaticVNode as a9,
-  createBaseVNode as aA,
-  normalizeClass as aB,
-  toDisplayString as aC,
-  useFocus as aD,
-  refDebounced as aE,
-  flexsearch_bundle as aF,
-  client$1 as aG,
-  client as aH,
+  Fragment as aA,
+  createBaseVNode as aB,
+  normalizeClass as aC,
+  toDisplayString as aD,
+  ref as aE,
+  computed as aF,
+  renderSlot as aG,
+  normalizeStyle as aH,
+  reactive as aI,
+  createTextVNode as aJ,
+  useFocus as aK,
+  refDebounced as aL,
+  flexsearch_bundle as aM,
+  client$1 as aN,
+  client as aO,
   toRaw$1 as aa,
   Dropdown as ab,
   clone as ac,
@@ -37439,11 +37490,11 @@ export {
   createBlock as at,
   withCtx as au,
   openBlock as av,
-  createVNode as aw,
-  createElementBlock as ax,
-  renderList as ay,
-  Fragment as az,
-  renderSlot as b,
+  createCommentVNode as aw,
+  createVNode as ax,
+  createElementBlock as ay,
+  renderList as az,
+  renderSlot$1 as b,
   createBlock$1 as c,
   defineComponent$1 as d,
   withKeys as e,
@@ -37458,7 +37509,7 @@ export {
   normalizeClass$1 as n,
   openBlock$1 as o,
   createVNode$1 as p,
-  createCommentVNode as q,
+  createCommentVNode$1 as q,
   resolveComponent$1 as r,
   scrollIntoView as s,
   toDisplayString$1 as t,

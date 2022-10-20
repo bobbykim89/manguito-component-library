@@ -4,7 +4,6 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
-import { ar as defineComponent, as as resolveComponent, at as createBlock, au as withCtx, av as openBlock, aw as createVNode, ax as createElementBlock, ay as renderList, az as Fragment, aA as createBaseVNode, aB as normalizeClass, aC as toDisplayString } from "./vendor.0614ad87.js";
 class MCLTheme {
 }
 __publicField(MCLTheme, "bgColor", {
@@ -346,68 +345,7 @@ const _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const _sfc_main = /* @__PURE__ */ defineComponent({
-  __name: "MCLTheme.story",
-  setup(__props, { expose }) {
-    expose();
-    const colors = {
-      primary: "bg-primary",
-      secondary: "bg-secondary",
-      success: "bg-success",
-      danger: "bg-danger",
-      info: "bg-info",
-      warning: "bg-warning",
-      "light-1": "bg-light-1",
-      "light-2": "bg-light-2",
-      "light-3": "bg-light-3",
-      "light-4": "bg-light-4",
-      "dark-1": "bg-dark-1",
-      "dark-2": "bg-dark-2",
-      "dark-3": "bg-dark-3",
-      "dark-4": "bg-dark-4",
-      black: "bg-black",
-      white: "bg-white"
-    };
-    const generateFontColor = (input) => {
-      return generateClass("TEXTCOLOR", input);
-    };
-    const __returned__ = { colors, generateFontColor };
-    Object.defineProperty(__returned__, "__isScriptSetup", { enumerable: false, value: true });
-    return __returned__;
-  }
-});
-const _hoisted_1 = { class: "flex items-center justify-center" };
-function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  const _component_Variant = resolveComponent("Variant");
-  const _component_Story = resolveComponent("Story");
-  return openBlock(), createBlock(_component_Story, { title: "MCL Theme" }, {
-    default: withCtx(() => [
-      createVNode(_component_Variant, { title: "Color Palette" }, {
-        default: withCtx(() => [
-          (openBlock(), createElementBlock(Fragment, null, renderList($setup.colors, (color, index) => {
-            return createBaseVNode("div", {
-              class: "grid grid-cols-2 gap-4 content-center mb-2xs",
-              key: `color-${index}`
-            }, [
-              createBaseVNode("div", _hoisted_1, [
-                createBaseVNode("h3", {
-                  class: normalizeClass(["capitalize drop-shadow-md", $setup.generateFontColor(index)])
-                }, toDisplayString(index), 3)
-              ]),
-              createBaseVNode("div", {
-                class: normalizeClass(["bg-primary h-lg", color])
-              }, null, 2)
-            ]);
-          }), 64))
-        ]),
-        _: 1
-      })
-    ]),
-    _: 1
-  });
-}
-_sfc_main.__file = "src/stories/documentation/MCLTheme.story.vue";
-const MCLTheme_story = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render], ["__file", "/Users/skim585/Documents/projects/manguito-component-library/src/stories/documentation/MCLTheme.story.vue"]]);
 export {
-  MCLTheme_story as default
+  _export_sfc as _,
+  generateClass as g
 };
