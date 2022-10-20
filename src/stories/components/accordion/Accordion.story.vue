@@ -17,35 +17,35 @@ import {
 
 const state = reactive<{
   borderColor?: ColorPalette
+  rounded?: boolean
   displayHighlight?: boolean
   highlightLocation?: Location
   highlightColor?: ColorPalette
   highlightWidth?: Range<12>
   displayNumber?: boolean
-  number?: number
-  numberColor?: ColorPalette
-  numberBgColor?: ColorPalette
   title: string
   titleSize?: HeadingSize
   titleColor?: ColorPalette
   openOnMount?: boolean
   iconColor?: ColorPalette
+  bgColor?: ColorPalette
+  slotBgColor?: ColorPalette
   slotText: string
 }>({
   borderColor: 'light-4',
+  rounded: false,
   displayHighlight: true,
   highlightLocation: 'left',
   highlightColor: 'secondary',
   highlightWidth: 8,
   displayNumber: true,
-  number: 1,
-  numberColor: 'dark-3',
-  numberBgColor: 'secondary',
   title: 'Title Here',
   titleSize: 'sm',
   titleColor: 'dark-3',
   openOnMount: false,
   iconColor: 'dark-3',
+  bgColor: 'white',
+  slotBgColor: 'light-2',
   slotText:
     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga quo incidunt a blanditiis mollitia ea est? Fugit voluptate expedita magni vitae iste. Nulla aperiam voluptate ullam dolor officiis earum quis aliquam at ducimus porro. Quidem, molestias! Voluptates perferendis distinctio ipsam dicta optio non praesentium, maiores commodi. Natus, ducimus doloremque?',
 })
@@ -58,16 +58,16 @@ const state = reactive<{
       :title-size="state.titleSize"
       :title-color="state.titleColor"
       :border-color="state.borderColor"
+      :rounded="state.rounded"
       :display-highlight="state.displayHighlight"
       :highlight-location="state.highlightLocation"
       :highlight-color="state.highlightColor"
       :highlight-width="state.highlightWidth"
       :display-number="state.displayNumber"
-      :number="state.number"
-      :number-color="state.numberColor"
-      :number-bg-color="state.numberBgColor"
       :open-on-mount="state.openOnMount"
       :icon-color="state.iconColor"
+      :bg-color="state.bgColor"
+      :slot-bg-color="state.slotBgColor"
     >
       <div v-html="state.slotText"></div>
     </accordion>
@@ -88,6 +88,7 @@ const state = reactive<{
         v-model="state.borderColor"
         :options="colors"
       />
+      <HstCheckbox title="rounded" v-model="state.rounded" />
       <HstCheckbox title="display-highlight" v-model="state.displayHighlight" />
       <HstSelect
         title="highlight-location"
@@ -108,21 +109,16 @@ const state = reactive<{
         :max="12"
       />
       <HstCheckbox title="display-number" v-model="state.displayNumber" />
-      <HstNumber title="number" :step="1" v-model="state.number" />
-      <HstSelect
-        title="number-color"
-        v-model="state.numberColor"
-        :options="colors"
-      />
-      <HstSelect
-        title="number-bg-color"
-        v-model="state.numberBgColor"
-        :options="colors"
-      />
       <HstCheckbox title="open-on-mount" v-model="state.openOnMount" />
       <HstSelect
         title="icon-color"
         v-model="state.iconColor"
+        :options="colors"
+      />
+      <HstSelect title="bg-color" v-model="state.bgColor" :options="colors" />
+      <HstSelect
+        title="slot-bg-color"
+        v-model="state.slotBgColor"
         :options="colors"
       />
       <HstTextarea v-model="state.slotText" title="Slot Text" />

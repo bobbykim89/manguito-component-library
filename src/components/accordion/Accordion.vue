@@ -22,41 +22,44 @@ defineComponent({
 const props = withDefaults(
   defineProps<{
     borderColor?: ColorPalette
+    rounded?: boolean
     displayHighlight?: boolean
     highlightLocation?: Location
     highlightColor?: ColorPalette
     highlightWidth?: Range<12>
     displayNumber?: boolean
-    number?: number
-    numberColor?: ColorPalette
-    numberBgColor?: ColorPalette
     title: string
     titleSize?: HeadingSize
     titleColor?: ColorPalette
     openOnMount?: boolean
     iconColor?: ColorPalette
+    bgColor?: ColorPalette
+    slotBgColor?: ColorPalette
   }>(),
   {
     borderColor: 'light-4',
+    rounded: false,
     displayHighlight: true,
     highlightLocation: 'left',
     highlightColor: 'secondary',
     highlightWidth: 8,
     displayNumber: true,
-    number: 1,
-    numberColor: 'dark-3',
-    numberBgColor: 'secondary',
     titleSize: 'sm',
     titleColor: 'dark-3',
     openOnMount: false,
     iconColor: 'dark-3',
+    bgColor: 'white',
+    slotBgColor: 'light-2',
   }
 )
 
 const toggle = ref(props.openOnMount)
+const emit = defineEmits(['accordion-click'])
 
-const toggleAction = (): void => {
+const toggleAction = (e: Event): void => {
   toggle.value = !toggle.value
+
+  emit('accordion-click', e)
 }
 
 const getBorderClass = (
@@ -89,16 +92,6 @@ const getBorderClass = (
   )} ${generateClass('BORDERLW', hlWidth)}`
 }
 
-const getInnerBorderClass = (bColor: ColorPalette): string => {
-  /**
-   * @bColor - borderVariant
-   */
-
-  if (toggle.value === true) {
-    return `border-b ${generateClass('BORDERB', bColor)}`
-  }
-}
-
 const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
   /**
    * @size - titleSize
@@ -107,35 +100,18 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
   return `${generateClass('H3', size)} ${generateClass('TEXTCOLOR', color)}`
 }
 
-const getNumberClass = (
-  num: number,
-  color: ColorPalette,
-  bgColor: ColorPalette
-): string => {
-  /**
-   * @num - number
-   * @color - numberColor
-   * @bgColor - numberBgColor
-   */
-
-  let borderClass: string
-  if (num > 9) {
-    borderClass = 'double-digit'
-  } else {
-    borderClass = 'single-digit'
-  }
-
-  return `${generateClass('TEXTCOLOR', color)} ${generateClass(
-    'BGCOLOR',
-    bgColor
-  )} ${borderClass}`
-}
-
 const getIconColor = (color: ColorPalette): string => {
   /**
    * @color - iconColor
    */
   return generateClass('SVGFILL', color)
+}
+
+const getSlotBgColor = (color: ColorPalette): string => {
+  /**
+   * @color - slotBgColor
+   */
+  return generateClass('BGCOLOR', color)
 }
 
 const textSlot = ref()
@@ -149,30 +125,30 @@ const slotTextVal = computed(() => {
 
 <template>
   <section
-    :class="
+    class="overflow-hidden"
+    :class="[
+      rounded ? 'rounded-md' : '',
       getBorderClass(
         borderColor,
         displayHighlight,
         highlightColor,
         highlightLocation,
         highlightWidth
-      )
-    "
+      ),
+    ]"
   >
     <div
-      class="py-sm px-md cursor-pointer bg-white"
-      :class="getInnerBorderClass(borderColor)"
+      class="py-sm px-md cursor-pointer transition-all duration-500"
+      :class="[
+        toggle
+          ? `border-b ${generateClass('BORDERB', borderColor)} ease-in`
+          : 'ease-out',
+        generateClass('BGCOLOR', bgColor),
+      ]"
       @click="toggleAction"
     >
-      <div class="flex justify-between">
+      <div class="flex justify-between items-center">
         <h3 :class="getTitleClass(titleSize, titleColor)">
-          <span
-            v-if="displayNumber"
-            class="mr-xs number-block"
-            :class="getNumberClass(number, numberColor, numberBgColor)"
-          >
-            {{ number }}
-          </span>
           {{ title }}
         </h3>
         <div class="flex justify-center items-center ml-xs md:ml-sm lg:ml-md">
@@ -194,11 +170,13 @@ const slotTextVal = computed(() => {
       </div>
     </div>
     <div
+      class="h-auto overflow-hidden"
       :class="[
         toggle
           ? 'transition-all duration-500 ease-in'
           : 'transition-all duration-500 ease-out',
-        'h-auto overflow-hidden bg-light-1',
+        generateClass('BGCOLOR', slotBgColor),
+        ,
       ]"
       :style="slotTextVal"
       ref="textSlot"
@@ -217,19 +195,4 @@ const slotTextVal = computed(() => {
   </section>
 </template>
 
-<style lang="scss" scoped>
-.number-block {
-  display: inline-block;
-  font-size: 16px;
-  border-radius: 50%;
-  text-align: center;
-  font-weight: bold;
-  line-height: 1.4;
-}
-.number-block.single-digit {
-  padding: 4px 10.5px;
-}
-.number-block.double-digit {
-  padding: 4.5px 7px;
-}
-</style>
+<style lang="scss" scoped></style>
