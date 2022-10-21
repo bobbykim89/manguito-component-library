@@ -42,6 +42,11 @@ const mclTheme = {
 
 const mclHeading = ({ addComponents, theme }) => {
   addComponents({
+    body: {
+      // default font size
+      fontSize: '1rem',
+      lineHeight: '1.5rem',
+    },
     h1: {
       // default medium size
       fontSize: '30px',

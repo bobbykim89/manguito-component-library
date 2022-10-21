@@ -15,10 +15,6 @@ import type {
   HeadingSize,
 } from '@mcl/manguito-theme/theme/theme.types'
 
-defineComponent({
-  name: 'Accordion',
-})
-
 const props = withDefaults(
   defineProps<{
     borderColor?: ColorPalette
@@ -27,7 +23,6 @@ const props = withDefaults(
     highlightLocation?: Location
     highlightColor?: ColorPalette
     highlightWidth?: Range<12>
-    displayNumber?: boolean
     title: string
     titleSize?: HeadingSize
     titleColor?: ColorPalette
@@ -43,7 +38,6 @@ const props = withDefaults(
     highlightLocation: 'left',
     highlightColor: 'secondary',
     highlightWidth: 8,
-    displayNumber: true,
     titleSize: 'sm',
     titleColor: 'dark-3',
     openOnMount: false,
@@ -118,14 +112,17 @@ const textSlot = ref()
 
 const slotTextVal = computed(() => {
   return {
-    height: toggle.value ? textSlot.value.scrollHeight + 'px' : '0px',
+    height:
+      textSlot.value && toggle.value
+        ? textSlot.value.scrollHeight + 'px'
+        : '0px',
   }
 })
 </script>
 
 <template>
-  <section
-    class="overflow-hidden"
+  <div
+    class="overflow-hidden w-full"
     :class="[
       rounded ? 'rounded-md' : '',
       getBorderClass(
@@ -192,7 +189,7 @@ const slotTextVal = computed(() => {
         <slot></slot>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <style lang="scss" scoped></style>
