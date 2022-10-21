@@ -31,6 +31,8 @@ export type ClassType =
   | 'BORDERB'
   | 'BORDERTW'
   | 'BORDERLW'
+  | 'HVBGCOLOR'
+  | 'HVTEXTCOLOR'
 
 export type InputType =
   | ColorPalette
@@ -54,6 +56,9 @@ class GenerateMCLClass extends MCLTheme {
       case 'TEXTCOLOR':
       case 'SVGFILL':
         return this.getColorClass()
+      case 'HVBGCOLOR':
+      case 'HVTEXTCOLOR':
+        return this.getHoverColorClass()
       case 'H1':
       case 'H2':
       case 'H3':
@@ -86,6 +91,13 @@ class GenerateMCLClass extends MCLTheme {
       return textColor[this.classValue]
     }
     return svgFillColor[this.classValue]
+  }
+  getHoverColorClass(): string {
+    const { hoverBgColor, hoverTextColor } = MCLTheme
+    if (this.classType === 'HVBGCOLOR') {
+      return hoverBgColor[this.classValue]
+    }
+    return hoverTextColor[this.classValue]
   }
   getHeadingTextSizeClass(): string {
     const { heading1, heading2, heading3, heading4 } = MCLTheme

@@ -49,6 +49,11 @@ const questions = [
     choices: componentTypes,
   },
   {
+    type: 'confirm',
+    name: 'create_story',
+    message: 'Do you want to create story directory?',
+  },
+  {
     type: 'input',
     name: 'author_name',
     message: 'Please enter your name',
@@ -66,6 +71,7 @@ inquirer.prompt(questions).then((answers) => {
   const componentName = upperFirst(camelCaseText)
   const directoryName = kebabCase(answers['component_name'])
   const authorName = upperFirst(answers['author_name'])
+  const storyConfirm = answers['create_story']
 
   const storyName = directoryName.replace(/-/gi, '')
 
@@ -109,34 +115,33 @@ inquirer.prompt(questions).then((answers) => {
     })
     .replace(/{%componentName%}/gi, componentName)
 
-  console.log(componentName, directoryName, authorName)
-  console.log(COMPONENTS_PATH, STORIES_PATH)
-
   fs.mkdir(`${COMPONENTS_PATH}/${directoryName}`, (error) => {
     if (error) {
       console.log('Failed to create component..')
       console.log(error)
       return
     } else {
-      fs.mkdir(
-        `${STORIES_PATH}/${answers[
-          'component_type'
-        ].toLowerCase()}/${directoryName}`,
-        (error) => {
-          if (error) {
-            console.log('Failed to create story...')
-            return
-          } else {
-            // create story file
-            fs.writeFileSync(
-              `${STORIES_PATH}/${answers[
-                'component_type'
-              ].toLowerCase()}/${directoryName}/${componentName}.story.vue`,
-              storyTemplate
-            )
+      if (storyConfirm) {
+        fs.mkdir(
+          `${STORIES_PATH}/${answers[
+            'component_type'
+          ].toLowerCase()}/${directoryName}`,
+          (error) => {
+            if (error) {
+              console.log('Failed to create story...')
+              return
+            } else {
+              // create story file
+              fs.writeFileSync(
+                `${STORIES_PATH}/${answers[
+                  'component_type'
+                ].toLowerCase()}/${directoryName}/${componentName}.story.vue`,
+                storyTemplate
+              )
+            }
           }
-        }
-      )
+        )
+      }
       // create component file
       fs.writeFileSync(
         `${COMPONENTS_PATH}/${directoryName}/${componentName}.vue`,

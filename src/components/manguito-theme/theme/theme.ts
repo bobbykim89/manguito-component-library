@@ -79,6 +79,25 @@ abstract class MCLTheme {
     black: 'bg-black',
     white: 'bg-white',
   }
+  // hover bg color class
+  protected static hoverBgColor: ColorClass = {
+    primary: 'hover:bg-primary',
+    secondary: 'hover:bg-secondary',
+    success: 'hover:bg-success',
+    danger: 'hover:bg-danger',
+    info: 'hover:bg-info',
+    warning: 'hover:bg-warning',
+    'light-1': 'hover:bg-light-1',
+    'light-2': 'hover:bg-light-2',
+    'light-3': 'hover:bg-light-3',
+    'light-4': 'hover:bg-light-4',
+    'dark-1': 'hover:bg-dark-1',
+    'dark-2': 'hover:bg-dark-2',
+    'dark-3': 'hover:bg-dark-3',
+    'dark-4': 'hover:bg-dark-4',
+    black: 'hover:bg-black',
+    white: 'hover:bg-white',
+  }
   // text color class
   protected static textColor: ColorClass = {
     primary: 'text-primary',
@@ -98,6 +117,25 @@ abstract class MCLTheme {
     black: 'text-black',
     white: 'text-white',
   }
+  protected static hoverTextColor: ColorClass = {
+    primary: 'hover:text-primary',
+    secondary: 'hover:text-secondary',
+    success: 'hover:text-success',
+    danger: 'hover:text-danger',
+    info: 'hover:text-info',
+    warning: 'hover:text-warning',
+    'light-1': 'hover:text-light-1',
+    'light-2': 'hover:text-light-2',
+    'light-3': 'hover:text-light-3',
+    'light-4': 'hover:text-light-4',
+    'dark-1': 'hover:text-dark-1',
+    'dark-2': 'hover:text-dark-2',
+    'dark-3': 'hover:text-dark-3',
+    'dark-4': 'hover:text-dark-4',
+    black: 'hover:text-black',
+    white: 'hover:text-white',
+  }
+  // hover text color class
   // SVG fill color class
   protected static svgFillColor: ColorClass = {
     primary: 'fill-primary',
