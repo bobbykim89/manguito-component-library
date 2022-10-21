@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import { defineComponent, withDefaults } from 'vue'
-
-defineComponent({
-  name: '{%componentName%}',
-})
+import { withDefaults } from 'vue'
 
 const props = withDefaults(
   defineProps<{}>(),

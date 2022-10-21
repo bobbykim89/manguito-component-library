@@ -3,10 +3,9 @@ import { withDefaults } from 'vue'
 import type {
   ColorPalette,
   BodyText,
+  ButtonSize,
 } from '@mcl/manguito-theme/theme/theme.types'
 import generateClass from '@mcl/manguito-theme'
-
-type ButtonSize = 'small' | 'medium' | 'large'
 
 withDefaults(
   defineProps<{
@@ -15,6 +14,7 @@ withDefaults(
     buttonSize?: ButtonSize
     isBlock?: boolean
     rounded?: boolean
+    displayShadow?: boolean
   }>(),
   {
     color: 'primary',
@@ -22,6 +22,7 @@ withDefaults(
     buttonSize: 'medium',
     isBlock: false,
     rounded: false,
+    displayShadow: false,
   }
 )
 
@@ -32,7 +33,8 @@ const buttonConfig = (
   textSize: BodyText,
   btnSize: ButtonSize,
   block: boolean,
-  rounded: boolean
+  rounded: boolean,
+  shadow: boolean
 ): string => {
   /**
    * @color - color, btn background color
@@ -40,6 +42,7 @@ const buttonConfig = (
    * @btnSize - buttonSize, padding for button
    * @block - isBlock, whether button will have full width or not
    * @rounded - rounded, whether button will have round corner or not
+   * @shadow - displayShadow, boolean
    */
 
   const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
@@ -47,6 +50,7 @@ const buttonConfig = (
   let textColor = lightColor.includes(color) ? 'text-black' : 'text-white'
   let isBlock = block ? 'block w-full' : ''
   let corner = rounded ? 'rounded-full' : 'rounded'
+  let showShadow = shadow ? 'drop-shadow-md	' : ''
   let buttonSize: string
 
   if (btnSize === 'medium') {
@@ -63,7 +67,7 @@ const buttonConfig = (
   )} ${textColor} ${buttonSize} ${generateClass(
     'BODYTEXT',
     textSize
-  )} ${isBlock} ${corner}`
+  )} ${isBlock} ${corner} ${showShadow}`
 }
 
 const handleButtonClick = (e: Event): void => {
@@ -74,7 +78,9 @@ const handleButtonClick = (e: Event): void => {
 <template>
   <button
     class="bg-opacity-100 hover:bg-opacity-70 transition-all duration-300 ease-linear"
-    :class="buttonConfig(color, textSize, buttonSize, isBlock, rounded)"
+    :class="
+      buttonConfig(color, textSize, buttonSize, isBlock, rounded, displayShadow)
+    "
     @click="handleButtonClick"
   >
     <slot />

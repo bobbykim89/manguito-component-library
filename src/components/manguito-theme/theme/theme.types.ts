@@ -47,3 +47,4 @@ export type _Range<
   T extends number,
   R extends unknown[]
 > = R['length'] extends T ? R['length'] : R['length'] | _Range<T, [T, ...R]>
+export type ButtonSize = 'small' | 'medium' | 'large'
