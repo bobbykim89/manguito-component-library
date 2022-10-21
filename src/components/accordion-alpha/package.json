@@ -1,9 +1,8 @@
 {
-  "name": "@mcl/btn",
+  "name": "@mcl/accordion-alpha",
   "version": "0.1.0",
   "description": "",
   "type": "module",
-  "private": false,
   "main": "index.ts",
   "author": {
     "name": "Bobby Kim",

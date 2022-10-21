@@ -82,7 +82,7 @@ class GenerateMCLClass extends MCLTheme {
     if (this.classType === 'BGCOLOR') {
       return bgColor[this.classValue]
     }
-    if ((this.classType = 'TEXTCOLOR')) {
+    if (this.classType === 'TEXTCOLOR') {
       return textColor[this.classValue]
     }
     return svgFillColor[this.classValue]
