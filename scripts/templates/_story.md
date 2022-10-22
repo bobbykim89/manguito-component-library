@@ -1,13 +1,6 @@
 <script setup lang="ts">
-import { defineComponent } from 'vue'
+import { reactive } from 'vue'
 import {%componentName%} from '@/components/{%componentDir%}'
-
-defineComponent({
-  name: '{%componentName%}',
-  components: {
-    '{%componentDir%}': {%componentName%}
-  },
-})
 
 </script>
 

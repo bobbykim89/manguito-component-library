@@ -8,7 +8,7 @@ export default defineConfig({
   theme: {
     title: 'Manguito Components Library',
     logo: {
-      square: '/logo192.png',
+      square: '/mcl-logo-square.png',
       light: '/mcl-logo-light.png',
       dark: '/mcl-logo-dark.png',
     },
