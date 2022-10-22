@@ -15,7 +15,7 @@ const mclTheme = {
       secondary: '#00feda',
       success: '#78be20',
       info: '#00a3e0',
-      warning: '#ffc627',
+      warning: '#f1ac18',
       danger: '#cc2f2f',
       'light-1': '#fafafa',
       'light-2': '#f1f1f1',

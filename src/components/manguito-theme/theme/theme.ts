@@ -155,6 +155,25 @@ abstract class MCLTheme {
     black: 'fill-black',
     white: 'fill-white',
   }
+  // ring color class
+  protected static ringColor: ColorClass = {
+    primary: 'ring-primary',
+    secondary: 'ring-secondary',
+    success: 'ring-success',
+    danger: 'ring-danger',
+    info: 'ring-info',
+    warning: 'ring-warning',
+    'light-1': 'ring-light-1',
+    'light-2': 'ring-light-2',
+    'light-3': 'ring-light-3',
+    'light-4': 'ring-light-4',
+    'dark-1': 'ring-dark-1',
+    'dark-2': 'ring-dark-2',
+    'dark-3': 'ring-dark-3',
+    'dark-4': 'ring-dark-4',
+    black: 'ring-black',
+    white: 'ring-white',
+  }
   // h1 class
   protected static heading1: HeaderSizeClass = {
     sm: 'h1-sm',

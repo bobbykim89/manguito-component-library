@@ -17,6 +17,7 @@ export type ClassType =
   | 'BGCOLOR'
   | 'TEXTCOLOR'
   | 'SVGFILL'
+  | 'RINGCOLOR'
   | 'H1'
   | 'H2'
   | 'H3'
@@ -55,6 +56,7 @@ class GenerateMCLClass extends MCLTheme {
       case 'BGCOLOR':
       case 'TEXTCOLOR':
       case 'SVGFILL':
+      case 'RINGCOLOR':
         return this.getColorClass()
       case 'HVBGCOLOR':
       case 'HVTEXTCOLOR':
@@ -83,14 +85,17 @@ class GenerateMCLClass extends MCLTheme {
     }
   }
   getColorClass(): string {
-    const { bgColor, textColor, svgFillColor } = MCLTheme
+    const { bgColor, textColor, svgFillColor, ringColor } = MCLTheme
     if (this.classType === 'BGCOLOR') {
       return bgColor[this.classValue]
     }
     if (this.classType === 'TEXTCOLOR') {
       return textColor[this.classValue]
     }
-    return svgFillColor[this.classValue]
+    if (this.classType === 'SVGFILL') {
+      return svgFillColor[this.classValue]
+    }
+    return ringColor[this.classValue]
   }
   getHoverColorClass(): string {
     const { hoverBgColor, hoverTextColor } = MCLTheme
