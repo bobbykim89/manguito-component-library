@@ -1,13 +1,42 @@
 <script lang="ts" setup>
 import { reactive } from 'vue'
+import HeroAlpha from '@/components/hero-alpha'
 import HeroBeta from '@/components/hero-beta'
 import type {
   ColorPalette,
   HeadingSize,
   HeadingLevel,
   OpacityRange,
+  Directions,
 } from '@/components/manguito-theme/theme/theme.types'
 import { colors, headingTextLevel, headingTextSize } from '@/assets/options'
+
+const stateAlpha = reactive<{
+  title: string
+  titleLevel?: HeadingLevel
+  titleSize?: HeadingSize
+  displaySubTitle: boolean
+  subTitle?: string
+  subTitleLevel?: HeadingLevel
+  subTitleSize?: HeadingSize
+  titleColor?: ColorPalette
+  bgImage: string
+  bgColor?: ColorPalette
+  imgPosition?: Directions
+}>({
+  title: 'Hero Alpha',
+  titleLevel: 'h1',
+  titleSize: 'md',
+  displaySubTitle: false,
+  subTitle: 'This is subtitle',
+  subTitleLevel: 'h2',
+  subTitleSize: 'md',
+  titleColor: 'dark-3',
+  bgImage:
+    'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1650675406/ManguitoPage/hl38duquvda0ilultyqb.jpg',
+  bgColor: 'white',
+  imgPosition: 'right',
+})
 
 const stateBeta = reactive<{
   title: string
@@ -39,7 +68,22 @@ const stateBeta = reactive<{
 </script>
 
 <template>
-  <Story title="Hero">
+  <Story title="Hero" group="section-comp">
+    <Variant title="hero-alpha">
+      <hero-alpha
+        :title="stateAlpha.title"
+        :title-level="stateAlpha.titleLevel"
+        :title-size="stateAlpha.titleSize"
+        :display-sub-title="stateAlpha.displaySubTitle"
+        :sub-title="stateAlpha.subTitle"
+        :sub-title-level="stateAlpha.subTitleLevel"
+        :sub-title-size="stateAlpha.subTitleSize"
+        :title-color="stateAlpha.titleColor"
+        :bg-image="stateAlpha.bgImage"
+        :bg-color="stateAlpha.bgColor"
+        :img-position="stateAlpha.imgPosition"
+      ></hero-alpha>
+    </Variant>
     <Variant title="hero-beta">
       <hero-beta
         :title="stateBeta.title"
