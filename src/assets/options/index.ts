@@ -1,4 +1,4 @@
-export const colors = [
+export const colors: string[] = [
   'primary',
   'secondary',
   'success',
@@ -17,7 +17,8 @@ export const colors = [
   'white',
 ]
 
-export const bodyTextSize = ['xs', 'sm', 'md', 'lg', 'xl']
-export const headingTextSize = ['sm', 'md', 'lg', 'xl']
-export const buttonSize = ['small', 'medium', 'large']
-export const highlightLocationOptions = ['left', 'top']
+export const bodyTextSize: string[] = ['xs', 'sm', 'md', 'lg', 'xl']
+export const headingTextSize: string[] = ['sm', 'md', 'lg', 'xl']
+export const buttonSize: string[] = ['small', 'medium', 'large']
+export const highlightLocationOptions: string[] = ['left', 'top']
+export const headingTextLevel: string[] = ['h1', 'h2', 'h3', 'h4']
