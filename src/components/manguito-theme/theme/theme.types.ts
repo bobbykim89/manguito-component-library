@@ -49,3 +49,4 @@ export type _Range<
 > = R['length'] extends T ? R['length'] : R['length'] | _Range<T, [T, ...R]>
 export type ButtonSize = 'small' | 'medium' | 'large'
 export type OpacityRange = 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100
+export type Directions = 'left' | 'right'
