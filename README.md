@@ -24,7 +24,7 @@ Work in progress
 
 ## Dependencies
 
-Work ing progress
+Work in progress
 
 ## License
 

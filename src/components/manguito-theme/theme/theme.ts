@@ -59,6 +59,19 @@ export interface BorderWidth {
   12: string
 }
 
+export interface Opacity {
+  10: string
+  20: string
+  30: string
+  40: string
+  50: string
+  60: string
+  70: string
+  80: string
+  90: string
+  100: string
+}
+
 abstract class MCLTheme {
   // bg color class
   protected static bgColor: ColorClass = {
@@ -353,6 +366,30 @@ abstract class MCLTheme {
     10: 'border-l-[10px]',
     11: 'border-l-[11px]',
     12: 'border-l-[12px]',
+  }
+  protected static backgroundOpacity: Opacity = {
+    10: 'bg-opacity-10',
+    20: 'bg-opacity-20',
+    30: 'bg-opacity-30',
+    40: 'bg-opacity-40',
+    50: 'bg-opacity-50',
+    60: 'bg-opacity-60',
+    70: 'bg-opacity-70',
+    80: 'bg-opacity-80',
+    90: 'bg-opacity-90',
+    100: 'bg-opacity-100',
+  }
+  protected static opacity: Opacity = {
+    10: 'opacity-10',
+    20: 'opacity-20',
+    30: 'opacity-30',
+    40: 'opacity-40',
+    50: 'opacity-50',
+    60: 'opacity-60',
+    70: 'opacity-70',
+    80: 'opacity-80',
+    90: 'opacity-90',
+    100: 'opacity-100',
   }
 }
 

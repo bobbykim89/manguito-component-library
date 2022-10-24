@@ -5,6 +5,7 @@ import type {
   BodyText,
   FontWeight,
   Range,
+  OpacityRange,
 } from './theme.types'
 
 /**
@@ -34,6 +35,8 @@ export type ClassType =
   | 'BORDERLW'
   | 'HVBGCOLOR'
   | 'HVTEXTCOLOR'
+  | 'BGOPACITY'
+  | 'OPACITY'
 
 export type InputType =
   | ColorPalette
@@ -41,6 +44,7 @@ export type InputType =
   | BodyText
   | FontWeight
   | Range<12>
+  | OpacityRange
 
 class GenerateMCLClass extends MCLTheme {
   classType: ClassType
@@ -80,6 +84,10 @@ class GenerateMCLClass extends MCLTheme {
       case 'BORDERTW':
       case 'BORDERLW':
         return this.getBorderWidthClass()
+      case 'BGOPACITY':
+        return this.getBgOpacityClass()
+      case 'OPACITY':
+        return this.getOpacityClass()
       default:
         return
     }
@@ -157,6 +165,14 @@ class GenerateMCLClass extends MCLTheme {
       return borderTopWidth[this.classValue]
     }
     return borderLeftWidth[this.classValue]
+  }
+  getBgOpacityClass(): string {
+    const { backgroundOpacity } = MCLTheme
+    return backgroundOpacity[this.classValue]
+  }
+  getOpacityClass(): string {
+    const { opacity } = MCLTheme
+    return opacity[this.classValue]
   }
 }
 
