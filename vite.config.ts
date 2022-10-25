@@ -16,4 +16,5 @@ export default defineConfig({
       },
     ],
   },
+  base: '/manguito-component-library/',
 })
