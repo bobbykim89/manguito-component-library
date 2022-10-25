@@ -6,6 +6,7 @@ import type {
   HeadingSize,
   ColorPalette,
   Directions,
+  OpacityRange,
 } from '@mcl/manguito-theme/theme/theme.types'
 
 const props = withDefaults(
@@ -21,6 +22,8 @@ const props = withDefaults(
     bgImage: string
     bgColor?: ColorPalette
     imgPosition?: Directions
+    displayFilter?: boolean
+    filterOpacity?: OpacityRange
   }>(),
   {
     titleLevel: 'h1',
@@ -31,6 +34,8 @@ const props = withDefaults(
     titleColor: 'dark-3',
     imgPosition: 'right',
     bgColor: 'white',
+    displayFilter: true,
+    filterOpacity: 30,
   }
 )
 
@@ -75,16 +80,26 @@ const getTitleClass = (
 
 <template>
   <section
-    class="bg-white overflow-hidden w-full"
+    class="overflow-hidden w-full"
     :class="generateClass('BGCOLOR', bgColor)"
   >
     <div class="grid lg:grid-cols-2">
       <div
-        class="px-xs flex flex-col justify-center"
+        class="relative px-xs flex flex-col justify-center min-h-[256px] md:min-h-[400px]"
         :class="{ 'lg:order-2': imgPosition === 'left' }"
       >
         <div
-          class="py-md lg:py-lg px-0"
+          class="lg:hidden absolute inset-0 bg-no-repeat bg-cover bg-top"
+          :style="getBgImage(bgImage)"
+        >
+          <div
+            v-if="displayFilter"
+            class="absolute inset-0 bg-white"
+            :class="generateClass('OPACITY', filterOpacity)"
+          ></div>
+        </div>
+        <div
+          class="relative py-md lg:py-lg px-0"
           :class="[imgPosition === 'right' ? 'lg:pl-md' : 'lg:pr-md']"
         >
           <div class="text-center lg:text-left mb-xs">
@@ -92,16 +107,16 @@ const getTitleClass = (
             <component
               :is="titleLevel"
               :class="getTitleClass(titleLevel, titleSize, titleColor)"
+              v-html="title"
             >
-              {{ title }}
             </component>
             <!-- sub title -->
             <component
               :is="subTitleLevel"
               v-if="displaySubTitle"
               :class="getTitleClass(subTitleLevel, subTitleSize, titleColor)"
+              v-html="subTitle"
             >
-              {{ subTitle }}
             </component>
           </div>
           <div>
@@ -110,7 +125,7 @@ const getTitleClass = (
         </div>
       </div>
       <div
-        class="relative bg-no-repeat bg-cover bg-top min-h-[256px] md:min-h-[400px] lg:min-h-[512px] xl:min-h-[80vh]"
+        class="hidden lg:block relative bg-no-repeat bg-cover bg-top min-h-[256px] md:min-h-[400px] lg:min-h-[512px] xl:min-h-[80vh]"
         :class="{ 'lg:order-1': imgPosition === 'left' }"
         :style="getBgImage(bgImage)"
       >

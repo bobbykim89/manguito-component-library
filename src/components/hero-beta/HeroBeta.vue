@@ -113,8 +113,8 @@ const getTitleHighlightClass = (
               :class="
                 getTitleHighlightClass(titleHighlightColor, showTitleHighlight)
               "
+              v-html="title"
             >
-              {{ title }}
             </span>
           </component>
           <div class="hidden md:block md:mt-sm w-3/4">

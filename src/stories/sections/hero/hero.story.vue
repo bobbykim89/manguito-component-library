@@ -25,6 +25,8 @@ const stateAlpha = reactive<{
   bgImage: string
   bgColor?: ColorPalette
   imgPosition?: Directions
+  displayFilter?: boolean
+  filterOpacity?: OpacityRange
   slotText?: string
 }>({
   title: 'Hero Alpha',
@@ -39,6 +41,8 @@ const stateAlpha = reactive<{
     'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1650675406/ManguitoPage/hl38duquvda0ilultyqb.jpg',
   bgColor: 'white',
   imgPosition: 'right',
+  displayFilter: true,
+  filterOpacity: 30,
   slotText:
     'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat odio voluptate fuga quibusdam nostrum veritatis similique aperiam nobis debitis, excepturi id culpa quasi quos totam obcaecati deserunt ea quis sit quisquam alias nihil omnis! Aut culpa architecto repellat minima adipisci porro consequatur, officiis facere ea quos officia fugiat atque quia?',
 })
@@ -87,6 +91,8 @@ const stateBeta = reactive<{
         :bg-image="stateAlpha.bgImage"
         :bg-color="stateAlpha.bgColor"
         :img-position="stateAlpha.imgPosition"
+        :display-filter="stateAlpha.displayFilter"
+        :filter-opacity="stateAlpha.filterOpacity"
       >
         <div v-html="stateAlpha.slotText"></div>
       </hero-alpha>
@@ -101,6 +107,18 @@ const stateBeta = reactive<{
           title="img-position"
           v-model="stateAlpha.imgPosition"
           :options="direction"
+        />
+        <HstCheckbox
+          title="display-filter"
+          v-model="stateAlpha.displayFilter"
+        />
+        <HstSlider
+          title="filter-opacity"
+          :modelValue="stateAlpha.filterOpacity"
+          @update:modelValue="stateAlpha.filterOpacity = $event"
+          :step="10"
+          :min="10"
+          :max="100"
         />
         <HstText title="title" v-model="stateAlpha.title" />
         <HstSelect
