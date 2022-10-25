@@ -11,6 +11,8 @@ import type {
 } from '@/components/manguito-theme/theme/theme.types'
 import { colors, headingTextLevel, headingTextSize } from '@/assets/options'
 
+const direction: string[] = ['left', 'right']
+
 const stateAlpha = reactive<{
   title: string
   titleLevel?: HeadingLevel
@@ -23,19 +25,22 @@ const stateAlpha = reactive<{
   bgImage: string
   bgColor?: ColorPalette
   imgPosition?: Directions
+  slotText?: string
 }>({
   title: 'Hero Alpha',
   titleLevel: 'h1',
   titleSize: 'md',
-  displaySubTitle: false,
+  displaySubTitle: true,
   subTitle: 'This is subtitle',
-  subTitleLevel: 'h2',
+  subTitleLevel: 'h3',
   subTitleSize: 'md',
   titleColor: 'dark-3',
   bgImage:
     'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1650675406/ManguitoPage/hl38duquvda0ilultyqb.jpg',
   bgColor: 'white',
   imgPosition: 'right',
+  slotText:
+    'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat odio voluptate fuga quibusdam nostrum veritatis similique aperiam nobis debitis, excepturi id culpa quasi quos totam obcaecati deserunt ea quis sit quisquam alias nihil omnis! Aut culpa architecto repellat minima adipisci porro consequatur, officiis facere ea quos officia fugiat atque quia?',
 })
 
 const stateBeta = reactive<{
@@ -82,7 +87,52 @@ const stateBeta = reactive<{
         :bg-image="stateAlpha.bgImage"
         :bg-color="stateAlpha.bgColor"
         :img-position="stateAlpha.imgPosition"
-      ></hero-alpha>
+      >
+        <div v-html="stateAlpha.slotText"></div>
+      </hero-alpha>
+      <template #controls>
+        <HstText title="bg-image" v-model="stateAlpha.bgImage" />
+        <HstSelect
+          title="bg-color"
+          v-model="stateAlpha.bgColor"
+          :options="colors"
+        />
+        <HstSelect
+          title="img-position"
+          v-model="stateAlpha.imgPosition"
+          :options="direction"
+        />
+        <HstText title="title" v-model="stateAlpha.title" />
+        <HstSelect
+          title="title-level"
+          v-model="stateAlpha.titleLevel"
+          :options="headingTextLevel"
+        />
+        <HstSelect
+          title="title-size"
+          v-model="stateAlpha.titleSize"
+          :options="headingTextSize"
+        />
+        <HstCheckbox
+          title="display-sub-title"
+          v-model="stateAlpha.displaySubTitle"
+        />
+        <HstSelect
+          title="sub-title-level"
+          v-model="stateAlpha.subTitleLevel"
+          :options="headingTextLevel"
+        />
+        <HstSelect
+          title="sub-title-size"
+          v-model="stateAlpha.subTitleSize"
+          :options="headingTextSize"
+        />
+        <HstSelect
+          title="title-color"
+          v-model="stateAlpha.titleColor"
+          :options="colors"
+        />
+      </template>
     </Variant>
     <Variant title="hero-beta">
       <hero-beta
