@@ -20,7 +20,6 @@ const stateAlpha = reactive<{
   borderColor?: ColorPalette
   rounded?: boolean
   displayHighlight?: boolean
-  highlightLocation?: Location
   highlightColor?: ColorPalette
   highlightWidth?: Range<12>
   title: string
@@ -35,7 +34,6 @@ const stateAlpha = reactive<{
   borderColor: 'light-4',
   rounded: false,
   displayHighlight: true,
-  highlightLocation: 'left',
   highlightColor: 'secondary',
   highlightWidth: 8,
   title: 'Title Here',
@@ -87,10 +85,8 @@ const stateBeta = reactive<{
         :border-color="stateAlpha.borderColor"
         :rounded="stateAlpha.rounded"
         :display-highlight="stateAlpha.displayHighlight"
-        :highlight-location="stateAlpha.highlightLocation"
         :highlight-color="stateAlpha.highlightColor"
         :highlight-width="stateAlpha.highlightWidth"
-        :display-number="stateAlpha.displayNumber"
         :open-on-mount="stateAlpha.openOnMount"
         :icon-color="stateAlpha.iconColor"
         :bg-color="stateAlpha.bgColor"
@@ -129,11 +125,6 @@ const stateBeta = reactive<{
         <HstCheckbox
           title="display-highlight"
           v-model="stateAlpha.displayHighlight"
-        />
-        <HstSelect
-          title="highlight-location"
-          v-model="stateAlpha.highlightLocation"
-          :options="highlightLocationOptions"
         />
         <HstSelect
           title="highlight-color"
