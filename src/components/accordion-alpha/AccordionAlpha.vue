@@ -10,7 +10,6 @@ import {
 import generateClass from '@mcl/manguito-theme'
 import type {
   ColorPalette,
-  Location,
   Range,
   HeadingSize,
 } from '@mcl/manguito-theme/theme/theme.types'
@@ -20,7 +19,6 @@ const props = withDefaults(
     borderColor?: ColorPalette
     rounded?: boolean
     displayHighlight?: boolean
-    highlightLocation?: Location
     highlightColor?: ColorPalette
     highlightWidth?: Range<12>
     title: string
@@ -35,7 +33,6 @@ const props = withDefaults(
     borderColor: 'light-4',
     rounded: false,
     displayHighlight: true,
-    highlightLocation: 'left',
     highlightColor: 'secondary',
     highlightWidth: 8,
     titleSize: 'sm',
@@ -60,30 +57,42 @@ const getBorderClass = (
   bColor: ColorPalette,
   dHl: boolean,
   hlColor: ColorPalette,
-  hlLocation: Location,
   hlWidth: Range<12>
 ): string => {
   /**
    * @bColor - borderColor
    * @dHl - displayHighlight
    * @hlColor - highlightColor
-   * @hlLocation - highlightLocation
    * @hlWidth - highlightWidth
    */
 
-  if (!dHl || hlWidth === 0) {
-    return `border ${generateClass('BORDER', bColor)}`
+  const classArray: string[] = ['border', generateClass('BORDER', bColor)]
+
+  if (dHl && hlWidth !== 0) {
+    const borderArray: string[] = [
+      generateClass('BORDERL', hlColor),
+      generateClass('BORDERLW', hlWidth),
+    ]
+    borderArray.forEach((item) => {
+      classArray.push(item)
+    })
   }
-  if (dHl && hlLocation === 'top') {
-    return `border ${generateClass('BORDER', bColor)} ${generateClass(
-      'BORDERT',
-      hlColor
-    )} ${generateClass('BORDERTW', hlWidth)}`
-  }
-  return `border ${generateClass('BORDER', bColor)} ${generateClass(
-    'BORDERL',
-    hlColor
-  )} ${generateClass('BORDERLW', hlWidth)}`
+
+  return classArray.join(' ')
+
+  // if (!dHl || hlWidth === 0) {
+  //   return `border ${generateClass('BORDER', bColor)}`
+  // }
+  // if (dHl && hlLocation === 'top') {
+  //   return `border ${generateClass('BORDER', bColor)} ${generateClass(
+  //     'BORDERT',
+  //     hlColor
+  //   )} ${generateClass('BORDERTW', hlWidth)}`
+  // }
+  // return `border ${generateClass('BORDER', bColor)} ${generateClass(
+  //   'BORDERL',
+  //   hlColor
+  // )} ${generateClass('BORDERLW', hlWidth)}`
 }
 
 const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
@@ -129,7 +138,6 @@ const slotTextVal = computed(() => {
         borderColor,
         displayHighlight,
         highlightColor,
-        highlightLocation,
         highlightWidth
       ),
     ]"
