@@ -1,4 +1,4 @@
-import { ar as defineComponent, aE as ref, aF as computed, av as openBlock, ay as createElementBlock, aB as createBaseVNode, aC as normalizeClass, aD as toDisplayString, aw as createCommentVNode, aG as renderSlot, aH as normalizeStyle, aI as reactive, as as resolveComponent, at as createBlock, au as withCtx, ax as createVNode } from "./vendor.981b08eb.js";
+import { ar as defineComponent, aE as ref, aF as computed, av as openBlock, ay as createElementBlock, aB as createBaseVNode, aC as normalizeClass, aD as toDisplayString, aw as createCommentVNode, aG as renderSlot, aH as normalizeStyle, aI as reactive, as as resolveComponent, at as createBlock, au as withCtx, ax as createVNode } from "./vendor.ee93adbd.js";
 import { _ as _export_sfc, g as generateClass } from "./_plugin-vue_export-helper.e3a59fa7.js";
 import { c as colors, h as headingTextSize } from "./index.0271104e.js";
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
