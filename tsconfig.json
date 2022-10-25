@@ -13,11 +13,11 @@
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
     "types": ["vite/client"],
-    "allowJs": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    }
+    "allowJs": true
+    // "baseUrl": "."
+    // "paths": {
+    //   "@/*": ["src/*"]
+    // }
   },
   "include": [
     "src/**/*.ts",

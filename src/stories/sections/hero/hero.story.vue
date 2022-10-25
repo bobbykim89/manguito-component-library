@@ -1,15 +1,19 @@
 <script lang="ts" setup>
 import { reactive } from 'vue'
-import HeroAlpha from '@/components/hero-alpha'
-import HeroBeta from '@/components/hero-beta'
+import HeroAlpha from '../../../components/hero-alpha'
+import HeroBeta from '../../../components/hero-beta'
 import type {
   ColorPalette,
   HeadingSize,
   HeadingLevel,
   OpacityRange,
   Directions,
-} from '@/components/manguito-theme/theme/theme.types'
-import { colors, headingTextLevel, headingTextSize } from '@/assets/options'
+} from '../../../components/manguito-theme/theme/theme.types'
+import {
+  colors,
+  headingTextLevel,
+  headingTextSize,
+} from '../../../assets/options'
 
 const direction: string[] = ['left', 'right']
 
