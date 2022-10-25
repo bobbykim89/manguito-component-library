@@ -1,9 +1,0 @@
-import { $ as markRaw } from "./vendor.ee93adbd.js";
-let searchData$1 = { "index": { "reg": '{"0":1,"1":1,"2":1,"3":1,"4":1}', "text.cfg": '{"doc":0,"opt":1}', "text.map": '[{"m":[0],"ma":[0],"mam":[0],"mamk":[0],"mamko":[0],"mamkot":[0],"mamkoto":[0],"a":[1],"ak":[1],"ako":[1],"akor":[1],"akort":[1],"akorte":[1],"akorteo":[1],"akorteom":[1],"p":[2],"po":[2],"pot":[2],"poto":[2],"potom":[2],"t":[3,4],"ta":[3,4],"tap":[3,4]},{"k":[0],"ko":[0],"kom":[0],"komp":[0],"kompo":[0],"kompom":[0],"kompome":[0],"kompomem":[0],"kompomemt":[0],"kompomemts":[0],"l":[0],"le":[0],"lep":[0],"lepr":[0],"lepra":[0],"leprar":[0],"leprare":[0]},{"al":[1,2,3,4],"alf":[1,2,3,4],"alfa":[1,2,3,4],"a":[2,3,4]},{"mk":[0],"mkl":[0],"e":[0],"es":[0]},{"a":[0],"t":[1,2],"te":[1,2,3],"tes":[1,2,3],"tesk":[1,2,3],"teskr":[1,2,3],"teskre":[1,2,3],"teskrep":[1,2,3],"teskrept":[1,2,3],"teskrepte":[1,2,3],"teskrepteo":[1,2,3],"teskrepteom":[1,2,3]},{"p":[0],"pa":[0],"pas":[0],"pase":[0],"paset":[0],"te":[4],"tes":[4],"tesk":[4],"teskr":[4],"teskre":[4],"teskrep":[4],"teskrept":[4],"teskrepte":[4],"teskrepteo":[4],"teskrepteom":[4]},{"3":[0],"o":[0],"om":[0],"f":[0],"fo":[0],"p":[1,3],"pe":[1,2,3],"pet":[1,2,3],"peta":[1,2,3]},{"fe":[0],"fet":[0],"fete":[0],"am":[0],"amt":[0]},{"t":[0],"ta":[0],"tal":[0],"talf":[0],"talfe":[0],"talfem":[0],"talfemt":[0],"ks":[0]}]', "text.ctx": "[{}]" }, "idMap": { "0": { "id": "src-stories-documentation-mcltheme-story-vue", "kind": "story" }, "1": { "id": "src-stories-components-accordion-accordion-story-vue", "kind": "story" }, "2": { "id": "src-stories-components-button-button-story-vue", "kind": "story" }, "3": { "id": "src-stories-sections-hero-hero-story-vue", "kind": "story" }, "4": { "id": "src-stories-components-tabs-tabs-story-vue", "kind": "story" } } };
-const searchData = markRaw(searchData$1);
-function onUpdate(cb) {
-}
-export {
-  onUpdate,
-  searchData
-};
