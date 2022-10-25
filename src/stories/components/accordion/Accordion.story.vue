@@ -1,20 +1,19 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import AccordionAlpha from '@/components/accordion-alpha'
-import AccordionBeta from '@/components/accordion-beta'
+import AccordionAlpha from '../../../components/accordion-alpha'
+import AccordionBeta from '../../../components/accordion-beta'
 import type {
   ColorPalette,
-  Location,
   Range,
   HeadingSize,
-} from '@/components/manguito-theme/theme/theme.types'
+} from '../../../components/manguito-theme/theme/theme.types'
 import {
   colors,
   bodyTextSize,
   headingTextSize,
   buttonSize,
   highlightLocationOptions,
-} from '@/assets/options'
+} from '../../../assets/options'
 
 const stateAlpha = reactive<{
   borderColor?: ColorPalette
