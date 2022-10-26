@@ -17,11 +17,14 @@ const stateAlpha = reactive<{
   title: string
   titleLevel?: HeadingLevel
   titleSize?: HeadingSize
+  titleColor?: ColorPalette
   displaySubTitle: boolean
   subTitle?: string
   subTitleLevel?: HeadingLevel
   subTitleSize?: HeadingSize
-  titleColor?: ColorPalette
+  subTitleColor?: ColorPalette
+  displaySubTitleHighlight?: boolean
+  subTitleHighlightColor?: ColorPalette
   bgImage: string
   bgColor?: ColorPalette
   imgPosition?: Directions
@@ -32,11 +35,14 @@ const stateAlpha = reactive<{
   title: 'Hero Alpha',
   titleLevel: 'h1',
   titleSize: 'md',
+  titleColor: 'dark-3',
   displaySubTitle: true,
   subTitle: 'This is subtitle',
   subTitleLevel: 'h3',
   subTitleSize: 'md',
-  titleColor: 'dark-3',
+  subTitleColor: 'dark-3',
+  displaySubTitleHighlight: false,
+  subTitleHighlightColor: 'primary',
   bgImage:
     'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1650675406/ManguitoPage/hl38duquvda0ilultyqb.jpg',
   bgColor: 'white',
@@ -87,7 +93,10 @@ const stateBeta = reactive<{
         :sub-title="stateAlpha.subTitle"
         :sub-title-level="stateAlpha.subTitleLevel"
         :sub-title-size="stateAlpha.subTitleSize"
+        :display-sub-title-highlight="stateAlpha.displaySubTitleHighlight"
+        :sub-title-highlight-color="stateAlpha.subTitleHighlightColor"
         :title-color="stateAlpha.titleColor"
+        :sub-title-color="stateAlpha.subTitleColor"
         :bg-image="stateAlpha.bgImage"
         :bg-color="stateAlpha.bgColor"
         :img-position="stateAlpha.imgPosition"
@@ -131,6 +140,11 @@ const stateBeta = reactive<{
           v-model="stateAlpha.titleSize"
           :options="headingTextSize"
         />
+        <HstSelect
+          title="title-color"
+          v-model="stateAlpha.titleColor"
+          :options="colors"
+        />
         <HstCheckbox
           title="display-sub-title"
           v-model="stateAlpha.displaySubTitle"
@@ -146,8 +160,17 @@ const stateBeta = reactive<{
           :options="headingTextSize"
         />
         <HstSelect
-          title="title-color"
-          v-model="stateAlpha.titleColor"
+          title="sub-title-color"
+          v-model="stateAlpha.subTitleColor"
+          :options="colors"
+        />
+        <HstCheckbox
+          title="display-sub-title-highlight"
+          v-model="stateAlpha.displaySubTitleHighlight"
+        />
+        <HstSelect
+          title="sub-title-highlight-color"
+          v-model="stateAlpha.subTitleHighlightColor"
           :options="colors"
         />
       </template>

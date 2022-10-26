@@ -14,11 +14,14 @@ const props = withDefaults(
     title: string
     titleLevel?: HeadingLevel
     titleSize?: HeadingSize
+    titleColor?: ColorPalette
     displaySubTitle: boolean
     subTitle?: string
     subTitleLevel?: HeadingLevel
     subTitleSize?: HeadingSize
-    titleColor?: ColorPalette
+    subTitleColor?: ColorPalette
+    displaySubTitleHighlight?: boolean
+    subTitleHighlightColor?: ColorPalette
     bgImage: string
     bgColor?: ColorPalette
     imgPosition?: Directions
@@ -28,10 +31,13 @@ const props = withDefaults(
   {
     titleLevel: 'h1',
     titleSize: 'md',
+    titleColor: 'dark-3',
     displaySubTitle: false,
     subTitleLevel: 'h3',
     subTitleSize: 'md',
-    titleColor: 'dark-3',
+    subTitleColor: 'dark-3',
+    displaySubTitleHighlight: false,
+    subTitleHighlightColor: 'primary',
     imgPosition: 'right',
     bgColor: 'white',
     displayFilter: true,
@@ -55,7 +61,7 @@ const getTitleClass = (
   /**
    * @level - titleLevel/subTitleLevel
    * @size - titleSize/subTitleSize
-   * @color - titleColor
+   * @color - titleColor/subTitleColor
    */
 
   let titleLevel
@@ -75,6 +81,24 @@ const getTitleClass = (
   ]
 
   return classArray.join(' ')
+}
+const getTitleHighlightClass = (
+  color: ColorPalette,
+  display: boolean
+): string => {
+  /**
+   * @color - subTitleHighlightColor
+   * @display - displaySubTitleHighlight
+   */
+
+  const classArray = [
+    generateClass('BGCOLOR', color),
+    'shadow-lg',
+    'px-2xs',
+    'py-3xs',
+  ]
+
+  return display ? classArray.join(' ') : ''
 }
 </script>
 
@@ -106,7 +130,10 @@ const getTitleClass = (
             <!-- title -->
             <component
               :is="titleLevel"
-              :class="getTitleClass(titleLevel, titleSize, titleColor)"
+              :class="[
+                displaySubTitleHighlight ? 'mb-3xs' : '',
+                getTitleClass(titleLevel, titleSize, titleColor),
+              ]"
               v-html="title"
             >
             </component>
@@ -114,9 +141,18 @@ const getTitleClass = (
             <component
               :is="subTitleLevel"
               v-if="displaySubTitle"
-              :class="getTitleClass(subTitleLevel, subTitleSize, titleColor)"
-              v-html="subTitle"
+              :class="getTitleClass(subTitleLevel, subTitleSize, subTitleColor)"
             >
+              <span
+                class="box-decoration-clone"
+                :class="
+                  getTitleHighlightClass(
+                    subTitleHighlightColor,
+                    displaySubTitleHighlight
+                  )
+                "
+                v-html="subTitle"
+              ></span>
             </component>
           </div>
           <div>
