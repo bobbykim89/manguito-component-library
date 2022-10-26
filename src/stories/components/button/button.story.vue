@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import BtnAlpha from '../../../components/btn-alpha'
-import BtnBeta from '../../../components/btn-beta'
+import BtnAlpha from '@/components/btn-alpha'
+import BtnBeta from '@/components/btn-beta'
 import type {
   ColorPalette,
   BodyText,
   ButtonSize,
-} from '../../../components/manguito-theme/theme/theme.types'
-import { colors, bodyTextSize, buttonSize } from '../../../assets/options'
+} from '@/components/manguito-theme/theme/theme.types'
+import { colors, bodyTextSize, buttonSize } from '@/assets/options'
 
 const stateAlpha = reactive<{
   text: string
