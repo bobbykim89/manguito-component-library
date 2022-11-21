@@ -19,6 +19,9 @@ export type ClassType =
   | 'TEXTCOLOR'
   | 'SVGFILL'
   | 'RINGCOLOR'
+  | 'FOCUSRING'
+  | 'ACTIVERING'
+  | 'ACTIVEBG'
   | 'H1'
   | 'H2'
   | 'H3'
@@ -61,6 +64,9 @@ class GenerateMCLClass extends MCLTheme {
       case 'TEXTCOLOR':
       case 'SVGFILL':
       case 'RINGCOLOR':
+      case 'FOCUSRING':
+      case 'ACTIVERING':
+      case 'ACTIVEBG':
         return this.getColorClass()
       case 'HVBGCOLOR':
       case 'HVTEXTCOLOR':
@@ -93,7 +99,15 @@ class GenerateMCLClass extends MCLTheme {
     }
   }
   getColorClass(): string {
-    const { bgColor, textColor, svgFillColor, ringColor } = MCLTheme
+    const {
+      bgColor,
+      textColor,
+      svgFillColor,
+      ringColor,
+      ringFocusColor,
+      ringActiveColor,
+      bgActiveColor,
+    } = MCLTheme
     if (this.classType === 'BGCOLOR') {
       return bgColor[this.classValue]
     }
@@ -102,6 +116,15 @@ class GenerateMCLClass extends MCLTheme {
     }
     if (this.classType === 'SVGFILL') {
       return svgFillColor[this.classValue]
+    }
+    if (this.classType === 'FOCUSRING') {
+      return ringFocusColor[this.classValue]
+    }
+    if (this.classType === 'ACTIVERING') {
+      return ringActiveColor[this.classValue]
+    }
+    if (this.classType === 'ACTIVEBG') {
+      return bgActiveColor[this.classValue]
     }
     return ringColor[this.classValue]
   }

@@ -47,7 +47,9 @@ const buttonConfig = (
 
   const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
 
-  let textColor = lightColor.includes(color) ? 'text-black' : 'text-white'
+  let textColor = lightColor.includes(color)
+    ? 'text-black ring-offset-black'
+    : 'text-white ring-offset-white'
   let isBlock = block ? 'block w-full' : ''
   let corner = rounded ? 'rounded-full' : 'rounded'
   let showShadow = shadow ? 'drop-shadow-md	' : ''
@@ -61,8 +63,8 @@ const buttonConfig = (
     buttonSize = 'px-5 py-2.5'
   }
 
-  return `${generateClass(
-    'BGCOLOR',
+  return `${generateClass('BGCOLOR', color)} ${generateClass(
+    'FOCUSRING',
     color
   )} ${textColor} ${buttonSize} ${generateClass(
     'BODYTEXT',
@@ -77,7 +79,7 @@ const handleButtonClick = (e: Event): void => {
 
 <template>
   <button
-    class="bg-opacity-100 hover:bg-opacity-70 transition-all duration-300 ease-linear"
+    class="focus:outline-none focus:ring-4 ring-offset-2 bg-opacity-100 hover:bg-opacity-70 transition-all duration-300 ease-linear"
     :class="
       buttonConfig(color, textSize, buttonSize, isBlock, rounded, displayShadow)
     "

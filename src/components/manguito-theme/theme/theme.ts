@@ -187,6 +187,63 @@ abstract class MCLTheme {
     black: 'ring-black',
     white: 'ring-white',
   }
+  // focus:ring color class
+  protected static ringFocusColor: ColorClass = {
+    primary: 'focus:ring-primary',
+    secondary: 'focus:ring-secondary',
+    success: 'focus:ring-success',
+    danger: 'focus:ring-danger',
+    info: 'focus:ring-info',
+    warning: 'focus:ring-warning',
+    'light-1': 'focus:ring-light-1',
+    'light-2': 'focus:ring-light-2',
+    'light-3': 'focus:ring-light-3',
+    'light-4': 'focus:ring-light-4',
+    'dark-1': 'focus:ring-dark-1',
+    'dark-2': 'focus:ring-dark-2',
+    'dark-3': 'focus:ring-dark-3',
+    'dark-4': 'focus:ring-dark-4',
+    black: 'focus:ring-black',
+    white: 'focus:ring-white',
+  }
+  // active:ring color class
+  protected static ringActiveColor: ColorClass = {
+    primary: 'active:ring-primary',
+    secondary: 'active:ring-secondary',
+    success: 'active:ring-success',
+    danger: 'active:ring-danger',
+    info: 'active:ring-info',
+    warning: 'active:ring-warning',
+    'light-1': 'active:ring-light-1',
+    'light-2': 'active:ring-light-2',
+    'light-3': 'active:ring-light-3',
+    'light-4': 'active:ring-light-4',
+    'dark-1': 'active:ring-dark-1',
+    'dark-2': 'active:ring-dark-2',
+    'dark-3': 'active:ring-dark-3',
+    'dark-4': 'active:ring-dark-4',
+    black: 'active:ring-black',
+    white: 'active:ring-white',
+  }
+  // active:bg color class
+  protected static bgActiveColor: ColorClass = {
+    primary: 'active:bg-primary',
+    secondary: 'active:bg-secondary',
+    success: 'active:bg-success',
+    danger: 'active:bg-danger',
+    info: 'active:bg-info',
+    warning: 'active:bg-warning',
+    'light-1': 'active:bg-light-1',
+    'light-2': 'active:bg-light-2',
+    'light-3': 'active:bg-light-3',
+    'light-4': 'active:bg-light-4',
+    'dark-1': 'active:bg-dark-1',
+    'dark-2': 'active:bg-dark-2',
+    'dark-3': 'active:bg-dark-3',
+    'dark-4': 'active:bg-dark-4',
+    black: 'active:bg-black',
+    white: 'active:bg-white',
+  }
   // h1 class
   protected static heading1: HeaderSizeClass = {
     sm: 'h1-sm',
