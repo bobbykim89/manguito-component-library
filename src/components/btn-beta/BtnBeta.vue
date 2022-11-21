@@ -53,6 +53,7 @@ const buttonConfig = (
   // let textColor = lightColor.includes(color) ? 'text-black' : 'text-white'
   const classArray: string[] = [
     generateClass('BORDER', color),
+    generateClass('FOCUSRING', color),
     generateClass('BGCOLOR', hvColor),
     generateClass('HVBGCOLOR', color),
     generateClass('TEXTCOLOR', color),
@@ -97,7 +98,7 @@ const handleButtonClick = (e: Event): void => {
 
 <template>
   <button
-    class="transition-all duration-300 ease-linear border-2"
+    class="focus:outline-none focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear border-2"
     :class="
       buttonConfig(
         color,

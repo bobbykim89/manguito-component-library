@@ -51,15 +51,17 @@ const stateBeta = reactive<{
 <template>
   <Story title="Button" group="base-comp">
     <Variant title="btn-alpha">
-      <btn-alpha
-        :is-block="stateAlpha.block"
-        :rounded="stateAlpha.rounded"
-        :color="stateAlpha.color"
-        :text-size="stateAlpha.textSize"
-        :button-size="stateAlpha.buttonSize"
-        :display-shadow="stateAlpha.displayShadow"
-        >{{ stateAlpha.text }}</btn-alpha
-      >
+      <div class="p-xs">
+        <btn-alpha
+          :is-block="stateAlpha.block"
+          :rounded="stateAlpha.rounded"
+          :color="stateAlpha.color"
+          :text-size="stateAlpha.textSize"
+          :button-size="stateAlpha.buttonSize"
+          :display-shadow="stateAlpha.displayShadow"
+          >{{ stateAlpha.text }}</btn-alpha
+        >
+      </div>
       <template #controls>
         <HstText title="Text" v-model="stateAlpha.text" />
         <HstSelect title="color" v-model="stateAlpha.color" :options="colors" />
@@ -82,16 +84,18 @@ const stateBeta = reactive<{
       </template>
     </Variant>
     <Variant title="btn-beta">
-      <btn-beta
-        :color="stateBeta.color"
-        :hover-color="stateBeta.hoverColor"
-        :text-size="stateBeta.textSize"
-        :button-size="stateBeta.buttonSize"
-        :is-block="stateBeta.isBlock"
-        :rounded="stateBeta.rounded"
-        :display-shadow="stateBeta.displayShadow"
-        >{{ stateBeta.text }}</btn-beta
-      >
+      <div class="p-xs">
+        <btn-beta
+          :color="stateBeta.color"
+          :hover-color="stateBeta.hoverColor"
+          :text-size="stateBeta.textSize"
+          :button-size="stateBeta.buttonSize"
+          :is-block="stateBeta.isBlock"
+          :rounded="stateBeta.rounded"
+          :display-shadow="stateBeta.displayShadow"
+          >{{ stateBeta.text }}</btn-beta
+        >
+      </div>
       <template #controls>
         <HstText title="Text" v-model="stateBeta.text" />
         <HstSelect title="color" v-model="stateBeta.color" :options="colors" />
