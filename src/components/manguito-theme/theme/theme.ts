@@ -130,6 +130,7 @@ abstract class MCLTheme {
     black: 'text-black',
     white: 'text-white',
   }
+  // hover text color class
   protected static hoverTextColor: ColorClass = {
     primary: 'hover:text-primary',
     secondary: 'hover:text-secondary',
@@ -148,7 +149,6 @@ abstract class MCLTheme {
     black: 'hover:text-black',
     white: 'hover:text-white',
   }
-  // hover text color class
   // SVG fill color class
   protected static svgFillColor: ColorClass = {
     primary: 'fill-primary',
