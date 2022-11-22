@@ -55,6 +55,8 @@ const props = withDefaults(
   }
 )
 
+const emit = defineEmits(['card-click'])
+
 const getBorderClass = (
   border: ColorPalette,
   bg: ColorPalette,
@@ -124,11 +126,22 @@ const getLabelClass = (tColor: ColorPalette, bColor: ColorPalette): string => {
   ]
   return classArray.join(' ')
 }
+const handleButtonClick = (link: string, target: CtaTarget): void => {
+  /**
+   * @link - ctaLink
+   * @target - ctaTarget
+   */
+  window.open(link, target)
+}
+const handleCardClick = (e: Event): void => {
+  emit('card-click', e)
+  console.log('click')
+}
 </script>
 
 <template>
   <div
-    class="overflow-hidden border max-w-[350px]"
+    class="overflow-hidden border max-w-[350px] cursor-pointer"
     :class="
       getBorderClass(
         borderColor,
@@ -138,6 +151,7 @@ const getLabelClass = (tColor: ColorPalette, bColor: ColorPalette): string => {
         displayShadow
       )
     "
+    @click="handleCardClick"
   >
     <div class="relative" v-if="displayImage">
       <img
@@ -146,6 +160,7 @@ const getLabelClass = (tColor: ColorPalette, bColor: ColorPalette): string => {
         class="object-cover object-top h-[220px] min-w-full"
       />
       <span
+        v-if="displayLabel"
         class="py-3xs px-2xs ml-xs inline-block font-bold text-xs absolute bottom-0 translate-y-[50%]"
         :class="getLabelClass(labelTextColor, labelColor)"
         v-html="labelText"
@@ -154,6 +169,12 @@ const getLabelClass = (tColor: ColorPalette, bColor: ColorPalette): string => {
     <div class="content-height flex flex-col justify-between">
       <div class="min-h-[100px] p-0">
         <div class="px-xs pt-sm">
+          <span
+            v-if="!displayImage && displayLabel"
+            class="py-3xs px-2xs mb-2xs inline-block font-bold text-xs"
+            :class="getLabelClass(labelTextColor, labelColor)"
+            v-html="labelText"
+          ></span>
           <h3
             :class="getTitleClass(titleSize, titleColor, displayHighlight)"
             v-html="title"
@@ -163,18 +184,20 @@ const getLabelClass = (tColor: ColorPalette, bColor: ColorPalette): string => {
             class="mb-xs h-3xs w-md"
             :class="generateClass('BGCOLOR', highlightColor)"
           ></div>
-          <div class="mb-sm">
+          <div class="mb-sm cursor-default" @click.stop>
             <slot></slot>
           </div>
         </div>
       </div>
-      <div class="pb-sm border-0" v-if="displayCta">
+      <div class="pb-sm border-0 cursor-default" v-if="displayCta" @click.stop>
         <div class="w-full px-xs">
-          <a :href="ctaLink" :target="ctaTarget" class="cursor-pointer">
-            <btn-alpha :color="ctaColor" :is-block="true" :rounded="rounded">{{
-              ctaText
-            }}</btn-alpha>
-          </a>
+          <btn-alpha
+            :color="ctaColor"
+            :is-block="true"
+            :rounded="rounded"
+            @btn-click="handleButtonClick(ctaLink, ctaTarget)"
+            >{{ ctaText }}</btn-alpha
+          >
         </div>
       </div>
     </div>
