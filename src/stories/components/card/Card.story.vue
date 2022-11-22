@@ -37,6 +37,7 @@ const stateAlpha = reactive<{
   highlightColor?: ColorPalette
   rounded?: boolean
   displayShadow?: boolean
+  ctaAsLink?: boolean
   slotText?: string
 }>({
   title: 'Title text',
@@ -62,6 +63,7 @@ const stateAlpha = reactive<{
   enlargeOnHover: false,
   rounded: true,
   displayShadow: true,
+  ctaAsLink: true,
   slotText:
     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?',
 })
@@ -81,6 +83,7 @@ const stateAlpha = reactive<{
           :image-source="stateAlpha.imageSource"
           :image-alt="stateAlpha.imageAlt"
           :display-cta="stateAlpha.displayCta"
+          :cta-as-link="stateAlpha.ctaAsLink"
           :cta-color="stateAlpha.ctaColor"
           :cta-link="stateAlpha.ctaLink"
           :cta-target="stateAlpha.ctaTarget"
@@ -148,6 +151,7 @@ const stateAlpha = reactive<{
         <HstText title="image-source" v-model="stateAlpha.imageSource" />
         <HstText title="image-alt" v-model="stateAlpha.imageAlt" />
         <HstCheckbox title="display-cta" v-model="stateAlpha.displayCta" />
+        <HstCheckbox title="cta-as-link" v-model="stateAlpha.ctaAsLink" />
         <HstSelect
           title="cta-color"
           v-model="stateAlpha.ctaColor"

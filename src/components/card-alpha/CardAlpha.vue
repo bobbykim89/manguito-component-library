@@ -19,6 +19,7 @@ const props = withDefaults(
     imageSource?: string
     imageAlt?: string
     displayCta?: boolean
+    ctaAsLink?: boolean
     ctaText?: string
     ctaColor?: ColorPalette
     ctaLink?: string
@@ -40,6 +41,7 @@ const props = withDefaults(
     bgColor: 'light-1',
     displayImage: true,
     displayCta: true,
+    ctaAsLink: true,
     ctaColor: 'primary',
     ctaTarget: '_blank',
     ctaText: 'cta text',
@@ -55,7 +57,7 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['card-click'])
+const emit = defineEmits(['card-click', 'card-btn-click'])
 
 const getBorderClass = (
   border: ColorPalette,
@@ -86,8 +88,6 @@ const getBorderClass = (
   if (shadow) {
     classArray.push('drop-shadow-md')
   }
-
-  console.log(classArray.join(' '))
 
   return classArray.join(' ')
 }
@@ -126,16 +126,25 @@ const getLabelClass = (tColor: ColorPalette, bColor: ColorPalette): string => {
   ]
   return classArray.join(' ')
 }
-const handleButtonClick = (link: string, target: CtaTarget): void => {
+const handleButtonClick = (
+  e: Event,
+  link: string,
+  target: CtaTarget,
+  btnLink: boolean
+): void => {
   /**
    * @link - ctaLink
    * @target - ctaTarget
+   * @btnLink - ctaAsLink
    */
-  window.open(link, target)
+  if (btnLink) {
+    window.open(link, target)
+  } else {
+    emit('card-btn-click', e)
+  }
 }
 const handleCardClick = (e: Event): void => {
   emit('card-click', e)
-  console.log('click')
 }
 </script>
 
@@ -195,7 +204,9 @@ const handleCardClick = (e: Event): void => {
             :color="ctaColor"
             :is-block="true"
             :rounded="rounded"
-            @btn-click="handleButtonClick(ctaLink, ctaTarget)"
+            @btn-click="
+              handleButtonClick($event, ctaLink, ctaTarget, ctaAsLink)
+            "
             >{{ ctaText }}</btn-alpha
           >
         </div>
