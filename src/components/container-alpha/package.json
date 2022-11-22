@@ -1,0 +1,15 @@
+{
+  "name": "@mcl/container-alpha",
+  "version": "0.1.0",
+  "description": "",
+  "type": "module",
+  "main": "index.ts",
+  "author": {
+    "name": "Bobby Kim",
+    "url": "https://www.devbobbykim.com/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@mcl/manguito-theme": "^0.1.0"
+  }
+}
