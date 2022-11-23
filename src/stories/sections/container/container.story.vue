@@ -67,9 +67,11 @@ const handleButtonClick = (): void => {
                     You are always welcomed to Manguito page if you love this
                     pretty little birb! 🦜
                   </p>
-                  <btn-alpha color="success" @btn-click="handleButtonClick"
-                    >Let's go!</btn-alpha
-                  >
+                  <div class="flex justify-end">
+                    <btn-alpha color="success" @btn-click="handleButtonClick"
+                      >Let's go!</btn-alpha
+                    >
+                  </div>
                 </div>
               </accordion-beta>
             </div>

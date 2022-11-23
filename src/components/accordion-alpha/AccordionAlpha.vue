@@ -143,7 +143,7 @@ const slotTextVal = computed(() => {
     ]"
   >
     <div
-      class="py-sm px-md cursor-pointer transition-all duration-500"
+      class="py-xs px-sm cursor-pointer transition-all duration-500"
       :class="[
         toggle
           ? `border-b ${generateClass('BORDERB', borderColor)} ease-in`
@@ -181,7 +181,6 @@ const slotTextVal = computed(() => {
           ? 'transition-all duration-500 ease-in'
           : 'transition-all duration-500 ease-out',
         generateClass('BGCOLOR', slotBgColor),
-        ,
       ]"
       :style="slotTextVal"
       ref="textSlot"
@@ -191,7 +190,7 @@ const slotTextVal = computed(() => {
           toggle
             ? 'opacity-100 transition-opacity duration-500 ease-in'
             : 'opacity-0 transition-opacity duration-500 ease-out',
-          'px-md py-sm',
+          'px-sm py-xs',
         ]"
       >
         <slot></slot>
