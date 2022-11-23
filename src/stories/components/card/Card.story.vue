@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import CardAlpha from '@/components/card-alpha'
+import CardBeta from '@/components/card-beta'
 import type {
   ColorPalette,
   HeadingSize,
@@ -166,6 +167,9 @@ const stateAlpha = reactive<{
         />
         <HstTextarea v-model="stateAlpha.slotText" title="Slot Text" />
       </template>
+    </Variant>
+    <Variant title="card-beta">
+      <card-beta title="dummy title"></card-beta>
     </Variant>
   </Story>
 </template>
