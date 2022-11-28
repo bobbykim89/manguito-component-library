@@ -169,7 +169,12 @@ const stateAlpha = reactive<{
       </template>
     </Variant>
     <Variant title="card-beta">
-      <card-beta title="dummy title"></card-beta>
+      <div class="p-md">
+        <card-beta
+          title="dummy title"
+          image-source="https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg"
+        ></card-beta>
+      </div>
     </Variant>
   </Story>
 </template>
