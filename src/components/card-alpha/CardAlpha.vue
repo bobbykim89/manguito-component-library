@@ -6,6 +6,7 @@ import type {
   ColorPalette,
   HeadingSize,
   CtaTarget,
+  CrossOrigin,
 } from '@mcl/manguito-theme/theme/theme.types'
 
 const props = withDefaults(
@@ -18,6 +19,7 @@ const props = withDefaults(
     displayImage?: boolean
     imageSource?: string
     imageAlt?: string
+    imageCors?: CrossOrigin
     displayCta?: boolean
     ctaAsLink?: boolean
     ctaText?: string
@@ -40,6 +42,7 @@ const props = withDefaults(
     borderColor: 'light-3',
     bgColor: 'light-1',
     displayImage: true,
+    imageCors: 'anonymous',
     displayCta: true,
     ctaAsLink: true,
     ctaColor: 'primary',
@@ -80,7 +83,9 @@ const getBorderClass = (
   ]
 
   if (rounded) {
-    classArray.push('rounded')
+    classArray.push('rounded-md')
+  } else {
+    classArray.push('rounded-sm')
   }
   if (enlarge) {
     classArray.push('hover:scale-105 transition ease-in duration-300')
@@ -166,6 +171,7 @@ const handleCardClick = (e: Event): void => {
       <img
         :src="imageSource"
         :alt="imageAlt"
+        :crossorigin="imageCors"
         class="object-cover object-top h-[220px] min-w-full"
       />
       <span

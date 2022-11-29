@@ -14,9 +14,10 @@ const props = withDefaults(
     titleSize?: HeadingSize
     titleColor?: ColorPalette
     titleBlockColor?: ColorPalette
+    borderColor?: ColorPalette
     imageSource?: string
     imageAlt?: string
-    imageCORS?: CrossOrigin
+    imageCors?: CrossOrigin
     displayGrayScale?: boolean
     ctaAsLink?: boolean
     ctaLink?: string
@@ -27,20 +28,39 @@ const props = withDefaults(
     titleSize: 'md',
     titleColor: 'light-1',
     titleBlockColor: 'dark-4',
+    borderColor: 'light-3',
     displayGrayScale: true,
-    imageCORS: 'anonymous',
+    imageCors: 'anonymous',
     ctaAsLink: false,
     ctaTarget: '_blank',
     rounded: false,
   }
 )
 
+const emit = defineEmits(['card-click'])
+
+const getBorderClass = (bColor: ColorPalette, rounded: boolean): string => {
+  /**
+   * @bColor - borderColor
+   * @rounded - rounded
+   */
+  const classArray = [generateClass('BORDER', bColor)]
+  if (rounded) {
+    classArray.push('rounded-md')
+  } else {
+    classArray.push('rounded-sm')
+  }
+
+  return classArray.join(' ')
+}
+
 const handleHoverEffect = (dGray: boolean): string => {
   /**
    * @dgray - displayGrayScale
    */
   if (dGray) {
-    return '[@media(hover:hover)]:grayscale hover:grayscale-0'
+    return '[@media(hover:hover)]:grayscale peer-hover:grayscale-0'
+    // return ''
   }
   return
 }
@@ -64,25 +84,50 @@ const handleTitleClass = (
 
   return classArray.join(' ')
 }
+
+const handleCardClick = (
+  e: Event,
+  link: string,
+  target: CtaTarget,
+  ctaLink: boolean
+): void => {
+  /**
+   * @e - Event
+   * @link - ctaLink
+   * @target - ctaTarget
+   * @ctaLink - ctaAsLink
+   */
+  if (ctaLink) {
+    window.open(link, target)
+  } else {
+    emit('card-click', e)
+  }
+}
 </script>
 
 <template>
   <div
-    class="relative max-w-[350px] flex-grow flex-shrink-0 cursor-pointer overflow-hidden"
-    :class="[rounded ? 'rounded-md' : 'rounded-sm']"
+    class="relative max-w-[350px] flex-grow flex-shrink-0 cursor-pointer overflow-hidden border border-light-3"
+    :class="getBorderClass(borderColor, rounded)"
+    @click="handleCardClick($event, ctaLink, ctaTarget, ctaAsLink)"
   >
+    <div
+      class="absolute z-[15] flex flex-col justify-end items-start inset-0 p-xs [@media(hover:hover)]:opacity-0 hover:opacity-100 peer transition-opacity duration-200"
+    >
+      <h3
+        v-html="title"
+        class="inline-block px-xs py-2xs mb-2xs pointer-events-none tracking-wide"
+        :class="handleTitleClass(titleSize, titleColor, titleBlockColor)"
+      ></h3>
+      <slot></slot>
+    </div>
     <img
       :src="imageSource"
       :alt="imageAlt"
-      :crossorigin="imageCORS"
-      class="relative h-full object-cover transition-all duration-200 peer"
+      :crossorigin="imageCors"
+      class="relative z-10 h-full object-cover transition-all duration-200"
       :class="handleHoverEffect(displayGrayScale)"
     />
-    <h3
-      v-html="title"
-      class="absolute bottom-xs left-xs px-xs py-2xs pointer-events-none tracking-wide [@media(hover:hover)]:opacity-0 peer-hover:opacity-100 transition-opacity duration-200"
-      :class="handleTitleClass(titleSize, titleColor, titleBlockColor)"
-    ></h3>
   </div>
 </template>
 
