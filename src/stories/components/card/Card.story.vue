@@ -6,6 +6,7 @@ import type {
   ColorPalette,
   HeadingSize,
   CtaTarget,
+  CrossOrigin,
 } from '@/components/manguito-theme/theme/theme.types'
 import {
   colors,
@@ -13,6 +14,7 @@ import {
   buttonSize,
   targetOption,
   headingTextSize,
+  corsOptions,
 } from '@/assets/options'
 
 const stateAlpha = reactive<{
@@ -24,6 +26,7 @@ const stateAlpha = reactive<{
   displayImage?: boolean
   imageSource?: string
   imageAlt?: string
+  imageCors?: CrossOrigin
   displayCta?: boolean
   ctaText?: string
   ctaColor?: ColorPalette
@@ -50,6 +53,7 @@ const stateAlpha = reactive<{
   imageSource:
     'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg',
   imageAlt: 'Manguito is perching',
+  imageCors: 'anonymous',
   displayCta: true,
   ctaColor: 'primary',
   ctaLink: 'https://manguitopage.herokuapp.com/',
@@ -68,6 +72,40 @@ const stateAlpha = reactive<{
   slotText:
     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?',
 })
+
+const stateBeta = reactive<{
+  title: string
+  titleSize?: HeadingSize
+  titleColor?: ColorPalette
+  titleBlockColor?: ColorPalette
+  borderColor?: ColorPalette
+  imageSource?: string
+  imageAlt?: string
+  imageCors?: CrossOrigin
+  displayGrayScale?: boolean
+  ctaAsLink?: boolean
+  ctaLink?: string
+  ctaTarget?: CtaTarget
+  rounded?: boolean
+  slotText?: string
+}>({
+  title: 'Card Beta',
+  titleSize: 'md',
+  titleColor: 'light-1',
+  titleBlockColor: 'dark-4',
+  borderColor: 'light-3',
+  displayGrayScale: true,
+  imageSource:
+    'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg',
+  imageAlt: 'Manguito is perching',
+  imageCors: 'anonymous',
+  ctaAsLink: false,
+  ctaLink: 'https://manguitopage.herokuapp.com/',
+  ctaTarget: '_blank',
+  rounded: false,
+  slotText:
+    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?',
+})
 </script>
 
 <template>
@@ -83,6 +121,7 @@ const stateAlpha = reactive<{
           :display-image="stateAlpha.displayImage"
           :image-source="stateAlpha.imageSource"
           :image-alt="stateAlpha.imageAlt"
+          :image-cors="stateAlpha.imageCors"
           :display-cta="stateAlpha.displayCta"
           :cta-as-link="stateAlpha.ctaAsLink"
           :cta-color="stateAlpha.ctaColor"
@@ -151,6 +190,11 @@ const stateAlpha = reactive<{
         <HstCheckbox title="display-image" v-model="stateAlpha.displayImage" />
         <HstText title="image-source" v-model="stateAlpha.imageSource" />
         <HstText title="image-alt" v-model="stateAlpha.imageAlt" />
+        <HstSelect
+          title="image-cors"
+          v-model="stateAlpha.imageCors"
+          :options="corsOptions"
+        />
         <HstCheckbox title="display-cta" v-model="stateAlpha.displayCta" />
         <HstCheckbox title="cta-as-link" v-model="stateAlpha.ctaAsLink" />
         <HstSelect
@@ -171,10 +215,66 @@ const stateAlpha = reactive<{
     <Variant title="card-beta">
       <div class="p-md">
         <card-beta
-          title="dummy title"
-          image-source="https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg"
-        ></card-beta>
+          :title="stateBeta.title"
+          :title-size="stateBeta.titleSize"
+          :title-color="stateBeta.titleColor"
+          :title-block-color="stateBeta.titleBlockColor"
+          :border-color="stateBeta.borderColor"
+          :display-gray-scale="stateBeta.displayGrayScale"
+          :image-source="stateBeta.imageSource"
+          :image-alt="stateBeta.imageAlt"
+          :image-cors="stateBeta.imageCors"
+          :cta-as-link="stateBeta.ctaAsLink"
+          :cta-link="stateBeta.ctaLink"
+          :cta-target="stateBeta.ctaTarget"
+          :rounded="stateBeta.rounded"
+        >
+          <div v-html="stateBeta.slotText" class="bg-light-1/50 p-xs"></div>
+        </card-beta>
       </div>
+      <template #controls>
+        <HstText title="title" v-model="stateBeta.title" />
+        <HstSelect
+          title="title-size"
+          v-model="stateBeta.titleSize"
+          :options="headingTextSize"
+        />
+        <HstSelect
+          title="title-color"
+          v-model="stateBeta.titleColor"
+          :options="colors"
+        />
+        <HstSelect
+          title="title-block-color"
+          v-model="stateBeta.titleBlockColor"
+          :options="colors"
+        />
+        <HstSelect
+          title="border-color"
+          v-model="stateBeta.borderColor"
+          :options="colors"
+        />
+        <HstCheckbox title="rounded" v-model="stateBeta.rounded" />
+        <HstCheckbox
+          title="display-gray-scale"
+          v-model="stateBeta.displayGrayScale"
+        />
+        <HstText title="image-source" v-model="stateBeta.imageSource" />
+        <HstText title="image-alt" v-model="stateBeta.imageAlt" />
+        <HstSelect
+          title="image-cors"
+          v-model="stateBeta.imageCors"
+          :options="corsOptions"
+        />
+        <HstCheckbox title="cta-as-link" v-model="stateBeta.ctaAsLink" />
+        <HstText title="cta-link" v-model="stateBeta.ctaLink" />
+        <HstSelect
+          title="cta-target"
+          v-model="stateBeta.ctaTarget"
+          :options="targetOption"
+        />
+        <HstTextarea v-model="stateBeta.slotText" title="Slot Text" />
+      </template>
     </Variant>
   </Story>
 </template>

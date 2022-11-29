@@ -35,3 +35,4 @@ export const columnWidth: ColWidth[] = [
   { label: '75', value: 75 },
   { label: '100', value: 100 },
 ]
+export const corsOptions: string[] = ['use-credentials', 'anonymous']
