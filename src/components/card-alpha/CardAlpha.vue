@@ -155,7 +155,7 @@ const handleCardClick = (e: Event): void => {
 
 <template>
   <div
-    class="overflow-hidden border max-w-[350px] cursor-pointer"
+    class="overflow-hidden border max-w-[350px] flex-grow flex-shrink-0 cursor-pointer"
     :class="
       getBorderClass(
         borderColor,

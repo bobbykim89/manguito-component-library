@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withDefaults } from 'vue'
+import { withDefaults, ref } from 'vue'
 import type {
   ColorPalette,
   HeadingSize,
@@ -37,6 +37,7 @@ const props = withDefaults(
   }
 )
 
+const card = ref()
 const emit = defineEmits(['card-click'])
 
 const getBorderClass = (bColor: ColorPalette, rounded: boolean): string => {
@@ -103,6 +104,10 @@ const handleCardClick = (
     emit('card-click', e)
   }
 }
+
+defineExpose({
+  card,
+})
 </script>
 
 <template>
@@ -125,7 +130,7 @@ const handleCardClick = (
       :src="imageSource"
       :alt="imageAlt"
       :crossorigin="imageCors"
-      class="relative z-10 h-full object-cover transition-all duration-200"
+      class="relative z-10 object-cover aspect-[3/4] transition-all duration-200"
       :class="handleHoverEffect(displayGrayScale)"
     />
   </div>
