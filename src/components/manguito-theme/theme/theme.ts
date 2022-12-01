@@ -149,6 +149,25 @@ abstract class MCLTheme {
     black: 'hover:text-black',
     white: 'hover:text-white',
   }
+  // disabled text color class
+  protected static disabledTextColor: ColorClass = {
+    primary: 'disabled:text-primary',
+    secondary: 'disabled:text-secondary',
+    success: 'disabled:text-success',
+    danger: 'disabled:text-danger',
+    info: 'disabled:text-info',
+    warning: 'disabled:text-warning',
+    'light-1': 'disabled:text-light-1',
+    'light-2': 'disabled:text-light-2',
+    'light-3': 'disabled:text-light-3',
+    'light-4': 'disabled:text-light-4',
+    'dark-1': 'disabled:text-dark-1',
+    'dark-2': 'disabled:text-dark-2',
+    'dark-3': 'disabled:text-dark-3',
+    'dark-4': 'disabled:text-dark-4',
+    black: 'disabled:text-black',
+    white: 'disabled:text-white',
+  }
   // SVG fill color class
   protected static svgFillColor: ColorClass = {
     primary: 'fill-primary',
