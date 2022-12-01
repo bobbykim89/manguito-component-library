@@ -112,7 +112,7 @@ defineExpose({
 
 <template>
   <div
-    class="relative max-w-[350px] flex-grow flex-shrink-0 cursor-pointer overflow-hidden border border-light-3"
+    class="relative max-w-[450px] sm:max-w-[350px] w-full xs:w-auto flex-grow flex-shrink-0 cursor-pointer overflow-hidden border border-light-3"
     :class="getBorderClass(borderColor, rounded)"
     @click="handleCardClick($event, ctaLink, ctaTarget, ctaAsLink)"
   >
