@@ -17,28 +17,33 @@ const props = withDefaults(
     title: string
     titleSize?: HeadingSize
     titleColor?: ColorPalette
-    displaySubTitle?: boolean
-    subTitle?: string
-    subTitleSize?: BodyText
-    subTitleColor?: ColorPalette
-    description?: string
+    bgColor?: ColorPalette
+    displayTagLine?: boolean
+    tagLineUpperCase?: boolean
+    tagLine?: string
+    tagLineSize?: BodyText
+    tagLineColor?: ColorPalette
     displayHighlight?: boolean
     highlightColor?: ColorPalette
     btnColor?: ColorPalette
-    btnIconColor?: ColorPalette
+    btnDisabledColor?: ColorPalette
+    btnBgColor?: ColorPalette
     cardsContent: any[]
     cardsGap?: SpacingLevel
   }>(),
   {
     titleSize: 'md',
     titleColor: 'dark-3',
-    displaySubTitle: true,
-    subTitleSize: 'md',
-    subTitleColor: 'success',
+    bgColor: 'light-1',
+    displayTagLine: true,
+    tagLineUpperCase: true,
+    tagLineSize: 'md',
+    tagLineColor: 'success',
     displayHighlight: true,
     highlightColor: 'primary',
-    btnColor: 'primary',
-    btnIconColor: 'light-3',
+    btnColor: 'dark-3',
+    btnDisabledColor: 'dark-1',
+    btnBgColor: 'light-4',
     cardsGap: 'xs',
   }
 )
@@ -49,6 +54,7 @@ const slideContainer = ref()
 const carouselCards = ref<
   null | InstanceType<typeof CardAlpha | typeof CardBeta>[]
 >([])
+const emit = defineEmits(['btn-prev', 'btn-next'])
 
 const currentIndex = ref(0)
 const isNextBtnDisabled = ref(false)
@@ -83,13 +89,20 @@ const setCarouselRef = (el): void => {
 }
 
 // navigation btn control function
-const handleSlideBtnClick = (btn: BtnNav): void => {
+const handleSlideBtnClick = (e: Event, btn: BtnNav): void => {
   if (isMoving) {
     return
   }
   isMoving = true
-  btn === 'prev' ? currentIndex.value-- : currentIndex.value++
-  console.log(currentIndex)
+  // btn === 'prev' ? currentIndex.value-- : currentIndex.value++
+  if (btn === 'prev') {
+    currentIndex.value--
+    emit('btn-prev', e)
+  }
+  if (btn === 'next') {
+    currentIndex.value++
+    emit('btn-next', e)
+  }
   slideContainer.value.dispatchEvent(new Event('sliderMove'))
 }
 
@@ -103,6 +116,64 @@ const slideObserver = new IntersectionObserver(
   },
   { threshold: 0.75 }
 )
+
+const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
+  /**
+   * @size - titleSize
+   * @color - titleColor
+   */
+
+  const classArray = [
+    generateClass('H2', size),
+    generateClass('TEXTCOLOR', color),
+  ]
+
+  return classArray.join(' ')
+}
+
+const getTaglineClass = (
+  size: BodyText,
+  color: ColorPalette,
+  upper: boolean
+): string => {
+  /**
+   * @size - tagLineSize
+   * @color - tagLineColor
+   * @upper - tagLineUpperCase
+   */
+
+  const classArray = [
+    generateClass('BODYTEXT', size),
+    generateClass('TEXTCOLOR', color),
+  ]
+
+  if (upper) {
+    classArray.push('uppercase')
+  }
+
+  return classArray.join(' ')
+}
+
+const getButtonClass = (
+  color: ColorPalette,
+  disabled: ColorPalette,
+  bgColor: ColorPalette
+): string => {
+  /**
+   * @color - btnColor
+   * @disabled - btnDisabledColor
+   * @bgColor - btnBgColor
+   */
+
+  const classArray = [
+    generateClass('TEXTCOLOR', color),
+    generateClass('DISABLEDTEXTCOLOR', disabled),
+    generateClass('BGCOLOR', bgColor),
+    generateClass('RINGCOLOR', bgColor),
+  ]
+
+  return classArray.join(' ')
+}
 
 onMounted(() => {
   // handle slide movement
@@ -127,32 +198,47 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="py-lg lg:py-xl overflow-hidden">
-    <div class="container grid gap-4 text-center sm:text-left">
+  <section
+    class="py-lg lg:py-xl overflow-hidden"
+    :class="generateClass('BGCOLOR', bgColor)"
+  >
+    <div class="container px-xs text-center sm:text-left">
       <div class="relative">
         <div
-          class="hidden sm:block absolute w-md bg-primary/25 -left-4 h-full"
+          v-if="displayHighlight"
+          class="hidden sm:block absolute w-md bg-opacity-25 -left-4 h-full"
+          :class="generateClass('BGCOLOR', highlightColor)"
         ></div>
         <div class="relative">
-          <small class="tracking-widest text-secondary uppercase"
-            >Small title</small
-          >
-          <h2 class="tracking-wide">CarouselAlpha {{ title }}</h2>
+          <span
+            v-if="displayTagLine"
+            class="tracking-widest"
+            :class="
+              getTaglineClass(tagLineSize, tagLineColor, tagLineUpperCase)
+            "
+            v-html="tagLine"
+          ></span>
+          <h2
+            class="tracking-wide"
+            :class="getTitleClass(titleSize, titleColor)"
+            v-html="title"
+          ></h2>
         </div>
         <div
           class="relative flex flex-wrap sm:flex-nowrap justify-center sm:justify-start items-center space-x-4 space-y-4"
         >
-          <div class="max-w-2xl">
+          <div class="max-w-xl">
             <slot name="description"></slot>
           </div>
           <div class="flex space-x-4">
             <button
-              class="grid place-items-center text-primary bg-secondary hover:bg-opacity-80 rounded-full p-2 focus:outline-none focus:ring-4 ring-offset-2 ring-offset-inherit ring-secondary disabled:bg-opacity-20 disabled:text-warning transition-all duration-200"
+              class="grid place-items-center hover:bg-opacity-80 rounded-full p-xs focus:outline-none focus:ring-4 ring-offset-2 ring-offset-inherit disabled:bg-opacity-50 transition-all duration-200"
+              :class="getButtonClass(btnColor, btnDisabledColor, btnBgColor)"
               :disabled="currentIndex === 0"
-              @click="handleSlideBtnClick('prev')"
+              @click="handleSlideBtnClick($event, 'prev')"
             >
               <svg
-                class="w-sm h-sm"
+                class="w-xs h-xs"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 384 512"
                 fill="currentColor"
@@ -164,12 +250,13 @@ onMounted(() => {
               </svg>
             </button>
             <button
-              class="grid place-items-center text-primary bg-secondary hover:bg-opacity-80 rounded-full p-2 focus:outline-none focus:ring-4 ring-offset-2 ring-offset-inherit ring-secondary disabled:bg-opacity-20 disabled:text-warning transition-all duration-200"
+              class="grid place-items-center hover:bg-opacity-80 rounded-full p-xs focus:outline-none focus:ring-4 ring-offset-2 ring-offset-inherit disabled:bg-opacity-50 transition-all duration-200"
+              :class="getButtonClass(btnColor, btnDisabledColor, btnBgColor)"
               :disabled="isNextBtnDisabled"
-              @click="handleSlideBtnClick('next')"
+              @click="handleSlideBtnClick($event, 'next')"
             >
               <svg
-                class="w-sm h-sm"
+                class="w-xs h-xs"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 384 512"
                 fill="currentColor"
@@ -184,7 +271,7 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div class="container mt-md sm:mt-lg lg:mt-xl xs:w-screen">
+    <div class="container mt-md sm:mt-lg lg:mt-xl">
       <div class="flex transition-transform duration-500" ref="slideContainer">
         <slot
           name="carousel"

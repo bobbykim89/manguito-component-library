@@ -8,6 +8,8 @@ import type {
   HeadingSize,
   CtaTarget,
   CrossOrigin,
+  BodyText,
+  SpacingLevel,
 } from '@/components/manguito-theme/theme/theme.types'
 import {
   colors,
@@ -15,10 +17,10 @@ import {
   buttonSize,
   targetOption,
   headingTextSize,
-  corsOptions,
+  spacingOptions,
 } from '@/assets/options'
 
-const cardInfo: [] = [
+const cardInfo: any[] = [
   {
     title: 'Card 1',
     description:
@@ -77,38 +79,73 @@ const cardInfo: [] = [
   },
 ]
 
-const stateAlpha = reactive<{}>({})
+const stateAlpha = reactive<{
+  title: string
+  titleSize?: HeadingSize
+  titleColor?: ColorPalette
+  bgColor?: ColorPalette
+  displayTagLine?: boolean
+  tagLineUpperCase?: boolean
+  tagLine?: string
+  tagLineSize?: BodyText
+  tagLineColor?: ColorPalette
+  displayHighlight?: boolean
+  highlightColor?: ColorPalette
+  btnColor?: ColorPalette
+  btnDisabledColor?: ColorPalette
+  btnBgColor?: ColorPalette
+  cardsContent: any[]
+  cardsGap?: SpacingLevel
+  slotText?: string
+}>({
+  title: 'Carousel Alpha',
+  titleSize: 'md',
+  titleColor: 'dark-3',
+  bgColor: 'light-1',
+  displayTagLine: true,
+  tagLineUpperCase: true,
+  tagLine: 'Lorem ipsum',
+  tagLineSize: 'md',
+  tagLineColor: 'success',
+  displayHighlight: true,
+  highlightColor: 'primary',
+  btnColor: 'dark-3',
+  btnDisabledColor: 'dark-1',
+  btnBgColor: 'light-4',
+  cardsContent: cardInfo,
+  cardsGap: 'xs',
+  slotText:
+    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit quas tempora consequatur totam voluptas error doloribus inventore aliquam repudiandae quaerat.',
+})
 </script>
 
 <template>
   <Story title="Carousel" group="section-comp">
     <Variant title="carousel-alpha">
-      <div>
-        <carousel-alpha title="carousel-alpha" :cards-content="cardInfo">
+      <div class="mb-lg">
+        <h1 class="mb-lg h1-sm">card-alpha example:</h1>
+        <carousel-alpha
+          :title="stateAlpha.title"
+          :title-size="stateAlpha.titleSize"
+          :title-color="stateAlpha.titleColor"
+          :bg-color="stateAlpha.bgColor"
+          :display-tag-line="stateAlpha.displayTagLine"
+          :tag-line-upper-case="stateAlpha.tagLineUpperCase"
+          :tag-line="stateAlpha.tagLine"
+          :tag-line-size="stateAlpha.tagLineSize"
+          :tag-line-color="stateAlpha.tagLineColor"
+          :display-highlight="stateAlpha.displayHighlight"
+          :highlight-color="stateAlpha.highlightColor"
+          :btn-color="stateAlpha.btnColor"
+          :btn-disabled-color="stateAlpha.btnDisabledColor"
+          :btn-bg-color="stateAlpha.btnBgColor"
+          :cards-content="stateAlpha.cardsContent"
+          :cards-gap="stateAlpha.cardsGap"
+        >
           <template #description>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit quas
-              tempora consequatur totam
-              <strong>voluptas error</strong> doloribus inventore aliquam
-              repudiandae quaerat.
-            </p>
+            <div v-html="stateAlpha.slotText"></div>
           </template>
           <template #carousel="{ setRef, cards }">
-            <!-- <card-alpha
-              v-for="(card, i) in cards"
-              :key="i"
-              :ref="(el) => setRef(el)"
-              :title="card.title"
-              label-text="Manguito"
-              :image-source="card.img"
-              :enlarge-on-hover="true"
-              cta-text="Read more"
-              :cta-link="card.url"
-              cta-target="_blank"
-              class="mr-xs last:mr-0 h-full"
-            >
-              <div v-html="card.description"></div>
-            </card-alpha> -->
             <card-beta
               v-for="(card, i) in cards"
               :key="i"
@@ -128,6 +165,115 @@ const stateAlpha = reactive<{}>({})
           </template>
         </carousel-alpha>
       </div>
+      <div class="mb-lg">
+        <h1 class="mb-lg h1-sm">card-beta example:</h1>
+        <carousel-alpha
+          :title="stateAlpha.title"
+          :title-size="stateAlpha.titleSize"
+          :title-color="stateAlpha.titleColor"
+          :bg-color="stateAlpha.bgColor"
+          :display-tag-line="stateAlpha.displayTagLine"
+          :tag-line-upper-case="stateAlpha.tagLineUpperCase"
+          :tag-line="stateAlpha.tagLine"
+          :tag-line-size="stateAlpha.tagLineSize"
+          :tag-line-color="stateAlpha.tagLineColor"
+          :display-highlight="stateAlpha.displayHighlight"
+          :highlight-color="stateAlpha.highlightColor"
+          :btn-color="stateAlpha.btnColor"
+          :btn-disabled-color="stateAlpha.btnDisabledColor"
+          :btn-bg-color="stateAlpha.btnBgColor"
+          :cards-content="stateAlpha.cardsContent"
+          :cards-gap="stateAlpha.cardsGap"
+        >
+          <template #description>
+            <div v-html="stateAlpha.slotText"></div>
+          </template>
+          <template #carousel="{ setRef, cards }">
+            <card-alpha
+              v-for="(card, i) in cards"
+              :key="i"
+              :ref="(el) => setRef(el)"
+              :title="card.title"
+              label-text="card-alpha"
+              :image-source="card.img"
+              :enlarge-on-hover="true"
+              cta-text="Read more"
+              :cta-link="card.url"
+              cta-target="_blank"
+              class="mr-xs last:mr-0 h-full"
+            >
+              <div v-html="card.description"></div>
+            </card-alpha>
+          </template>
+        </carousel-alpha>
+      </div>
+      <template #controls>
+        <HstText title="title" v-model="stateAlpha.title" />
+        <HstSelect
+          title="title-size"
+          v-model="stateAlpha.titleSize"
+          :options="headingTextSize"
+        />
+        <HstSelect
+          title="title-color"
+          v-model="stateAlpha.titleColor"
+          :options="colors"
+        />
+        <HstSelect
+          title="bg-color"
+          v-model="stateAlpha.bgColor"
+          :options="colors"
+        />
+        <HstCheckbox
+          title="display-tag-line"
+          v-model="stateAlpha.displayTagLine"
+        />
+        <HstCheckbox
+          title="tag-line-upper-case"
+          v-model="stateAlpha.tagLineUpperCase"
+        />
+        <HstText title="tag-line" v-model="stateAlpha.tagLine" />
+        <HstSelect
+          title="tag-line-size"
+          v-model="stateAlpha.tagLineSize"
+          :options="bodyTextSize"
+        />
+        <HstSelect
+          title="tag-line-color"
+          v-model="stateAlpha.tagLineColor"
+          :options="colors"
+        />
+        <HstCheckbox
+          title="display-highlight"
+          v-model="stateAlpha.displayHighlight"
+        />
+        <HstSelect
+          title="highlight-color"
+          v-model="stateAlpha.highlightColor"
+          :options="colors"
+        />
+        <HstSelect
+          title="btn-color"
+          v-model="stateAlpha.btnColor"
+          :options="colors"
+        />
+        <HstSelect
+          title="btn-disabled-color"
+          v-model="stateAlpha.btnDisabledColor"
+          :options="colors"
+        />
+        <HstSelect
+          title="btn-bg-color"
+          v-model="stateAlpha.btnBgColor"
+          :options="colors"
+        />
+        <HstSelect
+          title="cards-gap"
+          v-model="stateAlpha.cardsGap"
+          :options="spacingOptions"
+        />
+        <HstTextarea v-model="stateAlpha.slotText" title="Slot Text" />
+      </template>
     </Variant>
   </Story>
 </template>

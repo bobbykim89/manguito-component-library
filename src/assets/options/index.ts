@@ -22,6 +22,18 @@ export const colors: string[] = [
   'white',
 ]
 
+export const spacingOptions: string[] = [
+  '3xs',
+  '2xs',
+  'xs',
+  'sm',
+  'md',
+  'lg',
+  'xl',
+  '2xl',
+  '3xl',
+]
+
 export const bodyTextSize: string[] = ['xs', 'sm', 'md', 'lg', 'xl']
 export const headingTextSize: string[] = ['sm', 'md', 'lg', 'xl']
 export const buttonSize: string[] = ['small', 'medium', 'large']

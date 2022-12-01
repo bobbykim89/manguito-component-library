@@ -17,6 +17,7 @@ import type {
 export type ClassType =
   | 'BGCOLOR'
   | 'TEXTCOLOR'
+  | 'DISABLEDTEXTCOLOR'
   | 'SVGFILL'
   | 'RINGCOLOR'
   | 'FOCUSRING'
@@ -62,6 +63,7 @@ class GenerateMCLClass extends MCLTheme {
     switch (this.classType) {
       case 'BGCOLOR':
       case 'TEXTCOLOR':
+      case 'DISABLEDTEXTCOLOR':
       case 'SVGFILL':
       case 'RINGCOLOR':
       case 'FOCUSRING':
@@ -102,6 +104,7 @@ class GenerateMCLClass extends MCLTheme {
     const {
       bgColor,
       textColor,
+      disabledTextColor,
       svgFillColor,
       ringColor,
       ringFocusColor,
@@ -113,6 +116,9 @@ class GenerateMCLClass extends MCLTheme {
     }
     if (this.classType === 'TEXTCOLOR') {
       return textColor[this.classValue]
+    }
+    if (this.classType === 'DISABLEDTEXTCOLOR') {
+      return disabledTextColor[this.classValue]
     }
     if (this.classType === 'SVGFILL') {
       return svgFillColor[this.classValue]
