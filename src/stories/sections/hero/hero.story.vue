@@ -2,6 +2,7 @@
 import { reactive } from 'vue'
 import HeroAlpha from '@/components/hero-alpha'
 import HeroBeta from '@/components/hero-beta'
+import HeroGamma from '@/components/hero-gamma'
 import type {
   ColorPalette,
   HeadingSize,
@@ -232,6 +233,12 @@ const stateBeta = reactive<{
         />
         <HstTextarea title="slot-text" v-model="stateBeta.slotText" />
       </template>
+    </Variant>
+    <Variant title="hero-gamma">
+      <hero-gamma
+        title="Hero Gamma"
+        image-source="https://images.unsplash.com/photo-1575408264798-b50b252663e6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1053&q=80"
+      ></hero-gamma>
     </Variant>
   </Story>
 </template>
