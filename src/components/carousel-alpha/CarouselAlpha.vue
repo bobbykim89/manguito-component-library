@@ -26,7 +26,6 @@ const props = withDefaults(
     displayHighlight?: boolean
     highlightColor?: ColorPalette
     btnColor?: ColorPalette
-    btnDisabledColor?: ColorPalette
     btnBgColor?: ColorPalette
     cardsContent: any[]
     cardsGap?: SpacingLevel
@@ -42,7 +41,6 @@ const props = withDefaults(
     displayHighlight: true,
     highlightColor: 'primary',
     btnColor: 'dark-3',
-    btnDisabledColor: 'dark-1',
     btnBgColor: 'light-4',
     cardsGap: 'xs',
   }
@@ -59,8 +57,8 @@ const emit = defineEmits(['btn-prev', 'btn-next'])
 const currentIndex = ref(0)
 const isNextBtnDisabled = ref(false)
 let isMoving: boolean = false
-const cardsSpace = (): number => {
-  switch (props.cardsGap) {
+const cardsSpace = (gap: SpacingLevel): number => {
+  switch (gap) {
     case '3xs':
       return 4
     case '2xs':
@@ -154,20 +152,14 @@ const getTaglineClass = (
   return classArray.join(' ')
 }
 
-const getButtonClass = (
-  color: ColorPalette,
-  disabled: ColorPalette,
-  bgColor: ColorPalette
-): string => {
+const getButtonClass = (color: ColorPalette, bgColor: ColorPalette): string => {
   /**
    * @color - btnColor
-   * @disabled - btnDisabledColor
    * @bgColor - btnBgColor
    */
 
   const classArray = [
     generateClass('TEXTCOLOR', color),
-    generateClass('DISABLEDTEXTCOLOR', disabled),
     generateClass('BGCOLOR', bgColor),
     generateClass('RINGCOLOR', bgColor),
   ]
@@ -180,7 +172,7 @@ onMounted(() => {
   slideContainer.value.addEventListener('sliderMove', () => {
     slideContainer.value.style.transform = `translateX(-${
       currentIndex.value *
-      (carouselCards.value[0].$el.clientWidth + cardsSpace())
+      (carouselCards.value[0].$el.clientWidth + cardsSpace(props.cardsGap) + 2)
     }px)`
 
     isNextBtnDisabled.value = false
@@ -202,7 +194,7 @@ onMounted(() => {
     class="py-lg lg:py-xl overflow-hidden"
     :class="generateClass('BGCOLOR', bgColor)"
   >
-    <div class="container px-xs text-center sm:text-left">
+    <div class="container px-xs sm:px-md text-center sm:text-left">
       <div class="relative">
         <div
           v-if="displayHighlight"
@@ -232,8 +224,8 @@ onMounted(() => {
           </div>
           <div class="flex space-x-4">
             <button
-              class="grid place-items-center hover:bg-opacity-80 rounded-full p-xs focus:outline-none focus:ring-4 ring-offset-2 ring-offset-inherit disabled:bg-opacity-50 transition-all duration-200"
-              :class="getButtonClass(btnColor, btnDisabledColor, btnBgColor)"
+              class="grid place-items-center hover:bg-opacity-80 rounded-full p-xs focus:outline-none focus:ring-4 ring-offset-2 ring-offset-inherit disabled:opacity-50 transition-all duration-200"
+              :class="getButtonClass(btnColor, btnBgColor)"
               :disabled="currentIndex === 0"
               @click="handleSlideBtnClick($event, 'prev')"
             >
@@ -250,8 +242,8 @@ onMounted(() => {
               </svg>
             </button>
             <button
-              class="grid place-items-center hover:bg-opacity-80 rounded-full p-xs focus:outline-none focus:ring-4 ring-offset-2 ring-offset-inherit disabled:bg-opacity-50 transition-all duration-200"
-              :class="getButtonClass(btnColor, btnDisabledColor, btnBgColor)"
+              class="grid place-items-center hover:bg-opacity-80 rounded-full p-xs focus:outline-none focus:ring-4 ring-offset-2 ring-offset-inherit disabled:opacity-50 transition-all duration-200"
+              :class="getButtonClass(btnColor, btnBgColor)"
               :disabled="isNextBtnDisabled"
               @click="handleSlideBtnClick($event, 'next')"
             >
@@ -272,7 +264,10 @@ onMounted(() => {
       </div>
     </div>
     <div class="container mt-md sm:mt-lg lg:mt-xl">
-      <div class="flex transition-transform duration-500" ref="slideContainer">
+      <div
+        class="flex transition-transform duration-500 px-xs"
+        ref="slideContainer"
+      >
         <slot
           name="carousel"
           :cards="cardsContent"

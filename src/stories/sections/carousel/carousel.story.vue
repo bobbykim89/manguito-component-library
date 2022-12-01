@@ -19,6 +19,7 @@ import {
   headingTextSize,
   spacingOptions,
 } from '@/assets/options'
+import generateClass from '@/components/manguito-theme'
 
 const cardInfo: any[] = [
   {
@@ -92,7 +93,6 @@ const stateAlpha = reactive<{
   displayHighlight?: boolean
   highlightColor?: ColorPalette
   btnColor?: ColorPalette
-  btnDisabledColor?: ColorPalette
   btnBgColor?: ColorPalette
   cardsContent: any[]
   cardsGap?: SpacingLevel
@@ -110,7 +110,6 @@ const stateAlpha = reactive<{
   displayHighlight: true,
   highlightColor: 'primary',
   btnColor: 'dark-3',
-  btnDisabledColor: 'dark-1',
   btnBgColor: 'light-4',
   cardsContent: cardInfo,
   cardsGap: 'xs',
@@ -122,8 +121,12 @@ const stateAlpha = reactive<{
 <template>
   <Story title="Carousel" group="section-comp">
     <Variant title="carousel-alpha">
-      <div class="mb-lg">
-        <h1 class="mb-lg h1-sm">card-alpha example:</h1>
+      <div class="py-sm">
+        <h2 class="h2-sm uppercase pl-xs sm:pl-md mb-md mt-sm">
+          <span class="bg-warning px-xs py-2xs rounded-md"
+            >card-alpha example:</span
+          >
+        </h2>
         <carousel-alpha
           :title="stateAlpha.title"
           :title-size="stateAlpha.titleSize"
@@ -137,7 +140,6 @@ const stateAlpha = reactive<{
           :display-highlight="stateAlpha.displayHighlight"
           :highlight-color="stateAlpha.highlightColor"
           :btn-color="stateAlpha.btnColor"
-          :btn-disabled-color="stateAlpha.btnDisabledColor"
           :btn-bg-color="stateAlpha.btnBgColor"
           :cards-content="stateAlpha.cardsContent"
           :cards-gap="stateAlpha.cardsGap"
@@ -155,7 +157,7 @@ const stateAlpha = reactive<{
               :cta-as-link="true"
               :cta-link="card.url"
               cta-target="_blank"
-              class="mr-4 last:mr-0 h-full"
+              class="mr-xs last:mr-0 h-full"
             >
               <div
                 class="py-2xs px-xs bg-light-2/50"
@@ -165,8 +167,12 @@ const stateAlpha = reactive<{
           </template>
         </carousel-alpha>
       </div>
-      <div class="mb-lg">
-        <h1 class="mb-lg h1-sm">card-beta example:</h1>
+      <div class="py-sm">
+        <h2 class="h2-sm uppercase pl-xs sm:pl-md mb-md mt-sm">
+          <span class="bg-warning px-xs py-2xs rounded-md"
+            >card-beta example:</span
+          >
+        </h2>
         <carousel-alpha
           :title="stateAlpha.title"
           :title-size="stateAlpha.titleSize"
@@ -180,7 +186,6 @@ const stateAlpha = reactive<{
           :display-highlight="stateAlpha.displayHighlight"
           :highlight-color="stateAlpha.highlightColor"
           :btn-color="stateAlpha.btnColor"
-          :btn-disabled-color="stateAlpha.btnDisabledColor"
           :btn-bg-color="stateAlpha.btnBgColor"
           :cards-content="stateAlpha.cardsContent"
           :cards-gap="stateAlpha.cardsGap"
@@ -255,11 +260,6 @@ const stateAlpha = reactive<{
         <HstSelect
           title="btn-color"
           v-model="stateAlpha.btnColor"
-          :options="colors"
-        />
-        <HstSelect
-          title="btn-disabled-color"
-          v-model="stateAlpha.btnDisabledColor"
           :options="colors"
         />
         <HstSelect
