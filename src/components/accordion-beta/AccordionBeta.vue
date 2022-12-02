@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withDefaults, ref, computed } from 'vue'
+import { withDefaults, ref, computed, onMounted, watch } from 'vue'
 import generateClass from '@mcl/manguito-theme'
 import type {
   ColorPalette,
@@ -39,6 +39,7 @@ const toggleAction = (e: Event): void => {
   toggle.value = !toggle.value
 
   emit('accordion-click', e)
+  console.log(toggle.value)
 }
 
 const getBorderClass = (
