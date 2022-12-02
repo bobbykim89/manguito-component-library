@@ -1,9 +1,13 @@
-# Tab
+# Hero
 
-## Tab-alpha
+## hero-alpha
 
-Tab alpha description
+hero alpha description
 
-## Tab-beta
+## hero-beta
 
-Tab beta description
+hero beta description
+
+## hero-gamma
+
+currently parallax effect is not applied properly in Histoire.js, but still it is working properly in application

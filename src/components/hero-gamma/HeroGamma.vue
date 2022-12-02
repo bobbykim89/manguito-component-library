@@ -25,6 +25,7 @@ const props = withDefaults(
     labelTextSize?: BodyText
     labelTextColor?: ColorPalette
     labelBgColor?: ColorPalette
+    displaySlot?: boolean
   }>(),
   {
     titleLevel: 'h1',
@@ -39,6 +40,7 @@ const props = withDefaults(
     labelTextSize: 'md',
     labelTextColor: 'light-1',
     labelBgColor: 'dark-3',
+    displaySlot: true,
   }
 )
 
@@ -99,6 +101,45 @@ const getLabelClass = (
   ]
   return classArray.join(' ')
 }
+const generateGradientColor = (color: ColorPalette): string => {
+  /**
+   * @color - gradientColor
+   */
+  switch (color) {
+    case 'primary':
+      return 'from-primary/80'
+    case 'secondary':
+      return 'from-secondary/80'
+    case 'success':
+      return 'from-success/80'
+    case 'danger':
+      return 'from-danger/80'
+    case 'info':
+      return 'from-info/80'
+    case 'warning':
+      return 'from-warning/80'
+    case 'light-1':
+      return 'from-light-1/80'
+    case 'light-2':
+      return 'from-light-2/80'
+    case 'light-3':
+      return 'from-light-3/80'
+    case 'light-4':
+      return 'from-light-4/80'
+    case 'dark-1':
+      return 'from-dark-1/80'
+    case 'dark-2':
+      return 'from-dark-2/80'
+    case 'dark-3':
+      return 'from-dark-3/80'
+    case 'dark-4':
+      return 'from-dark-4/80'
+    case 'black':
+      return 'from-black/80'
+    case 'white':
+      return 'from-white/80'
+  }
+}
 </script>
 
 <template>
@@ -107,7 +148,9 @@ const getLabelClass = (
     :style="getBgImage(imageSource)"
   >
     <div
-      class="absolute bg-gradient-to-t inset-0 top-1/3 -bottom-0 from-secondary/80 to-transparent"
+      v-if="displayGradient"
+      class="absolute bg-gradient-to-t inset-0 top-1/3 to-transparent"
+      :class="generateGradientColor(gradientColor)"
     ></div>
     <div class="relative py-md px-sm md:py-lg md:px-md">
       <div v-if="displayLabel" class="mb-2xs">
@@ -127,16 +170,15 @@ const getLabelClass = (
       ></component>
       <div
         v-if="displayHighlight"
-        class="mb-xs h-3xs w-md"
+        class="mb-xs h-3xs md:h-2xs w-md"
         :class="generateClass('BGCOLOR', highlightColor)"
       ></div>
     </div>
-    <div class="px-sm md:max-w-[50vh] relative">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias aut
-      excepturi autem voluptatum, minus quos eaque nam repudiandae dolorum vitae
-      neque corrupti temporibus. Tempora maxime sequi voluptas dolorem sunt
-      porro, ipsum quaerat a nam aperiam ex ut repudiandae, necessitatibus eos.
-      Sunt, quos sit a totam tempore unde ipsa exercitationem alias.
+    <div
+      v-if="displaySlot"
+      class="px-sm md:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[40vw] 2xl:max-w-[35vw] relative"
+    >
+      <slot></slot>
     </div>
   </section>
 </template>
