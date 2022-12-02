@@ -1,4 +1,4 @@
-# @mcl/hamburger-alpha
+# @mcl/modal-alpha
 
 Add description
 
@@ -10,7 +10,7 @@ Add description
 
 ## Usage
 
-`import HamburgerAlpha from "@mcl/hamburger-alpha"`;
+`import ModalAlpha from "@mcl/modal-alpha"`;
 
 ## Versioning
 
