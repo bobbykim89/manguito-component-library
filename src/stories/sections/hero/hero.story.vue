@@ -9,8 +9,14 @@ import type {
   HeadingLevel,
   OpacityRange,
   Directions,
+  BodyText,
 } from '@/components/manguito-theme/theme/theme.types'
-import { colors, headingTextLevel, headingTextSize } from '@/assets/options'
+import {
+  colors,
+  headingTextLevel,
+  headingTextSize,
+  bodyTextSize,
+} from '@/assets/options'
 
 const direction: string[] = ['left', 'right']
 
@@ -80,6 +86,45 @@ const stateBeta = reactive<{
   gradientOpacity: 50,
   slotText:
     'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat inventore repellendus corrupti labore doloribus, a nisi, animi tempora cupiditate doloremque enim sunt expedita possimus fuga, voluptates sed beatae sint alias.',
+})
+const stateGamma = reactive<{
+  title: string
+  titleLevel?: HeadingLevel
+  titleSize?: HeadingSize
+  titleColor?: ColorPalette
+  displayTitleShadow?: boolean
+  displayHighlight?: boolean
+  highlightColor?: ColorPalette
+  imageSource: string
+  displayGradient?: boolean
+  gradientColor?: ColorPalette
+  displayLabel?: boolean
+  labelText?: string
+  labelTextSize?: BodyText
+  labelTextColor?: ColorPalette
+  labelBgColor?: ColorPalette
+  displaySlot?: boolean
+  slotText?: string
+}>({
+  title: 'Hero Gamma',
+  titleLevel: 'h1',
+  titleSize: 'md',
+  titleColor: 'dark-3',
+  displayTitleShadow: true,
+  displayHighlight: true,
+  highlightColor: 'primary',
+  imageSource:
+    'https://images.unsplash.com/photo-1575408264798-b50b252663e6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1053&q=80',
+  displayGradient: true,
+  gradientColor: 'primary',
+  displayLabel: true,
+  labelText: 'Lorem Ipsum',
+  labelTextSize: 'md',
+  labelTextColor: 'light-1',
+  labelBgColor: 'dark-3',
+  displaySlot: true,
+  slotText:
+    'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque id fuga exercitationem dolor! Voluptate est fugit unde labore iusto commodi qui rem blanditiis officia cupiditate quos esse, doloribus similique in mollitia. In dolore ipsa minima molestias, facilis alias nisi officia, voluptatibus consequuntur cupiditate suscipit. Ut deserunt esse laboriosam! Nulla, repudiandae?',
 })
 </script>
 
@@ -236,10 +281,88 @@ const stateBeta = reactive<{
     </Variant>
     <Variant title="hero-gamma">
       <hero-gamma
-        title="Hero Gamma"
-        image-source="https://images.unsplash.com/photo-1575408264798-b50b252663e6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1053&q=80"
-        label-text="lorem ipsum"
-      ></hero-gamma>
+        :title="stateGamma.title"
+        :title-level="stateGamma.titleLevel"
+        :title-color="stateGamma.titleColor"
+        :title-size="stateGamma.titleSize"
+        :display-title-shadow="stateGamma.displayTitleShadow"
+        :display-highlight="stateGamma.displayHighlight"
+        :highlight-color="stateGamma.highlightColor"
+        :image-source="stateGamma.imageSource"
+        :display-gradient="stateGamma.displayGradient"
+        :gradient-color="stateGamma.gradientColor"
+        :display-label="stateGamma.displayLabel"
+        :label-text="stateGamma.labelText"
+        :label-text-size="stateGamma.labelTextSize"
+        :label-text-color="stateGamma.labelTextColor"
+        :label-bg-color="stateGamma.labelBgColor"
+        :display-slot="stateGamma.displaySlot"
+      >
+        <div
+          v-html="stateGamma.slotText"
+          class="bg-light-2/60 p-xs sm:p-sm lg:p-md rounded-md"
+        ></div>
+      </hero-gamma>
+      <template #controls>
+        <HstText title="title" v-model="stateGamma.title" />
+        <HstSelect
+          title="title-level"
+          v-model="stateGamma.titleLevel"
+          :options="headingTextLevel"
+        />
+        <HstSelect
+          title="title-size"
+          v-model="stateGamma.titleSize"
+          :options="headingTextSize"
+        />
+        <HstSelect
+          title="title-color"
+          v-model="stateGamma.titleColor"
+          :options="colors"
+        />
+        <HstCheckbox
+          title="display-title-shadow"
+          v-model="stateGamma.displayTitleShadow"
+        />
+        <HstCheckbox
+          title="display-highlight"
+          v-model="stateGamma.displayHighlight"
+        />
+        <HstSelect
+          title="highlight-color"
+          v-model="stateGamma.highlightColor"
+          :options="colors"
+        />
+        <HstText title="image-source" v-model="stateGamma.imageSource" />
+        <HstCheckbox
+          title="display-gradient"
+          v-model="stateGamma.displayGradient"
+        />
+        <HstSelect
+          title="gradient-color"
+          v-model="stateGamma.gradientColor"
+          :options="colors"
+        />
+        <HstCheckbox title="display-label" v-model="stateGamma.displayLabel" />
+        <HstText title="label-text" v-model="stateGamma.labelText" />
+        <HstSelect
+          title="label-text-size"
+          v-model="stateGamma.labelTextSize"
+          :options="bodyTextSize"
+        />
+        <HstSelect
+          title="label-text-color"
+          v-model="stateGamma.labelTextColor"
+          :options="colors"
+        />
+        <HstSelect
+          title="label-bg-color"
+          v-model="stateGamma.labelBgColor"
+          :options="colors"
+        />
+        <HstCheckbox title="display-slot" v-model="stateGamma.displaySlot" />
+        <HstTextarea title="slot-text" v-model="stateGamma.slotText" />
+      </template>
     </Variant>
   </Story>
 </template>
