@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, withDefaults } from 'vue'
+import { withDefaults, Transition } from 'vue'
 import type {
   ColorPalette,
   HeadingSize,
@@ -15,6 +15,7 @@ const props = withDefaults(
     backdropColor?: ColorPalette
     bgColor?: ColorPalette
     rounded?: boolean
+    displayShadow?: boolean
     modelValue?: boolean
   }>(),
   {
@@ -24,16 +25,36 @@ const props = withDefaults(
     backdropColor: 'dark-4',
     bgColor: 'light-1',
     rounded: true,
+    displayShadow: true,
     modelValue: false,
   }
 )
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'modal-close'])
 
-const openModal = (e: Event): void => {
-  emit('update:modelValue', true)
-}
 const closeModal = (e: Event): void => {
   emit('update:modelValue', false)
+  emit('modal-close', e)
+}
+
+const getModalClass = (
+  bgColor: ColorPalette,
+  rounded: boolean,
+  shadow: boolean
+): string => {
+  /**
+   * @bgColor - bgColor
+   * @rounded - rounded
+   * @shadow - displayShadow
+   */
+
+  const classArray: string[] = [generateClass('BGCOLOR', bgColor)]
+  if (rounded) {
+    classArray.push('rounded-lg')
+  }
+  if (shadow) {
+    classArray.push('shadow-lg')
+  }
+  return classArray.join(' ')
 }
 
 const getHeaderClass = (size: HeadingSize, color: ColorPalette): string => {
@@ -50,52 +71,78 @@ const getHeaderClass = (size: HeadingSize, color: ColorPalette): string => {
 </script>
 
 <template>
-  <section
-    v-if="modelValue"
-    @click="closeModal"
-    class="fixed inset-0 z-10 overflow-y-auto bg-opacity-70"
-    :class="generateClass('BGCOLOR', backdropColor)"
-  >
-    <div class="min-h-screen px-4 text-center">
-      <span
-        class="inline-block h-[50vh] lg:h-screen align-middle"
-        aria-hidden="true"
-        >&#8203;</span
-      >
-      <div
-        @click.stop
-        class="inline-block w-full max-w-md my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg"
-      >
-        <!-- modal header -->
-        <div class="flex justify-between items-center px-xs py-2xs">
-          <h3
-            class="leading-6"
-            :class="getHeaderClass(headerSize, headerColor)"
+  <Transition name="fade" appear>
+    <section
+      v-if="modelValue"
+      @click="closeModal"
+      class="fixed inset-0 z-[150] overflow-y-auto bg-opacity-70 flex justify-center items-start md:items-center px-xs"
+      :class="generateClass('BGCOLOR', backdropColor)"
+    >
+      <Transition name="slide-down" appear>
+        <div
+          @click.stop
+          v-if="modelValue"
+          class="inline-block w-full max-w-md mt-[30vh] md:mt-0 overflow-hidden"
+          :class="getModalClass(bgColor, rounded, displayShadow)"
+        >
+          <!-- modal header -->
+          <div
+            v-if="displayHeader"
+            class="flex justify-between items-center px-xs pt-xs pb-2xs"
           >
-            Modal header
-          </h3>
-          <button
-            @click.prevent="closeModal"
-            class="opacity-60"
-            :class="generateClass('TEXTCOLOR', headerColor)"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 320 512"
-              fill="currentColor"
-              class="h-xs w-xs"
+            <h3 :class="getHeaderClass(headerSize, headerColor)">
+              Modal header
+            </h3>
+            <button
+              @click.prevent="closeModal"
+              class="opacity-80 hover:opacity-60 transition-opacity duration-150 ease-linear"
+              :class="generateClass('TEXTCOLOR', headerColor)"
             >
-              <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
-              <path
-                d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"
-              />
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 320 512"
+                fill="currentColor"
+                class="h-xs w-xs"
+              >
+                <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+                <path
+                  d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"
+                />
+              </svg>
+            </button>
+          </div>
+          <!-- modal content -->
+          <div
+            class="px-xs pb-xs"
+            :class="[displayHeader ? 'pt-2xs' : 'pt-xs']"
+          >
+            <slot></slot>
+          </div>
         </div>
-        <div class="px-xs pb-xs pt-2xs">modal content</div>
-      </div>
-    </div>
-  </section>
+      </Transition>
+    </section>
+  </Transition>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s linear;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: transform 0.3s ease-in, opacity 0.4s linear;
+}
+
+.slide-down-enter,
+.slide-down-leave-to {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+</style>

@@ -28,8 +28,15 @@ const openModal = (): void => {
   <Story title="Modal" group="base-comp">
     <Variant title="modal-alpha">
       <div class="relative w-screen h-screen">
-        <btn-alpha @btn-click="openModal">Click to open modal</btn-alpha>
-        <modal-alpha v-model="modalState"></modal-alpha>
+        <div class="p-sm">
+          <btn-alpha @btn-click="openModal">Click to open modal</btn-alpha>
+        </div>
+        <modal-alpha v-model="modalState">
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dolorum
+          dignissimos, rem sint optio odit minima voluptatum tempore fuga eum
+          cum molestias. Alias dignissimos numquam enim necessitatibus doloribus
+          ab sit sunt.
+        </modal-alpha>
       </div>
     </Variant>
   </Story>
