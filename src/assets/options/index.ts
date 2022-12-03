@@ -48,3 +48,4 @@ export const columnWidth: ColWidth[] = [
   { label: '100', value: 100 },
 ]
 export const corsOptions: string[] = ['use-credentials', 'anonymous']
+export const inputOptions: string[] = ['text', 'email', 'password']

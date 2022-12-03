@@ -52,3 +52,4 @@ export type OpacityRange = 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100
 export type Directions = 'left' | 'right'
 export type ColumnWidth = 25 | 50 | 75 | 100
 export type CrossOrigin = 'use-credentials' | 'anonymous'
+export type InputType = 'text' | 'email' | 'password'

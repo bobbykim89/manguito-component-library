@@ -111,6 +111,25 @@ abstract class MCLTheme {
     black: 'hover:bg-black',
     white: 'hover:bg-white',
   }
+  // ::before bg color class
+  protected static beforeBgColor: ColorClass = {
+    primary: 'before:bg-primary',
+    secondary: 'before:bg-secondary',
+    success: 'before:bg-success',
+    danger: 'before:bg-danger',
+    info: 'before:bg-info',
+    warning: 'before:bg-warning',
+    'light-1': 'before:bg-light-1',
+    'light-2': 'before:bg-light-2',
+    'light-3': 'before:bg-light-3',
+    'light-4': 'before:bg-light-4',
+    'dark-1': 'before:bg-dark-1',
+    'dark-2': 'before:bg-dark-2',
+    'dark-3': 'before:bg-dark-3',
+    'dark-4': 'before:bg-dark-4',
+    black: 'before:bg-black',
+    white: 'before:bg-white',
+  }
   // text color class
   protected static textColor: ColorClass = {
     primary: 'text-primary',
