@@ -50,6 +50,8 @@ const getModalClass = (
   const classArray: string[] = [generateClass('BGCOLOR', bgColor)]
   if (rounded) {
     classArray.push('rounded-lg')
+  } else {
+    classArray.push('rounded-sm')
   }
   if (shadow) {
     classArray.push('shadow-lg')
@@ -88,11 +90,12 @@ const getHeaderClass = (size: HeadingSize, color: ColorPalette): string => {
           <!-- modal header -->
           <div
             v-if="displayHeader"
-            class="flex justify-between items-center px-xs pt-xs pb-2xs"
+            class="flex justify-between items-center px-sm pt-sm pb-[12px]"
           >
-            <h3 :class="getHeaderClass(headerSize, headerColor)">
-              Modal header
-            </h3>
+            <h3
+              :class="getHeaderClass(headerSize, headerColor)"
+              v-html="headerText"
+            ></h3>
             <button
               @click.prevent="closeModal"
               class="opacity-80 hover:opacity-60 transition-opacity duration-150 ease-linear"
@@ -113,8 +116,8 @@ const getHeaderClass = (size: HeadingSize, color: ColorPalette): string => {
           </div>
           <!-- modal content -->
           <div
-            class="px-xs pb-xs"
-            :class="[displayHeader ? 'pt-2xs' : 'pt-xs']"
+            class="px-sm pb-sm"
+            :class="[displayHeader ? 'pt-[12px]' : 'pt-sm']"
           >
             <slot></slot>
           </div>
