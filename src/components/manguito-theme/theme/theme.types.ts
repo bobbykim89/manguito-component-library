@@ -18,6 +18,7 @@ export type ColorPalette =
   | 'white'
 // Available spacings
 export type SpacingLevel =
+  | '0'
   | '3xs'
   | '2xs'
   | 'xs'

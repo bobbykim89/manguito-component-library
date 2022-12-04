@@ -79,20 +79,6 @@ const getBorderClass = (
   }
 
   return classArray.join(' ')
-
-  // if (!dHl || hlWidth === 0) {
-  //   return `border ${generateClass('BORDER', bColor)}`
-  // }
-  // if (dHl && hlLocation === 'top') {
-  //   return `border ${generateClass('BORDER', bColor)} ${generateClass(
-  //     'BORDERT',
-  //     hlColor
-  //   )} ${generateClass('BORDERTW', hlWidth)}`
-  // }
-  // return `border ${generateClass('BORDER', bColor)} ${generateClass(
-  //   'BORDERL',
-  //   hlColor
-  // )} ${generateClass('BORDERLW', hlWidth)}`
 }
 
 const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
@@ -117,15 +103,25 @@ const getSlotBgColor = (color: ColorPalette): string => {
   return generateClass('BGCOLOR', color)
 }
 
+// adjust text slot size on toggle and screen resize
 const textSlot = ref()
+const slotHeight = ref<number>()
+
+const initObserver = (): void => {
+  const observer = new ResizeObserver(() => {
+    slotHeight.value = textSlot.value.scrollHeight
+  })
+  observer.observe(textSlot.value)
+}
 
 const slotTextVal = computed(() => {
   return {
-    height:
-      textSlot.value && toggle.value
-        ? textSlot.value.scrollHeight + 'px'
-        : '0px',
+    height: textSlot.value && toggle.value ? slotHeight.value + 'px' : '0px',
   }
+})
+
+onMounted(() => {
+  initObserver()
 })
 </script>
 
@@ -183,7 +179,6 @@ const slotTextVal = computed(() => {
         generateClass('BGCOLOR', slotBgColor),
       ]"
       :style="slotTextVal"
-      ref="textSlot"
     >
       <div
         :class="[
@@ -192,6 +187,7 @@ const slotTextVal = computed(() => {
             : 'opacity-0 transition-opacity duration-500 ease-out',
           'px-sm py-xs',
         ]"
+        ref="textSlot"
       >
         <slot></slot>
       </div>
