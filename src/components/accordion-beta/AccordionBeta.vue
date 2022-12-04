@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withDefaults, ref, computed } from 'vue'
+import { withDefaults, ref, computed, onMounted } from 'vue'
 import generateClass from '@mcl/manguito-theme'
 import type {
   ColorPalette,
@@ -39,7 +39,6 @@ const toggleAction = (e: Event): void => {
   toggle.value = !toggle.value
 
   emit('accordion-click', e)
-  console.log(toggle.value)
 }
 
 const getBorderClass = (
@@ -80,14 +79,23 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
 }
 
 const textSlot = ref()
+const slotHeight = ref<number>()
+
+const initObserver = (): void => {
+  const observer = new ResizeObserver(() => {
+    slotHeight.value = textSlot.value.scrollHeight
+  })
+  observer.observe(textSlot.value)
+}
 
 const slotTextVal = computed(() => {
   return {
-    height:
-      textSlot.value && toggle.value
-        ? textSlot.value.scrollHeight + 'px'
-        : '0px',
+    height: textSlot.value && toggle.value ? slotHeight.value + 'px' : '0px',
   }
+})
+
+onMounted(() => {
+  initObserver()
 })
 </script>
 
@@ -127,7 +135,6 @@ const slotTextVal = computed(() => {
           : 'transition-all duration-500 ease-out',
       ]"
       :style="slotTextVal"
-      ref="textSlot"
     >
       <div
         :class="[
@@ -136,6 +143,7 @@ const slotTextVal = computed(() => {
             : 'opacity-0 transition-opacity duration-500 ease-out',
           'px-xs pt-xs pb-2xs',
         ]"
+        ref="textSlot"
       >
         <slot></slot>
       </div>

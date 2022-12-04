@@ -59,6 +59,8 @@ const isNextBtnDisabled = ref(false)
 let isMoving: boolean = false
 const cardsSpace = (gap: SpacingLevel): number => {
   switch (gap) {
+    case '0':
+      return 0
     case '3xs':
       return 4
     case '2xs':

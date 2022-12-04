@@ -73,6 +73,7 @@ export interface Opacity {
 }
 
 export interface Spacing {
+  '0': string
   '3xs': string
   '2xs': string
   xs: string
@@ -499,6 +500,7 @@ abstract class MCLTheme {
     100: 'opacity-100',
   }
   protected static marginBottom: Spacing = {
+    '0': 'mb-0',
     '3xs': 'mb-3xs',
     '2xs': 'mb-2xs',
     xs: 'mb-xs',

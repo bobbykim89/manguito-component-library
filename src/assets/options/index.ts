@@ -23,6 +23,7 @@ export const colors: string[] = [
 ]
 
 export const spacingOptions: string[] = [
+  '0',
   '3xs',
   '2xs',
   'xs',
