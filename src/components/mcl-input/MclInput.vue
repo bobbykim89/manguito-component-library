@@ -4,6 +4,7 @@ import type {
   ColorPalette,
   BodyText,
   InputType,
+  SpacingLevel,
 } from '@mcl/manguito-theme/theme/theme.types'
 import generateClass from '@mcl/manguito-theme'
 
@@ -24,6 +25,7 @@ const props = withDefaults(
     type?: InputType
     displayShadow?: boolean
     isRequired?: boolean
+    spacing?: SpacingLevel
     modelValue?: string
   }>(),
   {
@@ -40,6 +42,7 @@ const props = withDefaults(
     type: 'text',
     displayShadow: true,
     isRequired: false,
+    spacing: 'md',
   }
 )
 
@@ -110,7 +113,7 @@ const getInputClass = (
 </script>
 
 <template>
-  <div>
+  <div :class="generateClass('MARGINB', spacing)">
     <label
       v-if="displayLabel"
       :for="identifier"
@@ -121,7 +124,7 @@ const getInputClass = (
     <input
       :id="identifier"
       :type="type"
-      class="w-full p-2xs mb-2xs outline-none input__text"
+      class="w-full p-2xs outline-none input__text"
       :class="
         getInputClass(
           bgColor,
@@ -137,7 +140,7 @@ const getInputClass = (
     />
     <div
       v-if="displayHighlight"
-      class="relative -top-3 h-3xs input__decorator"
+      class="relative -top-1 h-3xs input__decorator"
       :class="generateClass('BEFOREBG', highlightColor)"
     ></div>
   </div>
