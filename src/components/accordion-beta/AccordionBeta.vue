@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withDefaults, ref, computed, onMounted } from 'vue'
+import { withDefaults, ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import generateClass from '@mcl/manguito-theme'
 import type {
   ColorPalette,
@@ -81,11 +81,12 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
 const textSlot = ref()
 const slotHeight = ref<number>()
 
-const initObserver = (): void => {
+const initObserver = (): ResizeObserver => {
   const observer = new ResizeObserver(() => {
     slotHeight.value = textSlot.value.scrollHeight
   })
-  observer.observe(textSlot.value)
+  // observer.observe(textSlot.value)
+  return observer
 }
 
 const slotTextVal = computed(() => {
@@ -95,7 +96,10 @@ const slotTextVal = computed(() => {
 })
 
 onMounted(() => {
-  initObserver()
+  initObserver().observe(textSlot.value)
+})
+onBeforeUnmount(() => {
+  initObserver().unobserve(textSlot.value)
 })
 </script>
 
