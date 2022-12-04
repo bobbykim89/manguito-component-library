@@ -6,6 +6,7 @@ import {
   Transition,
   computed,
   onMounted,
+  onBeforeUnmount,
 } from 'vue'
 import generateClass from '@mcl/manguito-theme'
 import type {
@@ -107,11 +108,11 @@ const getSlotBgColor = (color: ColorPalette): string => {
 const textSlot = ref()
 const slotHeight = ref<number>()
 
-const initObserver = (): void => {
+const initObserver = (): ResizeObserver => {
   const observer = new ResizeObserver(() => {
     slotHeight.value = textSlot.value.scrollHeight
   })
-  observer.observe(textSlot.value)
+  return observer
 }
 
 const slotTextVal = computed(() => {
@@ -120,8 +121,12 @@ const slotTextVal = computed(() => {
   }
 })
 
+// lifecycle hooks
 onMounted(() => {
-  initObserver()
+  initObserver().observe(textSlot.value)
+})
+onBeforeUnmount(() => {
+  initObserver().unobserve(textSlot.value)
 })
 </script>
 
