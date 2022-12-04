@@ -6,8 +6,14 @@ import type {
   ColorPalette,
   InputType,
   BodyText,
+  SpacingLevel,
 } from '@/components/manguito-theme/theme/theme.types'
-import { colors, bodyTextSize, inputOptions } from '@/assets/options'
+import {
+  colors,
+  bodyTextSize,
+  inputOptions,
+  spacingOptions,
+} from '@/assets/options'
 
 const inputRef = ref('')
 const textOutput = ref('')
@@ -42,6 +48,7 @@ const stateAlpha = reactive<{
   type?: InputType
   displayShadow?: boolean
   isRequired?: boolean
+  spacing?: SpacingLevel
 }>({
   identifier: 'mcl-input',
   displayLabel: true,
@@ -58,6 +65,7 @@ const stateAlpha = reactive<{
   type: 'text',
   displayShadow: true,
   isRequired: false,
+  spacing: 'md',
 })
 </script>
 
@@ -84,6 +92,7 @@ const stateAlpha = reactive<{
           :type="stateAlpha.type"
           :display-shadow="stateAlpha.displayShadow"
           :is-required="stateAlpha.isRequired"
+          :spacing="stateAlpha.spacing"
           v-model="inputRef"
         ></mcl-input>
         <div class="flex justify-end items-center mt-2xs">
@@ -145,6 +154,11 @@ const stateAlpha = reactive<{
           v-model="stateAlpha.displayShadow"
         />
         <HstCheckbox title="is-required" v-model="stateAlpha.isRequired" />
+        <HstSelect
+          title="spacing"
+          v-model="stateAlpha.spacing"
+          :options="spacingOptions"
+        />
       </template>
     </Variant>
   </Story>

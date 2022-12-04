@@ -6,6 +6,7 @@ import type {
   FontWeight,
   Range,
   OpacityRange,
+  SpacingLevel,
 } from './theme.types'
 
 /**
@@ -42,6 +43,7 @@ export type ClassType =
   | 'HVTEXTCOLOR'
   | 'BGOPACITY'
   | 'OPACITY'
+  | 'MARGINB'
 
 export type InputType =
   | ColorPalette
@@ -50,6 +52,7 @@ export type InputType =
   | FontWeight
   | Range<12>
   | OpacityRange
+  | SpacingLevel
 
 class GenerateMCLClass extends MCLTheme {
   classType: ClassType
@@ -98,6 +101,8 @@ class GenerateMCLClass extends MCLTheme {
         return this.getBgOpacityClass()
       case 'OPACITY':
         return this.getOpacityClass()
+      case 'MARGINB':
+        return this.getSpacingClass()
       default:
         return
     }
@@ -208,6 +213,12 @@ class GenerateMCLClass extends MCLTheme {
   getOpacityClass(): string {
     const { opacity } = MCLTheme
     return opacity[this.classValue]
+  }
+  getSpacingClass(): string {
+    const { marginBottom } = MCLTheme
+    if (this.classType === 'MARGINB') {
+      return marginBottom[this.classValue]
+    }
   }
 }
 

@@ -72,6 +72,18 @@ export interface Opacity {
   100: string
 }
 
+export interface Spacing {
+  '3xs': string
+  '2xs': string
+  xs: string
+  sm: string
+  md: string
+  lg: string
+  xl: string
+  '2xl': string
+  '3xl': string
+}
+
 abstract class MCLTheme {
   // bg color class
   protected static bgColor: ColorClass = {
@@ -485,6 +497,17 @@ abstract class MCLTheme {
     80: 'opacity-80',
     90: 'opacity-90',
     100: 'opacity-100',
+  }
+  protected static marginBottom: Spacing = {
+    '3xs': 'mb-3xs',
+    '2xs': 'mb-2xs',
+    xs: 'mb-xs',
+    sm: 'mb-sm',
+    md: 'mb-md',
+    lg: 'mb-lg',
+    xl: 'mb-xl',
+    '2xl': 'mb-2xl',
+    '3xl': 'mb-3xl',
   }
 }
 
