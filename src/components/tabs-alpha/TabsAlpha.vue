@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withDefaults, ref, Transition, computed } from 'vue'
+import { withDefaults, ref, Transition } from 'vue'
 import generateClass from '@mcl/manguito-theme'
 import type {
   ColorPalette,

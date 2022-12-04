@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withDefaults, ref, onMounted, computed } from 'vue'
+import { withDefaults, ref, onMounted, onBeforeUnmount } from 'vue'
 import type {
   HeadingSize,
   ColorPalette,
@@ -188,6 +188,12 @@ onMounted(() => {
 
   // intersection observer for slider
   slideObserver.observe(carouselCards.value[carouselCards.value.length - 1].$el)
+})
+
+onBeforeUnmount(() => {
+  slideObserver.unobserve(
+    carouselCards.value[carouselCards.value.length - 1].$el
+  )
 })
 </script>
 
