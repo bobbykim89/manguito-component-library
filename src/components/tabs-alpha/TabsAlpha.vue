@@ -139,6 +139,7 @@ const getInactiveBtnClass = (fColor: ColorPalette): string => {
             : getInactiveBtnClass(inactiveTitleColor),
           rounded && 'rounded-lg',
         ]"
+        :disabled="currentTab === index"
       >
         <h3 :class="generateClass('H3', titleSize)">
           {{ item.title }}
