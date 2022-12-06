@@ -19,53 +19,112 @@ const props = withDefaults(
   defineProps<{
     logo: string
     logoSmall?: string
+    logoAlt?: string
+    logoAsLink?: boolean
+    logoLink: string
+    logoLinkTarget?: CtaTarget
     title: string
     titleSize?: HeadingSize
     titleColor?: ColorPalette
+    titleAsLink?: boolean
+    titleLink: string
+    titleLinkTarget?: CtaTarget
     navItems: NavItemType[]
     navItemAsLink?: boolean
     bgColor?: ColorPalette
     hamburgerColor?: ColorPalette
     hamburgerBorder?: boolean
+    fadeInOnScroll?: boolean
+    scrollDistance?: number
   }>(),
   {
+    logoAsLink: true,
+    logoLinkTarget: '_self',
     titleSize: 'md',
     titleColor: 'dark-3',
+    titleAsLink: true,
+    titleLinkTarget: '_self',
+    navItemAsLink: true,
     bgColor: 'light-1',
     hamburgerColor: 'dark-1',
     hamburgerBorder: true,
+    fadeInOnScroll: true,
+    scrollDistance: 50,
   }
 )
 
 const navScroll = ref<boolean>(false)
 const navOpen = ref<boolean>(false)
-const emit = defineEmits(['toggle-menu', 'menu-click'])
+const emit = defineEmits([
+  'toggle-menu',
+  'menu-click',
+  'title-click',
+  'logo-click',
+])
+
+type EmitType = 'menu' | 'title' | 'logo'
 
 const toggleNavButton = (e: Event): void => {
   navOpen.value = !navOpen.value
   emit('toggle-menu', e)
 }
 
+const handleScroll = (): any => {
+  if (window.scrollY >= props.scrollDistance) {
+    navScroll.value = true
+  } else {
+    navScroll.value = false
+  }
+}
+
 const navItemClick = (
   e: Event,
+  title: string,
   link: string,
   target: string,
-  itemLink: boolean
+  itemLink: boolean,
+  emitType: EmitType
 ): void => {
   /**
    * @e - $event
-   * @link - navItems[#].url
-   * @target - navItems[#].target
-   * @itemlink - navItemAsLink
+   * @link - navItems[#].url / titleLink
+   * @target - navItems[#].target / titleLinkTaget
+   * @itemlink - navItemAsLink /
+   * @emitType - Non prop value type EmitType
    */
   e.preventDefault()
   navOpen.value = false
   if (itemLink) {
     window.open(link, target)
   } else {
-    emit('menu-click', e)
-    console.log('emit menu click: ', e, link, target)
+    if (emitType === 'menu') {
+      emit('menu-click', { event: e, title: title, link: link, target: target })
+    }
+    if (emitType === 'title') {
+      emit('title-click', {
+        event: e,
+        title: title,
+        link: link,
+        target: target,
+      })
+    }
+    if (emitType === 'logo') {
+      emit('logo-click', { event: e, title: title, link: link, target: target })
+    }
+    // console.log('emit menu click: ', e, link, target)
   }
+}
+
+const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
+  /**
+   * @size - titleSize
+   * @color - titleColor
+   */
+  const classArray: string[] = [
+    generateClass('H2', size),
+    generateClass('TEXTCOLOR', color),
+  ]
+  return classArray.join(' ')
 }
 
 // collapse/expand mobile menu
@@ -88,9 +147,11 @@ const menuHeightVal = computed(() => {
 
 onMounted(() => {
   initObserver().observe(mobileMenu.value)
+  window.addEventListener('scroll', handleScroll())
 })
 onBeforeUnmount(() => {
   initObserver().unobserve(mobileMenu.value)
+  window.addEventListener('scroll', handleScroll())
 })
 </script>
 
@@ -105,25 +166,56 @@ onBeforeUnmount(() => {
       class="flex flex-wrap items-center py-xs mx-xs md:mx-sm align-middle justify-between sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px]"
     >
       <div class="flex flex-shrink-0 items-center self-center">
-        <div class="h-lg mr-2xs md:mr-sm align-middle">
-          <img
-            :src="logo"
-            alt=""
-            class="h-full"
-            :class="[logoSmall ? 'hidden md:inline-block' : 'inline-block']"
-          />
-          <img
-            v-if="logoSmall"
-            :src="logoSmall"
-            alt=""
-            class="inline-block md:hidden h-full"
-          />
+        <div class="h-md md:h-lg lg:h-xl mr-2xs md:mr-sm align-middle">
+          <a
+            :href="logoLink"
+            :target="logoLinkTarget"
+            @click="
+              navItemClick(
+                $event,
+                title,
+                logoLink,
+                logoLinkTarget,
+                logoAsLink,
+                'logo'
+              )
+            "
+          >
+            <img
+              :src="logo"
+              :alt="logoAlt"
+              class="h-full"
+              :class="[logoSmall ? 'hidden md:inline-block' : 'inline-block']"
+            />
+            <img
+              v-if="logoSmall"
+              :src="logoSmall"
+              :alt="logoAlt"
+              class="inline-block md:hidden h-full"
+            />
+          </a>
         </div>
         <div class="flex flex-col justify-center ml-2">
-          <h1
-            class="inline-block font-bold text-xl align-middle tracking-wider"
-            v-html="title"
-          ></h1>
+          <a
+            :href="titleLink"
+            :target="titleLinkTarget"
+            @click="
+              navItemClick(
+                $event,
+                title,
+                titleLink,
+                titleLinkTarget,
+                titleAsLink,
+                'title'
+              )
+            "
+          >
+            <h2
+              class="inline-block align-middle tracking-wider"
+              :class="getTitleClass(titleSize, titleColor)"
+              v-html="title"
+            ></h2>
+          </a>
           <li class="hidden md:flex flex-wrap">
             <ul
               class="mr-xs last:mr-0"
@@ -134,13 +226,20 @@ onBeforeUnmount(() => {
                 :href="item.url"
                 :target="item.target"
                 v-html="item.title"
-                class="tracking-wider outline-none nav__text"
+                class="tracking-wider align-middle outline-none nav__text"
                 @click="
-                  navItemClick($event, item.url, item.target, navItemAsLink)
+                  navItemClick(
+                    $event,
+                    item.title,
+                    item.url,
+                    item.target,
+                    navItemAsLink,
+                    'menu'
+                  )
                 "
               ></a>
               <div
-                class="relative -top-[2px] nav__decorator before:bg-primary"
+                class="relative -top-[2px] h-[6px] nav__decorator before:bg-primary"
               ></div>
             </ul>
           </li>
@@ -150,14 +249,17 @@ onBeforeUnmount(() => {
         <hamburger-menu
           :color="hamburgerColor"
           :display-border="hamburgerBorder"
+          class="block md:hidden"
           @hbg-click="toggleNavButton"
         ></hamburger-menu>
-        <div class="hidden md:block">end</div>
+        <div class="hidden md:block">
+          <slot name="nav-slot"></slot>
+        </div>
       </div>
     </div>
     <!-- mobile menu -->
     <div
-      class="h-auto overflow-hidden"
+      class="h-auto overflow-hidden md:hidden"
       :class="[
         navOpen
           ? 'transition-all duration-500 ease-in'
@@ -168,7 +270,7 @@ onBeforeUnmount(() => {
       :style="menuHeightVal"
     >
       <div
-        class="bg-light-2 bg-opacity-80 rounded-md my-2xs mx-xs overflow-hidden"
+        class="bg-light-2 bg-opacity-80 rounded-md mt-2xs mb-xs mx-xs overflow-hidden"
       >
         <ul class="flex flex-col items-center justify-center p-xs">
           <li
@@ -180,13 +282,20 @@ onBeforeUnmount(() => {
               :href="item.url"
               :target="item.target"
               v-html="item.title"
-              class="tracking-wider outline-none nav__text"
+              class="tracking-wider outline-none align-middle nav__text"
               @click="
-                navItemClick($event, item.url, item.target, navItemAsLink)
+                navItemClick(
+                  $event,
+                  item.title,
+                  item.url,
+                  item.target,
+                  navItemAsLink,
+                  'menu'
+                )
               "
             ></a>
             <div
-              class="relative -top-[2px] nav__decorator before:bg-primary"
+              class="relative h-3xs -top-[2px] nav__decorator before:bg-primary"
             ></div>
           </li>
         </ul>
@@ -200,8 +309,6 @@ onBeforeUnmount(() => {
 
 <style lang="scss" scoped>
 .nav__decorator {
-  height: 6px;
-
   &::before {
     content: '';
     position: absolute;

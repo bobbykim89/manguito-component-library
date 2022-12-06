@@ -62,7 +62,7 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
       class="hidden hamburger__checkbox"
     />
     <div
-      class="relative h-3xs w-sm hamburger__icon before:w-sm after:w-sm before:h-3xs after:h-3xs transition-all duration-300 ease-linear"
+      class="relative h-[3px] w-sm hamburger__icon before:w-sm after:w-sm before:h-[3px] after:h-[3px] transition-all duration-300 ease-linear"
       :class="getHamburgerButtonClass(color)"
     ></div>
   </button>
