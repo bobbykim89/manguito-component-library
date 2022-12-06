@@ -4,6 +4,7 @@ import type {
   ColorPalette,
   CtaTarget,
   HeadingSize,
+  BodyText,
 } from '@mcl/manguito-theme/theme/theme.types'
 import generateClass from '@mcl/manguito-theme'
 // Import hamburgerMenu
@@ -31,6 +32,11 @@ const props = withDefaults(
     titleLinkTarget?: CtaTarget
     navItems: NavItemType[]
     navItemAsLink?: boolean
+    menuTextSize?: BodyText
+    menuTextColor?: ColorPalette
+    menuTextBold?: boolean
+    displayHighlight?: boolean
+    highlightColor?: ColorPalette
     bgColor?: ColorPalette
     hamburgerColor?: ColorPalette
     hamburgerBorder?: boolean
@@ -45,6 +51,11 @@ const props = withDefaults(
     titleAsLink: true,
     titleLinkTarget: '_self',
     navItemAsLink: true,
+    menuTextSize: 'md',
+    menuTextColor: 'dark-3',
+    menuTextBold: false,
+    displayHighlight: true,
+    highlightColor: 'primary',
     bgColor: 'light-1',
     hamburgerColor: 'dark-1',
     hamburgerBorder: true,
@@ -127,6 +138,26 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
   return classArray.join(' ')
 }
 
+const getMenuItemClass = (
+  size: BodyText,
+  color: ColorPalette,
+  bold: boolean
+): string => {
+  /**
+   * @size - menuTextSize
+   * @color - menuTextColor
+   * @bold - menuTextBold
+   */
+  const classArray: string[] = [
+    generateClass('BODYTEXT', size),
+    generateClass('TEXTCOLOR', color),
+  ]
+  if (bold) {
+    classArray.push('font-bold')
+  }
+  return classArray.join(' ')
+}
+
 // collapse/expand mobile menu
 const mobileMenu = ref()
 const mobileMenuHeight = ref<number>()
@@ -159,11 +190,12 @@ onBeforeUnmount(() => {
   <nav
     :class="[
       navScroll ? 'lg:shadow-md bg-opacity-70' : 'bg-opacity-80',
-      'bg-light-1 w-full top-0 md:sticky items-center z-50 transition ease-in duration-500 delay-150',
+      'w-full top-0 md:sticky items-center z-50 transition ease-in duration-500 delay-150',
+      generateClass('BGCOLOR', bgColor),
     ]"
   >
     <div
-      class="flex flex-wrap items-center py-xs mx-xs md:mx-sm align-middle justify-between sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px]"
+      class="flex flex-wrap items-center py-xs md:py-2xs mx-xs md:mx-sm align-middle justify-between sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px]"
     >
       <div class="flex flex-shrink-0 items-center self-center">
         <div class="h-md md:h-lg lg:h-xl mr-2xs md:mr-sm align-middle">
@@ -227,6 +259,9 @@ onBeforeUnmount(() => {
                 :target="item.target"
                 v-html="item.title"
                 class="tracking-wider align-middle outline-none nav__text"
+                :class="
+                  getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)
+                "
                 @click="
                   navItemClick(
                     $event,
@@ -239,7 +274,9 @@ onBeforeUnmount(() => {
                 "
               ></a>
               <div
-                class="relative -top-[2px] h-[6px] nav__decorator before:bg-primary"
+                v-if="displayHighlight"
+                class="relative -top-[2px] h-[6px] nav__decorator"
+                :class="generateClass('BEFOREBG', highlightColor)"
               ></div>
             </ul>
           </li>
@@ -283,6 +320,9 @@ onBeforeUnmount(() => {
               :target="item.target"
               v-html="item.title"
               class="tracking-wider outline-none align-middle nav__text"
+              :class="
+                getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)
+              "
               @click="
                 navItemClick(
                   $event,
@@ -295,7 +335,9 @@ onBeforeUnmount(() => {
               "
             ></a>
             <div
+              v-if="displayHighlight"
               class="relative h-3xs -top-[2px] nav__decorator before:bg-primary"
+              :class="generateClass('BEFOREBG', highlightColor)"
             ></div>
           </li>
         </ul>
