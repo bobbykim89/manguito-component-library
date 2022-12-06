@@ -18,6 +18,7 @@ import type {
 export type ClassType =
   | 'BGCOLOR'
   | 'BEFOREBG'
+  | 'AFTERBG'
   | 'TEXTCOLOR'
   | 'DISABLEDTEXTCOLOR'
   | 'SVGFILL'
@@ -67,6 +68,7 @@ class GenerateMCLClass extends MCLTheme {
     switch (this.classType) {
       case 'BGCOLOR':
       case 'BEFOREBG':
+      case 'AFTERBG':
       case 'TEXTCOLOR':
       case 'DISABLEDTEXTCOLOR':
       case 'SVGFILL':
@@ -111,6 +113,7 @@ class GenerateMCLClass extends MCLTheme {
     const {
       bgColor,
       beforeBgColor,
+      afterBgColor,
       textColor,
       disabledTextColor,
       svgFillColor,
@@ -124,6 +127,9 @@ class GenerateMCLClass extends MCLTheme {
     }
     if (this.classType === 'BEFOREBG') {
       return beforeBgColor[this.classValue]
+    }
+    if (this.classType === 'AFTERBG') {
+      return afterBgColor[this.classValue]
     }
     if (this.classType === 'TEXTCOLOR') {
       return textColor[this.classValue]

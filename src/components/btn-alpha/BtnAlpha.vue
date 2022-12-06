@@ -79,7 +79,7 @@ const handleButtonClick = (e: Event): void => {
 
 <template>
   <button
-    class="focus:outline-none focus:ring-4 ring-offset-2 bg-opacity-100 hover:bg-opacity-70 transition-all duration-300 ease-linear"
+    class="outline-none focus:ring-4 ring-offset-2 bg-opacity-100 hover:bg-opacity-70 transition-all duration-300 ease-linear"
     :class="
       buttonConfig(color, textSize, buttonSize, isBlock, rounded, displayShadow)
     "
