@@ -88,12 +88,14 @@ const handleTitleClass = (
 
 const handleCardClick = (
   e: Event,
+  title: string,
   link: string,
   target: CtaTarget,
   ctaLink: boolean
 ): void => {
   /**
    * @e - Event
+   * @title - title
    * @link - ctaLink
    * @target - ctaTarget
    * @ctaLink - ctaAsLink
@@ -101,7 +103,7 @@ const handleCardClick = (
   if (ctaLink) {
     window.open(link, target)
   } else {
-    emit('card-click', e)
+    emit('card-click', { event: e, title: title, url: link, target: target })
   }
 }
 
@@ -114,7 +116,7 @@ defineExpose({
   <div
     class="relative max-w-[450px] sm:max-w-[350px] w-full xs:w-auto flex-grow flex-shrink-0 cursor-pointer overflow-hidden border border-light-3"
     :class="getBorderClass(borderColor, rounded)"
-    @click="handleCardClick($event, ctaLink, ctaTarget, ctaAsLink)"
+    @click="handleCardClick($event, title, ctaLink, ctaTarget, ctaAsLink)"
   >
     <div
       class="absolute z-[15] flex flex-col justify-end items-start inset-0 p-xs [@media(hover:hover)]:opacity-0 hover:opacity-100 peer transition-opacity duration-200"

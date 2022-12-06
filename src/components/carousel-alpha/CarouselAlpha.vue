@@ -181,10 +181,9 @@ onMounted(() => {
   })
 
   // transition end event
-  slideContainer.value.addEventListener(
-    'transitionend',
-    () => (isMoving = false)
-  )
+  slideContainer.value.addEventListener('transitionend', () => {
+    isMoving = false
+  })
 
   // intersection observer for slider
   slideObserver.observe(carouselCards.value[carouselCards.value.length - 1].$el)

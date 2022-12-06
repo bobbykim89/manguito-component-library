@@ -133,11 +133,13 @@ const getLabelClass = (tColor: ColorPalette, bColor: ColorPalette): string => {
 }
 const handleButtonClick = (
   e: Event,
+  title: string,
   link: string,
   target: CtaTarget,
   btnLink: boolean
 ): void => {
   /**
+   * @title - title
    * @link - ctaLink
    * @target - ctaTarget
    * @btnLink - ctaAsLink
@@ -145,11 +147,22 @@ const handleButtonClick = (
   if (btnLink) {
     window.open(link, target)
   } else {
-    emit('card-btn-click', e)
+    emit('card-btn-click', {
+      event: e,
+      title: title,
+      url: link,
+      target: target,
+    })
   }
 }
 const handleCardClick = (e: Event): void => {
-  emit('card-click', e)
+  const { title, ctaLink, ctaTarget } = props
+  emit('card-click', {
+    event: e,
+    title: title,
+    url: ctaLink,
+    target: ctaTarget,
+  })
 }
 </script>
 
@@ -211,7 +224,7 @@ const handleCardClick = (e: Event): void => {
             :is-block="true"
             :rounded="rounded"
             @btn-click="
-              handleButtonClick($event, ctaLink, ctaTarget, ctaAsLink)
+              handleButtonClick($event, title, ctaLink, ctaTarget, ctaAsLink)
             "
             >{{ ctaText }}</btn-alpha
           >

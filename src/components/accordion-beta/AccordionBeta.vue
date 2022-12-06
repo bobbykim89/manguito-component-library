@@ -35,10 +35,10 @@ const props = withDefaults(
 const toggle = ref(props.openOnMount)
 const emit = defineEmits(['accordion-click'])
 
-const toggleAction = (e: Event): void => {
+const toggleAction = (e: Event, title: string): void => {
   toggle.value = !toggle.value
 
-  emit('accordion-click', e)
+  emit('accordion-click', { event: e, title: title })
 }
 
 const getBorderClass = (
@@ -109,7 +109,7 @@ onBeforeUnmount(() => {
     :class="getBorderClass(borderColor, bgColor, rounded, displayShadow)"
   >
     <div
-      @click="toggleAction"
+      @click="toggleAction($event, title)"
       class="flex justify-between items-center w-full px-4 py-2 cursor-pointer hover:bg-opacity-70 transition duration-200 ease-in"
       :class="[rounded ? 'rounded-lg' : '', generateClass('BGCOLOR', btnColor)]"
     >

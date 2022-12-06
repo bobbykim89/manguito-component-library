@@ -38,10 +38,10 @@ const props = withDefaults(
 const currentTab = ref(0)
 const emit = defineEmits(['tab-click'])
 
-const hadleTabClick = (index: number, e: Event): void => {
+const hadleTabClick = (e: Event, index: number, title: string): void => {
   e.preventDefault()
   currentTab.value = index
-  emit('tab-click', e)
+  emit('tab-click', { event: e, title: title })
 }
 
 const getBorderClass = (
@@ -131,7 +131,7 @@ const getInactiveBtnClass = (fColor: ColorPalette): string => {
       <button
         v-for="(item, index) in props.content"
         :key="index"
-        @click="hadleTabClick(index, $event)"
+        @click="hadleTabClick($event, index, item.title)"
         class="text-center focus:outline-none w-full py-2.5"
         :class="[
           currentTab === index
