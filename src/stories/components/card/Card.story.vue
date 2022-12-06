@@ -44,7 +44,7 @@ const stateAlpha = reactive<{
   ctaAsLink?: boolean
   slotText?: string
 }>({
-  title: 'Title text',
+  title: 'Card Alpha',
   titleSize: 'md',
   titleColor: 'dark-3',
   borderColor: 'light-3',
@@ -106,6 +106,9 @@ const stateBeta = reactive<{
   slotText:
     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?',
 })
+const handleCardClick = (e: Event) => {
+  console.log(e)
+}
 </script>
 
 <template>
@@ -136,6 +139,8 @@ const stateBeta = reactive<{
           :enlarge-on-hover="stateAlpha.enlargeOnHover"
           :rounded="stateAlpha.rounded"
           :display-shadow="stateAlpha.displayShadow"
+          @card-btn-click="handleCardClick"
+          @card-click="handleCardClick"
         >
           <div v-html="stateAlpha.slotText"></div>
         </card-alpha>
@@ -228,6 +233,7 @@ const stateBeta = reactive<{
           :cta-link="stateBeta.ctaLink"
           :cta-target="stateBeta.ctaTarget"
           :rounded="stateBeta.rounded"
+          @card-click="handleCardClick"
         >
           <div v-html="stateBeta.slotText" class="bg-light-1/50 p-xs"></div>
         </card-beta>

@@ -48,10 +48,10 @@ const props = withDefaults(
 const toggle = ref(props.openOnMount)
 const emit = defineEmits(['accordion-click'])
 
-const toggleAction = (e: Event): void => {
+const toggleAction = (e: Event, title: string): void => {
   toggle.value = !toggle.value
 
-  emit('accordion-click', e)
+  emit('accordion-click', { event: e, title: title })
 }
 
 const getBorderClass = (
@@ -151,7 +151,7 @@ onBeforeUnmount(() => {
           : 'ease-out',
         generateClass('BGCOLOR', bgColor),
       ]"
-      @click="toggleAction"
+      @click="toggleAction($event, title)"
     >
       <div class="flex justify-between items-center">
         <h3 :class="getTitleClass(titleSize, titleColor)">

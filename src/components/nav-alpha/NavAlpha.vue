@@ -182,7 +182,7 @@ onMounted(() => {
 })
 onBeforeUnmount(() => {
   initObserver().unobserve(mobileMenu.value)
-  window.addEventListener('scroll', handleScroll())
+  window.removeEventListener('scroll', handleScroll())
 })
 </script>
 
