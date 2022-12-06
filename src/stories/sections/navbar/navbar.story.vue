@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
 import NavAlpha from '@/components/nav-alpha'
+import type { NavItemType } from '@/components/nav-alpha/NavAlpha.vue'
 import type {
   ColorPalette,
   HeadingSize,
@@ -16,6 +17,24 @@ import {
   corsOptions,
 } from '@/assets/options'
 
+const navItems: NavItemType[] = [
+  {
+    title: 'Home',
+    url: 'https://manguitopage.herokuapp.com/',
+    target: '_blank',
+  },
+  {
+    title: 'Gallery',
+    url: 'https://manguitopage.herokuapp.com/gallery',
+    target: '_blank',
+  },
+  {
+    title: 'About',
+    url: 'https://manguitopage.herokuapp.com/about',
+    target: '_blank',
+  },
+]
+
 const stateAlpha = reactive<{}>({})
 </script>
 
@@ -25,7 +44,13 @@ const stateAlpha = reactive<{}>({})
       <nav-alpha
         logo="https://res.cloudinary.com/dwgni1x3t/image/upload/v1670261556/MCL/mcl-logo-light_eqxliq.png"
         title="Manguito Page"
-      ></nav-alpha>
+        logo-small="https://res.cloudinary.com/dwgni1x3t/image/upload/v1670275930/MCL/mcl-logo-square_jvgyxx.png"
+        :nav-items="navItems"
+      >
+        <template #mobile-slot>
+          <div class="bg-primary">dada</div>
+        </template>
+      </nav-alpha>
     </Variant>
   </Story>
 </template>

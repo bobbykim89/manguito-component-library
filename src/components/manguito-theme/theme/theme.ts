@@ -143,6 +143,25 @@ abstract class MCLTheme {
     black: 'before:bg-black',
     white: 'before:bg-white',
   }
+  // ::after bg color class
+  protected static afterBgColor: ColorClass = {
+    primary: 'after:bg-primary',
+    secondary: 'after:bg-secondary',
+    success: 'after:bg-success',
+    danger: 'after:bg-danger',
+    info: 'after:bg-info',
+    warning: 'after:bg-warning',
+    'light-1': 'after:bg-light-1',
+    'light-2': 'after:bg-light-2',
+    'light-3': 'after:bg-light-3',
+    'light-4': 'after:bg-light-4',
+    'dark-1': 'after:bg-dark-1',
+    'dark-2': 'after:bg-dark-2',
+    'dark-3': 'after:bg-dark-3',
+    'dark-4': 'after:bg-dark-4',
+    black: 'after:bg-black',
+    white: 'after:bg-white',
+  }
   // text color class
   protected static textColor: ColorClass = {
     primary: 'text-primary',

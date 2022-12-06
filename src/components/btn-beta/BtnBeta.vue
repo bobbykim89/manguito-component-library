@@ -98,7 +98,7 @@ const handleButtonClick = (e: Event): void => {
 
 <template>
   <button
-    class="focus:outline-none focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear border-2"
+    class="outline-none focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear border-2"
     :class="
       buttonConfig(
         color,
