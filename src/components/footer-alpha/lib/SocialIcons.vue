@@ -6,6 +6,7 @@ import type {
   CtaTarget,
 } from '@mcl/manguito-theme/theme/theme.types'
 import generateClass from '@mcl/manguito-theme'
+import type { SocialUrl } from '../FooterAlpha.vue'
 // Import Icon files
 import GithubIcon from './icons/GithubIcon.vue'
 import InstagramIcon from './icons/InstagramIcon.vue'
@@ -15,10 +16,7 @@ import TwitterIcon from './icons/TwitterIcon.vue'
 const props = withDefaults(
   defineProps<{
     iconColor: ColorPalette
-    linkedin?: string
-    instagram?: string
-    github?: string
-    twitter?: string
+    socialLinks?: SocialUrl
   }>(),
   {
     iconColor: 'light-1',
@@ -32,7 +30,7 @@ interface IconList {
 const iconsRef = ref([])
 
 const handleIconsList = (): void => {
-  const { linkedin, instagram, github, twitter } = props
+  const { linkedin, instagram, github, twitter } = props.socialLinks
 
   const iconsList: IconList[] = []
   if (linkedin) {
@@ -89,7 +87,7 @@ onMounted(() => {
       <a
         :href="item.url"
         target="_blank"
-        class="inline-block outline-none focus:ring-2 ring-offset-2 ring-offset-transparent rounded-md transition-all duration-300 ease-linear"
+        class="inline-block outline-none focus:ring-2 hover:ring-2 hover:opacity-70 ring-offset-2 ring-offset-transparent rounded-md transition-all duration-300 ease-linear"
         :class="getIconColor(iconColor)"
       >
         <!-- <linkedin-icon></linkedin-icon> -->
