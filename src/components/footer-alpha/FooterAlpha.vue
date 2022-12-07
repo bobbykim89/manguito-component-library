@@ -56,7 +56,7 @@ const props = withDefaults(
     displaySocialIcons: true,
     socialIconColor: 'light-1',
     navItemAsLink: true,
-    menuTextSize: 'sm',
+    menuTextSize: 'md',
     menuTextColor: 'light-1',
     menuTextBold: false,
     displayHighlight: true,
@@ -67,8 +67,8 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['menu-click', 'logo-click'])
-type EmitType = 'menu' | 'logo'
+const emit = defineEmits(['menu-click', 'logo-click', 'secondary-menu-click'])
+type EmitType = 'menu' | 'logo' | 'secondary'
 
 const getFooterClass = (bg: ColorPalette, border: ColorPalette): string => {
   /**
@@ -139,6 +139,14 @@ const footerItemClick = (
     if (emitType === 'logo') {
       emit('logo-click', { event: e, title: title, link: link, target: target })
     }
+    if (emitType === 'secondary') {
+      emit('secondary-menu-click', {
+        event: e,
+        title: title,
+        link: link,
+        target: target,
+      })
+    }
   }
 }
 </script>
@@ -173,11 +181,14 @@ const footerItemClick = (
             <img class="inline-block h-full" :src="logo" :alt="logoAlt" />
           </a>
         </div>
-        <div class="mb-xs flex items-center justify-end md:justify-center">
+        <div
+          v-if="displaySocialIcons"
+          class="mb-xs flex items-center justify-end md:justify-center"
+        >
           <!-- social icons -->
           <social-icons
-            linkedin="https://www.linkedin.com/in/sihun-kim-9baa17165/"
-            github="https://github.com/bobbykim89"
+            :social-links="socialLinks"
+            :icon-color="socialIconColor"
           ></social-icons>
         </div>
       </div>
@@ -260,7 +271,7 @@ const footerItemClick = (
                     item.url,
                     item.target,
                     navItemAsLink,
-                    'menu'
+                    'secondary'
                   )
                 "
                 v-html="item.title"
