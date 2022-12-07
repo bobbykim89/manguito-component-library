@@ -66,6 +66,17 @@ const getIconList = computed(() => {
   return iconsRef.value
 })
 
+const getIconColor = (color: ColorPalette): string => {
+  /**
+   * @color - iconColor
+   */
+  const classArray: string[] = [
+    generateClass('TEXTCOLOR', color),
+    generateClass('RINGCOLOR', color),
+  ]
+  return classArray.join(' ')
+}
+
 onMounted(() => {
   handleIconsList()
   console.log(iconsRef.value)
@@ -75,7 +86,12 @@ onMounted(() => {
 <template>
   <ul class="flex flex-wrap">
     <li v-for="(item, index) in iconsRef" :key="index" class="mr-xs last:mr-0">
-      <a :href="item.url" target="_blank" class="text-light-1">
+      <a
+        :href="item.url"
+        target="_blank"
+        class="inline-block outline-none focus:ring-2 ring-offset-2 ring-offset-transparent rounded-md transition-all duration-300 ease-linear"
+        :class="getIconColor(iconColor)"
+      >
         <!-- <linkedin-icon></linkedin-icon> -->
         <component :is="item.icon"></component>
       </a>

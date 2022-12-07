@@ -4,9 +4,16 @@ import type {
   ColorPalette,
   HeadingSize,
   CtaTarget,
+  BodyText,
 } from '@mcl/manguito-theme/theme/theme.types'
 import generateClass from '@mcl/manguito-theme'
 import SocialIcons from './lib/SocialIcons.vue'
+
+export interface NavItemType {
+  title: string
+  url: string
+  target?: CtaTarget
+}
 
 export interface SocialUrl {
   linkedin?: string
@@ -20,35 +27,153 @@ const props = withDefaults(
     title: string
     titleSize?: HeadingSize
     titleColor?: ColorPalette
-    titleAsLink?: boolean
-    titleLink: string
-    titleLinkTarget?: CtaTarget
+    copyText?: string
     logo: string
-    logoSmall?: string
+    logoAlt?: string
+    logoAsLink?: boolean
+    logoLink: string
+    logoLinkTarget?: CtaTarget
     displaySocialIcons?: boolean
-    SocialIconColor: ColorPalette
+    socialIconColor: ColorPalette
     socialLinks?: SocialUrl
+    navItems: NavItemType[]
+    secondaryNavItems?: NavItemType[]
+    navItemAsLink?: boolean
+    menuTextSize?: BodyText
+    menuTextColor?: ColorPalette
+    menuTextBold?: boolean
     displayHighlight?: boolean
     highlightColor?: ColorPalette
+    bgColor?: ColorPalette
+    borderTopColor?: ColorPalette
+    headlineColor?: ColorPalette
   }>(),
   {
+    titleSize: 'md',
+    titleColor: 'light-1',
+    logoAsLink: true,
+    logoLinkTarget: '_self',
+    displaySocialIcons: true,
+    socialIconColor: 'light-1',
+    navItemAsLink: true,
+    menuTextSize: 'sm',
+    menuTextColor: 'light-1',
+    menuTextBold: false,
     displayHighlight: true,
     highlightColor: 'primary',
+    bgColor: 'dark-3',
+    borderTopColor: 'primary',
+    headlineColor: 'light-1',
   }
 )
-const contactText = ['Email', 'Instagram', 'Facebook', 'Twitter']
+
+const emit = defineEmits(['menu-click', 'logo-click'])
+type EmitType = 'menu' | 'logo'
+
+const getFooterClass = (bg: ColorPalette, border: ColorPalette): string => {
+  /**
+   * @bg - bgColor
+   * @border - borderTopColor
+   */
+
+  const classArray: string[] = [
+    generateClass('BGCOLOR', bg),
+    generateClass('BORDER', border),
+  ]
+  return classArray.join(' ')
+}
+const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
+  /**
+   * @size - titleSize
+   * @color - titleColor
+   */
+  const classArray: string[] = [
+    generateClass('H2', size),
+    generateClass('TEXTCOLOR', color),
+  ]
+  return classArray.join(' ')
+}
+const getMenuItemClass = (
+  size: BodyText,
+  color: ColorPalette,
+  bold: boolean
+): string => {
+  /**
+   * @size - menuTextSize
+   * @color - menuTextColor
+   * @bold - menuTextBold
+   */
+  const classArray: string[] = [
+    generateClass('BODYTEXT', size),
+    generateClass('TEXTCOLOR', color),
+  ]
+  if (bold) {
+    classArray.push('font-bold')
+  }
+  return classArray.join(' ')
+}
+
+const footerItemClick = (
+  e: Event,
+  title: string,
+  link: string,
+  target: string,
+  itemLink: boolean,
+  emitType: EmitType
+): void => {
+  /**
+   * @e - $event
+   * @title - navItems[#].title / title
+   * @link - navItems[#].url / logoLink
+   * @target - navItems[#].target / logoLinkTaget
+   * @itemlink - navItemAsLink / logoAsLink
+   * @emitType - Non prop value type EmitType
+   */
+  e.preventDefault()
+  if (itemLink) {
+    window.open(link, target)
+  } else {
+    if (emitType === 'menu') {
+      emit('menu-click', { event: e, title: title, link: link, target: target })
+    }
+    if (emitType === 'logo') {
+      emit('logo-click', { event: e, title: title, link: link, target: target })
+    }
+  }
+}
 </script>
 
 <template>
-  <footer class="border-t border-dark-2 bg-dark-3 py-6 sm:py-8 md:py-12">
+  <footer
+    class="border-t-2 py-6 sm:py-8 md:py-12"
+    :class="getFooterClass(bgColor, borderTopColor)"
+  >
     <div class="container px-xs md:px-lg lg:px-xl">
       <div
-        class="flex flex-col md:flex-row flex-wrap justify-between mb-xs md:mb-md px-xs md:px-md border-b-2 border-light-1"
+        class="flex flex-col md:flex-row flex-wrap justify-between mb-xs md:mb-md px-xs md:px-md border-b-2"
+        :class="generateClass('BORDER', headlineColor)"
       >
-        <div class="h-md md:h-xl lg:h-xl align-middle mb-xs">
-          <img class="inline-block h-full" :src="logo" alt="" />
+        <div class="h-lg md:h-xl align-middle mb-xs">
+          <a
+            :href="logoLink"
+            :target="logoLinkTarget"
+            class="h-full inline-block outline-none focus:ring-2 ring-offset-2 ring-offset-transparent rounded-md transition-all duration-300 ease-linear"
+            :class="generateClass('RINGCOLOR', titleColor)"
+            @click="
+              footerItemClick(
+                $event,
+                title,
+                logoLink,
+                logoLinkTarget,
+                logoAsLink,
+                'logo'
+              )
+            "
+          >
+            <img class="inline-block h-full" :src="logo" :alt="logoAlt" />
+          </a>
         </div>
-        <div class="mb-xs flex items-center md:justify-center">
+        <div class="mb-xs flex items-center justify-end md:justify-center">
           <!-- social icons -->
           <social-icons
             linkedin="https://www.linkedin.com/in/sihun-kim-9baa17165/"
@@ -57,81 +182,101 @@ const contactText = ['Email', 'Instagram', 'Facebook', 'Twitter']
         </div>
       </div>
       <div
-        class="flex flex-wrap md:justify-between items-center md:items-start gap-6 md:gap-12"
+        class="flex flex-wrap md:justify-between items-center md:items-start gap-6 md:gap-8"
       >
         <div class="grid gap-2 justify-items-center basis-full md:basis-1/3">
-          <h2 class="h2-md">{{ title }}</h2>
-          <small className="text-sm text-white align-middle font-bold mb-2">
-            &copy; Manguito Page {{ new Date().getFullYear() }}
+          <h2
+            class="inline-block align-middle tracking-wider"
+            :class="getTitleClass(titleSize, titleColor)"
+            v-html="title"
+          ></h2>
+          <small v-if="copyText" class="text-xs text-white align-middle mb-2">
+            &copy; {{ copyText + ' ' + new Date().getFullYear() }}
           </small>
-          <div>
+          <div class="px-xs md:px-0">
             <slot></slot>
           </div>
         </div>
         <nav
-          class="text-sm flex flex-col items-center sm:items-start sm:flex-row text-center sm:text-left gap-6 justify-between md:justify-around grow md:basis-1/2"
+          class="text-sm flex flex-col md:flex-row items-center sm:items-start sm:flex-row text-center sm:text-left gap-xs justify-between md:justify-around grow md:basis-1/2"
         >
-          <div class="grid gap-3">
-            <p
-              class="font-bold decoration-primary decoration-4 tracking-wide px-4"
+          <ul
+            class="flex flex-wrap md:flex-col justify-center items-center gap-2xs"
+          >
+            <li
+              v-for="(item, i) in navItems"
+              :key="`first-nav-${i}`"
+              class="inline-block"
             >
-              FooterAlpha {{ title }}
-            </p>
+              <a
+                :href="item.url"
+                :target="item.target"
+                class="tracking-wide outline-none nav__text"
+                :class="
+                  getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)
+                "
+                @click="
+                  footerItemClick(
+                    $event,
+                    item.title,
+                    item.url,
+                    item.target,
+                    navItemAsLink,
+                    'menu'
+                  )
+                "
+                v-html="item.title"
+              >
+              </a>
+              <div
+                v-if="displayHighlight"
+                class="relative top-3xs h-3xs nav__decorator"
+                :class="generateClass('BEFOREBG', highlightColor)"
+              ></div>
+            </li>
+          </ul>
 
-            <ul>
-              <li v-for="(item, i) in contactText" :key="i">
-                <a href="#" class="tracking-wider outline-none nav__text">
-                  {{ item }}
-                </a>
-                <div
-                  v-if="displayHighlight"
-                  class="relative h-3xs nav__decorator before:bg-primary"
-                  :class="generateClass('BEFOREBG', highlightColor)"
-                ></div>
-              </li>
-            </ul>
-          </div>
+          <!-- secondary menu -->
+          <ul
+            v-if="secondaryNavItems"
+            class="flex flex-wrap md:flex-col justify-center items-center gap-2xs"
+          >
+            <li
+              v-for="(item, i) in secondaryNavItems"
+              :key="`second-nav-${i}`"
+              class="inline-block"
+            >
+              <a
+                :href="item.url"
+                :target="item.target"
+                class="tracking-wide outline-none nav__text"
+                :class="
+                  getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)
+                "
+                @click="
+                  footerItemClick(
+                    $event,
+                    item.title,
+                    item.url,
+                    item.target,
+                    navItemAsLink,
+                    'menu'
+                  )
+                "
+                v-html="item.title"
+              >
+              </a>
+              <div
+                v-if="displayHighlight"
+                class="relative top-3xs h-3xs nav__decorator"
+                :class="generateClass('BEFOREBG', highlightColor)"
+              ></div>
+            </li>
+          </ul>
         </nav>
       </div>
     </div>
   </footer>
-  <!-- <footer
-    class="border-t border-dark-2 mt-16 sm:mt-24 lg:mt-40 py-6 sm:py-8 md:py-12 px-xs md:px-lg lg:px-xl"
-  >
-    <div
-      class="container flex flex-wrap md:justify-between items-center md:items-start gap-12"
-    >
-      <div class="grid gap-2 justify-items-center basis-full md:basis-1/3">
-        <div class="h-md md:h-xl lg:h-xl align-middle">
-          <img class="inline-block h-full" :src="logo" alt="" />
-        </div>
-        <p class="text-dark-3 text-sm text-center md:text-left">
-          Small text example
-        </p>
-      </div>
-      <nav
-        class="text-sm flex flex-col items-center sm:items-start sm:flex-row text-center sm:text-left gap-6 justify-between md:justify-around grow md:basis-1/2"
-      >
-        <div class="grid gap-3">
-          <p
-            class="font-bold decoration-primary decoration-4 tracking-wide px-4"
-          >
-            FooterAlpha {{ title }}
-          </p>
-          <ul>
-            <li v-for="(item, i) in contactText" :key="i">
-              <a
-                href="#"
-                class="hover:text-primary transition-colors focus:outline-none focus:ring-4 ring-offset-2 ring-offset-inherit px-4 ring-primary rounded-full"
-              >
-                {{ item }}
-              </a>
-            </li>
-          </ul>
-        </div>
-      </nav>
-    </div>
-  </footer> -->
 </template>
 
 <style lang="scss" scoped>
