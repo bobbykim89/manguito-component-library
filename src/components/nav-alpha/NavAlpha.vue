@@ -38,6 +38,7 @@ const props = withDefaults(
     displayHighlight?: boolean
     highlightColor?: ColorPalette
     bgColor?: ColorPalette
+    mobileMenuBgColor?: ColorPalette
     hamburgerColor?: ColorPalette
     hamburgerBorder?: boolean
     fadeInOnScroll?: boolean
@@ -57,6 +58,7 @@ const props = withDefaults(
     displayHighlight: true,
     highlightColor: 'primary',
     bgColor: 'light-1',
+    mobileMenuBgColor: 'light-2',
     hamburgerColor: 'dark-1',
     hamburgerBorder: true,
     fadeInOnScroll: true,
@@ -187,14 +189,14 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <nav
+  <header
     :class="[
       navScroll ? 'lg:shadow-md bg-opacity-70' : 'bg-opacity-80',
       'w-full top-0 md:sticky items-center z-50 transition ease-in duration-500 delay-150',
       generateClass('BGCOLOR', bgColor),
     ]"
   >
-    <div
+    <nav
       class="flex flex-wrap items-center py-xs md:py-2xs mx-xs md:mx-sm align-middle justify-between sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px]"
     >
       <div class="flex flex-shrink-0 items-center self-center">
@@ -293,7 +295,7 @@ onBeforeUnmount(() => {
           <slot name="nav-slot"></slot>
         </div>
       </div>
-    </div>
+    </nav>
     <!-- mobile menu -->
     <div
       class="h-auto overflow-hidden md:hidden"
@@ -307,7 +309,8 @@ onBeforeUnmount(() => {
       :style="menuHeightVal"
     >
       <div
-        class="bg-light-2 bg-opacity-80 rounded-md mt-2xs mb-xs mx-xs overflow-hidden"
+        class="bg-opacity-80 rounded-md my-2xs mx-xs overflow-hidden"
+        :class="generateClass('BGCOLOR', mobileMenuBgColor)"
       >
         <ul class="flex flex-col items-center justify-center p-xs">
           <li
@@ -336,7 +339,7 @@ onBeforeUnmount(() => {
             ></a>
             <div
               v-if="displayHighlight"
-              class="relative h-3xs -top-[2px] nav__decorator before:bg-primary"
+              class="relative h-3xs -top-[2px] nav__decorator"
               :class="generateClass('BEFOREBG', highlightColor)"
             ></div>
           </li>
@@ -346,7 +349,7 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </div>
-  </nav>
+  </header>
 </template>
 
 <style lang="scss" scoped>
