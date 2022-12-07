@@ -56,6 +56,7 @@ const stateAlpha = reactive<{
   displayHighlight?: boolean
   highlightColor?: ColorPalette
   bgColor?: ColorPalette
+  mobileMenuBgColor?: ColorPalette
   hamburgerColor?: ColorPalette
   hamburgerBorder?: boolean
   fadeInOnScroll?: boolean
@@ -82,6 +83,7 @@ const stateAlpha = reactive<{
   displayHighlight: true,
   highlightColor: 'primary',
   bgColor: 'light-1',
+  mobileMenuBgColor: 'light-2',
   hamburgerColor: 'dark-1',
   hamburgerBorder: true,
   fadeInOnScroll: true,
@@ -127,6 +129,7 @@ const handleEmitClick = (type: EmitType): void => {
           :display-highlight="stateAlpha.displayHighlight"
           :highlight-color="stateAlpha.highlightColor"
           :bg-color="stateAlpha.bgColor"
+          :mobile-menu-bg-color="stateAlpha.mobileMenuBgColor"
           :hamburger-color="stateAlpha.hamburgerColor"
           :hamburger-border="stateAlpha.hamburgerBorder"
           :fade-in-on-scroll="stateAlpha.fadeInOnScroll"
@@ -224,6 +227,11 @@ const handleEmitClick = (type: EmitType): void => {
         <HstSelect
           title="bg-color"
           v-model="stateAlpha.bgColor"
+          :options="colors"
+        />
+        <HstSelect
+          title="mobile-menu-bg-color"
+          v-model="stateAlpha.mobileMenuBgColor"
           :options="colors"
         />
         <HstSelect
