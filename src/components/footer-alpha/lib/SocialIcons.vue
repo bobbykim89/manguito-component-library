@@ -77,7 +77,6 @@ const getIconColor = (color: ColorPalette): string => {
 
 onMounted(() => {
   handleIconsList()
-  console.log(iconsRef.value)
 })
 </script>
 
@@ -90,7 +89,6 @@ onMounted(() => {
         class="inline-block outline-none focus:ring-2 hover:ring-2 hover:opacity-70 ring-offset-2 ring-offset-transparent rounded-md transition-all duration-300 ease-linear"
         :class="getIconColor(iconColor)"
       >
-        <!-- <linkedin-icon></linkedin-icon> -->
         <component :is="item.icon"></component>
       </a>
     </li>

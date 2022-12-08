@@ -8,5 +8,8 @@
 "name": "{%authorName%}",
 "url": "https://www.devbobbykim.com/"
 },
+"publishConfig": {
+"access": "public"
+},
 "license": "MIT"
 }

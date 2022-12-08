@@ -5,10 +5,10 @@ import type {
   ColorPalette,
   BodyText,
   SpacingLevel,
-} from '@mcl/manguito-theme/theme/theme.types'
-import generateClass from '@mcl/manguito-theme'
-import CardAlpha from '@mcl/card-alpha'
-import CardBeta from '@mcl/card-beta'
+} from '@bobbykim89/manguito-theme/theme/theme.types'
+import generateClass from '@bobbykim89/manguito-theme'
+import CardAlpha from '@bobbykim89/card-alpha'
+import CardBeta from '@bobbykim89/card-beta'
 
 type BtnNav = 'prev' | 'next'
 

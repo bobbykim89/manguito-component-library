@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import AccordionAlpha from '@/components/accordion-alpha'
 import AccordionBeta from '@/components/accordion-beta'
 import type {
@@ -72,8 +72,6 @@ const stateBeta = reactive<{
   slotText:
     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga quo incidunt a blanditiis mollitia ea est? Fugit voluptate expedita magni vitae iste. Nulla aperiam voluptate ullam dolor officiis earum quis aliquam at ducimus porro. Quidem, molestias! Voluptates perferendis distinctio ipsam dicta optio non praesentium, maiores commodi. Natus, ducimus doloremque?',
 })
-
-const accordionOpen = ref(false)
 </script>
 
 <template>

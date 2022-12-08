@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { withDefaults } from 'vue'
-import generateClass from '@mcl/manguito-theme'
+import generateClass from '@bobbykim89/manguito-theme'
 import type {
   HeadingLevel,
   HeadingSize,
   ColorPalette,
   Directions,
   OpacityRange,
-} from '@mcl/manguito-theme/theme/theme.types'
+} from '@bobbykim89/manguito-theme/theme/theme.types'
 
 const props = withDefaults(
   defineProps<{

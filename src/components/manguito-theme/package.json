@@ -1,10 +1,12 @@
 {
-  "name": "@mcl/manguito-theme",
+  "name": "@bobbykim89/manguito-theme",
   "version": "0.1.0",
   "description": "main theme file for manguito components library",
   "type": "module",
-  "private": false,
   "main": "index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "author": {
     "name": "Bobby Kim",
     "url": "https://www.devbobbykim.com/"

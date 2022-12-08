@@ -1,1 +1,20 @@
-{"name":"@mcl/carousel-alpha","version":"0.1.0","description":"","type":"module","main":"index.ts","author":{"name":"Bobby Kim","url":"https://www.devbobbykim.com/"},"license":"MIT","dependencies":{"@mcl/card-alpha":"^0.1.0","@mcl/card-beta":"^0.1.0","@mcl/manguito-theme":"^0.1.0"}}
+{
+  "name": "@bobbykim89/carousel-alpha",
+  "version": "0.1.0",
+  "description": "",
+  "type": "module",
+  "main": "index.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": {
+    "name": "Bobby Kim",
+    "url": "https://www.devbobbykim.com/"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@bobbykim89/card-alpha": "^0.1.0",
+    "@bobbykim89/card-beta": "^0.1.0",
+    "@bobbykim89/manguito-theme": "^0.1.0"
+  }
+}

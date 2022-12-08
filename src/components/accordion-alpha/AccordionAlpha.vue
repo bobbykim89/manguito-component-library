@@ -8,12 +8,12 @@ import {
   onMounted,
   onBeforeUnmount,
 } from 'vue'
-import generateClass from '@mcl/manguito-theme'
+import generateClass from '@bobbykim89/manguito-theme'
 import type {
   ColorPalette,
   Range,
   HeadingSize,
-} from '@mcl/manguito-theme/theme/theme.types'
+} from '@bobbykim89/manguito-theme/theme/theme.types'
 
 const props = withDefaults(
   defineProps<{
