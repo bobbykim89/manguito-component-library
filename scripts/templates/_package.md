@@ -8,6 +8,10 @@
 "name": "{%authorName%}",
 "url": "https://www.devbobbykim.com/"
 },
+"repository": {
+"type": "git",
+"url": "https://github.com/bobbykim89/manguito-component-library.git"
+},
 "publishConfig": {
 "access": "public"
 },
