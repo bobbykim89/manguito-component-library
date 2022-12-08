@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { withDefaults } from 'vue'
-import generateClass from '@bobbykim89/manguito-theme'
-import BtnAlpha from '@bobbykim89/btn-alpha'
+import generateClass from '@bobbykim/manguito-theme'
+import BtnAlpha from '@bobbykim/btn-alpha'
 import type {
   ColorPalette,
   HeadingSize,
   CtaTarget,
   CrossOrigin,
-} from '@bobbykim89/manguito-theme/theme/theme.types'
+} from '@bobbykim/manguito-theme/theme/theme.types'
 
 const props = withDefaults(
   defineProps<{

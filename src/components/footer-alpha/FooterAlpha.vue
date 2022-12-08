@@ -5,8 +5,8 @@ import type {
   HeadingSize,
   CtaTarget,
   BodyText,
-} from '@bobbykim89/manguito-theme/theme/theme.types'
-import generateClass from '@bobbykim89/manguito-theme'
+} from '@bobbykim/manguito-theme/theme/theme.types'
+import generateClass from '@bobbykim/manguito-theme'
 import SocialIcons from './lib/SocialIcons.vue'
 
 export interface NavItemType {
