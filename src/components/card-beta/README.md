@@ -1,20 +1,36 @@
-# @mcl/card-beta
-
-Add description
+# @bobbykim/card-beta
 
 ## Demo
 
-[Enjoy]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-components-card-card-story-vue?variantId=src-stories-components-card-card-story-vue-1)
 
 ## Install
 
+```sh
+npm i @bobbykim/card-beta
+```
+
 ## Usage
 
-`import CardBeta from "@mcl/card-beta"`;
+`import CardBeta from "@bobbykim/card-beta"`
 
-## Versioning
+In your code
 
-We use [SemVer](http://semver.org/) for versioning.
+```vue
+<script setup lang="ts">
+...
+import CardBeta from '@bobbykim/card-beta'
+...
+</script>
+
+<template>
+  <card-beta></card-beta>
+</template>
+```
+
+## Required packages
+
+- @bobbykim/manguito-theme
 
 ## Authors
 

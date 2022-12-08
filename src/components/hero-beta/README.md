@@ -2,7 +2,7 @@
 
 ## Demo
 
-[Histoire]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-sections-hero-hero-story-vue?variantId=src-stories-sections-hero-hero-story-vue-1)
 
 ## Install
 
@@ -18,9 +18,19 @@ In your code
 
 ```vue
 <script setup lang="ts">
+...
 import HeroBeta from '@bobbykim/hero-beta'
+...
 </script>
+
+<template>
+  <hero-beta></hero-beta>
+</template>
 ```
+
+## Required packages
+
+- @bobbykim/manguito-theme
 
 ## Authors
 

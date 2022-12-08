@@ -1,20 +1,36 @@
-# @mcl/modal-alpha
-
-Add description
+# @bobbykim/modal-alpha
 
 ## Demo
 
-[Enjoy]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-components-modal-modal-story-vue?variantId=src-stories-components-modal-modal-story-vue-0)
 
 ## Install
 
+```sh
+npm i @bobbykim/modal-alpha
+```
+
 ## Usage
 
-`import ModalAlpha from "@mcl/modal-alpha"`;
+`import ModalAlpha from "@bobbykim/modal-alpha"`;
 
-## Versioning
+In your code
 
-We use [SemVer](http://semver.org/) for versioning.
+```vue
+<script setup lang="ts">
+...
+import ModalAlpha from '@bobbykim/modal-alpha'
+...
+</script>
+
+<template>
+  <modal-alpha></modal-alpha>
+</template>
+```
+
+## Required packages
+
+- @bobbykim/manguito-theme
 
 ## Authors
 

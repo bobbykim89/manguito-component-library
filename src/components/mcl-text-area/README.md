@@ -1,20 +1,36 @@
-# @mcl/mcl-text-area
-
-Add description
+# @bobbykim/mcl-text-area
 
 ## Demo
 
-[Enjoy]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-components-input-input-story-vue?variantId=src-stories-components-input-input-story-vue-1)
 
 ## Install
 
+```sh
+npm i @bobbykim/mcl-text-area
+```
+
 ## Usage
 
-`import MclTextArea from "@mcl/mcl-text-area"`;
+`import MclTextArea from "@bobbykim/mcl-text-area"`
 
-## Versioning
+In your code
 
-We use [SemVer](http://semver.org/) for versioning.
+```vue
+<script setup lang="ts">
+...
+import MclTextArea from '@bobbykim/mcl-text-area'
+...
+</script>
+
+<template>
+  <mcl-text-area></mcl-text-area>
+</template>
+```
+
+## Required packages
+
+- @bobbykim/manguito-theme
 
 ## Authors
 

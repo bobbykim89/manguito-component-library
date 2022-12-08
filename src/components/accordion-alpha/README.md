@@ -1,20 +1,36 @@
-# @mcl/accordion
-
-Add description
+# @bobbykim/accordion
 
 ## Demo
 
-[Enjoy]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-components-accordion-accordion-story-vue?variantId=src-stories-components-accordion-accordion-story-vue-0)
 
 ## Install
 
+```sh
+npm i @bobbykim/accordion-alpha
+```
+
 ## Usage
 
-`import Accordion from "@mcl/accordion"`;
+`import AccordionAlpha from "@bobbykim/accordion-alpha"`;
 
-## Versioning
+In your code
 
-We use [SemVer](http://semver.org/) for versioning.
+```vue
+<script setup lang="ts">
+...
+import AccordionAlpha from '@bobbykim/accordion-alpha'
+...
+</script>
+
+<template>
+  <accordion-alpha></accordion-alpha>
+</template>
+```
+
+## Required packages
+
+- @bobbykim/manguito-theme
 
 ## Authors
 

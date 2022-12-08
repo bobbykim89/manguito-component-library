@@ -1,20 +1,37 @@
-# @mcl/card-alpha
-
-Add description
+# @bobbykim/card-alpha
 
 ## Demo
 
-[Enjoy]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-components-card-card-story-vue?variantId=src-stories-components-card-card-story-vue-0)
 
 ## Install
 
+```sh
+npm i @bobbykim/card-alpha
+```
+
 ## Usage
 
-`import CardAlpha from "@mcl/card-alpha"`;
+`import CardAlpha from "@bobbykim/card-alpha"`;
 
-## Versioning
+In your code
 
-We use [SemVer](http://semver.org/) for versioning.
+```vue
+<script setup lang="ts">
+...
+import CardAlpha from '@bobbykim/card-alpha'
+...
+</script>
+
+<template>
+  <card-alpha></card-alpha>
+</template>
+```
+
+## Required packages
+
+- @bobbykim/manguito-theme
+- @bobbykim/btn-alpha
 
 ## Authors
 

@@ -4,7 +4,7 @@ manguito-theme includes basic config for MCL, including theme.types and generate
 
 ## Demo
 
-[Histoire]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-documentation-mcltheme-story-vue?variantId=src-stories-documentation-mcltheme-story-vue-0)
 
 ## Install
 

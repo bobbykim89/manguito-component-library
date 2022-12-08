@@ -1,20 +1,38 @@
-# @mcl/nav-alpha
+# @bobbykim/nav-alpha
 
 Add description
 
 ## Demo
 
-[Enjoy]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-sections-navbar-navbar-story-vue?variantId=src-stories-sections-navbar-navbar-story-vue-0)
 
 ## Install
 
+```sh
+npm i @bobbykim/nav-alpha
+```
+
 ## Usage
 
-`import NavAlpha from "@mcl/nav-alpha"`;
+`import NavAlpha from "@bobbykim/nav-alpha"`;
 
-## Versioning
+In your code
 
-We use [SemVer](http://semver.org/) for versioning.
+```vue
+<script setup lang="ts">
+...
+import NavAlpha from '@bobbykim/nav-alpha'
+...
+</script>
+
+<template>
+  <nav-alpha></nav-alpha>
+</template>
+```
+
+## Required packages
+
+- @bobbykim/manguito-theme
 
 ## Authors
 

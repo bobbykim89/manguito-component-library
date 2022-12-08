@@ -4,7 +4,7 @@ MCL Component using parallax background
 
 ## Demo
 
-[Histoire]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-sections-hero-hero-story-vue?variantId=src-stories-sections-hero-hero-story-vue-2)
 
 ## Install
 
@@ -18,9 +18,19 @@ npm i @bobbykim/hero-gamma
 
 ```vue
 <script setup lang="ts">
+...
 import HeroGamma from '@bobbykim/hero-gamma'
+...
 </script>
+
+<template>
+  <hero-gamma></hero-gamma>
+</template>
 ```
+
+## Required packages
+
+- @bobbykim/manguito-theme
 
 ## Authors
 

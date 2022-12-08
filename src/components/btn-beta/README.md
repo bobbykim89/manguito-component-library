@@ -1,20 +1,36 @@
-# @mcl/btn-beta
-
-Add description
+# @bobbykim/btn-beta
 
 ## Demo
 
-[Enjoy]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-components-button-button-story-vue?variantId=src-stories-components-button-button-story-vue-1)
 
 ## Install
 
+```sh
+npm i @bobbykim/btn-beta
+```
+
 ## Usage
 
-`import BtnBeta from "@mcl/btn-beta"`;
+`import BtnBeta from "@bobbykim/btn-beta"`;
 
-## Versioning
+In your code
 
-We use [SemVer](http://semver.org/) for versioning.
+```vue
+<script setup lang="ts">
+...
+import BtnBeta from '@bobbykim/btn-beta'
+...
+</script>
+
+<template>
+  <btn-beta></btn-beta>
+</template>
+```
+
+## Required packages
+
+- @bobbykim/manguito-theme
 
 ## Authors
 
