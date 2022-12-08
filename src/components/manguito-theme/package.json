@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim89/manguito-theme",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "main theme file for manguito components library",
   "type": "module",
   "main": "index.ts",
