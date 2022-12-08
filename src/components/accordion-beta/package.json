@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/accordion-beta",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "type": "module",
   "main": "index.ts",
@@ -17,6 +17,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@bobbykim/manguito-theme": "^0.1.0"
+    "@bobbykim/manguito-theme": "^0.1.1"
   }
 }

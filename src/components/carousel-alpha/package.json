@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/carousel-alpha",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "type": "module",
   "main": "index.ts",
@@ -17,8 +17,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@bobbykim/card-alpha": "^0.1.0",
-    "@bobbykim/card-beta": "^0.1.0",
-    "@bobbykim/manguito-theme": "^0.1.0"
+    "@bobbykim/card-alpha": "^0.1.1",
+    "@bobbykim/card-beta": "^0.1.1",
+    "@bobbykim/manguito-theme": "^0.1.1"
   }
 }
