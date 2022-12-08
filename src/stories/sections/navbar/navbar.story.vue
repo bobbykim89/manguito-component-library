@@ -69,7 +69,7 @@ const stateAlpha = reactive<{
   logoAsLink: true,
   logoLink: '/',
   logoLinkTarget: '_self',
-  title: 'MANGU<span class="text-primary">IT</span>O',
+  title: 'Nav Alpha',
   titleSize: 'md',
   titleColor: 'dark-3',
   titleAsLink: true,

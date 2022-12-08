@@ -59,7 +59,7 @@ const handleButtonClick = (): void => {
             <div
               class="md:m-2xs bg-light-3 p-xs md:p-sm rounded-md aspect-square"
             >
-              <h2 class="h2-md mb-sm">This is Picture of Manguito</h2>
+              <h2 class="h2-md mb-sm">Container Alpha</h2>
               <div v-html="stateAlpha.slotText" class="mb-xs"></div>
               <accordion-beta title="Love Manguito?" btn-color="success">
                 <div>
