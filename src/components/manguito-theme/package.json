@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim89/manguito-theme",
-  "version": "0.1.2",
+  "version": "0.1.0",
   "description": "main theme file for manguito components library. Other MCL components will need to import this file to run.",
   "type": "module",
   "main": "index.ts",
@@ -11,6 +11,5 @@
     "name": "Bobby Kim",
     "url": "https://www.devbobbykim.com/"
   },
-  "license": "MIT",
-  "gitHead": "7e241468f9191e6a0a21bbf2db88ca0820b42717"
+  "license": "MIT"
 }
