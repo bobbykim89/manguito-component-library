@@ -67,3 +67,11 @@ interface NavItemType {
   target?: CtaTarget
 }
 ```
+
+### Emits
+
+| Event       | Arguments                                          | Usage                                                       |
+| ----------- | -------------------------------------------------- | ----------------------------------------------------------- |
+| logo-click  | event, title, link, target                         | Emitted on logo click when logo-as-link prop is disabled    |
+| title-click | event, title, link, target                         | Emitted on title click when title-as-link prop is disabled  |
+| menu-click  | event, navItem.title, navItem.link, navitem.target | Emitted on menu item click when nav-item-as-link is diabled |
