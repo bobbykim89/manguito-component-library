@@ -35,7 +35,7 @@ const stateAlpha = reactive<{
   displayHighlight: true,
   highlightColor: 'secondary',
   highlightWidth: 8,
-  title: 'Title Here',
+  title: 'Accordion Alpha',
   titleSize: 'sm',
   titleColor: 'dark-3',
   openOnMount: false,
@@ -59,7 +59,7 @@ const stateBeta = reactive<{
   openOnMount?: boolean
   slotText: string
 }>({
-  title: 'This is title',
+  title: 'Accordion Beta',
   titleColor: 'light-1',
   titleSize: 'md',
   borderColor: 'light-3',

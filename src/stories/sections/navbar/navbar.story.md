@@ -10,7 +10,7 @@ npm i @bobbykim/nav-alpha
 
 ### Usage
 
-`import NavAlpha from "@bobbykim/nav-alpha"`;
+`import NavAlpha from "@bobbykim/nav-alpha"`
 
 In your code
 

@@ -87,7 +87,7 @@ const stateAlpha = reactive<{
   headlineColor?: ColorPalette
   slotText?: string
 }>({
-  title: 'MCL',
+  title: 'Footer Alpha',
   titleSize: 'md',
   titleColor: 'light-1',
   copyText: 'Manguito Component Library',
