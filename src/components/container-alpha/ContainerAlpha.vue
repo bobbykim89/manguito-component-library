@@ -4,8 +4,8 @@ import type {
   ColorPalette,
   Position,
   ColumnWidth,
-} from '@bobbykim89/manguito-theme/theme/theme.types'
-import generateClass from '@bobbykim89/manguito-theme'
+} from '@bobbykim/manguito-theme/theme/theme.types'
+import generateClass from '@bobbykim/manguito-theme'
 
 type PositionY = 'top' | 'bottom'
 

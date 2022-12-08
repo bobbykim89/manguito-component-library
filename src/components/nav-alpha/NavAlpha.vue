@@ -5,8 +5,8 @@ import type {
   CtaTarget,
   HeadingSize,
   BodyText,
-} from '@bobbykim89/manguito-theme/theme/theme.types'
-import generateClass from '@bobbykim89/manguito-theme'
+} from '@bobbykim/manguito-theme/theme/theme.types'
+import generateClass from '@bobbykim/manguito-theme'
 // Import hamburgerMenu
 import HamburgerMenu from './lib/HamburgerMenu.vue'
 

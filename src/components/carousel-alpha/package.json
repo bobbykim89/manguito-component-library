@@ -1,6 +1,6 @@
 {
-  "name": "@bobbykim89/carousel-alpha",
-  "version": "0.1.2",
+  "name": "@bobbykim/carousel-alpha",
+  "version": "0.1.0",
   "description": "",
   "type": "module",
   "main": "index.ts",
@@ -13,12 +13,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bobbykim89/manguito-component-library.git"
+    "url": "https://github.com/bobbykim/manguito-component-library.git"
   },
   "license": "MIT",
   "dependencies": {
-    "@bobbykim89/card-alpha": "^0.1.2",
-    "@bobbykim89/card-beta": "^0.1.2",
-    "@bobbykim89/manguito-theme": "^0.1.2"
+    "@bobbykim/card-alpha": "^0.1.0",
+    "@bobbykim/card-beta": "^0.1.0",
+    "@bobbykim/manguito-theme": "^0.1.0"
   }
 }
