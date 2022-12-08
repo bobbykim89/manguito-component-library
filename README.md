@@ -43,7 +43,7 @@ git push
 
 ## Installation
 
-```
+```sh
 npm i -D tailwindcss postcss autoprefixer sass
 npm i @bobbykim/manguito-theme
 npx tailwindcss init -p
@@ -51,14 +51,17 @@ npx tailwindcss init -p
 
 tailwind.config.cjs
 
-```tailwind.config.cjs
+```cjs
 const {
   mclTheme,
   mclHeading,
 } = require('@bobbykim/manguito-theme/themeVariables.cjs')
 
 module.exports = {
-  content: ['./src/**/*.{vue,ts,js,cjs}', './node_modules/@bobbykim/**/*.{vue,ts,js,cjs}'],
+  content: [
+    './src/**/*.{vue,ts,js,cjs}',
+    './node_modules/@bobbykim/**/*.{vue,ts,js,cjs}',
+  ],
   theme: mclTheme,
   plugins: [mclHeading],
 }
@@ -68,18 +71,17 @@ module.exports = {
 
 in your-file.vue
 
-```your-file.vue
-<script setup lang='ts'>
+```vue
+<script setup lang="ts">
 import ComponentName from '@bobbykim/<ComponentName>'
 ...
 </script>
 
 <template>
-...
-<component-name></component-name>
-...
+  ...
+  <component-name></component-name>
+  ...
 </template>
-
 ```
 
 ## Dependencies
