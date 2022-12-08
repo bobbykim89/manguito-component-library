@@ -16,6 +16,7 @@ export type ColorPalette =
   | 'dark-4'
   | 'black'
   | 'white'
+  | 'transparent'
 // Available spacings
 export type SpacingLevel =
   | '0'
