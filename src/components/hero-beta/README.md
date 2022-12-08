@@ -1,20 +1,26 @@
-# @mcl/hero-beta
-
-Add description
+# @bobbykim/hero-beta
 
 ## Demo
 
-[Enjoy]({%sbLink%})
+[Histoire]({%sbLink%})
 
 ## Install
 
+```sh
+npm i @bobbykim/hero-beta
+```
+
 ## Usage
 
-`import HeroBeta from "@mcl/hero-beta"`;
+`import HeroBeta from '@bobbykim/hero-beta'`
 
-## Versioning
+In your code
 
-We use [SemVer](http://semver.org/) for versioning.
+```vue
+<script setup lang="ts">
+import HeroBeta from '@bobbykim/hero-beta'
+</script>
+```
 
 ## Authors
 

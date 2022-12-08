@@ -4,7 +4,7 @@ Add description
 
 ## Demo
 
-[Enjoy]({%sbLink%})
+[Histoire]({%sbLink%})
 
 ## Install
 
