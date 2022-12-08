@@ -68,7 +68,7 @@ module.exports = {
 
 in your-file.vue
 
-```in your-file.vue
+```your-file.vue
 <script setup lang='ts'>
 import ComponentName from '@bobbykim/<ComponentName>'
 ...
