@@ -1,7 +1,5 @@
 # @bobbykim/nav-alpha
 
-Add description
-
 ## Demo
 
 [MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-sections-navbar-navbar-story-vue?variantId=src-stories-sections-navbar-navbar-story-vue-0)
