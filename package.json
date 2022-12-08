@@ -13,7 +13,8 @@
     "bootstrap": "lerna bootstrap",
     "create": "node ./scripts/index.mjs",
     "commit": "cz",
-    "release": "standard-version"
+    "release": "standard-version",
+    "publish": "lerna publish"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.10.7",
