@@ -51,7 +51,7 @@ npx tailwindcss init -p
 
 tailwind.config.cjs
 
-```
+```tailwind.config.cjs
 const {
   mclTheme,
   mclHeading,
@@ -68,7 +68,7 @@ module.exports = {
 
 in your-file.vue
 
-```
+```in your-file.vue
 <script setup lang='ts'>
 import ComponentName from '@bobbykim/<ComponentName>'
 ...
