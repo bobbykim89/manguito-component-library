@@ -21,6 +21,7 @@ export interface ColorClass {
   'dark-4': string
   black: string
   white: string
+  transparent: string
 }
 
 export interface HeaderSizeClass {
@@ -104,6 +105,7 @@ abstract class MCLTheme {
     'dark-4': 'bg-dark-4',
     black: 'bg-black',
     white: 'bg-white',
+    transparent: 'bg-transparent',
   }
   // hover bg color class
   protected static hoverBgColor: ColorClass = {
@@ -123,6 +125,7 @@ abstract class MCLTheme {
     'dark-4': 'hover:bg-dark-4',
     black: 'hover:bg-black',
     white: 'hover:bg-white',
+    transparent: 'hover:bg-transparent',
   }
   // ::before bg color class
   protected static beforeBgColor: ColorClass = {
@@ -142,6 +145,7 @@ abstract class MCLTheme {
     'dark-4': 'before:bg-dark-4',
     black: 'before:bg-black',
     white: 'before:bg-white',
+    transparent: 'before:bg-transparent',
   }
   // ::after bg color class
   protected static afterBgColor: ColorClass = {
@@ -161,6 +165,7 @@ abstract class MCLTheme {
     'dark-4': 'after:bg-dark-4',
     black: 'after:bg-black',
     white: 'after:bg-white',
+    transparent: 'after:bg-transparent',
   }
   // text color class
   protected static textColor: ColorClass = {
@@ -180,6 +185,7 @@ abstract class MCLTheme {
     'dark-4': 'text-dark-4',
     black: 'text-black',
     white: 'text-white',
+    transparent: 'text-transparent',
   }
   // hover text color class
   protected static hoverTextColor: ColorClass = {
@@ -199,6 +205,7 @@ abstract class MCLTheme {
     'dark-4': 'hover:text-dark-4',
     black: 'hover:text-black',
     white: 'hover:text-white',
+    transparent: 'hover:text-transparent',
   }
   // disabled text color class
   protected static disabledTextColor: ColorClass = {
@@ -218,6 +225,7 @@ abstract class MCLTheme {
     'dark-4': 'disabled:text-dark-4',
     black: 'disabled:text-black',
     white: 'disabled:text-white',
+    transparent: 'disabled:text-transparent',
   }
   // SVG fill color class
   protected static svgFillColor: ColorClass = {
@@ -237,6 +245,7 @@ abstract class MCLTheme {
     'dark-4': 'fill-dark-4',
     black: 'fill-black',
     white: 'fill-white',
+    transparent: 'fill-transparent',
   }
   // ring color class
   protected static ringColor: ColorClass = {
@@ -256,6 +265,7 @@ abstract class MCLTheme {
     'dark-4': 'ring-dark-4',
     black: 'ring-black',
     white: 'ring-white',
+    transparent: 'ring-transparent',
   }
   // focus:ring color class
   protected static ringFocusColor: ColorClass = {
@@ -275,6 +285,7 @@ abstract class MCLTheme {
     'dark-4': 'focus:ring-dark-4',
     black: 'focus:ring-black',
     white: 'focus:ring-white',
+    transparent: 'focus:ring-transparent',
   }
   // active:ring color class
   protected static ringActiveColor: ColorClass = {
@@ -294,6 +305,7 @@ abstract class MCLTheme {
     'dark-4': 'active:ring-dark-4',
     black: 'active:ring-black',
     white: 'active:ring-white',
+    transparent: 'active:ring-transparent',
   }
   // active:bg color class
   protected static bgActiveColor: ColorClass = {
@@ -313,6 +325,7 @@ abstract class MCLTheme {
     'dark-4': 'active:bg-dark-4',
     black: 'active:bg-black',
     white: 'active:bg-white',
+    transparent: 'active:bg-transparent',
   }
   // h1 class
   protected static heading1: HeaderSizeClass = {
@@ -374,6 +387,7 @@ abstract class MCLTheme {
     'dark-4': 'border-dark-4',
     black: 'border-black',
     white: 'border-white',
+    transparent: 'border-transparent',
   }
   protected static borderXColor: ColorClass = {
     primary: 'border-x-primary',
@@ -392,6 +406,7 @@ abstract class MCLTheme {
     'dark-4': 'border-x-dark-4',
     black: 'border-x-black',
     white: 'border-x-white',
+    transparent: 'border-x-transparent',
   }
   protected static borderYColor: ColorClass = {
     primary: 'border-y-primary',
@@ -410,6 +425,7 @@ abstract class MCLTheme {
     'dark-4': 'border-y-dark-4',
     black: 'border-y-black',
     white: 'border-y-white',
+    transparent: 'border-y-transparent',
   }
   protected static borderTopColor: ColorClass = {
     primary: 'border-t-primary',
@@ -428,6 +444,7 @@ abstract class MCLTheme {
     'dark-4': 'border-t-dark-4',
     black: 'border-t-black',
     white: 'border-t-white',
+    transparent: 'border-t-transparent',
   }
   protected static borderLeftColor: ColorClass = {
     primary: 'border-l-primary',
@@ -446,6 +463,7 @@ abstract class MCLTheme {
     'dark-4': 'border-l-dark-4',
     black: 'border-l-black',
     white: 'border-l-white',
+    transparent: 'border-l-transparent',
   }
   protected static borderBottomColor: ColorClass = {
     primary: 'border-b-primary',
@@ -464,6 +482,7 @@ abstract class MCLTheme {
     'dark-4': 'border-b-dark-4',
     black: 'border-b-black',
     white: 'border-b-white',
+    transparent: 'border-b-transparent',
   }
   // Border width class for top/left
   protected static borderTopWidth: BorderWidth = {

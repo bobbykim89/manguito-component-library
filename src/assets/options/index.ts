@@ -20,6 +20,7 @@ export const colors: string[] = [
   'dark-4',
   'black',
   'white',
+  'transparent',
 ]
 
 export const spacingOptions: string[] = [

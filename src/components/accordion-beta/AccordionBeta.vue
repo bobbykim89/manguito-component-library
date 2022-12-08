@@ -85,7 +85,6 @@ const initObserver = (): ResizeObserver => {
   const observer = new ResizeObserver(() => {
     slotHeight.value = textSlot.value.scrollHeight
   })
-  // observer.observe(textSlot.value)
   return observer
 }
 
