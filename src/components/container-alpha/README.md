@@ -1,20 +1,36 @@
-# @mcl/container-alpha
-
-Add description
+# @bobbykim/container-alpha
 
 ## Demo
 
-[Enjoy]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-sections-container-container-story-vue?variantId=src-stories-sections-container-container-story-vue-0)
 
 ## Install
 
+```sh
+npm i @bobbykim/container-alpha
+```
+
 ## Usage
 
-`import ContainerAlpha from "@mcl/container-alpha"`;
+`import ContainerAlpha from "@bobbykim/container-alpha"`;
 
-## Versioning
+In your code
 
-We use [SemVer](http://semver.org/) for versioning.
+```vue
+<script setup lang="ts">
+...
+import ContainerAlpha from '@bobbykim/container-alpha'
+...
+</script>
+
+<template>
+  <container-alpha></container-alpha>
+</template>
+```
+
+## Required packages
+
+- @bobbykim/manguito-theme
 
 ## Authors
 

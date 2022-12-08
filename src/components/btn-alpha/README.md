@@ -1,18 +1,36 @@
-# @mcl/btn
-
-Add description
+# @bobbykim/btn-alpha
 
 ## Demo
 
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-components-button-button-story-vue?variantId=src-stories-components-button-button-story-vue-0)
+
 ## Install
+
+```sh
+npm i @bobbykim/btn-alpha
+```
 
 ## Usage
 
-`import Btn from "@mcl/btn"`;
+`import BtnAlpha from "@bobbykim/btn-alpha"`;
 
-## Versioning
+In your code
 
-We use [SemVer](http://semver.org/) for versioning.
+```vue
+<script setup lang="ts">
+...
+import BtnAlpha from '@bobbykim/btn-alpha'
+...
+</script>
+
+<template>
+  <btn-alpha></btn-alpha>
+</template>
+```
+
+## Required packages
+
+- @bobbykim/manguito-theme
 
 ## Authors
 

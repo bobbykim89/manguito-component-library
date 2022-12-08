@@ -1,20 +1,38 @@
-# @mcl/carousel-alpha
-
-Add description
+# @bobbykim/carousel-alpha
 
 ## Demo
 
-[Enjoy]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-sections-carousel-carousel-story-vue?variantId=src-stories-sections-carousel-carousel-story-vue-0)
 
 ## Install
 
+```sh
+npm i @bobbykim/carousel-alpha
+```
+
 ## Usage
 
-`import CarouselAlpha from "@mcl/carousel-alpha"`;
+`import CarouselAlpha from "@bobbykim/carousel-alpha"`;
 
-## Versioning
+In your code
 
-We use [SemVer](http://semver.org/) for versioning.
+```vue
+<script setup lang="ts">
+...
+import CarouselAlpha from '@bobbykim/carousel-alpha'
+...
+</script>
+
+<template>
+  <carousel-alpha></carousel-alpha>
+</template>
+```
+
+## Required packages
+
+- @bobbykim/manguito-theme
+- @bobbykim/card-alpha
+- @bobbykim/card-beta
 
 ## Authors
 

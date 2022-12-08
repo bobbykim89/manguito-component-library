@@ -12,8 +12,8 @@ export default defineConfig({
       light: '/mcl-logo-light.png',
       dark: '/mcl-logo-dark.png',
     },
-    favicon: './favicon.ico',
-    logoHref: 'https://manguitopage.herokuapp.com/',
+    favicon: 'favicon.ico',
+    logoHref: 'https://manguito-component-library.vercel.app/',
     colors: {
       primary: defaultColors.amber,
     },

@@ -1,20 +1,36 @@
-# @mcl/tabs-alpha
-
-Add description
+# @bobbykim/tabs-alpha
 
 ## Demo
 
-[Enjoy]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-components-tabs-tabs-story-vue?variantId=src-stories-components-tabs-tabs-story-vue-0)
 
 ## Install
 
+```sh
+npm i @bobbykim/tabs-alpha
+```
+
 ## Usage
 
-`import TabsAlpha from "@mcl/tabs-alpha"`;
+`import TabsAlpha from "@bobbykim/tabs-alpha"`;
 
-## Versioning
+In your code
 
-We use [SemVer](http://semver.org/) for versioning.
+```vue
+<script setup lang="ts">
+...
+import TabsAlpha from '@bobbykim/tabs-alpha'
+...
+</script>
+
+<template>
+  <tabs-alpha></tabs-alpha>
+</template>
+```
+
+## Required packages
+
+- @bobbykim/manguito-theme
 
 ## Authors
 

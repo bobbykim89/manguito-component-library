@@ -1,20 +1,36 @@
-# @mcl/mcl-input
-
-Add description
+# @bobbykim/mcl-input
 
 ## Demo
 
-[Enjoy]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-components-input-input-story-vue?variantId=src-stories-components-input-input-story-vue-0)
 
 ## Install
 
+```sh
+npm i @bobbykim/mcl-input
+```
+
 ## Usage
 
-`import MclInput from "@mcl/mcl-input"`;
+`import MclInput from "@bobbykim/mcl-input"`;
 
-## Versioning
+In your code
 
-We use [SemVer](http://semver.org/) for versioning.
+```vue
+<script setup lang="ts">
+...
+import MclInput from '@bobbykim/mcl-input'
+...
+</script>
+
+<template>
+  <mcl-input></mcl-input>
+</template>
+```
+
+## Required packages
+
+- @bobbykim/manguito-theme
 
 ## Authors
 

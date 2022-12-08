@@ -4,17 +4,13 @@ Add description
 
 ## Demo
 
-[Histoire]({%sbLink%})
+[MCL Histoire Page]({%sbLink%})
 
 ## Install
 
 ## Usage
 
 `import {%vueFileName%} from "{%componentName%}"`;
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning.
 
 ## Authors
 
