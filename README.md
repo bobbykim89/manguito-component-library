@@ -4,27 +4,100 @@
 
 # Manguito Component Library (MCL)
 
-> A component library based on Vue 3 and Tailwind CSS
+> A simple component library based on Vue 3, SASS and Tailwind CSS
+> MCL uses vite as bundler
+
+## Project Setup
+
+### Install packages
+
+```
+npm install
+```
+
+### Bootstrap packages
+
+```
+npm run bootstrap
+```
+
+### Run dev server
+
+```
+npm run story:dev
+```
+
+### Create new component
+
+```
+npm run create
+```
+
+### Commit changes
+
+```
+git add . --or-- git add <file-name>
+npm run commit
+git push
+```
 
 ## Installation
 
 ```
-Work in progress
+npm i -D tailwindcss postcss autoprefixer sass
+npm i @bobbykim/manguito-theme
+npx tailwindcss init -p
+```
+
+```tailwind.config.cjs
+const {
+  mclTheme,
+  mclHeading,
+} = require('@bobbykim/manguito-theme/themeVariables.cjs')
+
+module.exports = {
+  content: ['./src/**/*.{vue,ts,js,cjs}', './node_modules/@bobbykim/**/*.{vue,ts,js,cjs}'],
+  theme: mclTheme,
+  plugins: [mclHeading],
+}
 ```
 
 ## Usage
 
-```
-Work in progress
-```
+```yourFile.vue
+<script setup lang='ts'>
+import ComponentName from '@bobbykim/ComponentName'
+...
+</script>
 
-## Documentation
+<template>
+...
+<component-name></component-name>
+...
+</template>
 
-Work in progress
+```
 
 ## Dependencies
 
-Work in progress
+### Components
+
+> Vue
+> Vite
+> SASS
+> Typescript
+> Tailwind CSS (tailwindcss, autoprefixer, postcss)
+> @vitejs/plugin-vue
+> vue-tsc
+
+### Histoire Page
+
+> Histoire
+> @histoire/plugin-vue
+
+### Package management
+
+> Lerna
 
 ## License
 
