@@ -11,12 +11,17 @@
     "story:build": "histoire build",
     "story:preview": "histoire preview",
     "bootstrap": "lerna bootstrap",
-    "create": "node ./scripts/index.mjs"
+    "create": "node ./scripts/index.mjs",
+    "commit": "cz"
   },
   "devDependencies": {
     "@histoire/plugin-vue": "^0.10.7",
+    "@types/inquirer": "^9.0.2",
+    "@types/lodash": "^4.14.186",
     "@vitejs/plugin-vue": "^3.1.2",
     "autoprefixer": "^10.4.12",
+    "commitizen": "^4.2.6",
+    "cz-conventional-changelog": "^3.3.0",
     "histoire": "^0.10.7",
     "inquirer": "^9.1.2",
     "lerna": "^5.5.4",
@@ -29,8 +34,11 @@
     "vue-tsc": "^1.0.9"
   },
   "dependencies": {
-    "vue": "^3.2.40",
-    "@types/inquirer": "^9.0.2",
-    "@types/lodash": "^4.14.186"
+    "vue": "^3.2.40"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

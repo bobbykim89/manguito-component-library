@@ -3,8 +3,8 @@ import { withDefaults, Transition } from 'vue'
 import type {
   ColorPalette,
   HeadingSize,
-} from '@mcl/manguito-theme/theme/theme.types'
-import generateClass from '@mcl/manguito-theme'
+} from '@bobbykim89/manguito-theme/theme/theme.types'
+import generateClass from '@bobbykim89/manguito-theme'
 
 const props = withDefaults(
   defineProps<{

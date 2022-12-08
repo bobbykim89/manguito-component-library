@@ -4,8 +4,8 @@ import type {
   ColorPalette,
   BodyText,
   ButtonSize,
-} from '@mcl/manguito-theme/theme/theme.types'
-import generateClass from '@mcl/manguito-theme'
+} from '@bobbykim89/manguito-theme/theme/theme.types'
+import generateClass from '@bobbykim89/manguito-theme'
 
 const props = withDefaults(
   defineProps<{
@@ -69,10 +69,6 @@ const buttonConfig = (
   } else {
     classArray.push('rounded')
   }
-  // let isBlock = block ? 'block w-full' : ''
-  // let corner = rounded ? 'rounded-full' : 'rounded'
-
-  // let buttonSize: string
 
   if (btnSize === 'medium') {
     classArray.push('px-4 py-2')
@@ -85,8 +81,6 @@ const buttonConfig = (
   if (shadow) {
     classArray.push('drop-shadow-md')
   }
-
-  console.log(classArray)
 
   return classArray.join(' ')
 }

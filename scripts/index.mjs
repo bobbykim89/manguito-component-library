@@ -91,7 +91,7 @@ inquirer.prompt(questions).then((answers) => {
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_package.md`), {
       encoding: 'utf8',
     })
-    .replace(/{%componentName%}/gi, `@mcl/${directoryName}`)
+    .replace(/{%componentName%}/gi, `@bobbykim89/${directoryName}`)
     .replace(/{%authorName%}/gi, authorName)
 
   const readmeTemplate = fs

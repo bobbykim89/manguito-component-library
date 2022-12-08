@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { withDefaults, ref, Transition } from 'vue'
-import generateClass from '@mcl/manguito-theme'
+import generateClass from '@bobbykim89/manguito-theme'
 import type {
   ColorPalette,
   HeadingSize,
-} from '@mcl/manguito-theme/theme/theme.types'
+} from '@bobbykim89/manguito-theme/theme/theme.types'
 
 export interface ContentType {
   title: string
