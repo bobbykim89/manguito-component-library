@@ -4,7 +4,7 @@ manguito-theme includes basic config for MCL, including theme.types and generate
 
 ## Demo
 
-[Enjoy]({%sbLink%})
+[Histoire]({%sbLink%})
 
 ## Install
 
@@ -42,15 +42,13 @@ in Vue component file.
 
 ```vue
 <script setup lang="ts">
+...
 import generateClass from '@bobbykim/manguito-theme'
+import type { <Type you need> } from '@bobbykim/manguito-theme/theme/theme.types'
 ...
 </script>
 
-<template>
-  ...
-  <component-name></component-name>
-  ...
-</template>
+<template>...</template>
 ```
 
 ## Authors

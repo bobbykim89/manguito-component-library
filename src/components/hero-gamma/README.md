@@ -1,20 +1,26 @@
-# @mcl/hero-gamma
+# @bobbykim/hero-gamma
 
-Add description
+MCL Component using parallax background
 
 ## Demo
 
-[Enjoy]({%sbLink%})
+[Histoire]({%sbLink%})
 
 ## Install
 
+```sh
+npm i @bobbykim/hero-gamma
+```
+
 ## Usage
 
-`import HeroGamma from "@mcl/hero-gamma"`;
+`import HeroGamma from "@bobbykim/hero-gamma"`
 
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning.
+```vue
+<script setup lang="ts">
+import HeroGamma from '@bobbykim/hero-gamma'
+</script>
+```
 
 ## Authors
 
