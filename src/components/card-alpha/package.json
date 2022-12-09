@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/card-alpha",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "type": "module",
   "main": "index.ts",
@@ -18,7 +18,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@bobbykim/btn-alpha": "^0.1.1",
-    "@bobbykim/manguito-theme": "^0.1.1"
+    "@bobbykim/btn-alpha": "^0.1.2",
+    "@bobbykim/manguito-theme": "^0.1.2"
   }
 }
