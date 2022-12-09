@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/btn-alpha",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "type": "module",
   "private": false,
@@ -19,6 +19,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@bobbykim/manguito-theme": "^0.1.1"
+    "@bobbykim/manguito-theme": "^0.1.2"
   }
 }

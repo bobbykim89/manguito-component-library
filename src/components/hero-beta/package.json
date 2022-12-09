@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/hero-beta",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "type": "module",
   "main": "index.ts",
@@ -18,6 +18,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@bobbykim/manguito-theme": "^0.1.1"
+    "@bobbykim/manguito-theme": "^0.1.2"
   }
 }
