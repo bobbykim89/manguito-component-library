@@ -10,10 +10,6 @@ npm i @bobbykim/nav-alpha
 
 ### Usage
 
-`import NavAlpha from "@bobbykim/nav-alpha"`
-
-In your code
-
 ```vue
 <script setup lang="ts">
 ...
