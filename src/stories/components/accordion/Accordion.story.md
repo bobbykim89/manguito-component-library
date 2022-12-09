@@ -55,6 +55,8 @@ import AccordionAlpha from '@bobbykim/accordion-alpha'
 
 -Default slot
 
+---
+
 ## @bobbykim/accordion-beta
 
 ### Install
