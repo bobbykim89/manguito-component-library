@@ -57,7 +57,7 @@ const stateAlpha = reactive<{
   displayCta: true,
   ctaColor: 'primary',
   ctaLink: 'https://manguitopage.herokuapp.com/',
-  ctaTarget: '_blank',
+  ctaTarget: '_self',
   ctaText: 'cta text',
   displayLabel: true,
   labelText: 'Lorem ipsum',
@@ -101,7 +101,7 @@ const stateBeta = reactive<{
   imageCors: 'anonymous',
   ctaAsLink: false,
   ctaLink: 'https://manguitopage.herokuapp.com/',
-  ctaTarget: '_blank',
+  ctaTarget: '_self',
   rounded: false,
   slotText:
     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?',
