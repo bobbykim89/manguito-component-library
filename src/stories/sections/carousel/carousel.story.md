@@ -1,6 +1,6 @@
 # Carousel
 
-## carousel-alpha
+## @bobbykim/carousel-alpha
 
 ## Install
 
