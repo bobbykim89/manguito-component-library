@@ -38,10 +38,10 @@
   },
   "dependencies": {
     "vue": "^3.2.40",
-    "@bobbykim/btn-alpha": "^0.1.1",
-    "@bobbykim/card-alpha": "^0.1.1",
-    "@bobbykim/card-beta": "^0.1.1",
-    "@bobbykim/manguito-theme": "^0.1.1"
+    "@bobbykim/btn-alpha": "^0.1.3",
+    "@bobbykim/card-alpha": "^0.1.3",
+    "@bobbykim/card-beta": "^0.1.3",
+    "@bobbykim/manguito-theme": "^0.1.3"
   },
   "config": {
     "commitizen": {
