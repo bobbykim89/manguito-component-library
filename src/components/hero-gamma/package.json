@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/hero-gamma",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "",
   "type": "module",
   "main": "index.ts",
@@ -18,6 +18,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@bobbykim/manguito-theme": "^0.1.2"
+    "@bobbykim/manguito-theme": "^0.1.3"
   }
 }
