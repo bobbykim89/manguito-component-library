@@ -37,7 +37,7 @@ const props = withDefaults(
     displayTagLine: true,
     tagLineUpperCase: true,
     tagLineSize: 'md',
-    tagLineColor: 'success',
+    tagLineColor: 'dark-1',
     displayHighlight: true,
     highlightColor: 'primary',
     btnColor: 'dark-3',
@@ -272,7 +272,8 @@ onBeforeUnmount(() => {
     </div>
     <div class="container mt-md sm:mt-lg lg:mt-xl">
       <div
-        class="flex transition-transform duration-500 px-xs"
+        class="flex transition-transform duration-500 px-xs gap-xs"
+        :class="generateClass('GAP', cardsGap)"
         ref="slideContainer"
       >
         <slot
