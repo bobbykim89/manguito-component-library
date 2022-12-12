@@ -39,9 +39,8 @@ import AccordionAlpha from '@bobbykim/accordion-alpha'
 | rounded           | boolean                | false    | false     | rounding border of component                     |
 | display-highlight | boolean                | false    | true      | displaying highlight on left side of component   |
 | highlight-color   | string (ColorPalette)  | false    | secondary | color of highlight                               |
-| highlight-width   | number (Range<12>)     | false    | 8         | width of highlight                               |
 | open-on-mount     | boolean                | false    | false     | component toggled open when component is mounted |
-| icon-color        | string (ColorPalette)  | false    | dark-3    | color of chevron icon on right side              |
+| icon-color        | string (ColorPalette)  | false    | dark-3    | color of chevron icon at the bottom of component |
 | bg-color          | string (ColorPalette)  | false    | white     | color of accordion head                          |
 | slot-bg-color     | string (ColorPalette)  | false    | light-2   | background color of collapsable slot             |
 
@@ -53,7 +52,8 @@ import AccordionAlpha from '@bobbykim/accordion-alpha'
 
 ### Slots
 
--Default slot
+- `#head-slot`: slot in the right side of accordion head, does not affected by default accordion click behavior (toggle)
+- `#content`: slot in the content area
 
 ---
 
