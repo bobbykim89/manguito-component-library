@@ -106,7 +106,7 @@ const stateAlpha = reactive<{
   tagLineUpperCase: true,
   tagLine: 'Lorem ipsum',
   tagLineSize: 'md',
-  tagLineColor: 'success',
+  tagLineColor: 'dark-1',
   displayHighlight: true,
   highlightColor: 'primary',
   btnColor: 'dark-3',
@@ -157,7 +157,7 @@ const stateAlpha = reactive<{
               :cta-as-link="true"
               :cta-link="card.url"
               cta-target="_blank"
-              class="mr-xs last:mr-0 h-full"
+              class="h-full"
             >
               <div
                 class="py-2xs px-xs bg-light-2/50"
@@ -205,7 +205,7 @@ const stateAlpha = reactive<{
               cta-text="Read more"
               :cta-link="card.url"
               cta-target="_blank"
-              class="mr-xs last:mr-0 h-full"
+              class="h-full"
             >
               <div v-html="card.description"></div>
             </card-alpha>

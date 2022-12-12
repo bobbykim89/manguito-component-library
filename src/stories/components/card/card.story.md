@@ -122,6 +122,13 @@ import CardBeta from '@bobbykim/card-beta'
 | cta-as-link        | boolean               | false    | true      | whether to use cta as link or emitter on click        |
 | rounded            | boolean               | false    | true      | rounded corner of card component and cta button       |
 
+### Types
+
+```ts
+type CrossOrigin = 'use-credentials' | 'anonymous'
+type CtaTarget = '_self' | '_blank'
+```
+
 ### Emits
 
 | Event      | Arguments                 | Usage                                                    |
