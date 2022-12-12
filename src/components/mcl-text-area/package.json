@@ -19,5 +19,6 @@
   "license": "MIT",
   "dependencies": {
     "@bobbykim/manguito-theme": "^0.1.3"
-  }
+  },
+  "gitHead": "4e6b9b908a17893f6e6baab01741dc0dde771ac8"
 }
