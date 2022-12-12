@@ -549,6 +549,19 @@ abstract class MCLTheme {
     '2xl': 'mb-2xl',
     '3xl': 'mb-3xl',
   }
+  // spacing gap class for flex/grid
+  protected static gap: Spacing = {
+    '0': 'gap-0',
+    '3xs': 'gap-3xs',
+    '2xs': 'gap-2xs',
+    xs: 'gap-xs',
+    sm: 'gap-sm',
+    md: 'gap-md',
+    lg: 'gap-lg',
+    xl: 'gap-xl',
+    '2xl': 'gap-2xl',
+    '3xl': 'gap-3xl',
+  }
 }
 
 export default MCLTheme
