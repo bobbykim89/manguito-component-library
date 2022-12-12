@@ -46,7 +46,7 @@ const props = withDefaults(
     displayCta: true,
     ctaAsLink: true,
     ctaColor: 'primary',
-    ctaTarget: '_blank',
+    ctaTarget: '_self',
     ctaText: 'cta text',
     displayLabel: true,
     labelText: 'Lorem ipsum',

@@ -22,7 +22,7 @@ import NavAlpha from '@bobbykim/nav-alpha'
 </template>
 ```
 
-### Required packages
+### Dependencies
 
 - @bobbykim/manguito-theme
 

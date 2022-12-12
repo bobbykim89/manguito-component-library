@@ -24,7 +24,7 @@ import AccordionAlpha from '@bobbykim/accordion-alpha'
 </template>
 ```
 
-### Required packages
+### Dependencies
 
 - @bobbykim/manguito-theme
 
@@ -81,7 +81,7 @@ import AccordionBeta from '@bobbykim/accordion-beta'
 </template>
 ```
 
-### Required packages
+### Dependencies
 
 - @bobbykim/manguito-theme
 
