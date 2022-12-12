@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { reactive, ref } from 'vue'
 import AccordionAlpha from '@/components/accordion-alpha'
 import AccordionBeta from '@/components/accordion-beta'
 import type {
   ColorPalette,
-  Range,
   HeadingSize,
 } from '@/components/manguito-theme/theme/theme.types'
 import {
@@ -20,7 +19,6 @@ const stateAlpha = reactive<{
   rounded?: boolean
   displayHighlight?: boolean
   highlightColor?: ColorPalette
-  highlightWidth?: Range<12>
   title: string
   titleSize?: HeadingSize
   titleColor?: ColorPalette
@@ -34,7 +32,6 @@ const stateAlpha = reactive<{
   rounded: false,
   displayHighlight: true,
   highlightColor: 'secondary',
-  highlightWidth: 8,
   title: 'Accordion Alpha',
   titleSize: 'sm',
   titleColor: 'dark-3',
@@ -72,6 +69,12 @@ const stateBeta = reactive<{
   slotText:
     'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga quo incidunt a blanditiis mollitia ea est? Fugit voluptate expedita magni vitae iste. Nulla aperiam voluptate ullam dolor officiis earum quis aliquam at ducimus porro. Quidem, molestias! Voluptates perferendis distinctio ipsam dicta optio non praesentium, maiores commodi. Natus, ducimus doloremque?',
 })
+
+const headSlotToggle = ref<boolean>(false)
+
+const handleHeadSlotClick = (): void => {
+  headSlotToggle.value = !headSlotToggle.value
+}
 </script>
 
 <template>
@@ -85,13 +88,33 @@ const stateBeta = reactive<{
         :rounded="stateAlpha.rounded"
         :display-highlight="stateAlpha.displayHighlight"
         :highlight-color="stateAlpha.highlightColor"
-        :highlight-width="stateAlpha.highlightWidth"
         :open-on-mount="stateAlpha.openOnMount"
         :icon-color="stateAlpha.iconColor"
         :bg-color="stateAlpha.bgColor"
         :slot-bg-color="stateAlpha.slotBgColor"
       >
-        <div v-html="stateAlpha.slotText"></div>
+        <template #head-slot>
+          <div
+            class="cursor-pointer transition-all ease-in duration-150 hover:opacity-80"
+            :class="[headSlotToggle ? 'text-success' : 'text-danger']"
+            @click="handleHeadSlotClick"
+          >
+            <svg
+              class="w-sm"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 512 512"
+              fill="currentColor"
+            >
+              <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+              <path
+                d="M256 512c141.4 0 256-114.6 256-256S397.4 0 256 0S0 114.6 0 256S114.6 512 256 512zM369 209L241 337c-9.4 9.4-24.6 9.4-33.9 0l-64-64c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l47 47L335 175c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9z"
+              />
+            </svg>
+          </div>
+        </template>
+        <template #content>
+          <div v-html="stateAlpha.slotText"></div>
+        </template>
       </accordion-alpha>
       <template #controls>
         <HstText title="title" v-model="stateAlpha.title" />
@@ -129,14 +152,6 @@ const stateBeta = reactive<{
           title="highlight-color"
           v-model="stateAlpha.highlightColor"
           :options="colors"
-        />
-        <HstSlider
-          title="highlight-width"
-          :modelValue="stateAlpha.highlightWidth"
-          @update:modelValue="stateAlpha.highlightWidth = $event"
-          :step="1"
-          :min="1"
-          :max="12"
         />
         <HstCheckbox title="open-on-mount" v-model="stateAlpha.openOnMount" />
         <HstSelect
