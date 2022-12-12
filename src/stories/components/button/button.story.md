@@ -22,7 +22,7 @@ import BtnAlpha from '@bobbykim/btn-alpha'
 </template>
 ```
 
-### Required packages
+### Dependencies
 
 - @bobbykim/manguito-theme
 
@@ -79,7 +79,7 @@ import BtnBeta from '@bobbykim/btn-beta'
 </template>
 ```
 
-### Required packages
+### Dependencies
 
 - @bobbykim/manguito-theme
 

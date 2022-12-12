@@ -45,6 +45,7 @@ export type ClassType =
   | 'BGOPACITY'
   | 'OPACITY'
   | 'MARGINB'
+  | 'GAP'
 
 export type InputType =
   | ColorPalette
@@ -104,6 +105,7 @@ class GenerateMCLClass extends MCLTheme {
       case 'OPACITY':
         return this.getOpacityClass()
       case 'MARGINB':
+      case 'GAP':
         return this.getSpacingClass()
       default:
         return
@@ -221,10 +223,11 @@ class GenerateMCLClass extends MCLTheme {
     return opacity[this.classValue]
   }
   getSpacingClass(): string {
-    const { marginBottom } = MCLTheme
+    const { marginBottom, gap } = MCLTheme
     if (this.classType === 'MARGINB') {
       return marginBottom[this.classValue]
     }
+    return gap[this.classValue]
   }
 }
 

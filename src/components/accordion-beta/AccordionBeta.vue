@@ -65,6 +65,8 @@ const getBorderClass = (
   }
   if (rounded) {
     borderInfo.push('rounded-2xl')
+  } else {
+    borderInfo.push('rounded-sm')
   }
 
   return borderInfo.join(' ')
@@ -75,7 +77,12 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
    * @size - titleSize
    * @color - titleColor
    */
-  return `${generateClass('H3', size)} ${generateClass('TEXTCOLOR', color)}`
+
+  const classArray: string[] = [
+    generateClass('H3', size),
+    generateClass('TEXTCOLOR', color),
+  ]
+  return classArray.join(' ')
 }
 
 const textSlot = ref()
@@ -110,7 +117,10 @@ onBeforeUnmount(() => {
     <div
       @click="toggleAction($event, title)"
       class="flex justify-between items-center w-full px-4 py-2 cursor-pointer hover:bg-opacity-70 transition duration-200 ease-in"
-      :class="[rounded ? 'rounded-lg' : '', generateClass('BGCOLOR', btnColor)]"
+      :class="[
+        rounded ? 'rounded-lg' : 'rounded-sm',
+        generateClass('BGCOLOR', btnColor),
+      ]"
     >
       <h3 :class="getTitleClass(titleSize, titleColor)">{{ title }}</h3>
       <div class="flex justify-center items-center ml-xs md:ml-sm lg:ml-md">

@@ -32,7 +32,7 @@ const props = withDefaults(
     displayGrayScale: true,
     imageCors: 'anonymous',
     ctaAsLink: false,
-    ctaTarget: '_blank',
+    ctaTarget: '_self',
     rounded: false,
   }
 )
