@@ -24,7 +24,17 @@ import CarouselAlpha from '@bobbykim/carousel-alpha'
 </script>
 
 <template>
-  <carousel-alpha></carousel-alpha>
+  <carousel-alpha>
+    <!-- adding nested card-components -->
+    <template #carousel="{ setRef, cards }">
+      <card-component
+        v-for="(card, i) in cards"
+        :key="i"
+        :ref="(el) => setRef(el)"
+        class="mr-xs last:mr-0 h-full"
+      ></card-component>
+    </template>
+  </carousel-alpha>
 </template>
 ```
 
