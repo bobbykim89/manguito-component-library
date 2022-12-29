@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, withDefaults } from 'vue'
+import { computed, withDefaults } from 'vue'
 import type {
   ColorPalette,
   BodyText,
