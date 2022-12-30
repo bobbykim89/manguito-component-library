@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, withDefaults } from 'vue'
+import { withDefaults, computed, ref } from 'vue'
 import type {
   ColorPalette,
   BodyText,
@@ -18,15 +18,15 @@ const props = withDefaults(
     labelBold?: boolean
     displayBorder?: boolean
     borderColor?: ColorPalette
-    displayHighlight?: boolean
-    highlightColor?: ColorPalette
     bgColor?: ColorPalette
-    placeholder?: string
-    type?: InputType
+    buttonText?: string
+    buttonTextColor?: ColorPalette
+    buttonColor?: ColorPalette
     displayShadow?: boolean
     isRequired?: boolean
     spacing?: SpacingLevel
-    modelValue?: string
+    accept?: string
+    modelValue?: File
   }>(),
   {
     displayLabel: true,
@@ -35,26 +35,29 @@ const props = withDefaults(
     labelBold: true,
     displayBorder: false,
     borderColor: 'light-4',
-    displayHighlight: true,
-    highlightColor: 'primary',
     bgColor: 'light-1',
-    placeholder: '',
-    type: 'text',
+    buttonText: 'Browse',
+    buttonTextColor: 'dark-3',
+    buttonColor: 'light-4',
     displayShadow: true,
     isRequired: false,
     spacing: 'md',
+    accept: 'image/jpg,image/jpeg,image/png',
   }
 )
 
 const emit = defineEmits(['update:modelValue'])
-const inputValue = computed({
-  get() {
-    return props.modelValue
-  },
-  set(value) {
-    emit('update:modelValue', value)
-  },
-})
+
+const inputFileName = ref('')
+const inputRef = ref()
+const onLabelClick = (): void => {
+  inputRef.value.click()
+}
+const onChangeFile = (e: Event) => {
+  const file = (e.target as HTMLInputElement).files[0]
+  emit('update:modelValue', file)
+  inputFileName.value = file.name
+}
 
 const getLabelClass = (
   size: BodyText,
@@ -83,14 +86,12 @@ const getInputClass = (
   bgColor: ColorPalette,
   dBorder: boolean,
   bColor: ColorPalette,
-  dHL: boolean,
   dShadow: boolean
 ): string => {
   /**
    * @bgColor - bgColor
    * @dBorder - displayBorder
    * @bColor - borderColor
-   * @dHL - displayHighlight
    * @dShadow - displayShadow
    */
 
@@ -99,67 +100,57 @@ const getInputClass = (
     classArray.push('border-2')
     classArray.push(generateClass('BORDER', bColor))
   }
-  if (!dHL) {
-    classArray.push(
-      'focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear'
-    )
-    classArray.push(generateClass('FOCUSRING', bColor))
-  }
+
   if (dShadow) {
     classArray.push('shadow-md')
   }
+  return classArray.join(' ')
+}
+const getButtonClass = (bColor: ColorPalette, tColor: ColorPalette): string => {
+  /**
+   * @bColor - buttonColor
+   * @tColor - textColor
+   */
+  const classArray: string[] = [
+    generateClass('BGCOLOR', bColor),
+    generateClass('TEXTCOLOR', tColor),
+  ]
+
   return classArray.join(' ')
 }
 </script>
 
 <template>
   <div :class="generateClass('MARGINB', spacing)">
-    <label
+    <p
       v-if="displayLabel"
-      :for="identifier"
-      v-html="labelText"
-      class="inline-block mb-2xs"
+      class="inline-block mb-2xs cursor-default"
       :class="getLabelClass(labelSize, labelColor, labelBold)"
-    ></label>
-    <input
-      :id="identifier"
-      :type="type"
-      class="w-full p-2xs outline-none input__text"
-      :class="
-        getInputClass(
-          bgColor,
-          displayBorder,
-          borderColor,
-          displayHighlight,
-          displayShadow
-        )
-      "
-      v-model="inputValue"
-      :placeholder="placeholder"
-      :required="isRequired"
-    />
-    <div
-      v-if="displayHighlight"
-      class="relative -top-1 h-3xs input__decorator"
-      :class="generateClass('BEFOREBG', highlightColor)"
-    ></div>
+      @click="onLabelClick"
+      v-html="labelText"
+    ></p>
+    <label
+      :for="identifier"
+      class="w-full p-3xs outline-none flex justify-between"
+      :class="getInputClass(bgColor, displayBorder, borderColor, displayShadow)"
+    >
+      <span class="py-3xs pl-3xs text-sm">{{ inputFileName }}</span>
+      <div
+        class="px-xs py-3xs h-full hover:bg-opacity-70 transition-all duration-200 ease-linear cursor-pointer"
+        :class="getButtonClass(buttonColor, buttonTextColor)"
+        v-html="buttonText"
+      ></div>
+      <input
+        type="file"
+        :id="identifier"
+        ref="inputRef"
+        class="hidden"
+        :required="isRequired"
+        :accept="accept"
+        @change="onChangeFile"
+      />
+    </label>
   </div>
 </template>
 
-<style lang="scss" scoped>
-.input__decorator {
-  &::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 100%;
-    width: 0;
-    transition: width 0.3s linear;
-  }
-}
-
-.input__text:focus + .input__decorator::before {
-  width: 100%;
-}
-</style>
+<style lang="scss" scoped></style>
