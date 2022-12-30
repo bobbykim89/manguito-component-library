@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/hero-alpha",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "",
   "type": "module",
   "main": "index.ts",
