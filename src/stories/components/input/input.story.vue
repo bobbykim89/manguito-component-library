@@ -37,20 +37,19 @@ const handleCancel = (): void => {
 }
 
 const handleFileSubmit = (): void => {
-  if (inputFileRef.value !== '') {
-    console.log(inputFileRef.value)
+  console.log(inputFileRef.value)
+  if (
+    inputFileRef.value !== '' &&
+    inputFileRef.value !== undefined &&
+    inputFileRef.value !== null
+  ) {
     textOutput.value = inputFileRef.value.name
     fileSizeRef.value = inputFileRef.value.size
     inputFileRef.value = ''
+    return
   }
-}
-const handleFileCancel = (): void => {
-  if (inputFileRef.value !== '') {
-    console.log('cancelled!')
-    inputFileRef.value = ''
-  } else {
-    console.log('there is no file!')
-  }
+  textOutput.value =
+    '<span class="text-primary text-lg">Please add file first :)</span>'
 }
 
 const stateAlpha = reactive<{
@@ -366,12 +365,6 @@ const stateGamma = reactive<{
         ></mcl-input-file>
         <div class="flex justify-end items-center">
           <btn-alpha type="submit" class="mr-2xs">Submit</btn-alpha>
-          <btn-alpha
-            type="button"
-            color="secondary"
-            @btn-click="handleFileCancel"
-            >Cancel</btn-alpha
-          >
         </div>
       </form>
       <div class="flex flex-col justify-center items-center">
