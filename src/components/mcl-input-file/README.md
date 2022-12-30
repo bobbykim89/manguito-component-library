@@ -2,7 +2,7 @@
 
 ## Demo
 
-[MCL Histoire Page]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-components-input-input-story-vue?variantId=src-stories-components-input-input-story-vue-2)
 
 ## Install
 
