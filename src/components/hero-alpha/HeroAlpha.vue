@@ -15,7 +15,7 @@ const props = withDefaults(
     titleLevel?: HeadingLevel
     titleSize?: HeadingSize
     titleColor?: ColorPalette
-    displaySubTitle: boolean
+    displaySubTitle?: boolean
     subTitle?: string
     subTitleLevel?: HeadingLevel
     subTitleSize?: HeadingSize
@@ -109,7 +109,7 @@ const getTitleHighlightClass = (
   >
     <div class="grid lg:grid-cols-2">
       <div
-        class="relative px-xs flex flex-col justify-center min-h-[256px] md:min-h-[400px]"
+        class="relative px-xs md:px-md xl:px-lg flex flex-col justify-center min-h-[256px] md:min-h-[420px]"
         :class="{ 'lg:order-2': imgPosition === 'left' }"
       >
         <div
@@ -123,7 +123,7 @@ const getTitleHighlightClass = (
           ></div>
         </div>
         <div
-          class="relative py-md lg:py-lg px-0"
+          class="relative py-lg px-0"
           :class="[imgPosition === 'right' ? 'lg:pl-md' : 'lg:pr-md']"
         >
           <div class="text-center lg:text-left mb-xs">
@@ -134,8 +134,8 @@ const getTitleHighlightClass = (
                 displaySubTitleHighlight ? 'mb-3xs' : '',
                 getTitleClass(titleLevel, titleSize, titleColor),
               ]"
-              v-html="title"
             >
+              <span v-html="title"></span>
             </component>
             <!-- sub title -->
             <component
@@ -161,7 +161,7 @@ const getTitleHighlightClass = (
         </div>
       </div>
       <div
-        class="hidden lg:block relative bg-no-repeat bg-cover bg-top min-h-[256px] md:min-h-[400px] lg:min-h-[512px] xl:min-h-[80vh]"
+        class="hidden lg:block relative bg-no-repeat bg-cover bg-top lg:min-h-[512px] xl:min-h-[80vh]"
         :class="{ 'lg:order-1': imgPosition === 'left' }"
         :style="getBgImage(bgImage)"
       >
