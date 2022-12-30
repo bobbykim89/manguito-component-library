@@ -19,7 +19,7 @@ const props = withDefaults(
     displayBorder?: boolean
     borderColor?: ColorPalette
     bgColor?: ColorPalette
-    buttonText: string
+    buttonText?: string
     buttonTextColor?: ColorPalette
     buttonColor?: ColorPalette
     displayShadow?: boolean
@@ -36,6 +36,7 @@ const props = withDefaults(
     displayBorder: false,
     borderColor: 'light-4',
     bgColor: 'light-1',
+    buttonText: 'Browse',
     buttonTextColor: 'dark-3',
     buttonColor: 'light-4',
     displayShadow: true,
@@ -94,11 +95,7 @@ const getInputClass = (
    * @dShadow - displayShadow
    */
 
-  const classArray: string[] = [
-    generateClass('BGCOLOR', bgColor),
-    generateClass('FOCUSRING', bColor),
-    'focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear',
-  ]
+  const classArray: string[] = [generateClass('BGCOLOR', bgColor)]
   if (dBorder) {
     classArray.push('border-2')
     classArray.push(generateClass('BORDER', bColor))
