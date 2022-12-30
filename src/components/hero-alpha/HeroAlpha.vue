@@ -15,7 +15,7 @@ const props = withDefaults(
     titleLevel?: HeadingLevel
     titleSize?: HeadingSize
     titleColor?: ColorPalette
-    displaySubTitle: boolean
+    displaySubTitle?: boolean
     subTitle?: string
     subTitleLevel?: HeadingLevel
     subTitleSize?: HeadingSize
