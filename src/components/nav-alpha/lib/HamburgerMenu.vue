@@ -7,6 +7,7 @@ const props = withDefaults(
   defineProps<{
     color?: ColorPalette
     displayBorder?: boolean
+    toggle: boolean
   }>(),
   {
     color: 'dark-2',
@@ -14,11 +15,9 @@ const props = withDefaults(
   }
 )
 
-const buttonToggle = ref<boolean>(false)
 const emit = defineEmits(['hbg-click'])
 
 const handleButtonToggle = (e: Event): void => {
-  buttonToggle.value = !buttonToggle.value
   emit('hbg-click', e)
 }
 
@@ -58,7 +57,7 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
   >
     <input
       type="checkbox"
-      v-model="buttonToggle"
+      v-model="toggle"
       class="hidden hamburger__checkbox"
     />
     <div

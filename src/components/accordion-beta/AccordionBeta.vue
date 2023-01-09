@@ -90,7 +90,11 @@ const slotHeight = ref<number>()
 
 const initObserver = (): ResizeObserver => {
   const observer = new ResizeObserver(() => {
-    slotHeight.value = textSlot.value.scrollHeight
+    if (textSlot.value) {
+      slotHeight.value = textSlot.value.scrollHeight
+      return
+    }
+    slotHeight.value = 0
   })
   return observer
 }
@@ -105,7 +109,7 @@ onMounted(() => {
   initObserver().observe(textSlot.value)
 })
 onBeforeUnmount(() => {
-  initObserver().unobserve(textSlot.value)
+  initObserver().disconnect()
 })
 </script>
 

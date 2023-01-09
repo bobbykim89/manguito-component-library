@@ -77,12 +77,19 @@ const emit = defineEmits([
 
 type EmitType = 'menu' | 'title' | 'logo'
 
+const closeNav = (e: Event): void => {
+  navOpen.value = false
+}
+
 const toggleNavButton = (e: Event): void => {
   navOpen.value = !navOpen.value
   emit('toggle-menu', e)
 }
 
 const handleScroll = (): any => {
+  if (!window) {
+    return
+  }
   if (window.scrollY >= props.scrollDistance) {
     navScroll.value = true
   } else {
@@ -166,7 +173,10 @@ const mobileMenuHeight = ref<number>()
 
 const initObserver = (): ResizeObserver => {
   const observer = new ResizeObserver(() => {
-    mobileMenuHeight.value = mobileMenu.value.scrollHeight
+    if (mobileMenu.value) {
+      mobileMenuHeight.value = mobileMenu.value.scrollHeight
+      return
+    }
   })
   return observer
 }
@@ -183,7 +193,7 @@ onMounted(() => {
   window.addEventListener('scroll', handleScroll())
 })
 onBeforeUnmount(() => {
-  initObserver().unobserve(mobileMenu.value)
+  initObserver().disconnect()
   window.removeEventListener('scroll', handleScroll())
 })
 </script>
@@ -290,6 +300,7 @@ onBeforeUnmount(() => {
           :display-border="hamburgerBorder"
           class="block md:hidden"
           @hbg-click="toggleNavButton"
+          :toggle="navOpen"
         ></hamburger-menu>
         <div class="hidden md:block">
           <slot name="nav-slot"></slot>
@@ -345,7 +356,7 @@ onBeforeUnmount(() => {
           </li>
         </ul>
         <div>
-          <slot name="mobile-slot"></slot>
+          <slot name="mobile-slot" :close-nav="closeNav"></slot>
         </div>
       </div>
     </div>
