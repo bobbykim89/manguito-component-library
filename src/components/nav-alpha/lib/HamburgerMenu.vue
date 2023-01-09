@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, withDefaults } from 'vue'
+import { withDefaults, computed } from 'vue'
 import type { ColorPalette } from '@bobbykim/manguito-theme/theme/theme.types'
 import generateClass from '@bobbykim/manguito-theme'
 
@@ -20,6 +20,15 @@ const emit = defineEmits(['hbg-click'])
 const handleButtonToggle = (e: Event): void => {
   emit('hbg-click', e)
 }
+
+const hamburgetButtonState = computed({
+  get() {
+    return props.toggle
+  },
+  set(value) {
+    return value
+  },
+})
 
 const getBorderClass = (bColor: ColorPalette, border: boolean): string => {
   /**
@@ -57,7 +66,7 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
   >
     <input
       type="checkbox"
-      v-model="toggle"
+      v-model="hamburgetButtonState"
       class="hidden hamburger__checkbox"
     />
     <div
