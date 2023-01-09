@@ -148,10 +148,11 @@ const handleEmitClick = (type: EmitType): void => {
               >
             </div>
           </template>
-          <template #mobile-slot>
+          <template #mobile-slot="{ closeNav }">
             <ul class="bg-light-4 p-2xs flex justify-center">
               <li class="mr-xs">
                 <a
+                  @click="closeNav"
                   href="https://manguitopage.herokuapp.com/login"
                   target="_blank"
                   >Login</a
@@ -159,6 +160,7 @@ const handleEmitClick = (type: EmitType): void => {
               </li>
               <li>
                 <a
+                  @click="closeNav"
                   href="https://manguitopage.herokuapp.com/signup"
                   target="_blank"
                   >Signup</a
