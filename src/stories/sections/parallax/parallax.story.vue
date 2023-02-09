@@ -18,6 +18,7 @@ const stateAlpha = reactive<{
   titleLevel?: HeadingLevel
   titleSize?: HeadingSize
   titleColor?: ColorPalette
+  slotText?: string
 }>({
   sectionBgColor: 'transparent',
   containerBgColor: 'light-2',
@@ -29,6 +30,8 @@ const stateAlpha = reactive<{
   titleLevel: 'h2',
   titleSize: 'md',
   titleColor: 'dark-3',
+  slotText:
+    'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsa enim, maxime est veniam consequatur animi omnis modi at labore corrupti illo, blanditiis ducimus, tempora vel voluptas suscipit aliquam! Unde dicta enim hic esse facere delectus vero minima sunt dignissimos, veniam cumque asperiores nemo natus libero saepe, eaque, aspernatur id quibusdam.',
 })
 </script>
 
@@ -45,7 +48,11 @@ const stateAlpha = reactive<{
         :bg-image="stateAlpha.bgImage"
         :img-height-sm="stateAlpha.imgHeightSm"
         :img-height-lg="stateAlpha.imgHeightLg"
-      ></parallax-alpha>
+      >
+        <template #content>
+          <div v-html="stateAlpha.slotText"></div>
+        </template>
+      </parallax-alpha>
       <template #controls>
         <HstText title="title" v-model="stateAlpha.title" />
         <HstSelect
@@ -84,6 +91,7 @@ const stateAlpha = reactive<{
           :step="1"
           v-model="stateAlpha.imgHeightLg"
         />
+        <HstTextarea v-model="stateAlpha.slotText" title="Slot Text" />
       </template>
     </Variant>
   </Story>

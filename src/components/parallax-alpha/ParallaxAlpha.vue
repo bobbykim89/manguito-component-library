@@ -60,7 +60,11 @@ const parallaxImage = computed(() => {
   return {
     '--bg-image': `url('${props.bgImage}')`,
     '--container-height-mobile': `${props.imgHeightSm}px`,
-    '--container-height-desktop': `${props.imgHeightLg}px`,
+    '--container-height-desktop': `${
+      props.imgHeightLg > props.imgHeightSm
+        ? props.imgHeightLg
+        : props.imgHeightSm
+    }px`,
   }
 })
 </script>
