@@ -1,6 +1,40 @@
-const plugin = require('tailwindcss/plugin')
+import plugin from 'tailwindcss/plugin'
 
-const mclTheme = plugin.withOptions(
+interface ColorInput {
+  primary?: string
+  secondary?: string
+  success?: string
+  info?: string
+  warning?: string
+  danger?: string
+  'light-1'?: string
+  'light-2'?: string
+  'light-3'?: string
+  'light-4'?: string
+  'dark-1'?: string
+  'dark-2'?: string
+  'dark-3'?: string
+  'dark-4'?: string
+}
+
+interface SpacingInput {
+  '3xs'?: string
+  '2xs'?: string
+  xs?: string
+  sm?: string
+  md?: string
+  lg?: string
+  xl?: string
+  '2xl'?: string
+  '3xl'?: string
+}
+
+interface MCLInputType {
+  colors?: ColorInput
+  spacing?: SpacingInput
+}
+
+export const mclTheme = plugin.withOptions(
   () => {
     return ({ addBase, theme, addComponents }) => {
       addBase({
@@ -163,7 +197,7 @@ const mclTheme = plugin.withOptions(
       })
     }
   },
-  (options = {}) => {
+  (options: MCLInputType = {}) => {
     const colorsList = {
       primary: '#ec489a',
       secondary: '#00feda',
@@ -229,7 +263,3 @@ const mclTheme = plugin.withOptions(
     }
   }
 )
-
-module.exports = {
-  mclTheme: mclTheme,
-}
