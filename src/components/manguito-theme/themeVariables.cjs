@@ -4,6 +4,7 @@ const mclTheme = plugin.withOptions(
   () => {
     return ({ addBase, theme, addComponents, addUtilities, e }) => {
       const colors = theme('colors')
+      // console.log(colors)
       const listColors = Object.keys(colors).reduce((accumulator, key) => {
         if (typeof colors[key] === 'string') {
           return {
@@ -22,6 +23,62 @@ const mclTheme = plugin.withOptions(
               ...acc,
               [`.mcl-list-${e(key)}-${level} li::before`]: {
                 color: colors[key][level],
+              },
+            }),
+            {}
+          ),
+        }
+      }, {})
+      const btnColors = Object.keys(colors).reduce((accumulator, key) => {
+        if (typeof colors[key] === 'string') {
+          return {
+            ...accumulator,
+            [`.btn.btn-${e(key)}`]: {
+              [`@apply bg-${key}`]: {},
+              '&:hover': {
+                '@apply bg-opacity-70': {},
+              },
+              '&:focus': {
+                [`@apply ring-4 ring-${key}`]: {},
+              },
+            },
+            [`.btn.btn-invert.btn-${e(key)}`]: {
+              [`@apply border-2 bg-white border-${key} text-${key}`]: {},
+              '&:hover': {
+                [`@apply bg-${key} text-white bg-opacity-100`]: {},
+              },
+              '&:focus': {
+                [`@apply bg-${key} text-white`]: {},
+              },
+            },
+          }
+        }
+
+        const colorShades = Object.keys(colors[key])
+
+        return {
+          ...accumulator,
+          ...colorShades.reduce(
+            (acc, level) => ({
+              ...acc,
+              [`.btn.btn-${e(key)}-${level}`]: {
+                [`@apply bg-${key}-${level}`]: {},
+                '&:hover': {
+                  '@apply bg-opacity-70': {},
+                },
+                '&:focus': {
+                  [`@apply ring-4 ring-${key}-${level}`]: {},
+                },
+              },
+              [`.btn.btn-invert.btn-${e(key)}-${level}`]: {
+                [`@apply border-2 bg-white border-${key}-${level} text-${key}-${level}`]:
+                  {},
+                '&:hover': {
+                  [`@apply bg-${key}-${level} text-white bg-opacity-100`]: {},
+                },
+                '&:focus': {
+                  [`@apply bg-${key}-${level} text-white`]: {},
+                },
               },
             }),
             {}
@@ -194,6 +251,9 @@ const mclTheme = plugin.withOptions(
         'ul .mcl-list': {
           'list-style': 'none',
         },
+        '.mcl-list li': {
+          'margin-bottom': '0.5rem',
+        },
         '.mcl-list li::before': {
           content: '"•"',
           'font-weight': '700',
@@ -202,20 +262,17 @@ const mclTheme = plugin.withOptions(
           'margin-left': '-1rem',
         },
         '.btn': {
-          paddingTop: '0.5rem',
-          paddingBottom: '0.5rem',
-          paddingLeft: '1rem',
-          paddingRight: '1rem',
+          padding: '0.5rem 1rem',
           cursor: 'pointer',
           'font-size': '1rem',
           transition: 'all 300ms linear',
           overflow: 'hidden',
           display: 'inline-block',
           'font-weight': 'bold',
-          '@apply outline-none ring-offset-white ring-offset-2 bg-primary rounded':
+          '@apply outline-none ring-offset-white ring-offset-2 bg-primary text-center rounded':
             {},
           '&:hover': {
-            '@apply bg-primary/75': {},
+            '@apply bg-opacity-70': {},
           },
           '&:focus': {
             '@apply ring-4 ring-primary': {},
@@ -224,18 +281,28 @@ const mclTheme = plugin.withOptions(
         '.btn.btn-round': {
           '@apply rounded-full': {},
         },
-        '.btn.btn-secondary': {
-          '@apply bg-secondary': {},
+        '.btn.btn-full': {
+          display: 'block',
+          width: '100%',
+        },
+        '.btn.btn-sm': {
+          padding: '0.25rem 0.5rem',
+          'font-size': '0.875rem',
+        },
+        '.btn.btn-lg': {
+          padding: '0.625rem 1.25rem',
+          'font-size': '1.125rem',
+        },
+        '.btn.btn-invert': {
+          '@apply border-2 border-primary text-primary bg-white': {},
           '&:hover': {
-            '@apply bg-secondary/75': {},
-          },
-          '&:focus': {
-            '@apply ring-4 ring-secondary': {},
+            '@apply bg-primary text-white bg-opacity-100': {},
           },
         },
       })
 
       addUtilities(listColors)
+      addUtilities(btnColors)
     }
   },
   (options = {}) => {

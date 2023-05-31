@@ -69,6 +69,7 @@ const colors: ColorClass = {
   'dark-4': 'bg-dark-4',
   black: 'bg-black',
   white: 'bg-white',
+  transparent: 'transparent',
 }
 
 const spacings: SpacingClass = {
