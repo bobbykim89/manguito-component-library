@@ -38,17 +38,25 @@ export type BodyText = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 // Font weight
 export type FontWeight = 'light' | 'normal' | 'bold'
 // border positions
-export type Position = 'left' | 'right'
+export type Position = 'left' | 'center' | 'right'
 // link targets
 export type CtaTarget = '_self' | '_blank'
 // Highlight positions
-export type Location = 'left' | 'top'
+export type Location = 'left' | 'right' | 'top' | 'bottom'
 // available ranges
-export type Range<T extends number> = number extends T ? number : _Range<T, []>
-export type _Range<
+type _RangeArray<
   T extends number,
-  R extends unknown[]
-> = R['length'] extends T ? R['length'] : R['length'] | _Range<T, [T, ...R]>
+  R extends unknown[] = []
+> = R['length'] extends T ? R : _RangeArray<T, [...R, 1]>
+type IntRange<
+  T extends number[],
+  E extends number,
+  R extends number = never
+> = T['length'] extends E ? R | E : IntRange<[...T, 1], E, R | T['length']>
+export type Range<T extends number, R extends number> = IntRange<
+  _RangeArray<T>,
+  R
+>
 export type ButtonSize = 'small' | 'medium' | 'large'
 export type OpacityRange = 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100
 export type Directions = 'left' | 'right'

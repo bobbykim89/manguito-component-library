@@ -8,7 +8,7 @@
         class="grid grid-cols-3 gap-6 justify-items-center content-center mb-2xs bg-white py-sm px-xs md:py-md md:px-sm"
       >
         <div class="col-span-3">
-          <h3>Default buttons</h3>
+          <h3>Button colors</h3>
         </div>
         <div class="place-self-center">
           <button class="btn">Default</button>
@@ -23,7 +23,7 @@
           <h3>Button Size</h3>
         </div>
         <div class="place-self-center">
-          <button class="btn btn-info">Default</button>
+          <button class="btn btn-info text-white">Default</button>
         </div>
         <div class="place-self-center">
           <button class="btn btn-sm btn-light-4">Small</button>
@@ -69,6 +69,17 @@
         </div>
         <div class="col-span-3 justify-self-stretch place-self-center">
           <button class="btn btn-full btn-invert btn-dark-2">Full width</button>
+        </div>
+        <div class="col-span-3">
+          <h3>Button group</h3>
+        </div>
+        <div class="col-span-3 place-self-center">
+          <div class="btn-group">
+            <button class="btn">Button 1</button>
+            <button class="btn btn-secondary">Button 2</button>
+            <button class="btn btn-warning">Button 3</button>
+            <button class="btn btn-danger btn-invert">Button 4</button>
+          </div>
         </div>
       </div>
     </Variant>

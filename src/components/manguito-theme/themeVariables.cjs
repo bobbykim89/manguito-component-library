@@ -51,6 +51,11 @@ const mclTheme = plugin.withOptions(
                 [`@apply bg-${key} text-white`]: {},
               },
             },
+            [`.btn-group .btn.btn-${e(key)}`]: {
+              '&:focus': {
+                '@apply ring-0': {},
+              },
+            },
           }
         }
 
@@ -78,6 +83,11 @@ const mclTheme = plugin.withOptions(
                 },
                 '&:focus': {
                   [`@apply bg-${key}-${level} text-white`]: {},
+                },
+              },
+              [`.btn-group .btn.btn-${e(key)}-${level}`]: {
+                '&:focus': {
+                  '@apply ring-0': {},
                 },
               },
             }),
@@ -292,6 +302,16 @@ const mclTheme = plugin.withOptions(
         '.btn.btn-lg': {
           padding: '0.625rem 1.25rem',
           'font-size': '1.125rem',
+        },
+        '.btn-group': {
+          '@apply flex rounded overflow-hidden': {},
+        },
+        '.btn-group .btn': {
+          '@apply rounded-none ring-offset-0': {},
+
+          '&focused': {
+            '@apply ring-0': {},
+          },
         },
         '.btn.btn-invert': {
           '@apply border-2 border-primary text-primary bg-white': {},
