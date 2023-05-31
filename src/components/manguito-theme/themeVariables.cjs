@@ -2,7 +2,33 @@ const plugin = require('tailwindcss/plugin')
 
 const mclTheme = plugin.withOptions(
   () => {
-    return ({ addBase, theme, addComponents }) => {
+    return ({ addBase, theme, addComponents, addUtilities, e }) => {
+      const colors = theme('colors')
+      const listColors = Object.keys(colors).reduce((accumulator, key) => {
+        if (typeof colors[key] === 'string') {
+          return {
+            ...accumulator,
+            [`.mcl-list-${e(key)} li::before`]: {
+              color: colors[key],
+            },
+          }
+        }
+        const colorShades = Object.keys(colors[key])
+
+        return {
+          ...accumulator,
+          ...colorShades.reduce(
+            (acc, level) => ({
+              ...acc,
+              [`.mcl-list-${e(key)}-${level} li::before`]: {
+                color: colors[key][level],
+              },
+            }),
+            {}
+          ),
+        }
+      }, {})
+
       addBase({
         body: {
           // default font size
@@ -160,7 +186,56 @@ const mclTheme = plugin.withOptions(
           color: theme('colors.primary'),
           textDecoration: 'underline',
         },
+        '.mcl-list': {
+          'list-style-position': 'inside',
+          padding: 0,
+          'margin-left': '1rem',
+        },
+        'ul .mcl-list': {
+          'list-style': 'none',
+        },
+        '.mcl-list li::before': {
+          content: '"•"',
+          'font-weight': '700',
+          display: 'inline-block',
+          width: '1rem',
+          'margin-left': '-1rem',
+        },
+        '.btn': {
+          paddingTop: '0.5rem',
+          paddingBottom: '0.5rem',
+          paddingLeft: '1rem',
+          paddingRight: '1rem',
+          cursor: 'pointer',
+          'font-size': '1rem',
+          transition: 'all 300ms linear',
+          overflow: 'hidden',
+          display: 'inline-block',
+          'font-weight': 'bold',
+          '@apply outline-none ring-offset-white ring-offset-2 bg-primary rounded':
+            {},
+          '&:hover': {
+            '@apply bg-primary/75': {},
+          },
+          '&:focus': {
+            '@apply ring-4 ring-primary': {},
+          },
+        },
+        '.btn.btn-round': {
+          '@apply rounded-full': {},
+        },
+        '.btn.btn-secondary': {
+          '@apply bg-secondary': {},
+          '&:hover': {
+            '@apply bg-secondary/75': {},
+          },
+          '&:focus': {
+            '@apply ring-4 ring-secondary': {},
+          },
+        },
       })
+
+      addUtilities(listColors)
     }
   },
   (options = {}) => {

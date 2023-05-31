@@ -175,7 +175,14 @@ const handleHeadSlotClick = (): void => {
         :display-shadow="stateBeta.displayShadow"
         :open-on-mount="stateBeta.openOnMount"
       >
-        <div v-html="stateBeta.slotText"></div>
+        <!-- <div v-html="stateBeta.slotText"></div> -->
+        <div>
+          <ul class="mcl-list mcl-list-pink-500 p-xs">
+            <li>{{ stateBeta.slotText }}</li>
+            <li>{{ stateBeta.slotText }}</li>
+          </ul>
+          <a href="#" class="btn btn-secondary btn-round">1234</a>
+        </div>
       </accordion-beta>
       <template #controls>
         <HstText title="title" v-model="stateBeta.title" />

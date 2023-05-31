@@ -1,4 +1,5 @@
 import plugin from 'tailwindcss/plugin'
+import flattenColorPalette from 'tailwindcss/lib/util/flattenColorPalette'
 
 interface ColorInput {
   primary?: string
@@ -36,7 +37,47 @@ interface MCLInputType {
 
 export const mclTheme = plugin.withOptions(
   () => {
-    return ({ addBase, theme, addComponents }) => {
+    return ({ addBase, theme, addComponents, addUtilities, e }) => {
+      const colors = theme('colors')
+      const listColors = Object.keys(colors).reduce((accumulator, key) => {
+        if (typeof colors[key] === 'string') {
+          return {
+            ...accumulator,
+            [`.mcl-list-${e(key)} li::before`]: {
+              color: colors[key],
+            },
+          }
+        }
+        const colorShades = Object.keys(colors[key])
+        console.log(colorShades)
+
+        return {
+          ...accumulator,
+          ...colorShades.reduce(
+            (acc, level) => ({
+              ...acc,
+              [`.mcl-list-${e(key)}-${level} li::before`]: {
+                color: colors[key][level],
+              },
+            }),
+            {}
+          ),
+        }
+      }, {})
+
+      //   const listColors = Object.entries(colors).map(([key, value]) => {
+      //     if (typeof value !== undefined) {
+      //       return {
+      //         [`.${e(`mcl-list-${key}`)}`]: {
+      //           'background-color': `${value} !important`,
+      //         },
+      //       }
+      //     }
+      //     /**pass */
+      //   })
+
+      //   console.log(listColors)
+
       addBase({
         body: {
           // default font size
@@ -194,7 +235,27 @@ export const mclTheme = plugin.withOptions(
           color: theme('colors.primary'),
           textDecoration: 'underline',
         },
+        '.mcl-list': {
+          'list-style-position': 'inside',
+          padding: '0',
+          'margin-left': '1rem',
+        },
+        'ul .mcl-list': {
+          'list-style': 'none',
+        },
+        '.mcl-list li::before': {
+          content: '"•"',
+          'font-weight': '700',
+          display: 'inline-block',
+          width: '1rem',
+          'margin-left': '-1rem',
+          color: theme('colors.secondary'),
+        },
       })
+
+      //   addComponents(listColors)
+
+      addUtilities(listColors)
     }
   },
   (options: MCLInputType = {}) => {
