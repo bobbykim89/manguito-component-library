@@ -86,3 +86,25 @@
   <li>item 3</li>
 </ul>
 ```
+
+### List style size
+
+```html
+<ul class="mcl-list mcl-list-primary">
+  <li>item 1</li>
+  <li>item 2</li>
+  <li>item 3</li>
+</ul>
+
+<ul class="mcl-list mcl-list-sm mcl-list-secondary">
+  <li>item 1</li>
+  <li>item 2</li>
+  <li>item 3</li>
+</ul>
+
+<ul class="mcl-list mcl-list-lg mcl-list-info">
+  <li>item 1</li>
+  <li>item 2</li>
+  <li>item 3</li>
+</ul>
+```

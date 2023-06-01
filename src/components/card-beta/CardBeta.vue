@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withDefaults, ref } from 'vue'
+import { ref } from 'vue'
 import type {
   ColorPalette,
   HeadingSize,
@@ -32,6 +32,7 @@ const props = withDefaults(
     displayGrayScale: true,
     imageCors: 'anonymous',
     ctaAsLink: false,
+    ctaLink: '#',
     ctaTarget: '_self',
     rounded: false,
   }
@@ -63,7 +64,7 @@ const handleHoverEffect = (dGray: boolean): string => {
     return '[@media(hover:hover)]:grayscale peer-hover:grayscale-0'
     // return ''
   }
-  return
+  return ''
 }
 
 const handleTitleClass = (

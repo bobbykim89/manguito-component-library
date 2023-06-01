@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withDefaults, computed } from 'vue'
+import { computed } from 'vue'
 import type { ColorPalette } from '@bobbykim/manguito-theme/theme/theme.types'
 import generateClass from '@bobbykim/manguito-theme'
 

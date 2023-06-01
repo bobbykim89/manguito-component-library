@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withDefaults, ref, Transition } from 'vue'
+import { ref, Transition } from 'vue'
 import generateClass from '@bobbykim/manguito-theme'
 import type {
   ColorPalette,
@@ -37,9 +37,11 @@ const props = withDefaults(
 
 const currentTab = ref(0)
 const emit = defineEmits(['tab-click'])
+const transitionClass = ref<string>('')
 
 const hadleTabClick = (e: Event, index: number, title: string): void => {
   e.preventDefault()
+  transitionClass.value = currentTab.value < index ? 'slide-next' : 'slide-prev'
   currentTab.value = index
   emit('tab-click', { event: e, title: title })
 }
@@ -147,7 +149,7 @@ const getInactiveBtnClass = (fColor: ColorPalette): string => {
       </button>
     </div>
     <div class="mt-2xs relative p-xs lg:px-sm whitespace-pre-line">
-      <Transition name="slide" mode="out-in">
+      <Transition :name="transitionClass" mode="out-in">
         <div :key="currentTab" v-html="content[currentTab].content"></div>
       </Transition>
     </div>
@@ -155,19 +157,33 @@ const getInactiveBtnClass = (fColor: ColorPalette): string => {
 </template>
 
 <style lang="scss" scoped>
-// page transition animations
-.slide-enter-active {
+// transition animations
+.slide-prev-enter-active {
   transition: all 0.5s ease-in-out;
 }
-.slide-leave-active {
+.slide-prev-leave-active {
   transition: all 0.5s;
 }
-.slide-enter {
-  transform: translateX(-20px);
+.slide-prev-enter-from {
+  transform: translateX(-30%);
   opacity: 0;
 }
-.slide-leave-to {
-  transform: translateX(20px);
+.slide-prev-leave-to {
+  transform: translateX(30%);
+  opacity: 0;
+}
+.slide-next-enter-active {
+  transition: all 0.5s ease-in-out;
+}
+.slide-next-leave-active {
+  transition: all 0.5s;
+}
+.slide-next-enter-from {
+  transform: translateX(30%);
+  opacity: 0;
+}
+.slide-next-leave-to {
+  transform: translateX(-30%);
   opacity: 0;
 }
 </style>

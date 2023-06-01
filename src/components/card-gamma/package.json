@@ -1,12 +1,9 @@
 {
-  "name": "@bobbykim/card-alpha",
-  "version": "0.1.4",
+  "name": "@bobbykim/card-gamma",
+  "version": "0.1.0",
   "description": "",
   "type": "module",
   "main": "index.ts",
-  "publishConfig": {
-    "access": "public"
-  },
   "author": {
     "name": "Bobby Kim",
     "url": "https://www.devbobbykim.com/"
@@ -16,9 +13,11 @@
     "type": "git",
     "url": "https://github.com/bobbykim89/manguito-component-library.git"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "license": "MIT",
   "dependencies": {
     "@bobbykim/manguito-theme": "^0.1.4"
-  },
-  "gitHead": "4e6b9b908a17893f6e6baab01741dc0dde771ac8"
+  }
 }

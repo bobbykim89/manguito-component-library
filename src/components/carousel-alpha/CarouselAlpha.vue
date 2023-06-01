@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withDefaults, ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import type {
   HeadingSize,
   ColorPalette,
@@ -83,8 +83,8 @@ const cardsSpace = (gap: SpacingLevel): number => {
 }
 
 // assign ref as
-const setCarouselRef = (el): void => {
-  carouselCards.value.push(el)
+const setCarouselRef = (el: any): void => {
+  carouselCards.value!.push(el)
   // carouselCards.value = el
 }
 
@@ -174,7 +174,7 @@ onMounted(() => {
   slideContainer.value.addEventListener('sliderMove', () => {
     slideContainer.value.style.transform = `translateX(-${
       currentIndex.value *
-      (carouselCards.value[0].$el.clientWidth + cardsSpace(props.cardsGap) + 2)
+      (carouselCards.value![0].$el.clientWidth + cardsSpace(props.cardsGap) + 2)
     }px)`
 
     isNextBtnDisabled.value = false
@@ -186,12 +186,14 @@ onMounted(() => {
   })
 
   // intersection observer for slider
-  slideObserver.observe(carouselCards.value[carouselCards.value.length - 1].$el)
+  slideObserver.observe(
+    carouselCards.value![carouselCards.value!.length - 1].$el
+  )
 })
 
 onBeforeUnmount(() => {
   slideObserver.unobserve(
-    carouselCards.value[carouselCards.value.length - 1].$el
+    carouselCards.value![carouselCards.value!.length - 1].$el
   )
 })
 </script>

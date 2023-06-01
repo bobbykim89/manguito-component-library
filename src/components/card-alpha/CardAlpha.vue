@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { withDefaults } from 'vue'
 import generateClass from '@bobbykim/manguito-theme'
-import BtnAlpha from '@bobbykim/btn-alpha'
 import type {
   ColorPalette,
   HeadingSize,
@@ -46,6 +44,7 @@ const props = withDefaults(
     displayCta: true,
     ctaAsLink: true,
     ctaColor: 'primary',
+    ctaLink: '#',
     ctaTarget: '_self',
     ctaText: 'cta text',
     displayLabel: true,
@@ -131,6 +130,25 @@ const getLabelClass = (tColor: ColorPalette, bColor: ColorPalette): string => {
   ]
   return classArray.join(' ')
 }
+const getCtaClass = (color: ColorPalette, round: boolean): string => {
+  /**
+   * @color - ctaColor
+   * @round - rounded
+   */
+  const classArray: string[] = [generateClass('BTNCOLOR', color)]
+
+  const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
+
+  let textColor = lightColor.includes(color) ? 'text-black' : 'text-white'
+
+  classArray.push(textColor)
+
+  if (round) {
+    classArray.push('btn-round')
+  }
+
+  return classArray.join(' ')
+}
 const handleButtonClick = (
   e: Event,
   title: string,
@@ -147,6 +165,7 @@ const handleButtonClick = (
   if (btnLink) {
     window.open(link, target)
   } else {
+    e.preventDefault()
     emit('card-btn-click', {
       event: e,
       title: title,
@@ -219,14 +238,15 @@ const handleCardClick = (e: Event): void => {
       </div>
       <div class="pb-sm border-0 cursor-default" v-if="displayCta" @click.stop>
         <div class="w-full px-xs">
-          <btn-alpha
-            :color="ctaColor"
-            :is-block="true"
-            :rounded="rounded"
-            @btn-click="
+          <a
+            :href="ctaLink"
+            :target="ctaTarget"
+            class="btn btn-full"
+            :class="getCtaClass(ctaColor, rounded)"
+            @click="
               handleButtonClick($event, title, ctaLink, ctaTarget, ctaAsLink)
             "
-            >{{ ctaText }}</btn-alpha
+            >{{ ctaText }}</a
           >
         </div>
       </div>

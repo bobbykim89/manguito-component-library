@@ -13,7 +13,7 @@ import type {
 /**
  * @TailwindCSS - Good practice is to let all of used classes to be in full instead of generated dynamically using methods such as string literal.
  * @Interface - ClassType to define the case, and Input type to generate tailwind clssname.
- * @Export GenerateRDSClass - extends RDSTheme class
+ * @Export GenerateMCLClass - extends MCLTheme class
  */
 
 export type ClassType =
@@ -164,34 +164,58 @@ class GenerateMCLClass extends MCLTheme {
         return this.getTextAlignClass()
       // case: border width class
       case 'BORDERW':
+        return this.getBorderWidthClass()
       case 'BORDERXW':
+        return this.getBorderXWidthClass()
       case 'BORDERYW':
+        return this.getBorderYWidthClass()
       case 'BORDERTW':
+        return this.getBorderTopWidthClass()
       case 'BORDERBW':
+        return this.getBorderBottomWidthClass()
       case 'BORDERLW':
+        return this.getBorderLeftWidthClass()
       case 'BORDERRW':
+        return this.getBorderWidthClass()
       // case: opacity class
-      case 'BGOPACITY':
       case 'OPACITY':
+        return this.getOpacityClass()
+      case 'BGOPACITY':
+        return this.getBgOpacityClass()
       // case: spacing class
       // margins
       case 'MARGIN':
+        return this.getMarginClass()
       case 'MARGINX':
+        return this.getMarginXClass()
       case 'MARGINY':
+        return this.getMarginYClass()
       case 'MARGINT':
+        return this.getMarginTopClass()
       case 'MARGINB':
+        return this.getMarginBottomClass()
       case 'MARGINL':
+        return this.getMarginLeftClass()
       case 'MARGINR':
+        return this.getMarginRightClass()
       // paddings
       case 'PADDING':
+        return this.getPaddingClass()
       case 'PADDINGX':
+        return this.getPaddingXClass()
       case 'PADDINGY':
+        return this.getPaddingYClass()
       case 'PADDINGT':
+        return this.getPaddingTopClass()
       case 'PADDINGB':
+        return this.getPaddingBottomClass()
       case 'PADDINGL':
+        return this.getPaddingLeftClass()
       case 'PADDINGR':
+        return this.getPaddingRightClass()
       // gap
       case 'GAP':
+        return this.getGapClass()
       default:
         return ' '
     }
@@ -373,8 +397,155 @@ class GenerateMCLClass extends MCLTheme {
     return MCLTheme.textAlign[this.classValue as Position]
   }
   // handle border width classes
+  getBorderWidthClass(): string {
+    if (!this.validateRangeType) {
+      return ' '
+    }
+    return MCLTheme.borderWidth[this.classValue as Range<1, 12>]
+  }
+  getBorderXWidthClass(): string {
+    if (!this.validateRangeType) {
+      return ' '
+    }
+    return MCLTheme.borderXWidth[this.classValue as Range<1, 12>]
+  }
+  getBorderYWidthClass(): string {
+    if (!this.validateRangeType) {
+      return ' '
+    }
+    return MCLTheme.borderYWidth[this.classValue as Range<1, 12>]
+  }
+  getBorderTopWidthClass(): string {
+    if (!this.validateRangeType) {
+      return ' '
+    }
+    return MCLTheme.borderTopWidth[this.classValue as Range<1, 12>]
+  }
+  getBorderBottomWidthClass(): string {
+    if (!this.validateRangeType) {
+      return ' '
+    }
+    return MCLTheme.borderBottomWidth[this.classValue as Range<1, 12>]
+  }
+  getBorderLeftWidthClass(): string {
+    if (!this.validateRangeType) {
+      return ' '
+    }
+    return MCLTheme.borderLeftWidth[this.classValue as Range<1, 12>]
+  }
+  getBorderRightWidthClass(): string {
+    if (!this.validateRangeType) {
+      return ' '
+    }
+    return MCLTheme.borderRightWidth[this.classValue as Range<1, 12>]
+  }
   // handle opacity classes
+  getOpacityClass(): string {
+    if (!this.validateOpacityType) {
+      return ' '
+    }
+    return MCLTheme.opacity[this.classValue as OpacityRange]
+  }
+  getBgOpacityClass(): string {
+    if (!this.validateOpacityType) {
+      return ' '
+    }
+    return MCLTheme.backgroundOpacity[this.classValue as OpacityRange]
+  }
   // handle spacing classes
+  // margins
+  getMarginClass(): string {
+    if (!this.validateSpaceType) {
+      return ' '
+    }
+    return MCLTheme.margin[this.classValue as SpacingLevel]
+  }
+  getMarginXClass(): string {
+    if (!this.validateSpaceType) {
+      return ' '
+    }
+    return MCLTheme.marginX[this.classValue as SpacingLevel]
+  }
+  getMarginYClass(): string {
+    if (!this.validateSpaceType) {
+      return ' '
+    }
+    return MCLTheme.marginY[this.classValue as SpacingLevel]
+  }
+  getMarginTopClass(): string {
+    if (!this.validateSpaceType) {
+      return ' '
+    }
+    return MCLTheme.marginTop[this.classValue as SpacingLevel]
+  }
+  getMarginBottomClass(): string {
+    if (!this.validateSpaceType) {
+      return ' '
+    }
+    return MCLTheme.marginBottom[this.classValue as SpacingLevel]
+  }
+  getMarginLeftClass(): string {
+    if (!this.validateSpaceType) {
+      return ' '
+    }
+    return MCLTheme.marginLeft[this.classValue as SpacingLevel]
+  }
+  getMarginRightClass(): string {
+    if (!this.validateSpaceType) {
+      return ' '
+    }
+    return MCLTheme.marginRight[this.classValue as SpacingLevel]
+  }
+  // padding
+  getPaddingClass(): string {
+    if (!this.validateSpaceType) {
+      return ' '
+    }
+    return MCLTheme.padding[this.classValue as SpacingLevel]
+  }
+  getPaddingXClass(): string {
+    if (!this.validateSpaceType) {
+      return ' '
+    }
+    return MCLTheme.paddingX[this.classValue as SpacingLevel]
+  }
+  getPaddingYClass(): string {
+    if (!this.validateSpaceType) {
+      return ' '
+    }
+    return MCLTheme.paddingY[this.classValue as SpacingLevel]
+  }
+  getPaddingTopClass(): string {
+    if (!this.validateSpaceType) {
+      return ' '
+    }
+    return MCLTheme.paddingTop[this.classValue as SpacingLevel]
+  }
+  getPaddingBottomClass(): string {
+    if (!this.validateSpaceType) {
+      return ' '
+    }
+    return MCLTheme.paddingBottom[this.classValue as SpacingLevel]
+  }
+  getPaddingLeftClass(): string {
+    if (!this.validateSpaceType) {
+      return ' '
+    }
+    return MCLTheme.paddingLeft[this.classValue as SpacingLevel]
+  }
+  getPaddingRightClass(): string {
+    if (!this.validateSpaceType) {
+      return ' '
+    }
+    return MCLTheme.paddingRight[this.classValue as SpacingLevel]
+  }
+  // gap
+  getGapClass(): string {
+    if (!this.validateSpaceType) {
+      return ' '
+    }
+    return MCLTheme.gap[this.classValue as SpacingLevel]
+  }
   // input validation
   validateColorType(): boolean {
     const validatorRe =
