@@ -150,8 +150,8 @@
           </ul>
         </div>
         <div class="mb-sm">
-          <div class="text-success">Success</div>
-          <ul class="mcl-list mcl-list-success">
+          <div class="text-success">Success Small</div>
+          <ul class="mcl-list mcl-list-sm mcl-list-success">
             <li>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit
               sapiente repudiandae ullam? Voluptas esse rerum quaerat adipisci
@@ -171,8 +171,8 @@
           </ul>
         </div>
         <div class="mb-sm">
-          <div class="text-warning">Warning</div>
-          <ul class="mcl-list mcl-list-warning">
+          <div class="text-warning">Warning Large</div>
+          <ul class="mcl-list mcl-list-lg mcl-list-warning">
             <li>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit
               sapiente repudiandae ullam? Voluptas esse rerum quaerat adipisci

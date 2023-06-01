@@ -271,6 +271,12 @@ const mclTheme = plugin.withOptions(
           width: '1rem',
           'margin-left': '-1rem',
         },
+        '.mcl-list.mcl-list-sm li::before': {
+          'font-weight': '500',
+        },
+        '.mcl-list.mcl-list-lg li::before': {
+          'font-weight': '900',
+        },
         '.btn': {
           padding: '0.5rem 1rem',
           cursor: 'pointer',
@@ -309,7 +315,7 @@ const mclTheme = plugin.withOptions(
         '.btn-group .btn': {
           '@apply rounded-none ring-offset-0': {},
 
-          '&focused': {
+          '&:focus': {
             '@apply ring-0': {},
           },
         },

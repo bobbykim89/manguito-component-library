@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { withDefaults } from 'vue'
 import generateClass from '@bobbykim/manguito-theme'
 import type {
   HeadingLevel,
@@ -64,7 +63,9 @@ const getTitleClass = (
    * @color - titleColor/subTitleColor
    */
 
-  let titleLevel
+  type TitleLevelInputType = 'H1' | 'H2' | 'H3' | 'H4'
+
+  let titleLevel: TitleLevelInputType
   if (level === 'h1') {
     titleLevel = 'H1'
   } else if (level === 'h2') {

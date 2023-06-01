@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { withDefaults } from 'vue'
 import type {
   HeadingSize,
   HeadingLevel,
@@ -138,6 +137,8 @@ const generateGradientColor = (color: ColorPalette): string => {
       return 'from-black/80'
     case 'white':
       return 'from-white/80'
+    default:
+      return ''
   }
 }
 </script>

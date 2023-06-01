@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { withDefaults } from 'vue'
 import generateClass from '@bobbykim/manguito-theme'
 import type {
   ColorPalette,
@@ -19,7 +18,7 @@ const props = withDefaults(
     fullWidth?: boolean
     bgImage: string
     displayGradients?: boolean
-    gradientOpacity?: OpacityRange
+    gradientColor?: ColorPalette
   }>(),
   {
     titleLevel: 'h1',
@@ -29,7 +28,7 @@ const props = withDefaults(
     titleHighlightColor: 'dark-3',
     fullWidth: true,
     displayGradients: true,
-    gradientOpacity: 50,
+    gradientColor: 'dark-3',
   }
 )
 const getBgImage = (img: string) => {
@@ -56,7 +55,7 @@ const getTitleClass = (
    * @color - titleColor
    */
 
-  let titleLevel
+  let titleLevel: 'H1' | 'H2' | 'H3' | 'H4'
   if (level === 'h1') {
     titleLevel = 'H1'
   } else if (level === 'h2') {
@@ -88,6 +87,48 @@ const getTitleHighlightClass = (
 
   return display ? classArray.join(' ') : ''
 }
+
+const generateGradientColor = (color: ColorPalette): string => {
+  /**
+   * @color - gradientColor
+   */
+  switch (color) {
+    case 'primary':
+      return 'from-primary/80'
+    case 'secondary':
+      return 'from-secondary/80'
+    case 'success':
+      return 'from-success/80'
+    case 'danger':
+      return 'from-danger/80'
+    case 'info':
+      return 'from-info/80'
+    case 'warning':
+      return 'from-warning/80'
+    case 'light-1':
+      return 'from-light-1/80'
+    case 'light-2':
+      return 'from-light-2/80'
+    case 'light-3':
+      return 'from-light-3/80'
+    case 'light-4':
+      return 'from-light-4/80'
+    case 'dark-1':
+      return 'from-dark-1/80'
+    case 'dark-2':
+      return 'from-dark-2/80'
+    case 'dark-3':
+      return 'from-dark-3/80'
+    case 'dark-4':
+      return 'from-dark-4/80'
+    case 'black':
+      return 'from-black/80'
+    case 'white':
+      return 'from-white/80'
+    default:
+      return ''
+  }
+}
 </script>
 
 <template>
@@ -98,8 +139,8 @@ const getTitleHighlightClass = (
   >
     <div
       v-if="displayGradients"
-      class="absolute inset-0 bg-gradient-to-b from-transparent to-black"
-      :class="generateClass('OPACITY', gradientOpacity)"
+      class="absolute bg-gradient-to-t inset-0 top-1/3 to-transparent"
+      :class="generateGradientColor(gradientColor)"
     ></div>
     <div class="relative h-full px-xs">
       <div class="container">

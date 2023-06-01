@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withDefaults, computed, ref } from 'vue'
+import { computed, ref } from 'vue'
 import type {
   ColorPalette,
   BodyText,
@@ -54,7 +54,7 @@ const onLabelClick = (): void => {
   inputRef.value.click()
 }
 const onChangeFile = (e: Event) => {
-  const file = (e.target as HTMLInputElement).files[0]
+  const file = (e.target as HTMLInputElement).files![0]
   emit('update:modelValue', file)
   inputFileName.value = file.name
 }
