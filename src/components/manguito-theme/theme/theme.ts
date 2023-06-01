@@ -86,6 +86,12 @@ export interface Spacing {
   '3xl': string
 }
 
+export interface Alignment {
+  left: string
+  center: string
+  right: string
+}
+
 abstract class MCLTheme {
   // bg color class
   protected static bgColor: ColorClass = {
@@ -166,6 +172,26 @@ abstract class MCLTheme {
     black: 'after:bg-black',
     white: 'after:bg-white',
     transparent: 'after:bg-transparent',
+  }
+  // active:bg color class
+  protected static bgActiveColor: ColorClass = {
+    primary: 'active:bg-primary',
+    secondary: 'active:bg-secondary',
+    success: 'active:bg-success',
+    danger: 'active:bg-danger',
+    info: 'active:bg-info',
+    warning: 'active:bg-warning',
+    'light-1': 'active:bg-light-1',
+    'light-2': 'active:bg-light-2',
+    'light-3': 'active:bg-light-3',
+    'light-4': 'active:bg-light-4',
+    'dark-1': 'active:bg-dark-1',
+    'dark-2': 'active:bg-dark-2',
+    'dark-3': 'active:bg-dark-3',
+    'dark-4': 'active:bg-dark-4',
+    black: 'active:bg-black',
+    white: 'active:bg-white',
+    transparent: 'active:bg-transparent',
   }
   // text color class
   protected static textColor: ColorClass = {
@@ -307,25 +333,45 @@ abstract class MCLTheme {
     white: 'active:ring-white',
     transparent: 'active:ring-transparent',
   }
-  // active:bg color class
-  protected static bgActiveColor: ColorClass = {
-    primary: 'active:bg-primary',
-    secondary: 'active:bg-secondary',
-    success: 'active:bg-success',
-    danger: 'active:bg-danger',
-    info: 'active:bg-info',
-    warning: 'active:bg-warning',
-    'light-1': 'active:bg-light-1',
-    'light-2': 'active:bg-light-2',
-    'light-3': 'active:bg-light-3',
-    'light-4': 'active:bg-light-4',
-    'dark-1': 'active:bg-dark-1',
-    'dark-2': 'active:bg-dark-2',
-    'dark-3': 'active:bg-dark-3',
-    'dark-4': 'active:bg-dark-4',
-    black: 'active:bg-black',
-    white: 'active:bg-white',
-    transparent: 'active:bg-transparent',
+  // btn color class
+  protected static btnColor: ColorClass = {
+    primary: 'btn-primary',
+    secondary: 'btn-secondary',
+    success: 'btn-success',
+    danger: 'btn-danger',
+    info: 'btn-info',
+    warning: 'btn-warning',
+    'light-1': 'btn-light-1',
+    'light-2': 'btn-light-2',
+    'light-3': 'btn-light-3',
+    'light-4': 'btn-light-4',
+    'dark-1': 'btn-dark-1',
+    'dark-2': 'btn-dark-2',
+    'dark-3': 'btn-dark-3',
+    'dark-4': 'btn-dark-4',
+    black: 'btn-black',
+    white: 'btn-white',
+    transparent: 'btn-transparent',
+  }
+  // list color class
+  protected static listColor: ColorClass = {
+    primary: 'mcl-list-primary',
+    secondary: 'mcl-list-secondary',
+    success: 'mcl-list-success',
+    danger: 'mcl-list-danger',
+    info: 'mcl-list-info',
+    warning: 'mcl-list-warning',
+    'light-1': 'mcl-list-light-1',
+    'light-2': 'mcl-list-light-2',
+    'light-3': 'mcl-list-light-3',
+    'light-4': 'mcl-list-light-4',
+    'dark-1': 'mcl-list-dark-1',
+    'dark-2': 'mcl-list-dark-2',
+    'dark-3': 'mcl-list-dark-3',
+    'dark-4': 'mcl-list-dark-4',
+    black: 'mcl-list-black',
+    white: 'mcl-list-white',
+    transparent: 'mcl-list-transparent',
   }
   // h1 class
   protected static heading1: HeaderSizeClass = {
@@ -446,25 +492,6 @@ abstract class MCLTheme {
     white: 'border-t-white',
     transparent: 'border-t-transparent',
   }
-  protected static borderLeftColor: ColorClass = {
-    primary: 'border-l-primary',
-    secondary: 'border-l-secondary',
-    success: 'border-l-success',
-    danger: 'border-l-danger',
-    info: 'border-l-info',
-    warning: 'border-l-warning',
-    'light-1': 'border-l-light-1',
-    'light-2': 'border-l-light-2',
-    'light-3': 'border-l-light-3',
-    'light-4': 'border-l-light-4',
-    'dark-1': 'border-l-dark-1',
-    'dark-2': 'border-l-dark-2',
-    'dark-3': 'border-l-dark-3',
-    'dark-4': 'border-l-dark-4',
-    black: 'border-l-black',
-    white: 'border-l-white',
-    transparent: 'border-l-transparent',
-  }
   protected static borderBottomColor: ColorClass = {
     primary: 'border-b-primary',
     secondary: 'border-b-secondary',
@@ -484,7 +511,87 @@ abstract class MCLTheme {
     white: 'border-b-white',
     transparent: 'border-b-transparent',
   }
-  // Border width class for top/left
+  protected static borderLeftColor: ColorClass = {
+    primary: 'border-l-primary',
+    secondary: 'border-l-secondary',
+    success: 'border-l-success',
+    danger: 'border-l-danger',
+    info: 'border-l-info',
+    warning: 'border-l-warning',
+    'light-1': 'border-l-light-1',
+    'light-2': 'border-l-light-2',
+    'light-3': 'border-l-light-3',
+    'light-4': 'border-l-light-4',
+    'dark-1': 'border-l-dark-1',
+    'dark-2': 'border-l-dark-2',
+    'dark-3': 'border-l-dark-3',
+    'dark-4': 'border-l-dark-4',
+    black: 'border-l-black',
+    white: 'border-l-white',
+    transparent: 'border-l-transparent',
+  }
+  protected static borderRightColor: ColorClass = {
+    primary: 'border-r-primary',
+    secondary: 'border-r-secondary',
+    success: 'border-r-success',
+    danger: 'border-r-danger',
+    info: 'border-r-info',
+    warning: 'border-r-warning',
+    'light-1': 'border-r-light-1',
+    'light-2': 'border-r-light-2',
+    'light-3': 'border-r-light-3',
+    'light-4': 'border-r-light-4',
+    'dark-1': 'border-r-dark-1',
+    'dark-2': 'border-r-dark-2',
+    'dark-3': 'border-r-dark-3',
+    'dark-4': 'border-r-dark-4',
+    black: 'border-r-black',
+    white: 'border-r-white',
+    transparent: 'border-r-transparent',
+  }
+  // Border width class
+  protected static borderWidth: BorderWidth = {
+    1: 'border-[1px]',
+    2: 'border-[2px]',
+    3: 'border-[3px]',
+    4: 'border-[4px]',
+    5: 'border-[5px]',
+    6: 'border-[6px]',
+    7: 'border-[7px]',
+    8: 'border-[8px]',
+    9: 'border-[9px]',
+    10: 'border-[10px]',
+    11: 'border-[11px]',
+    12: 'border-[12px]',
+  }
+  protected static borderXWidth: BorderWidth = {
+    1: 'border-x-[1px]',
+    2: 'border-x-[2px]',
+    3: 'border-x-[3px]',
+    4: 'border-x-[4px]',
+    5: 'border-x-[5px]',
+    6: 'border-x-[6px]',
+    7: 'border-x-[7px]',
+    8: 'border-x-[8px]',
+    9: 'border-x-[9px]',
+    10: 'border-x-[10px]',
+    11: 'border-x-[11px]',
+    12: 'border-x-[12px]',
+  }
+  protected static borderYWidth: BorderWidth = {
+    1: 'border-y-[1px]',
+    2: 'border-y-[2px]',
+    3: 'border-y-[3px]',
+    4: 'border-y-[4px]',
+    5: 'border-y-[5px]',
+    6: 'border-y-[6px]',
+    7: 'border-y-[7px]',
+    8: 'border-y-[8px]',
+    9: 'border-y-[9px]',
+    10: 'border-y-[10px]',
+    11: 'border-y-[11px]',
+    12: 'border-y-[12px]',
+  }
   protected static borderTopWidth: BorderWidth = {
     1: 'border-t-[1px]',
     2: 'border-t-[2px]',
@@ -498,6 +605,20 @@ abstract class MCLTheme {
     10: 'border-t-[10px]',
     11: 'border-t-[11px]',
     12: 'border-t-[12px]',
+  }
+  protected static borderBottomWidth: BorderWidth = {
+    1: 'border-b-[1px]',
+    2: 'border-b-[2px]',
+    3: 'border-b-[3px]',
+    4: 'border-b-[4px]',
+    5: 'border-b-[5px]',
+    6: 'border-b-[6px]',
+    7: 'border-b-[7px]',
+    8: 'border-b-[8px]',
+    9: 'border-b-[9px]',
+    10: 'border-b-[10px]',
+    11: 'border-b-[11px]',
+    12: 'border-b-[12px]',
   }
   protected static borderLeftWidth: BorderWidth = {
     1: 'border-l-[1px]',
@@ -513,6 +634,21 @@ abstract class MCLTheme {
     11: 'border-l-[11px]',
     12: 'border-l-[12px]',
   }
+  protected static borderRightWidth: BorderWidth = {
+    1: 'border-r-[1px]',
+    2: 'border-r-[2px]',
+    3: 'border-r-[3px]',
+    4: 'border-r-[4px]',
+    5: 'border-r-[5px]',
+    6: 'border-r-[6px]',
+    7: 'border-r-[7px]',
+    8: 'border-r-[8px]',
+    9: 'border-r-[9px]',
+    10: 'border-r-[10px]',
+    11: 'border-r-[11px]',
+    12: 'border-r-[12px]',
+  }
+  // opacity
   protected static backgroundOpacity: Opacity = {
     10: 'bg-opacity-10',
     20: 'bg-opacity-20',
@@ -537,6 +673,55 @@ abstract class MCLTheme {
     90: 'opacity-90',
     100: 'opacity-100',
   }
+  // spacing: margin
+  protected static margin: Spacing = {
+    '0': 'm-0',
+    '3xs': 'm-3xs',
+    '2xs': 'm-2xs',
+    xs: 'm-xs',
+    sm: 'm-sm',
+    md: 'm-md',
+    lg: 'm-lg',
+    xl: 'm-xl',
+    '2xl': 'm-2xl',
+    '3xl': 'm-3xl',
+  }
+  protected static marginX: Spacing = {
+    '0': 'mx-0',
+    '3xs': 'mx-3xs',
+    '2xs': 'mx-2xs',
+    xs: 'mx-xs',
+    sm: 'mx-sm',
+    md: 'mx-md',
+    lg: 'mx-lg',
+    xl: 'mx-xl',
+    '2xl': 'mx-2xl',
+    '3xl': 'mx-3xl',
+  }
+  protected static marginY: Spacing = {
+    '0': 'my-0',
+    '3xs': 'my-3xs',
+    '2xs': 'my-2xs',
+    xs: 'my-xs',
+    sm: 'my-sm',
+    md: 'my-md',
+    lg: 'my-lg',
+    xl: 'my-xl',
+    '2xl': 'my-2xl',
+    '3xl': 'my-3xl',
+  }
+  protected static marginTop: Spacing = {
+    '0': 'mt-0',
+    '3xs': 'mt-3xs',
+    '2xs': 'mt-2xs',
+    xs: 'mt-xs',
+    sm: 'mt-sm',
+    md: 'mt-md',
+    lg: 'mt-lg',
+    xl: 'mt-xl',
+    '2xl': 'mt-2xl',
+    '3xl': 'mt-3xl',
+  }
   protected static marginBottom: Spacing = {
     '0': 'mb-0',
     '3xs': 'mb-3xs',
@@ -548,6 +733,115 @@ abstract class MCLTheme {
     xl: 'mb-xl',
     '2xl': 'mb-2xl',
     '3xl': 'mb-3xl',
+  }
+  protected static marginLeft: Spacing = {
+    '0': 'ml-0',
+    '3xs': 'ml-3xs',
+    '2xs': 'ml-2xs',
+    xs: 'ml-xs',
+    sm: 'ml-sm',
+    md: 'ml-md',
+    lg: 'ml-lg',
+    xl: 'ml-xl',
+    '2xl': 'ml-2xl',
+    '3xl': 'ml-3xl',
+  }
+  protected static marginRight: Spacing = {
+    '0': 'mr-0',
+    '3xs': 'mr-3xs',
+    '2xs': 'mr-2xs',
+    xs: 'mr-xs',
+    sm: 'mr-sm',
+    md: 'mr-md',
+    lg: 'mr-lg',
+    xl: 'mr-xl',
+    '2xl': 'mr-2xl',
+    '3xl': 'mr-3xl',
+  }
+  // spacing: padding
+  protected static padding: Spacing = {
+    '0': 'p-0',
+    '3xs': 'p-3xs',
+    '2xs': 'p-2xs',
+    xs: 'p-xs',
+    sm: 'p-sm',
+    md: 'p-md',
+    lg: 'p-lg',
+    xl: 'p-xl',
+    '2xl': 'p-2xl',
+    '3xl': 'p-3xl',
+  }
+  protected static paddingX: Spacing = {
+    '0': 'px-0',
+    '3xs': 'px-3xs',
+    '2xs': 'px-2xs',
+    xs: 'px-xs',
+    sm: 'px-sm',
+    md: 'px-md',
+    lg: 'px-lg',
+    xl: 'px-xl',
+    '2xl': 'px-2xl',
+    '3xl': 'px-3xl',
+  }
+  protected static paddingY: Spacing = {
+    '0': 'py-0',
+    '3xs': 'py-3xs',
+    '2xs': 'py-2xs',
+    xs: 'py-xs',
+    sm: 'py-sm',
+    md: 'py-md',
+    lg: 'py-lg',
+    xl: 'py-xl',
+    '2xl': 'py-2xl',
+    '3xl': 'py-3xl',
+  }
+  protected static paddingTop: Spacing = {
+    '0': 'pt-0',
+    '3xs': 'pt-3xs',
+    '2xs': 'pt-2xs',
+    xs: 'pt-xs',
+    sm: 'pt-sm',
+    md: 'pt-md',
+    lg: 'pt-lg',
+    xl: 'pt-xl',
+    '2xl': 'pt-2xl',
+    '3xl': 'pt-3xl',
+  }
+  protected static paddingBottom: Spacing = {
+    '0': 'pb-0',
+    '3xs': 'pb-3xs',
+    '2xs': 'pb-2xs',
+    xs: 'pb-xs',
+    sm: 'pb-sm',
+    md: 'pb-md',
+    lg: 'pb-lg',
+    xl: 'pb-xl',
+    '2xl': 'pb-2xl',
+    '3xl': 'pb-3xl',
+  }
+  protected static paddingLeft: Spacing = {
+    '0': 'pl-0',
+    '3xs': 'pl-3xs',
+    '2xs': 'pl-2xs',
+    xs: 'pl-xs',
+    sm: 'pl-sm',
+    md: 'pl-md',
+    lg: 'pl-lg',
+    xl: 'pl-xl',
+    '2xl': 'pl-2xl',
+    '3xl': 'pl-3xl',
+  }
+  protected static paddingRight: Spacing = {
+    '0': 'pr-0',
+    '3xs': 'pr-3xs',
+    '2xs': 'pr-2xs',
+    xs: 'pr-xs',
+    sm: 'pr-sm',
+    md: 'pr-md',
+    lg: 'pr-lg',
+    xl: 'pr-xl',
+    '2xl': 'pr-2xl',
+    '3xl': 'pr-3xl',
   }
   // spacing gap class for flex/grid
   protected static gap: Spacing = {
@@ -561,6 +855,12 @@ abstract class MCLTheme {
     xl: 'gap-xl',
     '2xl': 'gap-2xl',
     '3xl': 'gap-3xl',
+  }
+  // text alignment
+  protected static textAlign: Alignment = {
+    left: 'text-left',
+    center: 'text-center',
+    right: 'text-right',
   }
 }
 

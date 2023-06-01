@@ -61,10 +61,64 @@ type Directions = 'left' | 'right'
 
 ---
 
-## hero-beta
+## @bobbykim/hero-beta
 
-hero beta description
+### Install
 
-## hero-gamma
+```sh
+npm i @bobbykim/hero-beta
+```
 
-currently parallax effect is not applied properly in Histoire.js, but still it is working properly in application
+### Usage
+
+`import HeroBeta from "@bobbykim/hero-beta"`;
+
+In your code
+
+```vue
+<script setup lang="ts">
+...
+import HeroBeta from '@bobbykim/hero-beta'
+...
+</script>
+
+<template>
+  <hero-beta></hero-beta>
+</template>
+```
+
+### Required packages
+
+- @bobbykim/manguito-theme
+
+---
+
+## @bobbykim/hero-gamma
+
+### Install
+
+```sh
+npm i @bobbykim/hero-gamma
+```
+
+### Usage
+
+`import HeroBeta from "@bobbykim/hero-gamma"`;
+
+In your code
+
+```vue
+<script setup lang="ts">
+...
+import HeroBeta from '@bobbykim/hero-gamma'
+...
+</script>
+
+<template>
+  <hero-gamma></hero-gamma>
+</template>
+```
+
+### Required packages
+
+- @bobbykim/manguito-theme

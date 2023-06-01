@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { withDefaults } from 'vue'
 import type {
   ColorPalette,
   Position,
@@ -35,9 +34,7 @@ const generatePoints = (location: PositionY, direction: Position): string => {
   if (location === 'top') {
     return direction === 'left' ? '0,0 100,100 0,100' : '100,0 100,100 0,100'
   }
-  if (location === 'bottom') {
-    return direction === 'left' ? '0,0 100,0 0,100' : '0,0 100,0 100,100'
-  }
+  return direction === 'left' ? '0,0 100,0 0,100' : '0,0 100,0 100,100'
 }
 const getLeftColumnWidth = (
   dRightCol: boolean,
@@ -50,19 +47,17 @@ const getLeftColumnWidth = (
   if (!dRightCol) {
     return 'md:col-span-4'
   }
-  if (dRightCol) {
-    switch (lColWidth) {
-      case 25:
-        return 'md:col-span-1'
-      case 50:
-        return 'md:col-span-2'
-      case 75:
-        return 'md:col-span-3'
-      case 100:
-        return 'md:col-span-4'
-      default:
-        return
-    }
+  switch (lColWidth) {
+    case 25:
+      return 'md:col-span-1'
+    case 50:
+      return 'md:col-span-2'
+    case 75:
+      return 'md:col-span-3'
+    case 100:
+      return 'md:col-span-4'
+    default:
+      return ''
   }
 }
 const getRightColumnWIdth = (
@@ -70,20 +65,18 @@ const getRightColumnWIdth = (
   lColWidth: ColumnWidth
 ): string => {
   if (!dRightCol) {
-    return
+    return ''
   }
-  if (dRightCol) {
-    switch (lColWidth) {
-      case 25:
-        return 'md:col-span-3'
-      case 50:
-        return 'md:col-span-2'
-      case 75:
-        return 'md:col-span-1'
-      case 100:
-      default:
-        return
-    }
+  switch (lColWidth) {
+    case 25:
+      return 'md:col-span-3'
+    case 50:
+      return 'md:col-span-2'
+    case 75:
+      return 'md:col-span-1'
+    case 100:
+    default:
+      return ''
   }
 }
 </script>

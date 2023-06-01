@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withDefaults, Transition } from 'vue'
+import { Transition } from 'vue'
 import type {
   ColorPalette,
   HeadingSize,
@@ -133,7 +133,7 @@ const getHeaderClass = (size: HeadingSize, color: ColorPalette): string => {
   transition: opacity 0.3s linear;
 }
 
-.fade-enter,
+.fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }
@@ -143,7 +143,7 @@ const getHeaderClass = (size: HeadingSize, color: ColorPalette): string => {
   transition: transform 0.3s ease-in, opacity 0.4s linear;
 }
 
-.slide-down-enter,
+.slide-down-enter-from,
 .slide-down-leave-to {
   opacity: 0;
   transform: translateY(-100%);

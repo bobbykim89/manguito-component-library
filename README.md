@@ -54,16 +54,13 @@ tailwind.config.cjs
 ```cjs
 const {
   mclTheme,
-  mclHeading,
-} = require('@bobbykim/manguito-theme/themeVariables.cjs')
-
+} = require('./src/components/manguito-theme/themeVariables.cjs')
 module.exports = {
   content: [
     './src/**/*.{vue,ts,js,cjs}',
     './node_modules/@bobbykim/**/*.{vue,ts,js,cjs}',
   ],
-  theme: mclTheme,
-  plugins: [mclHeading],
+  plugins: [mclTheme()],
 }
 ```
 
