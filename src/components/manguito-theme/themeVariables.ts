@@ -1,10 +1,44 @@
-const plugin = require('tailwindcss/plugin')
+import plugin from 'tailwindcss/plugin'
+import flattenColorPalette from 'tailwindcss/lib/util/flattenColorPalette'
 
-const mclTheme = plugin.withOptions(
+interface ColorInput {
+  primary?: string
+  secondary?: string
+  success?: string
+  info?: string
+  warning?: string
+  danger?: string
+  'light-1'?: string
+  'light-2'?: string
+  'light-3'?: string
+  'light-4'?: string
+  'dark-1'?: string
+  'dark-2'?: string
+  'dark-3'?: string
+  'dark-4'?: string
+}
+
+interface SpacingInput {
+  '3xs'?: string
+  '2xs'?: string
+  xs?: string
+  sm?: string
+  md?: string
+  lg?: string
+  xl?: string
+  '2xl'?: string
+  '3xl'?: string
+}
+
+interface MCLInputType {
+  colors?: ColorInput
+  spacing?: SpacingInput
+}
+
+export const mclTheme = plugin.withOptions(
   () => {
     return ({ addBase, theme, addComponents, addUtilities, e }) => {
       const colors = theme('colors')
-      // console.log(colors)
       const listColors = Object.keys(colors).reduce((accumulator, key) => {
         if (typeof colors[key] === 'string') {
           return {
@@ -15,6 +49,7 @@ const mclTheme = plugin.withOptions(
           }
         }
         const colorShades = Object.keys(colors[key])
+        console.log(colorShades)
 
         return {
           ...accumulator,
@@ -29,72 +64,19 @@ const mclTheme = plugin.withOptions(
           ),
         }
       }, {})
-      const btnColors = Object.keys(colors).reduce((accumulator, key) => {
-        if (typeof colors[key] === 'string') {
-          return {
-            ...accumulator,
-            [`.btn.btn-${e(key)}`]: {
-              [`@apply bg-${key}`]: {},
-              '&:hover': {
-                '@apply bg-opacity-70': {},
-              },
-              '&:focus': {
-                [`@apply ring-4 ring-${key}`]: {},
-              },
-            },
-            [`.btn.btn-invert.btn-${e(key)}`]: {
-              [`@apply border-2 bg-white border-${key} text-${key}`]: {},
-              '&:hover': {
-                [`@apply bg-${key} text-white bg-opacity-100`]: {},
-              },
-              '&:focus': {
-                [`@apply bg-${key} text-white`]: {},
-              },
-            },
-            [`.btn-group .btn.btn-${e(key)}`]: {
-              '&:focus': {
-                '@apply ring-0': {},
-              },
-            },
-          }
-        }
 
-        const colorShades = Object.keys(colors[key])
+      //   const listColors = Object.entries(colors).map(([key, value]) => {
+      //     if (typeof value !== undefined) {
+      //       return {
+      //         [`.${e(`mcl-list-${key}`)}`]: {
+      //           'background-color': `${value} !important`,
+      //         },
+      //       }
+      //     }
+      //     /**pass */
+      //   })
 
-        return {
-          ...accumulator,
-          ...colorShades.reduce(
-            (acc, level) => ({
-              ...acc,
-              [`.btn.btn-${e(key)}-${level}`]: {
-                [`@apply bg-${key}-${level}`]: {},
-                '&:hover': {
-                  '@apply bg-opacity-70': {},
-                },
-                '&:focus': {
-                  [`@apply ring-4 ring-${key}-${level}`]: {},
-                },
-              },
-              [`.btn.btn-invert.btn-${e(key)}-${level}`]: {
-                [`@apply border-2 bg-white border-${key}-${level} text-${key}-${level}`]:
-                  {},
-                '&:hover': {
-                  [`@apply bg-${key}-${level} text-white bg-opacity-100`]: {},
-                },
-                '&:focus': {
-                  [`@apply bg-${key}-${level} text-white`]: {},
-                },
-              },
-              [`.btn-group .btn.btn-${e(key)}-${level}`]: {
-                '&:focus': {
-                  '@apply ring-0': {},
-                },
-              },
-            }),
-            {}
-          ),
-        }
-      }, {})
+      //   console.log(listColors)
 
       addBase({
         body: {
@@ -255,14 +237,11 @@ const mclTheme = plugin.withOptions(
         },
         '.mcl-list': {
           'list-style-position': 'inside',
-          padding: 0,
+          padding: '0',
           'margin-left': '1rem',
         },
         'ul .mcl-list': {
           'list-style': 'none',
-        },
-        '.mcl-list li': {
-          'margin-bottom': '0.5rem',
         },
         '.mcl-list li::before': {
           content: '"•"',
@@ -270,68 +249,16 @@ const mclTheme = plugin.withOptions(
           display: 'inline-block',
           width: '1rem',
           'margin-left': '-1rem',
-        },
-        '.mcl-list.mcl-list-sm li::before': {
-          'font-weight': '500',
-        },
-        '.mcl-list.mcl-list-lg li::before': {
-          'font-weight': '900',
-        },
-        '.btn': {
-          padding: '0.5rem 1rem',
-          cursor: 'pointer',
-          'font-size': '1rem',
-          transition: 'all 300ms linear',
-          overflow: 'hidden',
-          display: 'inline-block',
-          'font-weight': 'bold',
-          '@apply outline-none ring-offset-white ring-offset-2 bg-primary text-center rounded':
-            {},
-          '&:hover': {
-            '@apply bg-opacity-70': {},
-          },
-          '&:focus': {
-            '@apply ring-4 ring-primary': {},
-          },
-        },
-        '.btn.btn-round': {
-          '@apply rounded-full': {},
-        },
-        '.btn.btn-full': {
-          display: 'block',
-          width: '100%',
-        },
-        '.btn.btn-sm': {
-          padding: '0.25rem 0.5rem',
-          'font-size': '0.875rem',
-        },
-        '.btn.btn-lg': {
-          padding: '0.625rem 1.25rem',
-          'font-size': '1.125rem',
-        },
-        '.btn-group': {
-          '@apply flex rounded overflow-hidden': {},
-        },
-        '.btn-group .btn': {
-          '@apply rounded-none ring-offset-0': {},
-
-          '&:focus': {
-            '@apply ring-0': {},
-          },
-        },
-        '.btn.btn-invert': {
-          '@apply border-2 border-primary text-primary bg-white': {},
-          '&:hover': {
-            '@apply bg-primary text-white bg-opacity-100': {},
-          },
+          color: theme('colors.secondary'),
         },
       })
 
+      //   addComponents(listColors)
+
       addUtilities(listColors)
-      addUtilities(btnColors)
     }
   },
-  (options = {}) => {
+  (options: MCLInputType = {}) => {
     const colorsList = {
       primary: '#ec489a',
       secondary: '#00feda',
@@ -397,7 +324,3 @@ const mclTheme = plugin.withOptions(
     }
   }
 )
-
-module.exports = {
-  mclTheme: mclTheme,
-}

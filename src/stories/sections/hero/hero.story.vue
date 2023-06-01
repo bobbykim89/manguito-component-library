@@ -70,7 +70,7 @@ const stateBeta = reactive<{
   fullWidth?: boolean
   bgImage: string
   displayGradients?: boolean
-  gradientOpacity?: OpacityRange
+  gradientColor?: ColorPalette
   slotText?: string
 }>({
   title: 'Hero Beta',
@@ -83,7 +83,7 @@ const stateBeta = reactive<{
   bgImage:
     'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1650675432/ManguitoPage/zvgtgavhpuwsfesyhv0j.jpg',
   displayGradients: true,
-  gradientOpacity: 50,
+  gradientColor: 'dark-3',
   slotText:
     'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat inventore repellendus corrupti labore doloribus, a nisi, animi tempora cupiditate doloremque enim sunt expedita possimus fuga, voluptates sed beatae sint alias.',
 })
@@ -232,7 +232,7 @@ const stateGamma = reactive<{
         :full-width="stateBeta.fullWidth"
         :bg-image="stateBeta.bgImage"
         :display-gradients="stateBeta.displayGradients"
-        :gradient-opacity="stateBeta.gradientOpacity"
+        :gradient-color="stateBeta.gradientColor"
       >
         <div v-html="stateBeta.slotText"></div>
       </hero-beta>
@@ -268,13 +268,10 @@ const stateGamma = reactive<{
           title="display-gradients"
           v-model="stateBeta.displayGradients"
         />
-        <HstSlider
-          title="gradient-opacity"
-          :modelValue="stateBeta.gradientOpacity"
-          @update:modelValue="stateBeta.gradientOpacity = $event"
-          :step="10"
-          :min="10"
-          :max="100"
+        <HstSelect
+          title="gradient-color"
+          v-model="stateBeta.gradientColor"
+          :options="colors"
         />
         <HstTextarea title="slot-text" v-model="stateBeta.slotText" />
       </template>

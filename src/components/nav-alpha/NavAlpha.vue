@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, withDefaults, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import type {
   ColorPalette,
   CtaTarget,
@@ -101,7 +101,7 @@ const navItemClick = (
   e: Event,
   title: string,
   link: string,
-  target: string,
+  target: string = '_self',
   itemLink: boolean,
   emitType: EmitType
 ): void => {

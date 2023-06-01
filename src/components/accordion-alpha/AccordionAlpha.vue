@@ -1,17 +1,8 @@
 <script setup lang="ts">
-import {
-  defineComponent,
-  withDefaults,
-  ref,
-  Transition,
-  computed,
-  onMounted,
-  onBeforeUnmount,
-} from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import generateClass from '@bobbykim/manguito-theme'
 import type {
   ColorPalette,
-  Range,
   HeadingSize,
 } from '@bobbykim/manguito-theme/theme/theme.types'
 
