@@ -169,29 +169,36 @@ const getButtonClass = (color: ColorPalette, bgColor: ColorPalette): string => {
   return classArray.join(' ')
 }
 
+const handleSlide = (): void => {
+  slideContainer.value.style.transform = `translateX(-${
+    currentIndex.value *
+    (carouselCards.value![0].$el.clientWidth + cardsSpace(props.cardsGap) + 2)
+  }px)`
+
+  isNextBtnDisabled.value = false
+}
+
+const handleTransitionEnd = (): void => {
+  isMoving = false
+}
+
 onMounted(() => {
-  // handle slide movement
-  slideContainer.value.addEventListener('sliderMove', () => {
-    slideContainer.value.style.transform = `translateX(-${
-      currentIndex.value *
-      (carouselCards.value![0].$el.clientWidth + cardsSpace(props.cardsGap) + 2)
-    }px)`
+  if (typeof window !== undefined) {
+    // handle slide movement
+    slideContainer.value.addEventListener('sliderMove', handleSlide)
+    // handle transition end event
+    slideContainer.value.addEventListener('transitionend', handleTransitionEnd)
 
-    isNextBtnDisabled.value = false
-  })
-
-  // transition end event
-  slideContainer.value.addEventListener('transitionend', () => {
-    isMoving = false
-  })
-
-  // intersection observer for slider
-  slideObserver.observe(
-    carouselCards.value![carouselCards.value!.length - 1].$el
-  )
+    // intersection observer for slider
+    slideObserver.observe(
+      carouselCards.value![carouselCards.value!.length - 1].$el
+    )
+  }
 })
 
 onBeforeUnmount(() => {
+  slideContainer.value.removeEventListener('sliderMove', handleSlide)
+  slideContainer.value.removeEventListener('transitionend', handleTransitionEnd)
   slideObserver.unobserve(
     carouselCards.value![carouselCards.value!.length - 1].$el
   )
