@@ -3,6 +3,7 @@ import { reactive } from 'vue'
 import CardAlpha from '@/components/card-alpha'
 import CardBeta from '@/components/card-beta'
 import CardGamma from '@/components/card-gamma'
+import CardDelta from '@/components/card-delta'
 import type {
   ColorPalette,
   HeadingSize,
@@ -378,6 +379,11 @@ const handleCardClick = (e: Event) => {
         />
         <HstTextarea v-model="stateGamma.slotText" title="Slot Text" />
       </template>
+    </Variant>
+    <Variant title="card-delta">
+      <div class="p-md">
+        <card-delta></card-delta>
+      </div>
     </Variant>
   </Story>
 </template>
