@@ -1,20 +1,23 @@
 {
-"name": "@bobbykim/card-delta",
-"version": "0.1.0",
-"description": "",
-"type": "module",
-"main": "index.ts",
-"author": {
-"name": "Bobby Kim",
-"url": "https://www.devbobbykim.com/"
-},
-"homepage": "https://manguito-component-library.vercel.app/",
-"repository": {
-"type": "git",
-"url": "https://github.com/bobbykim89/manguito-component-library.git"
-},
-"publishConfig": {
-"access": "public"
-},
-"license": "MIT"
+  "name": "@bobbykim/card-delta",
+  "version": "0.1.0",
+  "description": "",
+  "type": "module",
+  "main": "index.ts",
+  "author": {
+    "name": "Bobby Kim",
+    "url": "https://www.devbobbykim.com/"
+  },
+  "homepage": "https://manguito-component-library.vercel.app/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bobbykim89/manguito-component-library.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@bobbykim/manguito-theme": "^0.2.0"
+  }
 }
