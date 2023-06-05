@@ -3,6 +3,7 @@ import { onMounted, reactive, ref } from 'vue'
 import CarouselAlpha from '@/components/carousel-alpha'
 import CardAlpha from '@/components/card-alpha'
 import CardBeta from '@/components/card-beta'
+import CardDelta from '@/components/card-delta'
 import type {
   ColorPalette,
   HeadingSize,
@@ -209,6 +210,49 @@ const stateAlpha = reactive<{
             >
               <div v-html="card.description"></div>
             </card-alpha>
+          </template>
+        </carousel-alpha>
+      </div>
+      <div class="py-sm">
+        <h2 class="h2-sm uppercase pl-xs sm:pl-md mb-md mt-sm">
+          <span class="bg-warning px-xs py-2xs rounded-md"
+            >card-delta example:</span
+          >
+        </h2>
+        <carousel-alpha
+          :title="stateAlpha.title"
+          :title-size="stateAlpha.titleSize"
+          :title-color="stateAlpha.titleColor"
+          :bg-color="stateAlpha.bgColor"
+          :display-tag-line="stateAlpha.displayTagLine"
+          :tag-line-upper-case="stateAlpha.tagLineUpperCase"
+          :tag-line="stateAlpha.tagLine"
+          :tag-line-size="stateAlpha.tagLineSize"
+          :tag-line-color="stateAlpha.tagLineColor"
+          :display-highlight="stateAlpha.displayHighlight"
+          :highlight-color="stateAlpha.highlightColor"
+          :btn-color="stateAlpha.btnColor"
+          :btn-bg-color="stateAlpha.btnBgColor"
+          :cards-content="stateAlpha.cardsContent"
+          :cards-gap="stateAlpha.cardsGap"
+        >
+          <template #description>
+            <div v-html="stateAlpha.slotText"></div>
+          </template>
+          <template #carousel="{ setRef, cards }">
+            <card-delta
+              v-for="(card, i) in cards"
+              :key="i"
+              :ref="(el) => setRef(el)"
+              :title="card.title"
+              :image-source="card.img"
+              cta-text="Read more"
+              :cta-link="card.url"
+              cta-target="_blank"
+              class="h-full"
+            >
+              <div v-html="card.description"></div>
+            </card-delta>
           </template>
         </carousel-alpha>
       </div>

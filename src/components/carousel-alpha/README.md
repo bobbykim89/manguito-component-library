@@ -43,6 +43,7 @@ import CarouselAlpha from '@bobbykim/carousel-alpha'
 - @bobbykim/manguito-theme
 - @bobbykim/card-alpha
 - @bobbykim/card-beta
+- @bobbykim/card-delta
 
 ## Authors
 

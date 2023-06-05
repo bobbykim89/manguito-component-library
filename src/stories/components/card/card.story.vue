@@ -3,12 +3,15 @@ import { reactive } from 'vue'
 import CardAlpha from '@/components/card-alpha'
 import CardBeta from '@/components/card-beta'
 import CardGamma from '@/components/card-gamma'
+import CardDelta from '@/components/card-delta'
+import type { CustomColorType } from '@/components/card-delta/CardDelta.vue'
 import type {
   ColorPalette,
   HeadingSize,
   CtaTarget,
   CrossOrigin,
   OpacityRange,
+  Range,
 } from '@/components/manguito-theme/theme/theme.types'
 import {
   colors,
@@ -126,7 +129,7 @@ const stateGamma = reactive<{
   imageSource:
     'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg',
   imageAlt: 'a bird',
-  title: 'card-gamma',
+  title: 'Card Gamma',
   titleSize: 'md',
   titleColor: 'dark-3',
   displayHighlight: false,
@@ -138,8 +141,60 @@ const stateGamma = reactive<{
   slotText:
     'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae, natus.',
 })
+
+const stateDelta = reactive<{
+  displayImage?: boolean
+  imageSource?: string
+  imageAlt?: string
+  crossOrigin?: CrossOrigin
+  title: string
+  titleSize?: HeadingSize
+  titleColor?: ColorPalette
+  backgroundColor?: ColorPalette
+  displayHighlight?: boolean
+  highlightColor?: ColorPalette
+  ctaText: string
+  ctaLink: string
+  ctaLinkTarget?: CtaTarget
+  ctaAsLink?: boolean
+  ctaButton?: boolean
+  ctaButtonColor?: ColorPalette
+  ctaButtonBlock?: boolean
+  borderWidth?: Range<1, 10>
+  borderColor?: ColorPalette
+  gradient1?: ColorPalette
+  gradient2?: ColorPalette
+  customColor?: CustomColorType
+  slotText?: string
+}>({
+  displayImage: true,
+  imageSource:
+    'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg',
+  imageAlt: 'picture of a bird',
+  crossOrigin: 'anonymous',
+  title: 'Card Delta',
+  titleSize: 'md',
+  titleColor: 'dark-4',
+  backgroundColor: 'light-1',
+  displayHighlight: true,
+  highlightColor: 'primary',
+  ctaText: 'Read more',
+  ctaLink: '/',
+  ctaLinkTarget: '_self',
+  ctaButton: false,
+  ctaButtonColor: 'warning',
+  ctaAsLink: true,
+  ctaButtonBlock: false,
+  borderWidth: 3,
+  borderColor: 'light-3',
+  gradient1: 'primary',
+  gradient2: 'secondary',
+  customColor: {},
+  slotText:
+    'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Placeat, numquam.',
+})
 const handleCardClick = (e: Event) => {
-  console.log(e)
+  console.log('card clicked!', e)
 }
 </script>
 
@@ -377,6 +432,109 @@ const handleCardClick = (e: Event) => {
           :options="corsOptions"
         />
         <HstTextarea v-model="stateGamma.slotText" title="Slot Text" />
+      </template>
+    </Variant>
+    <Variant title="card-delta">
+      <div class="p-md">
+        <card-delta
+          :display-image="stateDelta.displayImage"
+          :image-source="stateDelta.imageSource"
+          :image-alt="stateDelta.imageAlt"
+          :cross-origin="stateDelta.crossOrigin"
+          :title="stateDelta.title"
+          :title-size="stateDelta.titleSize"
+          :title-color="stateDelta.titleColor"
+          :background-color="stateDelta.backgroundColor"
+          :display-highlight="stateDelta.displayHighlight"
+          :highlight-color="stateDelta.highlightColor"
+          :cta-text="stateDelta.ctaText"
+          :cta-link="stateDelta.ctaLink"
+          :cta-link-target="stateDelta.ctaLinkTarget"
+          :cta-as-link="stateDelta.ctaAsLink"
+          :cta-button="stateDelta.ctaButton"
+          :cta-button-color="stateDelta.ctaButtonColor"
+          :cta-button-block="stateDelta.ctaButtonBlock"
+          :border-width="stateDelta.borderWidth"
+          :border-color="stateDelta.borderColor"
+          :gradient1="stateDelta.gradient1"
+          :gradient2="stateDelta.gradient2"
+          :custom-color="stateDelta.customColor"
+          @card-click="handleCardClick"
+        >
+          <div v-html="stateDelta.slotText"></div>
+        </card-delta>
+      </div>
+      <template #controls>
+        <HstCheckbox title="display-image" v-model="stateDelta.displayImage" />
+        <HstText title="image-source" v-model="stateDelta.imageSource" />
+        <HstText title="image-alt" v-model="stateDelta.imageAlt" />
+        <HstSelect
+          title="cross-origin"
+          v-model="stateDelta.crossOrigin"
+          :options="corsOptions"
+        />
+        <HstText title="title" v-model="stateDelta.title" />
+        <HstSelect
+          title="title-size"
+          v-model="stateDelta.titleSize"
+          :options="headingTextSize"
+        />
+        <HstSelect
+          title="title-color"
+          v-model="stateDelta.titleColor"
+          :options="colors"
+        />
+        <HstCheckbox
+          title="display-highlight"
+          v-model="stateDelta.displayHighlight"
+        />
+        <HstSelect
+          title="highlight-color"
+          v-model="stateDelta.highlightColor"
+          :options="colors"
+        />
+        <HstText title="cta-text" v-model="stateDelta.ctaText" />
+        <HstText title="cta-link" v-model="stateDelta.ctaLink" />
+        <HstSelect
+          title="cta-link-target"
+          v-model="stateDelta.ctaLinkTarget"
+          :options="targetOption"
+        />
+        <HstCheckbox title="cta-as-link" v-model="stateDelta.ctaAsLink" />
+        <HstCheckbox title="cta-button" v-model="stateDelta.ctaButton" />
+        <HstSelect
+          title="cta-button-color"
+          v-model="stateDelta.ctaButtonColor"
+          :options="colors"
+        />
+        <HstCheckbox
+          title="cta-button-block"
+          v-model="stateDelta.ctaButtonBlock"
+        />
+        <HstSlider
+          title="border-width"
+          v-model="stateDelta.borderWidth"
+          :step="1"
+          :min="1"
+          :max="10"
+        />
+        <HstSelect
+          title="border-color"
+          v-model="stateDelta.borderColor"
+          :options="colors"
+        />
+        <HstSelect
+          title="gradient1"
+          v-model="stateDelta.gradient1"
+          :options="colors"
+        />
+        <HstSelect
+          title="gradient2"
+          v-model="stateDelta.gradient2"
+          :options="colors"
+        />
+        <HstJson title="custom-color" v-model="stateDelta.customColor" />
+        <HstTextarea v-model="stateDelta.slotText" title="Slot Text" />
       </template>
     </Variant>
   </Story>

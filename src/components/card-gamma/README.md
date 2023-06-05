@@ -2,7 +2,7 @@
 
 ## Demo
 
-[MCL Histoire Page](https://manguito-component-library.vercel.app/)
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-components-card-card-story-vue?variantId=src-stories-components-card-card-story-vue-2)
 
 ## Install
 

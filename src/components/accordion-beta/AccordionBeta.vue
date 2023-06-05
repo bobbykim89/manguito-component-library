@@ -106,7 +106,9 @@ const slotTextVal = computed(() => {
 })
 
 onMounted(() => {
-  initObserver().observe(textSlot.value)
+  if (typeof window !== undefined) {
+    initObserver().observe(textSlot.value)
+  }
 })
 onBeforeUnmount(() => {
   initObserver().disconnect()
