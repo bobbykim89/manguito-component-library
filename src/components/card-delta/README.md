@@ -1,16 +1,28 @@
 # @bobbykim/card-delta
 
-Add description
-
 ## Demo
 
-[MCL Histoire Page]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-components-card-card-story-vue?variantId=src-stories-components-card-card-story-vue-3)
 
 ## Install
 
 ## Usage
 
 `import CardDelta from "@bobbykim/card-delta"`;
+
+In your code
+
+```vue
+<script setup lang="ts">
+...
+import CardDelta from "@bobbykim/card-delta"
+...
+</script>
+
+<template>
+  <card-delta></card-delta>
+</template>
+```
 
 ## Authors
 
