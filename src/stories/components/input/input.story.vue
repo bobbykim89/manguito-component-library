@@ -3,6 +3,8 @@ import { reactive, ref } from 'vue'
 import MclInput from '@/components/mcl-input'
 import MclTextArea from '@/components/mcl-text-area'
 import MclInputFile from '@/components/mcl-input-file'
+import MclSelect from '@/components/mcl-select'
+import type { SelectOptionType } from '@/components/mcl-select/MclSelect.vue'
 import BtnAlpha from '@/components/btn-alpha'
 import type {
   ColorPalette,
@@ -138,6 +140,7 @@ const stateGamma = reactive<{
   buttonTextColor?: ColorPalette
   buttonColor?: ColorPalette
   displayShadow?: boolean
+  placeholder?: string
   isRequired?: boolean
   accept?: string
   spacing?: SpacingLevel
@@ -155,9 +158,54 @@ const stateGamma = reactive<{
   buttonTextColor: 'dark-3',
   buttonColor: 'light-4',
   displayShadow: true,
+  placeholder: 'Placeholder',
   isRequired: false,
   accept: 'image/jpg,image/jpeg,image/png',
   spacing: 'md',
+})
+
+const stateDelta = reactive<{
+  identifier: string
+  displayLabel?: boolean
+  labelText?: string
+  labelSize?: BodyText
+  labelColor?: ColorPalette
+  labelBold?: boolean
+  displayBorder?: boolean
+  borderColor?: ColorPalette
+  displayHighlight?: boolean
+  highlightColor?: ColorPalette
+  bgColor?: ColorPalette
+  arrowColor?: ColorPalette
+  placeholder?: string
+  displayShadow?: boolean
+  isRequired?: boolean
+  spacing?: SpacingLevel
+  options: SelectOptionType[]
+  modelValue?: string
+}>({
+  identifier: 'mcl-select',
+  displayLabel: true,
+  labelText: 'MCL Select',
+  labelSize: 'md',
+  labelColor: 'dark-3',
+  labelBold: true,
+  displayBorder: false,
+  borderColor: 'light-4',
+  displayHighlight: true,
+  highlightColor: 'primary',
+  bgColor: 'light-1',
+  arrowColor: 'dark-4',
+  placeholder: 'Placeholder',
+  displayShadow: true,
+  isRequired: false,
+  spacing: 'md',
+  options: [
+    { text: 'Item 1', value: 'value 1' },
+    { text: 'Item 2', value: 'value 2' },
+    { text: 'Item 3', value: 'value 3' },
+    { text: 'Item 4', value: 'value 4' },
+  ],
 })
 </script>
 
@@ -358,6 +406,7 @@ const stateGamma = reactive<{
           :button-text-color="stateGamma.buttonTextColor"
           :button-color="stateGamma.buttonColor"
           :display-shadow="stateGamma.displayShadow"
+          :placeholder="stateGamma.placeholder"
           :is-required="stateGamma.isRequired"
           :accept="stateGamma.accept"
           :spacing="stateGamma.spacing"
@@ -421,11 +470,106 @@ const stateGamma = reactive<{
           title="display-shadow"
           v-model="stateGamma.displayShadow"
         />
+        <HstText title="placeholder" v-model="stateGamma.placeholder" />
         <HstCheckbox title="is-required" v-model="stateGamma.isRequired" />
         <HstText title="accept" v-model="stateGamma.accept" />
         <HstSelect
           title="spacing"
           v-model="stateGamma.spacing"
+          :options="spacingOptions"
+        />
+      </template>
+    </Variant>
+    <Variant title="mcl-select">
+      <form
+        class="max-w-lg p-md m-xs md:mx-auto border border-light-3 rounded"
+        @submit.prevent="handleSubmit"
+      >
+        <mcl-select
+          :identifier="stateDelta.identifier"
+          :display-label="stateDelta.displayLabel"
+          :label-text="stateDelta.labelText"
+          :label-size="stateDelta.labelSize"
+          :label-color="stateDelta.labelColor"
+          :label-bold="stateDelta.labelBold"
+          :display-border="stateDelta.displayBorder"
+          :border-color="stateDelta.borderColor"
+          :display-highlight="stateDelta.displayHighlight"
+          :highlight-color="stateDelta.highlightColor"
+          :bg-color="stateDelta.bgColor"
+          :arrow-color="stateDelta.arrowColor"
+          :placeholder="stateDelta.placeholder"
+          :display-shadow="stateDelta.displayShadow"
+          :is-required="stateDelta.isRequired"
+          :spacing="stateDelta.spacing"
+          :options="stateDelta.options"
+          v-model="inputRef"
+        ></mcl-select>
+        <div class="flex justify-end items-center">
+          <button class="btn btn-warning mr-2xs" type="submit">Submit</button>
+          <button class="btn btn-secondary" type="button" @click="handleCancel">
+            Cancel
+          </button>
+        </div>
+      </form>
+      <div class="flex flex-col justify-center items-center">
+        <p class="mb-xs">Selected value is:</p>
+        <div class="max-w-xs md:max-w-md">
+          <div v-html="textOutput" class="whitespace-pre-line"></div>
+        </div>
+      </div>
+      <template #controls>
+        <HstText title="identifier" v-model="stateDelta.identifier" />
+        <HstCheckbox title="display-label" v-model="stateDelta.displayLabel" />
+        <HstText title="label-text" v-model="stateDelta.labelText" />
+        <HstSelect
+          title="label-size"
+          v-model="stateDelta.labelSize"
+          :options="bodyTextSize"
+        />
+        <HstSelect
+          title="label-color"
+          v-model="stateDelta.labelColor"
+          :options="colors"
+        />
+        <HstCheckbox title="label-bold" v-model="stateDelta.labelBold" />
+        <HstCheckbox
+          title="display-border"
+          v-model="stateDelta.displayBorder"
+        />
+        <HstSelect
+          title="border-color"
+          v-model="stateDelta.borderColor"
+          :options="colors"
+        />
+        <HstCheckbox
+          title="display-highlight"
+          v-model="stateDelta.displayHighlight"
+        />
+        <HstSelect
+          title="highlight-color"
+          v-model="stateDelta.highlightColor"
+          :options="colors"
+        />
+        <HstSelect
+          title="bg-color"
+          v-model="stateDelta.bgColor"
+          :options="colors"
+        />
+        <HstSelect
+          title="arrow-color"
+          v-model="stateDelta.arrowColor"
+          :options="colors"
+        />
+        <HstText title="placeholder" v-model="stateDelta.placeholder" />
+        <HstCheckbox
+          title="display-shadow"
+          v-model="stateDelta.displayShadow"
+        />
+        <HstCheckbox title="is-required" v-model="stateDelta.isRequired" />
+        <HstSelect
+          title="spacing"
+          v-model="stateDelta.spacing"
           :options="spacingOptions"
         />
       </template>
