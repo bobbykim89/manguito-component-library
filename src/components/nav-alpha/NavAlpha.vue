@@ -87,7 +87,7 @@ const toggleNavButton = (e: Event): void => {
 }
 
 const handleScroll = (): any => {
-  if (!window) {
+  if (typeof window !== undefined) {
     return
   }
   if (window.scrollY >= props.scrollDistance) {
@@ -189,8 +189,10 @@ const menuHeightVal = computed(() => {
 })
 
 onMounted(() => {
-  initObserver().observe(mobileMenu.value)
-  window.addEventListener('scroll', handleScroll())
+  if (typeof window !== undefined) {
+    initObserver().observe(mobileMenu.value)
+    window.addEventListener('scroll', handleScroll())
+  }
 })
 onBeforeUnmount(() => {
   initObserver().disconnect()
