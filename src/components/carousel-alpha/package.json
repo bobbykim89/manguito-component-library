@@ -20,6 +20,7 @@
   "dependencies": {
     "@bobbykim/card-alpha": "^0.1.5",
     "@bobbykim/card-beta": "^0.1.5",
+    "@bobbykim/card-delta": "^0.1.0",
     "@bobbykim/manguito-theme": "^0.2.0"
   },
   "gitHead": "4e6b9b908a17893f6e6baab01741dc0dde771ac8"

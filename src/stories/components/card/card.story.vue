@@ -188,7 +188,7 @@ const stateDelta = reactive<{
   borderWidth: 3,
   borderColor: 'light-3',
   gradient1: 'primary',
-  gradient2: 'info',
+  gradient2: 'secondary',
   customColor: {},
   slotText:
     'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Placeat, numquam.',

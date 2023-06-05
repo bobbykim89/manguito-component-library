@@ -9,6 +9,7 @@ import type {
 import generateClass from '@bobbykim/manguito-theme'
 import CardAlpha from '@bobbykim/card-alpha'
 import CardBeta from '@bobbykim/card-beta'
+import CardDelta from '@bobbykim/card-delta'
 
 type BtnNav = 'prev' | 'next'
 
@@ -50,7 +51,7 @@ const prevBtn = ref()
 const nextBtn = ref()
 const slideContainer = ref()
 const carouselCards = ref<
-  null | InstanceType<typeof CardAlpha | typeof CardBeta>[]
+  null | InstanceType<typeof CardAlpha | typeof CardBeta | typeof CardDelta>[]
 >([])
 const emit = defineEmits(['btn-prev', 'btn-next'])
 

@@ -145,10 +145,6 @@ type CtaTarget = '_self' | '_blank'
 
 ## @bobbykim/card-gamma
 
-### Demo
-
-[MCL Histoire Page](https://manguito-component-library.vercel.app/)
-
 ### Install
 
 ```sh
@@ -194,3 +190,41 @@ import CardGamma from '@bobbykim/card-gamma'
   </card-gamma>
 </template>
 ```
+
+---
+
+## @bobbykim/card-delta
+
+### Install
+
+### Usage
+
+`import CardDelta from "@bobbykim/card-delta"`;
+
+In your code
+
+```vue
+<script setup lang="ts">
+...
+import CardDelta from "@bobbykim/card-delta"
+...
+</script>
+
+<template>
+  <card-delta></card-delta>
+</template>
+```
+
+### Dependencies
+
+- @bobbykim/manguito-theme
+
+### Emits
+
+| Event      | Arguments | Usage                                         |
+| ---------- | --------- | --------------------------------------------- |
+| card-click | event     | Emitted on clicking card when card is flipped |
+
+### Slots
+
+- default slot

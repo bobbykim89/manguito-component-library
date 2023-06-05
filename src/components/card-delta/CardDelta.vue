@@ -97,7 +97,7 @@ const props = withDefaults(
     borderWidth: 3,
     borderColor: 'light-3',
     gradient1: 'primary',
-    gradient2: 'info',
+    gradient2: 'secondary',
   }
 )
 
@@ -165,10 +165,11 @@ const configColorMap = () => {
 }
 
 const handleCardClick = (e: Event, link: boolean) => {
+  const { title, ctaLink, ctaLinkTarget } = props
   if (!link) {
     e.preventDefault()
   }
-  emit('card-click', e)
+  emit('card-click', { event: e, title, url: ctaLink, target: ctaLinkTarget })
 }
 
 onMounted(() => {
@@ -178,7 +179,8 @@ onMounted(() => {
 
 <template>
   <div
-    class="card overflow-hidden rounded-md max-w-[450px] sm:max-w-[350px]"
+    class="card overflow-hidden rounded-md max-w-[450px] sm:max-w-[350px] w-full xs:w-auto flex-grow flex-shrink-0 border"
+    :class="generateClass('BORDER', borderColor)"
     :style="borderColor"
   >
     <div class="flex flex-col rounded-md overflow-hidden">
