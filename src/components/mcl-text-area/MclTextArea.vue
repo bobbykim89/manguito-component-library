@@ -94,6 +94,10 @@ const getInputClass = (
    */
 
   const classArray: string[] = [generateClass('BGCOLOR', bgColor)]
+  const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
+  if (!lightColor.includes(bgColor)) {
+    classArray.push('text-white')
+  }
   if (dBorder) {
     classArray.push('border-2')
     classArray.push(generateClass('BORDER', bColor))

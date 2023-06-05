@@ -1,12 +1,57 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import generateClass from '@bobbykim/manguito-theme'
 import type {
   ColorPalette,
   BodyText,
-  InputType,
   SpacingLevel,
 } from '@bobbykim/manguito-theme/theme/theme.types'
-import generateClass from '@bobbykim/manguito-theme'
+
+export interface SelectOptionType {
+  text: string
+  value: string | number
+}
+
+export interface ColorMap {
+  [key: string]: string
+  primary: string
+  secondary: string
+  success: string
+  info: string
+  warning: string
+  danger: string
+  'light-1': string
+  'light-2': string
+  'light-3': string
+  'light-4': string
+  'dark-1': string
+  'dark-2': string
+  'dark-3': string
+  'dark-4': string
+  black: string
+  white: string
+  transparent: string
+}
+
+const colors = ref<ColorMap>({
+  primary: '#ec489a',
+  secondary: '#00feda',
+  success: '#78be20',
+  info: '#00a3e0',
+  warning: '#f1ac18',
+  danger: '#cc2f2f',
+  'light-1': '#fafafa',
+  'light-2': '#f1f1f1',
+  'light-3': '#e8e8e8',
+  'light-4': '#d0d0d0',
+  'dark-1': '#747474',
+  'dark-2': '#484848',
+  'dark-3': '#1f2937',
+  'dark-4': '#191919',
+  black: '#000',
+  white: 'fff',
+  transparent: 'transparent',
+})
 
 const props = withDefaults(
   defineProps<{
@@ -21,11 +66,12 @@ const props = withDefaults(
     displayHighlight?: boolean
     highlightColor?: ColorPalette
     bgColor?: ColorPalette
+    arrowColor?: ColorPalette
     placeholder?: string
-    type?: InputType
     displayShadow?: boolean
     isRequired?: boolean
     spacing?: SpacingLevel
+    options: SelectOptionType[]
     modelValue?: string
   }>(),
   {
@@ -38,8 +84,8 @@ const props = withDefaults(
     displayHighlight: true,
     highlightColor: 'primary',
     bgColor: 'light-1',
+    arrowColor: 'dark-4',
     placeholder: '',
-    type: 'text',
     displayShadow: true,
     isRequired: false,
     spacing: 'md',
@@ -54,6 +100,10 @@ const inputValue = computed({
   set(value) {
     emit('update:modelValue', value)
   },
+})
+
+const arrowColor = computed(() => {
+  return { '--arrow-color': colors.value[props.arrowColor] }
 })
 
 const getLabelClass = (
@@ -117,7 +167,7 @@ const getInputClass = (
 </script>
 
 <template>
-  <div :class="generateClass('MARGINB', spacing)">
+  <div :class="generateClass('MARGINB', spacing)" :style="arrowColor">
     <label
       v-if="displayLabel"
       :for="identifier"
@@ -125,9 +175,8 @@ const getInputClass = (
       class="inline-block mb-2xs"
       :class="getLabelClass(labelSize, labelColor, labelBold)"
     ></label>
-    <input
+    <select
       :id="identifier"
-      :type="type"
       class="w-full p-2xs outline-none input__text"
       :class="
         getInputClass(
@@ -139,9 +188,23 @@ const getInputClass = (
         )
       "
       v-model="inputValue"
-      :placeholder="placeholder"
       :required="isRequired"
-    />
+    >
+      <option
+        v-if="placeholder"
+        class="p-2xs"
+        value=""
+        v-html="placeholder"
+        selected
+      ></option>
+      <option
+        v-for="item in options"
+        :key="item.text"
+        class="p-2xs"
+        v-html="item.text"
+        :value="item.value"
+      ></option>
+    </select>
     <div
       v-if="displayHighlight"
       class="relative -top-1 h-3xs input__decorator"
@@ -161,6 +224,38 @@ const getInputClass = (
     width: 0;
     transition: width 0.3s linear;
   }
+}
+
+.input__text {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: linear-gradient(
+      45deg,
+      transparent 50%,
+      var(--arrow-color) 50%
+    ),
+    linear-gradient(135deg, var(--arrow-color) 50%, transparent 50%);
+  background-position: calc(100% - 20px) calc(1em + 2px),
+    calc(100% - 15px) calc(1em + 2px), 100% 0;
+  background-size: 5px 5px, 5px 5px, 2.5em 2.5em;
+  background-repeat: no-repeat;
+}
+
+.input__text:focus {
+  background-image: linear-gradient(
+      45deg,
+      var(--arrow-color) 50%,
+      transparent 50%
+    ),
+    linear-gradient(135deg, transparent 50%, var(--arrow-color) 50%);
+
+  background-position: calc(100% - 15px) 1em, calc(100% - 20px) 1em, 100% 0;
+  background-size: 5px 5px, 5px 5px, 2.5em 2.5em;
+  background-repeat: no-repeat;
+  outline: 0;
 }
 
 .input__text:focus + .input__decorator::before {

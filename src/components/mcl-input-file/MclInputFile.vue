@@ -23,6 +23,7 @@ const props = withDefaults(
     buttonTextColor?: ColorPalette
     buttonColor?: ColorPalette
     displayShadow?: boolean
+    placeholder?: string
     isRequired?: boolean
     spacing?: SpacingLevel
     accept?: string
@@ -40,6 +41,7 @@ const props = withDefaults(
     buttonTextColor: 'dark-3',
     buttonColor: 'light-4',
     displayShadow: true,
+    placeholder: '',
     isRequired: false,
     spacing: 'md',
     accept: 'image/jpg,image/jpeg,image/png',
@@ -96,6 +98,10 @@ const getInputClass = (
    */
 
   const classArray: string[] = [generateClass('BGCOLOR', bgColor)]
+  const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
+  if (!lightColor.includes(bgColor)) {
+    classArray.push('text-white')
+  }
   if (dBorder) {
     classArray.push('border-2')
     classArray.push(generateClass('BORDER', bColor))
@@ -118,6 +124,13 @@ const getButtonClass = (bColor: ColorPalette, tColor: ColorPalette): string => {
 
   return classArray.join(' ')
 }
+
+const trancateString = (text: string): string => {
+  if (text.length < 25) {
+    return text
+  }
+  return text.slice(0, 20) + '...' + text.slice(-6)
+}
 </script>
 
 <template>
@@ -134,7 +147,9 @@ const getButtonClass = (bColor: ColorPalette, tColor: ColorPalette): string => {
       class="w-full p-3xs outline-none flex justify-between"
       :class="getInputClass(bgColor, displayBorder, borderColor, displayShadow)"
     >
-      <span class="py-3xs pl-3xs text-sm">{{ inputFileName }}</span>
+      <span class="py-3xs pl-3xs text-sm">{{
+        inputFileName ? trancateString(inputFileName) : placeholder
+      }}</span>
       <div
         class="px-xs py-3xs h-full hover:bg-opacity-70 transition-all duration-200 ease-linear cursor-pointer"
         :class="getButtonClass(buttonColor, buttonTextColor)"
