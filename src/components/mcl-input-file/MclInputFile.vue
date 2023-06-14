@@ -18,6 +18,9 @@ const props = withDefaults(
     labelBold?: boolean
     displayBorder?: boolean
     borderColor?: ColorPalette
+    rounded?: boolean
+    displayHighlight?: boolean
+    highlightColor?: ColorPalette
     bgColor?: ColorPalette
     buttonText?: string
     buttonTextColor?: ColorPalette
@@ -36,6 +39,9 @@ const props = withDefaults(
     labelBold: true,
     displayBorder: false,
     borderColor: 'light-4',
+    rounded: false,
+    displayHighlight: true,
+    highlightColor: 'primary',
     bgColor: 'light-1',
     buttonText: 'Browse',
     buttonTextColor: 'dark-3',
@@ -88,13 +94,19 @@ const getInputClass = (
   bgColor: ColorPalette,
   dBorder: boolean,
   bColor: ColorPalette,
-  dShadow: boolean
+  dShadow: boolean,
+  rounded: boolean,
+  dHL: boolean,
+  hlColor: ColorPalette
 ): string => {
   /**
    * @bgColor - bgColor
    * @dBorder - displayBorder
    * @bColor - borderColor
    * @dShadow - displayShadow
+   * @rounded - rounded
+   * @dHl - displayHighlight
+   * @hlColor - highlightColor
    */
 
   const classArray: string[] = [generateClass('BGCOLOR', bgColor)]
@@ -110,17 +122,32 @@ const getInputClass = (
   if (dShadow) {
     classArray.push('shadow-md')
   }
+  if (rounded) {
+    classArray.push('rounded-md')
+  }
+  if (dHL) {
+    classArray.push('input-label')
+    classArray.push(generateClass('BEFOREBG', hlColor))
+  }
   return classArray.join(' ')
 }
-const getButtonClass = (bColor: ColorPalette, tColor: ColorPalette): string => {
+const getButtonClass = (
+  bColor: ColorPalette,
+  tColor: ColorPalette,
+  rounded: boolean
+): string => {
   /**
    * @bColor - buttonColor
    * @tColor - textColor
+   * @rounded - rounded
    */
   const classArray: string[] = [
     generateClass('BGCOLOR', bColor),
     generateClass('TEXTCOLOR', tColor),
   ]
+  if (rounded) {
+    classArray.push('rounded-r-md')
+  }
 
   return classArray.join(' ')
 }
@@ -144,22 +171,34 @@ const trancateString = (text: string): string => {
     ></p>
     <label
       :for="identifier"
-      class="w-full p-3xs outline-none flex justify-between"
-      :class="getInputClass(bgColor, displayBorder, borderColor, displayShadow)"
+      class="relative w-full p-3xs outline-none flex justify-between overflow-hidden"
+      :class="
+        getInputClass(
+          bgColor,
+          displayBorder,
+          borderColor,
+          displayShadow,
+          rounded,
+          displayHighlight,
+          highlightColor
+        )
+      "
     >
-      <span class="py-3xs pl-3xs text-sm">{{
-        inputFileName ? trancateString(inputFileName) : placeholder
-      }}</span>
+      <div class="py-3xs px-3xs">
+        <span class="text-sm">{{
+          inputFileName ? trancateString(inputFileName) : placeholder
+        }}</span>
+      </div>
       <div
-        class="px-xs py-3xs h-full hover:bg-opacity-70 transition-all duration-200 ease-linear cursor-pointer"
-        :class="getButtonClass(buttonColor, buttonTextColor)"
+        class="px-xs py-3xs hover:bg-opacity-70 transition-all duration-200 ease-linear cursor-pointer flex flex-col justify-center"
+        :class="getButtonClass(buttonColor, buttonTextColor, rounded)"
         v-html="buttonText"
       ></div>
       <input
         type="file"
         :id="identifier"
         ref="inputRef"
-        class="hidden"
+        class="hidden input-file"
         :required="isRequired"
         :accept="accept"
         @change="onChangeFile"
@@ -168,4 +207,19 @@ const trancateString = (text: string): string => {
   </div>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.input-label {
+  &::before {
+    content: '';
+    position: absolute;
+    height: 0.25rem;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    transition: width 0.3s linear;
+  }
+  &:has(.input-file:hover, .input-file:focus)::before {
+    width: 100%;
+  }
+}
+</style>

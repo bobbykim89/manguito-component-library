@@ -63,6 +63,7 @@ const props = withDefaults(
     labelBold?: boolean
     displayBorder?: boolean
     borderColor?: ColorPalette
+    rounded?: boolean
     displayHighlight?: boolean
     highlightColor?: ColorPalette
     bgColor?: ColorPalette
@@ -81,6 +82,7 @@ const props = withDefaults(
     labelBold: true,
     displayBorder: false,
     borderColor: 'light-4',
+    rounded: false,
     displayHighlight: true,
     highlightColor: 'primary',
     bgColor: 'light-1',
@@ -134,7 +136,8 @@ const getInputClass = (
   dBorder: boolean,
   bColor: ColorPalette,
   dHL: boolean,
-  dShadow: boolean
+  dShadow: boolean,
+  rounded: boolean
 ): string => {
   /**
    * @bgColor - bgColor
@@ -142,6 +145,7 @@ const getInputClass = (
    * @bColor - borderColor
    * @dHL - displayHighlight
    * @dShadow - displayShadow
+   * @rounded - rounded
    */
 
   const classArray: string[] = [generateClass('BGCOLOR', bgColor)]
@@ -161,6 +165,20 @@ const getInputClass = (
   }
   if (dShadow) {
     classArray.push('shadow-md')
+  }
+  if (rounded) {
+    classArray.push('rounded-md')
+  }
+  return classArray.join(' ')
+}
+const getHighlightClass = (color: ColorPalette, rounded: boolean): string => {
+  /**
+   * @color - highlightColor
+   * @rounded - rounded
+   */
+  const classArray: string[] = [generateClass('BEFOREBG', color)]
+  if (rounded) {
+    classArray.push('rounded-b-md')
   }
   return classArray.join(' ')
 }
@@ -184,7 +202,8 @@ const getInputClass = (
           displayBorder,
           borderColor,
           displayHighlight,
-          displayShadow
+          displayShadow,
+          rounded
         )
       "
       v-model="inputValue"
@@ -193,8 +212,10 @@ const getInputClass = (
       <option
         v-if="placeholder"
         class="p-2xs"
-        value=""
         v-html="placeholder"
+        value=""
+        disabled
+        hidden
         selected
       ></option>
       <option
@@ -207,8 +228,8 @@ const getInputClass = (
     </select>
     <div
       v-if="displayHighlight"
-      class="relative -top-1 h-3xs input__decorator"
-      :class="generateClass('BEFOREBG', highlightColor)"
+      class="relative -top-1 h-3xs overflow-hidden input__decorator"
+      :class="getHighlightClass(highlightColor, rounded)"
     ></div>
   </div>
 </template>

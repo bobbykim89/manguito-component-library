@@ -63,6 +63,7 @@ const stateAlpha = reactive<{
   labelBold?: boolean
   displayBorder?: boolean
   borderColor?: ColorPalette
+  rounded?: boolean
   displayHighlight?: boolean
   highlightColor?: ColorPalette
   bgColor?: ColorPalette
@@ -80,6 +81,7 @@ const stateAlpha = reactive<{
   labelBold: true,
   displayBorder: false,
   borderColor: 'light-4',
+  rounded: false,
   displayHighlight: true,
   highlightColor: 'primary',
   bgColor: 'light-1',
@@ -99,6 +101,7 @@ const stateBeta = reactive<{
   labelBold?: boolean
   displayBorder?: boolean
   borderColor?: ColorPalette
+  rounded?: boolean
   displayHighlight?: boolean
   highlightColor?: ColorPalette
   bgColor?: ColorPalette
@@ -116,6 +119,7 @@ const stateBeta = reactive<{
   labelBold: true,
   displayBorder: false,
   borderColor: 'light-4',
+  rounded: false,
   displayHighlight: true,
   highlightColor: 'primary',
   bgColor: 'light-1',
@@ -135,6 +139,9 @@ const stateGamma = reactive<{
   labelBold?: boolean
   displayBorder?: boolean
   borderColor?: ColorPalette
+  rounded?: boolean
+  displayHighlight?: boolean
+  highlightColor?: ColorPalette
   bgColor?: ColorPalette
   buttonText: string
   buttonTextColor?: ColorPalette
@@ -153,6 +160,9 @@ const stateGamma = reactive<{
   labelBold: true,
   displayBorder: false,
   borderColor: 'light-4',
+  rounded: false,
+  displayHighlight: true,
+  highlightColor: 'primary',
   bgColor: 'light-1',
   buttonText: 'Browse',
   buttonTextColor: 'dark-3',
@@ -173,6 +183,7 @@ const stateDelta = reactive<{
   labelBold?: boolean
   displayBorder?: boolean
   borderColor?: ColorPalette
+  rounded?: boolean
   displayHighlight?: boolean
   highlightColor?: ColorPalette
   bgColor?: ColorPalette
@@ -192,6 +203,7 @@ const stateDelta = reactive<{
   labelBold: true,
   displayBorder: false,
   borderColor: 'light-4',
+  rounded: false,
   displayHighlight: true,
   highlightColor: 'primary',
   bgColor: 'light-1',
@@ -225,6 +237,7 @@ const stateDelta = reactive<{
           :label-bold="stateAlpha.labelBold"
           :display-border="stateAlpha.displayBorder"
           :border-color="stateAlpha.borderColor"
+          :rounded="stateAlpha.rounded"
           :display-highlight="stateAlpha.displayHighlight"
           :highlight-color="stateAlpha.highlightColor"
           :bg-color="stateAlpha.bgColor"
@@ -272,6 +285,7 @@ const stateDelta = reactive<{
           v-model="stateAlpha.borderColor"
           :options="colors"
         />
+        <HstCheckbox title="rounded" v-model="stateAlpha.rounded" />
         <HstCheckbox
           title="display-highlight"
           v-model="stateAlpha.displayHighlight"
@@ -318,6 +332,7 @@ const stateDelta = reactive<{
           :label-bold="stateBeta.labelBold"
           :display-border="stateBeta.displayBorder"
           :border-color="stateBeta.borderColor"
+          :rounded="stateBeta.rounded"
           :display-highlight="stateBeta.displayHighlight"
           :highlight-color="stateBeta.highlightColor"
           :bg-color="stateBeta.bgColor"
@@ -362,6 +377,7 @@ const stateDelta = reactive<{
           v-model="stateBeta.borderColor"
           :options="colors"
         />
+        <HstCheckbox title="rounded" v-model="stateBeta.rounded" />
         <HstCheckbox
           title="display-highlight"
           v-model="stateBeta.displayHighlight"
@@ -401,6 +417,9 @@ const stateDelta = reactive<{
           :label-bold="stateGamma.labelBold"
           :display-border="stateGamma.displayBorder"
           :border-color="stateGamma.borderColor"
+          :rounded="stateGamma.rounded"
+          :display-highlight="stateGamma.displayHighlight"
+          :highlight-color="stateGamma.highlightColor"
           :bg-color="stateGamma.bgColor"
           :button-text="stateGamma.buttonText"
           :button-text-color="stateGamma.buttonTextColor"
@@ -450,6 +469,16 @@ const stateDelta = reactive<{
           v-model="stateGamma.borderColor"
           :options="colors"
         />
+        <HstCheckbox title="rounded" v-model="stateGamma.rounded" />
+        <HstCheckbox
+          title="display-highlight"
+          v-model="stateGamma.displayHighlight"
+        />
+        <HstSelect
+          title="highlight-color"
+          v-model="stateGamma.highlightColor"
+          :options="colors"
+        />
         <HstSelect
           title="bg-color"
           v-model="stateGamma.bgColor"
@@ -494,6 +523,7 @@ const stateDelta = reactive<{
           :label-bold="stateDelta.labelBold"
           :display-border="stateDelta.displayBorder"
           :border-color="stateDelta.borderColor"
+          :rounded="stateDelta.rounded"
           :display-highlight="stateDelta.displayHighlight"
           :highlight-color="stateDelta.highlightColor"
           :bg-color="stateDelta.bgColor"
@@ -542,6 +572,7 @@ const stateDelta = reactive<{
           v-model="stateDelta.borderColor"
           :options="colors"
         />
+        <HstCheckbox title="rounded" v-model="stateDelta.rounded" />
         <HstCheckbox
           title="display-highlight"
           v-model="stateDelta.displayHighlight"

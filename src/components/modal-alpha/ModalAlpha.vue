@@ -77,7 +77,7 @@ const getHeaderClass = (size: HeadingSize, color: ColorPalette): string => {
     <section
       v-if="modelValue"
       @click="closeModal"
-      class="fixed inset-0 z-[150] overflow-y-auto bg-opacity-70 flex justify-center items-start md:items-center px-xs"
+      class="fixed inset-0 z-[150] overflow-y-auto bg-opacity-70 backdrop-blur flex justify-center items-start md:items-center px-xs"
       :class="generateClass('BGCOLOR', backdropColor)"
     >
       <Transition name="slide-down" appear>
