@@ -51,6 +51,28 @@
 </div>
 ```
 
+### Button progress animation
+
+You need to nest text inside a tag such as div, span or text to make text visible on hover.
+
+```html
+<button class="btn btn-progress">
+  <span>Default</span>
+</button>
+<button class="btn btn-progress btn-secondary">
+  <span>Secondary</span>
+</button>
+<button class="btn btn-full btn-progress btn-info btn-round">
+  <span>Rounded</span>
+</button>
+<button class="btn btn-progress btn-warning btn-full">
+  <span>Full width</span>
+</button>
+<button class="btn btn-progress btn-danger btn-round btn-full">
+  <span>Full width rounded</span>
+</button>
+```
+
 ---
 
 ## List class
