@@ -65,6 +65,9 @@ You need to nest text inside a tag such as div, span or text to make text visibl
 <button class="btn btn-full btn-progress btn-info btn-round">
   <span>Rounded</span>
 </button>
+<button class="btn btn-full btn-progress btn-success btn-progress-r">
+  <span>Reverse</span>
+</button>
 <button class="btn btn-progress btn-warning btn-full">
   <span>Full width</span>
 </button>
