@@ -4,7 +4,6 @@ const mclTheme = plugin.withOptions(
   () => {
     return ({ addBase, theme, addComponents, addUtilities, e }) => {
       const colors = theme('colors')
-      // console.log(colors)
       const listColors = Object.keys(colors).reduce((accumulator, key) => {
         if (typeof colors[key] === 'string') {
           return {
@@ -56,6 +55,13 @@ const mclTheme = plugin.withOptions(
                 '@apply ring-0': {},
               },
             },
+            [`.btn.btn-progress.btn-${e(key)}`]: {
+              [`@apply before:bg-${key} border-${key} text-${key} bg-transparent`]:
+                {},
+              '&:hover, &:focus': {
+                '@apply text-white': {},
+              },
+            },
           }
         }
 
@@ -88,6 +94,13 @@ const mclTheme = plugin.withOptions(
               [`.btn-group .btn.btn-${e(key)}-${level}`]: {
                 '&:focus': {
                   '@apply ring-0': {},
+                },
+              },
+              [`.btn.btn-progress.btn-${e(key)}-${level}`]: {
+                [`@apply before:bg-${key}-${level} border-${key}-${level} text-${key}-${level} bg-transparent`]:
+                  {},
+                '&:hover, &:focus': {
+                  '@apply text-white': {},
                 },
               },
             }),
@@ -323,6 +336,29 @@ const mclTheme = plugin.withOptions(
           '@apply border-2 border-primary text-primary bg-white': {},
           '&:hover': {
             '@apply bg-primary text-white bg-opacity-100': {},
+          },
+        },
+        '.btn.btn-progress': {
+          position: 'relative',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            height: '100%',
+            width: '0',
+            bottom: '0',
+            left: '0',
+            transition: 'width 300ms linear',
+          },
+          '@apply before:bg-primary border-2 border-primary text-primary bg-transparent':
+            {},
+        },
+        '.btn.btn-progress > *': {
+          position: 'relative',
+        },
+        '.btn.btn-progress:hover, .btn.btn-progress:focus': {
+          '@apply text-white': {},
+          '&::before': {
+            width: '100%',
           },
         },
       })
