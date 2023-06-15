@@ -99,7 +99,12 @@
             <span>Rounded</span>
           </button>
         </div>
-        <div class="col-span-3 justify-self-stretch place-self-center">
+        <div class="place-self-center">
+          <button class="btn btn-full btn-progress btn-success btn-progress-r">
+            <span>Reverse</span>
+          </button>
+        </div>
+        <div class="col-span-2 justify-self-stretch place-self-center">
           <button class="btn btn-progress btn-warning btn-full">
             <span>Full width</span>
           </button>

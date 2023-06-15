@@ -355,12 +355,25 @@ const mclTheme = plugin.withOptions(
         '.btn.btn-progress > *': {
           position: 'relative',
         },
+        '.btn.btn-progress.btn-progress-r': {
+          '&::before': {
+            left: '100%',
+            transition: 'all 300ms linear',
+          },
+        },
         '.btn.btn-progress:hover, .btn.btn-progress:focus': {
           '@apply text-white': {},
           '&::before': {
             width: '100%',
           },
         },
+        '.btn.btn-progress.btn-progress-r:hover, .btn.btn-progress.btn-progress-r:focus':
+          {
+            '&::before': {
+              width: '100%',
+              left: '0',
+            },
+          },
       })
 
       addUtilities(listColors)
