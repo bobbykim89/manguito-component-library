@@ -28,6 +28,34 @@ const mclTheme = plugin.withOptions(
           ),
         }
       }, {})
+      const linkColors = Object.keys(colors).reduce((accumulator, key) => {
+        const invalidKeys = ['current', 'transparent', 'inherit']
+        if (invalidKeys.includes(key)) {
+          return
+        }
+        if (typeof colors[key] === 'string') {
+          return {
+            ...accumulator,
+            [`.mcl-link.text-${e(key)}`]: {
+              '&:hover': {
+                [`@apply text-${key}/60`]: {},
+              },
+            },
+          }
+        }
+        const colorShades = Object.keys(colors[key])
+        return {
+          ...accumulator,
+          ...colorShades.reduce((acc, level) => ({
+            ...acc,
+            [`.mcl-link.text-${e(key)}-${level}`]: {
+              '&:hover': {
+                [`@apply text-${key}-${level}/60`]: {},
+              },
+            },
+          })),
+        }
+      })
       const btnColors = Object.keys(colors).reduce((accumulator, key) => {
         if (typeof colors[key] === 'string') {
           return {
@@ -265,6 +293,10 @@ const mclTheme = plugin.withOptions(
         '.mcl-link': {
           color: theme('colors.primary'),
           textDecoration: 'underline',
+          '@apply transition-colors duration-200 ease-in': {},
+          '&:hover': {
+            '@apply text-primary/60': {},
+          },
         },
         '.mcl-list': {
           'list-style-position': 'inside',
@@ -378,6 +410,7 @@ const mclTheme = plugin.withOptions(
 
       addUtilities(listColors)
       addUtilities(btnColors)
+      addUtilities(linkColors)
     }
   },
   (options = {}) => {

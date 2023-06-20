@@ -133,3 +133,21 @@ You need to nest text inside a tag such as div, span or text to make text visibl
   <li>item 3</li>
 </ul>
 ```
+
+---
+
+## Link Class
+
+### Default link
+
+```html
+<a href="#" class="mcl-link">Default</a>
+```
+
+### Link Style Colors
+
+```html
+<a href="#" class="mcl-link text-secondary">Secondary</a>
+<a href="#" class="mcl-link text-success">Success</a>
+<a href="#" class="mcl-link text-info">Info</a>
+```
