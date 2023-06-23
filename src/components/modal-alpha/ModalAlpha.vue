@@ -100,6 +100,8 @@ const getHeaderClass = (size: HeadingSize, color: ColorPalette): string => {
               @click.prevent="closeModal"
               class="opacity-80 hover:opacity-60 transition-opacity duration-150 ease-linear"
               :class="generateClass('TEXTCOLOR', headerColor)"
+              type="button"
+              aria-label="close"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
