@@ -138,11 +138,7 @@ const configColorMap = () => {
     if (props.customColor && props.customColor[key as keyof ColorMap]) {
       colors.value[key as keyof ColorMap] =
         props.customColor[key as keyof ColorMap]
-    }
-    if (
-      !props.customColor!.hasOwnProperty(key as keyof ColorMap) ||
-      props.customColor![key as keyof ColorMap] === undefined
-    ) {
+    } else {
       colors.value[key as keyof ColorMap] = defaultColors[key as keyof ColorMap]
     }
   })

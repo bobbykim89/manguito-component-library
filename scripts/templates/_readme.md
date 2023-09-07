@@ -12,7 +12,7 @@ Add description
 
 `import {%vueFileName%} from "{%componentName%}"`;
 
-## Authors
+## Maintainer
 
 - **{%authorName%}** - _Initial work_
 
