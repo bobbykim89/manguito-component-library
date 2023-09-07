@@ -3,93 +3,40 @@
  * @Interface - Classes for color, header text, body text, border color, border width(top, left).
  * @Export RDSTheme - an abstract class
  */
+import type {
+  ColorPalette,
+  HeadingSize,
+  BodyText,
+  FontWeight,
+  Range,
+  OpacityRange,
+  SpacingLevel,
+  Position,
+} from './theme.types'
 
-export interface ColorClass {
-  primary: string
-  secondary: string
-  success: string
-  info: string
-  warning: string
-  danger: string
-  'light-1': string
-  'light-2': string
-  'light-3': string
-  'light-4': string
-  'dark-1': string
-  'dark-2': string
-  'dark-3': string
-  'dark-4': string
-  black: string
-  white: string
-  transparent: string
+export type ColorClass = {
+  [key in ColorPalette]: string
 }
-
-export interface HeaderSizeClass {
-  sm: string
-  md: string
-  lg: string
-  xl: string
+export type HeaderSizeClass = {
+  [key in HeadingSize]: string
 }
-
-export interface BodyTextClass {
-  xs: string
-  sm: string
-  md: string
-  lg: string
-  xl: string
+export type BodyTextClass = {
+  [key in BodyText]: string
 }
-
-export interface FontWeightClass {
-  light: string
-  normal: string
-  bold: string
+export type FontWeightClass = {
+  [key in FontWeight]: string
 }
-
-export interface BorderWidth {
-  1: string
-  2: string
-  3: string
-  4: string
-  5: string
-  6: string
-  7: string
-  8: string
-  9: string
-  10: string
-  11: string
-  12: string
+export type BorderWidth = {
+  [key in Range<1, 12>]: string
 }
-
-export interface Opacity {
-  10: string
-  20: string
-  30: string
-  40: string
-  50: string
-  60: string
-  70: string
-  80: string
-  90: string
-  100: string
+export type Opacity = {
+  [key in OpacityRange]: string
 }
-
-export interface Spacing {
-  '0': string
-  '3xs': string
-  '2xs': string
-  xs: string
-  sm: string
-  md: string
-  lg: string
-  xl: string
-  '2xl': string
-  '3xl': string
+export type Spacing = {
+  [key in SpacingLevel]: string
 }
-
-export interface Alignment {
-  left: string
-  center: string
-  right: string
+export type Alignment = {
+  [key in Position]: string
 }
 
 abstract class MCLTheme {

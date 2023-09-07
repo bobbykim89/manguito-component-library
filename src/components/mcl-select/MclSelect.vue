@@ -12,25 +12,8 @@ export interface SelectOptionType {
   value: string | number
 }
 
-export interface ColorMap {
-  [key: string]: string
-  primary: string
-  secondary: string
-  success: string
-  info: string
-  warning: string
-  danger: string
-  'light-1': string
-  'light-2': string
-  'light-3': string
-  'light-4': string
-  'dark-1': string
-  'dark-2': string
-  'dark-3': string
-  'dark-4': string
-  black: string
-  white: string
-  transparent: string
+export type ColorMap = {
+  [key in ColorPalette]: string
 }
 
 const colors = ref<ColorMap>({
