@@ -245,6 +245,7 @@ onBeforeUnmount(() => {
               :class="getButtonClass(btnColor, btnBgColor)"
               :disabled="currentIndex === 0"
               @click="handleSlideBtnClick($event, 'prev')"
+              aria-label="previous"
             >
               <svg
                 class="w-xs h-xs"
@@ -263,6 +264,7 @@ onBeforeUnmount(() => {
               :class="getButtonClass(btnColor, btnBgColor)"
               :disabled="isNextBtnDisabled"
               @click="handleSlideBtnClick($event, 'next')"
+              aria-label="next"
             >
               <svg
                 class="w-xs h-xs"

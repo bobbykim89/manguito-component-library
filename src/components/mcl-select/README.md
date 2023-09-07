@@ -1,4 +1,4 @@
-# {%componentName%}
+# @bobbykim/mcl-select
 
 Add description
 
@@ -10,11 +10,11 @@ Add description
 
 ## Usage
 
-`import {%vueFileName%} from "{%componentName%}"`;
+`import MclSelect from "@bobbykim/mcl-select"`;
 
-## Maintainer
+## Authors
 
-- **{%authorName%}** - _Initial work_
+- **Bobby Kim** - _Initial work_
 
 ## License
 

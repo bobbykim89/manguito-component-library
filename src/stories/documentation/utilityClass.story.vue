@@ -81,6 +81,39 @@
             <button class="btn btn-danger btn-invert">Button 4</button>
           </div>
         </div>
+        <div class="col-span-3">
+          <h3>Button progress</h3>
+        </div>
+        <div class="place-self-center">
+          <button class="btn btn-progress">
+            <span>Default</span>
+          </button>
+        </div>
+        <div class="place-self-center">
+          <button class="btn btn-progress btn-secondary">
+            <span>Secondary</span>
+          </button>
+        </div>
+        <div class="place-self-center">
+          <button class="btn btn-full btn-progress btn-info btn-round">
+            <span>Rounded</span>
+          </button>
+        </div>
+        <div class="place-self-center">
+          <button class="btn btn-full btn-progress btn-success btn-progress-r">
+            <span>Reverse</span>
+          </button>
+        </div>
+        <div class="col-span-2 justify-self-stretch place-self-center">
+          <button class="btn btn-progress btn-warning btn-full">
+            <span>Full width</span>
+          </button>
+        </div>
+        <div class="col-span-3 justify-self-stretch place-self-center">
+          <button class="btn btn-progress btn-danger btn-round btn-full">
+            <span>Full width rounded</span>
+          </button>
+        </div>
       </div>
     </Variant>
     <!-- List class -->
@@ -190,6 +223,28 @@
               quia fugiat neque! Maxime, eaque.
             </li>
           </ul>
+        </div>
+      </div>
+    </Variant>
+    <Variant title="Link class">
+      <div class="mb-2xs bg-white py-sm px-xs md:py-md md:px-sm">
+        <div class="mb-sm">
+          <a href="#" class="mcl-link">Default</a>
+        </div>
+        <div class="mb-sm">
+          <a href="#" class="mcl-link text-secondary">Secondary</a>
+        </div>
+        <div class="mb-sm">
+          <a href="#" class="mcl-link text-info">Info</a>
+        </div>
+        <div class="mb-sm">
+          <a href="#" class="mcl-link text-success">Success</a>
+        </div>
+        <div class="mb-sm">
+          <a href="#" class="mcl-link text-warning">Warning</a>
+        </div>
+        <div class="mb-sm">
+          <a href="#" class="mcl-link text-danger">Danger</a>
         </div>
       </div>
     </Variant>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import generateClass from '@bobbykim/manguito-theme'
 import type {
   ColorPalette,
@@ -9,32 +9,11 @@ import type {
   CrossOrigin,
 } from '@bobbykim/manguito-theme/theme/theme.types'
 
-export interface ColorMap {
-  [key: string]: string
-  primary: string
-  secondary: string
-  success: string
-  info: string
-  warning: string
-  danger: string
-  'light-1': string
-  'light-2': string
-  'light-3': string
-  'light-4': string
-  'dark-1': string
-  'dark-2': string
-  'dark-3': string
-  'dark-4': string
-  black: string
-  white: string
-  transparent: string
+export type ColorMap = {
+  [key in ColorPalette]?: string
 }
 
-export type CustomColorType = {
-  [P in keyof ColorMap]?: ColorMap[P]
-}
-
-const colors = ref<ColorMap>({
+const defaultColors: ColorMap = {
   primary: '#ec489a',
   secondary: '#00feda',
   success: '#78be20',
@@ -52,7 +31,9 @@ const colors = ref<ColorMap>({
   black: '#000',
   white: 'fff',
   transparent: 'transparent',
-})
+}
+
+const colors = ref<ColorMap>({})
 
 const props = withDefaults(
   defineProps<{
@@ -77,7 +58,7 @@ const props = withDefaults(
     borderColor?: ColorPalette
     gradient1?: ColorPalette
     gradient2?: ColorPalette
-    customColor?: CustomColorType
+    customColor?: ColorMap
   }>(),
   {
     displayImage: true,
@@ -144,7 +125,6 @@ const buttonClass = (
 }
 
 const borderColor = computed(() => {
-  configColorMap()
   return {
     '--border-color': colors.value[props.borderColor],
     '--gradient-1': colors.value[props.gradient1],
@@ -155,11 +135,11 @@ const borderColor = computed(() => {
 
 const configColorMap = () => {
   Object.keys(colors.value).forEach((key: string) => {
-    if (
-      props.customColor !== undefined &&
-      props.customColor[key as keyof ColorMap]
-    ) {
-      colors.value[key] = props.customColor[key] as string
+    if (props.customColor && props.customColor[key as keyof ColorMap]) {
+      colors.value[key as keyof ColorMap] =
+        props.customColor[key as keyof ColorMap]
+    } else {
+      colors.value[key as keyof ColorMap] = defaultColors[key as keyof ColorMap]
     }
   })
 }
@@ -173,8 +153,15 @@ const handleCardClick = (e: Event, link: boolean) => {
 }
 
 onMounted(() => {
+  colors.value = Object.assign({}, defaultColors)
   configColorMap()
 })
+watch(
+  () => props.customColor,
+  () => {
+    configColorMap()
+  }
+)
 </script>
 
 <template>

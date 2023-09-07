@@ -8,6 +8,7 @@ const props = withDefaults(
     color?: ColorPalette
     displayBorder?: boolean
     toggle: boolean
+    navColor: ColorPalette
   }>(),
   {
     color: 'dark-2',
@@ -30,12 +31,26 @@ const hamburgetButtonState = computed({
   },
 })
 
-const getBorderClass = (bColor: ColorPalette, border: boolean): string => {
+const getBorderClass = (
+  bColor: ColorPalette,
+  border: boolean,
+  nColor: ColorPalette
+): string => {
   /**
    * @bColor - color
    * @border - displayBorder
+   * @nColor - navColor
    */
-  const classArray: string[] = [generateClass('RINGCOLOR', bColor)]
+  // console.log(
+  //   nColor,
+  //   '+',
+  //   generateClass('RINGOFFSETCOLOR', nColor),
+  //   generateClass('BGCOLOR', nColor)
+  // )
+  const classArray: string[] = [
+    generateClass('RINGCOLOR', bColor),
+    // generateClass('RINGOFFSETCOLOR', nColor),
+  ]
 
   if (border) {
     classArray.push(generateClass('BORDER', bColor))
@@ -61,7 +76,7 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
 <template>
   <button
     class="p-3xs rounded-md aspect-square outline-none focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear hover:opacity-70 focus:opacity-70 hamburger__button"
-    :class="getBorderClass(color, displayBorder)"
+    :class="getBorderClass(color, displayBorder, navColor)"
     @click="handleButtonToggle"
   >
     <input

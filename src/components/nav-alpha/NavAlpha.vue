@@ -203,7 +203,7 @@ onBeforeUnmount(() => {
 <template>
   <header
     :class="[
-      navScroll ? 'lg:shadow-md bg-opacity-70' : 'bg-opacity-80',
+      navScroll ? 'lg:shadow-md bg-opacity-70' : 'bg-opacity-100',
       'w-full top-0 md:sticky items-center z-50 transition ease-in duration-500 delay-150',
       generateClass('BGCOLOR', bgColor),
     ]"
@@ -262,8 +262,8 @@ onBeforeUnmount(() => {
               v-html="title"
             ></h2>
           </a>
-          <li class="hidden md:flex flex-wrap">
-            <ul
+          <ul class="hidden md:flex flex-wrap">
+            <li
               class="mr-xs last:mr-0"
               v-for="(item, index) in navItems"
               :key="`menu-${index}`"
@@ -292,8 +292,8 @@ onBeforeUnmount(() => {
                 class="relative -top-[2px] h-[6px] nav__decorator"
                 :class="generateClass('BEFOREBG', highlightColor)"
               ></div>
-            </ul>
-          </li>
+            </li>
+          </ul>
         </div>
       </div>
       <div>
@@ -303,6 +303,7 @@ onBeforeUnmount(() => {
           class="block md:hidden"
           @hbg-click="toggleNavButton"
           :toggle="navOpen"
+          :nav-color="bgColor"
         ></hamburger-menu>
         <div class="hidden md:block">
           <slot name="nav-slot"></slot>
