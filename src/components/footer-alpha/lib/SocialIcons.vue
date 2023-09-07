@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { withDefaults, ref, markRaw, onMounted, computed } from 'vue'
+import { ref, markRaw, onMounted, computed } from 'vue'
 import type {
   ColorPalette,
   HeadingSize,
@@ -26,35 +26,40 @@ const props = withDefaults(
 interface IconList {
   url: string
   icon: any
+  label: string
 }
-const iconsRef = ref([])
+const iconsRef = ref<any>([])
 
 const handleIconsList = (): void => {
-  const { linkedin, instagram, github, twitter } = props.socialLinks
+  const { linkedin, instagram, github, twitter } = props.socialLinks!
 
   const iconsList: IconList[] = []
   if (linkedin) {
     iconsList.push({
       url: linkedin,
       icon: markRaw(LinkedinIcon),
+      label: 'linkedin social icon',
     })
   }
   if (github) {
     iconsList.push({
       url: github,
       icon: markRaw(GithubIcon),
+      label: 'github social icon',
     })
   }
   if (instagram) {
     iconsList.push({
       url: instagram,
       icon: markRaw(InstagramIcon),
+      label: 'instagram social icon',
     })
   }
   if (twitter) {
     iconsList.push({
       url: twitter,
       icon: markRaw(TwitterIcon),
+      label: 'twitter social icon',
     })
   }
   iconsRef.value = iconsList
@@ -88,6 +93,7 @@ onMounted(() => {
         target="_blank"
         class="inline-block outline-none focus:ring-2 hover:ring-2 hover:opacity-70 ring-offset-2 ring-offset-transparent rounded-md transition-all duration-300 ease-linear"
         :class="getIconColor(iconColor)"
+        :aria-label="item.label"
       >
         <component :is="item.icon"></component>
       </a>

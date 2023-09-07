@@ -57,6 +57,7 @@ export type Range<T extends number, R extends number> = IntRange<
   _RangeArray<T>,
   R
 >
+
 export type ButtonSize = 'small' | 'medium' | 'large'
 export type OpacityRange = 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100
 export type Directions = 'left' | 'right'
