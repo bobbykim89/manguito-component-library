@@ -4,6 +4,7 @@ import MclInput from '@/components/mcl-input'
 import MclTextArea from '@/components/mcl-text-area'
 import MclInputFile from '@/components/mcl-input-file'
 import MclSelect from '@/components/mcl-select'
+import MclInputSwitch from '@/components/mcl-input-switch'
 import type { SelectOptionType } from '@/components/mcl-select/MclSelect.vue'
 import BtnAlpha from '@/components/btn-alpha'
 import type {
@@ -604,6 +605,11 @@ const stateDelta = reactive<{
           :options="spacingOptions"
         />
       </template>
+    </Variant>
+    <Variant title="mcl-input-switch">
+      <form>
+        <mcl-input-switch></mcl-input-switch>
+      </form>
     </Variant>
   </Story>
 </template>
