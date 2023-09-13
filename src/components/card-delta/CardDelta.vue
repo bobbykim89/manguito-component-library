@@ -8,7 +8,6 @@ import type {
   Range,
   CrossOrigin,
 } from '@bobbykim/manguito-theme/theme/theme.types'
-import MCLTheme from '@bobbykim/manguito-theme/theme'
 
 export type ColorMap = {
   [key in ColorPalette]?: string

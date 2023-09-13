@@ -41,15 +41,10 @@ const getBorderClass = (
    * @border - displayBorder
    * @nColor - navColor
    */
-  // console.log(
-  //   nColor,
-  //   '+',
-  //   generateClass('RINGOFFSETCOLOR', nColor),
-  //   generateClass('BGCOLOR', nColor)
-  // )
+
   const classArray: string[] = [
     generateClass('RINGCOLOR', bColor),
-    // generateClass('RINGOFFSETCOLOR', nColor),
+    generateClass('OFFSETRING', nColor),
   ]
 
   if (border) {
