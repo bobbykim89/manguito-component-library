@@ -608,7 +608,10 @@ const stateDelta = reactive<{
     </Variant>
     <Variant title="mcl-input-switch">
       <form>
-        <mcl-input-switch></mcl-input-switch>
+        <mcl-input-switch
+          identifier="pollito"
+          label-text="pollito"
+        ></mcl-input-switch>
       </form>
     </Variant>
   </Story>
