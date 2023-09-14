@@ -7,20 +7,15 @@ import CardDelta from '@/components/card-delta'
 import type {
   ColorPalette,
   HeadingSize,
-  CtaTarget,
-  CrossOrigin,
   BodyText,
   SpacingLevel,
 } from '@/components/manguito-theme/theme/theme.types'
 import {
   colors,
   bodyTextSize,
-  buttonSize,
-  targetOption,
   headingTextSize,
   spacingOptions,
 } from '@/assets/options'
-import generateClass from '@/components/manguito-theme'
 
 const cardInfo: any[] = [
   {
