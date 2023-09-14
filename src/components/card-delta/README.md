@@ -24,7 +24,7 @@ import CardDelta from "@bobbykim/card-delta"
 </template>
 ```
 
-## Authors
+## Maintainers
 
 - **Bobby Kim** - _Initial work_
 

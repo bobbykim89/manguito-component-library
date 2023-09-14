@@ -33,7 +33,7 @@ import CardAlpha from '@bobbykim/card-alpha'
 - @bobbykim/manguito-theme
 - @bobbykim/btn-alpha
 
-## Authors
+## Maintainers
 
 - **Bobby Kim** - _Initial work_
 

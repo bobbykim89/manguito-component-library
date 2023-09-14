@@ -280,6 +280,45 @@ abstract class MCLTheme {
     white: 'active:ring-white',
     transparent: 'active:ring-transparent',
   }
+  // ring-offset color class
+  protected static ringOffsetColor: ColorClass = {
+    primary: 'ring-offset-primary',
+    secondary: 'ring-offset-secondary',
+    success: 'ring-offset-success',
+    danger: 'ring-offset-danger',
+    info: 'ring-offset-info',
+    warning: 'ring-offset-warning',
+    'light-1': 'ring-offset-light-1',
+    'light-2': 'ring-offset-light-2',
+    'light-3': 'ring-offset-light-3',
+    'light-4': 'ring-offset-light-4',
+    'dark-1': 'ring-offset-dark-1',
+    'dark-2': 'ring-offset-dark-2',
+    'dark-3': 'ring-offset-dark-3',
+    'dark-4': 'ring-offset-dark-4',
+    black: 'ring-offset-black',
+    white: 'ring-offset-white',
+    transparent: 'ring-offset-transparent',
+  }
+  protected static dummyColor: ColorClass = {
+    primary: 'ring-offset-primary',
+    secondary: 'ring-offset-secondary',
+    success: 'ring-offset-success',
+    danger: 'ring-offset-danger',
+    info: 'ring-offset-info',
+    warning: 'ring-offset-warning',
+    'light-1': 'ring-offset-light-1',
+    'light-2': 'ring-offset-light-2',
+    'light-3': 'ring-offset-light-3',
+    'light-4': 'ring-offset-light-4',
+    'dark-1': 'ring-offset-dark-1',
+    'dark-2': 'ring-offset-dark-2',
+    'dark-3': 'ring-offset-dark-3',
+    'dark-4': 'ring-offset-dark-4',
+    black: 'ring-offset-black',
+    white: 'ring-offset-white',
+    transparent: 'ring-offset-transparent',
+  }
   // btn color class
   protected static btnColor: ColorClass = {
     primary: 'btn-primary',

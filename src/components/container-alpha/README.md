@@ -32,7 +32,7 @@ import ContainerAlpha from '@bobbykim/container-alpha'
 
 - @bobbykim/manguito-theme
 
-## Authors
+## Maintainers
 
 - **Bobby Kim** - _Initial work_
 

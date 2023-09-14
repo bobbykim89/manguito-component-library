@@ -1,4 +1,4 @@
-import MCLTheme from './theme'
+import MCLTheme from './theme.js'
 import type {
   ColorPalette,
   HeadingSize,
@@ -16,68 +16,82 @@ import type {
  * @Export GenerateMCLClass - extends MCLTheme class
  */
 
-export type ClassType =
-  // color class
-  | 'BGCOLOR'
-  | 'BEFOREBG'
-  | 'AFTERBG'
-  | 'HVBGCOLOR'
-  | 'ACTIVEBG'
-  | 'TEXTCOLOR'
-  | 'HVTEXTCOLOR'
-  | 'DISABLEDTEXTCOLOR'
-  | 'SVGFILL'
-  | 'RINGCOLOR'
-  | 'FOCUSRING'
-  | 'ACTIVERING'
-  | 'BTNCOLOR'
-  | 'LISTCOLOR'
-  // header text class
-  | 'H1'
-  | 'H2'
-  | 'H3'
-  | 'H4'
-  // body text class
-  | 'BODYTEXT'
-  // font weight class
-  | 'FONTWEIGHT'
-  // border color class
-  | 'BORDER'
-  | 'BORDERX'
-  | 'BORDERY'
-  | 'BORDERT'
-  | 'BORDERB'
-  | 'BORDERL'
-  | 'BORDERR'
-  // border width class
-  | 'BORDERW'
-  | 'BORDERXW'
-  | 'BORDERYW'
-  | 'BORDERTW'
-  | 'BORDERBW'
-  | 'BORDERLW'
-  | 'BORDERRW'
-  // opacity class
-  | 'BGOPACITY'
-  | 'OPACITY'
-  // spacing class
-  | 'MARGIN'
-  | 'MARGINX'
-  | 'MARGINY'
-  | 'MARGINT'
-  | 'MARGINB'
-  | 'MARGINL'
-  | 'MARGINR'
-  | 'PADDING'
-  | 'PADDINGX'
-  | 'PADDINGY'
-  | 'PADDINGT'
-  | 'PADDINGB'
-  | 'PADDINGL'
-  | 'PADDINGR'
-  | 'GAP'
-  // text align class
-  | 'TEXTALIGN'
+export const colorType = [
+  'BGCOLOR',
+  'BEFOREBG',
+  'AFTERBG',
+  'HVBGCOLOR',
+  'ACTIVEBG',
+  'TEXTCOLOR',
+  'HVTEXTCOLOR',
+  'DISABLEDTEXTCOLOR',
+  'SVGFILL',
+  'RINGCOLOR',
+  'FOCUSRING',
+  'ACTIVERING',
+  'OFFSETRING',
+  'DUMMYCOLOR',
+  'BTNCOLOR',
+  'LISTCOLOR',
+  'BORDER',
+  'BORDERX',
+  'BORDERY',
+  'BORDERT',
+  'BORDERB',
+  'BORDERL',
+  'BORDERR',
+] as const
+
+export const textType = [
+  'H1',
+  'H2',
+  'H3',
+  'H4',
+  'BODYTEXT',
+  'FONTWEIGHT',
+  'TEXTALIGN',
+] as const
+export const borderWidthType = [
+  'BORDERW',
+  'BORDERXW',
+  'BORDERYW',
+  'BORDERTW',
+  'BORDERBW',
+  'BORDERLW',
+  'BORDERRW',
+] as const
+export const scaleType = ['BGOPACITY', 'OPACITY'] as const
+export const spacingType = [
+  'MARGIN',
+  'MARGINX',
+  'MARGINY',
+  'MARGINT',
+  'MARGINB',
+  'MARGINL',
+  'MARGINR',
+  'PADDING',
+  'PADDINGX',
+  'PADDINGY',
+  'PADDINGT',
+  'PADDINGB',
+  'PADDINGL',
+  'PADDINGR',
+  'GAP',
+] as const
+const allType = [
+  ...colorType,
+  ...textType,
+  ...borderWidthType,
+  ...scaleType,
+  ...spacingType,
+] as const
+
+export type ClassType = (typeof allType)[number]
+export type ColorClassType = (typeof colorType)[number]
+export type TextClassType = (typeof textType)[number]
+export type BorderWidthClassType = (typeof borderWidthType)[number]
+export type ScaleClassType = (typeof scaleType)[number]
+export type SpacingClassType = (typeof spacingType)[number]
 
 export type InputType =
   | ColorPalette
@@ -98,9 +112,9 @@ class GenerateMCLClass extends MCLTheme {
     this.classType = classType
     this.classValue = classValue
   }
-  generateClassName(): string {
+  // handle color classes types
+  generateColorClass(): string {
     switch (this.classType) {
-      // case: color class
       case 'BGCOLOR':
         return this.getBgColorClass()
       case 'HVBGCOLOR':
@@ -125,11 +139,12 @@ class GenerateMCLClass extends MCLTheme {
         return this.getFocusRingColorClass()
       case 'ACTIVERING':
         return this.getActiveRingColorClass()
+      case 'OFFSETRING':
+        return this.getRingOffsetColorClass()
       case 'BTNCOLOR':
         return this.getBtnColorClass()
       case 'LISTCOLOR':
         return this.getRingColorClass()
-      // case: border color class
       case 'BORDER':
         return this.getBorderColorClass()
       case 'BORDERX':
@@ -144,6 +159,13 @@ class GenerateMCLClass extends MCLTheme {
         return this.getBorderLeftColorClass()
       case 'BORDERR':
         return this.getBorderRightColorClass()
+      default:
+        return ' '
+    }
+  }
+  // handle text class types
+  generateTextClass(): string {
+    switch (this.classType) {
       // case: heading text class
       case 'H1':
         return this.getH1Class()
@@ -162,6 +184,13 @@ class GenerateMCLClass extends MCLTheme {
       // case: text alignment class
       case 'TEXTALIGN':
         return this.getTextAlignClass()
+      default:
+        return ' '
+    }
+  }
+  // handle border width class types
+  generateBorderWidthClass(): string {
+    switch (this.classType) {
       // case: border width class
       case 'BORDERW':
         return this.getBorderWidthClass()
@@ -177,13 +206,24 @@ class GenerateMCLClass extends MCLTheme {
         return this.getBorderLeftWidthClass()
       case 'BORDERRW':
         return this.getBorderWidthClass()
+      default:
+        return ' '
+    }
+  }
+  generateScaleClass(): string {
+    switch (this.classType) {
       // case: opacity class
       case 'OPACITY':
         return this.getOpacityClass()
       case 'BGOPACITY':
         return this.getBgOpacityClass()
-      // case: spacing class
-      // margins
+      default:
+        return ' '
+    }
+  }
+  generateSpacingClass(): string {
+    switch (this.classType) {
+      // case: margins
       case 'MARGIN':
         return this.getMarginClass()
       case 'MARGINX':
@@ -198,7 +238,7 @@ class GenerateMCLClass extends MCLTheme {
         return this.getMarginLeftClass()
       case 'MARGINR':
         return this.getMarginRightClass()
-      // paddings
+      // case: paddings
       case 'PADDING':
         return this.getPaddingClass()
       case 'PADDINGX':
@@ -213,7 +253,7 @@ class GenerateMCLClass extends MCLTheme {
         return this.getPaddingLeftClass()
       case 'PADDINGR':
         return this.getPaddingRightClass()
-      // gap
+      // case: gap
       case 'GAP':
         return this.getGapClass()
       default:
@@ -296,6 +336,12 @@ class GenerateMCLClass extends MCLTheme {
       return ' '
     }
     return MCLTheme.ringActiveColor[this.classValue as ColorPalette]
+  }
+  getRingOffsetColorClass(): string {
+    if (!this.validateColorType) {
+      return ' '
+    }
+    return MCLTheme.ringOffsetColor[this.classValue as ColorPalette]
   }
   // btn & list
   getBtnColorClass(): string {
@@ -603,6 +649,9 @@ class GenerateMCLClass extends MCLTheme {
       return false
     }
     return validatorRe.test(this.classValue)
+  }
+  dummyMethod(): any {
+    return this.getRingOffsetColorClass()
   }
 }
 
