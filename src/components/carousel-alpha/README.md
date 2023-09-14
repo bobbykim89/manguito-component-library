@@ -45,7 +45,7 @@ import CarouselAlpha from '@bobbykim/carousel-alpha'
 - @bobbykim/card-beta
 - @bobbykim/card-delta
 
-## Authors
+## Maintainers
 
 - **Bobby Kim** - _Initial work_
 
