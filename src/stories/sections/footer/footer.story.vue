@@ -14,7 +14,6 @@ import type {
 import {
   colors,
   bodyTextSize,
-  buttonSize,
   targetOption,
   headingTextSize,
 } from '@/assets/options'

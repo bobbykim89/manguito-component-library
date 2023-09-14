@@ -37,10 +37,11 @@
     "vue-tsc": "^1.0.9"
   },
   "dependencies": {
-    "@bobbykim/btn-alpha": "^0.1.5",
-    "@bobbykim/card-alpha": "^0.1.5",
-    "@bobbykim/card-beta": "^0.1.5",
-    "@bobbykim/manguito-theme": "^0.2.0",
+    "@bobbykim/btn-alpha": "^0.1.6",
+    "@bobbykim/card-alpha": "^0.1.6",
+    "@bobbykim/card-beta": "^0.1.6",
+    "@bobbykim/card-delta": "^0.1.2",
+    "@bobbykim/manguito-theme": "^0.3.0",
     "vue": "^3.2.40"
   },
   "config": {
