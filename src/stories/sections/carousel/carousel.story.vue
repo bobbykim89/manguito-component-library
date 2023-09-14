@@ -20,7 +20,6 @@ import {
   headingTextSize,
   spacingOptions,
 } from '@/assets/options'
-import generateClass from '@/components/manguito-theme'
 
 const cardInfo: any[] = [
   {
