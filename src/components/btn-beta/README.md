@@ -32,7 +32,7 @@ import BtnBeta from '@bobbykim/btn-beta'
 
 - @bobbykim/manguito-theme
 
-## Authors
+## Maintainers
 
 - **Bobby Kim** - _Initial work_
 

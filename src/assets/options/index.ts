@@ -51,3 +51,4 @@ export const columnWidth: ColWidth[] = [
 ]
 export const corsOptions: string[] = ['use-credentials', 'anonymous']
 export const inputOptions: string[] = ['text', 'email', 'password']
+export const switchSizeOptions: string[] = ['sm', 'md', 'lg']

@@ -32,7 +32,7 @@ import MclInputFile from '@bobbykim/mcl-input-file'
 
 - @bobbykim/manguito-theme
 
-## Authors
+## Maintainers
 
 - **Bobby Kim** - _Initial work_
 

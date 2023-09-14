@@ -32,7 +32,7 @@ import AccordionBeta from '@bobbykim/accordion-beta'
 
 - @bobbykim/manguito-theme
 
-## Authors
+## Maintainers
 
 - **Bobby Kim** - _Initial work_
 

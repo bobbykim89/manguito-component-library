@@ -34,7 +34,7 @@ import HeroAlpha from '@bobbykim/hero-alpha'
 
 - @bobbykim/manguito-theme
 
-## Authors
+## Maintainers
 
 - **Bobby Kim** - _Initial work_
 

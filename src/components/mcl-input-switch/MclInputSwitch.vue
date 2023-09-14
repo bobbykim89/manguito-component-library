@@ -121,7 +121,7 @@ const switchSize = computed(() => {
     return {
       '--switch-width': '30px',
       '--switch-height': '17px',
-      '--slider-size': '14px',
+      '--slider-size': '13px',
       '--gutter-size': '2px',
     }
   }
@@ -197,50 +197,17 @@ const switchClass = computed<string>(() => {
   height: var(--switch-height);
 }
 
-/* Hide default HTML checkbox */
-// .switch input {
-//   opacity: 0;
-//   width: 0;
-//   height: 0;
-// }
-
-/* The slider */
-// .slider {
-//   background-color: #ccc;
-// }
-
 .slider:before {
-  // position: absolute;
   content: '';
   height: var(--slider-size);
   width: var(--slider-size);
   left: var(--gutter-size);
   bottom: var(--gutter-size);
-  // background-color: white; // before:bg-{color}
-  // -webkit-transition: 0.4s;
-  // transition: 0.4s;
 }
-
-// input:checked + .slider {
-//   background-color: #2196f3;
-// }
-
-// input:focus + .slider {
-//   box-shadow: 0 0 1px #2196f3;
-// }
 
 input:checked + .slider:before {
   -webkit-transform: translateX(var(--slider-size));
   -ms-transform: translateX(var(--slider-size));
   transform: translateX(var(--slider-size));
 }
-
-/* Rounded sliders */
-// .slider.round {
-//   border-radius: 34px;
-// }
-
-// .slider.round:before {
-//   border-radius: 50%;
-// }
 </style>

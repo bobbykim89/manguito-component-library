@@ -32,7 +32,7 @@ import HeroGamma from '@bobbykim/hero-gamma'
 
 - @bobbykim/manguito-theme
 
-## Authors
+## Maintainers
 
 - **Bobby Kim** - _Initial work_
 
