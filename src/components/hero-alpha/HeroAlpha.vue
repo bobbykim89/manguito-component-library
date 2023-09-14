@@ -52,6 +52,21 @@ const getBgImage = (img: string) => {
     'background-image': `url('${img}')`,
   }
 }
+const getFilterClass = (
+  bgColor: ColorPalette,
+  opacity: OpacityRange
+): string => {
+  /**
+   * @summary a function to handle filter color(=bgColor) and opacity of filter
+   * @param {ColorPalette} bgColor - background color of component
+   * @param {OpacityRange} filterOpacity - opacity of filter from 0 to 100 with step of 10
+   */
+  const classArray: string[] = [
+    generateClass('BGCOLOR', bgColor),
+    generateClass('OPACITY', opacity),
+  ]
+  return classArray.join(' ')
+}
 const getTitleClass = (
   level: HeadingLevel,
   size: HeadingSize,
@@ -113,26 +128,31 @@ const getTitleHighlightClass = (
         class="relative px-xs md:px-md xl:px-lg flex flex-col justify-center min-h-[256px] md:min-h-[420px]"
         :class="{ 'lg:order-2': imgPosition === 'left' }"
       >
+        <!-- display on mobile -->
         <div
           class="lg:hidden absolute inset-0 bg-no-repeat bg-cover bg-top"
           :style="getBgImage(bgImage)"
         >
           <div
             v-if="displayFilter"
-            class="absolute inset-0 bg-white"
-            :class="generateClass('OPACITY', filterOpacity)"
+            class="absolute inset-0"
+            :class="getFilterClass(bgColor, filterOpacity)"
           ></div>
+          <!-- <div
+            v-if="displayFilter"
+            class="absolute bg-gradient-to-r inset-0 from-white/90 to-90% to-transparent"
+          ></div> -->
         </div>
         <div
-          class="relative py-lg px-0"
+          class="relative py-xl px-0"
           :class="[imgPosition === 'right' ? 'lg:pl-md' : 'lg:pr-md']"
         >
-          <div class="text-center lg:text-left mb-xs">
+          <div class="mb-sm md:mb-md lg:mb-lg">
             <!-- title -->
             <component
               :is="titleLevel"
               :class="[
-                displaySubTitleHighlight ? 'mb-3xs' : '',
+                displaySubTitleHighlight ? 'mb-2xs md:mb-xs' : 'mb-xs md:mb-sm',
                 getTitleClass(titleLevel, titleSize, titleColor),
               ]"
             >
