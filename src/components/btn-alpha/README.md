@@ -32,7 +32,7 @@ import BtnAlpha from '@bobbykim/btn-alpha'
 
 - @bobbykim/manguito-theme
 
-## Authors
+## Maintainers
 
 - **Bobby Kim** - _Initial work_
 

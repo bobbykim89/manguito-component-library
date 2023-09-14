@@ -4,7 +4,7 @@ Add description
 
 ## Demo
 
-[MCL Histoire Page]({%sbLink%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/{%story-link%})
 
 ## Install
 

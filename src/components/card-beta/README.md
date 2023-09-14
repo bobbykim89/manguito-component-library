@@ -32,7 +32,7 @@ import CardBeta from '@bobbykim/card-beta'
 
 - @bobbykim/manguito-theme
 
-## Authors
+## Maintainers
 
 - **Bobby Kim** - _Initial work_
 

@@ -4,7 +4,9 @@ import MclInput from '@/components/mcl-input'
 import MclTextArea from '@/components/mcl-text-area'
 import MclInputFile from '@/components/mcl-input-file'
 import MclSelect from '@/components/mcl-select'
+import MclInputSwitch from '@/components/mcl-input-switch'
 import type { SelectOptionType } from '@/components/mcl-select/MclSelect.vue'
+import type { SwitchSizeType } from '@/components/mcl-input-switch/MclInputSwitch.vue'
 import BtnAlpha from '@/components/btn-alpha'
 import type {
   ColorPalette,
@@ -17,12 +19,14 @@ import {
   bodyTextSize,
   inputOptions,
   spacingOptions,
+  switchSizeOptions,
 } from '@/assets/options'
 
 const inputRef = ref('')
 const inputFileRef = ref()
 const textOutput = ref('')
 const fileSizeRef = ref('')
+const switchRef = ref<boolean>(false)
 const handleSubmit = (): void => {
   if (inputRef.value !== '') {
     textOutput.value = inputRef.value
@@ -218,6 +222,36 @@ const stateDelta = reactive<{
     { text: 'Item 3', value: 'value 3' },
     { text: 'Item 4', value: 'value 4' },
   ],
+})
+const stateEpsilon = reactive<{
+  identifier: string
+  horizontal?: boolean
+  displayLabel?: boolean
+  labelText?: string
+  labelSize?: BodyText
+  labelColor?: ColorPalette
+  labelBold?: boolean
+  sliderColor?: ColorPalette
+  onColor?: ColorPalette
+  offColor?: ColorPalette
+  switchSize?: SwitchSizeType
+  rounded?: boolean
+  spacing?: SpacingLevel
+  modelValue?: boolean
+}>({
+  identifier: 'mcl-input-switch',
+  horizontal: true,
+  displayLabel: true,
+  labelText: 'MCL Input Switch',
+  labelSize: 'md',
+  labelColor: 'dark-3',
+  labelBold: true,
+  sliderColor: 'light-1',
+  onColor: 'success',
+  offColor: 'dark-1',
+  switchSize: 'md',
+  rounded: true,
+  spacing: 'sm',
 })
 </script>
 
@@ -601,6 +635,76 @@ const stateDelta = reactive<{
         <HstSelect
           title="spacing"
           v-model="stateDelta.spacing"
+          :options="spacingOptions"
+        />
+      </template>
+    </Variant>
+    <Variant title="mcl-input-switch">
+      <div
+        class="max-w-[450px] bg-white rounded-lg border-2 border-dark-3 p-md"
+      >
+        <form>
+          <mcl-input-switch
+            :identifier="stateEpsilon.identifier"
+            :horizontal="stateEpsilon.horizontal"
+            :display-label="stateEpsilon.displayLabel"
+            :label-text="stateEpsilon.labelText"
+            :label-color="stateEpsilon.labelColor"
+            :label-bold="stateEpsilon.labelBold"
+            :slider-color="stateEpsilon.sliderColor"
+            :on-color="stateEpsilon.onColor"
+            :off-color="stateEpsilon.offColor"
+            :switch-size="stateEpsilon.switchSize"
+            :rounded="stateEpsilon.rounded"
+            :spacing="stateEpsilon.spacing"
+            v-model="switchRef"
+          ></mcl-input-switch>
+        </form>
+        <p class="mb-0">Switch Value: {{ switchRef }}</p>
+      </div>
+      <template #controls>
+        <HstText title="identifier" v-model="stateEpsilon.identifier" />
+        <HstCheckbox title="horizontal" v-model="stateEpsilon.horizontal" />
+        <HstCheckbox
+          title="display-label"
+          v-model="stateEpsilon.displayLabel"
+        />
+        <HstText title="label-text" v-model="stateEpsilon.labelText" />
+        <HstSelect
+          title="label-size"
+          v-model="stateEpsilon.labelSize"
+          :options="bodyTextSize"
+        />
+        <HstSelect
+          title="label-color"
+          v-model="stateEpsilon.labelColor"
+          :options="colors"
+        />
+        <HstCheckbox title="label-bold" v-model="stateEpsilon.labelBold" />
+        <HstSelect
+          title="slider-color"
+          v-model="stateEpsilon.sliderColor"
+          :options="colors"
+        />
+        <HstSelect
+          title="on-color"
+          v-model="stateEpsilon.onColor"
+          :options="colors"
+        />
+        <HstSelect
+          title="off-color"
+          v-model="stateEpsilon.offColor"
+          :options="colors"
+        />
+        <HstSelect
+          title="switch-size"
+          v-model="stateEpsilon.switchSize"
+          :options="switchSizeOptions"
+        />
+        <HstCheckbox title="rounded" v-model="stateEpsilon.rounded" />
+        <HstSelect
+          title="spacing"
+          v-model="stateEpsilon.spacing"
           :options="spacingOptions"
         />
       </template>

@@ -32,7 +32,7 @@ import CardGamma from '@bobbykim/card-gamma'
 
 - @bobbykim/manguito-theme
 
-## Authors
+## Maintainers
 
 - **Bobby Kim** - _Initial work_
 

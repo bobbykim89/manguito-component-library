@@ -92,7 +92,7 @@ import type { <Type you need> } from '@bobbykim/manguito-theme/theme/theme.types
 <template>...</template>
 ```
 
-## Authors
+## Maintainers
 
 - **Bobby Kim** - _Initial work_
 
