@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import NavAlpha from '@/components/nav-alpha'
-import BtnAlpha from '@/components/btn-alpha'
 import type { NavItemType } from '@/components/nav-alpha/NavAlpha.vue'
 import type {
   ColorPalette,
@@ -140,12 +139,10 @@ const handleEmitClick = (type: EmitType): void => {
         >
           <template #nav-slot>
             <div>
-              <btn-alpha class="mr-xs" @btn-click="handleLoginBtn"
-                >Login</btn-alpha
-              >
-              <btn-alpha color="warning" @btn-click="handleSignupBtn"
-                >Signup</btn-alpha
-              >
+              <button class="btn mr-xs" @click="handleLoginBtn">Login</button>
+              <button class="btn btn-warning" @click="handleSignupBtn">
+                Signup
+              </button>
             </div>
           </template>
           <template #mobile-slot="{ closeNav }">
