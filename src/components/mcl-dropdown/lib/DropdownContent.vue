@@ -24,8 +24,10 @@ const dropdownDirection = computed<string | undefined>(() => {
   if (!dropdownState.active || !contentRef.value) {
     return
   }
-  const { top, bottom, height } = contentRef.value.getBoundingClientRect()
-  if (window.innerHeight - top < height) {
+  if (
+    window.innerHeight - contentRef.value.getBoundingClientRect().bottom <
+    0
+  ) {
     return 'dropup-bottom'
   }
 })
@@ -36,7 +38,7 @@ const dropdownDirection = computed<string | undefined>(() => {
     <div
       v-if="active"
       ref="contentRef"
-      class="absolute my-2xs w-48 bg-white rounded-lg border py-2"
+      class="absolute my-2xs max-w-[14rem] w-max bg-white rounded-lg border py-2xs"
       :class="dropdownDirection"
       :style="buttonHeight"
     >
