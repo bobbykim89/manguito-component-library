@@ -8,7 +8,6 @@ import MclInputSwitch from '@/components/mcl-input-switch'
 import MclDropdown from '@/components/mcl-dropdown'
 import type { SelectOptionType } from '@/components/mcl-select/MclSelect.vue'
 import type { SwitchSizeType } from '@/components/mcl-input-switch/MclInputSwitch.vue'
-import BtnAlpha from '@/components/btn-alpha'
 import type {
   ColorPalette,
   InputType,
@@ -284,10 +283,10 @@ const stateEpsilon = reactive<{
           v-model="inputRef"
         ></mcl-input>
         <div class="flex justify-end items-center">
-          <btn-alpha type="submit" class="mr-2xs">Submit</btn-alpha>
-          <btn-alpha type="button" color="secondary" @btn-click="handleCancel"
-            >Cancel</btn-alpha
-          >
+          <button type="submit" class="btn mr-2xs">Submit</button>
+          <button type="button" class="btn btn-secondary" @click="handleCancel">
+            Cancel
+          </button>
         </div>
       </form>
       <div class="flex flex-col items-center justify-center">
@@ -379,10 +378,10 @@ const stateEpsilon = reactive<{
           v-model="inputRef"
         ></mcl-text-area>
         <div class="flex justify-end items-center">
-          <btn-alpha type="submit" class="mr-2xs">Submit</btn-alpha>
-          <btn-alpha type="button" color="secondary" @btn-click="handleCancel"
-            >Cancel</btn-alpha
-          >
+          <button type="submit" class="btn mr-2xs">Submit</button>
+          <button type="button" class="btn btn-secondary" @click="handleCancel">
+            Cancel
+          </button>
         </div>
       </form>
       <div class="flex flex-col justify-center items-center">
@@ -467,7 +466,7 @@ const stateEpsilon = reactive<{
           v-model="inputFileRef"
         ></mcl-input-file>
         <div class="flex justify-end items-center">
-          <btn-alpha type="submit" class="mr-2xs">Submit</btn-alpha>
+          <button type="submit" class="btn mr-2xs">Submit</button>
         </div>
       </form>
       <div class="flex flex-col justify-center items-center">
@@ -721,6 +720,7 @@ const stateEpsilon = reactive<{
           minima adipisci porro consequatur, officiis facere ea quos officia
           fugiat atque quia?
         </div>
+        <mcl-dropdown></mcl-dropdown>
       </div>
     </Variant>
   </Story>

@@ -2,7 +2,6 @@
 import { reactive } from 'vue'
 import ContainerAlpha from '@/components/container-alpha'
 import AccordionBeta from '@/components/accordion-beta'
-import BtnAlpha from '@/components/btn-alpha'
 import type {
   ColorPalette,
   Position,
@@ -68,9 +67,9 @@ const handleButtonClick = (): void => {
                     pretty little birb! 🦜
                   </p>
                   <div class="flex justify-end">
-                    <btn-alpha color="success" @btn-click="handleButtonClick"
-                      >Let's go!</btn-alpha
-                    >
+                    <button class="btn btn-success" @click="handleButtonClick">
+                      Let's go!
+                    </button>
                   </div>
                 </div>
               </accordion-beta>
