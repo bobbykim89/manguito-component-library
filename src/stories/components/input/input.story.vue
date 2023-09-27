@@ -5,6 +5,7 @@ import MclTextArea from '@/components/mcl-text-area'
 import MclInputFile from '@/components/mcl-input-file'
 import MclSelect from '@/components/mcl-select'
 import MclInputSwitch from '@/components/mcl-input-switch'
+import MclDropdown from '@/components/mcl-dropdown'
 import type { SelectOptionType } from '@/components/mcl-select/MclSelect.vue'
 import type { SwitchSizeType } from '@/components/mcl-input-switch/MclInputSwitch.vue'
 import BtnAlpha from '@/components/btn-alpha'
@@ -708,6 +709,19 @@ const stateEpsilon = reactive<{
           :options="spacingOptions"
         />
       </template>
+    </Variant>
+    <Variant title="mcl-dropdown">
+      <div class="border-2 rounded-lg p-lg border-dark-3 max-w-[350px]">
+        <mcl-dropdown></mcl-dropdown>
+        <div class="mt-md">
+          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat odio
+          voluptate fuga quibusdam nostrum veritatis similique aperiam nobis
+          debitis, excepturi id culpa quasi quos totam obcaecati deserunt ea
+          quis sit quisquam alias nihil omnis! Aut culpa architecto repellat
+          minima adipisci porro consequatur, officiis facere ea quos officia
+          fugiat atque quia?
+        </div>
+      </div>
     </Variant>
   </Story>
 </template>
