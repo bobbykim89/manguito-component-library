@@ -20,9 +20,9 @@ const props = withDefaults(
       <template #toggler="{ toggle }">
         <button @click="toggle" class="btn btn-primary">{{ title }}</button>
       </template>
-      <dropdown-content>
-        <dropdown-item>1</dropdown-item>
-        <dropdown-item>2</dropdown-item>
+      <dropdown-content v-slot="{ itemClick }">
+        <dropdown-item @click="itemClick">1</dropdown-item>
+        <dropdown-item>Manguito is cute manguito is cute</dropdown-item>
         <dropdown-item>3</dropdown-item>
       </dropdown-content>
     </dropdown-container>
