@@ -731,10 +731,12 @@ const dropdownItems: DropdownItem[] = [
     </Variant>
     <Variant title="mcl-dropdown">
       <div class="border-2 rounded-lg p-lg border-dark-3 max-w-[350px]">
-        <mcl-dropdown
-          title="Dropdown 1"
-          :dropdown-items="dropdownItems"
-        ></mcl-dropdown>
+        <div class="flex justify-end">
+          <mcl-dropdown
+            title="Dropdown 1"
+            :dropdown-items="dropdownItems"
+          ></mcl-dropdown>
+        </div>
         <div class="my-md">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat odio
           voluptate fuga quibusdam nostrum veritatis similique aperiam nobis
