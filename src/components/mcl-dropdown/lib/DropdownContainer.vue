@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import { reactive, provide, ref, Directive } from 'vue'
+import { reactive, provide, ref, Directive, onMounted } from 'vue'
 import type { InjectType } from './index.types'
 
 const emit = defineEmits(['click-outside', 'toggle'])
-const dropdownTarget = ref(null)
-const sharedState = reactive<InjectType>({
+const dropdownTarget = ref()
+const dropdownState = reactive<InjectType>({
   active: false,
+  buttonHeight: 0,
 })
-provide('sharedState', sharedState)
+provide('dropdownState', dropdownState)
 const toggle = (e: Event): void => {
-  sharedState.active = !sharedState.active
+  dropdownState.active = !dropdownState.active
   emit('toggle', e)
 }
 const onClickOutside = (e: Event): void => {
-  sharedState.active = false
+  dropdownState.active = false
   emit('click-outside', e)
 }
 const vClickOutside: Directive = {
@@ -29,11 +30,20 @@ const vClickOutside: Directive = {
     document.body.removeEventListener('click', el.__ClickOutsideHandler)
   },
 }
+onMounted(() => {
+  if (typeof window !== undefined) {
+    dropdownState.buttonHeight = dropdownTarget.value.scrollHeight
+  }
+})
 </script>
 
 <template>
   <div class="relative" ref="dropdownTarget" v-click-outside="onClickOutside">
-    <slot name="toggler" :toggle="toggle" />
+    <slot
+      name="toggler"
+      :toggle="toggle"
+      :dropdown-state="dropdownState.active"
+    />
     <slot></slot>
   </div>
 </template>

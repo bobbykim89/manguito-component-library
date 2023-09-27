@@ -177,7 +177,7 @@ const stateGamma = reactive<{
         <HstSlider
           title="filter-opacity"
           :modelValue="stateAlpha.filterOpacity"
-          @update:modelValue="stateAlpha.filterOpacity = $event"
+          @update:modelValue=";(stateAlpha.filterOpacity as number) = $event"
           :step="10"
           :min="10"
           :max="100"

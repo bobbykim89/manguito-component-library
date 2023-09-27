@@ -6,6 +6,7 @@ import MclInputFile from '@/components/mcl-input-file'
 import MclSelect from '@/components/mcl-select'
 import MclInputSwitch from '@/components/mcl-input-switch'
 import MclDropdown from '@/components/mcl-dropdown'
+import { DropdownItem } from '@/components/mcl-dropdown/MclDropdown.vue'
 import type { SelectOptionType } from '@/components/mcl-select/MclSelect.vue'
 import type { SwitchSizeType } from '@/components/mcl-input-switch/MclInputSwitch.vue'
 import type {
@@ -253,6 +254,25 @@ const stateEpsilon = reactive<{
   rounded: true,
   spacing: 'sm',
 })
+
+const dropdownItems: DropdownItem[] = [
+  {
+    title: 'Dropdown item 1',
+    link: '#',
+  },
+  {
+    title: 'Dropdown item 2',
+    link: '#',
+  },
+  {
+    title: 'Dropdown item 3',
+    link: '#',
+  },
+  {
+    title: 'Dropdown item 4',
+    link: '#',
+  },
+]
 </script>
 
 <template>
@@ -711,8 +731,11 @@ const stateEpsilon = reactive<{
     </Variant>
     <Variant title="mcl-dropdown">
       <div class="border-2 rounded-lg p-lg border-dark-3 max-w-[350px]">
-        <mcl-dropdown></mcl-dropdown>
-        <div class="mt-md">
+        <mcl-dropdown
+          title="Dropdown 1"
+          :dropdown-items="dropdownItems"
+        ></mcl-dropdown>
+        <div class="my-md">
           Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quaerat odio
           voluptate fuga quibusdam nostrum veritatis similique aperiam nobis
           debitis, excepturi id culpa quasi quos totam obcaecati deserunt ea
@@ -720,7 +743,10 @@ const stateEpsilon = reactive<{
           minima adipisci porro consequatur, officiis facere ea quos officia
           fugiat atque quia?
         </div>
-        <mcl-dropdown></mcl-dropdown>
+        <mcl-dropdown
+          title="Dropdown 2"
+          :dropdown-items="dropdownItems"
+        ></mcl-dropdown>
       </div>
     </Variant>
   </Story>

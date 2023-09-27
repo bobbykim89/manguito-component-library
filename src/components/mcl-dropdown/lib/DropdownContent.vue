@@ -1,36 +1,32 @@
 <script setup lang="ts">
-import { computed, ref, inject, Transition, onMounted } from 'vue'
+import { computed, ref, inject, Transition } from 'vue'
 import { InjectType } from './index.types'
 
-const contentRef = ref<HTMLAreaElement | null>(null)
-const sharedState = inject<InjectType>('sharedState', { active: false })
+const contentRef = ref<HTMLAreaElement>()
+const dropdownState = inject<InjectType>('dropdownState', {
+  active: false,
+  buttonHeight: 0,
+})
 const active = computed<boolean>(() => {
-  return sharedState.active
+  return dropdownState.active
 })
 const handleItemClick = () => {
   console.log('item click')
-  sharedState.active = false
+  dropdownState.active = false
 }
-const dropdownDirection = computed<string>(() => {
-  if (!sharedState.active || !contentRef.value) {
-    console.log('hidden')
-    return ''
+const buttonHeight = computed(() => {
+  return { '--button-height': `${dropdownState.buttonHeight}px` }
+})
+const dropdownDirection = computed<string | undefined>(() => {
+  if (typeof window === undefined) {
+    return
   }
-  console.log(
-    window.innerHeight,
-    contentRef.value?.getBoundingClientRect().bottom,
-    contentRef.value.scrollHeight
-  )
-  console.log(contentRef.value.getBoundingClientRect())
-  if (
-    window &&
-    window.innerHeight -
-      (contentRef.value?.getBoundingClientRect().bottom as number) <
-      contentRef.value.scrollHeight
-  ) {
-    return 'origin-top bottom-0 mb-2'
-  } else {
-    return ' origin-top-right'
+  if (!dropdownState.active || !contentRef.value) {
+    return
+  }
+  const { top, bottom, height } = contentRef.value.getBoundingClientRect()
+  if (window.innerHeight - top < height) {
+    return 'dropup-bottom'
   }
 })
 </script>
@@ -40,8 +36,9 @@ const dropdownDirection = computed<string>(() => {
     <div
       v-if="active"
       ref="contentRef"
-      class="absolute mt-2 w-48 bg-white rounded-lg border py-2"
+      class="absolute my-2xs w-48 bg-white rounded-lg border py-2"
       :class="dropdownDirection"
+      :style="buttonHeight"
     >
       <slot :item-click="handleItemClick" />
     </div>
@@ -49,6 +46,9 @@ const dropdownDirection = computed<string>(() => {
 </template>
 
 <style scoped lang="scss">
+.dropup-bottom {
+  bottom: var(--button-height);
+}
 .dropdown-content-enter-active,
 .dropdown-content-leave-active {
   transition: all 0.3s;
