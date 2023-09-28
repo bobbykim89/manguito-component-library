@@ -7,7 +7,6 @@ import GenerateMCLClass, {
 import type { ClassType, InputType } from './theme/index.js'
 
 const generateClass = (type: ClassType, value: InputType): string => {
-  console.log('running generate class')
   const mclGenerate = new GenerateMCLClass(type, value)
   if ((<string[]>(<unknown>colorType)).includes(type)) {
     return mclGenerate.generateColorClass()

@@ -17,6 +17,9 @@ const onClickOutside = (e: Event): void => {
   dropdownState.active = false
   emit('click-outside', e)
 }
+const onEscape = (): void => {
+  dropdownState.active = false
+}
 const vClickOutside: Directive = {
   mounted(el, binding) {
     el.__ClickOutsideHandler = (event: Event) => {
@@ -38,7 +41,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="relative" ref="dropdownTarget" v-click-outside="onClickOutside">
+  <div
+    class="relative"
+    ref="dropdownTarget"
+    v-click-outside="onClickOutside"
+    @keyup.esc="onEscape"
+  >
     <slot
       name="toggler"
       :toggle="toggle"

@@ -2,6 +2,14 @@
 import { computed, ref, inject, Transition } from 'vue'
 import { InjectType } from './index.types'
 
+const props = withDefaults(
+  defineProps<{
+    contentClass?: string
+  }>(),
+  {
+    contentClass: '',
+  }
+)
 const contentRef = ref<HTMLAreaElement>()
 const dropdownState = inject<InjectType>('dropdownState', {
   active: false,
@@ -11,13 +19,13 @@ const active = computed<boolean>(() => {
   return dropdownState.active
 })
 const handleItemClick = () => {
-  console.log('item click')
   dropdownState.active = false
 }
 const buttonHeight = computed(() => {
   return { '--button-height': `${dropdownState.buttonHeight}px` }
 })
 const dropdownDirection = computed<string | undefined>(() => {
+  const className: string = props.contentClass
   if (typeof window === undefined) {
     return
   }
@@ -38,8 +46,8 @@ const dropdownDirection = computed<string | undefined>(() => {
     <div
       v-if="active"
       ref="contentRef"
-      class="absolute my-2xs max-w-[14rem] w-max bg-white rounded-lg border py-2xs"
-      :class="dropdownDirection"
+      class="absolute my-2xs max-w-[14rem] w-max overflow-hidden"
+      :class="[dropdownDirection, contentClass]"
       :style="buttonHeight"
     >
       <slot :item-click="handleItemClick" />
