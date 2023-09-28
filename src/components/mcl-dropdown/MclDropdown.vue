@@ -1,22 +1,131 @@
 <script setup lang="ts">
-import { ref, reactive, provide } from 'vue'
+import { computed } from 'vue'
+import generateClass from '@bobbykim/manguito-theme'
+import type {
+  ColorPalette,
+  BodyText,
+  FontWeight,
+} from '@bobbykim/manguito-theme/theme/theme.types'
 import DropdownContainer from './lib/DropdownContainer.vue'
 import DropdownContent from './lib/DropdownContent.vue'
 
 export interface DropdownItem {
   title: string
-  link?: string
+  [key: string]: string
 }
 
 const props = withDefaults(
   defineProps<{
     title?: string
+    buttonColor?: ColorPalette
+    buttonRounded?: boolean
+    buttonTextColor?: ColorPalette
+    buttonInvert?: boolean
     dropdownItems: DropdownItem[]
+    dropdownColor?: ColorPalette
+    displayBorder?: boolean
+    rounded?: boolean
+    displayShadow?: boolean
+    hoverBgColor?: ColorPalette
+    dropdownTextSize?: BodyText
+    dropdownFontWeight?: FontWeight
+    dropdownTextColor?: ColorPalette
+    displaySeparator?: boolean
+    itemClickPrevent?: boolean
   }>(),
   {
     title: 'toggle',
+    buttonColor: 'warning',
+    buttonRounded: false,
+    buttonTextColor: 'black',
+    buttonInvert: false,
+    dropdownColor: 'white',
+    displayBorder: true,
+    rounded: true,
+    displayShadow: true,
+    hoverBgColor: 'light-4',
+    dropdownTextSize: 'md',
+    dropdownFontWeight: 'normal',
+    dropdownTextColor: 'dark-3',
+    displaySeparator: false,
+    itemClickPrevent: true,
   }
 )
+
+const emit = defineEmits(['button-click', 'item-click'])
+
+const dropdownButtonClass = computed(() => {
+  /**
+   * @param {ColorPalette} buttonColor - color of dropdown button
+   * @param {boolean} buttonRounded - whether to have rounded border of button
+   * @param {ColorPalette} buttonTextColor - font color for dropdown button
+   * @param {boolean} buttonInvert - whether to have button inverted
+   */
+  const { buttonColor, buttonRounded, buttonTextColor, buttonInvert } = props
+  const classArray: string[] = [generateClass('BTNCOLOR', buttonColor)]
+  if (buttonRounded) {
+    classArray.push('btn-round')
+  }
+  if (buttonInvert) {
+    classArray.push('btn-invert')
+  } else {
+    classArray.push(generateClass('TEXTCOLOR', buttonTextColor))
+  }
+  return classArray.join(' ')
+})
+const dropdownContentClass = computed<string>(() => {
+  /**
+   * @param {ColorPalette} dropdownColor - Background color of dropdown
+   * @param {boolean} displayBorder - whether to display border
+   * @param {boolean} rounded - whether to have rounded border
+   * @param {boolean} displayShadow - whether to have drop shadow
+   */
+  const { dropdownColor, rounded, displayBorder, displayShadow } = props
+  const classArray: string[] = [generateClass('BGCOLOR', dropdownColor)]
+  if (displayBorder) {
+    classArray.push('border-2')
+  }
+  if (rounded) {
+    classArray.push('rounded-md')
+  }
+  if (displayShadow) {
+    classArray.push('drop-shadow-lg')
+  }
+  return classArray.join(' ')
+})
+const dropDownItemClass = computed<string>(() => {
+  /**
+   * TODO: set class for bg color on hover, font size, font weight, text color, and whether to display separating line between dropdown items
+   * @param {ColorPalette} hoverBgColor - background color on hover
+   * @param {BodyText} dropdownTextSize - font size of dropdown text
+   * @param {FontWeight} dropdownFontWeight - font weight of dropdown text
+   * @param {ColorPalette} dropdownTextColor - font color of dropdown text
+   * @param {boolean} displaySeparator - whether to display separator between dropdown items
+   */
+  const {
+    hoverBgColor,
+    dropdownTextSize,
+    dropdownFontWeight,
+    dropdownTextColor,
+    displaySeparator,
+  } = props
+  const classArray: string[] = [
+    generateClass('HVBGCOLOR', hoverBgColor),
+    generateClass('BODYTEXT', dropdownTextSize),
+    generateClass('FONTWEIGHT', dropdownFontWeight),
+    generateClass('TEXTCOLOR', dropdownTextColor),
+  ]
+  if (displaySeparator) {
+    classArray.push('border-b last:border-b-0')
+  }
+  return classArray.join(' ')
+})
+const dropdownButtonClick = (e: Event): void => {
+  emit('button-click', e)
+}
+const dropdownItemClick = (e: Event): void => {
+  emit('item-click', e)
+}
 </script>
 
 <template>
@@ -24,8 +133,9 @@ const props = withDefaults(
     <dropdown-container>
       <template #toggler="{ toggle, dropdownState }">
         <button
-          @click="toggle"
-          class="btn btn-warning flex justify-between items-center gap-2xs"
+          @click="toggle($event), dropdownButtonClick($event)"
+          class="btn flex justify-between items-center gap-2xs"
+          :class="dropdownButtonClass"
         >
           <span>
             {{ title }}
@@ -33,10 +143,10 @@ const props = withDefaults(
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 448 512"
-            class="h-xs"
+            class="h-xs fill-current"
             :class="[
-              !dropdownState ? 'rotate-0' : 'rotate-180',
-              'transition-all duration-300 ease-in',
+              dropdownState ? 'rotate-180' : 'rotate-0',
+              'transition-transform duration-300 ease-in',
             ]"
           >
             <!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
@@ -46,14 +156,19 @@ const props = withDefaults(
           </svg>
         </button>
       </template>
-      <dropdown-content v-slot="{ itemClick }">
-        <div
+      <dropdown-content
+        v-slot="{ itemClick }"
+        :content-class="dropdownContentClass"
+      >
+        <button
           v-for="(item, idx) in dropdownItems"
           :key="idx"
-          class="block hover:bg-gray-200 my-1 px-4 py-1 font-medium text-gray-800"
+          class="block px-xs py-2xs first:pt-xs last:pb-xs"
+          :class="dropDownItemClass"
+          @click="itemClick(), dropdownItemClick($event)"
         >
-          <a :href="item.link" @click="itemClick" class="">{{ item.title }}</a>
-        </div>
+          {{ item.title }}
+        </button>
       </dropdown-content>
     </dropdown-container>
   </div>
