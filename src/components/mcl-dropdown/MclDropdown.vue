@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import generateClass from '@bobbykim/manguito-theme'
 import type {
   ColorPalette,
@@ -53,6 +53,8 @@ const props = withDefaults(
 )
 
 const emit = defineEmits(['button-click', 'item-click'])
+const contentIndexRef = ref<number>(-1)
+const contentItemRef = ref<HTMLButtonElement[]>()
 
 const dropdownButtonClass = computed(() => {
   /**
@@ -111,6 +113,7 @@ const dropDownItemClass = computed<string>(() => {
   } = props
   const classArray: string[] = [
     generateClass('HVBGCOLOR', hoverBgColor),
+    generateClass('FCBGCOLOR', hoverBgColor),
     generateClass('BODYTEXT', dropdownTextSize),
     generateClass('FONTWEIGHT', dropdownFontWeight),
     generateClass('TEXTCOLOR', dropdownTextColor),
@@ -121,15 +124,35 @@ const dropDownItemClass = computed<string>(() => {
   return classArray.join(' ')
 })
 const dropdownButtonClick = (e: Event): void => {
+  // resets index
+  contentIndexRef.value = -1
   emit('button-click', e)
 }
 const dropdownItemClick = (e: Event): void => {
   emit('item-click', e)
 }
+type KeyDirection = 'up' | 'down'
+const dropdownItemKeyUp = (direction: KeyDirection): void => {
+  const itemLength: number = props.dropdownItems.length
+  console.log('item-length', itemLength)
+  if (contentItemRef.value === undefined) {
+    return
+  }
+  if (direction === 'down' && contentIndexRef.value < itemLength - 1) {
+    contentIndexRef.value++
+  }
+  if (direction === 'up' && contentIndexRef.value > 0) {
+    contentIndexRef.value--
+  }
+  contentItemRef.value[contentIndexRef.value].focus()
+}
 </script>
 
 <template>
-  <div>
+  <div
+    @keyup.down="dropdownItemKeyUp('down')"
+    @keyup.up="dropdownItemKeyUp('up')"
+  >
     <dropdown-container>
       <template #toggler="{ toggle, dropdownState }">
         <button
@@ -163,9 +186,10 @@ const dropdownItemClick = (e: Event): void => {
         <button
           v-for="(item, idx) in dropdownItems"
           :key="idx"
-          class="block px-xs py-2xs first:pt-xs last:pb-xs"
+          class="block px-xs py-2xs first:pt-xs last:pb-xs w-full"
           :class="dropDownItemClass"
           @click="itemClick(), dropdownItemClick($event)"
+          ref="contentItemRef"
         >
           {{ item.title }}
         </button>

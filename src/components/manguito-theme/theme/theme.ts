@@ -60,7 +60,7 @@ abstract class MCLTheme {
     white: 'bg-white',
     transparent: 'bg-transparent',
   }
-  // hover bg color class
+  // hover: bg color class
   protected static hoverBgColor: ColorClass = {
     primary: 'hover:bg-primary',
     secondary: 'hover:bg-secondary',
@@ -79,6 +79,26 @@ abstract class MCLTheme {
     black: 'hover:bg-black',
     white: 'hover:bg-white',
     transparent: 'hover:bg-transparent',
+  }
+  // focus: bg color class
+  protected static focusBgColor: ColorClass = {
+    primary: 'focus:bg-primary',
+    secondary: 'focus:bg-secondary',
+    success: 'focus:bg-success',
+    danger: 'focus:bg-danger',
+    info: 'focus:bg-info',
+    warning: 'focus:bg-warning',
+    'light-1': 'focus:bg-light-1',
+    'light-2': 'focus:bg-light-2',
+    'light-3': 'focus:bg-light-3',
+    'light-4': 'focus:bg-light-4',
+    'dark-1': 'focus:bg-dark-1',
+    'dark-2': 'focus:bg-dark-2',
+    'dark-3': 'focus:bg-dark-3',
+    'dark-4': 'focus:bg-dark-4',
+    black: 'focus:bg-black',
+    white: 'focus:bg-white',
+    transparent: 'focus:bg-transparent',
   }
   // ::before bg color class
   protected static beforeBgColor: ColorClass = {

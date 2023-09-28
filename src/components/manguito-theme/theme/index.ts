@@ -21,6 +21,7 @@ export const colorType = [
   'BEFOREBG',
   'AFTERBG',
   'HVBGCOLOR',
+  'FCBGCOLOR',
   'ACTIVEBG',
   'TEXTCOLOR',
   'HVTEXTCOLOR',
@@ -119,6 +120,8 @@ class GenerateMCLClass extends MCLTheme {
         return this.getBgColorClass()
       case 'HVBGCOLOR':
         return this.getHoverBgColorClass()
+      case 'FCBGCOLOR':
+        return this.getFocusBgColorClass()
       case 'BEFOREBG':
         return this.getBeforeBgColorClass()
       case 'AFTERBG':
@@ -273,6 +276,12 @@ class GenerateMCLClass extends MCLTheme {
       return ' '
     }
     return MCLTheme.hoverBgColor[this.classValue as ColorPalette]
+  }
+  getFocusBgColorClass(): string {
+    if (!this.validateColorType) {
+      return ' '
+    }
+    return MCLTheme.focusBgColor[this.classValue as ColorPalette]
   }
   getBeforeBgColorClass(): string {
     if (!this.validateColorType) {
