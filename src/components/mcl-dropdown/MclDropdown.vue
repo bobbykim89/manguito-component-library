@@ -1,22 +1,27 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import generateClass from '@bobbykim/manguito-theme'
+import generateClass, {
+  DropdownContainer,
+  DropdownContent,
+} from '@bobbykim/manguito-theme'
 import type {
   ColorPalette,
   BodyText,
   FontWeight,
 } from '@bobbykim/manguito-theme/theme/theme.types'
-import DropdownContainer from './lib/DropdownContainer.vue'
-import DropdownContent from './lib/DropdownContent.vue'
 
 export interface DropdownItem {
   title: string
   [key: string]: string
 }
+export interface ItemClickEvent {
+  event: Event
+  item: DropdownItem
+}
 
 const props = withDefaults(
   defineProps<{
-    title?: string
+    title: string
     buttonColor?: ColorPalette
     buttonRounded?: boolean
     buttonTextColor?: ColorPalette
@@ -31,10 +36,8 @@ const props = withDefaults(
     dropdownFontWeight?: FontWeight
     dropdownTextColor?: ColorPalette
     displaySeparator?: boolean
-    itemClickPrevent?: boolean
   }>(),
   {
-    title: 'toggle',
     buttonColor: 'warning',
     buttonRounded: false,
     buttonTextColor: 'black',
@@ -48,7 +51,6 @@ const props = withDefaults(
     dropdownFontWeight: 'normal',
     dropdownTextColor: 'dark-3',
     displaySeparator: false,
-    itemClickPrevent: true,
   }
 )
 
@@ -85,7 +87,7 @@ const dropdownContentClass = computed<string>(() => {
   const { dropdownColor, rounded, displayBorder, displayShadow } = props
   const classArray: string[] = [generateClass('BGCOLOR', dropdownColor)]
   if (displayBorder) {
-    classArray.push('border-2')
+    classArray.push('border')
   }
   if (rounded) {
     classArray.push('rounded-md')
@@ -128,13 +130,16 @@ const dropdownButtonClick = (e: Event): void => {
   contentIndexRef.value = -1
   emit('button-click', e)
 }
-const dropdownItemClick = (e: Event): void => {
-  emit('item-click', e)
+const dropdownItemClick = (e: Event, item: DropdownItem): void => {
+  const customEvent: ItemClickEvent = {
+    event: e,
+    item,
+  }
+  emit('item-click', customEvent)
 }
 type KeyDirection = 'up' | 'down'
 const dropdownItemKeyUp = (direction: KeyDirection): void => {
   const itemLength: number = props.dropdownItems.length
-  console.log('item-length', itemLength)
   if (contentItemRef.value === undefined) {
     return
   }
@@ -186,9 +191,9 @@ const dropdownItemKeyUp = (direction: KeyDirection): void => {
         <button
           v-for="(item, idx) in dropdownItems"
           :key="idx"
-          class="block px-xs py-2xs first:pt-xs last:pb-xs w-full"
+          class="block px-xs py-2xs first:pt-xs last:pb-xs w-full text-left"
           :class="dropDownItemClass"
-          @click="itemClick(), dropdownItemClick($event)"
+          @click="itemClick(), dropdownItemClick($event, item)"
           ref="contentItemRef"
         >
           {{ item.title }}

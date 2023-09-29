@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { reactive, provide, ref, Directive, onMounted } from 'vue'
+import { reactive, provide, ref, onMounted } from 'vue'
 import type { InjectType } from './index.types'
+import { vClickOutside } from '../directives'
 
 const emit = defineEmits(['click-outside', 'toggle'])
 const dropdownTarget = ref()
@@ -19,19 +20,6 @@ const onClickOutside = (e: Event): void => {
 }
 const onEscape = (): void => {
   dropdownState.active = false
-}
-const vClickOutside: Directive = {
-  mounted(el, binding) {
-    el.__ClickOutsideHandler = (event: Event) => {
-      if (!(el === event.target || el.contains(event.target))) {
-        binding.value(event)
-      }
-    }
-    document.body.addEventListener('click', el.__ClickOutsideHandler)
-  },
-  unmounted(el) {
-    document.body.removeEventListener('click', el.__ClickOutsideHandler)
-  },
 }
 onMounted(() => {
   if (typeof window !== undefined) {
