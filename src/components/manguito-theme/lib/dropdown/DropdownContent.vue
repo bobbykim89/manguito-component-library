@@ -25,7 +25,6 @@ const buttonHeight = computed(() => {
   return { '--button-height': `${dropdownState.buttonHeight}px` }
 })
 const dropdownDirection = computed<string | undefined>(() => {
-  const className: string = props.contentClass
   if (typeof window === undefined) {
     return
   }

@@ -1,41 +1,42 @@
 <script setup lang="ts">
-import { reactive, provide, ref, onMounted } from 'vue'
+import { reactive, provide, inject, ref } from 'vue'
 import { CollapseState } from './index.types'
 
-const props = defineProps<{
-  collapseId: string
-}>()
+const props = withDefaults(
+  defineProps<{
+    collapseId: string
+    accordion: boolean
+  }>(),
+  {
+    accordion: false,
+  }
+)
 
 const emit = defineEmits(['click-outside', 'toggle'])
-const dropdownTarget = ref()
-const dropdownState = reactive<CollapseState>({
-  [props.collapseId]: false,
-})
-provide('dropdownState', dropdownState)
+let collapseState: CollapseState
+if (props.accordion) {
+  collapseState = inject<CollapseState>('collapseState', {
+    [props.collapseId]: false,
+  })
+} else {
+  collapseState = reactive<CollapseState>({
+    [props.collapseId]: false,
+  })
+  provide('collapseState', collapseState)
+}
+
 const toggle = (e: Event): void => {
-  dropdownState.active = !dropdownState.active
+  collapseState[props.collapseId] = !collapseState[props.collapseId]
   emit('toggle', e)
 }
-const onClickOutside = (e: Event): void => {
-  dropdownState.active = false
-  emit('click-outside', e)
-}
-const onEscape = (): void => {
-  dropdownState.active = false
-}
-onMounted(() => {
-  if (typeof window !== undefined) {
-    dropdownState.buttonHeight = dropdownTarget.value.scrollHeight
-  }
-})
 </script>
 
 <template>
-  <div class="relative" ref="dropdownTarget" @keyup.esc="onEscape">
+  <div class="relative">
     <slot
-      name="toggler"
+      name="header"
       :toggle="toggle"
-      :dropdown-state="dropdownState.active"
+      :collapse-state="collapseState[props.collapseId]"
     />
     <slot></slot>
   </div>

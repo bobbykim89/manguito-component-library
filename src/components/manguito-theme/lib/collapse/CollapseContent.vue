@@ -4,6 +4,7 @@ import { CollapseState } from './index.types'
 
 const props = withDefaults(
   defineProps<{
+    contentId: string
     contentClass?: string
   }>(),
   {
@@ -11,25 +12,23 @@ const props = withDefaults(
   }
 )
 const contentRef = ref<HTMLAreaElement>()
-const dropdownState = inject<CollapseState>('dropdownState', {
-  active: false,
-  buttonHeight: 0,
+const collapseState = inject<CollapseState>('collapseState', {
+  [props.contentId]: false,
 })
 const active = computed<boolean>(() => {
-  return dropdownState.active
+  return collapseState.active
 })
 const handleItemClick = () => {
-  dropdownState.active = false
+  collapseState.active = false
 }
 const buttonHeight = computed(() => {
-  return { '--button-height': `${dropdownState.buttonHeight}px` }
+  return { '--button-height': `${collapseState.buttonHeight}px` }
 })
 const dropdownDirection = computed<string | undefined>(() => {
-  const className: string = props.contentClass
   if (typeof window === undefined) {
     return
   }
-  if (!dropdownState.active || !contentRef.value) {
+  if (!collapseState.active || !contentRef.value) {
     return
   }
   if (
