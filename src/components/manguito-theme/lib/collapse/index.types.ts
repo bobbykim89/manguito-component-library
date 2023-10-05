@@ -1,5 +1,7 @@
-export interface CollapseState {
-  // [id: string]: boolean
-  id: string
+interface CollapseItem {
   open: boolean
+}
+
+export interface CollapseState {
+  [id: string]: CollapseItem
 }

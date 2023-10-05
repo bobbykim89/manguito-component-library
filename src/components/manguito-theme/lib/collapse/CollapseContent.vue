@@ -14,8 +14,9 @@ const props = withDefaults(
 const contentRef = ref<HTMLAreaElement>()
 const slotHeight = ref<number>()
 const collapseState = inject<CollapseState>('collapseState', {
-  id: props.contentId,
-  open: false,
+  [props.contentId]: {
+    open: false,
+  },
 })
 
 const initObserver = (): ResizeObserver => {
@@ -31,7 +32,9 @@ const initObserver = (): ResizeObserver => {
 const slotHeightVal = computed(() => {
   return {
     height:
-      contentRef.value && collapseState.open ? slotHeight.value + 'px' : '0px',
+      contentRef.value && collapseState[props.contentId].open
+        ? slotHeight.value + 'px'
+        : '0px',
   }
 })
 
@@ -40,7 +43,7 @@ onMounted(() => {
   if (typeof window !== undefined) {
     initObserver().observe(contentRef.value as Element)
   }
-  console.log(slotHeightVal.value, collapseState.open)
+  console.log(slotHeightVal.value, collapseState[props.contentId].open)
 })
 onBeforeUnmount(() => {
   initObserver().disconnect()
@@ -51,13 +54,15 @@ onBeforeUnmount(() => {
   <div
     class="overflow-hidden transition-[height] duration-500"
     :style="slotHeightVal"
-    :class="[collapseState.open ? 'ease-in' : 'ease-out']"
+    :class="[collapseState[props.contentId].open ? 'ease-in' : 'ease-out']"
   >
     <div
       ref="contentRef"
       class="transition-opacity duration-500"
       :class="[
-        collapseState.open ? 'opacity-100 ease-in' : 'opacity-0 ease-out',
+        collapseState[props.contentId].open
+          ? 'opacity-100 ease-in'
+          : 'opacity-0 ease-out',
         contentClass,
       ]"
     >
