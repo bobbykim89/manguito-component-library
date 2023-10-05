@@ -10,6 +10,7 @@ import DropdownContainer from './lib/dropdown/DropdownContainer.vue'
 import DropdownContent from './lib/dropdown/DropdownContent.vue'
 import CollapseContainer from './lib/collapse/CollapseContainer.vue'
 import CollapseContent from './lib/collapse/CollapseContent.vue'
+import Collapse from './lib/collapse/Collapse.vue'
 
 const generateClass = (type: ClassType, value: InputType): string => {
   const mclGenerate = new GenerateMCLClass(type, value)
@@ -36,5 +37,6 @@ export {
   DropdownContent,
   CollapseContainer,
   CollapseContent,
+  Collapse,
 }
 export * from './lib/directives'

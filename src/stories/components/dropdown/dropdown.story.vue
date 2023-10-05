@@ -14,6 +14,7 @@ import { colors, bodyTextSize, fontWeightOptions } from '@/assets/options'
 
 // test imports
 import { CollapseContainer, CollapseContent } from '@/components/manguito-theme'
+import Practice from '@/components/accordion-alpha/Practice.vue'
 
 const selectedInfoRef = ref<string>('')
 const selectedLinkRef = ref<string>('')
@@ -182,27 +183,30 @@ const handleClearButtonClick = (): void => {
     </Variant>
     <Variant title="test">
       <div class="bg-white max-w-[500px] border-2 rounded-md p-md">
-        <collapse-container collapse-id="mango">
+        <!-- <collapse-container collapse-id="mango">
           <template #header="{ toggle }">
-            <button @click="toggle">Toggler</button>
+            <button @click="toggle">Header Button</button>
           </template>
-          <collapse-content
-            content-id="mango"
-            content-class="bg-secondary p-xs"
-          >
-            <div>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
-              quo incidunt a blanditiis mollitia ea est? Fugit voluptate
-              expedita magni vitae iste. Nulla aperiam voluptate ullam dolor
-              officiis earum quis aliquam at ducimus porro. Quidem, molestias!
-              Voluptates perferendis distinctio ipsam dicta optio non
-              praesentium, maiores commodi. Natus, ducimus doloremque?
-            </div>
-          </collapse-content>
+          <template #content>
+            <collapse-content
+              content-id="mango"
+              content-class="bg-secondary p-xs"
+            >
+              <div>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo
+                fuga quo incidunt a blanditiis mollitia ea est? Fugit voluptate
+                expedita magni vitae iste. Nulla aperiam voluptate ullam dolor
+                officiis earum quis aliquam at ducimus porro. Quidem, molestias!
+                Voluptates perferendis distinctio ipsam dicta optio non
+                praesentium, maiores commodi. Natus, ducimus doloremque?
+              </div>
+            </collapse-content>
+          </template>
           <template #footer="{ toggle }">
             <button @click="toggle">Footer Button</button>
           </template>
-        </collapse-container>
+        </collapse-container> -->
+        <Practice></Practice>
       </div>
     </Variant>
   </Story>
