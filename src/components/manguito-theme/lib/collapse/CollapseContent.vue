@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, inject, Transition } from 'vue'
+import { computed, ref, inject, onMounted, onBeforeUnmount } from 'vue'
 import { CollapseState } from './index.types'
 
 const props = withDefaults(
@@ -12,59 +12,58 @@ const props = withDefaults(
   }
 )
 const contentRef = ref<HTMLAreaElement>()
+const slotHeight = ref<number>()
 const collapseState = inject<CollapseState>('collapseState', {
-  [props.contentId]: false,
+  id: props.contentId,
+  open: false,
 })
-const active = computed<boolean>(() => {
-  return collapseState.active
-})
-const handleItemClick = () => {
-  collapseState.active = false
+
+const initObserver = (): ResizeObserver => {
+  const observer = new ResizeObserver(() => {
+    if (contentRef.value) {
+      slotHeight.value = contentRef.value.scrollHeight
+      return
+    }
+    slotHeight.value = 0
+  })
+  return observer
 }
-const buttonHeight = computed(() => {
-  return { '--button-height': `${collapseState.buttonHeight}px` }
+const slotHeightVal = computed(() => {
+  return {
+    height:
+      contentRef.value && collapseState.open ? slotHeight.value + 'px' : '0px',
+  }
 })
-const dropdownDirection = computed<string | undefined>(() => {
-  if (typeof window === undefined) {
-    return
+
+// lifecycle hooks
+onMounted(() => {
+  if (typeof window !== undefined) {
+    initObserver().observe(contentRef.value as Element)
   }
-  if (!collapseState.active || !contentRef.value) {
-    return
-  }
-  if (
-    window.innerHeight - contentRef.value.getBoundingClientRect().bottom <
-    0
-  ) {
-    return 'dropup-bottom'
-  }
+  console.log(slotHeightVal.value, collapseState.open)
+})
+onBeforeUnmount(() => {
+  initObserver().disconnect()
 })
 </script>
 
 <template>
-  <transition name="dropdown-content">
+  <div
+    class="overflow-hidden transition-[height] duration-500"
+    :style="slotHeightVal"
+    :class="[collapseState.open ? 'ease-in' : 'ease-out']"
+  >
     <div
-      v-if="active"
       ref="contentRef"
-      class="absolute my-2xs max-w-[14rem] w-max overflow-hidden"
-      :class="[dropdownDirection, contentClass]"
-      :style="buttonHeight"
+      class="transition-opacity duration-500"
+      :class="[
+        collapseState.open ? 'opacity-100 ease-in' : 'opacity-0 ease-out',
+        contentClass,
+      ]"
     >
-      <slot :item-click="handleItemClick" />
+      <slot />
     </div>
-  </transition>
+  </div>
 </template>
 
-<style scoped lang="scss">
-.dropup-bottom {
-  bottom: var(--button-height);
-}
-.dropdown-content-enter-active,
-.dropdown-content-leave-active {
-  transition: all 0.3s;
-}
-.dropdown-content-enter-from,
-.dropdown-content-leave-to {
-  opacity: 0;
-  transform: translateY(-10px);
-}
-</style>
+<style scoped lang="scss"></style>
