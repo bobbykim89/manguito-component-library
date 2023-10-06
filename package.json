@@ -37,7 +37,7 @@
     "vue-tsc": "^1.8.15"
   },
   "dependencies": {
-    "@bobbykim/manguito-theme": "file: ./src/components/manguito-theme",
+    "@bobbykim/manguito-theme": "file:./src/components/manguito-theme/index.ts",
     "vue": "^3.2.40"
   },
   "config": {
