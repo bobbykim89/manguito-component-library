@@ -83,6 +83,11 @@ const mclTheme = plugin.withOptions(
                 '@apply ring-0': {},
               },
             },
+            [`.btn.btn-${e(key)}.btn-no-ring`]: {
+              '&:focus': {
+                '@apply ring-0': {},
+              },
+            },
             [`.btn.btn-progress.btn-${e(key)}`]: {
               [`@apply before:bg-${key} border-${key} text-${key} bg-transparent`]:
                 {},
@@ -360,6 +365,12 @@ const mclTheme = plugin.withOptions(
         '.btn-group .btn': {
           '@apply rounded-none ring-offset-0': {},
 
+          '&:focus': {
+            '@apply ring-0': {},
+          },
+        },
+        '.btn.btn-no-ring': {
+          '@apply ring-offset-0': {},
           '&:focus': {
             '@apply ring-0': {},
           },

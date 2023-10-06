@@ -5,9 +5,13 @@ import GenerateMCLClass, {
   scaleType,
 } from './theme'
 import type { ClassType, InputType } from './theme/index.js'
+// base components
+import DropdownContainer from './lib/dropdown/DropdownContainer.vue'
+import DropdownContent from './lib/dropdown/DropdownContent.vue'
+import Collapse from './lib/collapse/Collapse.vue'
+import type { CollapseEvent } from './lib/collapse/index.types'
 
 const generateClass = (type: ClassType, value: InputType): string => {
-  console.log('running generate class')
   const mclGenerate = new GenerateMCLClass(type, value)
   if ((<string[]>(<unknown>colorType)).includes(type)) {
     return mclGenerate.generateColorClass()
@@ -26,3 +30,6 @@ const generateClass = (type: ClassType, value: InputType): string => {
 }
 
 export default generateClass
+
+export { DropdownContainer, DropdownContent, Collapse, CollapseEvent }
+export * from './lib/directives'

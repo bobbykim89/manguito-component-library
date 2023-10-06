@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import generateClass from '@bobbykim/manguito-theme'
+import { ref, watch } from 'vue'
+import generateClass, {
+  Collapse,
+  vCollapse,
+  CollapseEvent,
+} from '@bobbykim/manguito-theme'
 import type {
   ColorPalette,
   HeadingSize,
@@ -8,6 +12,7 @@ import type {
 
 const props = withDefaults(
   defineProps<{
+    collapseId: string
     title: string
     titleColor?: ColorPalette
     titleSize?: HeadingSize
@@ -17,7 +22,8 @@ const props = withDefaults(
     iconColor?: ColorPalette
     rounded?: boolean
     displayShadow?: boolean
-    openOnMount?: boolean
+    visible?: boolean
+    accordion?: string
   }>(),
   {
     titleColor: 'light-1',
@@ -28,17 +34,17 @@ const props = withDefaults(
     iconColor: 'light-1',
     rounded: true,
     displayShadow: true,
-    openOnMount: false,
+    visible: false,
   }
 )
 
-const toggle = ref(props.openOnMount)
+const toggle = ref(props.visible)
 const emit = defineEmits(['accordion-click'])
 
-const toggleAction = (e: Event, title: string): void => {
-  toggle.value = !toggle.value
+const toggleAction = (e: CollapseEvent): void => {
+  toggle.value = e.visible
 
-  emit('accordion-click', { event: e, title: title })
+  emit('accordion-click', { event: e, title: props.title })
 }
 
 const getBorderClass = (
@@ -48,10 +54,10 @@ const getBorderClass = (
   dShadow: boolean
 ): string => {
   /**
-   * @bColor - borderColor
-   * @bgColor - bgColor
-   * @rounded - rounded
-   * @dShadow - displayShadow
+   * @param {ColorPalette} bColor - borderColor
+   * @param {ColorPalette} bgColor - bgColor
+   * @param {boolean} rounded - rounded
+   * @param {boolean} dShadow - displayShadow
    */
 
   let borderInfo: string[] = [
@@ -74,8 +80,8 @@ const getBorderClass = (
 
 const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
   /**
-   * @size - titleSize
-   * @color - titleColor
+   * @param {HeadingSize} size - titleSize
+   * @param {ColorPalette} color - titleColor
    */
 
   const classArray: string[] = [
@@ -85,34 +91,12 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
   return classArray.join(' ')
 }
 
-const textSlot = ref()
-const slotHeight = ref<number>()
-
-const initObserver = (): ResizeObserver => {
-  const observer = new ResizeObserver(() => {
-    if (textSlot.value) {
-      slotHeight.value = textSlot.value.scrollHeight
-      return
-    }
-    slotHeight.value = 0
-  })
-  return observer
-}
-
-const slotTextVal = computed(() => {
-  return {
-    height: textSlot.value && toggle.value ? slotHeight.value + 'px' : '0px',
+watch(
+  () => props.visible,
+  (newValue) => {
+    toggle.value = newValue
   }
-})
-
-onMounted(() => {
-  if (typeof window !== undefined) {
-    initObserver().observe(textSlot.value)
-  }
-})
-onBeforeUnmount(() => {
-  initObserver().disconnect()
-})
+)
 </script>
 
 <template>
@@ -121,7 +105,7 @@ onBeforeUnmount(() => {
     :class="getBorderClass(borderColor, bgColor, rounded, displayShadow)"
   >
     <div
-      @click="toggleAction($event, title)"
+      v-collapse:[collapseId]
       class="flex justify-between items-center w-full px-4 py-2 cursor-pointer hover:bg-opacity-70 transition duration-200 ease-in"
       :class="[
         rounded ? 'rounded-lg' : 'rounded-sm',
@@ -133,7 +117,7 @@ onBeforeUnmount(() => {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 448 512"
-          class="h-xs transition-all duration-300 ease-in"
+          class="h-xs transition-transform duration-300 ease-in"
           :class="[
             !toggle ? 'rotate-0' : 'rotate-180',
             generateClass('SVGFILL', iconColor),
@@ -146,26 +130,16 @@ onBeforeUnmount(() => {
         </svg>
       </div>
     </div>
-    <div
-      class="h-auto overflow-hidden"
-      :class="[
-        toggle
-          ? 'transition-all duration-500 ease-in'
-          : 'transition-all duration-500 ease-out',
-      ]"
-      :style="slotTextVal"
-    >
-      <div
-        :class="[
-          toggle
-            ? 'opacity-100 transition-opacity duration-500 ease-in'
-            : 'opacity-0 transition-opacity duration-500 ease-out',
-          'px-xs pt-xs pb-2xs',
-        ]"
-        ref="textSlot"
+    <div class="overflow-hidden">
+      <collapse
+        :collapseId="collapseId"
+        :visible="visible"
+        class-name="px-xs pt-xs pb-2xs"
+        @toggle="toggleAction"
+        :accordion="accordion"
       >
         <slot></slot>
-      </div>
+      </collapse>
     </div>
   </div>
 </template>

@@ -23,6 +23,7 @@
     "src/**/*.ts",
     "src/**/*.vue",
     "src/env.d.ts",
+    "src/**/*.story.vue",
     "src/histoire.setup.ts"
   ]
 }

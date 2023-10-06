@@ -30,10 +30,11 @@ const stateAlpha = reactive<{
   subTitleLevel?: HeadingLevel
   subTitleSize?: HeadingSize
   subTitleColor?: ColorPalette
-  displaySubTitleHighlight?: boolean
-  subTitleHighlightColor?: ColorPalette
+  displayHighlight?: boolean
+  highlightColor?: ColorPalette
   bgImage: string
   bgColor?: ColorPalette
+  mobileImageBlur?: boolean
   imgPosition?: Directions
   displayFilter?: boolean
   filterOpacity?: OpacityRange
@@ -48,11 +49,12 @@ const stateAlpha = reactive<{
   subTitleLevel: 'h3',
   subTitleSize: 'md',
   subTitleColor: 'dark-3',
-  displaySubTitleHighlight: false,
-  subTitleHighlightColor: 'primary',
+  displayHighlight: false,
+  highlightColor: 'warning',
   bgImage:
     'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1650675406/ManguitoPage/hl38duquvda0ilultyqb.jpg',
   bgColor: 'white',
+  mobileImageBlur: false,
   imgPosition: 'right',
   displayFilter: true,
   filterOpacity: 30,
@@ -139,12 +141,13 @@ const stateGamma = reactive<{
         :sub-title="stateAlpha.subTitle"
         :sub-title-level="stateAlpha.subTitleLevel"
         :sub-title-size="stateAlpha.subTitleSize"
-        :display-sub-title-highlight="stateAlpha.displaySubTitleHighlight"
-        :sub-title-highlight-color="stateAlpha.subTitleHighlightColor"
+        :display-highlight="stateAlpha.displayHighlight"
+        :highlight-color="stateAlpha.highlightColor"
         :title-color="stateAlpha.titleColor"
         :sub-title-color="stateAlpha.subTitleColor"
         :bg-image="stateAlpha.bgImage"
         :bg-color="stateAlpha.bgColor"
+        :mobile-image-blur="stateAlpha.mobileImageBlur"
         :img-position="stateAlpha.imgPosition"
         :display-filter="stateAlpha.displayFilter"
         :filter-opacity="stateAlpha.filterOpacity"
@@ -158,6 +161,10 @@ const stateGamma = reactive<{
           v-model="stateAlpha.bgColor"
           :options="colors"
         />
+        <HstCheckbox
+          title="mobile-image-blur"
+          v-model="stateAlpha.mobileImageBlur"
+        />
         <HstSelect
           title="img-position"
           v-model="stateAlpha.imgPosition"
@@ -170,7 +177,7 @@ const stateGamma = reactive<{
         <HstSlider
           title="filter-opacity"
           :modelValue="stateAlpha.filterOpacity"
-          @update:modelValue="stateAlpha.filterOpacity = $event"
+          @update:modelValue=";(stateAlpha.filterOpacity as number) = $event"
           :step="10"
           :min="10"
           :max="100"
@@ -195,6 +202,7 @@ const stateGamma = reactive<{
           title="display-sub-title"
           v-model="stateAlpha.displaySubTitle"
         />
+        <HstText title="subtitle" v-model="stateAlpha.subTitle" />
         <HstSelect
           title="sub-title-level"
           v-model="stateAlpha.subTitleLevel"
@@ -211,12 +219,12 @@ const stateGamma = reactive<{
           :options="colors"
         />
         <HstCheckbox
-          title="display-sub-title-highlight"
-          v-model="stateAlpha.displaySubTitleHighlight"
+          title="display-highlight"
+          v-model="stateAlpha.displayHighlight"
         />
         <HstSelect
-          title="sub-title-highlight-color"
-          v-model="stateAlpha.subTitleHighlightColor"
+          title="highlight-color"
+          v-model="stateAlpha.highlightColor"
           :options="colors"
         />
       </template>
