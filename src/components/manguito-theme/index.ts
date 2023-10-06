@@ -8,8 +8,6 @@ import type { ClassType, InputType } from './theme/index.js'
 // base components
 import DropdownContainer from './lib/dropdown/DropdownContainer.vue'
 import DropdownContent from './lib/dropdown/DropdownContent.vue'
-import CollapseContainer from './lib/collapse/CollapseContainer.vue'
-import CollapseContent from './lib/collapse/CollapseContent.vue'
 import Collapse from './lib/collapse/Collapse.vue'
 
 const generateClass = (type: ClassType, value: InputType): string => {
@@ -32,11 +30,5 @@ const generateClass = (type: ClassType, value: InputType): string => {
 
 export default generateClass
 
-export {
-  DropdownContainer,
-  DropdownContent,
-  CollapseContainer,
-  CollapseContent,
-  Collapse,
-}
+export { DropdownContainer, DropdownContent, Collapse }
 export * from './lib/directives'

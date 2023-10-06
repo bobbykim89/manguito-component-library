@@ -3,12 +3,11 @@ import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 const props = withDefaults(
   defineProps<{
     collapseId: string
-    accordion?: boolean
+    accordion?: string
     className?: string
     open?: boolean
   }>(),
   {
-    accordion: false,
     className: '',
     open: false,
   }
@@ -17,6 +16,9 @@ const toggle = ref<boolean>(props.open)
 const contentRef = ref<HTMLAreaElement>()
 const slotHeight = ref<number>()
 
+const handleToggleEvent = (): void => {
+  toggle.value = !toggle.value
+}
 const initObserver = (): ResizeObserver => {
   const observer = new ResizeObserver(() => {
     if (contentRef.value) {
@@ -32,12 +34,17 @@ const slotHeightVal = computed(() => {
     height: contentRef.value && toggle.value ? slotHeight.value + 'px' : '0px',
   }
 })
+watch(
+  () => props.open,
+  (newValue) => {
+    toggle.value = newValue
+  }
+)
 // lifecycle hooks
 onMounted(() => {
   if (typeof window !== undefined) {
     initObserver().observe(contentRef.value as Element)
   }
-  console.log(slotHeightVal.value, toggle.value)
 })
 onBeforeUnmount(() => {
   initObserver().disconnect()
@@ -46,7 +53,13 @@ onBeforeUnmount(() => {
 
 <template>
   <div>
-    <input type="checkbox" :id="collapseId" v-model="toggle" class="hidden" />
+    <button
+      :id="collapseId"
+      @click="handleToggleEvent"
+      class="hidden"
+      :accordion="accordion"
+      :open="toggle"
+    ></button>
     <div
       class="overflow-hidden transition-[height] duration-500"
       :style="slotHeightVal"

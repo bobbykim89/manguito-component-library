@@ -364,6 +364,12 @@ const mclTheme = plugin.withOptions(
             '@apply ring-0': {},
           },
         },
+        '.btn.btn-no-ring': {
+          '@apply ring-offset-0': {},
+          '&:focus': {
+            '@apply ring-0': {},
+          },
+        },
         '.btn.btn-invert': {
           '@apply border-2 border-primary text-primary bg-white': {},
           '&:hover': {

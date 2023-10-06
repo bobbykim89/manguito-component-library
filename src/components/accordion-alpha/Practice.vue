@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import {
-  CollapseContainer,
-  CollapseContent,
-  Collapse,
-  vToggle,
-} from '@bobbykim/manguito-theme'
+import { Collapse, vToggle } from '@bobbykim/manguito-theme'
+
+const props = withDefaults(
+  defineProps<{
+    open?: boolean
+  }>(),
+  {
+    open: false,
+  }
+)
 
 const collapseContent = [
   {
@@ -33,29 +37,34 @@ const collapseContent = [
   },
 ]
 const handleClick = (e: Event) => {
-  e.preventDefault()
-  //   console.log(e.target.getAttribute('href'))
-  console.log((e.target as HTMLElement).tagName)
+  console.log(e)
 }
 </script>
 
 <template>
   <div>
-    <div v-for="(item, idx) in collapseContent">
-      <a :href="`#${item.id}`" v-toggle class="btn btn-secondary">{{
+    <div
+      v-for="(item, idx) in collapseContent"
+      class="p-xs border-2 border-warning mb-md last:mb-0 bg-white"
+    >
+      <a :href="`#${item.id}`" v-toggle class="btn btn-secondary btn-full">{{
         item.title
       }}</a>
       <collapse
         :collapse-id="item.id"
         class-name="bg-secondary p-xs"
         :open="idx === 0 ? true : false"
+        @accordion-event="handleClick"
+        accordion="my-accordion"
       >
         <div>
           {{ item.content }}
         </div>
       </collapse>
-      <button v-toggle:[item.id] class="btn btn-invert">
-        {{ item.title }}
+      <button v-toggle:[item.id] class="btn btn-progress btn-full btn-no-ring">
+        <span>
+          {{ item.title }}
+        </span>
       </button>
     </div>
   </div>
