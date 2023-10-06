@@ -4,10 +4,10 @@ import { InjectType } from './index.types'
 
 const props = withDefaults(
   defineProps<{
-    contentClass?: string
+    className?: string
   }>(),
   {
-    contentClass: '',
+    className: '',
   }
 )
 const contentRef = ref<HTMLAreaElement>()
@@ -46,7 +46,7 @@ const dropdownDirection = computed<string | undefined>(() => {
       v-if="active"
       ref="contentRef"
       class="absolute my-2xs max-w-[14rem] w-max overflow-hidden"
-      :class="[dropdownDirection, contentClass]"
+      :class="[dropdownDirection, className]"
       :style="buttonHeight"
     >
       <slot :item-click="handleItemClick" />

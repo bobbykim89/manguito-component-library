@@ -1,19 +1,15 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import MclDropdown from '@/components/mcl-dropdown'
-import {
+import MclDropdown, {
   DropdownItem,
   ItemClickEvent,
-} from '@/components/mcl-dropdown/MclDropdown.vue'
+} from '@/components/mcl-dropdown'
 import type {
   ColorPalette,
   BodyText,
   FontWeight,
 } from '@/components/manguito-theme/theme/theme.types'
 import { colors, bodyTextSize, fontWeightOptions } from '@/assets/options'
-
-// test imports
-import Practice from '@/components/accordion-alpha/Practice.vue'
 
 const selectedInfoRef = ref<string>('')
 const selectedLinkRef = ref<string>('')
@@ -179,11 +175,6 @@ const handleClearButtonClick = (): void => {
           v-model="stateAlpha.displaySeparator"
         />
       </template>
-    </Variant>
-    <Variant title="test">
-      <div class="bg-white max-w-[500px] border-2 rounded-md p-md">
-        <Practice></Practice>
-      </div>
     </Variant>
   </Story>
 </template>

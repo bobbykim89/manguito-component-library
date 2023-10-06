@@ -9,15 +9,7 @@ import type {
   BodyText,
   FontWeight,
 } from '@bobbykim/manguito-theme/theme/theme.types'
-
-export interface DropdownItem {
-  title: string
-  [key: string]: string
-}
-export interface ItemClickEvent {
-  event: Event
-  item: DropdownItem
-}
+import type { DropdownItem, ItemClickEvent } from './index.types'
 
 const props = withDefaults(
   defineProps<{
@@ -186,7 +178,7 @@ const dropdownItemKeyUp = (direction: KeyDirection): void => {
       </template>
       <dropdown-content
         v-slot="{ itemClick }"
-        :content-class="dropdownContentClass"
+        :class-name="dropdownContentClass"
       >
         <button
           v-for="(item, idx) in dropdownItems"

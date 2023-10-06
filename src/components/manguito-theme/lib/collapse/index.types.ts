@@ -1,7 +1,3 @@
-interface CollapseItem {
-  open: boolean
-}
-
-export interface CollapseState {
-  [id: string]: CollapseItem
+export interface CollapseEvent extends Event {
+  visible: boolean
 }
