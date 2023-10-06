@@ -19,10 +19,11 @@ const props = withDefaults(
     subTitleLevel?: HeadingLevel
     subTitleSize?: HeadingSize
     subTitleColor?: ColorPalette
-    displaySubTitleHighlight?: boolean
-    subTitleHighlightColor?: ColorPalette
+    displayHighlight?: boolean // new
+    highlightColor?: ColorPalette
     bgImage: string
     bgColor?: ColorPalette
+    mobileImageBlur?: boolean
     imgPosition?: Directions
     displayFilter?: boolean
     filterOpacity?: OpacityRange
@@ -35,10 +36,11 @@ const props = withDefaults(
     subTitleLevel: 'h3',
     subTitleSize: 'md',
     subTitleColor: 'dark-3',
-    displaySubTitleHighlight: false,
-    subTitleHighlightColor: 'primary',
+    displayHighlight: false,
+    highlightColor: 'warning',
     imgPosition: 'right',
     bgColor: 'white',
+    mobileImageBlur: false,
     displayFilter: true,
     filterOpacity: 30,
   }
@@ -51,6 +53,21 @@ const getBgImage = (img: string) => {
   return {
     'background-image': `url('${img}')`,
   }
+}
+const getFilterClass = (
+  bgColor: ColorPalette,
+  opacity: OpacityRange
+): string => {
+  /**
+   * @summary a function to handle filter color(=bgColor) and opacity of filter
+   * @param {ColorPalette} bgColor - background color of component
+   * @param {OpacityRange} filterOpacity - opacity of filter from 0 to 100 with step of 10
+   */
+  const classArray: string[] = [
+    generateClass('BGCOLOR', bgColor),
+    generateClass('OPACITY', opacity),
+  ]
+  return classArray.join(' ')
 }
 const getTitleClass = (
   level: HeadingLevel,
@@ -83,23 +100,22 @@ const getTitleClass = (
 
   return classArray.join(' ')
 }
-const getTitleHighlightClass = (
-  color: ColorPalette,
-  display: boolean
+const getTitleBlockHighlightClass = (
+  display: boolean,
+  color: ColorPalette
 ): string => {
   /**
-   * @color - subTitleHighlightColor
-   * @display - displaySubTitleHighlight
+   * @summary - handle whether to display title block highlight
+   * @param {Boolean} displayHighlight - whether to display highlight
+   * @param {ColorPalette} highlightColor - color of highlight used
    */
+  if (!display) {
+    return ''
+  }
+  const classString: string =
+    generateClass('BORDERL', color) + ' pl-xs border-l-[8px]'
 
-  const classArray = [
-    generateClass('BGCOLOR', color),
-    'shadow-lg',
-    'px-2xs',
-    'py-3xs',
-  ]
-
-  return display ? classArray.join(' ') : ''
+  return classString
 }
 </script>
 
@@ -110,50 +126,48 @@ const getTitleHighlightClass = (
   >
     <div class="grid lg:grid-cols-2">
       <div
-        class="relative px-xs md:px-md xl:px-lg flex flex-col justify-center min-h-[256px] md:min-h-[420px]"
+        class="relative px-xs md:px-md xl:px-lg xl:pl-[18%] flex flex-col justify-center min-h-[60vh] md:min-h-[420px]"
         :class="{ 'lg:order-2': imgPosition === 'left' }"
       >
+        <!-- display on mobile -->
         <div
           class="lg:hidden absolute inset-0 bg-no-repeat bg-cover bg-top"
           :style="getBgImage(bgImage)"
+          :class="{ 'blur-sm': mobileImageBlur }"
         >
           <div
             v-if="displayFilter"
-            class="absolute inset-0 bg-white"
-            :class="generateClass('OPACITY', filterOpacity)"
+            class="absolute inset-0"
+            :class="getFilterClass(bgColor, filterOpacity)"
           ></div>
         </div>
         <div
-          class="relative py-lg px-0"
+          class="relative py-xl px-0"
           :class="[imgPosition === 'right' ? 'lg:pl-md' : 'lg:pr-md']"
         >
-          <div class="text-center lg:text-left mb-xs">
+          <div
+            class="mb-sm md:mb-md lg:mb-lg ml-xs md:ml-0"
+            :class="
+              getTitleBlockHighlightClass(displayHighlight, highlightColor)
+            "
+          >
             <!-- title -->
             <component
               :is="titleLevel"
-              :class="[
-                displaySubTitleHighlight ? 'mb-3xs' : '',
-                getTitleClass(titleLevel, titleSize, titleColor),
-              ]"
+              class="mb-xs md:mb-sm"
+              :class="getTitleClass(titleLevel, titleSize, titleColor)"
             >
               <span v-html="title"></span>
             </component>
             <!-- sub title -->
+            <!-- TODO: addground blur and highlight optional -->
             <component
               :is="subTitleLevel"
               v-if="displaySubTitle"
+              class="ml-md md:ml-0 pb-2xs"
               :class="getTitleClass(subTitleLevel, subTitleSize, subTitleColor)"
             >
-              <span
-                class="box-decoration-clone"
-                :class="
-                  getTitleHighlightClass(
-                    subTitleHighlightColor,
-                    displaySubTitleHighlight
-                  )
-                "
-                v-html="subTitle"
-              ></span>
+              <span v-html="subTitle"></span>
             </component>
           </div>
           <div>

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import ModalAlpha from '@/components/modal-alpha'
-import BtnAlpha from '@/components/btn-alpha'
 import MclInput from '@/components/mcl-input'
 import type {
   ColorPalette,
@@ -80,7 +79,7 @@ const modalCancel = (): void => {
     <Variant title="modal-alpha">
       <div class="relative w-screen h-screen">
         <div class="p-sm">
-          <btn-alpha @btn-click="openModal">Open Modal</btn-alpha>
+          <button class="btn" @click="openModal">Open Modal</button>
           <div class="flex flex-col justify-center items-center mt-md">
             <p class="mb-xs">Name: {{ outputInfo.name }}</p>
             <p class="mb-xs">Email: {{ outputInfo.email }}</p>
@@ -131,12 +130,12 @@ const modalCancel = (): void => {
             ></mcl-input>
 
             <div class="flex justify-end">
-              <btn-alpha type="submit" color="warning" class="mr-xs"
-                >Submit</btn-alpha
-              >
-              <btn-alpha type="button" @btn-click="modalCancel" color="danger"
-                >Cancel</btn-alpha
-              >
+              <button type="submit" class="btn btn-warning mr-xs">
+                Submit
+              </button>
+              <button type="button" @click="modalCancel" class="btn btn-danger">
+                Cancel
+              </button>
             </div>
           </form>
         </modal-alpha>

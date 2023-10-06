@@ -32,6 +32,7 @@ import AccordionAlpha from '@bobbykim/accordion-alpha'
 
 | Prop              | Type                   | Required | Default   | Description                                      |
 | ----------------- | ---------------------- | -------- | --------- | ------------------------------------------------ |
+| collapse-id       | string                 | true     | null      | id to trigger collapse event                     |
 | title             | string                 | true     | null      | title of component                               |
 | title-color       | string (ColorPalette)  | false    | dark-3    | color of title                                   |
 | title-size        | string (HeadingSize)   | false    | sm        | size of title                                    |
@@ -39,10 +40,11 @@ import AccordionAlpha from '@bobbykim/accordion-alpha'
 | rounded           | boolean                | false    | false     | rounding border of component                     |
 | display-highlight | boolean                | false    | true      | displaying highlight on left side of component   |
 | highlight-color   | string (ColorPalette)  | false    | secondary | color of highlight                               |
-| open-on-mount     | boolean                | false    | false     | component toggled open when component is mounted |
+| visible           | boolean                | false    | false     | whether to have content visible                  |
 | icon-color        | string (ColorPalette)  | false    | dark-3    | color of chevron icon at the bottom of component |
 | bg-color          | string (ColorPalette)  | false    | white     | color of accordion head                          |
 | slot-bg-color     | string (ColorPalette)  | false    | light-2   | background color of collapsable slot             |
+| accordion         | string                 | false    | null      | name of accordion group                          |
 
 ### Emits
 
@@ -52,7 +54,7 @@ import AccordionAlpha from '@bobbykim/accordion-alpha'
 
 ### Slots
 
-- `#head-slot`: slot in the right side of accordion head, does not affected by default accordion click behavior (toggle)
+- `#tab`: slot in the right side of accordion head, does not affected by default accordion click behavior (toggle)
 - `#content`: slot in the content area
 
 ---
@@ -89,6 +91,7 @@ import AccordionBeta from '@bobbykim/accordion-beta'
 
 | Prop           | Type                  | Required | Default | Description                                            |
 | -------------- | --------------------- | -------- | ------- | ------------------------------------------------------ |
+| collapse-id    | string                | true     | null    | id to trigger collapse event                           |
 | title          | string                | true     | null    | title of component                                     |
 | title-color    | string (ColorPalette) | false    | light-1 | color of title                                         |
 | title-size     | string (HeadingSize)  | false    | md      | size of title                                          |
@@ -98,7 +101,8 @@ import AccordionBeta from '@bobbykim/accordion-beta'
 | icon-color     | string (ColorPalette) | false    | light-1 | color of chevron icon on right side                    |
 | rounded        | boolean               | false    | true    | rounding border of component                           |
 | display-shadow | boolean               | false    | true    | add box shadow on the component                        |
-| open-on-mount  | boolean               | false    | false   | component toggled open when component is mounted       |
+| visible        | boolean               | false    | false   | component toggled open when component is mounted       |
+| accordion      | string                | false    | null    | name of accordion group                                |
 
 ### Emits
 
