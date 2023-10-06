@@ -14,7 +14,7 @@ export const vClickOutside: Directive = {
   },
 }
 
-export const vToggle: Directive = {
+export const vCollapse: Directive = {
   mounted(el, binding) {
     el.__HandleToggler = (event: Event): void => {
       const eTarget = event.target as HTMLElement
@@ -40,8 +40,8 @@ export const vToggle: Directive = {
       )
       // loop through each accordion items and handle reaction for each case
       for (let i = 0; i < accordionList.length; i++) {
-        const isOpen = accordionList[i].getAttribute('open')
-        if (accordionList[i].id !== target.id && isOpen === 'true') {
+        const isVisible = accordionList[i].getAttribute('visible')
+        if (accordionList[i].id !== target.id && isVisible === 'true') {
           accordionList[i].click()
         }
         if (accordionList[i].id === target.id) {

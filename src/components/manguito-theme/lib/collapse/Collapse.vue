@@ -1,23 +1,26 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
+import type { CollapseEvent } from './index.types'
 const props = withDefaults(
   defineProps<{
     collapseId: string
     accordion?: string
     className?: string
-    open?: boolean
+    visible?: boolean
   }>(),
   {
     className: '',
-    open: false,
+    visible: false,
   }
 )
-const toggle = ref<boolean>(props.open)
+const emit = defineEmits(['toggle'])
+const toggle = ref<boolean>(props.visible)
 const contentRef = ref<HTMLAreaElement>()
 const slotHeight = ref<number>()
 
-const handleToggleEvent = (): void => {
+const handleToggleEvent = (e: Event): void => {
   toggle.value = !toggle.value
+  emit('toggle', { ...e, visible: toggle.value } as CollapseEvent)
 }
 const initObserver = (): ResizeObserver => {
   const observer = new ResizeObserver(() => {
@@ -35,7 +38,7 @@ const slotHeightVal = computed(() => {
   }
 })
 watch(
-  () => props.open,
+  () => props.visible,
   (newValue) => {
     toggle.value = newValue
   }
@@ -58,7 +61,7 @@ onBeforeUnmount(() => {
       @click="handleToggleEvent"
       class="hidden"
       :accordion="accordion"
-      :open="toggle"
+      :visible="toggle"
     ></button>
     <div
       class="overflow-hidden transition-[height] duration-500"
