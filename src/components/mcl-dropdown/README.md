@@ -4,13 +4,35 @@ Add description
 
 ## Demo
 
-[MCL Histoire Page](https://manguito-component-library.vercel.app/story/{%story-link%})
+[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-components-dropdown-dropdown-story-vue?variantId=src-stories-components-dropdown-dropdown-story-vue-0)
 
 ## Install
+
+```sh
+npm i @bobbykim/mcl-dropdown
+```
 
 ## Usage
 
 `import MclDropdown from "@bobbykim/mcl-dropdown"`;
+
+In your code
+
+```vue
+<script setup lang="ts">
+...
+import MclDropdown from '@bobbykim/mcl-dropdown'
+...
+</script>
+
+<template>
+  <mcl-dropdown></mcl-dropdown>
+</template>
+```
+
+## Dependencies
+
+- @bobbykim/manguito-theme
 
 ## Maintainer
 
