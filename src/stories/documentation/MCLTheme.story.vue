@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import type { ColorClass } from '@/components/manguito-theme/theme/theme'
-import type {
-  ColorPalette,
-  SpacingLevel,
-} from '@/components/manguito-theme/theme/theme.types'
+import type { ColorPalette } from '@/components/manguito-theme'
 import generateClass from '@/components/manguito-theme'
 
 interface SizeItem {

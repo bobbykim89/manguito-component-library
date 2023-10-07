@@ -47,7 +47,7 @@ import HeroAlpha from '@bobbykim/hero-alpha'
 | sub-title-highlight-color   | string (ColorPalette) | false    | primary | color of highlight on subtitle                         |
 | bg-image                    | string                | true     | null    | bg image source of component                           |
 | bg-color                    | string (ColorPalette) | false    | white   | background color of component                          |
-| img-position                | string (Directions)   | false    | right   | location of image in desktop screen                    |
+| img-position                | string (DirectionX)   | false    | right   | location of image in desktop screen                    |
 | display-filter              | boolean               | false    | true    | display filter above background image in mobile screen |
 | filter-opacity              | number                | false    | 30      | opacity of filter in mobile screen                     |
 
@@ -56,7 +56,7 @@ import HeroAlpha from '@bobbykim/hero-alpha'
 ```ts
 type HeadingLevel = 'h1' | 'h2' | 'h3' | 'h4'
 type HeadingSize = 'sm' | 'md' | 'lg' | 'xl'
-type Directions = 'left' | 'right'
+type DirectionX = 'left' | 'right'
 ```
 
 ---

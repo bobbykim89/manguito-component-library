@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import { ref, markRaw, onMounted, computed } from 'vue'
-import type {
-  ColorPalette,
-  HeadingSize,
-  CtaTarget,
-} from '@bobbykim/manguito-theme/theme/theme.types'
+import type { ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
-import type { SocialUrl } from '../FooterAlpha.vue'
+import type { SocialUrl } from '../index.type'
 // Import Icon files
 import GithubIcon from './icons/GithubIcon.vue'
 import InstagramIcon from './icons/InstagramIcon.vue'

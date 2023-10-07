@@ -5,16 +5,8 @@ import type {
   ColorPalette,
   BodyText,
   SpacingLevel,
-} from '@bobbykim/manguito-theme/theme/theme.types'
-
-export interface SelectOptionType {
-  text: string
-  value: string | number
-}
-
-export type ColorMap = {
-  [key in ColorPalette]: string
-}
+} from '@bobbykim/manguito-theme'
+import type { ColorMap, SelectOptionType } from './index.type'
 
 const colors = ref<ColorMap>({
   primary: '#ec489a',

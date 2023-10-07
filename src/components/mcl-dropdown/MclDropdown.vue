@@ -8,7 +8,7 @@ import type {
   ColorPalette,
   BodyText,
   FontWeight,
-} from '@bobbykim/manguito-theme/theme/theme.types'
+} from '@bobbykim/manguito-theme'
 import type { DropdownItem, ItemClickEvent } from './index.types'
 
 const props = withDefaults(

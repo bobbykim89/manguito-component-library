@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import NavAlpha from '@/components/nav-alpha'
-import type { NavItemType } from '@/components/nav-alpha/NavAlpha.vue'
+import type { NavItemType } from '@/components/nav-alpha'
 import type {
   ColorPalette,
   HeadingSize,
   CtaTarget,
   BodyText,
-} from '@/components/manguito-theme/theme/theme.types'
+} from '@/components/manguito-theme'
 import {
   colors,
   bodyTextSize,
-  buttonSize,
   targetOption,
   headingTextSize,
 } from '@/assets/options'

@@ -4,16 +4,16 @@ import ContainerAlpha from '@/components/container-alpha'
 import AccordionBeta from '@/components/accordion-beta'
 import type {
   ColorPalette,
-  Position,
+  DirectionX,
   ColumnWidth,
-} from '@/components/manguito-theme/theme/theme.types'
+} from '@/components/manguito-theme'
 import { colors, directionsX, columnWidth } from '@/assets/options'
 
 const stateAlpha = reactive<{
   sectionBg?: ColorPalette
   containerBg?: ColorPalette
-  topDirection?: Position
-  bottomDirection?: Position
+  topDirection?: DirectionX
+  bottomDirection?: DirectionX
   displayRightColumn?: boolean
   leftColumnWidth?: ColumnWidth
   slotText?: string
@@ -60,7 +60,11 @@ const handleButtonClick = (): void => {
             >
               <h2 class="h2-md mb-sm">Container Alpha</h2>
               <div v-html="stateAlpha.slotText" class="mb-xs"></div>
-              <accordion-beta title="Love Manguito?" btn-color="success">
+              <accordion-beta
+                collapse-id="container-collapse"
+                title="Love Manguito?"
+                btn-color="success"
+              >
                 <div>
                   <p class="mb-xs">
                     You are always welcomed to Manguito page if you love this

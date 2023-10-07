@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import ParallaxAlpha from '@/components/parallax-alpha'
 import type {
   ColorPalette,
   HeadingSize,
   HeadingLevel,
-} from '@/components/manguito-theme/theme/theme.types'
+} from '@/components/manguito-theme'
 import { colors, headingTextLevel, headingTextSize } from '@/assets/options'
 
 const stateAlpha = reactive<{

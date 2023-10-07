@@ -5,7 +5,7 @@ import type {
   ColorPalette,
   BodyText,
   SpacingLevel,
-} from '@bobbykim/manguito-theme/theme/theme.types'
+} from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 import CardAlpha from '@bobbykim/card-alpha'
 import CardBeta from '@bobbykim/card-beta'

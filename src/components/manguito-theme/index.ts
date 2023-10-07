@@ -33,3 +33,4 @@ export default generateClass
 
 export { DropdownContainer, DropdownContent, Collapse, CollapseEvent }
 export * from './lib/directives'
+export * from './theme/theme.types'
