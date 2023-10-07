@@ -114,6 +114,34 @@
             <span>Full width rounded</span>
           </button>
         </div>
+        <div class="col-span-3">
+          <h3>Button no ring</h3>
+        </div>
+        <div class="place-self-center">
+          <button class="btn btn-no-ring">
+            <span>Default</span>
+          </button>
+        </div>
+        <div class="place-self-center">
+          <button class="btn btn-info btn-round btn-no-ring">
+            <span>Rounded</span>
+          </button>
+        </div>
+        <div class="place-self-center">
+          <button class="btn btn-no-ring btn-invert btn-secondary">
+            <span>Invert</span>
+          </button>
+        </div>
+        <div class="place-self-center">
+          <button class="btn btn-no-ring btn-progress btn-danger">
+            <span>Progress</span>
+          </button>
+        </div>
+        <div class="col-span-2 justify-self-stretch place-self-center">
+          <button class="btn btn-no-ring btn-warning btn-full">
+            <span>Full width</span>
+          </button>
+        </div>
       </div>
     </Variant>
     <!-- List class -->

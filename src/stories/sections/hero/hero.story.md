@@ -26,30 +26,31 @@ import HeroAlpha from '@bobbykim/hero-alpha'
 </template>
 ```
 
-### Required packages
+### Dependencies
 
 - @bobbykim/manguito-theme
 
 ### Props
 
-| Prop                        | Type                  | Required | Default | Description                                            |
-| --------------------------- | --------------------- | -------- | ------- | ------------------------------------------------------ |
-| title                       | string                | true     | null    | title of hero section component                        |
-| title-level                 | string (HeadingLevel) | false    | h1      | heading level of title                                 |
-| title-size                  | string (HeadingSize)  | false    | md      | size of title                                          |
-| title-color                 | string (ColorPalette) | false    | dark-3  | color of title                                         |
-| display-subtitle            | boolean               | false    | true    | display subtitle of component                          |
-| sub-title                   | string                | false    | null    | subtitle text of component                             |
-| sub-title-level             | string (HeadingLevel) | false    | h3      | heading level of subtitle                              |
-| sub-title-size              | string (HeadingSize)  | false    | md      | size of subtitle                                       |
-| sub-title-color             | string (ColorPalette) | false    | dark-3  | color of subtitle                                      |
-| display-sub-title-highlight | boolean               | false    | false   | highlight the subtitle                                 |
-| sub-title-highlight-color   | string (ColorPalette) | false    | primary | color of highlight on subtitle                         |
-| bg-image                    | string                | true     | null    | bg image source of component                           |
-| bg-color                    | string (ColorPalette) | false    | white   | background color of component                          |
-| img-position                | string (DirectionX)   | false    | right   | location of image in desktop screen                    |
-| display-filter              | boolean               | false    | true    | display filter above background image in mobile screen |
-| filter-opacity              | number                | false    | 30      | opacity of filter in mobile screen                     |
+| Prop              | Type                  | Required | Default | Description                                            |
+| ----------------- | --------------------- | -------- | ------- | ------------------------------------------------------ |
+| title             | string                | true     | null    | title of hero section component                        |
+| title-level       | string (HeadingLevel) | false    | h1      | heading level of title                                 |
+| title-size        | string (HeadingSize)  | false    | md      | size of title                                          |
+| title-color       | string (ColorPalette) | false    | dark-3  | color of title                                         |
+| display-subtitle  | boolean               | false    | true    | display subtitle of component                          |
+| sub-title         | string                | false    | null    | subtitle text of component                             |
+| sub-title-level   | string (HeadingLevel) | false    | h3      | heading level of subtitle                              |
+| sub-title-size    | string (HeadingSize)  | false    | md      | size of subtitle                                       |
+| sub-title-color   | string (ColorPalette) | false    | dark-3  | color of subtitle                                      |
+| display-highlight | boolean               | false    | false   | highlight the title block                              |
+| highlight-color   | string (ColorPalette) | false    | primary | color of highlight on title block                      |
+| bg-image          | string                | true     | null    | bg image source of component                           |
+| bg-color          | string (ColorPalette) | false    | white   | background color of component                          |
+| img-position      | string (DirectionX)   | false    | right   | location of image in desktop screen                    |
+| display-filter    | boolean               | false    | true    | display filter above background image in mobile screen |
+| filter-opacity    | number                | false    | 30      | opacity of filter in mobile screen                     |
+| mobile-image-blur | boolean               | false    | false   | Whether to blur the hero image on mobile               |
 
 ### Types
 
