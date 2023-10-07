@@ -5,16 +5,11 @@ import type {
   CtaTarget,
   HeadingSize,
   BodyText,
-} from '@bobbykim/manguito-theme/theme/theme.types'
+} from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
+import type { NavItemType } from './index.type'
 // Import hamburgerMenu
 import HamburgerMenu from './lib/HamburgerMenu.vue'
-
-export interface NavItemType {
-  title: string
-  url: string
-  target?: CtaTarget
-}
 
 const props = withDefaults(
   defineProps<{

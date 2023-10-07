@@ -1,12 +1,9 @@
 <script lang="ts" setup>
 import { reactive } from 'vue'
 import TabsAlpha from '@/components/tabs-alpha'
-import type { ContentType } from '@/components/tabs-alpha/TabsAlpha.vue'
-import type {
-  ColorPalette,
-  HeadingSize,
-} from '@/components/manguito-theme/theme/theme.types'
-import { colors, bodyTextSize, headingTextSize } from '@/assets/options'
+import type { ContentType } from '@/components/tabs-alpha'
+import type { ColorPalette, HeadingSize } from '@/components/manguito-theme'
+import { colors, headingTextSize } from '@/assets/options'
 
 type ContentArray = ContentType[]
 

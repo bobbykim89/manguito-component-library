@@ -1,3 +1,4 @@
-import TabsAlpha from "./TabsAlpha.vue";
+import TabsAlpha from './TabsAlpha.vue'
 
-export default TabsAlpha;
+export default TabsAlpha
+export * from './index.type'

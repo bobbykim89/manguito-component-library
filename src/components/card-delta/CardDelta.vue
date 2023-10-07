@@ -7,11 +7,8 @@ import type {
   CtaTarget,
   Range,
   CrossOrigin,
-} from '@bobbykim/manguito-theme/theme/theme.types'
-
-export type ColorMap = {
-  [key in ColorPalette]?: string
-}
+} from '@bobbykim/manguito-theme'
+import type { ColorMap } from './index.type'
 
 const defaultColors: ColorMap = {
   primary: '#ec489a',

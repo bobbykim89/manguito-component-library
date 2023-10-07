@@ -4,7 +4,7 @@ import CardAlpha from '@/components/card-alpha'
 import CardBeta from '@/components/card-beta'
 import CardGamma from '@/components/card-gamma'
 import CardDelta from '@/components/card-delta'
-import type { CustomColorType } from '@/components/card-delta/CardDelta.vue'
+import type { ColorMap } from '@/components/card-delta'
 import type {
   ColorPalette,
   HeadingSize,
@@ -12,11 +12,9 @@ import type {
   CrossOrigin,
   OpacityRange,
   Range,
-} from '@/components/manguito-theme/theme/theme.types'
+} from '@/components/manguito-theme'
 import {
   colors,
-  bodyTextSize,
-  buttonSize,
   targetOption,
   headingTextSize,
   corsOptions,
@@ -164,7 +162,7 @@ const stateDelta = reactive<{
   borderColor?: ColorPalette
   gradient1?: ColorPalette
   gradient2?: ColorPalette
-  customColor?: CustomColorType
+  customColor?: ColorMap
   slotText?: string
 }>({
   displayImage: true,

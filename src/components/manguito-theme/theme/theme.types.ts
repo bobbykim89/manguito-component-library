@@ -37,12 +37,14 @@ export type HeadingSize = 'sm' | 'md' | 'lg' | 'xl'
 export type BodyText = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 // Font weight
 export type FontWeight = 'light' | 'normal' | 'bold'
-// border positions
-export type Position = 'left' | 'center' | 'right'
+// alignment
+export type Alignment = 'left' | 'center' | 'right'
 // link targets
 export type CtaTarget = '_self' | '_blank'
 // Highlight positions
-export type Location = 'left' | 'right' | 'top' | 'bottom'
+export type Direction = 'left' | 'right' | 'top' | 'bottom'
+export type DirectionY = 'top' | 'bottom'
+export type DirectionX = 'left' | 'right'
 // available ranges
 type _RangeArray<
   T extends number,
@@ -60,7 +62,6 @@ export type Range<T extends number, R extends number> = IntRange<
 
 export type ButtonSize = 'small' | 'medium' | 'large'
 export type OpacityRange = 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100
-export type Directions = 'left' | 'right'
 export type ColumnWidth = 25 | 50 | 75 | 100
 export type CrossOrigin = 'use-credentials' | 'anonymous'
 export type InputType = 'text' | 'email' | 'password'
