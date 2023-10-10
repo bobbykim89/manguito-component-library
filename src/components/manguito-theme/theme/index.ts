@@ -7,7 +7,7 @@ import type {
   Range,
   OpacityRange,
   SpacingLevel,
-  Position,
+  Alignment,
 } from './theme.types'
 
 /**
@@ -102,7 +102,7 @@ export type InputType =
   | Range<1, 12>
   | OpacityRange
   | SpacingLevel
-  | Position
+  | Alignment
 
 class GenerateMCLClass extends MCLTheme {
   classType: ClassType
@@ -449,7 +449,7 @@ class GenerateMCLClass extends MCLTheme {
   }
   // handle text align classes
   getTextAlignClass(): string {
-    return MCLTheme.textAlign[this.classValue as Position]
+    return MCLTheme.textAlign[this.classValue as Alignment]
   }
   // handle border width classes
   getBorderWidthClass(): string {
