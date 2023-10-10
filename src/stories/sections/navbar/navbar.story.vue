@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import NavAlpha from '@/components/nav-alpha'
-import type { NavItemType } from '@/components/nav-alpha'
+import type { NavItemType, NavCollapseType } from '@/components/nav-alpha'
 import type {
   ColorPalette,
   HeadingSize,
@@ -15,7 +15,7 @@ import {
   headingTextSize,
 } from '@/assets/options'
 
-const navItems: NavItemType[] = [
+const navItems: Array<NavItemType | NavCollapseType> = [
   {
     title: 'Home',
     url: 'https://manguitopage.herokuapp.com/',
@@ -30,6 +30,26 @@ const navItems: NavItemType[] = [
     title: 'About',
     url: 'https://manguitopage.herokuapp.com/about',
     target: '_blank',
+  },
+  {
+    title: 'More',
+    children: [
+      {
+        title: 'Child Link 1',
+        url: '#',
+        target: '_self',
+      },
+      {
+        title: 'Child Link 2',
+        url: '#',
+        target: '_self',
+      },
+      {
+        title: 'Child Link 3',
+        url: '#',
+        target: '_self',
+      },
+    ],
   },
 ]
 
@@ -46,7 +66,7 @@ const stateAlpha = reactive<{
   titleAsLink?: boolean
   titleLink: string
   titleLinkTarget?: CtaTarget
-  navItems: NavItemType[]
+  navItems: Array<NavItemType | NavCollapseType>
   navItemAsLink?: boolean
   menuTextSize?: BodyText
   menuTextColor?: ColorPalette
