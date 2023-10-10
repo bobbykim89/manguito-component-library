@@ -27,25 +27,45 @@ const navItems: Array<NavItemType | NavCollapseType> = [
     target: '_blank',
   },
   {
+    title: 'Extra Items',
+    children: [
+      {
+        title: 'Extra Items Child Link 1',
+        url: '#',
+        target: '_self',
+      },
+      {
+        title: 'Extra Items Child Link 2',
+        url: '#',
+        target: '_self',
+      },
+      {
+        title: 'Extra Items Child Link 3',
+        url: '#',
+        target: '_self',
+      },
+    ],
+  },
+  {
     title: 'About',
     url: 'https://manguitopage.herokuapp.com/about',
     target: '_blank',
   },
   {
-    title: 'More',
+    title: 'More Items',
     children: [
       {
-        title: 'Child Link 1',
+        title: 'More Items Child Link 1',
         url: '#',
         target: '_self',
       },
       {
-        title: 'Child Link 2',
+        title: 'More Items Child Link 2',
         url: '#',
         target: '_self',
       },
       {
-        title: 'Child Link 3',
+        title: 'More Items Child Link 3',
         url: '#',
         target: '_self',
       },
@@ -75,7 +95,7 @@ const stateAlpha = reactive<{
   highlightColor?: ColorPalette
   bgColor?: ColorPalette
   mobileMenuBgColor?: ColorPalette
-  hamburgerColor?: ColorPalette
+  secondaryColor?: ColorPalette
   hamburgerBorder?: boolean
   fadeInOnScroll?: boolean
   scrollDistance?: number
@@ -102,7 +122,7 @@ const stateAlpha = reactive<{
   highlightColor: 'primary',
   bgColor: 'light-1',
   mobileMenuBgColor: 'light-2',
-  hamburgerColor: 'dark-1',
+  secondaryColor: 'dark-1',
   hamburgerBorder: true,
   fadeInOnScroll: true,
   scrollDistance: 50,
@@ -148,7 +168,7 @@ const handleEmitClick = (type: EmitType): void => {
           :highlight-color="stateAlpha.highlightColor"
           :bg-color="stateAlpha.bgColor"
           :mobile-menu-bg-color="stateAlpha.mobileMenuBgColor"
-          :hamburger-color="stateAlpha.hamburgerColor"
+          :secondary-color="stateAlpha.secondaryColor"
           :hamburger-border="stateAlpha.hamburgerBorder"
           :fade-in-on-scroll="stateAlpha.fadeInOnScroll"
           :scroll-distance="stateAlpha.scrollDistance"
@@ -253,8 +273,8 @@ const handleEmitClick = (type: EmitType): void => {
           :options="colors"
         />
         <HstSelect
-          title="hamburger-color"
-          v-model="stateAlpha.hamburgerColor"
+          title="secondary-color"
+          v-model="stateAlpha.secondaryColor"
           :options="colors"
         />
         <HstCheckbox

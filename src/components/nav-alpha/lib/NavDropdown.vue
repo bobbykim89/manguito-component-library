@@ -124,6 +124,7 @@ const navItemClick = (e: Event, item: NavItemType) => {
       >
         <button
           v-for="(item, idx) in navItem.children"
+          :key="idx"
           ref="navItemRef"
           class="px-xs py-2xs block w-full hover:bg-opacity-50 focus:bg-opacity-50"
           :class="[
