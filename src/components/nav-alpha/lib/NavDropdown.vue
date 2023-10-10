@@ -25,6 +25,7 @@ const props = withDefaults(
   {
     menuTextSize: 'md',
     bgColor: 'light-1',
+    hoverBgColor: 'dark-1',
     menuTextColor: 'dark-3',
     menuTextBold: false,
     displayHighlight: true,
@@ -130,6 +131,7 @@ const navItemClick = (e: Event, item: NavItemType) => {
             generateClass('HVBGCOLOR', hoverBgColor),
             generateClass('FCBGCOLOR', hoverBgColor),
             generateClass('TEXTCOLOR', menuTextColor),
+            generateClass('BODYTEXT', menuTextSize),
           ]"
           @click="itemClick(), navItemClick($event, item)"
         >

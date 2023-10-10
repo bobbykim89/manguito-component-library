@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import {
+  ref,
+  computed,
+  onMounted,
+  onBeforeUnmount,
+  watch,
+  Transition,
+} from 'vue'
 import type {
   ColorPalette,
   CtaTarget,
@@ -16,6 +23,7 @@ import type {
 import HamburgerMenu from './lib/HamburgerMenu.vue'
 import NavLink from './lib/NavLink.vue'
 import NavDropdown from './lib/NavDropdown.vue'
+import NavCollapse from './lib/NavCollapse.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -141,7 +149,7 @@ const navChildLinkClick = (e: NavChildClickEventType): void => {
    */
   const { title, url, target } = e.item
   e.event.preventDefault()
-  navOpen.value = false
+  navOpen.value = fals
   if (props.navItemAsLink) {
     window.open(url, target)
   } else {
@@ -182,25 +190,71 @@ const getMenuItemClass = (
 }
 
 // collapse/expand mobile menu
-const mobileMenu = ref()
-const mobileMenuHeight = ref<number>()
+// const mobileMenu = ref<Element | undefined>()
+// const observerStop = ref<boolean>(false)
+// const mobileMenuHeight = ref<number>()
 
-const initObserver = (): ResizeObserver => {
-  const observer = new ResizeObserver(() => {
-    if (mobileMenu.value) {
-      mobileMenuHeight.value = mobileMenu.value.scrollHeight
-      return
-    }
-  })
-  return observer
+// const initObserver = (): ResizeObserver => {
+//   const observer = new ResizeObserver(() => {
+//     if (mobileMenu.value) {
+//       // console.log(mobileMenu.value)
+//       mobileMenuHeight.value = mobileMenu.value.scrollHeight
+//       observerStop.value =
+//         mobileMenu.value.scrollHeight === mobileMenu.value.clientHeight
+//       return
+//     }
+//   })
+//   return observer
+// }
+
+// const menuHeightVal = computed(() => {
+//   const itemHeight: string =
+//     navOpen.value && observerStop.value ? 'min-height' : 'height'
+//   // if (!navOpen.value) {
+//   //   return { height: '0px' }
+//   // }
+//   // if (!navOpen.value) {
+//   //   return { height: '0px' }
+//   // }
+//   return {
+//     [itemHeight]:
+//       mobileMenu.value && navOpen.value ? mobileMenuHeight.value + 'px' : '0px',
+//     height:
+//       mobileMenu.value && navOpen.value ? mobileMenuHeight.value + 'px' : '0px',
+//   }
+//   // return {
+//   //   'max-height': '0px',
+//   // }
+//   // return {
+//   //   [itemHeight]:
+//   //     mobileMenu.value && navOpen.value ? mobileMenuHeight.value + 'px' : '0px',
+//   // }
+//   // return {
+//   //   height:
+//   //     mobileMenu.value && navOpen.value
+//   //       ? mobileMenu.value?.clientHeight + 'px'
+//   //       : '0px',
+//   // }
+//   // return {
+//   //   'min-height': mobileMenu.value ? mobileMenuHeight.value + 'px' : '0px',
+//   // }
+// })
+// transition functions
+const onEnter = (el: any) => {
+  el.style.height = 'auto'
+  const endWidth = getComputedStyle(el).height
+  el.style.height = '0px'
+  el.offsetHeight // force repaint
+  el.style.height = endWidth
 }
-
-const menuHeightVal = computed(() => {
-  return {
-    height:
-      mobileMenu.value && navOpen.value ? mobileMenuHeight.value + 'px' : '0px',
-  }
-})
+const onAfterEnter = (el: any) => {
+  el.style.height = 'auto'
+}
+const onLeave = (el: any) => {
+  el.style.height = getComputedStyle(el).height
+  el.offsetHeight // force repaint
+  el.style.height = '0px'
+}
 const hasChildren = (item: NavItemType | NavCollapseType) => {
   const NavCollapse = item as NavCollapseType
   if (typeof NavCollapse.children === 'undefined') {
@@ -210,13 +264,13 @@ const hasChildren = (item: NavItemType | NavCollapseType) => {
 }
 
 onMounted(() => {
-  if (typeof window !== undefined) {
-    initObserver().observe(mobileMenu.value)
+  if (typeof window !== 'undefined') {
+    // initObserver().observe(mobileMenu.value as Element)
     window.addEventListener('scroll', handleScroll())
   }
 })
 onBeforeUnmount(() => {
-  initObserver().disconnect()
+  // initObserver().disconnect()
   window.removeEventListener('scroll', handleScroll())
 })
 </script>
@@ -364,95 +418,70 @@ onBeforeUnmount(() => {
       </div>
     </nav>
     <!-- mobile menu -->
-    <div
-      class="h-auto overflow-hidden md:hidden"
-      :class="[
-        navOpen
-          ? 'transition-all duration-500 ease-in'
-          : 'transition-all duration-500 ease-out',
-        ,
-      ]"
-      ref="mobileMenu"
-      :style="menuHeightVal"
-    >
-      <div
-        class="bg-opacity-80 rounded-md my-2xs mx-xs overflow-hidden"
-        :class="generateClass('BGCOLOR', mobileMenuBgColor)"
+
+    <div class="overflow-hidden md:hidden">
+      <transition
+        name="collapse"
+        @enter="onEnter"
+        @after-enter="onAfterEnter"
+        @leave="onLeave"
       >
-        <ul class="flex flex-col items-center justify-center p-xs">
-          <li
-            class="mb-2xs last:mb-0"
-            v-for="(item, index) in navItems"
-            :key="`mobile-${index}`"
-          >
-            <!-- <a
-              :href="item.url"
-              :target="item.target"
-              v-html="item.title"
-              class="tracking-wider outline-none align-middle nav__text"
-              :class="
-                getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)
-              "
-              @click="
-                navItemClick(
-                  $event,
-                  item.title,
-                  item.url,
-                  item.target,
-                  navItemAsLink,
-                  'menu'
-                )
-              "
-            ></a>
-            <div
-              v-if="displayHighlight"
-              class="relative h-3xs -top-[2px] nav__decorator"
-              :class="generateClass('BEFOREBG', highlightColor)"
-            ></div> -->
-            <nav-link
-              v-if="!hasChildren(item)"
-              :nav-item="(item as NavItemType)"
-              :menu-text-color="menuTextColor"
-              :menu-text-size="menuTextSize"
-              :menu-text-bold="menuTextBold"
-              :display-highlight="displayHighlight"
-              :highlight-color="highlightColor"
-              @nav-link="
-                navItemClick(
-                  $event,
-                  item.title,
-                  (item as NavItemType).url,
-                  (item as NavItemType).target,
-                  navItemAsLink,
-                  'menu'
-                )
-              "
-            ></nav-link>
-          </li>
-        </ul>
-        <div>
-          <slot name="mobile-slot" :close-nav="closeNav"></slot>
+        <div
+          class="bg-opacity-80 rounded-md my-2xs mx-xs overflow-hidden"
+          v-if="navOpen"
+          :class="generateClass('BGCOLOR', mobileMenuBgColor)"
+        >
+          <ul class="flex flex-col items-center justify-center p-xs">
+            <li
+              class="mb-2xs last:mb-0"
+              v-for="(item, index) in navItems"
+              :key="`mobile-${index}`"
+            >
+              <nav-link
+                v-if="!hasChildren(item)"
+                :nav-item="(item as NavItemType)"
+                :menu-text-color="menuTextColor"
+                :menu-text-size="menuTextSize"
+                :menu-text-bold="menuTextBold"
+                :display-highlight="displayHighlight"
+                :highlight-color="highlightColor"
+                @nav-link="
+                  navItemClick(
+                    $event,
+                    item.title,
+                    (item as NavItemType).url,
+                    (item as NavItemType).target,
+                    navItemAsLink,
+                    'menu'
+                  )
+                "
+              ></nav-link>
+              <nav-collapse
+                v-else
+                :nav-id="item.title"
+                :nav-item="(item as NavCollapseType)"
+                :menu-text-color="menuTextColor"
+                :menu-text-size="menuTextSize"
+                :menu-text-bold="menuTextBold"
+                :display-highlight="displayHighlight"
+                :highlight-color="highlightColor"
+              ></nav-collapse>
+            </li>
+          </ul>
+          <div>
+            <slot name="mobile-slot" :close-nav="closeNav"></slot>
+          </div>
         </div>
-      </div>
+      </transition>
     </div>
   </header>
 </template>
 
 <style lang="scss" scoped>
-.nav__decorator {
-  &::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 100%;
-    width: 0;
-    transition: width 0.3s linear;
-  }
+.collapse-enter-active {
+  transition: height 0.5s ease-in;
 }
-
-.nav__text:focus + .nav__decorator::before,
-.nav__text:hover + .nav__decorator::before {
-  width: 100%;
+.collapse-leave-active {
+  transition: height 0.5s ease-out;
 }
 </style>
