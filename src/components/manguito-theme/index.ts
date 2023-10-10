@@ -9,7 +9,8 @@ import type { ClassType, InputType } from './theme/index.js'
 import DropdownContainer from './lib/dropdown/DropdownContainer.vue'
 import DropdownContent from './lib/dropdown/DropdownContent.vue'
 import Collapse from './lib/collapse/Collapse.vue'
-import type { CollapseEvent } from './lib/collapse/index.types'
+
+import HamburgerMenu from './lib/nav/HamburgerMenu.vue'
 
 const generateClass = (type: ClassType, value: InputType): string => {
   const mclGenerate = new GenerateMCLClass(type, value)
@@ -31,6 +32,7 @@ const generateClass = (type: ClassType, value: InputType): string => {
 
 export default generateClass
 
-export { DropdownContainer, DropdownContent, Collapse, CollapseEvent }
+export { DropdownContainer, DropdownContent, Collapse, HamburgerMenu }
 export * from './lib/directives'
 export * from './theme/theme.types'
+export * from './lib/collapse/index.types'

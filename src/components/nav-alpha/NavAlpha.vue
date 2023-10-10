@@ -7,9 +7,15 @@ import type {
   BodyText,
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
-import type { NavItemType } from './index.type'
+import type {
+  NavItemType,
+  NavCollapseType,
+  NavChildClickEventType,
+} from './index.type'
 // Import hamburgerMenu
 import HamburgerMenu from './lib/HamburgerMenu.vue'
+import NavLink from './lib/NavLink.vue'
+import NavDropdown from './lib/NavDropdown.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -25,7 +31,7 @@ const props = withDefaults(
     titleAsLink?: boolean
     titleLink: string
     titleLinkTarget?: CtaTarget
-    navItems: NavItemType[]
+    navItems: Array<NavItemType | NavCollapseType>
     navItemAsLink?: boolean
     menuTextSize?: BodyText
     menuTextColor?: ColorPalette
@@ -129,6 +135,19 @@ const navItemClick = (
     // console.log('emit menu click: ', e, link, target)
   }
 }
+const navChildLinkClick = (e: NavChildClickEventType): void => {
+  /**
+   * @param {NavChildClickEventType} e - Event emitted from dropdown/collapse click events
+   */
+  const { title, url, target } = e.item
+  e.event.preventDefault()
+  navOpen.value = false
+  if (props.navItemAsLink) {
+    window.open(url, target)
+  } else {
+    emit('logo-click', { event: e, title, link: url, target })
+  }
+}
 
 const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
   /**
@@ -182,6 +201,13 @@ const menuHeightVal = computed(() => {
       mobileMenu.value && navOpen.value ? mobileMenuHeight.value + 'px' : '0px',
   }
 })
+const hasChildren = (item: NavItemType | NavCollapseType) => {
+  const NavCollapse = item as NavCollapseType
+  if (typeof NavCollapse.children === 'undefined') {
+    return false
+  }
+  return NavCollapse.children.length > 0
+}
 
 onMounted(() => {
   if (typeof window !== undefined) {
@@ -257,13 +283,14 @@ onBeforeUnmount(() => {
               v-html="title"
             ></h2>
           </a>
+          <!-- desktop nav menu -->
           <ul class="hidden md:flex flex-wrap">
             <li
               class="mr-xs last:mr-0"
               v-for="(item, index) in navItems"
               :key="`menu-${index}`"
             >
-              <a
+              <!-- <a
                 :href="item.url"
                 :target="item.target"
                 v-html="item.title"
@@ -286,7 +313,38 @@ onBeforeUnmount(() => {
                 v-if="displayHighlight"
                 class="relative -top-[2px] h-[6px] nav__decorator"
                 :class="generateClass('BEFOREBG', highlightColor)"
-              ></div>
+              ></div> -->
+              <nav-link
+                v-if="!hasChildren(item)"
+                :nav-item="(item as NavItemType)"
+                :menu-text-color="menuTextColor"
+                :menu-text-size="menuTextSize"
+                :menu-text-bold="menuTextBold"
+                :display-highlight="displayHighlight"
+                :highlight-color="highlightColor"
+                @nav-link="
+                  navItemClick(
+                    $event,
+                    item.title,
+                    (item as NavItemType).url,
+                    (item as NavItemType).target,
+                    navItemAsLink,
+                    'menu'
+                  )
+                "
+              ></nav-link>
+              <nav-dropdown
+                v-else
+                :nav-item="(item as NavCollapseType)"
+                :menu-text-color="menuTextColor"
+                :menu-text-size="menuTextSize"
+                :menu-text-bold="menuTextBold"
+                :display-highlight="displayHighlight"
+                :highlight-color="highlightColor"
+                :bg-color="bgColor"
+                :hover-bg-color="hamburgerColor"
+                @nav-link="navChildLinkClick"
+              ></nav-dropdown>
             </li>
           </ul>
         </div>
@@ -327,7 +385,7 @@ onBeforeUnmount(() => {
             v-for="(item, index) in navItems"
             :key="`mobile-${index}`"
           >
-            <a
+            <!-- <a
               :href="item.url"
               :target="item.target"
               v-html="item.title"
@@ -350,7 +408,26 @@ onBeforeUnmount(() => {
               v-if="displayHighlight"
               class="relative h-3xs -top-[2px] nav__decorator"
               :class="generateClass('BEFOREBG', highlightColor)"
-            ></div>
+            ></div> -->
+            <nav-link
+              v-if="!hasChildren(item)"
+              :nav-item="(item as NavItemType)"
+              :menu-text-color="menuTextColor"
+              :menu-text-size="menuTextSize"
+              :menu-text-bold="menuTextBold"
+              :display-highlight="displayHighlight"
+              :highlight-color="highlightColor"
+              @nav-link="
+                navItemClick(
+                  $event,
+                  item.title,
+                  (item as NavItemType).url,
+                  (item as NavItemType).target,
+                  navItemAsLink,
+                  'menu'
+                )
+              "
+            ></nav-link>
           </li>
         </ul>
         <div>

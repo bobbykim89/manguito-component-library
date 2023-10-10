@@ -5,3 +5,13 @@ export interface NavItemType {
   url: string
   target?: CtaTarget
 }
+
+export interface NavCollapseType {
+  title: string
+  children: NavItemType[]
+}
+
+export interface NavChildClickEventType {
+  event: Event
+  item: NavItemType
+}
