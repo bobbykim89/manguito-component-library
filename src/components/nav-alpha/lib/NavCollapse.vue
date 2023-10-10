@@ -1,16 +1,21 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed } from 'vue'
 import generateClass, {
   Collapse,
   vCollapse,
   CollapseEvent,
 } from '@bobbykim/manguito-theme'
 import type { ColorPalette, BodyText } from '@bobbykim/manguito-theme'
-import type { NavCollapseType, NavChildClickEventType } from '../index.type'
+import type {
+  NavCollapseType,
+  NavItemType,
+  NavChildClickEventType,
+} from '../index.type'
 
 const props = withDefaults(
   defineProps<{
     navId: string
+    navAccordionGroup: string
     navItem: NavCollapseType
     bgColor?: ColorPalette
     hoverBgColor?: ColorPalette
@@ -39,9 +44,22 @@ const handleNavId = computed<string>(() => {
   const navKebab = navLower.replaceAll(' ', '-')
   return `nav-${navKebab}`
 })
+const handleNavAccordionGroupName = computed<string>(() => {
+  const { navAccordionGroup } = props
+  const toLowerCase = navAccordionGroup.toLocaleLowerCase()
+  const toKebabCase = toLowerCase.replaceAll(' ', '-')
+  return `accordion-${toKebabCase}`
+})
 const toggleAction = (e: CollapseEvent): void => {
   toggle.value = e.visible
   //   emit('nav-link', { event: e, title: props.navItem.title })
+}
+const navItemClick = (e: Event, item: NavItemType) => {
+  const customEvent: NavChildClickEventType = {
+    event: e,
+    item,
+  }
+  emit('nav-link', customEvent)
 }
 const getMenuItemClass = (
   size: BodyText,
@@ -62,19 +80,23 @@ const getMenuItemClass = (
   }
   return classArray.join(' ')
 }
-const getnestedItemClass = (hlColor: ColorPalette): string => {
-  const classArray: string[] = [
-    generateClass('BORDER', hlColor),
-    'border-l-[4px]',
-    'pl-2xs',
-  ]
+const getnestedItemClass = (hlColor: ColorPalette, dHl: boolean): string => {
+  /**
+   * @param {ColorPalette} hlColor - highlightColor
+   * @param {boolean} dHl - displayHighlight
+   */
+  const classArray: string[] = ['px-2xs']
+  if (dHl) {
+    classArray.push(generateClass('BORDER', hlColor))
+    classArray.push('border-l-[4px]')
+  }
   return classArray.join(' ')
 }
 </script>
 
 <template>
-  <div class="w-full flex flex-col items-center">
-    <div>
+  <div class="flex flex-col w-full">
+    <div class="self-center">
       <button
         class="tracking-wider align-middle outline-none nav__text flex items-center gap-3xs"
         :class="getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)"
@@ -104,30 +126,30 @@ const getnestedItemClass = (hlColor: ColorPalette): string => {
         :class="generateClass('BEFOREBG', highlightColor)"
       ></div>
     </div>
-    <div class="self-end">
-      <collapse
-        :collapseId="handleNavId"
-        :visible="false"
-        :class-name="getnestedItemClass(highlightColor)"
-        @toggle="toggleAction"
-      >
-        <div>
-          <button
-            v-for="(item, idx) in navItem.children"
-            class="block w-full hover:bg-opacity-50 focus:bg-opacity-50 mb-3xs last:mb-0"
-            :key="idx"
-            :class="[
-              generateClass('HVBGCOLOR', hoverBgColor),
-              generateClass('FCBGCOLOR', hoverBgColor),
-              generateClass('TEXTCOLOR', menuTextColor),
-              generateClass('BODYTEXT', menuTextSize),
-            ]"
-          >
-            {{ item.title }}
-          </button>
-        </div>
-      </collapse>
-    </div>
+    <collapse
+      :collapseId="handleNavId"
+      :visible="false"
+      :accordion="handleNavAccordionGroupName"
+      @toggle="toggleAction"
+    >
+      <div class="flex flex-col">
+        <a
+          v-for="(item, idx) in navItem.children"
+          :href="item.url"
+          :target="item.target"
+          class="w-full pb-2xs last:pb-0 first:mt-2xs"
+          :key="idx"
+          :class="[
+            generateClass('TEXTCOLOR', menuTextColor),
+            generateClass('BODYTEXT', menuTextSize),
+            getnestedItemClass(highlightColor, displayHighlight),
+          ]"
+          @click="navItemClick($event, item)"
+        >
+          {{ item.title }}
+        </a>
+      </div>
+    </collapse>
   </div>
 </template>
 

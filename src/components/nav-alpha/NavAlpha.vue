@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import {
-  ref,
-  computed,
-  onMounted,
-  onBeforeUnmount,
-  watch,
-  Transition,
-} from 'vue'
+import { ref, onMounted, onBeforeUnmount, Transition } from 'vue'
 import type {
   ColorPalette,
   CtaTarget,
@@ -48,7 +41,7 @@ const props = withDefaults(
     highlightColor?: ColorPalette
     bgColor?: ColorPalette
     mobileMenuBgColor?: ColorPalette
-    hamburgerColor?: ColorPalette
+    secondaryColor?: ColorPalette
     hamburgerBorder?: boolean
     fadeInOnScroll?: boolean
     scrollDistance?: number
@@ -68,7 +61,7 @@ const props = withDefaults(
     highlightColor: 'primary',
     bgColor: 'light-1',
     mobileMenuBgColor: 'light-2',
-    hamburgerColor: 'dark-1',
+    secondaryColor: 'dark-1',
     hamburgerBorder: true,
     fadeInOnScroll: true,
     scrollDistance: 50,
@@ -140,7 +133,6 @@ const navItemClick = (
     if (emitType === 'logo') {
       emit('logo-click', { event: e, title: title, link: link, target: target })
     }
-    // console.log('emit menu click: ', e, link, target)
   }
 }
 const navChildLinkClick = (e: NavChildClickEventType): void => {
@@ -149,11 +141,11 @@ const navChildLinkClick = (e: NavChildClickEventType): void => {
    */
   const { title, url, target } = e.item
   e.event.preventDefault()
-  navOpen.value = fals
+  navOpen.value = false
   if (props.navItemAsLink) {
     window.open(url, target)
   } else {
-    emit('logo-click', { event: e, title, link: url, target })
+    emit('menu-click', { event: e, title, link: url, target })
   }
 }
 
@@ -189,56 +181,6 @@ const getMenuItemClass = (
   return classArray.join(' ')
 }
 
-// collapse/expand mobile menu
-// const mobileMenu = ref<Element | undefined>()
-// const observerStop = ref<boolean>(false)
-// const mobileMenuHeight = ref<number>()
-
-// const initObserver = (): ResizeObserver => {
-//   const observer = new ResizeObserver(() => {
-//     if (mobileMenu.value) {
-//       // console.log(mobileMenu.value)
-//       mobileMenuHeight.value = mobileMenu.value.scrollHeight
-//       observerStop.value =
-//         mobileMenu.value.scrollHeight === mobileMenu.value.clientHeight
-//       return
-//     }
-//   })
-//   return observer
-// }
-
-// const menuHeightVal = computed(() => {
-//   const itemHeight: string =
-//     navOpen.value && observerStop.value ? 'min-height' : 'height'
-//   // if (!navOpen.value) {
-//   //   return { height: '0px' }
-//   // }
-//   // if (!navOpen.value) {
-//   //   return { height: '0px' }
-//   // }
-//   return {
-//     [itemHeight]:
-//       mobileMenu.value && navOpen.value ? mobileMenuHeight.value + 'px' : '0px',
-//     height:
-//       mobileMenu.value && navOpen.value ? mobileMenuHeight.value + 'px' : '0px',
-//   }
-//   // return {
-//   //   'max-height': '0px',
-//   // }
-//   // return {
-//   //   [itemHeight]:
-//   //     mobileMenu.value && navOpen.value ? mobileMenuHeight.value + 'px' : '0px',
-//   // }
-//   // return {
-//   //   height:
-//   //     mobileMenu.value && navOpen.value
-//   //       ? mobileMenu.value?.clientHeight + 'px'
-//   //       : '0px',
-//   // }
-//   // return {
-//   //   'min-height': mobileMenu.value ? mobileMenuHeight.value + 'px' : '0px',
-//   // }
-// })
 // transition functions
 const onEnter = (el: any) => {
   el.style.height = 'auto'
@@ -265,12 +207,10 @@ const hasChildren = (item: NavItemType | NavCollapseType) => {
 
 onMounted(() => {
   if (typeof window !== 'undefined') {
-    // initObserver().observe(mobileMenu.value as Element)
     window.addEventListener('scroll', handleScroll())
   }
 })
 onBeforeUnmount(() => {
-  // initObserver().disconnect()
   window.removeEventListener('scroll', handleScroll())
 })
 </script>
@@ -344,30 +284,6 @@ onBeforeUnmount(() => {
               v-for="(item, index) in navItems"
               :key="`menu-${index}`"
             >
-              <!-- <a
-                :href="item.url"
-                :target="item.target"
-                v-html="item.title"
-                class="tracking-wider align-middle outline-none nav__text"
-                :class="
-                  getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)
-                "
-                @click="
-                  navItemClick(
-                    $event,
-                    item.title,
-                    item.url,
-                    item.target,
-                    navItemAsLink,
-                    'menu'
-                  )
-                "
-              ></a>
-              <div
-                v-if="displayHighlight"
-                class="relative -top-[2px] h-[6px] nav__decorator"
-                :class="generateClass('BEFOREBG', highlightColor)"
-              ></div> -->
               <nav-link
                 v-if="!hasChildren(item)"
                 :nav-item="(item as NavItemType)"
@@ -396,7 +312,7 @@ onBeforeUnmount(() => {
                 :display-highlight="displayHighlight"
                 :highlight-color="highlightColor"
                 :bg-color="bgColor"
-                :hover-bg-color="hamburgerColor"
+                :hover-bg-color="secondaryColor"
                 @nav-link="navChildLinkClick"
               ></nav-dropdown>
             </li>
@@ -405,7 +321,7 @@ onBeforeUnmount(() => {
       </div>
       <div>
         <hamburger-menu
-          :color="hamburgerColor"
+          :color="secondaryColor"
           :display-border="hamburgerBorder"
           class="block md:hidden"
           @hbg-click="toggleNavButton"
@@ -465,6 +381,8 @@ onBeforeUnmount(() => {
                 :menu-text-bold="menuTextBold"
                 :display-highlight="displayHighlight"
                 :highlight-color="highlightColor"
+                :nav-accordion-group="title"
+                @nav-link="navChildLinkClick"
               ></nav-collapse>
             </li>
           </ul>
