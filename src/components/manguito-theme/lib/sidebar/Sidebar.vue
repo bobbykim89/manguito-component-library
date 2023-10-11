@@ -84,7 +84,13 @@ watch(
         class="sidebar-body fixed h-full overflow-hidden inset-y-0 shadow z-[110]"
         :class="[placement === 'left' ? 'left-0' : 'right-0', className]"
       >
-        <slot :close="closeSidebar" :status="toggle" />
+        <div class="sticky top-0">
+          <slot name="header" :close="closeSidebar" :status="toggle" />
+        </div>
+        <slot name="body" :close="closeSidebar" :status="toggle" />
+        <div class="sticky bottom-0">
+          <slot name="footer" :close="closeSidebar" :status="toggle" />
+        </div>
       </div>
     </Transition>
   </div>

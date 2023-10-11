@@ -234,13 +234,13 @@ onBeforeUnmount(() => {
               :src="logo"
               :alt="logoAlt"
               class="h-full"
-              :class="[logoSmall ? 'hidden md:inline-block' : 'inline-block']"
+              :class="[logoSmall ? 'hidden lg:inline-block' : 'inline-block']"
             />
             <img
               v-if="logoSmall"
               :src="logoSmall"
               :alt="logoAlt"
-              class="inline-block md:hidden h-full"
+              class="inline-block lg:hidden h-full"
             />
           </a>
         </div>
@@ -266,7 +266,7 @@ onBeforeUnmount(() => {
             ></h2>
           </a>
           <!-- desktop nav menu -->
-          <ul class="hidden md:flex flex-wrap">
+          <ul class="hidden lg:flex flex-wrap">
             <li
               class="mr-xs last:mr-0"
               v-for="(item, index) in navItems"
@@ -311,19 +311,19 @@ onBeforeUnmount(() => {
         <hamburger-menu
           :color="secondaryColor"
           :display-border="hamburgerBorder"
-          class="block md:hidden"
+          class="block lg:hidden"
           @hbg-click="toggleNavButton"
           :toggle="navOpen"
           :nav-color="bgColor"
         ></hamburger-menu>
-        <div class="hidden md:block">
+        <div class="hidden lg:block">
           <slot name="nav-slot"></slot>
         </div>
       </div>
     </nav>
     <!-- mobile menu -->
 
-    <div class="overflow-hidden md:hidden">
+    <div class="overflow-hidden lg:hidden">
       <transition
         name="collapse"
         @enter="onEnter"
