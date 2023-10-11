@@ -114,15 +114,59 @@ import { Sidebar, vToggle } from '@bobbykim/manguito-theme'
       class-name="taildind css class"
       backdrop-color="dark-1"
       width="300"
-      v-slot="{ close }"
+      @toggle="$event"
+      @close="$event"
     >
       <!-- add a button to close sidebar -->
-      <button @click="close">Button</button>
+      <template #header="{ close }">
+        <button @click="close">Button</button>
+      </template>
+      <template #body> ...body content </template>
+      <template #footer> ...footer content </template>
     </sidebar>
     <!-- sidebar with no backdrop -->
     <sidebar sidebar-id="sidebar-component-id" no-backdrop></sidebar>
     <!-- load page with open sidebar -->
     <sidebar sidebar-id="sidebar-component-id" visible></sidebar>
+  </div>
+</template>
+```
+
+## Modal component
+
+```vue
+<script lang="ts" setup>
+import { Modal, vToggle } from '@bobbykim/manguito-theme'
+</script>
+
+<template>
+  <div>
+    <!-- trigger collapse toggle  -->
+    <button v-modal:modal-component-id>{{Tab button name}}</button>
+    <button v-modal:[when calling modal-id dynamically]>
+      {{Tab button name}}
+    </button>
+    <!-- trigger by 'a' tag -->
+    <a href="#modal-component-id" v-modal>{{Tab button name here}}</a>
+    <modal
+      modal-id="modal-component-id"
+      placement="'top'|'center'|'bottom'"
+      class-name="taildind css class"
+      backdrop-color="dark-1"
+      @toggle="$event"
+      @close="$event"
+    >
+      <!-- add a button to close modal -->
+      <template #header="{ close, status }">
+        <button @click="close">Button</button>
+      </template>
+      <template #body> ...body content </template>
+      <template #footer> ...footer content </template>
+    </modal>
+    <!-- modal with no backdrop -->
+    <modal modal-id="modal-component-id" no-backdrop></modal>
+    <!-- load page with open modal -->
+    <modal modal-id="modal-component-id" visible></modal>
   </div>
 </template>
 ```

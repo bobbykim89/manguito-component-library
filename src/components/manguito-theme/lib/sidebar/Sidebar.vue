@@ -25,6 +25,8 @@ const props = withDefaults(
 const emit = defineEmits(['toggle', 'close'])
 const toggle = ref<boolean>(props.visible)
 const toggleComplete = ref<boolean>(false)
+const headerRef = ref<HTMLElement>()
+const footerRef = ref<HTMLElement>()
 
 const handleToggleEvent = (e: Event): void => {
   toggle.value = !toggle.value
@@ -36,8 +38,18 @@ const closeSidebar = (e: Event): void => {
     emit('close', e)
   }
 }
-const handleSidebarWidth = computed(() => {
-  return { '--sidebar-width': `${props.width}px` }
+const handleStyleVariables = computed(() => {
+  return {
+    '--sidebar-width': `${props.width}px`,
+    '--header-height':
+      headerRef.value && toggle.value
+        ? headerRef.value.scrollHeight + 'px'
+        : '0px',
+    '--footer-height':
+      footerRef.value && toggle.value
+        ? footerRef.value.scrollHeight + 'px'
+        : '0px',
+  }
 })
 const sidebarClass = computed(() => {
   return props.placement === 'left' ? 'sidebar-left' : 'sidebar-right'
@@ -62,7 +74,7 @@ watch(
 </script>
 
 <template>
-  <div :style="handleSidebarWidth">
+  <div :style="handleStyleVariables">
     <button :id="sidebarId" @click="handleToggleEvent" class="hidden"></button>
     <Transition name="fade" appear tag="div" v-if="!noBackdrop">
       <section
@@ -82,14 +94,20 @@ watch(
         v-if="toggle"
         v-click-outside="closeSidebar"
         class="sidebar-body fixed h-full overflow-hidden inset-y-0 shadow z-[110]"
-        :class="[placement === 'left' ? 'left-0' : 'right-0', className]"
+        :class="[placement === 'left' ? 'left-0' : 'right-0']"
       >
-        <div class="sticky top-0">
-          <slot name="header" :close="closeSidebar" :status="toggle" />
-        </div>
-        <slot name="body" :close="closeSidebar" :status="toggle" />
-        <div class="sticky bottom-0">
-          <slot name="footer" :close="closeSidebar" :status="toggle" />
+        <div class="relative h-full overscroll-contain" :class="className">
+          <div class="sticky top-0" ref="headerRef">
+            <slot name="header" :close="closeSidebar" :status="toggle" />
+          </div>
+
+          <div class="sidebar-body-height">
+            <slot name="body" :close="closeSidebar" :status="toggle" />
+          </div>
+
+          <div class="sticky bottom-0" ref="footerRef">
+            <slot name="footer" :close="closeSidebar" :status="toggle" />
+          </div>
         </div>
       </div>
     </Transition>
@@ -99,6 +117,9 @@ watch(
 <style scoped lang="scss">
 .sidebar-body {
   width: 100%;
+}
+.sidebar-body-height {
+  min-height: calc(100vh - var(--header-height) - var(--footer-height));
 }
 
 .fade-enter-active,

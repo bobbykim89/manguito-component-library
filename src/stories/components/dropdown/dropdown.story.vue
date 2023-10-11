@@ -11,9 +11,6 @@ import type {
 } from '@/components/manguito-theme'
 import { colors, bodyTextSize, fontWeightOptions } from '@/assets/options'
 
-// test
-import { Sidebar, vToggle, Modal } from '@/components/manguito-theme'
-
 const selectedInfoRef = ref<string>('')
 const selectedLinkRef = ref<string>('')
 const dropdownItems: DropdownItem[] = [
@@ -178,62 +175,6 @@ const handleClearButtonClick = (): void => {
           v-model="stateAlpha.displaySeparator"
         />
       </template>
-    </Variant>
-    <Variant title="test">
-      <div>
-        <button v-toggle:my-modal>Toggle button</button>
-        <modal
-          modal-id="my-modal"
-          class-name="bg-primary px-xs overflow-scroll rounded-md max-h-[80vh]"
-        >
-          <template #header="{ close }">
-            <button class="btn btn-secondary" @click="close">
-              Close button
-            </button>
-          </template>
-          <template #body>
-            <h2 class="h2-md mb-md">This is Modal</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-              fermentum commodo dolor eget aliquet. Donec malesuada lorem
-              dictum, varius augue ut, congue lacus. Proin ornare nisl cursus
-              vehicula bibendum. Maecenas gravida semper erat quis posuere.
-              Suspendisse eu interdum orci. Suspendisse pellentesque finibus
-              lacus, ac ultrices libero placerat sed. Vestibulum ac purus velit.
-              Duis at euismod mi, quis malesuada erat. Sed feugiat cursus massa,
-              et posuere tellus sagittis non. Suspendisse consectetur ligula eu
-              nunc malesuada bibendum. Maecenas quis leo a tellus vulputate
-              imperdiet. Suspendisse suscipit lobortis massa, nec tristique quam
-              sagittis sed. Nulla eget accumsan orci, laoreet mollis quam. Proin
-              neque velit, suscipit ac tortor ut, mattis rhoncus massa.
-              Suspendisse non eros mi. Sed ut urna sed ex finibus consectetur.
-            </p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-              fermentum commodo dolor eget aliquet. Donec malesuada lorem
-              dictum, varius augue ut, congue lacus. Proin ornare nisl cursus
-              vehicula bibendum. Maecenas gravida semper erat quis posuere.
-              Suspendisse eu interdum orci. Suspendisse pellentesque finibus
-              lacus, ac ultrices libero placerat sed. Vestibulum ac purus velit.
-              Duis at euismod mi, quis malesuada erat. Sed feugiat cursus massa,
-              et posuere tellus sagittis non. Suspendisse consectetur ligula eu
-              nunc malesuada bibendum. Maecenas quis leo a tellus vulputate
-              imperdiet. Suspendisse suscipit lobortis massa, nec tristique quam
-              sagittis sed. Nulla eget accumsan orci, laoreet mollis quam. Proin
-              neque velit, suscipit ac tortor ut, mattis rhoncus massa.
-              Suspendisse non eros mi. Sed ut urna sed ex finibus consectetur.
-            </p>
-          </template>
-          <template #footer="{ close }">
-            <div class="bg-primary border-t-2 p-xs">
-              This is footer
-              <button class="btn btn-warning" @click="close">
-                Close button
-              </button>
-            </div>
-          </template>
-        </modal>
-      </div>
     </Variant>
   </Story>
 </template>

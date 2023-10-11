@@ -39,6 +39,7 @@ export type BodyText = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 export type FontWeight = 'light' | 'normal' | 'bold'
 // alignment
 export type Alignment = 'left' | 'center' | 'right'
+export type VerticalAlignment = 'top' | 'center' | 'bottom'
 // link targets
 export type CtaTarget = '_self' | '_blank'
 // Highlight positions
