@@ -219,87 +219,92 @@ const dropdownSelectEvent = (item: string): void => {
           luctus tortor. Cras eu pretium arcu. Cras ut turpis eros. Mauris
           venenatis eros diam.
         </p>
-        <sidebar
-          sidebar-id="sidebar-left"
-          v-slot="{ close, status }"
-          class-name="bg-light-1 p-xs"
-        >
-          <div class="flex justify-end mb-md">
-            <button @click="close">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="1em"
-                viewBox="0 0 384 512"
-                class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 transition-colors duration-300 ease-linear h-sm"
-              >
-                <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                <path
-                  d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
-                />
-              </svg>
-            </button>
-          </div>
-          <div>
-            <h2 class="h2-md mb-md">This is sidebar left</h2>
-            <p>Toggle Status: {{ status }}</p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-              fermentum commodo dolor eget aliquet. Donec malesuada lorem
-              dictum, varius augue ut, congue lacus. Proin ornare nisl cursus
-              vehicula bibendum. Maecenas gravida semper erat quis posuere.
-              Suspendisse eu interdum orci. Suspendisse pellentesque finibus
-              lacus, ac ultrices libero placerat sed. Vestibulum ac purus velit.
-              Duis at euismod mi, quis malesuada erat. Sed feugiat cursus massa,
-              et posuere tellus sagittis non. Suspendisse consectetur ligula eu
-              nunc malesuada bibendum. Maecenas quis leo a tellus vulputate
-              imperdiet. Suspendisse suscipit lobortis massa, nec tristique quam
-              sagittis sed. Nulla eget accumsan orci, laoreet mollis quam. Proin
-              neque velit, suscipit ac tortor ut, mattis rhoncus massa.
-              Suspendisse non eros mi. Sed ut urna sed ex finibus consectetur.
-            </p>
-          </div>
+        <sidebar sidebar-id="sidebar-left" class-name="bg-light-1 p-xs">
+          <template #header="{ close }">
+            <div class="flex justify-end mb-md">
+              <button @click="close">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="1em"
+                  viewBox="0 0 384 512"
+                  class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 transition-colors duration-300 ease-linear h-sm"
+                >
+                  <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                  <path
+                    d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
+                  />
+                </svg>
+              </button>
+            </div>
+          </template>
+          <template #body="{ status }">
+            <div>
+              <h2 class="h2-md mb-md">This is sidebar left</h2>
+              <p>Toggle Status: {{ status }}</p>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+                fermentum commodo dolor eget aliquet. Donec malesuada lorem
+                dictum, varius augue ut, congue lacus. Proin ornare nisl cursus
+                vehicula bibendum. Maecenas gravida semper erat quis posuere.
+                Suspendisse eu interdum orci. Suspendisse pellentesque finibus
+                lacus, ac ultrices libero placerat sed. Vestibulum ac purus
+                velit. Duis at euismod mi, quis malesuada erat. Sed feugiat
+                cursus massa, et posuere tellus sagittis non. Suspendisse
+                consectetur ligula eu nunc malesuada bibendum. Maecenas quis leo
+                a tellus vulputate imperdiet. Suspendisse suscipit lobortis
+                massa, nec tristique quam sagittis sed. Nulla eget accumsan
+                orci, laoreet mollis quam. Proin neque velit, suscipit ac tortor
+                ut, mattis rhoncus massa. Suspendisse non eros mi. Sed ut urna
+                sed ex finibus consectetur.
+              </p>
+            </div>
+          </template>
         </sidebar>
         <sidebar
           sidebar-id="sidebar-right"
           placement="right"
           no-backdrop
           width="450"
-          v-slot="{ close }"
           class-name="bg-warning p-xs"
         >
-          <div class="flex justify-start mb-md">
-            <button @click="close">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="1em"
-                viewBox="0 0 384 512"
-                class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 transition-colors duration-300 ease-linear h-sm"
-              >
-                <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
-                <path
-                  d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
-                />
-              </svg>
-            </button>
-          </div>
-          <div>
-            <h2 class="h2-md mb-md">This is sidebar right</h2>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-              fermentum commodo dolor eget aliquet. Donec malesuada lorem
-              dictum, varius augue ut, congue lacus. Proin ornare nisl cursus
-              vehicula bibendum. Maecenas gravida semper erat quis posuere.
-              Suspendisse eu interdum orci. Suspendisse pellentesque finibus
-              lacus, ac ultrices libero placerat sed. Vestibulum ac purus velit.
-              Duis at euismod mi, quis malesuada erat. Sed feugiat cursus massa,
-              et posuere tellus sagittis non. Suspendisse consectetur ligula eu
-              nunc malesuada bibendum. Maecenas quis leo a tellus vulputate
-              imperdiet. Suspendisse suscipit lobortis massa, nec tristique quam
-              sagittis sed. Nulla eget accumsan orci, laoreet mollis quam. Proin
-              neque velit, suscipit ac tortor ut, mattis rhoncus massa.
-              Suspendisse non eros mi. Sed ut urna sed ex finibus consectetur.
-            </p>
-          </div>
+          <template #header="{ close }">
+            <div class="flex justify-start mb-md">
+              <button @click="close">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="1em"
+                  viewBox="0 0 384 512"
+                  class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 transition-colors duration-300 ease-linear h-sm"
+                >
+                  <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                  <path
+                    d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
+                  />
+                </svg>
+              </button>
+            </div>
+          </template>
+          <template #body>
+            <div>
+              <h2 class="h2-md mb-md">This is sidebar right</h2>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+                fermentum commodo dolor eget aliquet. Donec malesuada lorem
+                dictum, varius augue ut, congue lacus. Proin ornare nisl cursus
+                vehicula bibendum. Maecenas gravida semper erat quis posuere.
+                Suspendisse eu interdum orci. Suspendisse pellentesque finibus
+                lacus, ac ultrices libero placerat sed. Vestibulum ac purus
+                velit. Duis at euismod mi, quis malesuada erat. Sed feugiat
+                cursus massa, et posuere tellus sagittis non. Suspendisse
+                consectetur ligula eu nunc malesuada bibendum. Maecenas quis leo
+                a tellus vulputate imperdiet. Suspendisse suscipit lobortis
+                massa, nec tristique quam sagittis sed. Nulla eget accumsan
+                orci, laoreet mollis quam. Proin neque velit, suscipit ac tortor
+                ut, mattis rhoncus massa. Suspendisse non eros mi. Sed ut urna
+                sed ex finibus consectetur.
+              </p>
+            </div>
+          </template>
         </sidebar>
       </div>
     </Variant>
