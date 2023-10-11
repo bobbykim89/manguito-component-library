@@ -154,6 +154,9 @@ const dropdownSelectEvent = (item: string): void => {
     <Variant title="Sidebar">
       <div>
         <div class="flex justify-center gap-xs my-md">
+          <button class="btn btn-success" v-toggle:sidebar-default>
+            Sidebar Default Header
+          </button>
           <button class="btn btn-danger" v-toggle:sidebar-left>
             Sidebar Left
           </button>
@@ -220,6 +223,41 @@ const dropdownSelectEvent = (item: string): void => {
           luctus tortor. Cras eu pretium arcu. Cras ut turpis eros. Mauris
           venenatis eros diam.
         </p>
+        <sidebar
+          sidebar-id="sidebar-default"
+          title="Sidebar title"
+          color="success"
+        >
+          <template #body>
+            <div class="py-sm px-xs">
+              <img
+                src="https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1685840063/ManguitoPage/xl0fo7vevr5nhxpnnztq.jpg"
+                class="mb-sm"
+              />
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+                fermentum commodo dolor eget aliquet. Donec malesuada lorem
+                dictum, varius augue ut, congue lacus. Proin ornare nisl cursus
+                vehicula bibendum. Maecenas gravida semper erat quis posuere.
+                Suspendisse eu interdum orci. Suspendisse pellentesque finibus
+                lacus, ac ultrices libero placerat sed. Vestibulum ac purus
+                velit. Duis at euismod mi, quis malesuada erat. Sed feugiat
+                cursus massa, et posuere tellus sagittis non. Suspendisse
+                consectetur ligula eu nunc malesuada bibendum. Maecenas quis leo
+                a tellus vulputate imperdiet. Suspendisse suscipit lobortis
+                massa, nec tristique quam sagittis sed. Nulla eget accumsan
+                orci, laoreet mollis quam. Proin neque velit, suscipit ac tortor
+                ut, mattis rhoncus massa. Suspendisse non eros mi. Sed ut urna
+                sed ex finibus consectetur.
+              </p>
+            </div>
+          </template>
+          <template #footer>
+            <div class="p-xs bg-success">
+              <h3 class="h3-sm">Footer text</h3>
+            </div>
+          </template>
+        </sidebar>
         <sidebar
           sidebar-id="sidebar-left"
           class-name="bg-light-1 px-xs overflow-scroll"
@@ -338,6 +376,9 @@ const dropdownSelectEvent = (item: string): void => {
         <div class="flex justify-center gap-xs my-md">
           <button class="btn btn-danger" v-toggle:modal-1>Modal 1</button>
           <button class="btn btn-warning" v-toggle:modal-2>Modal 2</button>
+          <button class="btn btn-success" v-toggle:modal-3>
+            Modal Default Header
+          </button>
         </div>
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dui
@@ -398,12 +439,10 @@ const dropdownSelectEvent = (item: string): void => {
           luctus tortor. Cras eu pretium arcu. Cras ut turpis eros. Mauris
           venenatis eros diam.
         </p>
-        <modal
-          modal-id="modal-1"
-          class-name="bg-light-1 px-xs overflow-y-scroll rounded-md"
-        >
+        <modal modal-id="modal-1" class-name="px-xs rounded-md" color="light-1">
           <template #header="{ close }">
-            <div class="flex justify-end py-xs bg-light-1">
+            <div class="flex justify-between py-xs bg-light-1 border-b-2">
+              <h3 class="h3-md">Modal 1</h3>
               <button @click="close">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -420,8 +459,7 @@ const dropdownSelectEvent = (item: string): void => {
             </div>
           </template>
           <template #body>
-            <div class="my-xs">
-              <h3 class="h3-md mb-sm">Modal 1</h3>
+            <div class="my-sm">
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
                 fermentum commodo dolor eget aliquet. Donec malesuada lorem
@@ -454,7 +492,8 @@ const dropdownSelectEvent = (item: string): void => {
         <modal
           modal-id="modal-2"
           no-backdrop
-          class-name="bg-warning border shadow-xl"
+          color="warning"
+          class-name="border shadow-xl"
           pleacement="top"
         >
           <template #header="{ close }">
@@ -477,6 +516,28 @@ const dropdownSelectEvent = (item: string): void => {
           <template #body>
             <div class="my-sm px-xs">
               <h3 class="h3-md mb-sm">Modal 2</h3>
+              <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+                fermentum commodo dolor eget aliquet. Donec malesuada lorem
+                dictum, varius augue ut, congue lacus. Proin ornare nisl cursus
+                vehicula bibendum. Maecenas gravida semper erat quis posuere.
+                Suspendisse eu interdum orci. Suspendisse pellentesque finibus
+                lacus, ac ultrices libero placerat sed. Vestibulum ac purus
+                velit. Duis at euismod mi, quis malesuada erat. Sed feugiat
+                cursus massa, et posuere tellus sagittis non. Suspendisse
+                consectetur ligula eu nunc malesuada bibendum. Maecenas quis leo
+                a tellus vulputate imperdiet.
+              </p>
+            </div>
+          </template>
+        </modal>
+        <modal
+          modal-id="modal-3"
+          color="success"
+          title="Modal with default header"
+        >
+          <template #body>
+            <div class="py-sm px-xs">
               <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
                 fermentum commodo dolor eget aliquet. Donec malesuada lorem
