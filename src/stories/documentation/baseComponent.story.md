@@ -113,17 +113,22 @@ import { Sidebar, vToggle } from '@bobbykim/manguito-theme'
       placement="'left'|'right'"
       class-name="taildind css class"
       backdrop-color="dark-1"
+      color="light-1"
       width="300"
       @toggle="$event"
       @close="$event"
     >
-      <!-- add a button to close sidebar -->
+      <!-- add custom close button to close sidebar -->
       <template #header="{ close }">
         <button @click="close">Button</button>
       </template>
       <template #body> ...body content </template>
       <template #footer> ...footer content </template>
     </sidebar>
+    <!-- sidebar with default header -->
+    <sidebar sidebar-id="sidebar-component-id" title="sidebar title"></sidebar>
+    <!-- sidebar with no header -->
+    <sidebar sidebar-id="sidebar-component-id" no-header></sidebar>
     <!-- sidebar with no backdrop -->
     <sidebar sidebar-id="sidebar-component-id" no-backdrop></sidebar>
     <!-- load page with open sidebar -->
@@ -153,6 +158,7 @@ import { Modal, vToggle } from '@bobbykim/manguito-theme'
       placement="'top'|'center'|'bottom'"
       class-name="taildind css class"
       backdrop-color="dark-1"
+      color="light-1"
       @toggle="$event"
       @close="$event"
     >
@@ -163,6 +169,10 @@ import { Modal, vToggle } from '@bobbykim/manguito-theme'
       <template #body> ...body content </template>
       <template #footer> ...footer content </template>
     </modal>
+    <!-- modal with default header -->
+    <modal modal-id="modal-component-id" title="modal title"></modal>
+    <!-- modal with no header -->
+    <modal modal-id="modal-component-id" no-header></modal>
     <!-- modal with no backdrop -->
     <modal modal-id="modal-component-id" no-backdrop></modal>
     <!-- load page with open modal -->
