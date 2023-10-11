@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { ColorPalette } from '../../theme/theme.types'
-import generateClass from '../../'
+import type { ColorPalette } from '@bobbykim/manguito-theme'
+import generateClass from '../../index'
 
 const props = withDefaults(
   defineProps<{
@@ -37,9 +37,9 @@ const getBorderClass = (
   nColor: ColorPalette
 ): string => {
   /**
-   * @param {ColorPalette} bColor - color
-   * @param {boolean} border - displayBorder
-   * @param {ColorPalette} nColor - navColor
+   * @bColor - color
+   * @border - displayBorder
+   * @nColor - navColor
    */
 
   const classArray: string[] = [
@@ -56,7 +56,7 @@ const getBorderClass = (
 
 const getHamburgerButtonClass = (color: ColorPalette): string => {
   /**
-   * @param {ColorPalette} color - color
+   * @color - color
    */
   const classArray: string[] = [
     generateClass('BGCOLOR', color),
@@ -102,13 +102,9 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
   }
 }
 .hamburger__button {
-  &:focus .hamburger__icon::before,
-  &:hover .hamburger__icon::before {
-    top: -0.55rem;
-  }
-  &:focus .hamburger__icon::after,
-  &:hover .hamburger__icon::after {
-    top: 0.55rem;
+  &:focus .hamburger__icon,
+  &:hover .hamburger__icon {
+    scale: 1.05;
   }
 }
 .hamburger__checkbox:checked + .hamburger__icon {

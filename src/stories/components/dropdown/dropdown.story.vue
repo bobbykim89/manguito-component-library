@@ -11,6 +11,9 @@ import type {
 } from '@/components/manguito-theme'
 import { colors, bodyTextSize, fontWeightOptions } from '@/assets/options'
 
+// test
+import { Sidebar, vToggle } from '@/components/manguito-theme'
+
 const selectedInfoRef = ref<string>('')
 const selectedLinkRef = ref<string>('')
 const dropdownItems: DropdownItem[] = [
@@ -175,6 +178,19 @@ const handleClearButtonClick = (): void => {
           v-model="stateAlpha.displaySeparator"
         />
       </template>
+    </Variant>
+    <Variant title="test">
+      <div>
+        <button v-toggle:my-sidebar>Toggle button</button>
+        <sidebar
+          sidebar-id="my-sidebar"
+          placement="right"
+          no-backdrop
+          v-slot="{ close }"
+        >
+          <button class="btn btn-secondary" @click="close">Close button</button>
+        </sidebar>
+      </div>
     </Variant>
   </Story>
 </template>

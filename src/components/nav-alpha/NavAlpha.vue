@@ -108,11 +108,11 @@ const navItemClick = (
   emitType: EmitType
 ): void => {
   /**
-   * @e - $event
-   * @link - navItems[#].url / titleLink
-   * @target - navItems[#].target / titleLinkTaget
-   * @itemlink - navItemAsLink /
-   * @emitType - Non prop value type EmitType
+   * @param {Event} e - $event
+   * @param {string} link - navItems[#].url / titleLink
+   * @param {string} target - navItems[#].target / titleLinkTaget
+   * @param {boolean} itemlink - navItemAsLink /
+   * @param {EmitType} emitType - Non prop value type EmitType
    */
   e.preventDefault()
   navOpen.value = false
@@ -140,19 +140,23 @@ const navChildLinkClick = (e: NavChildClickEventType): void => {
    * @param {NavChildClickEventType} e - Event emitted from dropdown/collapse click events
    */
   const { title, url, target } = e.item
-  e.event.preventDefault()
   navOpen.value = false
   if (props.navItemAsLink) {
     window.open(url, target)
   } else {
-    emit('menu-click', { event: e, title, link: url, target })
+    emit('menu-click', {
+      event: e,
+      title,
+      link: url,
+      target: target ? target : '_self',
+    })
   }
 }
 
 const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
   /**
-   * @size - titleSize
-   * @color - titleColor
+   * @param {HeadingSize} size - titleSize
+   * @param {ColorPalette} color - titleColor
    */
   const classArray: string[] = [
     generateClass('H2', size),
@@ -161,27 +165,10 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
   return classArray.join(' ')
 }
 
-const getMenuItemClass = (
-  size: BodyText,
-  color: ColorPalette,
-  bold: boolean
-): string => {
-  /**
-   * @size - menuTextSize
-   * @color - menuTextColor
-   * @bold - menuTextBold
-   */
-  const classArray: string[] = [
-    generateClass('BODYTEXT', size),
-    generateClass('TEXTCOLOR', color),
-  ]
-  if (bold) {
-    classArray.push('font-bold')
-  }
-  return classArray.join(' ')
-}
-
-// transition functions
+/**
+ * @TransitionFunctions
+ * @param {HTMLElement} el - passed any since transition handlers don't accept HTMLElement (accepts Element)
+ */
 const onEnter = (el: any) => {
   el.style.height = 'auto'
   const endWidth = getComputedStyle(el).height
@@ -197,6 +184,7 @@ const onLeave = (el: any) => {
   el.offsetHeight // force repaint
   el.style.height = '0px'
 }
+
 const hasChildren = (item: NavItemType | NavCollapseType) => {
   const NavCollapse = item as NavCollapseType
   if (typeof NavCollapse.children === 'undefined') {
