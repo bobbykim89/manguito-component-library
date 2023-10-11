@@ -91,3 +91,38 @@ import { DropdownContainer, DropdownContent } from '@bobbykim/manguito-theme'
   </div>
 </template>
 ```
+
+## Sidebar component
+
+```vue
+<script lang="ts" setup>
+import { Sidebar, vToggle } from '@bobbykim/manguito-theme'
+</script>
+
+<template>
+  <div>
+    <!-- trigger collapse toggle  -->
+    <button v-sidebar:sidebar-component-id>{{Tab button name}}</button>
+    <button v-sidebar:[when calling sidebar-id dynamically]>
+      {{Tab button name}}
+    </button>
+    <!-- trigger by 'a' tag -->
+    <a href="#sidebar-component-id" v-sidebar>{{Tab button name here}}</a>
+    <sidebar
+      sidebar-id="sidebar-component-id"
+      placement="'left'|'right'"
+      class-name="taildind css class"
+      backdrop-color="dark-1"
+      width="300"
+      v-slot="{ close }"
+    >
+      <!-- add a button to close sidebar -->
+      <button @click="close">Button</button>
+    </sidebar>
+    <!-- sidebar with no backdrop -->
+    <sidebar sidebar-id="sidebar-component-id" no-backdrop></sidebar>
+    <!-- load page with open sidebar -->
+    <sidebar sidebar-id="sidebar-component-id" visible></sidebar>
+  </div>
+</template>
+```

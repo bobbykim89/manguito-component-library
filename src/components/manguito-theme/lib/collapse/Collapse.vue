@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
+import { ref, watch, Transition } from 'vue'
 import type { CollapseEvent } from './index.types'
 const props = withDefaults(
   defineProps<{
@@ -15,43 +15,42 @@ const props = withDefaults(
 )
 const emit = defineEmits(['toggle'])
 const toggle = ref<boolean>(props.visible)
-const contentRef = ref<HTMLAreaElement>()
-const slotHeight = ref<number>()
 
 const handleToggleEvent = (e: Event): void => {
   toggle.value = !toggle.value
   emit('toggle', { ...e, visible: toggle.value } as CollapseEvent)
 }
-const initObserver = (): ResizeObserver => {
-  const observer = new ResizeObserver(() => {
-    if (contentRef.value) {
-      slotHeight.value = contentRef.value.scrollHeight
-      return
-    }
-    slotHeight.value = 0
-  })
-  return observer
+
+/**
+ * @TransitionFunctions
+ * @param {HTMLElement} el - passed any since transition handlers don't accept HTMLElement (accepts Element)
+ */
+const onEnter = (el: any) => {
+  el.style.height = 'auto'
+  el.style.opacity = '0'
+  const endWidth = getComputedStyle(el).height
+  el.style.height = '0px'
+  el.offsetHeight // force repaint
+  el.style.height = endWidth
+  el.style.opacity = '1'
 }
-const slotHeightVal = computed(() => {
-  return {
-    height: contentRef.value && toggle.value ? slotHeight.value + 'px' : '0px',
-  }
-})
+const onAfterEnter = (el: any) => {
+  el.style.height = 'auto'
+  el.style.opacity = '1'
+}
+const onLeave = (el: any) => {
+  el.style.height = getComputedStyle(el).height
+  el.offsetHeight // force repaint
+  el.style.height = '0px'
+  el.style.opacity = '0'
+}
+
 watch(
   () => props.visible,
   (newValue) => {
     toggle.value = newValue
   }
 )
-// lifecycle hooks
-onMounted(() => {
-  if (typeof window !== undefined) {
-    initObserver().observe(contentRef.value as Element)
-  }
-})
-onBeforeUnmount(() => {
-  initObserver().disconnect()
-})
 </script>
 
 <template>
@@ -63,23 +62,28 @@ onBeforeUnmount(() => {
       :accordion="accordion"
       :visible="toggle"
     ></button>
-    <div
-      class="overflow-hidden transition-[height] duration-500"
-      :style="slotHeightVal"
-      :class="[toggle ? 'ease-in' : 'ease-out']"
+    <transition
+      name="collapse"
+      tag="div"
+      @enter="onEnter"
+      @after-enter="onAfterEnter"
+      @leave="onLeave"
+      class="overflow-hidden"
     >
-      <div
-        ref="contentRef"
-        class="transition-opacity duration-500"
-        :class="[
-          toggle ? 'opacity-100 ease-in' : 'opacity-0 ease-out',
-          className,
-        ]"
-      >
-        <slot />
+      <div v-show="toggle">
+        <div :class="[className]">
+          <slot />
+        </div>
       </div>
-    </div>
+    </transition>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+.collapse-enter-active,
+.collapse-leave-active {
+  transition-property: height, opacity;
+  transition-duration: 500ms;
+  transition-timing-function: ease;
+}
+</style>

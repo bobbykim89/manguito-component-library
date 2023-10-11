@@ -46,9 +46,6 @@ const props = withDefaults(
     cardsGap: 'xs',
   }
 )
-
-const prevBtn = ref()
-const nextBtn = ref()
 const slideContainer = ref()
 const carouselCards = ref<
   null | InstanceType<typeof CardAlpha | typeof CardBeta | typeof CardDelta>[]
