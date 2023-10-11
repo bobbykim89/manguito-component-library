@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, watch, Transition } from 'vue'
-import generateClass, { ColorPalette, vClickOutside } from '../../'
+import generateClass, {
+  ColorPalette,
+  vClickOutside,
+  VerticalAlignment,
+} from '../../'
 
 const props = withDefaults(
   defineProps<{
@@ -9,14 +13,14 @@ const props = withDefaults(
     visible?: boolean
     noBackdrop?: boolean
     backdropColor?: ColorPalette
-    width?: string | number
+    placement?: VerticalAlignment
   }>(),
   {
     className: '',
     visible: false,
     noBackdrop: false,
     backdropColor: 'dark-4',
-    width: 300,
+    placement: 'center',
   }
 )
 
@@ -34,6 +38,17 @@ const closeModal = (e: Event): void => {
     emit('close', e)
   }
 }
+const handlePlacementVar = computed(() => {
+  let placementVariable: number
+  if (props.placement === 'top') {
+    placementVariable = 25
+  } else if (props.placement === 'bottom') {
+    placementVariable = 75
+  } else {
+    placementVariable = 50
+  }
+  return { '--vertical-placement': placementVariable + '%' }
+})
 
 /**
  * @TransitionFunctions
@@ -54,7 +69,7 @@ watch(
 </script>
 
 <template>
-  <div>
+  <div :style="handlePlacementVar">
     <button :id="modalId" @click="handleToggleEvent" class="hidden"></button>
     <Transition name="fade" appear tag="div" v-if="!noBackdrop">
       <section
@@ -73,9 +88,13 @@ watch(
     >
       <div
         v-if="toggle"
-        class="fixed w-full max-w-md max-h-[80vh] overflow-hidden shadow z-[110] px-xs top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+        class="vertical-placement fixed w-full max-w-md z-[110] px-xs"
       >
-        <div v-click-outside="closeModal" :class="className" class="relative">
+        <div
+          v-click-outside="closeModal"
+          :class="className"
+          class="relative overscroll-contain max-h-[80vh] md:max-h-[60vh]"
+        >
           <div class="sticky top-0">
             <slot name="header" :close="closeModal" :status="toggle" />
           </div>
@@ -90,6 +109,11 @@ watch(
 </template>
 
 <style scoped lang="scss">
+.vertical-placement {
+  top: var(--vertical-placement);
+  left: 50%;
+  transform: translateY(calc(-1 * var(--vertical-placement))) translateX(-50%);
+}
 .fade-enter-active,
 .fade-leave-active {
   transition-property: opacity;
@@ -116,7 +140,7 @@ watch(
   }
   100% {
     opacity: 1;
-    transform: translateY(-50%) translateX(-50%);
+    transform: translateY(calc(-1 * var(--vertical-placement))) translateX(-50%);
   }
 }
 </style>
