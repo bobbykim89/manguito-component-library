@@ -68,13 +68,13 @@ const dropdownSelectedRef = ref<string>('')
 const dropdownSelectEvent = (item: string): void => {
   dropdownSelectedRef.value = item
 }
-const sidebarRef = ref()
+const sidebarRef = ref<InstanceType<typeof Sidebar>>()
 const openSidebar = () => {
-  sidebarRef.value.open()
+  sidebarRef.value!.open()
 }
-const modalRef = ref()
+const modalRef = ref<InstanceType<typeof Modal>>()
 const openModal = () => {
-  modalRef.value.open()
+  modalRef.value!.open()
 }
 </script>
 
