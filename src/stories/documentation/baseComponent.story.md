@@ -144,7 +144,7 @@ import { Sidebar, vToggle } from '@bobbykim/manguito-theme'
 import { Sidebar, vToggle } from '@bobbykim/manguito-theme'
 import { ref } from 'vue'
 
-const sidebarRef = ref()
+const sidebarRef = ref<InstanceType<typeof Sidebar>>()
 
 const handleSidebar = () => {
   // open sidebar
@@ -215,7 +215,7 @@ import { Modal, vToggle } from '@bobbykim/manguito-theme'
 import { Modal, vToggle } from '@bobbykim/manguito-theme'
 import { ref } from 'vue'
 
-const modalRef = ref()
+const modalRef = ref<InstanceType<typeof Modal>>()
 
 const handlemodal = () => {
   // open modal

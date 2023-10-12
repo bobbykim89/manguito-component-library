@@ -39,7 +39,7 @@ const handleToggleEvent = (e: Event): void => {
   toggle.value = !toggle.value
   emit('toggle', e)
 }
-const openSidebar = (e: Event): void => {
+const openSidebar = (): void => {
   toggle.value = true
 }
 const closeSidebar = (e: Event): void => {
