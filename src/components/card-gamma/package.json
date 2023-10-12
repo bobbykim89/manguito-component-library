@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/card-gamma",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "",
   "type": "module",
   "main": "index.ts",
@@ -18,6 +18,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@bobbykim/manguito-theme": "^0.4.0"
+    "@bobbykim/manguito-theme": "^0.5.0"
   }
 }
