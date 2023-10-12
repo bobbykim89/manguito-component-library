@@ -76,6 +76,12 @@ You need to nest text inside a tag such as div, span or text to make text visibl
 </button>
 ```
 
+### Button with no ring on focus
+
+```html
+<button class="btn btn-no-ring">Button</button>
+```
+
 ---
 
 ## List class

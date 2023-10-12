@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import FooterAlpha from '@/components/footer-alpha'
-import type {
-  NavItemType,
-  SocialUrl,
-} from '@/components/footer-alpha/FooterAlpha.vue'
+import type { NavItemType, SocialUrl } from '@/components/footer-alpha'
 import type {
   ColorPalette,
   HeadingSize,
   CtaTarget,
   BodyText,
-} from '@/components/manguito-theme/theme/theme.types'
+} from '@/components/manguito-theme'
 import {
   colors,
   bodyTextSize,

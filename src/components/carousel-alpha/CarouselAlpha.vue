@@ -5,7 +5,7 @@ import type {
   ColorPalette,
   BodyText,
   SpacingLevel,
-} from '@bobbykim/manguito-theme/theme/theme.types'
+} from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 import CardAlpha from '@bobbykim/card-alpha'
 import CardBeta from '@bobbykim/card-beta'
@@ -46,9 +46,6 @@ const props = withDefaults(
     cardsGap: 'xs',
   }
 )
-
-const prevBtn = ref()
-const nextBtn = ref()
 const slideContainer = ref()
 const carouselCards = ref<
   null | InstanceType<typeof CardAlpha | typeof CardBeta | typeof CardDelta>[]

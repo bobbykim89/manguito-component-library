@@ -30,7 +30,7 @@ import HeroAlpha from '@bobbykim/hero-alpha'
 </template>
 ```
 
-## Required packages
+## Dependencies
 
 - @bobbykim/manguito-theme
 

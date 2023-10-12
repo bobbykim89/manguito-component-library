@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import type {
   ColorPalette,
-  Position,
+  DirectionX,
   ColumnWidth,
-} from '@bobbykim/manguito-theme/theme/theme.types'
+  DirectionY,
+} from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
-
-type PositionY = 'top' | 'bottom'
 
 const props = withDefaults(
   defineProps<{
     sectionBg?: ColorPalette
     containerBg?: ColorPalette
-    topDirection?: Position
-    bottomDirection?: Position
+    topDirection?: DirectionX
+    bottomDirection?: DirectionX
     displayRightColumn?: boolean
     leftColumnWidth?: ColumnWidth
   }>(),
@@ -26,7 +25,10 @@ const props = withDefaults(
     leftColumnWidth: 50,
   }
 )
-const generatePoints = (location: PositionY, direction: Position): string => {
+const generatePoints = (
+  location: DirectionY,
+  direction: DirectionX
+): string => {
   /**
    * @location - 'top'||'bottom'
    * @direction - topDirection || bottomDirection

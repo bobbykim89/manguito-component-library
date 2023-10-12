@@ -1,15 +1,8 @@
 <script setup lang="ts">
 import { ref, Transition } from 'vue'
 import generateClass from '@bobbykim/manguito-theme'
-import type {
-  ColorPalette,
-  HeadingSize,
-} from '@bobbykim/manguito-theme/theme/theme.types'
-
-export interface ContentType {
-  title: string
-  content: any
-}
+import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
+import type { ContentType } from './index.type'
 
 const props = withDefaults(
   defineProps<{

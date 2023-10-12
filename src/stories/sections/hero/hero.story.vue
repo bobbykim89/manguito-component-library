@@ -8,9 +8,9 @@ import type {
   HeadingSize,
   HeadingLevel,
   OpacityRange,
-  Directions,
+  DirectionX,
   BodyText,
-} from '@/components/manguito-theme/theme/theme.types'
+} from '@/components/manguito-theme'
 import {
   colors,
   headingTextLevel,
@@ -35,7 +35,7 @@ const stateAlpha = reactive<{
   bgImage: string
   bgColor?: ColorPalette
   mobileImageBlur?: boolean
-  imgPosition?: Directions
+  imgPosition?: DirectionX
   displayFilter?: boolean
   filterOpacity?: OpacityRange
   slotText?: string
