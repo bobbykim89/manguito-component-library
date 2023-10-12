@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import type {
   ColorPalette,
   BodyText,
-  InputType,
   SpacingLevel,
-} from '@bobbykim/manguito-theme/theme/theme.types'
+} from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 
 const props = withDefaults(

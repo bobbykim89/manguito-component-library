@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import { Transition } from 'vue'
-import type {
-  ColorPalette,
-  HeadingSize,
-} from '@bobbykim/manguito-theme/theme/theme.types'
+import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 
 const props = withDefaults(

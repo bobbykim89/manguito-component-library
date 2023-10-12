@@ -1,26 +1,13 @@
 <script setup lang="ts">
-import { withDefaults, ref, markRaw } from 'vue'
 import type {
   ColorPalette,
   HeadingSize,
   CtaTarget,
   BodyText,
-} from '@bobbykim/manguito-theme/theme/theme.types'
+} from '@bobbykim/manguito-theme'
+import type { NavItemType, SocialUrl } from './index.type'
 import generateClass from '@bobbykim/manguito-theme'
 import SocialIcons from './lib/SocialIcons.vue'
-
-export interface NavItemType {
-  title: string
-  url: string
-  target?: CtaTarget
-}
-
-export interface SocialUrl {
-  linkedin?: string
-  instagram?: string
-  github?: string
-  twitter?: string
-}
 
 const props = withDefaults(
   defineProps<{
@@ -117,7 +104,7 @@ const footerItemClick = (
   e: Event,
   title: string,
   link: string,
-  target: string,
+  target: string | undefined,
   itemLink: boolean,
   emitType: EmitType
 ): void => {

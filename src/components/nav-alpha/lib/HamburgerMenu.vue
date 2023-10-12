@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { ColorPalette } from '@bobbykim/manguito-theme/theme/theme.types'
+import type { ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 
 const props = withDefaults(
@@ -102,13 +102,9 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
   }
 }
 .hamburger__button {
-  &:focus .hamburger__icon::before,
-  &:hover .hamburger__icon::before {
-    top: -0.55rem;
-  }
-  &:focus .hamburger__icon::after,
-  &:hover .hamburger__icon::after {
-    top: 0.55rem;
+  &:focus .hamburger__icon,
+  &:hover .hamburger__icon {
+    scale: 1.05;
   }
 }
 .hamburger__checkbox:checked + .hamburger__icon {

@@ -39,7 +39,6 @@ export const spacingOptions: string[] = [
 export const bodyTextSize: string[] = ['xs', 'sm', 'md', 'lg', 'xl']
 export const headingTextSize: string[] = ['sm', 'md', 'lg', 'xl']
 export const buttonSize: string[] = ['small', 'medium', 'large']
-export const highlightLocationOptions: string[] = ['left', 'top']
 export const directionsX: string[] = ['left', 'right']
 export const headingTextLevel: string[] = ['h1', 'h2', 'h3', 'h4']
 export const targetOption: string[] = ['_self', '_blank']

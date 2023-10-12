@@ -14,6 +14,29 @@ export const vClickOutside: Directive = {
   },
 }
 
+export const vToggle: Directive = {
+  mounted(el, binding) {
+    el.__ClickToggleHandler = (e: Event): void => {
+      const eTarget = e.target as HTMLElement
+      let target: HTMLElement
+      if (eTarget.tagName === 'A') {
+        const targetId = eTarget.getAttribute('href')
+        const formattedTargetId =
+          targetId?.charAt(0) === '#' ? targetId.substring(1) : targetId
+        target = document.getElementById(formattedTargetId as string)!
+      } else {
+        target = document.getElementById(binding.arg as string)!
+      }
+      target.click()
+      return
+    }
+    el.addEventListener('click', el.__ClickToggleHandler)
+  },
+  unmounted(el) {
+    el.removeEventListener('click', el.__ClickToggleHandler)
+  },
+}
+
 export const vCollapse: Directive = {
   mounted(el, binding) {
     el.__HandleToggler = (event: Event): void => {
@@ -23,9 +46,7 @@ export const vCollapse: Directive = {
         const targetId = eTarget.getAttribute('href')
         const formattedTargetId =
           targetId?.charAt(0) === '#' ? targetId.substring(1) : targetId
-        target = document.getElementById(
-          formattedTargetId as string
-        ) as HTMLElement
+        target = document.getElementById(formattedTargetId as string)!
       } else {
         target = document.getElementById(binding.arg as string) as HTMLElement
       }

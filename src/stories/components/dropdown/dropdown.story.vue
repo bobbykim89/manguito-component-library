@@ -8,7 +8,7 @@ import type {
   ColorPalette,
   BodyText,
   FontWeight,
-} from '@/components/manguito-theme/theme/theme.types'
+} from '@/components/manguito-theme'
 import { colors, bodyTextSize, fontWeightOptions } from '@/assets/options'
 
 const selectedInfoRef = ref<string>('')

@@ -4,8 +4,7 @@ import type {
   ColorPalette,
   HeadingSize,
   HeadingLevel,
-  OpacityRange,
-} from '@bobbykim/manguito-theme/theme/theme.types'
+} from '@bobbykim/manguito-theme'
 
 const props = withDefaults(
   defineProps<{

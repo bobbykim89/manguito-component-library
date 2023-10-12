@@ -5,12 +5,8 @@ import type {
   ColorPalette,
   SpacingLevel,
   BodyText,
-} from '@bobbykim/manguito-theme/theme/theme.types'
-
-export type SwitchSizeType = 'sm' | 'md' | 'lg'
-export type ColorMap = {
-  [key in ColorPalette]: string
-}
+} from '@bobbykim/manguito-theme'
+import type { SwitchSizeType, ColorMap } from './index.type'
 
 const props = withDefaults(
   defineProps<{

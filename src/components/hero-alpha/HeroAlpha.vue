@@ -4,9 +4,9 @@ import type {
   HeadingLevel,
   HeadingSize,
   ColorPalette,
-  Directions,
+  DirectionX,
   OpacityRange,
-} from '@bobbykim/manguito-theme/theme/theme.types'
+} from '@bobbykim/manguito-theme'
 
 const props = withDefaults(
   defineProps<{
@@ -24,7 +24,7 @@ const props = withDefaults(
     bgImage: string
     bgColor?: ColorPalette
     mobileImageBlur?: boolean
-    imgPosition?: Directions
+    imgPosition?: DirectionX
     displayFilter?: boolean
     filterOpacity?: OpacityRange
   }>(),

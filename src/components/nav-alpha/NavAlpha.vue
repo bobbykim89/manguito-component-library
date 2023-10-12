@@ -1,20 +1,22 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onMounted, onBeforeUnmount, Transition } from 'vue'
 import type {
   ColorPalette,
   CtaTarget,
   HeadingSize,
   BodyText,
-} from '@bobbykim/manguito-theme/theme/theme.types'
+} from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
+import type {
+  NavItemType,
+  NavCollapseType,
+  NavChildClickEventType,
+} from './index.type'
 // Import hamburgerMenu
 import HamburgerMenu from './lib/HamburgerMenu.vue'
-
-export interface NavItemType {
-  title: string
-  url: string
-  target?: CtaTarget
-}
+import NavLink from './lib/NavLink.vue'
+import NavDropdown from './lib/NavDropdown.vue'
+import NavCollapse from './lib/NavCollapse.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -30,7 +32,7 @@ const props = withDefaults(
     titleAsLink?: boolean
     titleLink: string
     titleLinkTarget?: CtaTarget
-    navItems: NavItemType[]
+    navItems: Array<NavItemType | NavCollapseType>
     navItemAsLink?: boolean
     menuTextSize?: BodyText
     menuTextColor?: ColorPalette
@@ -39,7 +41,7 @@ const props = withDefaults(
     highlightColor?: ColorPalette
     bgColor?: ColorPalette
     mobileMenuBgColor?: ColorPalette
-    hamburgerColor?: ColorPalette
+    secondaryColor?: ColorPalette
     hamburgerBorder?: boolean
     fadeInOnScroll?: boolean
     scrollDistance?: number
@@ -59,7 +61,7 @@ const props = withDefaults(
     highlightColor: 'primary',
     bgColor: 'light-1',
     mobileMenuBgColor: 'light-2',
-    hamburgerColor: 'dark-1',
+    secondaryColor: 'dark-1',
     hamburgerBorder: true,
     fadeInOnScroll: true,
     scrollDistance: 50,
@@ -106,11 +108,11 @@ const navItemClick = (
   emitType: EmitType
 ): void => {
   /**
-   * @e - $event
-   * @link - navItems[#].url / titleLink
-   * @target - navItems[#].target / titleLinkTaget
-   * @itemlink - navItemAsLink /
-   * @emitType - Non prop value type EmitType
+   * @param {Event} e - $event
+   * @param {string} link - navItems[#].url / titleLink
+   * @param {string} target - navItems[#].target / titleLinkTaget
+   * @param {boolean} itemlink - navItemAsLink /
+   * @param {EmitType} emitType - Non prop value type EmitType
    */
   e.preventDefault()
   navOpen.value = false
@@ -131,14 +133,30 @@ const navItemClick = (
     if (emitType === 'logo') {
       emit('logo-click', { event: e, title: title, link: link, target: target })
     }
-    // console.log('emit menu click: ', e, link, target)
+  }
+}
+const navChildLinkClick = (e: NavChildClickEventType): void => {
+  /**
+   * @param {NavChildClickEventType} e - Event emitted from dropdown/collapse click events
+   */
+  const { title, url, target } = e.item
+  navOpen.value = false
+  if (props.navItemAsLink) {
+    window.open(url, target)
+  } else {
+    emit('menu-click', {
+      event: e,
+      title,
+      link: url,
+      target: target ? target : '_self',
+    })
   }
 }
 
 const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
   /**
-   * @size - titleSize
-   * @color - titleColor
+   * @param {HeadingSize} size - titleSize
+   * @param {ColorPalette} color - titleColor
    */
   const classArray: string[] = [
     generateClass('H2', size),
@@ -147,55 +165,40 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
   return classArray.join(' ')
 }
 
-const getMenuItemClass = (
-  size: BodyText,
-  color: ColorPalette,
-  bold: boolean
-): string => {
-  /**
-   * @size - menuTextSize
-   * @color - menuTextColor
-   * @bold - menuTextBold
-   */
-  const classArray: string[] = [
-    generateClass('BODYTEXT', size),
-    generateClass('TEXTCOLOR', color),
-  ]
-  if (bold) {
-    classArray.push('font-bold')
-  }
-  return classArray.join(' ')
+/**
+ * @TransitionFunctions
+ * @param {HTMLElement} el - passed any since transition handlers don't accept HTMLElement (accepts Element)
+ */
+const onEnter = (el: any) => {
+  el.style.height = 'auto'
+  const endWidth = getComputedStyle(el).height
+  el.style.height = '0px'
+  el.offsetHeight // force repaint
+  el.style.height = endWidth
+}
+const onAfterEnter = (el: any) => {
+  el.style.height = 'auto'
+}
+const onLeave = (el: any) => {
+  el.style.height = getComputedStyle(el).height
+  el.offsetHeight // force repaint
+  el.style.height = '0px'
 }
 
-// collapse/expand mobile menu
-const mobileMenu = ref()
-const mobileMenuHeight = ref<number>()
-
-const initObserver = (): ResizeObserver => {
-  const observer = new ResizeObserver(() => {
-    if (mobileMenu.value) {
-      mobileMenuHeight.value = mobileMenu.value.scrollHeight
-      return
-    }
-  })
-  return observer
-}
-
-const menuHeightVal = computed(() => {
-  return {
-    height:
-      mobileMenu.value && navOpen.value ? mobileMenuHeight.value + 'px' : '0px',
+const hasChildren = (item: NavItemType | NavCollapseType) => {
+  const NavCollapse = item as NavCollapseType
+  if (typeof NavCollapse.children === 'undefined') {
+    return false
   }
-})
+  return NavCollapse.children.length > 0
+}
 
 onMounted(() => {
-  if (typeof window !== undefined) {
-    initObserver().observe(mobileMenu.value)
+  if (typeof window !== 'undefined') {
     window.addEventListener('scroll', handleScroll())
   }
 })
 onBeforeUnmount(() => {
-  initObserver().disconnect()
   window.removeEventListener('scroll', handleScroll())
 })
 </script>
@@ -231,13 +234,13 @@ onBeforeUnmount(() => {
               :src="logo"
               :alt="logoAlt"
               class="h-full"
-              :class="[logoSmall ? 'hidden md:inline-block' : 'inline-block']"
+              :class="[logoSmall ? 'hidden lg:inline-block' : 'inline-block']"
             />
             <img
               v-if="logoSmall"
               :src="logoSmall"
               :alt="logoAlt"
-              class="inline-block md:hidden h-full"
+              class="inline-block lg:hidden h-full"
             />
           </a>
         </div>
@@ -262,125 +265,129 @@ onBeforeUnmount(() => {
               v-html="title"
             ></h2>
           </a>
-          <ul class="hidden md:flex flex-wrap">
+          <!-- desktop nav menu -->
+          <ul class="hidden lg:flex flex-wrap">
             <li
               class="mr-xs last:mr-0"
               v-for="(item, index) in navItems"
               :key="`menu-${index}`"
             >
-              <a
-                :href="item.url"
-                :target="item.target"
-                v-html="item.title"
-                class="tracking-wider align-middle outline-none nav__text"
-                :class="
-                  getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)
-                "
-                @click="
+              <nav-link
+                v-if="!hasChildren(item)"
+                :nav-item="(item as NavItemType)"
+                :menu-text-color="menuTextColor"
+                :menu-text-size="menuTextSize"
+                :menu-text-bold="menuTextBold"
+                :display-highlight="displayHighlight"
+                :highlight-color="highlightColor"
+                @nav-link="
                   navItemClick(
                     $event,
                     item.title,
-                    item.url,
-                    item.target,
+                    (item as NavItemType).url,
+                    (item as NavItemType).target,
                     navItemAsLink,
                     'menu'
                   )
                 "
-              ></a>
-              <div
-                v-if="displayHighlight"
-                class="relative -top-[2px] h-[6px] nav__decorator"
-                :class="generateClass('BEFOREBG', highlightColor)"
-              ></div>
+              ></nav-link>
+              <nav-dropdown
+                v-else
+                :nav-item="(item as NavCollapseType)"
+                :menu-text-color="menuTextColor"
+                :menu-text-size="menuTextSize"
+                :menu-text-bold="menuTextBold"
+                :display-highlight="displayHighlight"
+                :highlight-color="highlightColor"
+                :bg-color="bgColor"
+                :hover-bg-color="secondaryColor"
+                @nav-link="navChildLinkClick"
+              ></nav-dropdown>
             </li>
           </ul>
         </div>
       </div>
       <div>
         <hamburger-menu
-          :color="hamburgerColor"
+          :color="secondaryColor"
           :display-border="hamburgerBorder"
-          class="block md:hidden"
+          class="block lg:hidden"
           @hbg-click="toggleNavButton"
           :toggle="navOpen"
           :nav-color="bgColor"
         ></hamburger-menu>
-        <div class="hidden md:block">
+        <div class="hidden lg:block">
           <slot name="nav-slot"></slot>
         </div>
       </div>
     </nav>
     <!-- mobile menu -->
-    <div
-      class="h-auto overflow-hidden md:hidden"
-      :class="[
-        navOpen
-          ? 'transition-all duration-500 ease-in'
-          : 'transition-all duration-500 ease-out',
-        ,
-      ]"
-      ref="mobileMenu"
-      :style="menuHeightVal"
-    >
-      <div
-        class="bg-opacity-80 rounded-md my-2xs mx-xs overflow-hidden"
-        :class="generateClass('BGCOLOR', mobileMenuBgColor)"
+
+    <div class="overflow-hidden lg:hidden">
+      <transition
+        name="collapse"
+        @enter="onEnter"
+        @after-enter="onAfterEnter"
+        @leave="onLeave"
       >
-        <ul class="flex flex-col items-center justify-center p-xs">
-          <li
-            class="mb-2xs last:mb-0"
-            v-for="(item, index) in navItems"
-            :key="`mobile-${index}`"
-          >
-            <a
-              :href="item.url"
-              :target="item.target"
-              v-html="item.title"
-              class="tracking-wider outline-none align-middle nav__text"
-              :class="
-                getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)
-              "
-              @click="
-                navItemClick(
-                  $event,
-                  item.title,
-                  item.url,
-                  item.target,
-                  navItemAsLink,
-                  'menu'
-                )
-              "
-            ></a>
-            <div
-              v-if="displayHighlight"
-              class="relative h-3xs -top-[2px] nav__decorator"
-              :class="generateClass('BEFOREBG', highlightColor)"
-            ></div>
-          </li>
-        </ul>
-        <div>
-          <slot name="mobile-slot" :close-nav="closeNav"></slot>
+        <div
+          class="bg-opacity-80 rounded-md my-2xs mx-xs overflow-hidden"
+          v-if="navOpen"
+          :class="generateClass('BGCOLOR', mobileMenuBgColor)"
+        >
+          <ul class="flex flex-col items-center justify-center p-xs">
+            <li
+              class="mb-2xs last:mb-0"
+              v-for="(item, index) in navItems"
+              :key="`mobile-${index}`"
+            >
+              <nav-link
+                v-if="!hasChildren(item)"
+                :nav-item="(item as NavItemType)"
+                :menu-text-color="menuTextColor"
+                :menu-text-size="menuTextSize"
+                :menu-text-bold="menuTextBold"
+                :display-highlight="displayHighlight"
+                :highlight-color="highlightColor"
+                @nav-link="
+                  navItemClick(
+                    $event,
+                    item.title,
+                    (item as NavItemType).url,
+                    (item as NavItemType).target,
+                    navItemAsLink,
+                    'menu'
+                  )
+                "
+              ></nav-link>
+              <nav-collapse
+                v-else
+                :nav-id="item.title"
+                :nav-item="(item as NavCollapseType)"
+                :menu-text-color="menuTextColor"
+                :menu-text-size="menuTextSize"
+                :menu-text-bold="menuTextBold"
+                :display-highlight="displayHighlight"
+                :highlight-color="highlightColor"
+                :nav-accordion-group="title"
+                @nav-link="navChildLinkClick"
+              ></nav-collapse>
+            </li>
+          </ul>
+          <div>
+            <slot name="mobile-slot" :close-nav="closeNav"></slot>
+          </div>
         </div>
-      </div>
+      </transition>
     </div>
   </header>
 </template>
 
 <style lang="scss" scoped>
-.nav__decorator {
-  &::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 100%;
-    width: 0;
-    transition: width 0.3s linear;
-  }
+.collapse-enter-active {
+  transition: height 0.5s ease-in;
 }
-
-.nav__text:focus + .nav__decorator::before,
-.nav__text:hover + .nav__decorator::before {
-  width: 100%;
+.collapse-leave-active {
+  transition: height 0.5s ease-out;
 }
 </style>

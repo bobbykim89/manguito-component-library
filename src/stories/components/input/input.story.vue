@@ -5,14 +5,14 @@ import MclTextArea from '@/components/mcl-text-area'
 import MclInputFile from '@/components/mcl-input-file'
 import MclSelect from '@/components/mcl-select'
 import MclInputSwitch from '@/components/mcl-input-switch'
-import type { SelectOptionType } from '@/components/mcl-select/MclSelect.vue'
-import type { SwitchSizeType } from '@/components/mcl-input-switch/MclInputSwitch.vue'
+import type { SelectOptionType } from '@/components/mcl-select'
+import type { SwitchSizeType } from '@/components/mcl-input-switch'
 import type {
   ColorPalette,
   InputType,
   BodyText,
   SpacingLevel,
-} from '@/components/manguito-theme/theme/theme.types'
+} from '@/components/manguito-theme'
 import {
   colors,
   bodyTextSize,

@@ -6,7 +6,7 @@ import type {
   ColorPalette,
   BodyText,
   ButtonSize,
-} from '@/components/manguito-theme/theme/theme.types'
+} from '@/components/manguito-theme'
 import { colors, bodyTextSize, buttonSize } from '@/assets/options'
 
 const stateAlpha = reactive<{

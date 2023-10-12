@@ -2,10 +2,7 @@
 import { reactive, ref } from 'vue'
 import ModalAlpha from '@/components/modal-alpha'
 import MclInput from '@/components/mcl-input'
-import type {
-  ColorPalette,
-  HeadingSize,
-} from '@/components/manguito-theme/theme/theme.types'
+import type { ColorPalette, HeadingSize } from '@/components/manguito-theme'
 import { colors, headingTextSize } from '@/assets/options'
 
 const stateAlpha = reactive<{

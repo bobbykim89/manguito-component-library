@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import CarouselAlpha from '@/components/carousel-alpha'
 import CardAlpha from '@/components/card-alpha'
 import CardBeta from '@/components/card-beta'
@@ -9,7 +9,7 @@ import type {
   HeadingSize,
   BodyText,
   SpacingLevel,
-} from '@/components/manguito-theme/theme/theme.types'
+} from '@/components/manguito-theme'
 import {
   colors,
   bodyTextSize,

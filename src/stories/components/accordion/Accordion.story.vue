@@ -2,17 +2,8 @@
 import { reactive, ref } from 'vue'
 import AccordionAlpha from '@/components/accordion-alpha'
 import AccordionBeta from '@/components/accordion-beta'
-import type {
-  ColorPalette,
-  HeadingSize,
-} from '@/components/manguito-theme/theme/theme.types'
-import {
-  colors,
-  bodyTextSize,
-  headingTextSize,
-  buttonSize,
-  highlightLocationOptions,
-} from '@/assets/options'
+import type { ColorPalette, HeadingSize } from '@/components/manguito-theme'
+import { colors, headingTextSize } from '@/assets/options'
 
 const stateAlpha = reactive<{
   collapseId: string

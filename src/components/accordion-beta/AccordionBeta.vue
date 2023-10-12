@@ -5,10 +5,7 @@ import generateClass, {
   vCollapse,
   CollapseEvent,
 } from '@bobbykim/manguito-theme'
-import type {
-  ColorPalette,
-  HeadingSize,
-} from '@bobbykim/manguito-theme/theme/theme.types'
+import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
 
 const props = withDefaults(
   defineProps<{

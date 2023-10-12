@@ -5,7 +5,7 @@ import type {
   HeadingSize,
   CtaTarget,
   CrossOrigin,
-} from '@bobbykim/manguito-theme/theme/theme.types'
+} from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 
 const props = withDefaults(
