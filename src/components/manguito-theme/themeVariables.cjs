@@ -70,7 +70,7 @@ const mclTheme = plugin.withOptions(
               },
             },
             [`.btn.btn-invert.btn-${e(key)}`]: {
-              [`@apply border-2 bg-white border-${key} text-${key}`]: {},
+              [`@apply border-2 bg-transparent border-${key} text-${key}`]: {},
               '&:hover': {
                 [`@apply bg-${key} text-white bg-opacity-100`]: {},
               },

@@ -137,6 +137,33 @@ import { Sidebar, vToggle } from '@bobbykim/manguito-theme'
 </template>
 ```
 
+### Other methods
+
+```vue
+<script lang="ts" setup>
+import { Sidebar, vToggle } from '@bobbykim/manguito-theme'
+import { ref } from 'vue'
+
+const sidebarRef = ref()
+
+const handleSidebar = () => {
+  // open sidebar
+  sidebarRef.value.open()
+  // toggle sidebar
+  sidebarRef.value.toggle()
+  // close sidebar
+  sidebarRef.value.close()
+}
+</script>
+
+<template>
+  <div>
+    <button @click="handleSidebar">Button Name</button>
+    <sidebar sidebar-id="my-sidebar" ref="sidebarRef">...</sidebar>
+  </div>
+</template>
+```
+
 ## Modal component
 
 ```vue
@@ -177,6 +204,33 @@ import { Modal, vToggle } from '@bobbykim/manguito-theme'
     <modal modal-id="modal-component-id" no-backdrop></modal>
     <!-- load page with open modal -->
     <modal modal-id="modal-component-id" visible></modal>
+  </div>
+</template>
+```
+
+### Other methods
+
+```vue
+<script lang="ts" setup>
+import { Modal, vToggle } from '@bobbykim/manguito-theme'
+import { ref } from 'vue'
+
+const modalRef = ref()
+
+const handlemodal = () => {
+  // open modal
+  modalRef.value.open()
+  // toggle modal
+  modalRef.value.toggle()
+  // close modal
+  modalRef.value.close()
+}
+</script>
+
+<template>
+  <div>
+    <button @click="handleModal">Button Name</button>
+    <modal modal-id="my-modal" ref="modalRef">...</modal>
   </div>
 </template>
 ```
