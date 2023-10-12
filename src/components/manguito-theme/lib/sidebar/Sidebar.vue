@@ -39,6 +39,9 @@ const handleToggleEvent = (e: Event): void => {
   toggle.value = !toggle.value
   emit('toggle', e)
 }
+const openSidebar = (e: Event): void => {
+  toggle.value = true
+}
 const closeSidebar = (e: Event): void => {
   if (toggleComplete.value === true) {
     toggle.value = false
@@ -78,6 +81,11 @@ watch(
     toggle.value = newValue
   }
 )
+defineExpose({
+  toggle: handleToggleEvent,
+  open: openSidebar,
+  close: closeSidebar,
+})
 </script>
 
 <template>

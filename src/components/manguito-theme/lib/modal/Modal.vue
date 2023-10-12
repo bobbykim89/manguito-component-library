@@ -39,6 +39,9 @@ const handleToggleEvent = (e: Event): void => {
   toggle.value = !toggle.value
   emit('toggle', e)
 }
+const openModal = (): void => {
+  toggle.value = true
+}
 const closeModal = (e: Event): void => {
   if (toggleComplete.value === true) {
     toggle.value = false
@@ -73,6 +76,11 @@ watch(
     toggle.value = newValue
   }
 )
+defineExpose({
+  toggle: handleToggleEvent,
+  close: closeModal,
+  open: openModal,
+})
 </script>
 
 <template>

@@ -68,6 +68,14 @@ const dropdownSelectedRef = ref<string>('')
 const dropdownSelectEvent = (item: string): void => {
   dropdownSelectedRef.value = item
 }
+const sidebarRef = ref()
+const openSidebar = () => {
+  sidebarRef.value.open()
+}
+const modalRef = ref()
+const openModal = () => {
+  modalRef.value.open()
+}
 </script>
 
 <template>
@@ -223,10 +231,16 @@ const dropdownSelectEvent = (item: string): void => {
           luctus tortor. Cras eu pretium arcu. Cras ut turpis eros. Mauris
           venenatis eros diam.
         </p>
+        <div class="flex justify-center my-sm">
+          <button @click="openSidebar" class="btn btn-danger btn-progress">
+            <span> External Open Button </span>
+          </button>
+        </div>
         <sidebar
           sidebar-id="sidebar-default"
           title="Sidebar title"
           color="success"
+          ref="sidebarRef"
         >
           <template #body>
             <div class="py-sm px-xs">
@@ -439,6 +453,11 @@ const dropdownSelectEvent = (item: string): void => {
           luctus tortor. Cras eu pretium arcu. Cras ut turpis eros. Mauris
           venenatis eros diam.
         </p>
+        <div class="flex justify-center my-sm">
+          <button @click="openModal" class="btn btn-danger btn-invert">
+            External Open Button
+          </button>
+        </div>
         <modal modal-id="modal-1" class-name="px-xs rounded-md" color="light-1">
           <template #header="{ close }">
             <div class="flex justify-between py-xs bg-light-1 border-b-2">
@@ -535,6 +554,7 @@ const dropdownSelectEvent = (item: string): void => {
           modal-id="modal-3"
           color="success"
           title="Modal with default header"
+          ref="modalRef"
         >
           <template #body>
             <div class="py-sm px-xs">
