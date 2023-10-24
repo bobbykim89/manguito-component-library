@@ -417,6 +417,58 @@ const mclTheme = plugin.withOptions(
               left: '0',
             },
           },
+        '.tooltip-top': {
+          '&::after': {
+            content: '" "',
+            position: 'absolute',
+            top: '100%',
+            left: '50%',
+            'margin-left': '-5px',
+            'border-width': '5px',
+            'border-style': 'solid',
+          },
+          '@apply after:border-dark-3 after:border-x-transparent after:border-b-transparent':
+            {},
+        },
+        '.tooltip-bottom': {
+          '&::after': {
+            content: '" "',
+            position: 'absolute',
+            bottom: '100%',
+            left: '50%',
+            'margin-left': '-5px',
+            'border-width': '5px',
+            'border-style': 'solid',
+          },
+          '@apply after:border-t-transparent after:border-x-transparent after:border-b-dark-3':
+            {},
+        },
+        '.tooltip-left': {
+          '&::after': {
+            content: '" "',
+            position: 'absolute',
+            top: '50%',
+            left: '100%',
+            'margin-top': '-5px',
+            'border-width': '5px',
+            'border-style': 'solid',
+          },
+          '@apply after:border-y-transparent after:border-r-transparent after:border-l-dark-3':
+            {},
+        },
+        '.tooltip-right': {
+          '&::after': {
+            content: '" "',
+            position: 'absolute',
+            top: '50%',
+            right: '100%',
+            'margin-top': '-5px',
+            'border-width': '5px',
+            'border-style': 'solid',
+          },
+          '@apply after:border-y-transparent after:border-l-transparent after:border-r-dark-3':
+            {},
+        },
       })
 
       addUtilities(listColors)
