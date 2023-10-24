@@ -11,6 +11,8 @@ import type {
 } from '@/components/manguito-theme'
 import { colors, bodyTextSize, fontWeightOptions } from '@/assets/options'
 
+import { vTooltip } from '@/components/manguito-theme'
+
 const selectedInfoRef = ref<string>('')
 const selectedLinkRef = ref<string>('')
 const dropdownItems: DropdownItem[] = [
@@ -175,6 +177,11 @@ const handleClearButtonClick = (): void => {
           v-model="stateAlpha.displaySeparator"
         />
       </template>
+    </Variant>
+    <Variant title="test">
+      <div class="h-[50vh] flex justify-center items-center">
+        <p v-tooltip.left="'Manguito is Pollito!'">something</p>
+      </div>
     </Variant>
   </Story>
 </template>

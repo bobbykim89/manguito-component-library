@@ -1,4 +1,4 @@
-import { Directive } from 'vue'
+import { Directive, DirectiveBinding } from 'vue'
 
 export const vClickOutside: Directive = {
   mounted(el, binding) {
@@ -74,5 +74,85 @@ export const vCollapse: Directive = {
   },
   unmounted(el) {
     el.removeEventListener('click', el.__HandleToggler)
+  },
+}
+
+export const vTooltip: Directive = {
+  mounted(el, binding) {
+    el.__HandleTooltip = (el: Element, binding: DirectiveBinding) => {
+      let position = binding.arg || 'top'
+      let tooltipText = binding.value || 'tooltip text'
+      const elementHeight = el.scrollHeight + 'px'
+      console.log(elementHeight)
+      el.classList.add('relative', 'group')
+      const tooltipBox = document.createElement('div')
+      tooltipBox.setAttribute('tooltip', 'true')
+      tooltipBox.classList.add(
+        'absolute',
+        'p-3xs',
+        'bg-light-3',
+        // 'invisible',
+        'opacity-0',
+        // 'group-hover:visible',
+        'group-hover:opacity-100',
+        'transition-opacity',
+        'duration-200',
+        'z-[100]',
+        'rounded',
+        'text-sm'
+      )
+      console.log(binding.arg, binding.modifiers)
+      tooltipBox.style.width = '210px'
+      if (typeof binding.value === 'string') {
+        tooltipBox.innerHTML = binding.value
+      }
+      if (binding.modifiers.right === true) {
+        tooltipBox.style.top = '-5px'
+        tooltipBox.style.left = '105%'
+        tooltipBox.classList.add('tooltip-right')
+      }
+      if (binding.modifiers.left === true) {
+        tooltipBox.style.top = '-5px'
+        tooltipBox.style.right = '105%'
+        tooltipBox.classList.add('tooltip-left')
+      }
+      if (binding.modifiers.top === true) {
+        tooltipBox.style.bottom = '100%'
+        tooltipBox.style.left = '50%'
+        tooltipBox.style.transform = 'translateX(-50%)'
+        tooltipBox.classList.add('tooltip-top')
+      }
+      if (binding.modifiers.bottom === true) {
+        tooltipBox.style.top = '100%'
+        tooltipBox.style.left = '50%'
+        tooltipBox.style.transform = 'translateX(-50%)'
+        tooltipBox.classList.add('tooltip-bottom')
+      }
+      el.appendChild(tooltipBox)
+      // const eTarget = e.target as HTMLElement
+      // eTarget.classList.add('bg-dark-1')
+      // console.log(eTarget.classList)
+    }
+    el.__UnmountTooltip = (el: Element) => {
+      for (let i = 0; i < el.children.length; i++) {
+        if (el.children[i].getAttribute('tooltip') === 'true') {
+          el.removeChild(el.children[i])
+        }
+      }
+    }
+    // el.addEventListener('mouseover', el.__HandleTooltip)
+    el.__HandleTooltip(el, binding)
+  },
+  // unmounted(el) {
+  //   el.removeEventListener('mouseover', el.__HandleTooltip)
+  // },
+  updated(el, binding) {
+    // add function to remove tooltip component and add it again
+    el.__UnmountTooltip(el)
+    el.__HandleTooltip(el, binding)
+  },
+  unmounted(el) {
+    // add function to remove tooltip component
+    el.__UnmountTooltip(el)
   },
 }
