@@ -1,4 +1,6 @@
 import { Directive, DirectiveBinding } from 'vue'
+import generateClass from '../..'
+import type { ColorPalette } from '../..'
 
 export const vClickOutside: Directive = {
   mounted(el, binding) {
@@ -80,79 +82,168 @@ export const vCollapse: Directive = {
 export const vTooltip: Directive = {
   mounted(el, binding) {
     el.__HandleTooltip = (el: Element, binding: DirectiveBinding) => {
-      let position = binding.arg || 'top'
-      let tooltipText = binding.value || 'tooltip text'
-      const elementHeight = el.scrollHeight + 'px'
-      console.log(elementHeight)
-      el.classList.add('relative', 'group')
+      el.classList.add('relative', 'group', 'overflow-visible')
       const tooltipBox = document.createElement('div')
-      tooltipBox.setAttribute('tooltip', 'true')
+      tooltipBox.setAttribute('role', 'tooltip')
       tooltipBox.classList.add(
-        'absolute',
-        'p-3xs',
-        'bg-light-3',
         // 'invisible',
         'opacity-0',
         // 'group-hover:visible',
         'group-hover:opacity-100',
-        'transition-opacity',
-        'duration-200',
         'z-[100]',
-        'rounded',
-        'text-sm'
+        'tooltip'
       )
-      console.log(binding.arg, binding.modifiers)
-      tooltipBox.style.width = '210px'
-      if (typeof binding.value === 'string') {
+
+      const tooltipText = el.getAttribute('text')
+      // handle tooltip text
+      if (typeof tooltipText === 'string') {
+        tooltipBox.innerHTML = tooltipText
+      }
+      if (
+        typeof binding.value !== 'undefined' &&
+        typeof tooltipText !== 'string' &&
+        typeof binding.value === 'string'
+      ) {
         tooltipBox.innerHTML = binding.value
       }
-      if (binding.modifiers.right === true) {
-        tooltipBox.style.top = '-5px'
-        tooltipBox.style.left = '105%'
+      if (
+        typeof binding.value !== 'undefined' &&
+        typeof tooltipText !== 'string' &&
+        typeof binding.value !== 'string' &&
+        typeof binding.value.text === 'string'
+      ) {
+        tooltipBox.innerHTML = binding.value.text
+      }
+      // handle tooltip color
+      const tooltipColor = el.getAttribute('color')
+      if (
+        typeof tooltipColor === 'object' &&
+        (typeof binding.value === 'undefined' ||
+          typeof binding.value === 'string' ||
+          typeof binding.value.color === 'undefined')
+      ) {
+        tooltipBox.classList.add('bg-dark-3')
+      }
+      if (typeof tooltipColor === 'string') {
+        tooltipBox.classList.add(
+          generateClass('BGCOLOR', tooltipColor as ColorPalette)
+        )
+      }
+      if (
+        typeof binding.value !== 'undefined' &&
+        typeof tooltipColor !== 'string' &&
+        typeof binding.value !== 'string' &&
+        typeof binding.value.color === 'string'
+      ) {
+        tooltipBox.classList.add(
+          generateClass('BGCOLOR', binding.value.color as ColorPalette)
+        )
+      }
+      // handle tooltip text color
+      const tooltipTextColor = el.getAttribute('text-color')
+      if (
+        typeof tooltipTextColor === 'object' &&
+        (typeof binding.value === 'undefined' ||
+          typeof binding.value === 'string' ||
+          typeof binding.value.textColor === 'undefined')
+      ) {
+        tooltipBox.classList.add('text-white')
+      }
+      if (typeof tooltipTextColor === 'string') {
+        tooltipBox.classList.add(
+          generateClass('TEXTCOLOR', tooltipTextColor as ColorPalette)
+        )
+      }
+      if (
+        typeof binding.value !== 'undefined' &&
+        typeof tooltipTextColor !== 'string' &&
+        typeof binding.value !== 'string' &&
+        binding.value.textColor === 'string'
+      ) {
+        tooltipBox.classList.add(
+          generateClass('TEXTCOLOR', binding.value.textColor as ColorPalette)
+        )
+      }
+      // handle tooltip width
+      const tooltipWidth = el.getAttribute('width')
+      // default tooltip width range
+      if (
+        typeof tooltipWidth === 'object' &&
+        (typeof binding.value === 'undefined' ||
+          typeof binding.value === 'string' ||
+          typeof binding.value.width === 'undefined')
+      ) {
+        tooltipBox.style.maxWidth = '210px'
+        tooltipBox.style.minWidth = '80px'
+      }
+      if (typeof tooltipWidth === 'string') {
+        tooltipBox.style.width = tooltipWidth + 'px'
+      }
+      if (
+        typeof binding.value !== 'undefined' &&
+        typeof tooltipWidth !== 'string' &&
+        typeof binding.value !== 'string' &&
+        (typeof binding.value.width === 'number' ||
+          typeof binding.value.width === 'string')
+      ) {
+        tooltipBox.style.width = binding.value.width + 'px'
+      }
+      // handle custom class names
+      if (
+        typeof binding.value !== 'undefined' &&
+        typeof binding.value !== 'string' &&
+        typeof binding.value.className === 'string'
+      ) {
+        const formattedClassNames: string[] = binding.value.className.split(' ')
+        tooltipBox.classList.add(...formattedClassNames)
+      }
+      // handle tooltip direction
+      if (
+        binding.modifiers.right ||
+        Object.keys(binding.modifiers).length === 0
+      ) {
+        tooltipBox.style.top = '50%'
+        tooltipBox.style.left = '110%'
+        tooltipBox.style.transform = 'translateY(-50%)'
         tooltipBox.classList.add('tooltip-right')
       }
-      if (binding.modifiers.left === true) {
-        tooltipBox.style.top = '-5px'
-        tooltipBox.style.right = '105%'
+      if (binding.modifiers.left) {
+        tooltipBox.style.top = '50%'
+        tooltipBox.style.right = '110%'
+        tooltipBox.style.transform = 'translateY(-50%)'
         tooltipBox.classList.add('tooltip-left')
       }
-      if (binding.modifiers.top === true) {
-        tooltipBox.style.bottom = '100%'
+      if (binding.modifiers.top) {
+        tooltipBox.style.bottom = '110%'
         tooltipBox.style.left = '50%'
         tooltipBox.style.transform = 'translateX(-50%)'
         tooltipBox.classList.add('tooltip-top')
       }
-      if (binding.modifiers.bottom === true) {
-        tooltipBox.style.top = '100%'
+      if (binding.modifiers.bottom) {
+        tooltipBox.style.top = '110%'
         tooltipBox.style.left = '50%'
         tooltipBox.style.transform = 'translateX(-50%)'
         tooltipBox.classList.add('tooltip-bottom')
       }
+
       el.appendChild(tooltipBox)
-      // const eTarget = e.target as HTMLElement
-      // eTarget.classList.add('bg-dark-1')
-      // console.log(eTarget.classList)
     }
     el.__UnmountTooltip = (el: Element) => {
       for (let i = 0; i < el.children.length; i++) {
-        if (el.children[i].getAttribute('tooltip') === 'true') {
+        if (el.children[i].getAttribute('role') === 'tooltip') {
           el.removeChild(el.children[i])
         }
       }
     }
-    // el.addEventListener('mouseover', el.__HandleTooltip)
     el.__HandleTooltip(el, binding)
   },
-  // unmounted(el) {
-  //   el.removeEventListener('mouseover', el.__HandleTooltip)
-  // },
   updated(el, binding) {
-    // add function to remove tooltip component and add it again
+    // discard tooltip and rerender component on update
     el.__UnmountTooltip(el)
     el.__HandleTooltip(el, binding)
   },
   unmounted(el) {
-    // add function to remove tooltip component
+    // discard tooltip
     el.__UnmountTooltip(el)
   },
 }
