@@ -179,8 +179,28 @@ const handleClearButtonClick = (): void => {
       </template>
     </Variant>
     <Variant title="test">
-      <div class="h-[50vh] flex justify-center items-center">
-        <p v-tooltip.left="'Manguito is Pollito!'">something</p>
+      <div
+        class="min-h-[50vh] flex flex-col justify-center items-center gap-lg"
+      >
+        <p v-tooltip.top="'Manguito is Pollito!'" color="primary" width="100">
+          Tooltip 1
+        </p>
+        <button v-tooltip class="btn" text="Another Tooltip">A button</button>
+        <span
+          v-tooltip.left="{
+            text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            color: 'light-3',
+            textColor: 'black',
+            width: 200,
+            className: 'border-2 text-lg font-bold',
+          }"
+          >tooltip 3</span
+        >
+        <a
+          href="#"
+          v-tooltip.bottom="{ text: 'Pio pip this is a pollito chirping loud' }"
+          >Some text</a
+        >
       </div>
     </Variant>
   </Story>
