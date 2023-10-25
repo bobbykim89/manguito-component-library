@@ -86,9 +86,9 @@ export const vTooltip: Directive = {
       const tooltipBox = document.createElement('div')
       tooltipBox.setAttribute('role', 'tooltip')
       tooltipBox.classList.add(
-        // 'invisible',
+        'invisible',
         'opacity-0',
-        // 'group-hover:visible',
+        'group-hover:visible',
         'group-hover:opacity-100',
         'z-[100]',
         'tooltip'
