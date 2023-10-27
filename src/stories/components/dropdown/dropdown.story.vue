@@ -11,7 +11,7 @@ import type {
 } from '@/components/manguito-theme'
 import { colors, bodyTextSize, fontWeightOptions } from '@/assets/options'
 
-import { vTooltip } from '@/components/manguito-theme'
+import { vTooltip, vTest } from '@/components/manguito-theme'
 
 const selectedInfoRef = ref<string>('')
 const selectedLinkRef = ref<string>('')
@@ -201,6 +201,7 @@ const handleClearButtonClick = (): void => {
           v-tooltip.bottom="{ text: 'Pio pip this is a pollito chirping loud' }"
           >Some text</a
         >
+        <a href="#" v-test.top>vTest</a>
       </div>
     </Variant>
   </Story>
