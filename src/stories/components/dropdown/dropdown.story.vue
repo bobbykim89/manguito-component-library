@@ -201,7 +201,14 @@ const handleClearButtonClick = (): void => {
           v-tooltip.bottom="{ text: 'Pio pip this is a pollito chirping loud' }"
           >Some text</a
         >
-        <a href="#" v-test.top>vTest</a>
+        <a
+          href="#"
+          v-test.top
+          title="el pollo!"
+          color="warning"
+          text-color="danger"
+          >vTest</a
+        >
       </div>
     </Variant>
   </Story>
