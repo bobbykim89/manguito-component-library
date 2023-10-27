@@ -1,6 +1,14 @@
-import { Directive, DirectiveBinding } from 'vue'
+import {
+  Directive,
+  DirectiveBinding,
+  h,
+  render,
+  createVNode,
+  getCurrentInstance,
+} from 'vue'
 import generateClass from '../..'
-import type { ColorPalette } from '../..'
+import type { ColorPalette, Direction } from '../..'
+import tooltip from '../tooltip'
 
 export const vClickOutside: Directive = {
   mounted(el, binding) {
@@ -245,5 +253,53 @@ export const vTooltip: Directive = {
   unmounted(el) {
     // discard tooltip
     el.__UnmountTooltip(el)
+  },
+}
+
+// const hFunction = {
+//   props: {
+//     text: String,
+//   },
+//   setup(props: typeof this.props) {
+//     return () =>
+//       h('div', { class: 'bg-primary p-md', innerHTML: 'Manguito is pollito' })
+//   },
+// }
+
+export const vTest: Directive = {
+  mounted(el, binding) {
+    el.__Test = (el: Element, binding: DirectiveBinding) => {
+      // parent element class
+      el.classList.add('relative', 'group', 'overflow-visible')
+      // default classes
+      const defaultClassList =
+        'invisible opacity-0 group-hover:visible group-hover:opacity-100 z-[100] tooltip'
+      let tooltipDirection: Direction | undefined
+      const modifierArray: string[] = Object.keys(binding.modifiers)
+      // handle direction
+      if (modifierArray.length > 0) {
+        tooltipDirection = modifierArray[0] as Direction
+      }
+      const vnode = createVNode(tooltip, {
+        direction: tooltipDirection,
+        text: 'pio pip',
+      })
+      // vnode.$props = {
+      //   direction: 'left',
+      //   text: 'Manguito is pollito',
+      // }
+      console.log(vnode)
+      render(vnode, el)
+    }
+    el.__UnmountTest = (el: Element) => {
+      render(null, el)
+    }
+    el.__Test(el, binding)
+  },
+  updated(el, binding) {
+    el.__Test(el, binding)
+  },
+  unmounted(el) {
+    el.__UnmountTest(el)
   },
 }
