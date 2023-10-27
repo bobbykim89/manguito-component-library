@@ -203,10 +203,10 @@ const handleClearButtonClick = (): void => {
         >
         <a
           href="#"
-          v-test.top
-          title="el pollo!"
-          color="warning"
-          text-color="danger"
+          v-test.top="{
+            title: 'El pollito',
+            className: 'border-2 text-xl font-bold border-primary bg-secondary',
+          }"
           >vTest</a
         >
       </div>

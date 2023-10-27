@@ -256,19 +256,26 @@ export const vTooltip: Directive = {
   },
 }
 
-// const hFunction = {
-//   props: {
-//     text: String,
-//   },
-//   setup(props: typeof this.props) {
-//     return () =>
-//       h('div', { class: 'bg-primary p-md', innerHTML: 'Manguito is pollito' })
-//   },
-// }
+interface TooltipElementType extends HTMLElement {
+  __Test: Function
+  __UnmountTest: Function
+}
 
-export const vTest: Directive = {
+interface TooltipValueObjectType {
+  title?: string
+  color?: ColorPalette
+  textColor?: ColorPalette
+  width?: number | string
+  className?: string
+}
+type TooltipValueType = TooltipValueObjectType | string
+
+export const vTest: Directive<TooltipElementType, TooltipValueType> = {
   mounted(el, binding) {
-    el.__Test = (el: Element, binding: DirectiveBinding) => {
+    el.__Test = (
+      el: HTMLElement,
+      binding: DirectiveBinding<TooltipValueType>
+    ) => {
       // parent element class
       el.classList.add('relative', 'group', 'overflow-visible')
 
@@ -288,9 +295,9 @@ export const vTest: Directive = {
         !el.hasAttribute('title') &&
         typeof binding.value !== 'undefined' &&
         typeof binding.value !== 'string' &&
-        typeof binding.value.text === 'string'
+        typeof binding.value.title === 'string'
       ) {
-        tooltipText = binding.value.text
+        tooltipText = binding.value.title
       }
       // handle tooltip color
       let tooltipColor: string | null | undefined
@@ -314,7 +321,7 @@ export const vTest: Directive = {
         !el.hasAttribute('text-color') &&
         typeof binding.value !== 'undefined' &&
         typeof binding.value !== 'string' &&
-        binding.value.textColor === 'string'
+        typeof binding.value.textColor === 'string'
       ) {
         tooltipTextColor = binding.value.textColor
       }
