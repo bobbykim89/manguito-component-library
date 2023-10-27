@@ -464,6 +464,9 @@ const mclTheme = plugin.withOptions(
             {},
         },
         '.tooltip.tooltip-top': {
+          left: '50%',
+          bottom: '110%',
+          transform: 'translateX(-50%)',
           '&::after': {
             content: '" "',
             position: 'absolute',
@@ -477,6 +480,9 @@ const mclTheme = plugin.withOptions(
             {},
         },
         '.tooltip.tooltip-bottom': {
+          left: '50%',
+          top: '110%',
+          transform: 'translateX(-50%)',
           '&::after': {
             content: '" "',
             position: 'absolute',
@@ -490,6 +496,9 @@ const mclTheme = plugin.withOptions(
             {},
         },
         '.tooltip.tooltip-left': {
+          top: '50%',
+          right: '110%',
+          transform: 'translateY(-50%)',
           '&::after': {
             content: '" "',
             position: 'absolute',
@@ -503,6 +512,9 @@ const mclTheme = plugin.withOptions(
             {},
         },
         '.tooltip.tooltip-right': {
+          top: '50%',
+          left: '110%',
+          transform: 'translateY(-50%)',
           '&::after': {
             content: '" "',
             position: 'absolute',

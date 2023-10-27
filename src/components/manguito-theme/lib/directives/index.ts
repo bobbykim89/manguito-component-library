@@ -210,27 +210,27 @@ export const vTooltip: Directive = {
         binding.modifiers.right ||
         Object.keys(binding.modifiers).length === 0
       ) {
-        tooltipBox.style.top = '50%'
-        tooltipBox.style.left = '110%'
-        tooltipBox.style.transform = 'translateY(-50%)'
+        // tooltipBox.style.top = '50%'
+        // tooltipBox.style.left = '110%'
+        // tooltipBox.style.transform = 'translateY(-50%)'
         tooltipBox.classList.add('tooltip-right')
       }
       if (binding.modifiers.left) {
-        tooltipBox.style.top = '50%'
-        tooltipBox.style.right = '110%'
-        tooltipBox.style.transform = 'translateY(-50%)'
+        // tooltipBox.style.top = '50%'
+        // tooltipBox.style.right = '110%'
+        // tooltipBox.style.transform = 'translateY(-50%)'
         tooltipBox.classList.add('tooltip-left')
       }
       if (binding.modifiers.top) {
-        tooltipBox.style.bottom = '110%'
-        tooltipBox.style.left = '50%'
-        tooltipBox.style.transform = 'translateX(-50%)'
+        // tooltipBox.style.bottom = '110%'
+        // tooltipBox.style.left = '50%'
+        // tooltipBox.style.transform = 'translateX(-50%)'
         tooltipBox.classList.add('tooltip-top')
       }
       if (binding.modifiers.bottom) {
-        tooltipBox.style.top = '110%'
-        tooltipBox.style.left = '50%'
-        tooltipBox.style.transform = 'translateX(-50%)'
+        // tooltipBox.style.top = '110%'
+        // tooltipBox.style.left = '50%'
+        // tooltipBox.style.transform = 'translateX(-50%)'
         tooltipBox.classList.add('tooltip-bottom')
       }
 
@@ -271,9 +271,75 @@ export const vTest: Directive = {
     el.__Test = (el: Element, binding: DirectiveBinding) => {
       // parent element class
       el.classList.add('relative', 'group', 'overflow-visible')
-      // default classes
-      const defaultClassList =
-        'invisible opacity-0 group-hover:visible group-hover:opacity-100 z-[100] tooltip'
+
+      // handle tooltip text
+      let tooltipText: string | null | undefined
+      if (el.hasAttribute('title')) {
+        tooltipText = el.getAttribute('title')
+      }
+      if (
+        !el.hasAttribute('title') &&
+        typeof binding.value !== 'undefined' &&
+        typeof binding.value === 'string'
+      ) {
+        tooltipText = binding.value
+      }
+      if (
+        !el.hasAttribute('title') &&
+        typeof binding.value !== 'undefined' &&
+        typeof binding.value !== 'string' &&
+        typeof binding.value.text === 'string'
+      ) {
+        tooltipText = binding.value.text
+      }
+      // handle tooltip color
+      let tooltipColor: string | null | undefined
+      if (el.hasAttribute('color')) {
+        tooltipColor = el.getAttribute('color')
+      }
+      if (
+        !el.hasAttribute('color') &&
+        typeof binding.value !== 'undefined' &&
+        typeof binding.value !== 'string' &&
+        typeof binding.value.color === 'string'
+      ) {
+        tooltipColor = binding.value.color
+      }
+      // handle tooltip text color
+      let tooltipTextColor: string | null | undefined
+      if (el.hasAttribute('text-color')) {
+        tooltipTextColor = el.getAttribute('text-color')
+      }
+      if (
+        !el.hasAttribute('text-color') &&
+        typeof binding.value !== 'undefined' &&
+        typeof binding.value !== 'string' &&
+        binding.value.textColor === 'string'
+      ) {
+        tooltipTextColor = binding.value.textColor
+      }
+      // handle tooltip width
+      let tooltipWidth: string | number | null | undefined
+      if (el.hasAttribute('width')) {
+        tooltipWidth = el.getAttribute('width')
+      }
+      if (
+        !el.hasAttribute('width') &&
+        typeof binding.value !== 'undefined' &&
+        typeof binding.value !== 'string' &&
+        typeof binding.value.width === ('number' || 'string')
+      ) {
+        tooltipWidth = binding.value.width
+      }
+      // handle custom class names
+      let tooltipClassName: string | undefined
+      if (
+        typeof binding.value !== 'undefined' &&
+        typeof binding.value !== 'string' &&
+        typeof binding.value.className === 'string'
+      ) {
+        tooltipClassName = binding.value.className
+      }
       let tooltipDirection: Direction | undefined
       const modifierArray: string[] = Object.keys(binding.modifiers)
       // handle direction
@@ -282,13 +348,12 @@ export const vTest: Directive = {
       }
       const vnode = createVNode(tooltip, {
         direction: tooltipDirection,
-        text: 'pio pip',
+        title: tooltipText,
+        color: tooltipColor,
+        textColor: tooltipTextColor,
+        width: tooltipWidth,
+        customClass: tooltipClassName,
       })
-      // vnode.$props = {
-      //   direction: 'left',
-      //   text: 'Manguito is pollito',
-      // }
-      console.log(vnode)
       render(vnode, el)
     }
     el.__UnmountTest = (el: Element) => {
