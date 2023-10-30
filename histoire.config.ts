@@ -26,11 +26,11 @@ export default defineConfig({
       },
       {
         id: 'base-comp',
-        title: 'Base Components',
+        title: 'Components',
       },
       {
         id: 'section-comp',
-        title: 'Section Components',
+        title: 'Sections',
       },
     ],
   },
