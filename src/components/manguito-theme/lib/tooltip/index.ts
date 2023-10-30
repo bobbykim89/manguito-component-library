@@ -23,7 +23,6 @@ export default defineComponent({
     customClass: {
       type: String,
       default: '',
-      required: false,
     },
     title: {
       type: String,
