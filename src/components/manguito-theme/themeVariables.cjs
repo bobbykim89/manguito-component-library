@@ -141,6 +141,48 @@ const mclTheme = plugin.withOptions(
           ),
         }
       }, {})
+      const tooltipColors = Object.keys(colors).reduce((accumulator, key) => {
+        // const invalidKeys = ['current', 'transparent', 'inherit']
+        // if (invalidKeys.includes(key)) {
+        //   return
+        // }
+        if (typeof colors[key] === 'string') {
+          return {
+            ...accumulator,
+            [`.tooltip.tooltip-top.bg-${e(key)}`]: {
+              [`@apply after:border-t-${key}`]: {},
+            },
+            [`.tooltip.tooltip-bottom.bg-${e(key)}`]: {
+              [`@apply after:border-b-${key}`]: {},
+            },
+            [`.tooltip.tooltip-right.bg-${e(key)}`]: {
+              [`@apply after:border-r-${key}`]: {},
+            },
+            [`.tooltip.tooltip-left.bg-${e(key)}`]: {
+              [`@apply after:border-l-${key}`]: {},
+            },
+          }
+        }
+        const colorShades = Object.keys(colors[key])
+        return {
+          ...accumulator,
+          ...colorShades.reduce((acc, level) => ({
+            ...acc,
+            [`.tooltip.tooltip-top.bg-${e(key)}-${level}`]: {
+              [`@apply after:border-t-${key}-${level}`]: {},
+            },
+            [`.tooltip.tooltip-bottom.bg-${e(key)}-${level}`]: {
+              [`@apply after:border-b-${key}-${level}`]: {},
+            },
+            [`.tooltip.tooltip-right.bg-${e(key)}-${level}`]: {
+              [`@apply after:border-r-${key}-${level}`]: {},
+            },
+            [`.tooltip.tooltip-left.bg-${e(key)}-${level}`]: {
+              [`@apply after:border-l-${key}-${level}`]: {},
+            },
+          })),
+        }
+      }, {})
 
       addBase({
         body: {
@@ -417,11 +459,80 @@ const mclTheme = plugin.withOptions(
               left: '0',
             },
           },
+        '.tooltip': {
+          '@apply font-normal text-sm transition-opacity duration-200 p-2xs absolute rounded text-center drop-shadow-md':
+            {},
+        },
+        '.tooltip.tooltip-top': {
+          left: '50%',
+          bottom: '110%',
+          transform: 'translateX(-50%)',
+          '&::after': {
+            content: '" "',
+            position: 'absolute',
+            top: '100%',
+            left: '50%',
+            'margin-left': '-5px',
+            'border-width': '5px',
+            'border-style': 'solid',
+          },
+          '@apply after:border-t-dark-3 after:border-x-transparent after:border-b-transparent':
+            {},
+        },
+        '.tooltip.tooltip-bottom': {
+          left: '50%',
+          top: '110%',
+          transform: 'translateX(-50%)',
+          '&::after': {
+            content: '" "',
+            position: 'absolute',
+            bottom: '100%',
+            left: '50%',
+            'margin-left': '-5px',
+            'border-width': '5px',
+            'border-style': 'solid',
+          },
+          '@apply after:border-t-transparent after:border-x-transparent after:border-b-dark-3':
+            {},
+        },
+        '.tooltip.tooltip-left': {
+          top: '50%',
+          right: '110%',
+          transform: 'translateY(-50%)',
+          '&::after': {
+            content: '" "',
+            position: 'absolute',
+            top: '50%',
+            left: '100%',
+            'margin-top': '-5px',
+            'border-width': '5px',
+            'border-style': 'solid',
+          },
+          '@apply after:border-y-transparent after:border-r-transparent after:border-l-dark-3':
+            {},
+        },
+        '.tooltip.tooltip-right': {
+          top: '50%',
+          left: '110%',
+          transform: 'translateY(-50%)',
+          '&::after': {
+            content: '" "',
+            position: 'absolute',
+            top: '50%',
+            right: '100%',
+            'margin-top': '-5px',
+            'border-width': '5px',
+            'border-style': 'solid',
+          },
+          '@apply after:border-y-transparent after:border-l-transparent after:border-r-dark-3':
+            {},
+        },
       })
 
       addUtilities(listColors)
       addUtilities(btnColors)
       addUtilities(linkColors)
+      addUtilities(tooltipColors)
     }
   },
   (options = {}) => {
