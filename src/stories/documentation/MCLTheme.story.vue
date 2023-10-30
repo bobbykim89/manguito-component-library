@@ -225,7 +225,7 @@ const generateRandomBg = (size: string): string => {
 </script>
 
 <template>
-  <Story title="MCL Theme" group="design-system">
+  <Story title="Manguito Theme" group="design-system">
     <!-- color palette section -->
     <Variant title="Color Palette">
       <div

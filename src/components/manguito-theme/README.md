@@ -19,9 +19,7 @@ npx tailwindcss init -p
 tailwind.config.cjs
 
 ```cjs
-const {
-  mclTheme,
-} = require('./src/components/manguito-theme/themeVariables.cjs')
+const { mclTheme } = require('@bobbykim/manguito-theme/themeVariables.cjs')
 module.exports = {
   content: [
     './src/**/*.{vue,ts,js,cjs}',

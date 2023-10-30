@@ -11,7 +11,7 @@ import type {
   Range,
   OpacityRange,
   SpacingLevel,
-  Position,
+  Alignment as Position,
 } from './theme.types'
 
 export type ColorClass = {
