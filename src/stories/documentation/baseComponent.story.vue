@@ -161,7 +161,7 @@ const openModal = () => {
       </div>
     </Variant>
     <Variant title="Sidebar">
-      <div>
+      <div class="min-h-[100vh]">
         <div class="flex justify-center gap-xs my-md">
           <button class="btn btn-success" v-toggle:sidebar-default>
             Sidebar Default Header

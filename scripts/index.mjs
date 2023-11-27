@@ -94,6 +94,12 @@ inquirer.prompt(questions).then((answers) => {
     .replace(/{%componentName%}/gi, `@bobbykim/${directoryName}`)
     .replace(/{%authorName%}/gi, authorName)
 
+  const tsConfigTemplate = fs.readFileSync(
+    path.resolve(`${TEMPLATE_PATH}/_tsconfig.md`, {
+      encoding: 'utf8',
+    })
+  )
+
   const readmeTemplate = fs
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_readme.md`), {
       encoding: 'utf8',
@@ -170,6 +176,10 @@ inquirer.prompt(questions).then((answers) => {
       fs.writeFileSync(
         `${COMPONENTS_PATH}/${directoryName}/README.md`,
         readmeTemplate
+      )
+      fs.writeFileSync(
+        `${COMPONENTS_PATH}/${directoryName}/tsconfig.json`,
+        tsConfigTemplate
       )
     }
   })
