@@ -182,7 +182,9 @@ const handleClearButtonClick = (): void => {
       <div>
         <div class="flex justify-center gap-xs my-md">
           <button class="btn btn-danger" v-toggle-test:modal-1>Modal 1</button>
-          <button class="btn btn-danger" v-toggle-test:modal-2>Modal 2</button>
+          <button class="btn btn-secondary" v-toggle-test:modal-2>
+            Modal 2
+          </button>
           Modal Default Header
         </div>
         <p>
@@ -244,7 +246,12 @@ const handleClearButtonClick = (): void => {
           luctus tortor. Cras eu pretium arcu. Cras ut turpis eros. Mauris
           venenatis eros diam.
         </p>
-        <modal-test id="modal-1" class-name="px-xs rounded-md" color="light-1">
+        <modal-test
+          id="modal-1"
+          class-name="px-xs rounded-md"
+          color="light-1"
+          visible
+        >
           <template #header="{ close }">
             <div class="flex justify-between py-xs bg-light-1 border-b-2">
               <h3 class="h3-md">Modal 1</h3>
@@ -296,7 +303,7 @@ const handleClearButtonClick = (): void => {
         </modal-test>
         <modal-test id="modal-2" class-name="px-xs rounded-md" color="warning">
           <template #header="{ close }">
-            <div class="flex justify-between py-xs bg-light-1 border-b-2">
+            <div class="flex justify-between py-xs bg-warning border-b-2">
               <h3 class="h3-md">Modal 2</h3>
               <button @click="close">
                 <svg
@@ -335,7 +342,7 @@ const handleClearButtonClick = (): void => {
           </template>
           <template #footer="{ close }">
             <div
-              class="bg-light-1 border-t-2 flex justify-between items-center py-xs"
+              class="bg-warning border-t-2 flex justify-between items-center py-xs"
             >
               <h4 class="h4-md">Footer Text</h4>
               <button class="btn btn-round btn-warning" @click="close">
