@@ -43,19 +43,22 @@ const modalRef = ref<HTMLElement | undefined>()
 const toggle = ref<boolean>(props.visible)
 const toggleComplete = ref<boolean>(false)
 
-const handleToggleEvent = (e?: Event): void => {
+const handleToggleEvent = (): void => {
   toggle.value = !toggle.value
-  emit('toggle', e)
 }
 const openModal = (e?: Event): void => {
   toggle.value = true
-  emit('open', e)
 }
 const closeModal = (e?: Event): void => {
   if (toggleComplete.value === true) {
     toggle.value = false
-    emit('close', e)
   }
+}
+const emitOpenEvent = () => {
+  emit('open', { visible: true })
+}
+const emitCloseEvent = () => {
+  emit('close', { visible: false })
 }
 const handlePlacementVar = computed(() => {
   let placementVariable: number
@@ -86,12 +89,16 @@ const handleVisibility = (visible: boolean = false) => {
 }
 const observer = observeVisibleAttr(handleVisibility)
 
-watch(
-  () => props.visible,
-  (newValue) => {
-    toggle.value = newValue
+watch([() => props.visible], ([newVisible]) => {
+  toggle.value = newVisible
+})
+watch(toggle, (newValue) => {
+  if (newValue === true) {
+    emitOpenEvent()
+  } else if (newValue === false && toggleComplete.value === true) {
+    emitCloseEvent()
   }
-)
+})
 defineExpose({
   toggle: handleToggleEvent,
   close: closeModal,
