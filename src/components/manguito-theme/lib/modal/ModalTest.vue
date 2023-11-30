@@ -12,6 +12,7 @@ import generateClass, {
   vClickOutside,
   VerticalAlignment,
 } from '../../'
+import { observeVisibleAttr } from '../composables'
 
 const props = withDefaults(
   defineProps<{
@@ -38,7 +39,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits(['toggle', 'open', 'close'])
-const modalRef = ref()
+const modalRef = ref<HTMLElement | undefined>()
 const toggle = ref<boolean>(props.visible)
 const toggleComplete = ref<boolean>(false)
 
@@ -79,22 +80,11 @@ const onAfterLeave = () => {
   toggleComplete.value = false
 }
 
-const observer = new MutationObserver((mutations) => {
-  for (const mutation of mutations) {
-    if (
-      mutation.type !== 'attributes' ||
-      mutation.attributeName !== 'visible'
-    ) {
-      return
-    }
-    const visibleAttr =
-      (mutation.target as HTMLElement).getAttribute('visible') === 'true'
-        ? true
-        : false
-    toggle.value = visibleAttr
-    // console.log(mutation.target)
-  }
-})
+// set nutation observer watching `visible` attribute in element
+const handleVisibility = (visible: boolean = false) => {
+  toggle.value = visible
+}
+const observer = observeVisibleAttr(handleVisibility)
 
 watch(
   () => props.visible,
@@ -108,7 +98,9 @@ defineExpose({
   open: openModal,
 })
 onMounted(() => {
-  observer.observe(modalRef.value, { attributes: true })
+  if (modalRef.value) {
+    observer.observe(modalRef.value, { attributes: true })
+  }
 })
 onBeforeUnmount(() => {
   observer.disconnect()
@@ -117,7 +109,6 @@ onBeforeUnmount(() => {
 
 <template>
   <div :style="handlePlacementVar" :visible="toggle" ref="modalRef">
-    <!-- <button :id="modalId" @click="handleToggleEvent" class="hidden"></button> -->
     <Transition name="fade" appear tag="div" v-if="!noBackdrop">
       <section
         v-if="toggle"

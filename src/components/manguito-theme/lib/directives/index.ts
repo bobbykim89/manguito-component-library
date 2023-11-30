@@ -188,7 +188,7 @@ export const vTooltip: Directive<TooltipElementType, TooltipValueType> = {
 }
 
 export const vToggleTest: Directive = {
-  mounted(el, binding, vnode) {
+  mounted(el, binding) {
     el.__ClickToggleHandler = (e: Event): void => {
       const eTarget = e.target as HTMLElement
       let target: HTMLElement
@@ -201,13 +201,8 @@ export const vToggleTest: Directive = {
         target = document.getElementById(binding.arg as string)!
       }
       const targetAttr = target.getAttribute('visible')
-      if (targetAttr === 'true') {
-        target.setAttribute('visible', 'false')
-      }
-      if (targetAttr === 'false') {
-        target.setAttribute('visible', 'true')
-      }
-      // target.click()
+      const attrAfterToggle = targetAttr === 'true' ? 'false' : 'true'
+      target.setAttribute('visible', attrAfterToggle)
       return
     }
     el.addEventListener('click', el.__ClickToggleHandler)
