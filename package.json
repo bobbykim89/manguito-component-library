@@ -15,6 +15,7 @@
     "create": "node ./scripts/index.mjs",
     "commit": "cz",
     "release": "standard-version",
+    "prepublish": "lerna run build",
     "publish": "lerna publish"
   },
   "devDependencies": {
