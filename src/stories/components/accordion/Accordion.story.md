@@ -48,9 +48,10 @@ import AccordionAlpha from '@bobbykim/accordion-alpha'
 
 ### Emits
 
-| Event           | Arguments    | Usage                             |
-| --------------- | ------------ | --------------------------------- |
-| accordion-click | event, title | emits event on toggling component |
+| Event           | Arguments      | Usage                             |
+| --------------- | -------------- | --------------------------------- |
+| accordion-open  | visible, title | emits event on toggling component |
+| accordion-close | visible, title | emits event on toggling component |
 
 ### Slots
 
@@ -106,9 +107,10 @@ import AccordionBeta from '@bobbykim/accordion-beta'
 
 ### Emits
 
-| Event           | Arguments    | Usage                             |
-| --------------- | ------------ | --------------------------------- |
-| accordion-click | event, title | emits event on toggling component |
+| Event           | Arguments      | Usage                             |
+| --------------- | -------------- | --------------------------------- |
+| accordion-open  | visible, title | emits event on toggling component |
+| accordion-close | visible, title | emits event on toggling component |
 
 ### Slots
 

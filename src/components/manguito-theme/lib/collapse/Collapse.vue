@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, watch, Transition } from 'vue'
-import type { CollapseEvent } from './index.types'
+import { ref, watch, Transition, onMounted, onBeforeUnmount } from 'vue'
+import { observeVisibleAttr } from '../composables'
+
 const props = withDefaults(
   defineProps<{
-    collapseId: string
     accordion?: string
     className?: string
     visible?: boolean
@@ -13,12 +13,24 @@ const props = withDefaults(
     visible: false,
   }
 )
-const emit = defineEmits(['toggle'])
+const emit = defineEmits(['open', 'close'])
+const collapseRef = ref<HTMLElement | undefined>()
 const toggle = ref<boolean>(props.visible)
 
-const handleToggleEvent = (e: Event): void => {
+const toggleCollapse = (): void => {
   toggle.value = !toggle.value
-  emit('toggle', { ...e, visible: toggle.value } as CollapseEvent)
+}
+const openCollapse = (): void => {
+  toggle.value = true
+}
+const closeCollapse = (): void => {
+  toggle.value = false
+}
+const emitOpenEvent = () => {
+  emit('open', { visible: true })
+}
+const emitCloseEvent = () => {
+  emit('close', { visible: false })
 }
 
 /**
@@ -45,30 +57,49 @@ const onLeave = (el: any) => {
   el.style.opacity = '0'
 }
 
+// set nutation observer watching `visible` attribute in element
+const handleVisibility = (visible: boolean = false) => {
+  toggle.value = visible
+}
+const observer = observeVisibleAttr(handleVisibility)
+
 watch(
   () => props.visible,
   (newValue) => {
     toggle.value = newValue
   }
 )
+watch(toggle, (newValue) => {
+  if (newValue === true) {
+    emitOpenEvent()
+  } else if (newValue === false) {
+    emitCloseEvent()
+  }
+})
+defineExpose({
+  toggle: toggleCollapse,
+  close: closeCollapse,
+  open: openCollapse,
+})
+onMounted(() => {
+  if (collapseRef.value) {
+    observer.observe(collapseRef.value, { attributes: true })
+  }
+})
+onBeforeUnmount(() => {
+  observer.disconnect()
+})
 </script>
 
 <template>
-  <div>
-    <button
-      :id="collapseId"
-      @click="handleToggleEvent"
-      class="hidden"
-      :accordion="accordion"
-      :visible="toggle"
-    ></button>
+  <div :accordion="accordion" :visible="toggle" ref="collapseRef">
     <transition
       name="collapse"
       tag="div"
       @enter="onEnter"
       @after-enter="onAfterEnter"
       @leave="onLeave"
-      class="overflow-hidden"
+      class="overflow-y-clip"
     >
       <div v-show="toggle">
         <div :class="[className]">

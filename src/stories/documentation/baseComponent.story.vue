@@ -65,6 +65,12 @@ const customButtonColor = (idx: number): string => {
       return ' '
   }
 }
+const collapseRef = ref<InstanceType<typeof Collapse>>()
+const toggleCollapse = () => {
+  if (collapseRef.value) {
+    collapseRef.value.toggle()
+  }
+}
 const dropdownSelectedRef = ref<string>('')
 const dropdownSelectEvent = (item: string): void => {
   dropdownSelectedRef.value = item
@@ -91,10 +97,25 @@ const openModal = () => {
             class="btn btn-full btn-warning"
             >Tab Button</a
           >
-          <collapse
-            collapse-id="my-collapse-component"
-            class-name="bg-light-3 p-xs"
+          <collapse id="my-collapse-component" class-name="bg-light-3 p-xs">
+            <div>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
+              quo incidunt a blanditiis mollitia ea est? Fugit voluptate
+              expedita magni vitae iste. Nulla aperiam voluptate ullam dolor
+              officiis earum quis aliquam at ducimus porro. Quidem, molestias!
+              Voluptates perferendis distinctio ipsam dicta optio non
+              praesentium, maiores commodi. Natus, ducimus doloremque?
+            </div>
+          </collapse>
+        </div>
+        <div class="p-2xs border-2 border-success rounded-md mb-lg bg-white">
+          <button
+            @click="toggleCollapse"
+            class="btn btn-full btn-success btn-no-ring"
           >
+            Toggle Collapse Through Ref
+          </button>
+          <collapse ref="collapseRef" class-name="bg-light-3 p-xs">
             <div>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
               quo incidunt a blanditiis mollitia ea est? Fugit voluptate
@@ -116,7 +137,7 @@ const openModal = () => {
               >{{ item.title }} Header</a
             >
             <collapse
-              :collapse-id="item.id"
+              :id="item.id"
               class-name="bg-light-3 p-xs"
               :visible="idx === 0 ? true : false"
               accordion="my-accordion"
@@ -161,7 +182,7 @@ const openModal = () => {
       </div>
     </Variant>
     <Variant title="Sidebar">
-      <div>
+      <div class="min-h-[100vh]">
         <div class="flex justify-center gap-xs my-md">
           <button class="btn btn-success" v-toggle:sidebar-default>
             Sidebar Default Header
@@ -238,7 +259,7 @@ const openModal = () => {
           </button>
         </div>
         <sidebar
-          sidebar-id="sidebar-default"
+          id="sidebar-default"
           title="Sidebar title"
           color="success"
           ref="sidebarRef"
@@ -274,7 +295,7 @@ const openModal = () => {
           </template>
         </sidebar>
         <sidebar
-          sidebar-id="sidebar-left"
+          id="sidebar-left"
           class-name="bg-light-1 px-xs overflow-scroll"
         >
           <template #header="{ close }">
@@ -339,7 +360,7 @@ const openModal = () => {
           </template>
         </sidebar>
         <sidebar
-          sidebar-id="sidebar-right"
+          id="sidebar-right"
           placement="right"
           no-backdrop
           width="450"
@@ -459,7 +480,7 @@ const openModal = () => {
             External Open Button
           </button>
         </div>
-        <modal modal-id="modal-1" class-name="px-xs rounded-md" color="light-1">
+        <modal id="modal-1" class-name="px-xs rounded-md" color="light-1">
           <template #header="{ close }">
             <div class="flex justify-between py-xs bg-light-1 border-b-2">
               <h3 class="h3-md">Modal 1</h3>
@@ -510,7 +531,7 @@ const openModal = () => {
           </template>
         </modal>
         <modal
-          modal-id="modal-2"
+          id="modal-2"
           no-backdrop
           color="warning"
           class-name="border shadow-xl"
@@ -552,7 +573,7 @@ const openModal = () => {
           </template>
         </modal>
         <modal
-          modal-id="modal-3"
+          id="modal-3"
           color="success"
           title="Modal with default header"
           ref="modalRef"
