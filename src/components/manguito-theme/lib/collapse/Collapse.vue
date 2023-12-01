@@ -99,7 +99,7 @@ onBeforeUnmount(() => {
       @enter="onEnter"
       @after-enter="onAfterEnter"
       @leave="onLeave"
-      class="overflow-hidden"
+      class="overflow-y-clip"
     >
       <div v-show="toggle">
         <div :class="[className]">

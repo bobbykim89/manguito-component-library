@@ -32,6 +32,10 @@ export default defineConfig({
         id: 'section-comp',
         title: 'Sections',
       },
+      {
+        id: 'deprecated',
+        title: 'Deprecated',
+      },
     ],
   },
 })
