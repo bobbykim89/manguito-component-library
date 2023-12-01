@@ -20,7 +20,7 @@ export const vToggle = {
             let target;
             if (eTarget.tagName === 'A') {
                 const targetId = eTarget.getAttribute('href');
-                const formattedTargetId = (targetId === null || targetId === void 0 ? void 0 : targetId.charAt(0)) === '#' ? targetId.substring(1) : targetId;
+                const formattedTargetId = targetId?.charAt(0) === '#' ? targetId.substring(1) : targetId;
                 target = document.getElementById(formattedTargetId);
             }
             else {
@@ -81,7 +81,7 @@ export const vCollapse = {
             let target;
             if (eTarget.tagName === 'A') {
                 const targetId = eTarget.getAttribute('href');
-                const formattedTargetId = (targetId === null || targetId === void 0 ? void 0 : targetId.charAt(0)) === '#' ? targetId.substring(1) : targetId;
+                const formattedTargetId = targetId?.charAt(0) === '#' ? targetId.substring(1) : targetId;
                 target = document.getElementById(formattedTargetId);
             }
             else {
@@ -213,3 +213,4 @@ export const vTooltip = {
         el.__UnmountTooltip(el);
     },
 };
+//# sourceMappingURL=index.js.map
