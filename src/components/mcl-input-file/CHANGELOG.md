@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.4.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-input-file@0.3.0...@bobbykim/mcl-input-file@0.4.0) (2023-12-01)
+
+
+### Features
+
+* **tsconfig:** update tsconfig file and some of import paths ([c7caaa3](https://github.com/bobbykim89/manguito-component-library/commit/c7caaa3101a5d57d0e799568f1c4f5cbebececc3))
+
+
+
+
+
 # [0.3.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-input-file@0.2.0...@bobbykim/mcl-input-file@0.3.0) (2023-12-01)
 
 

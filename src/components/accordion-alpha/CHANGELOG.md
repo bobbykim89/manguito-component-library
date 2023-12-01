@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/accordion-alpha@0.6.0...@bobbykim/accordion-alpha@0.7.0) (2023-12-01)
+
+
+### Features
+
+* **tsconfig:** update tsconfig file and some of import paths ([c7caaa3](https://github.com/bobbykim89/manguito-component-library/commit/c7caaa3101a5d57d0e799568f1c4f5cbebececc3))
+
+
+
+
+
 # [0.6.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/accordion-alpha@0.5.0...@bobbykim/accordion-alpha@0.6.0) (2023-12-01)
 
 
