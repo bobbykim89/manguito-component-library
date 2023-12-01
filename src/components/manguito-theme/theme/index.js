@@ -74,6 +74,8 @@ const allType = [
     ...spacingType,
 ];
 class GenerateMCLClass extends MCLTheme {
+    classType;
+    classValue;
     constructor(classType, classValue) {
         super();
         this.classType = classType;
@@ -629,3 +631,4 @@ class GenerateMCLClass extends MCLTheme {
     }
 }
 export default GenerateMCLClass;
+//# sourceMappingURL=index.js.map
