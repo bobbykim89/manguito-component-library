@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.3.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/container-alpha@0.2.0...@bobbykim/container-alpha@0.3.0) (2023-12-01)
+
+
+### Features
+
+* **components:** target version update ([fe78575](https://github.com/bobbykim89/manguito-component-library/commit/fe78575f5e82bb854333672c3853956e9e930044))
+
+
+
+
+
 # [0.2.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/container-alpha@0.1.10...@bobbykim/container-alpha@0.2.0) (2023-12-01)
 
 
