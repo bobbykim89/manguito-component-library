@@ -20,8 +20,10 @@ import { Collapse, vCollapse } from '@bobbykim/manguito-theme'
     <!-- trigger by 'a' tag -->
     <a href="#collapse-component-id" v-collapse>{{Tab button name here}}</a>
     <collapse
-      collapse-id="collapse-component-id"
+      id="collapse-component-id"
       class-name="tailwind css class"
+      @open="$event"
+      @close="$event"
     >
       <div>
         <!-- collapse content -->
@@ -31,32 +33,50 @@ import { Collapse, vCollapse } from '@bobbykim/manguito-theme'
   <!-- accordion example -->
   <div>
     <button v-collapse:collapse-component-id-1>{{Tab button name}}</button>
-    <collapse
-      collapse-id="collapse-component-id-1"
-      accordion="my-accordion-group"
-    >
+    <collapse id="collapse-component-id-1" accordion="my-accordion-group">
       <div>
         <!-- collapse content -->
       </div>
     </collapse>
     <button v-collapse:collapse-component-id-2>{{Tab button name}}</button>
-    <collapse
-      collapse-id="collapse-component-id-2"
-      accordion="my-accordion-group"
-    >
+    <collapse id="collapse-component-id-2" accordion="my-accordion-group">
       <div>
         <!-- collapse content -->
       </div>
     </collapse>
     <button v-collapse:collapse-component-id-3>{{Tab button name}}</button>
-    <collapse
-      collapse-id="collapse-component-id-3"
-      accordion="my-accordion-group"
-    >
+    <collapse id="collapse-component-id-3" accordion="my-accordion-group">
       <div>
         <!-- collapse content -->
       </div>
     </collapse>
+  </div>
+</template>
+```
+
+### Other methods
+
+```vue
+<script lang="ts" setup>
+import { Collapse } from '@bobbykim/manguito-theme'
+import { ref } from 'vue'
+
+const collapseRef = ref<InstanceType<typeof Collapse>>()
+
+const handleCollapse = () => {
+  // toggle collapse
+  collapseRef.value.toggle()
+  // open collapse
+  collapseRef.value.open()
+  // close collapse
+  collapseRef.value.close()
+}
+</script>
+
+<template>
+  <div>
+    <button @click="handleCollapse">Button Name</button>
+    <sidebar ref="collapseRef">...</sidebar>
   </div>
 </template>
 ```
@@ -109,13 +129,13 @@ import { Sidebar, vToggle } from '@bobbykim/manguito-theme'
     <!-- trigger by 'a' tag -->
     <a href="#sidebar-component-id" v-sidebar>{{Tab button name here}}</a>
     <sidebar
-      sidebar-id="sidebar-component-id"
+      id="sidebar-component-id"
       placement="'left'|'right'"
       class-name="taildind css class"
       backdrop-color="dark-1"
       color="light-1"
       width="300"
-      @toggle="$event"
+      @open="$event"
       @close="$event"
     >
       <!-- add custom close button to close sidebar -->
@@ -126,13 +146,13 @@ import { Sidebar, vToggle } from '@bobbykim/manguito-theme'
       <template #footer> ...footer content </template>
     </sidebar>
     <!-- sidebar with default header -->
-    <sidebar sidebar-id="sidebar-component-id" title="sidebar title"></sidebar>
+    <sidebar id="sidebar-component-id" title="sidebar title"></sidebar>
     <!-- sidebar with no header -->
-    <sidebar sidebar-id="sidebar-component-id" no-header></sidebar>
+    <sidebar id="sidebar-component-id" no-header></sidebar>
     <!-- sidebar with no backdrop -->
-    <sidebar sidebar-id="sidebar-component-id" no-backdrop></sidebar>
+    <sidebar id="sidebar-component-id" no-backdrop></sidebar>
     <!-- load page with open sidebar -->
-    <sidebar sidebar-id="sidebar-component-id" visible></sidebar>
+    <sidebar id="sidebar-component-id" visible></sidebar>
   </div>
 </template>
 ```
@@ -141,16 +161,16 @@ import { Sidebar, vToggle } from '@bobbykim/manguito-theme'
 
 ```vue
 <script lang="ts" setup>
-import { Sidebar, vToggle } from '@bobbykim/manguito-theme'
+import { Sidebar } from '@bobbykim/manguito-theme'
 import { ref } from 'vue'
 
 const sidebarRef = ref<InstanceType<typeof Sidebar>>()
 
 const handleSidebar = () => {
-  // open sidebar
-  sidebarRef.value.open()
   // toggle sidebar
   sidebarRef.value.toggle()
+  // open sidebar
+  sidebarRef.value.open()
   // close sidebar
   sidebarRef.value.close()
 }
@@ -159,7 +179,7 @@ const handleSidebar = () => {
 <template>
   <div>
     <button @click="handleSidebar">Button Name</button>
-    <sidebar sidebar-id="my-sidebar" ref="sidebarRef">...</sidebar>
+    <sidebar ref="sidebarRef">...</sidebar>
   </div>
 </template>
 ```
@@ -181,12 +201,12 @@ import { Modal, vToggle } from '@bobbykim/manguito-theme'
     <!-- trigger by 'a' tag -->
     <a href="#modal-component-id" v-modal>{{Tab button name here}}</a>
     <modal
-      modal-id="modal-component-id"
+      id="modal-component-id"
       placement="'top'|'center'|'bottom'"
       class-name="taildind css class"
       backdrop-color="dark-1"
       color="light-1"
-      @toggle="$event"
+      @open="$event"
       @close="$event"
     >
       <!-- add a button to close modal -->
@@ -197,13 +217,13 @@ import { Modal, vToggle } from '@bobbykim/manguito-theme'
       <template #footer> ...footer content </template>
     </modal>
     <!-- modal with default header -->
-    <modal modal-id="modal-component-id" title="modal title"></modal>
+    <modal id="modal-component-id" title="modal title"></modal>
     <!-- modal with no header -->
-    <modal modal-id="modal-component-id" no-header></modal>
+    <modal id="modal-component-id" no-header></modal>
     <!-- modal with no backdrop -->
-    <modal modal-id="modal-component-id" no-backdrop></modal>
+    <modal id="modal-component-id" no-backdrop></modal>
     <!-- load page with open modal -->
-    <modal modal-id="modal-component-id" visible></modal>
+    <modal id="modal-component-id" visible></modal>
   </div>
 </template>
 ```
@@ -212,16 +232,16 @@ import { Modal, vToggle } from '@bobbykim/manguito-theme'
 
 ```vue
 <script lang="ts" setup>
-import { Modal, vToggle } from '@bobbykim/manguito-theme'
+import { Modal } from '@bobbykim/manguito-theme'
 import { ref } from 'vue'
 
 const modalRef = ref<InstanceType<typeof Modal>>()
 
 const handlemodal = () => {
-  // open modal
-  modalRef.value.open()
   // toggle modal
   modalRef.value.toggle()
+  // open modal
+  modalRef.value.open()
   // close modal
   modalRef.value.close()
 }
@@ -230,7 +250,7 @@ const handlemodal = () => {
 <template>
   <div>
     <button @click="handleModal">Button Name</button>
-    <modal modal-id="my-modal" ref="modalRef">...</modal>
+    <modal ref="modalRef">...</modal>
   </div>
 </template>
 ```

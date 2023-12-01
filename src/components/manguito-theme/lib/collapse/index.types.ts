@@ -1,3 +1,3 @@
-export interface CollapseEvent extends Event {
+export interface CollapseEvent {
   visible: boolean
 }

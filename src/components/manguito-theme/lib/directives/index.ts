@@ -20,20 +20,6 @@ export const vClickOutside: Directive = {
 
 export const vToggle: Directive = {
   mounted(el, binding) {
-    // el.__ClickToggleHandler = (e: Event): void => {
-    //   const eTarget = e.target as HTMLElement
-    //   let target: HTMLElement
-    //   if (eTarget.tagName === 'A') {
-    //     const targetId = eTarget.getAttribute('href')
-    //     const formattedTargetId =
-    //       targetId?.charAt(0) === '#' ? targetId.substring(1) : targetId
-    //     target = document.getElementById(formattedTargetId as string)!
-    //   } else {
-    //     target = document.getElementById(binding.arg as string)!
-    //   }
-    //   target.click()
-    //   return
-    // }
     el.__ClickToggleHandler = (e: Event): void => {
       const eTarget = e.target as HTMLElement
       let target: HTMLElement
@@ -65,6 +51,37 @@ export const vToggle: Directive = {
 
 export const vCollapse: Directive = {
   mounted(el, binding) {
+    // el.__HandleToggler = (event: Event): void => {
+    //   const eTarget = event.target as HTMLElement
+    //   let target: HTMLElement
+    //   if (eTarget.tagName === 'A') {
+    //     const targetId = eTarget.getAttribute('href')
+    //     const formattedTargetId =
+    //       targetId?.charAt(0) === '#' ? targetId.substring(1) : targetId
+    //     target = document.getElementById(formattedTargetId as string)!
+    //   } else {
+    //     target = document.getElementById(binding.arg as string) as HTMLElement
+    //   }
+    //   if (!target.hasAttribute('accordion')) {
+    //     // run when it is not accordion component case
+    //     target.click()
+    //     return
+    //   }
+    //   const accordionName = target.getAttribute('accordion')
+    //   const accordionList: NodeListOf<HTMLElement> = document.querySelectorAll(
+    //     `button[accordion="${accordionName}"]`
+    //   )
+    //   // loop through each accordion items and handle reaction for each case
+    //   for (let i = 0; i < accordionList.length; i++) {
+    //     const isVisible = accordionList[i].getAttribute('visible')
+    //     if (accordionList[i].id !== target.id && isVisible === 'true') {
+    //       accordionList[i].click()
+    //     }
+    //     if (accordionList[i].id === target.id) {
+    //       accordionList[i].click()
+    //     }
+    //   }
+    // }
     el.__HandleToggler = (event: Event): void => {
       const eTarget = event.target as HTMLElement
       let target: HTMLElement
@@ -76,23 +93,36 @@ export const vCollapse: Directive = {
       } else {
         target = document.getElementById(binding.arg as string) as HTMLElement
       }
+      if (!target) {
+        return
+      }
+      if (target.hasAttribute('visible') === false) {
+        return
+      }
       if (!target.hasAttribute('accordion')) {
         // run when it is not accordion component case
-        target.click()
+        const targetAttr = target.getAttribute('visible')
+        const attrAfterToggle = targetAttr === 'true' ? 'false' : 'true'
+        target.setAttribute('visible', attrAfterToggle)
+        // target.click()
         return
       }
       const accordionName = target.getAttribute('accordion')
       const accordionList: NodeListOf<HTMLElement> = document.querySelectorAll(
-        `button[accordion="${accordionName}"]`
+        `div[accordion="${accordionName}"]`
       )
       // loop through each accordion items and handle reaction for each case
       for (let i = 0; i < accordionList.length; i++) {
         const isVisible = accordionList[i].getAttribute('visible')
         if (accordionList[i].id !== target.id && isVisible === 'true') {
-          accordionList[i].click()
+          accordionList[i].setAttribute('visible', 'false')
+          // accordionList[i].click()
         }
         if (accordionList[i].id === target.id) {
-          accordionList[i].click()
+          const targetAttr = target.getAttribute('visible')
+          const attrAfterToggle = targetAttr === 'true' ? 'false' : 'true'
+          target.setAttribute('visible', attrAfterToggle)
+          // accordionList[i].click()
         }
       }
     }
@@ -209,10 +239,10 @@ export const vTooltip: Directive<TooltipElementType, TooltipValueType> = {
   },
 }
 
-export const vToggleTest: Directive = {
+export const vCollapseTest: Directive = {
   mounted(el, binding) {
-    el.__ClickToggleHandler = (e: Event): void => {
-      const eTarget = e.target as HTMLElement
+    el.__HandleToggler = (event: Event): void => {
+      const eTarget = event.target as HTMLElement
       let target: HTMLElement
       if (eTarget.tagName === 'A') {
         const targetId = eTarget.getAttribute('href')
@@ -220,16 +250,44 @@ export const vToggleTest: Directive = {
           targetId?.charAt(0) === '#' ? targetId.substring(1) : targetId
         target = document.getElementById(formattedTargetId as string)!
       } else {
-        target = document.getElementById(binding.arg as string)!
+        target = document.getElementById(binding.arg as string) as HTMLElement
       }
-      const targetAttr = target.getAttribute('visible')
-      const attrAfterToggle = targetAttr === 'true' ? 'false' : 'true'
-      target.setAttribute('visible', attrAfterToggle)
-      return
+      if (!target) {
+        return
+      }
+      if (target.hasAttribute('visible') === false) {
+        return
+      }
+      if (!target.hasAttribute('accordion')) {
+        // run when it is not accordion component case
+        const targetAttr = target.getAttribute('visible')
+        const attrAfterToggle = targetAttr === 'true' ? 'false' : 'true'
+        target.setAttribute('visible', attrAfterToggle)
+        // target.click()
+        return
+      }
+      const accordionName = target.getAttribute('accordion')
+      const accordionList: NodeListOf<HTMLElement> = document.querySelectorAll(
+        `div[accordion="${accordionName}"]`
+      )
+      // loop through each accordion items and handle reaction for each case
+      for (let i = 0; i < accordionList.length; i++) {
+        const isVisible = accordionList[i].getAttribute('visible')
+        if (accordionList[i].id !== target.id && isVisible === 'true') {
+          accordionList[i].setAttribute('visible', 'false')
+          // accordionList[i].click()
+        }
+        if (accordionList[i].id === target.id) {
+          const targetAttr = target.getAttribute('visible')
+          const attrAfterToggle = targetAttr === 'true' ? 'false' : 'true'
+          target.setAttribute('visible', attrAfterToggle)
+          // accordionList[i].click()
+        }
+      }
     }
-    el.addEventListener('click', el.__ClickToggleHandler)
+    el.addEventListener('click', el.__HandleToggler)
   },
   unmounted(el) {
-    el.removeEventListener('click', el.__ClickToggleHandler)
+    el.removeEventListener('click', el.__HandleToggler)
   },
 }
