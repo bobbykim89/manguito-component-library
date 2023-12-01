@@ -238,7 +238,7 @@ const openModal = () => {
           </button>
         </div>
         <sidebar
-          sidebar-id="sidebar-default"
+          id="sidebar-default"
           title="Sidebar title"
           color="success"
           ref="sidebarRef"
@@ -274,7 +274,7 @@ const openModal = () => {
           </template>
         </sidebar>
         <sidebar
-          sidebar-id="sidebar-left"
+          id="sidebar-left"
           class-name="bg-light-1 px-xs overflow-scroll"
         >
           <template #header="{ close }">
@@ -339,7 +339,7 @@ const openModal = () => {
           </template>
         </sidebar>
         <sidebar
-          sidebar-id="sidebar-right"
+          id="sidebar-right"
           placement="right"
           no-backdrop
           width="450"
@@ -459,7 +459,7 @@ const openModal = () => {
             External Open Button
           </button>
         </div>
-        <modal modal-id="modal-1" class-name="px-xs rounded-md" color="light-1">
+        <modal id="modal-1" class-name="px-xs rounded-md" color="light-1">
           <template #header="{ close }">
             <div class="flex justify-between py-xs bg-light-1 border-b-2">
               <h3 class="h3-md">Modal 1</h3>
@@ -510,7 +510,7 @@ const openModal = () => {
           </template>
         </modal>
         <modal
-          modal-id="modal-2"
+          id="modal-2"
           no-backdrop
           color="warning"
           class-name="border shadow-xl"
@@ -552,7 +552,7 @@ const openModal = () => {
           </template>
         </modal>
         <modal
-          modal-id="modal-3"
+          id="modal-3"
           color="success"
           title="Modal with default header"
           ref="modalRef"

@@ -38,18 +38,18 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['toggle', 'open', 'close'])
+const emit = defineEmits(['open', 'close'])
 const modalRef = ref<HTMLElement | undefined>()
 const toggle = ref<boolean>(props.visible)
 const toggleComplete = ref<boolean>(false)
 
-const handleToggleEvent = (): void => {
+const toggleModal = (): void => {
   toggle.value = !toggle.value
 }
-const openModal = (e?: Event): void => {
+const openModal = (): void => {
   toggle.value = true
 }
-const closeModal = (e?: Event): void => {
+const closeModal = (): void => {
   if (toggleComplete.value === true) {
     toggle.value = false
   }
@@ -100,7 +100,7 @@ watch(toggle, (newValue) => {
   }
 })
 defineExpose({
-  toggle: handleToggleEvent,
+  toggle: toggleModal,
   close: closeModal,
   open: openModal,
 })
