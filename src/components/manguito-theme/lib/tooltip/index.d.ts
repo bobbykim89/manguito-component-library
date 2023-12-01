@@ -53,10 +53,10 @@ declare const _default: import("vue").DefineComponent<{
         required: true;
     };
 }>>, {
-    color: ColorPalette;
-    width: string | number;
     direction: Direction;
+    color: ColorPalette;
     textColor: ColorPalette;
+    width: string | number;
     customClass: string;
 }, {}>;
 export default _default;
