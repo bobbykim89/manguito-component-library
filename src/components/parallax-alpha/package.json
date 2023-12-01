@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/parallax-alpha",
-  "version": "0.1.7",
+  "version": "0.2.0",
   "description": "",
   "type": "module",
   "main": "index.ts",
@@ -21,6 +21,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@bobbykim/manguito-theme": "^0.7.0"
+    "@bobbykim/manguito-theme": "^0.8.0"
   }
 }
