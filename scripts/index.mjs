@@ -100,6 +100,12 @@ inquirer.prompt(questions).then((answers) => {
     })
   )
 
+  const tsVueConfigTemplate = fs.readFileSync(
+    path.resolve(`${TEMPLATE_PATH}/_tsconfig.vue.md`, {
+      encoding: 'utf8',
+    })
+  )
+
   const readmeTemplate = fs
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_readme.md`), {
       encoding: 'utf8',
@@ -177,9 +183,14 @@ inquirer.prompt(questions).then((answers) => {
         `${COMPONENTS_PATH}/${directoryName}/README.md`,
         readmeTemplate
       )
+      // create tsconfig files
       fs.writeFileSync(
         `${COMPONENTS_PATH}/${directoryName}/tsconfig.json`,
         tsConfigTemplate
+      )
+      fs.writeFileSync(
+        `${COMPONENTS_PATH}/${directoryName}/tsconfig.vue.json`,
+        tsVueConfigTemplate
       )
     }
   })
