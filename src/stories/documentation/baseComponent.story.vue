@@ -65,6 +65,12 @@ const customButtonColor = (idx: number): string => {
       return ' '
   }
 }
+const collapseRef = ref<InstanceType<typeof Collapse>>()
+const toggleCollapse = () => {
+  if (collapseRef.value) {
+    collapseRef.value.toggle()
+  }
+}
 const dropdownSelectedRef = ref<string>('')
 const dropdownSelectEvent = (item: string): void => {
   dropdownSelectedRef.value = item
@@ -91,10 +97,25 @@ const openModal = () => {
             class="btn btn-full btn-warning"
             >Tab Button</a
           >
-          <collapse
-            collapse-id="my-collapse-component"
-            class-name="bg-light-3 p-xs"
+          <collapse id="my-collapse-component" class-name="bg-light-3 p-xs">
+            <div>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
+              quo incidunt a blanditiis mollitia ea est? Fugit voluptate
+              expedita magni vitae iste. Nulla aperiam voluptate ullam dolor
+              officiis earum quis aliquam at ducimus porro. Quidem, molestias!
+              Voluptates perferendis distinctio ipsam dicta optio non
+              praesentium, maiores commodi. Natus, ducimus doloremque?
+            </div>
+          </collapse>
+        </div>
+        <div class="p-2xs border-2 border-success rounded-md mb-lg bg-white">
+          <button
+            @click="toggleCollapse"
+            class="btn btn-full btn-success btn-no-ring"
           >
+            Toggle Collapse Through Ref
+          </button>
+          <collapse ref="collapseRef" class-name="bg-light-3 p-xs">
             <div>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga
               quo incidunt a blanditiis mollitia ea est? Fugit voluptate
@@ -116,7 +137,7 @@ const openModal = () => {
               >{{ item.title }} Header</a
             >
             <collapse
-              :collapse-id="item.id"
+              :id="item.id"
               class-name="bg-light-3 p-xs"
               :visible="idx === 0 ? true : false"
               accordion="my-accordion"

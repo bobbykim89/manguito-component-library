@@ -36,12 +36,17 @@ const props = withDefaults(
 )
 
 const toggle = ref(props.visible)
-const emit = defineEmits(['accordion-click'])
+const emit = defineEmits(['accordion-open', 'accordion-close'])
 
 const toggleAction = (e: CollapseEvent): void => {
   toggle.value = e.visible
+  if (e.visible === true) {
+    emit('accordion-open', { ...e, title: props.title })
+  } else {
+    emit('accordion-close', { ...e, title: props.title })
+  }
 
-  emit('accordion-click', { event: e, title: props.title })
+  // emit('accordion-click', { event: e, title: props.title })
 }
 
 const getBorderClass = (
@@ -129,11 +134,12 @@ watch(
     </div>
     <div class="overflow-hidden">
       <collapse
-        :collapseId="collapseId"
+        :id="collapseId"
         :visible="visible"
         class-name="px-xs pt-xs pb-2xs"
-        @toggle="toggleAction"
         :accordion="accordion"
+        @open="toggleAction"
+        @close="toggleAction"
       >
         <slot></slot>
       </collapse>
