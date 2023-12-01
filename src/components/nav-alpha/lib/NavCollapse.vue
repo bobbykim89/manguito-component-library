@@ -149,7 +149,6 @@ const getnestedItemClass = (hlColor: ColorPalette, dHl: boolean): string => {
             :class="[
               generateClass('TEXTCOLOR', menuTextColor),
               generateClass('BODYTEXT', menuTextSize),
-              // getnestedItemClass(highlightColor, displayHighlight),
             ]"
             @click="navItemClick($event, item)"
           >
