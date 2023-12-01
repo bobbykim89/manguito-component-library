@@ -1,5 +1,4 @@
 import { Directive, DirectiveBinding, h, render, createVNode } from 'vue'
-import generateClass from '../..'
 import type { Direction } from '../..'
 import tooltip from '../tooltip'
 import type { TooltipElementType, TooltipValueType } from './index.types'
