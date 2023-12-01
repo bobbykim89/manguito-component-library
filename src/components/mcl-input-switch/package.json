@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/mcl-input-switch",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "",
   "type": "module",
   "main": "index.ts",
@@ -21,6 +21,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@bobbykim/manguito-theme": "^0.8.0"
+    "@bobbykim/manguito-theme": "^0.9.0"
   }
 }
