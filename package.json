@@ -15,7 +15,7 @@
     "create": "node ./scripts/index.mjs",
     "commit": "cz",
     "release": "standard-version",
-    "prepublish": "lerna run build",
+    "package:build": "lerna run build",
     "publish": "lerna publish"
   },
   "devDependencies": {
@@ -28,7 +28,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "histoire": "^0.17.6",
     "inquirer": "^9.1.2",
-    "lerna": "^5.5.4",
+    "lerna": "^8.0.0",
     "lodash": "^4.17.21",
     "postcss": "^8.4.24",
     "sass": "^1.55.0",
