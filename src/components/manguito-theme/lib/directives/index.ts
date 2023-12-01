@@ -1,6 +1,6 @@
 import { Directive, DirectiveBinding, h, render, createVNode } from 'vue'
 import type { Direction } from '../..'
-import tooltip from '../tooltip'
+import tooltip from '../tooltip/index.js'
 import type { TooltipElementType, TooltipValueType } from './index.types'
 
 export const vClickOutside: Directive = {

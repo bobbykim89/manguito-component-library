@@ -1,5 +1,5 @@
 import { render, createVNode } from 'vue';
-import tooltip from '../tooltip';
+import tooltip from '../tooltip/index.js';
 export const vClickOutside = {
     mounted(el, binding) {
         el.__ClickOutsideHandler = (event) => {
