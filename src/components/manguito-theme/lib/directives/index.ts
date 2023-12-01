@@ -19,7 +19,21 @@ export const vClickOutside: Directive = {
 }
 
 export const vToggle: Directive = {
-  mounted(el, binding, vnode) {
+  mounted(el, binding) {
+    // el.__ClickToggleHandler = (e: Event): void => {
+    //   const eTarget = e.target as HTMLElement
+    //   let target: HTMLElement
+    //   if (eTarget.tagName === 'A') {
+    //     const targetId = eTarget.getAttribute('href')
+    //     const formattedTargetId =
+    //       targetId?.charAt(0) === '#' ? targetId.substring(1) : targetId
+    //     target = document.getElementById(formattedTargetId as string)!
+    //   } else {
+    //     target = document.getElementById(binding.arg as string)!
+    //   }
+    //   target.click()
+    //   return
+    // }
     el.__ClickToggleHandler = (e: Event): void => {
       const eTarget = e.target as HTMLElement
       let target: HTMLElement
@@ -31,7 +45,15 @@ export const vToggle: Directive = {
       } else {
         target = document.getElementById(binding.arg as string)!
       }
-      target.click()
+      if (!target) {
+        return
+      }
+      if (target.hasAttribute('visible') === false) {
+        return
+      }
+      const targetAttr = target.getAttribute('visible')
+      const attrAfterToggle = targetAttr === 'true' ? 'false' : 'true'
+      target.setAttribute('visible', attrAfterToggle)
       return
     }
     el.addEventListener('click', el.__ClickToggleHandler)
