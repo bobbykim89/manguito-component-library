@@ -127,27 +127,35 @@ const getnestedItemClass = (hlColor: ColorPalette, dHl: boolean): string => {
       ></div>
     </div>
     <collapse
-      :collapseId="handleNavId"
+      :id="handleNavId"
       :visible="false"
       :accordion="handleNavAccordionGroupName"
-      @toggle="toggleAction"
+      @open="toggleAction"
+      @close="toggleAction"
     >
-      <div class="flex flex-col">
-        <a
-          v-for="(item, idx) in navItem.children"
-          :href="item.url"
-          :target="item.target"
-          class="w-full pb-2xs last:pb-0 first:mt-2xs"
-          :key="idx"
-          :class="[
-            generateClass('TEXTCOLOR', menuTextColor),
-            generateClass('BODYTEXT', menuTextSize),
-            getnestedItemClass(highlightColor, displayHighlight),
-          ]"
-          @click="navItemClick($event, item)"
-        >
-          {{ item.title }}
-        </a>
+      <div class="relative pt-2xs">
+        <div
+          v-if="displayHighlight"
+          class="absolute w-md bg-opacity-25 -left-4 h-full"
+          :class="generateClass('BGCOLOR', highlightColor)"
+        ></div>
+        <div class="relative flex flex-col">
+          <a
+            v-for="(item, idx) in navItem.children"
+            :href="item.url"
+            :target="item.target"
+            class="w-full pb-2xs last:pb-0"
+            :key="idx"
+            :class="[
+              generateClass('TEXTCOLOR', menuTextColor),
+              generateClass('BODYTEXT', menuTextSize),
+              // getnestedItemClass(highlightColor, displayHighlight),
+            ]"
+            @click="navItemClick($event, item)"
+          >
+            {{ item.title }}
+          </a>
+        </div>
       </div>
     </collapse>
   </div>
