@@ -1,1 +1,26 @@
-{"name":"@bobbykim/mcl-input-file","version":"0.1.7","description":"","type":"module","main":"index.ts","author":{"name":"Bobby Kim","url":"https://www.devbobbykim.com/"},"homepage":"https://manguito-component-library.vercel.app/","repository":{"type":"git","url":"https://github.com/bobbykim89/manguito-component-library.git"},"publishConfig":{"access":"public"},"license":"MIT","dependencies":{"@bobbykim/manguito-theme":"^0.7.0"}}
+{
+  "name": "@bobbykim/mcl-input-file",
+  "version": "0.1.7",
+  "description": "",
+  "type": "module",
+  "main": "index.ts",
+  "scripts": {
+    "build": "vue-tsc --project tsconfig.vue.json && tsc"
+  },
+  "author": {
+    "name": "Bobby Kim",
+    "url": "https://www.devbobbykim.com/"
+  },
+  "homepage": "https://manguito-component-library.vercel.app/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bobbykim89/manguito-component-library.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@bobbykim/manguito-theme": "^0.7.0"
+  }
+}

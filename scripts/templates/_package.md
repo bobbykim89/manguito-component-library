@@ -4,6 +4,9 @@
 "description": "",
 "type": "module",
 "main": "index.ts",
+"scripts": {
+"build": "vue-tsc --project tsconfig.vue.json && tsc"
+},
 "author": {
 "name": "{%authorName%}",
 "url": "https://www.devbobbykim.com/"

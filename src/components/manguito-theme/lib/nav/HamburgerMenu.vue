@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { ColorPalette } from '@bobbykim/manguito-theme'
+import type { ColorPalette } from '../../'
 import generateClass from '../../index'
 
 const props = withDefaults(
