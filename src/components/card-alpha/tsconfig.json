@@ -5,9 +5,6 @@
   "compilerOptions": {
     "skipLibCheck": true,
     "module": "ESNext",
-    "moduleResolution": "Node",
-    "strict": true,
-    "target": "ESNext",
     "declaration": true
   }
 }
