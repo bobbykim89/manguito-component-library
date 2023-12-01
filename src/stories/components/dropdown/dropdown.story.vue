@@ -72,6 +72,47 @@ const handleClearButtonClick = (): void => {
   selectedInfoRef.value = ''
   selectedLinkRef.value = ''
 }
+
+const collapseContent = [
+  {
+    id: '1',
+    title: 'Accordion 1',
+    content:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga quo incidunt a blanditiis mollitia ea est? Fugit voluptate expedita magni vitae iste. Nulla aperiam voluptate ullam dolor officiis earum quis aliquam at ducimus porro. Quidem, molestias! Voluptates perferendis distinctio ipsam dicta optio non praesentium, maiores commodi. Natus, ducimus doloremque?',
+  },
+  {
+    id: '2',
+    title: 'Accordion 2',
+    content:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga quo incidunt a blanditiis mollitia ea est? Fugit voluptate expedita magni vitae iste. Nulla aperiam voluptate ullam dolor officiis earum quis aliquam at ducimus porro. Quidem, molestias! Voluptates perferendis distinctio ipsam dicta optio non praesentium, maiores commodi. Natus, ducimus doloremque?',
+  },
+  {
+    id: '3',
+    title: 'Accordion 3',
+    content:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga quo incidunt a blanditiis mollitia ea est? Fugit voluptate expedita magni vitae iste. Nulla aperiam voluptate ullam dolor officiis earum quis aliquam at ducimus porro. Quidem, molestias! Voluptates perferendis distinctio ipsam dicta optio non praesentium, maiores commodi. Natus, ducimus doloremque?',
+  },
+  {
+    id: '4',
+    title: 'Accordion 4',
+    content:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga quo incidunt a blanditiis mollitia ea est? Fugit voluptate expedita magni vitae iste. Nulla aperiam voluptate ullam dolor officiis earum quis aliquam at ducimus porro. Quidem, molestias! Voluptates perferendis distinctio ipsam dicta optio non praesentium, maiores commodi. Natus, ducimus doloremque?',
+  },
+]
+const customButtonColor = (idx: number): string => {
+  switch (idx) {
+    case 0:
+      return 'btn-primary'
+    case 1:
+      return 'btn-secondary'
+    case 2:
+      return 'btn-success'
+    case 3:
+      return 'btn-danger'
+    default:
+      return ' '
+  }
+}
 </script>
 
 <template>

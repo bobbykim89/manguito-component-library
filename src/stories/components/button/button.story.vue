@@ -49,7 +49,7 @@ const stateBeta = reactive<{
 </script>
 
 <template>
-  <Story title="Button" group="base-comp">
+  <Story title="Button" group="deprecated">
     <Variant title="btn-alpha">
       <div class="p-xs">
         <btn-alpha

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import type {
   ColorPalette,
   HeadingSize,
@@ -38,7 +37,6 @@ const props = withDefaults(
   }
 )
 
-const card = ref()
 const emit = defineEmits(['card-click'])
 
 const getBorderClass = (bColor: ColorPalette, rounded: boolean): string => {
@@ -62,7 +60,6 @@ const handleHoverEffect = (dGray: boolean): string => {
    */
   if (dGray) {
     return '[@media(hover:hover)]:grayscale peer-hover:grayscale-0'
-    // return ''
   }
   return ''
 }
@@ -107,10 +104,6 @@ const handleCardClick = (
     emit('card-click', { event: e, title: title, url: link, target: target })
   }
 }
-
-defineExpose({
-  card,
-})
 </script>
 
 <template>

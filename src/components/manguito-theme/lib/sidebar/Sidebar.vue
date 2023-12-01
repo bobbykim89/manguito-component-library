@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { ref, computed, watch, Transition } from 'vue'
+import {
+  ref,
+  computed,
+  watch,
+  Transition,
+  onMounted,
+  onBeforeUnmount,
+} from 'vue'
 import generateClass, { ColorPalette, vClickOutside, DirectionX } from '../../'
+import { observeVisibleAttr } from '../composables'
 
 const props = withDefaults(
   defineProps<{
-    sidebarId: string
     title?: string
     titleColor?: ColorPalette
     className?: string
@@ -29,15 +36,18 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['toggle', 'close'])
+const emit = defineEmits(['open', 'close'])
 const toggle = ref<boolean>(props.visible)
 const toggleComplete = ref<boolean>(false)
+const sidebarRef = ref<HTMLElement | undefined>()
 const headerRef = ref<HTMLElement>()
 const footerRef = ref<HTMLElement>()
 
 const handleToggleEvent = (e: Event): void => {
   toggle.value = !toggle.value
-  emit('toggle', e)
+}
+const toggleSidebar = (): void => {
+  toggle.value = !toggle.value
 }
 const openSidebar = (): void => {
   toggle.value = true
@@ -45,8 +55,13 @@ const openSidebar = (): void => {
 const closeSidebar = (e: Event): void => {
   if (toggleComplete.value === true) {
     toggle.value = false
-    emit('close', e)
   }
+}
+const emitOpenEvent = () => {
+  emit('open', { visible: true })
+}
+const emitCloseEvent = () => {
+  emit('close', { visible: false })
 }
 const handleStyleVariables = computed(() => {
   return {
@@ -75,22 +90,44 @@ const onAfterEnter = () => {
 const onAfterLeave = () => {
   toggleComplete.value = false
 }
+
+// set nutation observer watching `visible` attribute in element
+const handleVisibility = (visible: boolean = false) => {
+  toggle.value = visible
+}
+const observer = observeVisibleAttr(handleVisibility)
+
 watch(
   () => props.visible,
   (newValue) => {
     toggle.value = newValue
   }
 )
+watch(toggle, (newValue) => {
+  if (newValue === true) {
+    emitOpenEvent()
+  } else if (newValue === false && toggleComplete.value === true) {
+    emitCloseEvent()
+  }
+})
 defineExpose({
-  toggle: handleToggleEvent,
+  toggle: toggleSidebar,
   open: openSidebar,
   close: closeSidebar,
+})
+onMounted(() => {
+  if (sidebarRef.value) {
+    observer.observe(sidebarRef.value, { attributes: true })
+  }
+})
+onBeforeUnmount(() => {
+  observer.disconnect()
 })
 </script>
 
 <template>
-  <div :style="handleStyleVariables">
-    <button :id="sidebarId" @click="handleToggleEvent" class="hidden"></button>
+  <div :style="handleStyleVariables" :visible="toggle" ref="sidebarRef">
+    <!-- <button :id="sidebarId" @click="handleToggleEvent" class="hidden"></button> -->
     <Transition name="fade" appear tag="div" v-if="!noBackdrop">
       <section
         v-if="toggle"

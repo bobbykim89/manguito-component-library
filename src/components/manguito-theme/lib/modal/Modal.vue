@@ -1,14 +1,21 @@
 <script setup lang="ts">
-import { ref, computed, watch, Transition } from 'vue'
+import {
+  ref,
+  computed,
+  watch,
+  Transition,
+  onMounted,
+  onBeforeUnmount,
+} from 'vue'
 import generateClass, {
   ColorPalette,
   vClickOutside,
   VerticalAlignment,
 } from '../../'
+import { observeVisibleAttr } from '../composables'
 
 const props = withDefaults(
   defineProps<{
-    modalId: string
     title?: string
     titleColor?: ColorPalette
     className?: string
@@ -31,22 +38,30 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['toggle', 'close'])
+const emit = defineEmits(['open', 'close'])
+const modalRef = ref<HTMLElement | undefined>()
 const toggle = ref<boolean>(props.visible)
 const toggleComplete = ref<boolean>(false)
 
-const handleToggleEvent = (e: Event): void => {
+// const handleToggleEvent = (): void => {
+//   toggle.value = !toggle.value
+// }
+const toggleModal = (): void => {
   toggle.value = !toggle.value
-  emit('toggle', e)
 }
 const openModal = (): void => {
   toggle.value = true
 }
-const closeModal = (e: Event): void => {
+const closeModal = (): void => {
   if (toggleComplete.value === true) {
     toggle.value = false
-    emit('close', e)
   }
+}
+const emitOpenEvent = () => {
+  emit('open', { visible: true })
+}
+const emitCloseEvent = () => {
+  emit('close', { visible: false })
 }
 const handlePlacementVar = computed(() => {
   let placementVariable: number
@@ -70,22 +85,44 @@ const onAfterEnter = () => {
 const onAfterLeave = () => {
   toggleComplete.value = false
 }
+
+// set nutation observer watching `visible` attribute in element
+const handleVisibility = (visible: boolean = false) => {
+  toggle.value = visible
+}
+const observer = observeVisibleAttr(handleVisibility)
+
 watch(
   () => props.visible,
   (newValue) => {
     toggle.value = newValue
   }
 )
+watch(toggle, (newValue) => {
+  if (newValue === true) {
+    emitOpenEvent()
+  } else if (newValue === false && toggleComplete.value === true) {
+    emitCloseEvent()
+  }
+})
 defineExpose({
-  toggle: handleToggleEvent,
+  toggle: toggleModal,
   close: closeModal,
   open: openModal,
+})
+onMounted(() => {
+  if (modalRef.value) {
+    observer.observe(modalRef.value, { attributes: true })
+  }
+})
+onBeforeUnmount(() => {
+  observer.disconnect()
 })
 </script>
 
 <template>
-  <div :style="handlePlacementVar">
-    <button :id="modalId" @click="handleToggleEvent" class="hidden"></button>
+  <div :style="handlePlacementVar" :visible="toggle" ref="modalRef">
+    <!-- <button :id="modalId" @click="handleToggleEvent" class="hidden"></button> -->
     <Transition name="fade" appear tag="div" v-if="!noBackdrop">
       <section
         v-if="toggle"
