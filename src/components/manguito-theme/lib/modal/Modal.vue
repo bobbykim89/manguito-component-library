@@ -11,8 +11,8 @@ import generateClass, {
   ColorPalette,
   vClickOutside,
   VerticalAlignment,
-} from '../../'
-import { observeVisibleAttr } from '../composables'
+} from '../../index.js'
+import { observeVisibleAttr } from '../composables/index.js'
 
 const props = withDefaults(
   defineProps<{

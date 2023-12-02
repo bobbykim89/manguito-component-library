@@ -8,7 +8,7 @@ import type {
   OpacityRange,
   SpacingLevel,
   Alignment,
-} from './theme.types'
+} from './theme.types.js'
 
 /**
  * @TailwindCSS - Good practice is to let all of used classes to be in full instead of generated dynamically using methods such as string literal.
