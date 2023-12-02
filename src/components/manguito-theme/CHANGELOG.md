@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.11.0...@bobbykim/manguito-theme@0.12.0) (2023-12-02)
+
+
+### Features
+
+* **manguito-theme,accordion-alpha,accordion-beta,nav-alpha:** change tsconfig settings ([055e6d8](https://github.com/bobbykim89/manguito-component-library/commit/055e6d8781705fcc144769da90470eb0d5e36612))
+
+
+
+
+
 # [0.11.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.10.0...@bobbykim/manguito-theme@0.11.0) (2023-12-02)
 
 
