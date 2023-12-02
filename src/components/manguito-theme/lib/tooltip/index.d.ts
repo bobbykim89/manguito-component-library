@@ -1,5 +1,5 @@
 import { PropType } from 'vue';
-import type { Direction, ColorPalette } from '../../';
+import type { Direction, ColorPalette } from '../../index.js';
 declare const _default: import("vue").DefineComponent<{
     direction: {
         type: PropType<Direction>;

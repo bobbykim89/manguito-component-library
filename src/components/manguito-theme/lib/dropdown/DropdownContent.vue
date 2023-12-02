@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, inject, Transition } from 'vue'
-import { InjectType } from './index.types'
+import { InjectType } from './index.types.js'
 
 const props = withDefaults(
   defineProps<{

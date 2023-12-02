@@ -1,4 +1,4 @@
-import type { ColorPalette } from '../../';
+import type { ColorPalette } from '../../index.js';
 declare const _default: import("vue").DefineComponent<{
     toggle: {
         type: import("vue").PropType<boolean>;

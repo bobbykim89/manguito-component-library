@@ -1,4 +1,4 @@
-import { ColorPalette, VerticalAlignment } from '../../';
+import { ColorPalette, VerticalAlignment } from '../../index.js';
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     visible: {
         type: import("vue").PropType<boolean>;

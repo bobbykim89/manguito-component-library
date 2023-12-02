@@ -3,7 +3,7 @@
  * @Interface - Classes for color, header text, body text, border color, border width(top, left).
  * @Export RDSTheme - an abstract class
  */
-import type { ColorPalette, HeadingSize, BodyText, FontWeight, Range, OpacityRange, SpacingLevel, Alignment as Position } from './theme.types';
+import type { ColorPalette, HeadingSize, BodyText, FontWeight, Range, OpacityRange, SpacingLevel, Alignment as Position } from './theme.types.js';
 export type ColorClass = {
     [key in ColorPalette]: string;
 };
