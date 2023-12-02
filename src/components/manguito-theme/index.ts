@@ -3,7 +3,7 @@ import GenerateMCLClass, {
   textType,
   borderWidthType,
   scaleType,
-} from './theme'
+} from './theme/index.js'
 import type { ClassType, InputType } from './theme/index.js'
 // base components
 import DropdownContainer from './lib/dropdown/DropdownContainer.vue'
@@ -42,6 +42,6 @@ export {
   Sidebar,
   Modal,
 }
-export * from './lib/directives'
-export * from './theme/theme.types'
-export * from './lib/collapse/index.types'
+export * from './lib/directives/index.js'
+export * from './theme/theme.types.js'
+export * from './lib/collapse/index.types.js'

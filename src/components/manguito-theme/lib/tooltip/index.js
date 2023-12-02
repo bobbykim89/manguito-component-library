@@ -1,5 +1,5 @@
 import { defineComponent, h, computed } from 'vue';
-import generateClass from '../../';
+import generateClass from '../../index.js';
 export default defineComponent({
     props: {
         direction: {

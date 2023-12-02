@@ -1,4 +1,4 @@
-import GenerateMCLClass, { colorType, textType, borderWidthType, scaleType, } from './theme';
+import GenerateMCLClass, { colorType, textType, borderWidthType, scaleType, } from './theme/index.js';
 // base components
 import DropdownContainer from './lib/dropdown/DropdownContainer.vue';
 import DropdownContent from './lib/dropdown/DropdownContent.vue';
@@ -25,7 +25,7 @@ const generateClass = (type, value) => {
 };
 export default generateClass;
 export { DropdownContainer, DropdownContent, Collapse, HamburgerMenu, Sidebar, Modal, };
-export * from './lib/directives';
-export * from './theme/theme.types';
-export * from './lib/collapse/index.types';
+export * from './lib/directives/index.js';
+export * from './theme/theme.types.js';
+export * from './lib/collapse/index.types.js';
 //# sourceMappingURL=index.js.map
