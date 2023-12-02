@@ -1,4 +1,5 @@
-import { PropType, defineComponent, h, computed } from 'vue'
+import { defineComponent, h, computed } from 'vue'
+import type { PropType } from 'vue'
 import type { Direction, ColorPalette } from '../../index.js'
 import generateClass from '../../index.js'
 

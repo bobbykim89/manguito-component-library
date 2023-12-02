@@ -7,11 +7,8 @@ import {
   onMounted,
   onBeforeUnmount,
 } from 'vue'
-import generateClass, {
-  ColorPalette,
-  vClickOutside,
-  DirectionX,
-} from '../../index.js'
+import generateClass, { vClickOutside } from '../../index.js'
+import type { ColorPalette, DirectionX } from '../../index.js'
 import { observeVisibleAttr } from '../composables/index.js'
 
 const props = withDefaults(
