@@ -1,4 +1,4 @@
-import type { ColorPalette } from '../..'
+import type { ColorPalette } from '../../index.js'
 
 export interface TooltipElementType extends HTMLElement {
   __HandleTooltip: Function

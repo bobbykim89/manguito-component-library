@@ -1,5 +1,5 @@
 import MCLTheme from './theme.js';
-import type { ColorPalette, HeadingSize, BodyText, FontWeight, Range, OpacityRange, SpacingLevel, Alignment } from './theme.types';
+import type { ColorPalette, HeadingSize, BodyText, FontWeight, Range, OpacityRange, SpacingLevel, Alignment } from './theme.types.js';
 /**
  * @TailwindCSS - Good practice is to let all of used classes to be in full instead of generated dynamically using methods such as string literal.
  * @Interface - ClassType to define the case, and Input type to generate tailwind clssname.

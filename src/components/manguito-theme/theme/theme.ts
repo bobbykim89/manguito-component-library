@@ -12,7 +12,7 @@ import type {
   OpacityRange,
   SpacingLevel,
   Alignment as Position,
-} from './theme.types'
+} from './theme.types.js'
 
 export type ColorClass = {
   [key in ColorPalette]: string

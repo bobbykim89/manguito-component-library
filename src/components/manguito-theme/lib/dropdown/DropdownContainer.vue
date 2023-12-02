@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, provide, ref, onMounted } from 'vue'
-import type { InjectType } from './index.types'
-import { vClickOutside } from '../directives'
+import type { InjectType } from './index.types.js'
+import { vClickOutside } from '../directives/index.js'
 
 const emit = defineEmits(['click-outside', 'toggle'])
 const dropdownTarget = ref()
