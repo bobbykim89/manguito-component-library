@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import generateClass, {
-  Collapse,
-  vCollapse,
-  CollapseEvent,
-} from '@bobbykim/manguito-theme'
+import generateClass, { Collapse, vCollapse } from '@bobbykim/manguito-theme'
+import type { CollapseEvent } from '@bobbykim/manguito-theme'
 import type { ColorPalette, BodyText } from '@bobbykim/manguito-theme'
 import type {
   NavCollapseType,
