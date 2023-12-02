@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.5.2](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/tabs-alpha@0.5.1...@bobbykim/tabs-alpha@0.5.2) (2023-12-02)
+
+**Note:** Version bump only for package @bobbykim/tabs-alpha
+
+
+
+
+
 ## [0.5.1](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/tabs-alpha@0.5.0...@bobbykim/tabs-alpha@0.5.1) (2023-12-02)
 
 **Note:** Version bump only for package @bobbykim/tabs-alpha

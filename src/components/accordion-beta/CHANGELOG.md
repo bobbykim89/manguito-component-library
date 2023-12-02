@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/accordion-beta@0.6.1...@bobbykim/accordion-beta@0.7.0) (2023-12-02)
+
+
+### Features
+
+* **manguito-theme,accordion-alpha,accordion-beta,nav-alpha:** change tsconfig settings ([055e6d8](https://github.com/bobbykim89/manguito-component-library/commit/055e6d8781705fcc144769da90470eb0d5e36612))
+
+
+
+
+
 ## [0.6.1](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/accordion-beta@0.6.0...@bobbykim/accordion-beta@0.6.1) (2023-12-02)
 
 **Note:** Version bump only for package @bobbykim/accordion-beta
