@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/card-delta",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "",
   "type": "module",
   "main": "index.ts",
@@ -21,6 +21,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@bobbykim/manguito-theme": "^0.10.0"
+    "@bobbykim/manguito-theme": "^0.11.0"
   }
 }

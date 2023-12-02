@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.11.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.10.0...@bobbykim/manguito-theme@0.11.0) (2023-12-02)
+
+
+### Features
+
+* **manguito-theme:** update import path ([c6c69fa](https://github.com/bobbykim89/manguito-component-library/commit/c6c69fa416e6ff7f388d97f8663a8e77b2e806d3))
+
+
+
+
+
 # [0.10.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.9.0...@bobbykim/manguito-theme@0.10.0) (2023-12-01)
 
 
