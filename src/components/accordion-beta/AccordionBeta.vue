@@ -1,10 +1,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import generateClass, {
-  Collapse,
-  vCollapse,
-  CollapseEvent,
-} from '@bobbykim/manguito-theme'
+import generateClass, { Collapse, vCollapse } from '@bobbykim/manguito-theme'
+import type { CollapseEvent } from '@bobbykim/manguito-theme'
 import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
 
 const props = withDefaults(
