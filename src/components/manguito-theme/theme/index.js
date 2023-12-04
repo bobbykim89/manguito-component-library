@@ -631,4 +631,3 @@ class GenerateMCLClass extends MCLTheme {
     }
 }
 export default GenerateMCLClass;
-//# sourceMappingURL=index.js.map

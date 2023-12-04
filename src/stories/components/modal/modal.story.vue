@@ -72,7 +72,7 @@ const modalCancel = (): void => {
 </script>
 
 <template>
-  <Story title="Modal" group="base-comp">
+  <Story title="Modal" group="deprecated">
     <Variant title="modal-alpha">
       <div class="relative w-screen h-screen">
         <div class="p-sm">
