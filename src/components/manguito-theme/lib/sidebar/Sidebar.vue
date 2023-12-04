@@ -44,9 +44,6 @@ const sidebarRef = ref<HTMLElement | undefined>()
 const headerRef = ref<HTMLElement>()
 const footerRef = ref<HTMLElement>()
 
-const handleToggleEvent = (e: Event): void => {
-  toggle.value = !toggle.value
-}
 const toggleSidebar = (): void => {
   toggle.value = !toggle.value
 }

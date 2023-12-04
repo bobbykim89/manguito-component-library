@@ -40,9 +40,6 @@ const modalRef = ref<HTMLElement | undefined>()
 const toggle = ref<boolean>(props.visible)
 const toggleComplete = ref<boolean>(false)
 
-// const handleToggleEvent = (): void => {
-//   toggle.value = !toggle.value
-// }
 const toggleModal = (): void => {
   toggle.value = !toggle.value
 }
