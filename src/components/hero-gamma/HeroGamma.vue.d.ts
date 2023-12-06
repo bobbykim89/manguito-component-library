@@ -1,133 +1,67 @@
 import type { HeadingSize, HeadingLevel, ColorPalette, BodyText } from '@bobbykim/manguito-theme';
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
-    title: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    titleColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    titleLevel: {
-        type: import("vue").PropType<HeadingLevel>;
-        default: string;
-    };
-    titleSize: {
-        type: import("vue").PropType<HeadingSize>;
-        default: string;
-    };
-    displayTitleShadow: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    displayHighlight: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    highlightColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    imageSource: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    displayGradient: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    gradientColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    displayLabel: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    labelText: {
-        type: import("vue").PropType<string>;
-    };
-    labelTextSize: {
-        type: import("vue").PropType<BodyText>;
-        default: string;
-    };
-    labelTextColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    labelBgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    displaySlot: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
-    title: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    titleColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    titleLevel: {
-        type: import("vue").PropType<HeadingLevel>;
-        default: string;
-    };
-    titleSize: {
-        type: import("vue").PropType<HeadingSize>;
-        default: string;
-    };
-    displayTitleShadow: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    displayHighlight: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    highlightColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    imageSource: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    displayGradient: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    gradientColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    displayLabel: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    labelText: {
-        type: import("vue").PropType<string>;
-    };
-    labelTextSize: {
-        type: import("vue").PropType<BodyText>;
-        default: string;
-    };
-    labelTextColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    labelBgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    displaySlot: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-}>>, {
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    title: string;
+    titleLevel?: HeadingLevel | undefined;
+    titleSize?: HeadingSize | undefined;
+    titleColor?: ColorPalette | undefined;
+    displayTitleShadow?: boolean | undefined;
+    displayHighlight?: boolean | undefined;
+    highlightColor?: ColorPalette | undefined;
+    imageSource: string;
+    displayGradient?: boolean | undefined;
+    gradientColor?: ColorPalette | undefined;
+    displayLabel?: boolean | undefined;
+    labelText?: string | undefined;
+    labelTextSize?: BodyText | undefined;
+    labelTextColor?: ColorPalette | undefined;
+    labelBgColor?: ColorPalette | undefined;
+    displaySlot?: boolean | undefined;
+}>, {
+    titleLevel: string;
+    titleSize: string;
+    titleColor: string;
+    displayTitleShadow: boolean;
+    displayHighlight: boolean;
+    displayGradient: boolean;
+    highlightColor: string;
+    gradientColor: string;
+    displayLabel: boolean;
+    labelTextSize: string;
+    labelTextColor: string;
+    labelBgColor: string;
+    displaySlot: boolean;
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    title: string;
+    titleLevel?: HeadingLevel | undefined;
+    titleSize?: HeadingSize | undefined;
+    titleColor?: ColorPalette | undefined;
+    displayTitleShadow?: boolean | undefined;
+    displayHighlight?: boolean | undefined;
+    highlightColor?: ColorPalette | undefined;
+    imageSource: string;
+    displayGradient?: boolean | undefined;
+    gradientColor?: ColorPalette | undefined;
+    displayLabel?: boolean | undefined;
+    labelText?: string | undefined;
+    labelTextSize?: BodyText | undefined;
+    labelTextColor?: ColorPalette | undefined;
+    labelBgColor?: ColorPalette | undefined;
+    displaySlot?: boolean | undefined;
+}>, {
+    titleLevel: string;
+    titleSize: string;
+    titleColor: string;
+    displayTitleShadow: boolean;
+    displayHighlight: boolean;
+    displayGradient: boolean;
+    highlightColor: string;
+    gradientColor: string;
+    displayLabel: boolean;
+    labelTextSize: string;
+    labelTextColor: string;
+    labelBgColor: string;
+    displaySlot: boolean;
+}>>>, {
     titleColor: ColorPalette;
     titleLevel: HeadingLevel;
     titleSize: HeadingSize;
@@ -145,6 +79,23 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     default?(_: {}): any;
 }>;
 export default _default;
+type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
+type __VLS_TypePropsToRuntimeProps<T> = {
+    [K in keyof T]-?: {} extends Pick<T, K> ? {
+        type: import('vue').PropType<__VLS_NonUndefinedable<T[K]>>;
+    } : {
+        type: import('vue').PropType<T[K]>;
+        required: true;
+    };
+};
+type __VLS_WithDefaults<P, D> = {
+    [K in keyof Pick<P, keyof P>]: K extends keyof D ? __VLS_Prettify<P[K] & {
+        default: D[K];
+    }> : P[K];
+};
+type __VLS_Prettify<T> = {
+    [K in keyof T]: T[K];
+} & {};
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {
         $slots: S;
