@@ -1,209 +1,101 @@
 import type { ColorPalette, CtaTarget, HeadingSize, BodyText } from '@bobbykim/manguito-theme';
 import type { NavItemType, NavCollapseType } from './index.type';
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
-    title: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    titleColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    menuTextSize: {
-        type: import("vue").PropType<BodyText>;
-        default: string;
-    };
-    menuTextColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    menuTextBold: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    displayHighlight: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    highlightColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    bgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    logo: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    logoSmall: {
-        type: import("vue").PropType<string>;
-    };
-    logoAlt: {
-        type: import("vue").PropType<string>;
-    };
-    logoAsLink: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    logoLink: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    logoLinkTarget: {
-        type: import("vue").PropType<CtaTarget>;
-        default: string;
-    };
-    titleSize: {
-        type: import("vue").PropType<HeadingSize>;
-        default: string;
-    };
-    titleAsLink: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    titleLink: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    titleLinkTarget: {
-        type: import("vue").PropType<CtaTarget>;
-        default: string;
-    };
-    navItems: {
-        type: import("vue").PropType<(NavItemType | NavCollapseType)[]>;
-        required: true;
-    };
-    navItemAsLink: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    mobileMenuBgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    secondaryColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    hamburgerBorder: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    fadeInOnScroll: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    scrollDistance: {
-        type: import("vue").PropType<number>;
-        default: number;
-    };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    logo: string;
+    logoSmall?: string | undefined;
+    logoAlt?: string | undefined;
+    logoAsLink?: boolean | undefined;
+    logoLink: string;
+    logoLinkTarget?: CtaTarget | undefined;
+    title: string;
+    titleSize?: HeadingSize | undefined;
+    titleColor?: ColorPalette | undefined;
+    titleAsLink?: boolean | undefined;
+    titleLink: string;
+    titleLinkTarget?: CtaTarget | undefined;
+    navItems: (NavItemType | NavCollapseType)[];
+    navItemAsLink?: boolean | undefined;
+    menuTextSize?: BodyText | undefined;
+    menuTextColor?: ColorPalette | undefined;
+    menuTextBold?: boolean | undefined;
+    displayHighlight?: boolean | undefined;
+    highlightColor?: ColorPalette | undefined;
+    bgColor?: ColorPalette | undefined;
+    mobileMenuBgColor?: ColorPalette | undefined;
+    secondaryColor?: ColorPalette | undefined;
+    hamburgerBorder?: boolean | undefined;
+    fadeInOnScroll?: boolean | undefined;
+    scrollDistance?: number | undefined;
+}>, {
+    logoAsLink: boolean;
+    logoLinkTarget: string;
+    titleSize: string;
+    titleColor: string;
+    titleAsLink: boolean;
+    titleLinkTarget: string;
+    navItemAsLink: boolean;
+    menuTextSize: string;
+    menuTextColor: string;
+    menuTextBold: boolean;
+    displayHighlight: boolean;
+    highlightColor: string;
+    bgColor: string;
+    mobileMenuBgColor: string;
+    secondaryColor: string;
+    hamburgerBorder: boolean;
+    fadeInOnScroll: boolean;
+    scrollDistance: number;
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "toggle-menu": (...args: any[]) => void;
     "menu-click": (...args: any[]) => void;
     "title-click": (...args: any[]) => void;
     "logo-click": (...args: any[]) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
-    title: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    titleColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    menuTextSize: {
-        type: import("vue").PropType<BodyText>;
-        default: string;
-    };
-    menuTextColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    menuTextBold: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    displayHighlight: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    highlightColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    bgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    logo: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    logoSmall: {
-        type: import("vue").PropType<string>;
-    };
-    logoAlt: {
-        type: import("vue").PropType<string>;
-    };
-    logoAsLink: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    logoLink: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    logoLinkTarget: {
-        type: import("vue").PropType<CtaTarget>;
-        default: string;
-    };
-    titleSize: {
-        type: import("vue").PropType<HeadingSize>;
-        default: string;
-    };
-    titleAsLink: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    titleLink: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    titleLinkTarget: {
-        type: import("vue").PropType<CtaTarget>;
-        default: string;
-    };
-    navItems: {
-        type: import("vue").PropType<(NavItemType | NavCollapseType)[]>;
-        required: true;
-    };
-    navItemAsLink: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    mobileMenuBgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    secondaryColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    hamburgerBorder: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    fadeInOnScroll: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    scrollDistance: {
-        type: import("vue").PropType<number>;
-        default: number;
-    };
-}>> & {
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    logo: string;
+    logoSmall?: string | undefined;
+    logoAlt?: string | undefined;
+    logoAsLink?: boolean | undefined;
+    logoLink: string;
+    logoLinkTarget?: CtaTarget | undefined;
+    title: string;
+    titleSize?: HeadingSize | undefined;
+    titleColor?: ColorPalette | undefined;
+    titleAsLink?: boolean | undefined;
+    titleLink: string;
+    titleLinkTarget?: CtaTarget | undefined;
+    navItems: (NavItemType | NavCollapseType)[];
+    navItemAsLink?: boolean | undefined;
+    menuTextSize?: BodyText | undefined;
+    menuTextColor?: ColorPalette | undefined;
+    menuTextBold?: boolean | undefined;
+    displayHighlight?: boolean | undefined;
+    highlightColor?: ColorPalette | undefined;
+    bgColor?: ColorPalette | undefined;
+    mobileMenuBgColor?: ColorPalette | undefined;
+    secondaryColor?: ColorPalette | undefined;
+    hamburgerBorder?: boolean | undefined;
+    fadeInOnScroll?: boolean | undefined;
+    scrollDistance?: number | undefined;
+}>, {
+    logoAsLink: boolean;
+    logoLinkTarget: string;
+    titleSize: string;
+    titleColor: string;
+    titleAsLink: boolean;
+    titleLinkTarget: string;
+    navItemAsLink: boolean;
+    menuTextSize: string;
+    menuTextColor: string;
+    menuTextBold: boolean;
+    displayHighlight: boolean;
+    highlightColor: string;
+    bgColor: string;
+    mobileMenuBgColor: string;
+    secondaryColor: string;
+    hamburgerBorder: boolean;
+    fadeInOnScroll: boolean;
+    scrollDistance: number;
+}>>> & {
     "onToggle-menu"?: ((...args: any[]) => any) | undefined;
     "onMenu-click"?: ((...args: any[]) => any) | undefined;
     "onTitle-click"?: ((...args: any[]) => any) | undefined;
@@ -234,6 +126,23 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     }): any;
 }>;
 export default _default;
+type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
+type __VLS_TypePropsToRuntimeProps<T> = {
+    [K in keyof T]-?: {} extends Pick<T, K> ? {
+        type: import('vue').PropType<__VLS_NonUndefinedable<T[K]>>;
+    } : {
+        type: import('vue').PropType<T[K]>;
+        required: true;
+    };
+};
+type __VLS_WithDefaults<P, D> = {
+    [K in keyof Pick<P, keyof P>]: K extends keyof D ? __VLS_Prettify<P[K] & {
+        default: D[K];
+    }> : P[K];
+};
+type __VLS_Prettify<T> = {
+    [K in keyof T]: T[K];
+} & {};
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {
         $slots: S;

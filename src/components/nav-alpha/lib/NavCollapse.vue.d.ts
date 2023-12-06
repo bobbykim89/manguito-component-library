@@ -1,90 +1,46 @@
 import type { ColorPalette, BodyText } from '@bobbykim/manguito-theme';
 import type { NavCollapseType } from '../index.type';
-declare const _default: import("vue").DefineComponent<{
-    navItem: {
-        type: import("vue").PropType<NavCollapseType>;
-        required: true;
-    };
-    menuTextSize: {
-        type: import("vue").PropType<BodyText>;
-        default: string;
-    };
-    menuTextColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    menuTextBold: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    displayHighlight: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    highlightColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    bgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    hoverBgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    navId: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    navAccordionGroup: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    navId: string;
+    navAccordionGroup: string;
+    navItem: NavCollapseType;
+    bgColor?: ColorPalette | undefined;
+    hoverBgColor?: ColorPalette | undefined;
+    menuTextSize?: BodyText | undefined;
+    menuTextColor?: ColorPalette | undefined;
+    menuTextBold?: boolean | undefined;
+    displayHighlight?: boolean | undefined;
+    highlightColor?: ColorPalette | undefined;
+}>, {
+    menuTextSize: string;
+    bgColor: string;
+    hoverBgColor: string;
+    menuTextColor: string;
+    menuTextBold: boolean;
+    displayHighlight: boolean;
+    highlightColor: string;
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "nav-link": (...args: any[]) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
-    navItem: {
-        type: import("vue").PropType<NavCollapseType>;
-        required: true;
-    };
-    menuTextSize: {
-        type: import("vue").PropType<BodyText>;
-        default: string;
-    };
-    menuTextColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    menuTextBold: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    displayHighlight: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    highlightColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    bgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    hoverBgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    navId: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    navAccordionGroup: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-}>> & {
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    navId: string;
+    navAccordionGroup: string;
+    navItem: NavCollapseType;
+    bgColor?: ColorPalette | undefined;
+    hoverBgColor?: ColorPalette | undefined;
+    menuTextSize?: BodyText | undefined;
+    menuTextColor?: ColorPalette | undefined;
+    menuTextBold?: boolean | undefined;
+    displayHighlight?: boolean | undefined;
+    highlightColor?: ColorPalette | undefined;
+}>, {
+    menuTextSize: string;
+    bgColor: string;
+    hoverBgColor: string;
+    menuTextColor: string;
+    menuTextBold: boolean;
+    displayHighlight: boolean;
+    highlightColor: string;
+}>>> & {
     "onNav-link"?: ((...args: any[]) => any) | undefined;
 }, {
     menuTextSize: BodyText;
@@ -96,3 +52,20 @@ declare const _default: import("vue").DefineComponent<{
     hoverBgColor: ColorPalette;
 }, {}>;
 export default _default;
+type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
+type __VLS_TypePropsToRuntimeProps<T> = {
+    [K in keyof T]-?: {} extends Pick<T, K> ? {
+        type: import('vue').PropType<__VLS_NonUndefinedable<T[K]>>;
+    } : {
+        type: import('vue').PropType<T[K]>;
+        required: true;
+    };
+};
+type __VLS_WithDefaults<P, D> = {
+    [K in keyof Pick<P, keyof P>]: K extends keyof D ? __VLS_Prettify<P[K] & {
+        default: D[K];
+    }> : P[K];
+};
+type __VLS_Prettify<T> = {
+    [K in keyof T]: T[K];
+} & {};

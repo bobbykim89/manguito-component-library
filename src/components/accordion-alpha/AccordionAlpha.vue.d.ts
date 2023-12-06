@@ -1,112 +1,58 @@
 import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme';
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
-    title: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    visible: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    accordion: {
-        type: import("vue").PropType<string>;
-    };
-    titleColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    collapseId: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    borderColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    rounded: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    displayHighlight: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    highlightColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    titleSize: {
-        type: import("vue").PropType<HeadingSize>;
-        default: string;
-    };
-    iconColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    bgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    slotBgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    collapseId: string;
+    borderColor?: ColorPalette | undefined;
+    rounded?: boolean | undefined;
+    displayHighlight?: boolean | undefined;
+    highlightColor?: ColorPalette | undefined;
+    title: string;
+    titleSize?: HeadingSize | undefined;
+    titleColor?: ColorPalette | undefined;
+    visible?: boolean | undefined;
+    iconColor?: ColorPalette | undefined;
+    bgColor?: ColorPalette | undefined;
+    slotBgColor?: ColorPalette | undefined;
+    accordion?: string | undefined;
+}>, {
+    borderColor: string;
+    rounded: boolean;
+    displayHighlight: boolean;
+    highlightColor: string;
+    titleSize: string;
+    titleColor: string;
+    visible: boolean;
+    iconColor: string;
+    bgColor: string;
+    slotBgColor: string;
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "accordion-open": (...args: any[]) => void;
     "accordion-close": (...args: any[]) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
-    title: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    visible: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    accordion: {
-        type: import("vue").PropType<string>;
-    };
-    titleColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    collapseId: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    borderColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    rounded: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    displayHighlight: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    highlightColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    titleSize: {
-        type: import("vue").PropType<HeadingSize>;
-        default: string;
-    };
-    iconColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    bgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    slotBgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-}>> & {
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    collapseId: string;
+    borderColor?: ColorPalette | undefined;
+    rounded?: boolean | undefined;
+    displayHighlight?: boolean | undefined;
+    highlightColor?: ColorPalette | undefined;
+    title: string;
+    titleSize?: HeadingSize | undefined;
+    titleColor?: ColorPalette | undefined;
+    visible?: boolean | undefined;
+    iconColor?: ColorPalette | undefined;
+    bgColor?: ColorPalette | undefined;
+    slotBgColor?: ColorPalette | undefined;
+    accordion?: string | undefined;
+}>, {
+    borderColor: string;
+    rounded: boolean;
+    displayHighlight: boolean;
+    highlightColor: string;
+    titleSize: string;
+    titleColor: string;
+    visible: boolean;
+    iconColor: string;
+    bgColor: string;
+    slotBgColor: string;
+}>>> & {
     "onAccordion-open"?: ((...args: any[]) => any) | undefined;
     "onAccordion-close"?: ((...args: any[]) => any) | undefined;
 }, {
@@ -125,6 +71,23 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     content?(_: {}): any;
 }>;
 export default _default;
+type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
+type __VLS_TypePropsToRuntimeProps<T> = {
+    [K in keyof T]-?: {} extends Pick<T, K> ? {
+        type: import('vue').PropType<__VLS_NonUndefinedable<T[K]>>;
+    } : {
+        type: import('vue').PropType<T[K]>;
+        required: true;
+    };
+};
+type __VLS_WithDefaults<P, D> = {
+    [K in keyof Pick<P, keyof P>]: K extends keyof D ? __VLS_Prettify<P[K] & {
+        default: D[K];
+    }> : P[K];
+};
+type __VLS_Prettify<T> = {
+    [K in keyof T]: T[K];
+} & {};
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {
         $slots: S;

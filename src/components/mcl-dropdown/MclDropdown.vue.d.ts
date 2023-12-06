@@ -1,131 +1,69 @@
 import type { ColorPalette, BodyText, FontWeight } from '@bobbykim/manguito-theme';
 import type { DropdownItem } from './index.types';
-declare const _default: import("vue").DefineComponent<{
-    title: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    displayBorder: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    buttonColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    buttonRounded: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    buttonTextColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    buttonInvert: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    dropdownItems: {
-        type: import("vue").PropType<DropdownItem[]>;
-        required: true;
-    };
-    dropdownColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    rounded: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    displayShadow: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    hoverBgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    dropdownTextSize: {
-        type: import("vue").PropType<BodyText>;
-        default: string;
-    };
-    dropdownFontWeight: {
-        type: import("vue").PropType<FontWeight>;
-        default: string;
-    };
-    dropdownTextColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    displaySeparator: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    title: string;
+    buttonColor?: ColorPalette | undefined;
+    buttonRounded?: boolean | undefined;
+    buttonTextColor?: ColorPalette | undefined;
+    buttonInvert?: boolean | undefined;
+    dropdownItems: DropdownItem[];
+    dropdownColor?: ColorPalette | undefined;
+    displayBorder?: boolean | undefined;
+    rounded?: boolean | undefined;
+    displayShadow?: boolean | undefined;
+    hoverBgColor?: ColorPalette | undefined;
+    dropdownTextSize?: BodyText | undefined;
+    dropdownFontWeight?: FontWeight | undefined;
+    dropdownTextColor?: ColorPalette | undefined;
+    displaySeparator?: boolean | undefined;
+}>, {
+    buttonColor: string;
+    buttonRounded: boolean;
+    buttonTextColor: string;
+    buttonInvert: boolean;
+    dropdownColor: string;
+    displayBorder: boolean;
+    rounded: boolean;
+    displayShadow: boolean;
+    hoverBgColor: string;
+    dropdownTextSize: string;
+    dropdownFontWeight: string;
+    dropdownTextColor: string;
+    displaySeparator: boolean;
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "button-click": (...args: any[]) => void;
     "item-click": (...args: any[]) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
-    title: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    displayBorder: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    buttonColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    buttonRounded: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    buttonTextColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    buttonInvert: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    dropdownItems: {
-        type: import("vue").PropType<DropdownItem[]>;
-        required: true;
-    };
-    dropdownColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    rounded: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    displayShadow: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    hoverBgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    dropdownTextSize: {
-        type: import("vue").PropType<BodyText>;
-        default: string;
-    };
-    dropdownFontWeight: {
-        type: import("vue").PropType<FontWeight>;
-        default: string;
-    };
-    dropdownTextColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    displaySeparator: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-}>> & {
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    title: string;
+    buttonColor?: ColorPalette | undefined;
+    buttonRounded?: boolean | undefined;
+    buttonTextColor?: ColorPalette | undefined;
+    buttonInvert?: boolean | undefined;
+    dropdownItems: DropdownItem[];
+    dropdownColor?: ColorPalette | undefined;
+    displayBorder?: boolean | undefined;
+    rounded?: boolean | undefined;
+    displayShadow?: boolean | undefined;
+    hoverBgColor?: ColorPalette | undefined;
+    dropdownTextSize?: BodyText | undefined;
+    dropdownFontWeight?: FontWeight | undefined;
+    dropdownTextColor?: ColorPalette | undefined;
+    displaySeparator?: boolean | undefined;
+}>, {
+    buttonColor: string;
+    buttonRounded: boolean;
+    buttonTextColor: string;
+    buttonInvert: boolean;
+    dropdownColor: string;
+    displayBorder: boolean;
+    rounded: boolean;
+    displayShadow: boolean;
+    hoverBgColor: string;
+    dropdownTextSize: string;
+    dropdownFontWeight: string;
+    dropdownTextColor: string;
+    displaySeparator: boolean;
+}>>> & {
     "onButton-click"?: ((...args: any[]) => any) | undefined;
     "onItem-click"?: ((...args: any[]) => any) | undefined;
 }, {
@@ -144,3 +82,20 @@ declare const _default: import("vue").DefineComponent<{
     displaySeparator: boolean;
 }, {}>;
 export default _default;
+type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
+type __VLS_TypePropsToRuntimeProps<T> = {
+    [K in keyof T]-?: {} extends Pick<T, K> ? {
+        type: import('vue').PropType<__VLS_NonUndefinedable<T[K]>>;
+    } : {
+        type: import('vue').PropType<T[K]>;
+        required: true;
+    };
+};
+type __VLS_WithDefaults<P, D> = {
+    [K in keyof Pick<P, keyof P>]: K extends keyof D ? __VLS_Prettify<P[K] & {
+        default: D[K];
+    }> : P[K];
+};
+type __VLS_Prettify<T> = {
+    [K in keyof T]: T[K];
+} & {};

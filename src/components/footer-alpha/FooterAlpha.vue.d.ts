@@ -1,190 +1,90 @@
 import type { ColorPalette, HeadingSize, CtaTarget, BodyText } from '@bobbykim/manguito-theme';
 import type { NavItemType, SocialUrl } from './index.type';
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
-    title: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    titleColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    socialLinks: {
-        type: import("vue").PropType<SocialUrl>;
-    };
-    titleSize: {
-        type: import("vue").PropType<HeadingSize>;
-        default: string;
-    };
-    copyText: {
-        type: import("vue").PropType<string>;
-    };
-    logo: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    logoAlt: {
-        type: import("vue").PropType<string>;
-    };
-    logoAsLink: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    logoLink: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    logoLinkTarget: {
-        type: import("vue").PropType<CtaTarget>;
-        default: string;
-    };
-    displaySocialIcons: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    socialIconColor: {
-        type: import("vue").PropType<ColorPalette>;
-        required: true;
-        default: string;
-    };
-    navItems: {
-        type: import("vue").PropType<NavItemType[]>;
-        required: true;
-    };
-    secondaryNavItems: {
-        type: import("vue").PropType<NavItemType[]>;
-    };
-    navItemAsLink: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    menuTextSize: {
-        type: import("vue").PropType<BodyText>;
-        default: string;
-    };
-    menuTextColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    menuTextBold: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    displayHighlight: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    highlightColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    bgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    borderTopColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    headlineColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    title: string;
+    titleSize?: HeadingSize | undefined;
+    titleColor?: ColorPalette | undefined;
+    copyText?: string | undefined;
+    logo: string;
+    logoAlt?: string | undefined;
+    logoAsLink?: boolean | undefined;
+    logoLink: string;
+    logoLinkTarget?: CtaTarget | undefined;
+    displaySocialIcons?: boolean | undefined;
+    socialIconColor: ColorPalette;
+    socialLinks?: SocialUrl | undefined;
+    navItems: NavItemType[];
+    secondaryNavItems?: NavItemType[] | undefined;
+    navItemAsLink?: boolean | undefined;
+    menuTextSize?: BodyText | undefined;
+    menuTextColor?: ColorPalette | undefined;
+    menuTextBold?: boolean | undefined;
+    displayHighlight?: boolean | undefined;
+    highlightColor?: ColorPalette | undefined;
+    bgColor?: ColorPalette | undefined;
+    borderTopColor?: ColorPalette | undefined;
+    headlineColor?: ColorPalette | undefined;
+}>, {
+    titleSize: string;
+    titleColor: string;
+    logoAsLink: boolean;
+    logoLinkTarget: string;
+    displaySocialIcons: boolean;
+    socialIconColor: string;
+    navItemAsLink: boolean;
+    menuTextSize: string;
+    menuTextColor: string;
+    menuTextBold: boolean;
+    displayHighlight: boolean;
+    highlightColor: string;
+    bgColor: string;
+    borderTopColor: string;
+    headlineColor: string;
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "menu-click": (...args: any[]) => void;
     "logo-click": (...args: any[]) => void;
     "secondary-menu-click": (...args: any[]) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
-    title: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    titleColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    socialLinks: {
-        type: import("vue").PropType<SocialUrl>;
-    };
-    titleSize: {
-        type: import("vue").PropType<HeadingSize>;
-        default: string;
-    };
-    copyText: {
-        type: import("vue").PropType<string>;
-    };
-    logo: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    logoAlt: {
-        type: import("vue").PropType<string>;
-    };
-    logoAsLink: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    logoLink: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    logoLinkTarget: {
-        type: import("vue").PropType<CtaTarget>;
-        default: string;
-    };
-    displaySocialIcons: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    socialIconColor: {
-        type: import("vue").PropType<ColorPalette>;
-        required: true;
-        default: string;
-    };
-    navItems: {
-        type: import("vue").PropType<NavItemType[]>;
-        required: true;
-    };
-    secondaryNavItems: {
-        type: import("vue").PropType<NavItemType[]>;
-    };
-    navItemAsLink: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    menuTextSize: {
-        type: import("vue").PropType<BodyText>;
-        default: string;
-    };
-    menuTextColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    menuTextBold: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    displayHighlight: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    highlightColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    bgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    borderTopColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    headlineColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-}>> & {
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    title: string;
+    titleSize?: HeadingSize | undefined;
+    titleColor?: ColorPalette | undefined;
+    copyText?: string | undefined;
+    logo: string;
+    logoAlt?: string | undefined;
+    logoAsLink?: boolean | undefined;
+    logoLink: string;
+    logoLinkTarget?: CtaTarget | undefined;
+    displaySocialIcons?: boolean | undefined;
+    socialIconColor: ColorPalette;
+    socialLinks?: SocialUrl | undefined;
+    navItems: NavItemType[];
+    secondaryNavItems?: NavItemType[] | undefined;
+    navItemAsLink?: boolean | undefined;
+    menuTextSize?: BodyText | undefined;
+    menuTextColor?: ColorPalette | undefined;
+    menuTextBold?: boolean | undefined;
+    displayHighlight?: boolean | undefined;
+    highlightColor?: ColorPalette | undefined;
+    bgColor?: ColorPalette | undefined;
+    borderTopColor?: ColorPalette | undefined;
+    headlineColor?: ColorPalette | undefined;
+}>, {
+    titleSize: string;
+    titleColor: string;
+    logoAsLink: boolean;
+    logoLinkTarget: string;
+    displaySocialIcons: boolean;
+    socialIconColor: string;
+    navItemAsLink: boolean;
+    menuTextSize: string;
+    menuTextColor: string;
+    menuTextBold: boolean;
+    displayHighlight: boolean;
+    highlightColor: string;
+    bgColor: string;
+    borderTopColor: string;
+    headlineColor: string;
+}>>> & {
     "onMenu-click"?: ((...args: any[]) => any) | undefined;
     "onLogo-click"?: ((...args: any[]) => any) | undefined;
     "onSecondary-menu-click"?: ((...args: any[]) => any) | undefined;
@@ -208,6 +108,23 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     default?(_: {}): any;
 }>;
 export default _default;
+type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
+type __VLS_TypePropsToRuntimeProps<T> = {
+    [K in keyof T]-?: {} extends Pick<T, K> ? {
+        type: import('vue').PropType<__VLS_NonUndefinedable<T[K]>>;
+    } : {
+        type: import('vue').PropType<T[K]>;
+        required: true;
+    };
+};
+type __VLS_WithDefaults<P, D> = {
+    [K in keyof Pick<P, keyof P>]: K extends keyof D ? __VLS_Prettify<P[K] & {
+        default: D[K];
+    }> : P[K];
+};
+type __VLS_Prettify<T> = {
+    [K in keyof T]: T[K];
+} & {};
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {
         $slots: S;

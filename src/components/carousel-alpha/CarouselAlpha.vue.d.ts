@@ -1,128 +1,66 @@
 import type { HeadingSize, ColorPalette, BodyText, SpacingLevel } from '@bobbykim/manguito-theme';
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
-    title: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    titleColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    titleSize: {
-        type: import("vue").PropType<HeadingSize>;
-        default: string;
-    };
-    bgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    displayHighlight: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    highlightColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    displayTagLine: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    tagLineUpperCase: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    tagLine: {
-        type: import("vue").PropType<string>;
-    };
-    tagLineSize: {
-        type: import("vue").PropType<BodyText>;
-        default: string;
-    };
-    tagLineColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    btnColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    btnBgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    cardsContent: {
-        type: import("vue").PropType<any[]>;
-        required: true;
-    };
-    cardsGap: {
-        type: import("vue").PropType<SpacingLevel>;
-        default: string;
-    };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    title: string;
+    titleSize?: HeadingSize | undefined;
+    titleColor?: ColorPalette | undefined;
+    bgColor?: ColorPalette | undefined;
+    displayTagLine?: boolean | undefined;
+    tagLineUpperCase?: boolean | undefined;
+    tagLine?: string | undefined;
+    tagLineSize?: BodyText | undefined;
+    tagLineColor?: ColorPalette | undefined;
+    displayHighlight?: boolean | undefined;
+    highlightColor?: ColorPalette | undefined;
+    btnColor?: ColorPalette | undefined;
+    btnBgColor?: ColorPalette | undefined;
+    cardsContent: any[];
+    cardsGap?: SpacingLevel | undefined;
+}>, {
+    titleSize: string;
+    titleColor: string;
+    bgColor: string;
+    displayTagLine: boolean;
+    tagLineUpperCase: boolean;
+    tagLineSize: string;
+    tagLineColor: string;
+    displayHighlight: boolean;
+    highlightColor: string;
+    btnColor: string;
+    btnBgColor: string;
+    cardsGap: string;
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "btn-prev": (...args: any[]) => void;
     "btn-next": (...args: any[]) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
-    title: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    titleColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    titleSize: {
-        type: import("vue").PropType<HeadingSize>;
-        default: string;
-    };
-    bgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    displayHighlight: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    highlightColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    displayTagLine: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    tagLineUpperCase: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    tagLine: {
-        type: import("vue").PropType<string>;
-    };
-    tagLineSize: {
-        type: import("vue").PropType<BodyText>;
-        default: string;
-    };
-    tagLineColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    btnColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    btnBgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    cardsContent: {
-        type: import("vue").PropType<any[]>;
-        required: true;
-    };
-    cardsGap: {
-        type: import("vue").PropType<SpacingLevel>;
-        default: string;
-    };
-}>> & {
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    title: string;
+    titleSize?: HeadingSize | undefined;
+    titleColor?: ColorPalette | undefined;
+    bgColor?: ColorPalette | undefined;
+    displayTagLine?: boolean | undefined;
+    tagLineUpperCase?: boolean | undefined;
+    tagLine?: string | undefined;
+    tagLineSize?: BodyText | undefined;
+    tagLineColor?: ColorPalette | undefined;
+    displayHighlight?: boolean | undefined;
+    highlightColor?: ColorPalette | undefined;
+    btnColor?: ColorPalette | undefined;
+    btnBgColor?: ColorPalette | undefined;
+    cardsContent: any[];
+    cardsGap?: SpacingLevel | undefined;
+}>, {
+    titleSize: string;
+    titleColor: string;
+    bgColor: string;
+    displayTagLine: boolean;
+    tagLineUpperCase: boolean;
+    tagLineSize: string;
+    tagLineColor: string;
+    displayHighlight: boolean;
+    highlightColor: string;
+    btnColor: string;
+    btnBgColor: string;
+    cardsGap: string;
+}>>> & {
     "onBtn-prev"?: ((...args: any[]) => any) | undefined;
     "onBtn-next"?: ((...args: any[]) => any) | undefined;
 }, {
@@ -146,6 +84,23 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     }): any;
 }>;
 export default _default;
+type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
+type __VLS_TypePropsToRuntimeProps<T> = {
+    [K in keyof T]-?: {} extends Pick<T, K> ? {
+        type: import('vue').PropType<__VLS_NonUndefinedable<T[K]>>;
+    } : {
+        type: import('vue').PropType<T[K]>;
+        required: true;
+    };
+};
+type __VLS_WithDefaults<P, D> = {
+    [K in keyof Pick<P, keyof P>]: K extends keyof D ? __VLS_Prettify<P[K] & {
+        default: D[K];
+    }> : P[K];
+};
+type __VLS_Prettify<T> = {
+    [K in keyof T]: T[K];
+} & {};
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {
         $slots: S;

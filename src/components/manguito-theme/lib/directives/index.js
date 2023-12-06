@@ -213,4 +213,3 @@ export const vTooltip = {
         el.__UnmountTooltip(el);
     },
 };
-//# sourceMappingURL=index.js.map
