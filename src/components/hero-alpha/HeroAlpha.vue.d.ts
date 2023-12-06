@@ -1,141 +1,71 @@
 import type { HeadingLevel, HeadingSize, ColorPalette, DirectionX, OpacityRange } from '@bobbykim/manguito-theme';
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
-    title: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    titleColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    titleLevel: {
-        type: import("vue").PropType<HeadingLevel>;
-        default: string;
-    };
-    titleSize: {
-        type: import("vue").PropType<HeadingSize>;
-        default: string;
-    };
-    displaySubTitle: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    subTitle: {
-        type: import("vue").PropType<string>;
-    };
-    subTitleLevel: {
-        type: import("vue").PropType<HeadingLevel>;
-        default: string;
-    };
-    subTitleSize: {
-        type: import("vue").PropType<HeadingSize>;
-        default: string;
-    };
-    subTitleColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    displayHighlight: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    highlightColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    bgImage: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    bgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    mobileImageBlur: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    imgPosition: {
-        type: import("vue").PropType<DirectionX>;
-        default: string;
-    };
-    displayFilter: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    filterOpacity: {
-        type: import("vue").PropType<OpacityRange>;
-        default: number;
-    };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
-    title: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    titleColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    titleLevel: {
-        type: import("vue").PropType<HeadingLevel>;
-        default: string;
-    };
-    titleSize: {
-        type: import("vue").PropType<HeadingSize>;
-        default: string;
-    };
-    displaySubTitle: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    subTitle: {
-        type: import("vue").PropType<string>;
-    };
-    subTitleLevel: {
-        type: import("vue").PropType<HeadingLevel>;
-        default: string;
-    };
-    subTitleSize: {
-        type: import("vue").PropType<HeadingSize>;
-        default: string;
-    };
-    subTitleColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    displayHighlight: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    highlightColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    bgImage: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    bgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    mobileImageBlur: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    imgPosition: {
-        type: import("vue").PropType<DirectionX>;
-        default: string;
-    };
-    displayFilter: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    filterOpacity: {
-        type: import("vue").PropType<OpacityRange>;
-        default: number;
-    };
-}>>, {
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    title: string;
+    titleLevel?: HeadingLevel | undefined;
+    titleSize?: HeadingSize | undefined;
+    titleColor?: ColorPalette | undefined;
+    displaySubTitle?: boolean | undefined;
+    subTitle?: string | undefined;
+    subTitleLevel?: HeadingLevel | undefined;
+    subTitleSize?: HeadingSize | undefined;
+    subTitleColor?: ColorPalette | undefined;
+    displayHighlight?: boolean | undefined;
+    highlightColor?: ColorPalette | undefined;
+    bgImage: string;
+    bgColor?: ColorPalette | undefined;
+    mobileImageBlur?: boolean | undefined;
+    imgPosition?: DirectionX | undefined;
+    displayFilter?: boolean | undefined;
+    filterOpacity?: OpacityRange | undefined;
+}>, {
+    titleLevel: string;
+    titleSize: string;
+    titleColor: string;
+    displaySubTitle: boolean;
+    subTitleLevel: string;
+    subTitleSize: string;
+    subTitleColor: string;
+    displayHighlight: boolean;
+    highlightColor: string;
+    imgPosition: string;
+    bgColor: string;
+    mobileImageBlur: boolean;
+    displayFilter: boolean;
+    filterOpacity: number;
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    title: string;
+    titleLevel?: HeadingLevel | undefined;
+    titleSize?: HeadingSize | undefined;
+    titleColor?: ColorPalette | undefined;
+    displaySubTitle?: boolean | undefined;
+    subTitle?: string | undefined;
+    subTitleLevel?: HeadingLevel | undefined;
+    subTitleSize?: HeadingSize | undefined;
+    subTitleColor?: ColorPalette | undefined;
+    displayHighlight?: boolean | undefined;
+    highlightColor?: ColorPalette | undefined;
+    bgImage: string;
+    bgColor?: ColorPalette | undefined;
+    mobileImageBlur?: boolean | undefined;
+    imgPosition?: DirectionX | undefined;
+    displayFilter?: boolean | undefined;
+    filterOpacity?: OpacityRange | undefined;
+}>, {
+    titleLevel: string;
+    titleSize: string;
+    titleColor: string;
+    displaySubTitle: boolean;
+    subTitleLevel: string;
+    subTitleSize: string;
+    subTitleColor: string;
+    displayHighlight: boolean;
+    highlightColor: string;
+    imgPosition: string;
+    bgColor: string;
+    mobileImageBlur: boolean;
+    displayFilter: boolean;
+    filterOpacity: number;
+}>>>, {
     titleColor: ColorPalette;
     titleLevel: HeadingLevel;
     titleSize: HeadingSize;
@@ -154,6 +84,23 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     default?(_: {}): any;
 }>;
 export default _default;
+type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
+type __VLS_TypePropsToRuntimeProps<T> = {
+    [K in keyof T]-?: {} extends Pick<T, K> ? {
+        type: import('vue').PropType<__VLS_NonUndefinedable<T[K]>>;
+    } : {
+        type: import('vue').PropType<T[K]>;
+        required: true;
+    };
+};
+type __VLS_WithDefaults<P, D> = {
+    [K in keyof Pick<P, keyof P>]: K extends keyof D ? __VLS_Prettify<P[K] & {
+        default: D[K];
+    }> : P[K];
+};
+type __VLS_Prettify<T> = {
+    [K in keyof T]: T[K];
+} & {};
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {
         $slots: S;
