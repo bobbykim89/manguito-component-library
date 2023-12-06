@@ -22,4 +22,3 @@ export const observeVisibleAttr = (fn) => {
     });
     return observer;
 };
-//# sourceMappingURL=observeVisible.js.map

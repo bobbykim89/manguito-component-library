@@ -1,198 +1,102 @@
 import type { ColorPalette, HeadingSize, CtaTarget, CrossOrigin } from '@bobbykim/manguito-theme';
-declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
-    title: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    titleColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    titleSize: {
-        type: import("vue").PropType<HeadingSize>;
-        default: string;
-    };
-    borderColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    bgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    displayImage: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    imageSource: {
-        type: import("vue").PropType<string>;
-    };
-    imageAlt: {
-        type: import("vue").PropType<string>;
-    };
-    imageCors: {
-        type: import("vue").PropType<CrossOrigin>;
-        default: string;
-    };
-    displayCta: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    ctaAsLink: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    ctaText: {
-        type: import("vue").PropType<string>;
-        default: string;
-    };
-    ctaColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    ctaLink: {
-        type: import("vue").PropType<string>;
-        default: string;
-    };
-    ctaTarget: {
-        type: import("vue").PropType<CtaTarget>;
-        default: string;
-    };
-    displayLabel: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    labelText: {
-        type: import("vue").PropType<string>;
-        default: string;
-    };
-    labelTextColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    labelColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    enlargeOnHover: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    displayHighlight: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    highlightColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    rounded: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    displayShadow: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-}, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
+declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    title: string;
+    titleSize?: HeadingSize | undefined;
+    titleColor?: ColorPalette | undefined;
+    borderColor?: ColorPalette | undefined;
+    bgColor?: ColorPalette | undefined;
+    displayImage?: boolean | undefined;
+    imageSource?: string | undefined;
+    imageAlt?: string | undefined;
+    imageCors?: CrossOrigin | undefined;
+    displayCta?: boolean | undefined;
+    ctaAsLink?: boolean | undefined;
+    ctaText?: string | undefined;
+    ctaColor?: ColorPalette | undefined;
+    ctaLink?: string | undefined;
+    ctaTarget?: CtaTarget | undefined;
+    displayLabel?: boolean | undefined;
+    labelText?: string | undefined;
+    labelTextColor?: ColorPalette | undefined;
+    labelColor?: ColorPalette | undefined;
+    enlargeOnHover?: boolean | undefined;
+    displayHighlight?: boolean | undefined;
+    highlightColor?: ColorPalette | undefined;
+    rounded?: boolean | undefined;
+    displayShadow?: boolean | undefined;
+}>, {
+    titleSize: string;
+    titleColor: string;
+    borderColor: string;
+    bgColor: string;
+    displayImage: boolean;
+    imageCors: string;
+    displayCta: boolean;
+    ctaAsLink: boolean;
+    ctaColor: string;
+    ctaLink: string;
+    ctaTarget: string;
+    ctaText: string;
+    displayLabel: boolean;
+    labelText: string;
+    labelTextColor: string;
+    labelColor: string;
+    displayHighlight: boolean;
+    highlightColor: string;
+    enlargeOnHover: boolean;
+    rounded: boolean;
+    displayShadow: boolean;
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "card-click": (...args: any[]) => void;
     "card-btn-click": (...args: any[]) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<{
-    title: {
-        type: import("vue").PropType<string>;
-        required: true;
-    };
-    titleColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    titleSize: {
-        type: import("vue").PropType<HeadingSize>;
-        default: string;
-    };
-    borderColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    bgColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    displayImage: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    imageSource: {
-        type: import("vue").PropType<string>;
-    };
-    imageAlt: {
-        type: import("vue").PropType<string>;
-    };
-    imageCors: {
-        type: import("vue").PropType<CrossOrigin>;
-        default: string;
-    };
-    displayCta: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    ctaAsLink: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    ctaText: {
-        type: import("vue").PropType<string>;
-        default: string;
-    };
-    ctaColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    ctaLink: {
-        type: import("vue").PropType<string>;
-        default: string;
-    };
-    ctaTarget: {
-        type: import("vue").PropType<CtaTarget>;
-        default: string;
-    };
-    displayLabel: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    labelText: {
-        type: import("vue").PropType<string>;
-        default: string;
-    };
-    labelTextColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    labelColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    enlargeOnHover: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    displayHighlight: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    highlightColor: {
-        type: import("vue").PropType<ColorPalette>;
-        default: string;
-    };
-    rounded: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-    displayShadow: {
-        type: import("vue").PropType<boolean>;
-        default: boolean;
-    };
-}>> & {
+}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+    title: string;
+    titleSize?: HeadingSize | undefined;
+    titleColor?: ColorPalette | undefined;
+    borderColor?: ColorPalette | undefined;
+    bgColor?: ColorPalette | undefined;
+    displayImage?: boolean | undefined;
+    imageSource?: string | undefined;
+    imageAlt?: string | undefined;
+    imageCors?: CrossOrigin | undefined;
+    displayCta?: boolean | undefined;
+    ctaAsLink?: boolean | undefined;
+    ctaText?: string | undefined;
+    ctaColor?: ColorPalette | undefined;
+    ctaLink?: string | undefined;
+    ctaTarget?: CtaTarget | undefined;
+    displayLabel?: boolean | undefined;
+    labelText?: string | undefined;
+    labelTextColor?: ColorPalette | undefined;
+    labelColor?: ColorPalette | undefined;
+    enlargeOnHover?: boolean | undefined;
+    displayHighlight?: boolean | undefined;
+    highlightColor?: ColorPalette | undefined;
+    rounded?: boolean | undefined;
+    displayShadow?: boolean | undefined;
+}>, {
+    titleSize: string;
+    titleColor: string;
+    borderColor: string;
+    bgColor: string;
+    displayImage: boolean;
+    imageCors: string;
+    displayCta: boolean;
+    ctaAsLink: boolean;
+    ctaColor: string;
+    ctaLink: string;
+    ctaTarget: string;
+    ctaText: string;
+    displayLabel: boolean;
+    labelText: string;
+    labelTextColor: string;
+    labelColor: string;
+    displayHighlight: boolean;
+    highlightColor: string;
+    enlargeOnHover: boolean;
+    rounded: boolean;
+    displayShadow: boolean;
+}>>> & {
     "onCard-click"?: ((...args: any[]) => any) | undefined;
     "onCard-btn-click"?: ((...args: any[]) => any) | undefined;
 }, {
@@ -221,6 +125,23 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<{
     default?(_: {}): any;
 }>;
 export default _default;
+type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
+type __VLS_TypePropsToRuntimeProps<T> = {
+    [K in keyof T]-?: {} extends Pick<T, K> ? {
+        type: import('vue').PropType<__VLS_NonUndefinedable<T[K]>>;
+    } : {
+        type: import('vue').PropType<T[K]>;
+        required: true;
+    };
+};
+type __VLS_WithDefaults<P, D> = {
+    [K in keyof Pick<P, keyof P>]: K extends keyof D ? __VLS_Prettify<P[K] & {
+        default: D[K];
+    }> : P[K];
+};
+type __VLS_Prettify<T> = {
+    [K in keyof T]: T[K];
+} & {};
 type __VLS_WithTemplateSlots<T, S> = T & {
     new (): {
         $slots: S;

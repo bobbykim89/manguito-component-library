@@ -121,7 +121,7 @@ const buttonClass = (
   return classArray.join(' ')
 }
 
-const borderColor = computed(() => {
+const styleVariables = computed(() => {
   return {
     '--border-color': colors.value[props.borderColor],
     '--gradient-1': colors.value[props.gradient1],
@@ -165,7 +165,7 @@ watch(
   <div
     class="card overflow-hidden rounded-md max-w-[450px] sm:max-w-[350px] w-full xs:w-auto flex-grow flex-shrink-0 border"
     :class="generateClass('BORDER', borderColor)"
-    :style="borderColor"
+    :style="styleVariables"
   >
     <div class="flex flex-col rounded-md overflow-hidden">
       <img
