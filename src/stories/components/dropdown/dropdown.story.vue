@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
-import MclDropdown, {
-  DropdownItem,
-  ItemClickEvent,
-} from '@/components/mcl-dropdown'
+import MclDropdown from '@/components/mcl-dropdown'
+import type { DropdownItem, ItemClickEvent } from '@/components/mcl-dropdown'
 import type {
   ColorPalette,
   BodyText,
