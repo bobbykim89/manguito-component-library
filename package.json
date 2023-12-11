@@ -21,7 +21,6 @@
     "publish": "lerna publish"
   },
   "devDependencies": {
-    "@histoire/plugin-vue": "^0.17.6",
     "@storybook/addon-essentials": "^7.6.4",
     "@storybook/addon-interactions": "^7.6.4",
     "@storybook/addon-links": "^7.6.4",
@@ -39,7 +38,6 @@
     "autoprefixer": "^10.4.16",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
-    "histoire": "^0.17.6",
     "inquirer": "^9.2.12",
     "lerna": "^8.0.0",
     "lodash": "^4.17.21",
