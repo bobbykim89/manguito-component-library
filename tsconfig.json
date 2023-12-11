@@ -13,7 +13,7 @@
     "esModuleInterop": true,
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
-    "types": ["node"],
+    "types": ["vite/client"],
     "allowJs": true,
     "baseUrl": "./",
     "paths": {
