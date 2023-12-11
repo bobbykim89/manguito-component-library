@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <Story title="Utility Class" group="design-system">
     <!-- button class -->
