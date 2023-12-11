@@ -12,8 +12,8 @@
   "scripts": {
     "story:dev": "storybook dev -p 6006",
     "story:build": "storybook build -o dist",
-    "story:preview": "histoire preview",
     "story:install": "npm install && npm install @bobbykim/manguito-theme",
+    "bootstrap": "lerna bootstrap",
     "create": "node ./scripts/index.mjs",
     "commit": "cz",
     "release": "standard-version",
