@@ -1,0 +1,64 @@
+import { Canvas, Meta } from '@storybook/blocks'
+import * as Stories from './list-class/list.stories'
+
+<Meta of={Stories} />
+
+# List class
+
+## Default list
+
+```html
+<ul class="mcl-list">
+  <li>item 1</li>
+  <li>item 2</li>
+  <li>item 3</li>
+</ul>
+```
+
+## List style colors
+
+```html
+<ul class="mcl-list mcl-list-primary">
+  <li>item 1</li>
+  <li>item 2</li>
+  <li>item 3</li>
+</ul>
+
+<ul class="mcl-list mcl-list-secondary">
+  <li>item 1</li>
+  <li>item 2</li>
+  <li>item 3</li>
+</ul>
+
+<ul class="mcl-list mcl-list-info">
+  <li>item 1</li>
+  <li>item 2</li>
+  <li>item 3</li>
+</ul>
+```
+
+## List style size
+
+```html
+<ul class="mcl-list mcl-list-primary">
+  <li>item 1</li>
+  <li>item 2</li>
+  <li>item 3</li>
+</ul>
+
+<ul class="mcl-list mcl-list-sm mcl-list-secondary">
+  <li>item 1</li>
+  <li>item 2</li>
+  <li>item 3</li>
+</ul>
+
+<ul class="mcl-list mcl-list-lg mcl-list-info">
+  <li>item 1</li>
+  <li>item 2</li>
+  <li>item 3</li>
+</ul>
+```
+
+## Example
+
+<Canvas of={Stories.listClassExample} />

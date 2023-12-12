@@ -1,0 +1,24 @@
+import { Canvas, Meta } from '@storybook/blocks'
+import * as Stories from './link-class/link.stories'
+
+<Meta of={Stories} />
+
+# Link Class
+
+## Default link
+
+```html
+<a href="#" class="mcl-link">Default</a>
+```
+
+## Link Style Colors
+
+```html
+<a href="#" class="mcl-link text-secondary">Secondary</a>
+<a href="#" class="mcl-link text-success">Success</a>
+<a href="#" class="mcl-link text-info">Info</a>
+```
+
+## Example
+
+<Canvas of={Stories.linkClassExample} />

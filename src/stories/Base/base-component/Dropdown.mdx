@@ -1,0 +1,43 @@
+import { Canvas, Meta } from '@storybook/blocks'
+import * as Stories from './dropdown/dropdown.stories'
+
+<Meta of={Stories} />
+
+# Dropdown component
+
+Included in `@bobbykim/manguito-theme`
+
+## Usage
+
+```js
+<script lang="ts" setup>
+import { DropdownContainer, DropdownContent } from '@bobbykim/manguito-theme'
+</script>
+
+<template>
+  <div>
+    <dropdown-container>
+      <template #toggler="{ toggle, dropdownState }">
+        <button @click="toggle">
+          <span> {{ button name }} </span>
+        </button>
+      </template>
+      <dropdown-content v-slot="{ itemClick }" class-name="taildind css class">
+        <button @click="itemClick()">
+          {{ dropdown item }}
+        </button>
+        <button @click="itemClick()">
+          {{ dropdown item }}
+        </button>
+        <button @click="itemClick()">
+          {{ dropdown item }}
+        </button>
+      </dropdown-content>
+    </dropdown-container>
+  </div>
+</template>
+```
+
+### Example
+
+<Canvas of={Stories.dropdownExample} />
