@@ -2,31 +2,31 @@ import type { Preview } from '@storybook/vue3'
 import '../src/assets/style.css'
 
 const customViewports = {
-  small: {
-    name: 'Small',
+  mobile: {
+    name: 'Mobile',
     styles: {
-      width: '640px',
-      height: '1024px',
+      width: '425px',
+      height: '835px',
     },
   },
-  medium: {
-    name: 'Medium',
+  tablet: {
+    name: 'Tablet',
     styles: {
       width: '768px',
       height: '1024px',
     },
   },
-  large: {
-    name: 'Large',
+  laptop: {
+    name: 'Laptop',
     styles: {
       width: '1024px',
       height: '1024px',
     },
   },
-  xLarge: {
-    name: 'X-large',
+  laptopLarge: {
+    name: 'Laptop (L)',
     styles: {
-      width: '1280px',
+      width: '1440px',
       height: '1024px',
     },
   },
