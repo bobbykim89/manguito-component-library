@@ -1,0 +1,47 @@
+import { Canvas, Meta } from '@storybook/blocks'
+import * as Stories from './tooltip/tooltip.stories'
+
+<Meta of={Stories} />
+
+# Tooltip component
+
+Included in `@bobbykim/manguito-theme`
+
+## Usage
+
+```js
+<script lang="ts" setup>
+import { vTooltip } from '@bobbykim/manguito-theme'
+</script>
+
+<template>
+  <button v-tooltip title="Tooltip text here">Default tooltip</button>
+  <button v-tooltip="'Tooltip text here'">
+    Alaternative way to add tooltip text
+  </button>
+  <button v-tooltip:top title="Tooltip text here">
+    Tooltip with direction (Default right)
+  </button>
+  <button v-tooltip title="Tooltip text here" color="primary">
+    Tooltip with color (Default dark-3)
+  </button>
+  <button v-tooltip title="Tooltip text here" text-color="primary">
+    Tooltip with text color (Default white)
+  </button>
+  <button v-tooltip title="Tooltip text here" width="140">
+    Tooltip with width (Default 80px)
+  </button>
+  <button
+    v-tooltip="{title: 'tooltip text here', color: 'primary', textColor: 'secondary' width: 150}"
+  >
+    Set tooltip by using value
+  </button>
+  <button
+    v-tooltip="{title: 'tooltip text here', color: 'primary', textColor: 'secondary' width: 150, className: '/** custom classname here**/'}"
+  >
+    customize tooltip with custom classname
+  </button>
+</template>
+```
+
+<Canvas of={Stories.tooltipExample} />
