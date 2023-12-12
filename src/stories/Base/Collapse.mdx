@@ -1,0 +1,130 @@
+import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import * as Stories from './collapse/collapse.stories'
+
+<Meta of={Stories} />
+
+# Collapse component
+
+Included in `@bobbykim/manguito-theme`
+
+## Usage
+
+```js
+<script lang="ts" setup>
+import { Collapse, vCollapse } from '@bobbykim/manguito-theme'
+</script>
+
+<template>
+  <!-- single collapse component example -->
+  <div>
+    <!-- trigger collapse toggle  -->
+    <button v-collapse:collapse-component-id>{{Tab button name}}</button>
+    <button v-collapse:[when calling collapse-id dynamically]>
+      {{Tab button name}}
+    </button>
+    <!-- trigger by 'a' tag -->
+    <a href="#collapse-component-id" v-collapse>{{Tab button name here}}</a>
+    <collapse
+      id="collapse-component-id"
+      class-name="tailwind css class"
+      @open="$event"
+      @close="$event"
+    >
+      <div>
+        <!-- collapse content -->
+      </div>
+    </collapse>
+  </div>
+  <!-- accordion example -->
+  <div>
+    <button v-collapse:collapse-component-id-1>{{Tab button name}}</button>
+    <collapse id="collapse-component-id-1" accordion="my-accordion-group">
+      <div>
+        <!-- collapse content -->
+      </div>
+    </collapse>
+    <button v-collapse:collapse-component-id-2>{{Tab button name}}</button>
+    <collapse id="collapse-component-id-2" accordion="my-accordion-group">
+      <div>
+        <!-- collapse content -->
+      </div>
+    </collapse>
+    <button v-collapse:collapse-component-id-3>{{Tab button name}}</button>
+    <collapse id="collapse-component-id-3" accordion="my-accordion-group">
+      <div>
+        <!-- collapse content -->
+      </div>
+    </collapse>
+  </div>
+</template>
+```
+
+<Canvas of={Stories.collapseExample} />
+
+### Trigger collapse through ref
+
+```js
+<script lang="ts" setup>
+import { Collapse } from '@bobbykim/manguito-theme'
+import { ref } from 'vue'
+
+const collapseRef = ref<InstanceType<typeof Collapse>>()
+
+const handleCollapse = () => {
+  // toggle collapse
+  collapseRef.value.toggle()
+  // open collapse
+  collapseRef.value.open()
+  // close collapse
+  collapseRef.value.close()
+}
+</script>
+
+<template>
+  <div>
+    <button @click="handleCollapse">Button Name</button>
+    <sidebar ref="collapseRef">...</sidebar>
+  </div>
+</template>
+```
+
+<Canvas of={Stories.collapseRefExample} />
+
+### Accordion
+
+```js
+<script lang="ts" setup>
+import { Collapse, vCollapse } from '@bobbykim/manguito-theme'
+</script>
+
+<template>
+  <!-- accordion example -->
+  <div>
+    <button v-collapse:collapse-component-id-1>{{Tab button name}}</button>
+    <collapse id="collapse-component-id-1" accordion="my-accordion-group">
+      <div>
+        <!-- collapse content -->
+      </div>
+    </collapse>
+    <button v-collapse:collapse-component-id-2>{{Tab button name}}</button>
+    <collapse id="collapse-component-id-2" accordion="my-accordion-group">
+      <div>
+        <!-- collapse content -->
+      </div>
+    </collapse>
+    <button v-collapse:collapse-component-id-3>{{Tab button name}}</button>
+    <collapse id="collapse-component-id-3" accordion="my-accordion-group">
+      <div>
+        <!-- collapse content -->
+      </div>
+    </collapse>
+  </div>
+</template>
+```
+
+<Canvas of={Stories.collapseAccordionExample} />
+
+### Events
+
+- `open` - \$event - Emitted when collapse component opens
+- `close` - \$event - Emitted when collapse component closes
