@@ -19,5 +19,8 @@
 "publishConfig": {
 "access": "public"
 },
-"license": "MIT"
+"license": "MIT",
+"dependencies": {
+"@bobbykim/manguito-theme": "^{%packageVersion%}"
+}
 }
