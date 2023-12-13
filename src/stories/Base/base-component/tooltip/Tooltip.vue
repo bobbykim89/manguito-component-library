@@ -1,15 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import {
-  Collapse,
-  vCollapse,
-  DropdownContainer,
-  DropdownContent,
-  Sidebar,
-  vToggle,
-  Modal,
-  vTooltip,
-} from '@/components/manguito-theme'
+import { vTooltip } from '@/components/manguito-theme'
 </script>
 
 <template>
@@ -112,7 +102,7 @@ import {
           v-tooltip.top
           title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
           class="btn btn-danger btn-fullwidth"
-          width="400"
+          tooltip-width="400"
         >
           Width 400px
         </button>

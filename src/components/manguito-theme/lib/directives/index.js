@@ -140,10 +140,10 @@ export const vTooltip = {
             }
             // handle tooltip width
             let tooltipWidth;
-            if (el.hasAttribute('width')) {
-                tooltipWidth = el.getAttribute('width');
+            if (el.hasAttribute('tooltip-width')) {
+                tooltipWidth = el.getAttribute('tooltip-width');
             }
-            if (!el.hasAttribute('width') &&
+            if (!el.hasAttribute('tooltip-width') &&
                 typeof binding.value !== 'undefined' &&
                 typeof binding.value !== 'string' &&
                 typeof binding.value.width === ('number' || 'string')) {

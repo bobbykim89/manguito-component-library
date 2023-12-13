@@ -20,6 +20,9 @@
     "package:build": "lerna run build",
     "publish": "lerna publish"
   },
+  "workspaces": [
+    "src/components/*"
+  ],
   "devDependencies": {
     "@storybook/addon-a11y": "^7.6.4",
     "@storybook/addon-actions": "^7.6.4",

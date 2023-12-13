@@ -14,9 +14,6 @@ export const collapseExample: Story = {
     components: { collapse: Collapse },
     template: '<collapse></collapse>',
   }),
-  parameters: {
-    controls: { disable: true },
-  },
 }
 
 export const collapseRefExample: Story = {
@@ -24,9 +21,6 @@ export const collapseRefExample: Story = {
     components: { 'collapse-ref': CollapseRef },
     template: '<collapse-ref></collapse-ref>',
   }),
-  parameters: {
-    controls: { disable: true },
-  },
 }
 
 export const collapseAccordionExample: Story = {
@@ -34,7 +28,4 @@ export const collapseAccordionExample: Story = {
     components: { 'collapse-accordionf': CollapseAccordion },
     template: '<collapse-accordionf></collapse-accordionf>',
   }),
-  parameters: {
-    controls: { disable: true },
-  },
 }

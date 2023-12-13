@@ -23,8 +23,8 @@ const customViewports = {
       height: '1024px',
     },
   },
-  laptopLarge: {
-    name: 'Laptop (L)',
+  desktop: {
+    name: 'Desktop',
     styles: {
       width: '1440px',
       height: '1024px',

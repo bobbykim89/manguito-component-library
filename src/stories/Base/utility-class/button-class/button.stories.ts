@@ -12,7 +12,4 @@ export const buttonExample: Story = {
     components: { 'button-class': Button },
     template: '<button-class></button-class>',
   }),
-  parameters: {
-    controls: { disable: true },
-  },
 }

@@ -80,12 +80,14 @@ inquirer.prompt(questions).then((answers) => {
       encoding: 'utf8',
     })
     .replace(/{%componentName%}/gi, componentName)
+  console.log('Created component files')
 
   const licenseTemplate = fs
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_license.md`), {
       encoding: 'utf8',
     })
     .replace(/{%author-name%}/gi, authorName)
+  console.log('Created license file')
 
   const packageTemplate = fs
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_package.md`), {
@@ -94,17 +96,25 @@ inquirer.prompt(questions).then((answers) => {
     .replace(/{%componentName%}/gi, `@bobbykim/${directoryName}`)
     .replace(/{%authorName%}/gi, authorName)
 
+  console.log('Created package.json file')
+
   const tsConfigTemplate = fs.readFileSync(
-    path.resolve(`${TEMPLATE_PATH}/_tsconfig.md`, {
+    path.resolve(`${TEMPLATE_PATH}/_tsconfig.md`),
+    {
       encoding: 'utf8',
-    })
+    }
   )
 
+  console.log('Created tsconfig.json file')
+
   const tsVueConfigTemplate = fs.readFileSync(
-    path.resolve(`${TEMPLATE_PATH}/_tsconfig.vue.md`, {
+    path.resolve(`${TEMPLATE_PATH}/_tsconfig.vue.md`),
+    {
       encoding: 'utf8',
-    })
+    }
   )
+
+  console.log('Created tsconfig.vue.json file')
 
   const readmeTemplate = fs
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_readme.md`), {
@@ -113,6 +123,8 @@ inquirer.prompt(questions).then((answers) => {
     .replace(/{%vueFileName%}/gi, componentName)
     .replace(/{%componentName%}/gi, `@bobbykim/${directoryName}`)
     .replace(/{%authorName%}/gi, authorName)
+
+  console.log('created readme file')
 
   const storyTemplate = fs
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_story.md`), {
@@ -126,6 +138,8 @@ inquirer.prompt(questions).then((answers) => {
       encoding: 'utf8',
     })
     .replace(/{%componentName%}/gi, componentName)
+
+  console.log('create index file')
 
   fs.mkdir(`${COMPONENTS_PATH}/${directoryName}`, (error) => {
     if (error) {

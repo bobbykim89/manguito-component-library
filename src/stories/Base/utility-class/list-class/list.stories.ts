@@ -12,7 +12,4 @@ export const listClassExample: Story = {
     components: { 'list-class': ListClass },
     template: '<list-class></list-class>',
   }),
-  parameters: {
-    controls: { disable: true },
-  },
 }

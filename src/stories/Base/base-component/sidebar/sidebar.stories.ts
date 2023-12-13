@@ -12,7 +12,4 @@ export const sidebarExample: Story = {
     components: { sidebar: Sidebar },
     template: '<sidebar></sidebar>',
   }),
-  parameters: {
-    controls: { disable: true },
-  },
 }

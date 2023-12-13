@@ -12,7 +12,4 @@ export const dropdownExample: Story = {
     components: { dropdown: Dropdown },
     template: '<dropdown></dropdown>',
   }),
-  parameters: {
-    controls: { disable: true },
-  },
 }
