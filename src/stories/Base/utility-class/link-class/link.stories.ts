@@ -12,7 +12,4 @@ export const linkClassExample: Story = {
     components: { 'link-class': LinkClass },
     template: '<link-class></link-class>',
   }),
-  parameters: {
-    controls: { disable: true },
-  },
 }

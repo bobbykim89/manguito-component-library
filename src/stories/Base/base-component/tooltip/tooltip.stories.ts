@@ -12,7 +12,4 @@ export const tooltipExample: Story = {
     components: { tooltip: Tooltip },
     template: '<tooltip></tooltip>',
   }),
-  parameters: {
-    controls: { disable: true },
-  },
 }

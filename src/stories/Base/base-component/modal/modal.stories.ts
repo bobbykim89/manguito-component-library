@@ -12,7 +12,4 @@ export const modalExample: Story = {
     components: { modal: Modal },
     template: '<modal></modal>',
   }),
-  parameters: {
-    controls: { disable: true },
-  },
 }
