@@ -16,7 +16,6 @@ const meta: Meta<typeof MclCardA> = {
       name: 'title',
       required: true,
       description: 'assigns title text of card',
-      defaultValue: undefined,
       category: 'Title Block',
     }),
     titleSize: headingTextControllers({
@@ -44,14 +43,12 @@ const meta: Meta<typeof MclCardA> = {
       name: 'image-source',
       required: false,
       description: 'image source on the card',
-      defaultValue: undefined,
       category: 'Image Block',
     }),
     imageAlt: textControllers({
       name: 'image-alt',
       required: false,
       description: 'image alt text on the card',
-      defaultValue: undefined,
       category: 'Image Block',
     }),
     imageCors: corsOptionControllers({
