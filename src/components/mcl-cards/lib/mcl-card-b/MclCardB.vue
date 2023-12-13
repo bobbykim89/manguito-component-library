@@ -7,7 +7,7 @@ import type {
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     title: string
     titleSize?: HeadingSize
