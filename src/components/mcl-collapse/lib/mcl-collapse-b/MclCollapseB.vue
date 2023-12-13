@@ -33,17 +33,15 @@ const props = withDefaults(
 )
 
 const toggle = ref(props.visible)
-const emit = defineEmits(['accordion-open', 'accordion-close'])
+const emit = defineEmits(['collapse-open', 'collapse-close'])
 
 const toggleAction = (e: CollapseEvent): void => {
   toggle.value = e.visible
   if (e.visible === true) {
-    emit('accordion-open', { ...e, title: props.title })
+    emit('collapse-open', { ...e, title: props.title })
   } else {
-    emit('accordion-close', { ...e, title: props.title })
+    emit('collapse-close', { ...e, title: props.title })
   }
-
-  // emit('accordion-click', { event: e, title: props.title })
 }
 
 const getBorderClass = (
