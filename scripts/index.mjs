@@ -1,8 +1,3 @@
-// const inquirer = require('inquirer')
-// const { camelCase, upperFirst, kebabCase } = require('lodash')
-// const fs = require('fs')
-// const path = require('path')
-
 import inquirer from 'inquirer'
 import lodash from 'lodash'
 import fs from 'fs'
@@ -72,6 +67,11 @@ inquirer.prompt(questions).then((answers) => {
   const directoryName = kebabCase(answers['component_name'])
   const authorName = upperFirst(answers['author_name'])
   const storyConfirm = answers['create_story']
+  const manguitoThemePackage = fs.readFileSync(
+    path.resolve(`${COMPONENTS_PATH}/manguito-theme/package.json`),
+    { encoding: 'utf8' }
+  )
+  const manguitoThemeVersion = JSON.parse(manguitoThemePackage).version
 
   const storyName = directoryName.replace(/-/gi, '')
 
@@ -95,6 +95,7 @@ inquirer.prompt(questions).then((answers) => {
     })
     .replace(/{%componentName%}/gi, `@bobbykim/${directoryName}`)
     .replace(/{%authorName%}/gi, authorName)
+    .replace(/{%packageVersion%}/gi, manguitoThemeVersion)
 
   console.log('Created package.json file')
 
@@ -161,7 +162,7 @@ inquirer.prompt(questions).then((answers) => {
               fs.writeFileSync(
                 `${STORIES_PATH}/${answers[
                   'component_type'
-                ].toLowerCase()}/${directoryName}/${componentName}.story.vue`,
+                ].toLowerCase()}/${directoryName}/${componentName}.stories.ts`,
                 storyTemplate
               )
             }
