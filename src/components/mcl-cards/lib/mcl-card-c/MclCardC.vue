@@ -20,7 +20,7 @@ const props = withDefaults(
     highlightOpacity?: OpacityRange
     displayTitle?: boolean
     cardColor?: ColorPalette
-    crossOrigin?: CrossOrigin
+    imageCors?: CrossOrigin
   }>(),
   {
     titleSize: 'md',
@@ -30,7 +30,7 @@ const props = withDefaults(
     highlightOpacity: 80,
     displayTitle: false,
     cardColor: 'primary',
-    crossOrigin: 'anonymous',
+    imageCors: 'anonymous',
   }
 )
 
@@ -92,7 +92,7 @@ const handleCardClick = (e: Event) => {
         cardFlipped ? 'opacity-100' : 'opacity-0',
         'absolute inset-0 object-cover object-center transition-opacity delay-500 duration-[800ms] grayscale-0 hover:grayscale',
       ]"
-      :crossorigin="crossOrigin"
+      :crossorigin="imageCors"
     />
     <div
       :class="[

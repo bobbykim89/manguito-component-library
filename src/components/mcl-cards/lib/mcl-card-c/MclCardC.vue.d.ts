@@ -10,7 +10,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     highlightOpacity?: OpacityRange | undefined;
     displayTitle?: boolean | undefined;
     cardColor?: ColorPalette | undefined;
-    crossOrigin?: CrossOrigin | undefined;
+    imageCors?: CrossOrigin | undefined;
 }>, {
     titleSize: string;
     titleColor: string;
@@ -19,7 +19,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     highlightOpacity: number;
     displayTitle: boolean;
     cardColor: string;
-    crossOrigin: string;
+    imageCors: string;
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "card-click": (...args: any[]) => void;
 }, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
@@ -33,7 +33,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     highlightOpacity?: OpacityRange | undefined;
     displayTitle?: boolean | undefined;
     cardColor?: ColorPalette | undefined;
-    crossOrigin?: CrossOrigin | undefined;
+    imageCors?: CrossOrigin | undefined;
 }>, {
     titleSize: string;
     titleColor: string;
@@ -42,18 +42,18 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     highlightOpacity: number;
     displayTitle: boolean;
     cardColor: string;
-    crossOrigin: string;
+    imageCors: string;
 }>>> & {
     "onCard-click"?: ((...args: any[]) => any) | undefined;
 }, {
     titleColor: ColorPalette;
     titleSize: HeadingSize;
+    imageCors: CrossOrigin;
     displayHighlight: boolean;
     highlightColor: ColorPalette;
     highlightOpacity: OpacityRange;
     displayTitle: boolean;
     cardColor: ColorPalette;
-    crossOrigin: CrossOrigin;
 }, {}>, {
     "card-body"?(_: {}): any;
 }>;

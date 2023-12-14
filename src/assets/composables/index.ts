@@ -29,8 +29,13 @@ import type {
 interface ControllerGenericInput {
   name: string
   required: boolean
-  description: string
+  description?: string
   category: string
+}
+interface RangeControllerControlOption {
+  min: number
+  max: number
+  step: number
 }
 interface ControllerColorType extends ControllerGenericInput {
   defaultValue?: ColorPalette
@@ -74,11 +79,13 @@ interface ControllerBooleanType extends ControllerGenericInput {
 interface ControllerTextType extends ControllerGenericInput {
   defaultValue?: string
 }
+interface ControllerRangeType extends ControllerGenericInput {
+  defaultValue?: number
+  controlOption: RangeControllerControlOption
+}
 interface ControllerWildCard extends ControllerGenericInput {
   defaultValue: any
 }
-
-type ControllerComposable = (...args: any[]) => any
 
 // select controllers
 export const colorControllers = (arg: ControllerColorType): any => {
@@ -306,5 +313,27 @@ export const textControllers = (arg: ControllerTextType): any => {
       category,
     },
     control: { type: 'text' },
+  }
+}
+
+// range controllers
+export const rangeControllers = (arg: ControllerRangeType): any => {
+  const { name, required, description, defaultValue, controlOption, category } =
+    arg
+  return {
+    name,
+    type: { name: 'string', required },
+    description,
+    table: {
+      type: { summary: 'Number' },
+      defaultValue: { summary: defaultValue },
+      category,
+    },
+    control: {
+      type: 'range',
+      min: controlOption.min,
+      max: controlOption.max,
+      step: controlOption.step,
+    },
   }
 }
