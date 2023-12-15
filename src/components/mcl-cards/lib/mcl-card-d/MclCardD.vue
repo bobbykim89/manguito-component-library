@@ -37,11 +37,11 @@ const props = withDefaults(
     displayImage?: boolean
     imageSource?: string
     imageAlt?: string
-    crossOrigin?: CrossOrigin
+    imageCors?: CrossOrigin
     title: string
     titleSize?: HeadingSize
     titleColor?: ColorPalette
-    backgroundColor?: ColorPalette
+    bgColor?: ColorPalette
     displayHighlight?: boolean
     highlightColor?: ColorPalette
     ctaText?: string
@@ -60,10 +60,10 @@ const props = withDefaults(
   {
     displayImage: true,
     imageAlt: '',
-    crossOrigin: 'anonymous',
+    imageCors: 'anonymous',
     titleSize: 'md',
     titleColor: 'dark-4',
-    backgroundColor: 'light-1',
+    bgColor: 'light-1',
     displayHighlight: true,
     highlightColor: 'primary',
     ctaText: 'Read more',
@@ -99,9 +99,9 @@ const buttonClass = (
   block: boolean
 ): string => {
   /**
-   * @dBtn - ctaButton
-   * @color - ctaButtonColor
-   * @block - ctaButtonBlock
+   * @param {boolean} - dBtn = ctaButton
+   * @param {ColorPalette} - color = ctaButtonColor
+   * @param {boolean} - block = ctaButtonBlock
    */
   const classArray: string[] = []
   const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
@@ -171,11 +171,11 @@ watch(
       <img
         v-if="displayImage"
         :src="imageSource"
-        :crossorigin="crossOrigin"
+        :crossorigin="imageCors"
         class="object-cover object-top max-h-[200px]"
         :alt="imageAlt"
       />
-      <div class="p-xs" :class="generateClass('BGCOLOR', backgroundColor)">
+      <div class="p-xs" :class="generateClass('BGCOLOR', bgColor)">
         <h3 class="mb-xs" :class="titleClass(titleSize, titleColor)">
           {{ title }}
         </h3>

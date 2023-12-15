@@ -83,8 +83,11 @@ interface ControllerRangeType extends ControllerGenericInput {
   defaultValue?: number
   controlOption: RangeControllerControlOption
 }
-interface ControllerWildCard extends ControllerGenericInput {
-  defaultValue: any
+interface ControllerObjectType extends ControllerGenericInput {
+  defaultValue?: {}
+}
+interface ControllerArrayType extends ControllerGenericInput {
+  defaultValue?: any[]
 }
 
 // select controllers
@@ -322,7 +325,7 @@ export const rangeControllers = (arg: ControllerRangeType): any => {
     arg
   return {
     name,
-    type: { name: 'string', required },
+    type: { name: 'number', required },
     description,
     table: {
       type: { summary: 'Number' },
@@ -335,5 +338,37 @@ export const rangeControllers = (arg: ControllerRangeType): any => {
       max: controlOption.max,
       step: controlOption.step,
     },
+  }
+}
+
+// object controllers
+export const objectControllers = (arg: ControllerObjectType): any => {
+  const { name, required, description, defaultValue, category } = arg
+  return {
+    name,
+    type: { name: 'object', required },
+    description,
+    table: {
+      type: { summary: 'Object' },
+      defaultValue: { summary: defaultValue },
+      category,
+    },
+    control: { type: 'object' },
+  }
+}
+
+// array controllers
+export const arrayControllers = (arg: ControllerArrayType): any => {
+  const { name, required, description, defaultValue, category } = arg
+  return {
+    name,
+    type: { name: 'array', required },
+    description,
+    table: {
+      type: { summary: 'Array' },
+      defaultValue: { summary: defaultValue },
+      category,
+    },
+    control: { type: 'array' },
   }
 }

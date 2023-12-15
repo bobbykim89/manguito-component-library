@@ -4,11 +4,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     displayImage?: boolean | undefined;
     imageSource?: string | undefined;
     imageAlt?: string | undefined;
-    crossOrigin?: CrossOrigin | undefined;
+    imageCors?: CrossOrigin | undefined;
     title: string;
     titleSize?: HeadingSize | undefined;
     titleColor?: ColorPalette | undefined;
-    backgroundColor?: ColorPalette | undefined;
+    bgColor?: ColorPalette | undefined;
     displayHighlight?: boolean | undefined;
     highlightColor?: ColorPalette | undefined;
     ctaText?: string | undefined;
@@ -26,10 +26,10 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
 }>, {
     displayImage: boolean;
     imageAlt: string;
-    crossOrigin: string;
+    imageCors: string;
     titleSize: string;
     titleColor: string;
-    backgroundColor: string;
+    bgColor: string;
     displayHighlight: boolean;
     highlightColor: string;
     ctaText: string;
@@ -48,11 +48,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     displayImage?: boolean | undefined;
     imageSource?: string | undefined;
     imageAlt?: string | undefined;
-    crossOrigin?: CrossOrigin | undefined;
+    imageCors?: CrossOrigin | undefined;
     title: string;
     titleSize?: HeadingSize | undefined;
     titleColor?: ColorPalette | undefined;
-    backgroundColor?: ColorPalette | undefined;
+    bgColor?: ColorPalette | undefined;
     displayHighlight?: boolean | undefined;
     highlightColor?: ColorPalette | undefined;
     ctaText?: string | undefined;
@@ -70,10 +70,10 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
 }>, {
     displayImage: boolean;
     imageAlt: string;
-    crossOrigin: string;
+    imageCors: string;
     titleSize: string;
     titleColor: string;
-    backgroundColor: string;
+    bgColor: string;
     displayHighlight: boolean;
     highlightColor: string;
     ctaText: string;
@@ -92,14 +92,14 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     titleColor: ColorPalette;
     titleSize: HeadingSize;
     borderColor: ColorPalette;
+    bgColor: ColorPalette;
     displayImage: boolean;
     imageAlt: string;
+    imageCors: CrossOrigin;
     ctaAsLink: boolean;
     ctaText: string;
     displayHighlight: boolean;
     highlightColor: ColorPalette;
-    crossOrigin: CrossOrigin;
-    backgroundColor: ColorPalette;
     ctaLinkTarget: CtaTarget;
     ctaButton: boolean;
     ctaButtonColor: ColorPalette;
