@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue'
+import { computed } from 'vue'
 import generateClass from '@bobbykim/manguito-theme'
 import type {
   ColorPalette,
@@ -10,27 +10,64 @@ import type {
 } from '@bobbykim/manguito-theme'
 import type { ColorMap } from './index.types'
 
-const defaultColors: ColorMap = {
-  primary: '#ec489a',
-  secondary: '#00feda',
-  success: '#78be20',
-  info: '#00a3e0',
-  warning: '#f1ac18',
-  danger: '#cc2f2f',
-  'light-1': '#fafafa',
-  'light-2': '#f1f1f1',
-  'light-3': '#e8e8e8',
-  'light-4': '#d0d0d0',
-  'dark-1': '#747474',
-  'dark-2': '#484848',
-  'dark-3': '#1f2937',
-  'dark-4': '#191919',
-  black: '#000',
-  white: 'fff',
-  transparent: 'transparent',
+// gradient color options objects
+const fromColorClasses: ColorMap = {
+  primary: 'from-primary',
+  secondary: 'from-secondary',
+  success: 'from-success',
+  info: 'from-info',
+  warning: 'from-warning',
+  danger: 'from-danger',
+  'light-1': 'from-light-1',
+  'light-2': 'from-light-2',
+  'light-3': 'from-light-3',
+  'light-4': 'from-light-4',
+  'dark-1': 'from-dark-1',
+  'dark-2': 'from-dark-2',
+  'dark-3': 'from-dark-3',
+  'dark-4': 'from-dark-4',
+  black: 'from-black',
+  white: 'from-white',
+  transparent: 'from-transparent',
 }
-
-const colors = ref<ColorMap>({})
+const viaColorClasses: ColorMap = {
+  primary: 'via-primary',
+  secondary: 'via-secondary',
+  success: 'via-success',
+  info: 'via-info',
+  warning: 'via-warning',
+  danger: 'via-danger',
+  'light-1': 'via-light-1',
+  'light-2': 'via-light-2',
+  'light-3': 'via-light-3',
+  'light-4': 'via-light-4',
+  'dark-1': 'via-dark-1',
+  'dark-2': 'via-dark-2',
+  'dark-3': 'via-dark-3',
+  'dark-4': 'via-dark-4',
+  black: 'via-black',
+  white: 'via-white',
+  transparent: 'via-transparent',
+}
+const toColorClasses: ColorMap = {
+  primary: 'to-primary',
+  secondary: 'to-secondary',
+  success: 'to-success',
+  info: 'to-info',
+  warning: 'to-warning',
+  danger: 'to-danger',
+  'light-1': 'to-light-1',
+  'light-2': 'to-light-2',
+  'light-3': 'to-light-3',
+  'light-4': 'to-light-4',
+  'dark-1': 'to-dark-1',
+  'dark-2': 'to-dark-2',
+  'dark-3': 'to-dark-3',
+  'dark-4': 'to-dark-4',
+  black: 'to-black',
+  white: 'to-white',
+  transparent: 'to-transparent',
+}
 
 const props = withDefaults(
   defineProps<{
@@ -83,8 +120,8 @@ const emit = defineEmits(['card-click'])
 
 const titleClass = (size: HeadingSize, color: ColorPalette): string => {
   /**
-   * @size - titleSize
-   * @color - titleColor
+   * @param {HeadingSize} size - titleSize
+   * @param {ColorPalette} color - titleColor
    */
 
   const classArray: string[] = [
@@ -121,51 +158,45 @@ const buttonClass = (
   return classArray.join(' ')
 }
 
-const styleVariables = computed(() => {
+const borderVariable = computed(() => {
   return {
-    '--border-color': colors.value[props.borderColor],
-    '--gradient-1': colors.value[props.gradient1],
-    '--gradient-2': colors.value[props.gradient2],
     '--border-width': `${props.borderWidth}px`,
   }
 })
 
-const configColorMap = () => {
-  Object.keys(colors.value).forEach((key: string) => {
-    if (props.customColor && props.customColor[key as keyof ColorMap]) {
-      colors.value[key as keyof ColorMap] =
-        props.customColor[key as keyof ColorMap]
-    } else {
-      colors.value[key as keyof ColorMap] = defaultColors[key as keyof ColorMap]
-    }
-  })
-}
+const gradientClass = computed<string>(() => {
+  const gradientBorerColor: string = fromColorClasses[props.borderColor]
+  const gradient1Color: string = viaColorClasses[props.gradient1]
+  const gradient2Color: string = toColorClasses[props.gradient2]
+  let classArray: string[] = [
+    generateClass('BORDER', props.borderColor),
+    gradientBorerColor,
+    gradient1Color,
+    gradient2Color,
+  ]
+
+  return classArray.join(' ')
+})
 
 const handleCardClick = (e: Event, link: boolean) => {
+  /**
+   * @param {Event} e - click event
+   * @param {Boolean} link - ctaAsLink
+   */
+
   const { title, ctaLink, ctaLinkTarget } = props
   if (!link) {
     e.preventDefault()
   }
   emit('card-click', { event: e, title, url: ctaLink, target: ctaLinkTarget })
 }
-
-onMounted(() => {
-  colors.value = Object.assign({}, defaultColors)
-  configColorMap()
-})
-watch(
-  () => props.customColor,
-  () => {
-    configColorMap()
-  }
-)
 </script>
 
 <template>
   <div
-    class="card overflow-hidden rounded-md max-w-[450px] sm:max-w-[350px] w-full xs:w-auto flex-grow flex-shrink-0 border"
-    :class="generateClass('BORDER', borderColor)"
-    :style="styleVariables"
+    class="card [--border-angle:0deg] bg-[conic-gradient(from_var(--border-angle),var(--tw-gradient-stops))] from-20% overflow-hidden rounded-md max-w-[450px] sm:max-w-[350px] w-full xs:w-auto flex-grow flex-shrink-0 border"
+    :class="gradientClass"
+    :style="borderVariable"
   >
     <div class="flex flex-col rounded-md overflow-hidden">
       <img
@@ -203,22 +234,15 @@ watch(
 
 <style lang="scss" scoped>
 .card {
-  --border-angle: 0turn;
-  background-image: conic-gradient(
-    from var(--border-angle),
-    var(--border-color) 20%,
-    var(--gradient-1),
-    var(--gradient-2)
-  );
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
   padding: var(--border-width);
 
-  animation: bg-spin 3s linear infinite;
+  animation: bg-spin 4s linear infinite;
   @keyframes bg-spin {
     to {
-      --border-angle: 1turn;
+      --border-angle: 360deg;
     }
   }
 
@@ -230,6 +254,6 @@ watch(
 @property --border-angle {
   syntax: '<angle>';
   inherits: true;
-  initial-value: 0turn;
+  initial-value: 0deg;
 }
 </style>

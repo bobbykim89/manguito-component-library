@@ -5,9 +5,7 @@ import {
   textControllers,
   booleanControllers,
   corsOptionControllers,
-  targetOptionControllers,
   rangeControllers,
-  objectControllers,
 } from '@/assets/composables'
 import { MclCardD } from '@/components/mcl-cards'
 
@@ -100,13 +98,6 @@ const meta: Meta<typeof MclCardD> = {
       defaultValue: 'secondary',
       category: 'Card Body',
     }),
-    customColor: objectControllers({
-      name: 'custom-color',
-      required: false,
-      description: 'set options for custom colors used in gradient',
-      defaultValue: {},
-      category: 'Card Body',
-    }),
     ctaText: textControllers({
       name: 'cta-text',
       required: false,
@@ -187,7 +178,6 @@ const meta: Meta<typeof MclCardD> = {
     borderColor: 'light-3',
     gradient1: 'primary',
     gradient2: 'secondary',
-    customColor: {},
   },
 }
 
