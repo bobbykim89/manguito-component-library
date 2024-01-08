@@ -1,0 +1,38 @@
+import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import * as Stories from './mcl-tabs-a/tabsA.stories'
+
+<Meta of={Stories} />
+
+# MCL Tabs A
+
+Included in `@bobbykim/mcl-tabs`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-tabs
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclTabsA } from '@bobbykim/mcl-tabs'
+</script>
+
+<template>
+  <mcl-tabs-a></mcl-tabs-a>
+</template>
+```
+
+<Canvas of={Stories.MclTabsAExample} />
+
+## Controls
+
+<Controls of={Stories.MclTabsAExample} />
+
+## Events
+
+-`tab-click` - (event: Event, title: string) - Emitted on tab title button click
