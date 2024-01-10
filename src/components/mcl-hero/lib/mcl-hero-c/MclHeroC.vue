@@ -24,7 +24,7 @@ const props = withDefaults(
     labelTextSize?: BodyText
     labelTextColor?: ColorPalette
     labelBgColor?: ColorPalette
-    displaySlot?: boolean
+    useSlot?: boolean
   }>(),
   {
     titleLevel: 'h1',
@@ -39,7 +39,7 @@ const props = withDefaults(
     labelTextSize: 'md',
     labelTextColor: 'light-1',
     labelBgColor: 'dark-3',
-    displaySlot: true,
+    useSlot: true,
   }
 )
 
@@ -176,7 +176,7 @@ const generateGradientColor = (color: ColorPalette): string => {
       ></div>
     </div>
     <div
-      v-if="displaySlot"
+      v-if="useSlot"
       class="px-sm md:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[40vw] 2xl:max-w-[35vw] relative"
     >
       <slot></slot>

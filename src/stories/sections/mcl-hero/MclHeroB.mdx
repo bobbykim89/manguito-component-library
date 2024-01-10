@@ -1,9 +1,9 @@
 import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
-import * as Stories from './mcl-hero-a/heroA.stories'
+import * as Stories from './mcl-hero-b/heroB.stories'
 
 <Meta of={Stories} />
 
-# MCL Hero A
+# MCL Hero B
 
 Included in `@bobbykim/mcl-hero`
 
@@ -19,19 +19,19 @@ In your code
 
 ```js
 <script setup lang="ts">
-import { MclHeroA } from '@bobbykim/mcl-hero'
+import { MclHeroB } from '@bobbykim/mcl-hero'
 </script>
 
 <template>
-  <mcl-hero-a></mcl-hero-a>
+  <mcl-hero-b></mcl-hero-b>
 </template>
 ```
 
-<Canvas of={Stories.MclHeroAExample} />
+<Canvas of={Stories.MclHeroBExample} />
 
 ## Controls
 
-<Controls of={Stories.MclHeroAExample} />
+<Controls of={Stories.MclHeroBExample} />
 
 ### Slot
 
