@@ -1,0 +1,45 @@
+import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import * as Stories from './mcl-header-a/headerA.stories'
+
+<Meta of={Stories} />
+
+# MCL Header A
+
+Included in `@bobbykim/mcl-header`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-header
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclHeaderA } from '@bobbykim/mcl-header'
+</script>
+
+<template>
+  <mcl-header-a></mcl-header-a>
+</template>
+```
+
+<Canvas of={Stories.MclHeaderAExample} />
+
+## Controls
+
+<Controls of={Stories.MclHeaderAExample} />
+
+## Slot
+
+- `#nav-slot`: slot on the right side of the component
+- `#mobile-slot`: slot at the bottom of collapse menu on mobile screen
+
+## Events
+
+- `logo-click` - (event, title, link, target) - event fired on logo click
+- `title-click` - (event, title, link, target) - event fired on title text click
+- `menu-click` - (event, menuItem.title, menuItem.link, menuItem.target) - event fired on menu item click

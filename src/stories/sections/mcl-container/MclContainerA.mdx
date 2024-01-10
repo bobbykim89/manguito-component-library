@@ -1,0 +1,39 @@
+import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import * as Stories from './mcl-container-a/containerA.stories'
+
+<Meta of={Stories} />
+
+# MCL Container A
+
+Included in `@bobbykim/mcl-container`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-container
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclContainerA } from '@bobbykim/mcl-container'
+</script>
+
+<template>
+  <mcl-container-a></mcl-container-a>
+</template>
+```
+
+<Canvas of={Stories.MclContainerAExample} />
+
+## Controls
+
+<Controls of={Stories.MclContainerAExample} />
+
+### Slot
+
+- `#left-column`: column on the left side of container displayed at default
+- `#right-column`: column on the right side of container, displayed only when `twoColumns` prop is true

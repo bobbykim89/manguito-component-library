@@ -79,6 +79,9 @@ interface ControllerBooleanType extends ControllerGenericInput {
 interface ControllerTextType extends ControllerGenericInput {
   defaultValue?: string
 }
+interface ControllerNumberType extends ControllerGenericInput {
+  defaultValue?: number
+}
 interface ControllerRangeType extends ControllerGenericInput {
   defaultValue?: number
   controlOption: RangeControllerControlOption
@@ -208,6 +211,21 @@ export const targetOptionControllers = (
 }
 
 export const columnWidthControllers = (arg: ControllerColWidthType): any => {
+  const { name, required, description, defaultValue, category } = arg
+  return {
+    name,
+    type: { name: 'string', required },
+    description,
+    table: {
+      type: { summary: 'Number' },
+      defaultValue: { summary: defaultValue },
+      category,
+    },
+    control: { type: 'number' },
+  }
+}
+
+export const numberControllers = (arg: ControllerNumberType): any => {
   const { name, required, description, defaultValue, category } = arg
   return {
     name,
