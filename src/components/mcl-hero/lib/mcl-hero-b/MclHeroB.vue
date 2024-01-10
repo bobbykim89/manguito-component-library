@@ -12,10 +12,10 @@ const props = withDefaults(
     titleLevel?: HeadingLevel
     titleSize?: HeadingSize
     titleColor?: ColorPalette
-    showTitleHighlight?: boolean
-    titleHighlightColor?: ColorPalette
+    displayHighlight?: boolean
+    highlightColor?: ColorPalette
     fullWidth?: boolean
-    bgImage: string
+    imageSource: string
     displayGradients?: boolean
     gradientColor?: ColorPalette
   }>(),
@@ -23,8 +23,8 @@ const props = withDefaults(
     titleLevel: 'h1',
     titleSize: 'md',
     titleColor: 'white',
-    showTitleHighlight: false,
-    titleHighlightColor: 'dark-3',
+    displayHighlight: false,
+    highlightColor: 'dark-3',
     fullWidth: true,
     displayGradients: true,
     gradientColor: 'dark-3',
@@ -32,7 +32,7 @@ const props = withDefaults(
 )
 const getBgImage = (img: string) => {
   /**
-   * @img - bgImage
+   * @img - imageSource
    */
   return { 'background-image': `url('${img}')` }
 }
@@ -78,8 +78,8 @@ const getTitleHighlightClass = (
   display: boolean
 ): string => {
   /**
-   * @color - titleHighlightColor
-   * @display - showTitleHighlight
+   * @color - highlightColor
+   * @display - displayHighlight
    */
 
   const classArray = [generateClass('BGCOLOR', color), 'shadow-lg', 'px-xs']
@@ -134,7 +134,7 @@ const generateGradientColor = (color: ColorPalette): string => {
   <section
     class="relative bg-image-container flex flex-col justify-end"
     :class="getSectionWidth(fullWidth)"
-    :style="getBgImage(bgImage)"
+    :style="getBgImage(imageSource)"
   >
     <div
       v-if="displayGradients"
@@ -150,9 +150,7 @@ const generateGradientColor = (color: ColorPalette): string => {
           >
             <span
               class="box-decoration-clone py-2xs"
-              :class="
-                getTitleHighlightClass(titleHighlightColor, showTitleHighlight)
-              "
+              :class="getTitleHighlightClass(highlightColor, displayHighlight)"
               v-html="title"
             >
             </span>

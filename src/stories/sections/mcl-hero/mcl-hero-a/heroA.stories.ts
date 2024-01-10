@@ -5,9 +5,6 @@ import {
   headingLevelControllers,
   textControllers,
   booleanControllers,
-  bodyTextControllers,
-  spacingControllers,
-  arrayControllers,
   xDirControllers,
   rangeControllers,
 } from '@/assets/composables'
