@@ -4,16 +4,16 @@ import generateClass, { Collapse, vCollapse } from '@bobbykim/manguito-theme'
 import type { CollapseEvent } from '@bobbykim/manguito-theme'
 import type { ColorPalette, BodyText } from '@bobbykim/manguito-theme'
 import type {
-  NavCollapseType,
-  NavItemType,
+  MenuItemType,
+  MenuCollapseType,
   NavChildClickEventType,
-} from '../index.type'
+} from './index.types'
 
 const props = withDefaults(
   defineProps<{
     navId: string
     navAccordionGroup: string
-    navItem: NavCollapseType
+    navItem: MenuCollapseType
     bgColor?: ColorPalette
     hoverBgColor?: ColorPalette
     menuTextSize?: BodyText
@@ -53,7 +53,7 @@ const toggleAction = (e: CollapseEvent): void => {
   toggle.value = e.visible
   //   emit('nav-link', { event: e, title: props.navItem.title })
 }
-const navItemClick = (e: Event, item: NavItemType) => {
+const navItemClick = (e: Event, item: MenuItemType) => {
   const customEvent: NavChildClickEventType = {
     event: e,
     item,

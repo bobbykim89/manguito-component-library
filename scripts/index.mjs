@@ -134,6 +134,13 @@ inquirer.prompt(questions).then((answers) => {
     .replace(/{%componentName%}/gi, componentName)
     .replace(/{%componentDir%}/gi, directoryName)
 
+  const storyMdxTemplate = fs
+    .readFileSync(path.resolve(`${TEMPLATE_PATH}/_story.mdx.md`), {
+      encoding: 'utf8',
+    })
+    .replace(/{%componentName%}/gi, componentName)
+    .replace(/{%componentDir%}/gi, directoryName)
+
   const indexTemplate = fs
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_index.md`), {
       encoding: 'utf8',
@@ -164,6 +171,13 @@ inquirer.prompt(questions).then((answers) => {
                   'component_type'
                 ].toLowerCase()}/${directoryName}/${componentName}.stories.ts`,
                 storyTemplate
+              )
+              // create story mdx file
+              fs.writeFileSync(
+                `${STORIES_PATH}/${answers[
+                  'component_type'
+                ].toLowerCase()}/${directoryName}/${componentName}.mdx`,
+                storyMdxTemplate
               )
             }
           }
