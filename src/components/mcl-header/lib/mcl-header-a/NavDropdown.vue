@@ -6,14 +6,14 @@ import generateClass, {
 } from '@bobbykim/manguito-theme'
 import type { ColorPalette, BodyText } from '@bobbykim/manguito-theme'
 import type {
-  NavCollapseType,
-  NavItemType,
+  MenuItemType,
+  MenuCollapseType,
   NavChildClickEventType,
 } from './index.types'
 
 const props = withDefaults(
   defineProps<{
-    navItem: NavCollapseType
+    navItem: MenuCollapseType
     bgColor?: ColorPalette
     hoverBgColor?: ColorPalette
     menuTextSize?: BodyText
@@ -74,7 +74,7 @@ const dropdownButtonClick = (e: Event): void => {
   // resets index
   navIndexRef.value = -1
 }
-const navItemClick = (e: Event, item: NavItemType) => {
+const navItemClick = (e: Event, item: MenuItemType) => {
   const customEvent: NavChildClickEventType = {
     event: e,
     item,
