@@ -25,7 +25,7 @@ const props = withDefaults(
     socialLinks?: SocialUrl
     menuItems: MenuItemType[]
     secondaryMenuItems?: MenuItemType[]
-    navItemAsLink?: boolean
+    menuItemAsLink?: boolean
     menuTextSize?: BodyText
     menuTextColor?: ColorPalette
     menuTextBold?: boolean
@@ -42,7 +42,7 @@ const props = withDefaults(
     logoLinkTarget: '_self',
     displaySocialIcons: true,
     socialIconColor: 'light-1',
-    navItemAsLink: true,
+    menuItemAsLink: true,
     menuTextSize: 'md',
     menuTextColor: 'light-1',
     menuTextBold: false,
@@ -113,7 +113,7 @@ const footerItemClick = (
    * @title - menuItems[#].title / title
    * @link - menuItems[#].url / logoLink
    * @target - menuItems[#].target / logoLinkTaget
-   * @itemlink - navItemAsLink / logoAsLink
+   * @itemlink - menuItemAsLink / logoAsLink
    * @emitType - Non prop value type EmitType
    */
   e.preventDefault()
@@ -219,7 +219,7 @@ const footerItemClick = (
                     item.title,
                     item.url,
                     item.target,
-                    navItemAsLink,
+                    menuItemAsLink,
                     'menu'
                   )
                 "
@@ -257,7 +257,7 @@ const footerItemClick = (
                     item.title,
                     item.url,
                     item.target,
-                    navItemAsLink,
+                    menuItemAsLink,
                     'secondary'
                   )
                 "
