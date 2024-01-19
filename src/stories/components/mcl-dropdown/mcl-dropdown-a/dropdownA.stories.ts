@@ -1,10 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import {
   colorControllers,
-  headingTextControllers,
   textControllers,
-  numberControllers,
-  headingLevelControllers,
   booleanControllers,
   arrayControllers,
   bodyTextControllers,

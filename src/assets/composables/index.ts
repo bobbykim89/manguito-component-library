@@ -221,7 +221,8 @@ export const columnWidthControllers = (arg: ControllerColWidthType): any => {
       defaultValue: { summary: defaultValue },
       category,
     },
-    control: { type: 'number' },
+    control: { type: 'select' },
+    options: Object.values(columnWidth),
   }
 }
 
@@ -236,8 +237,7 @@ export const numberControllers = (arg: ControllerNumberType): any => {
       defaultValue: { summary: defaultValue },
       category,
     },
-    control: { type: 'select' },
-    options: Object.values(columnWidth),
+    control: { type: 'number' },
   }
 }
 
