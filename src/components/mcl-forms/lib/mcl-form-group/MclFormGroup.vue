@@ -8,7 +8,7 @@ const props = withDefaults(
     textColor?: ColorPalette
     textSize?: BodyText
     textBold?: boolean
-    labelText?: string
+    label?: string
   }>(),
   {
     textColor: 'dark-3',
@@ -38,7 +38,7 @@ const handleLabelText = computed((): string => {
   <div>
     <label :for="labelFor" class="inline-block">
       <slot name="label">
-        <p class="mb-2xs" :class="handleLabelText">{{ labelText }}</p>
+        <p class="mb-2xs" :class="handleLabelText">{{ label }}</p>
       </slot>
     </label>
     <slot />
