@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { ColorPalette, InputType } from '@bobbykim/manguito-theme'
+import type { ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 import InputHighlight from '../common/InputHighlight.vue'
 
@@ -14,14 +14,10 @@ const props = withDefaults(
     highlightColor?: ColorPalette
     bgColor?: ColorPalette
     placeholder?: string
-    type?: InputType
     displayShadow?: boolean
     required?: boolean
+    rows?: number
     modelValue?: string
-    invalidFeedback?: string
-    minLength?: number
-    maxLength?: number
-    pattern?: string
   }>(),
   {
     displayBorder: false,
@@ -31,9 +27,9 @@ const props = withDefaults(
     highlightColor: 'primary',
     bgColor: 'light-1',
     placeholder: '',
-    type: 'text',
     displayShadow: true,
     required: false,
+    rows: 5,
   }
 )
 
@@ -46,6 +42,29 @@ const inputValue = computed({
     emit('update:modelValue', value)
   },
 })
+
+// const getLabelClass = (
+//   size: BodyText,
+//   color: ColorPalette,
+//   bold: boolean
+// ): string => {
+//   /**
+//    * @size - labelSize
+//    * @color - labelColor
+//    * @bold - labelBold
+//    */
+
+//   const classArray: string[] = [
+//     generateClass('BODYTEXT', size),
+//     generateClass('TEXTCOLOR', color),
+//   ]
+
+//   if (bold) {
+//     classArray.push('font-bold')
+//   }
+
+//   return classArray.join(' ')
+// }
 
 const getInputClass = (
   bgColor: ColorPalette,
@@ -87,14 +106,31 @@ const getInputClass = (
   }
   return classArray.join(' ')
 }
+// const getHighlightClass = (color: ColorPalette, rounded: boolean): string => {
+//   /**
+//    * @color - highlightColor
+//    * @rounded - rounded
+//    */
+//   const classArray: string[] = [generateClass('BEFOREBG', color)]
+//   if (rounded) {
+//     classArray.push('rounded-b-md')
+//   }
+//   return classArray.join(' ')
+// }
 </script>
 
 <template>
   <div>
-    <input
+    <!-- <label
+      v-if="displayLabel"
+      :for="identifier"
+      v-html="labelText"
+      class="inline-block mb-2xs"
+      :class="getLabelClass(labelSize, labelColor, labelBold)"
+    ></label> -->
+    <textarea
       :id="id"
-      :type="type"
-      class="w-full p-2xs outline-none peer peer/validation"
+      class="w-full p-2xs outline-none input__text peer"
       :class="
         getInputClass(
           bgColor,
@@ -108,21 +144,36 @@ const getInputClass = (
       v-model="inputValue"
       :placeholder="placeholder"
       :required="required"
-      :minlength="minLength"
-      :maxlength="maxLength"
-      :pattern="pattern"
+      :rows="rows"
     />
+    <!-- <div
+      v-if="displayHighlight"
+      class="relative -top-2.5 h-3xs overflow-hidden input__decorator"
+      :class="getHighlightClass(highlightColor, rounded)"
+    ></div> -->
     <input-highlight
       v-if="displayHighlight"
       :color="highlightColor"
       :rounded="rounded"
+      :offset="2.5"
     ></input-highlight>
-    <div
-      class="peer-valid/validation:hidden peer-inavlid/validation:block ml-3xs"
-    >
-      <slot name="invalid-feedback">
-        <span class="text-xs text-danger">{{ invalidFeedback }}</span>
-      </slot>
-    </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+// .input__decorator {
+//   &::before {
+//     content: '';
+//     position: absolute;
+//     bottom: 0;
+//     left: 0;
+//     height: 100%;
+//     width: 0;
+//     transition: width 0.3s linear;
+//   }
+// }
+
+// .input__text:focus + .input__decorator::before {
+//   width: 100%;
+// }
+</style>

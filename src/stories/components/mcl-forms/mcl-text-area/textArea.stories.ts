@@ -10,11 +10,11 @@ import {
   inputTypeControllers,
   numberControllers,
 } from '@/assets/composables'
-import { MclInputText } from '@/components/mcl-forms'
-import MclInputTextWithLabel from './MclInputTextWithLabel.vue'
+import { MclTextArea } from '@/components/mcl-forms'
+import MclTextAreaWithLabel from './MclTextAreaWithLabel.vue'
 
-const meta: Meta<typeof MclInputText> = {
-  title: 'Components/Form/MclInputText',
+const meta: Meta<typeof MclTextArea> = {
+  title: 'Components/Form/MclTextArea',
   argTypes: {
     id: textControllers({
       name: 'id',
@@ -56,13 +56,6 @@ const meta: Meta<typeof MclInputText> = {
       description: 'assigns placeholder text for the input',
       category: 'Input Block',
     }),
-    type: inputTypeControllers({
-      name: 'type',
-      required: false,
-      description: 'assigns accepted type of input for the component',
-      defaultValue: 'text',
-      category: 'Input Block',
-    }),
     displayShadow: booleanControllers({
       name: 'display-shadow',
       required: false,
@@ -78,28 +71,11 @@ const meta: Meta<typeof MclInputText> = {
       defaultValue: false,
       category: 'Input Block',
     }),
-    pattern: textControllers({
-      name: 'pattern',
+    rows: numberControllers({
+      name: 'rows',
       required: false,
-      description: 'assigns patterns to validate input data',
-      category: 'Input Block',
-    }),
-    minLength: numberControllers({
-      name: 'min-length',
-      required: false,
-      description: 'assigns min length to validate input data',
-      category: 'Input Block',
-    }),
-    maxLength: numberControllers({
-      name: 'max-length',
-      required: false,
-      description: 'assigns max length to validate input data',
-      category: 'Input Block',
-    }),
-    invalidFeedback: textControllers({
-      name: 'invalid-feedback',
-      required: false,
-      description: 'assigns text being displayed when input value is not valid',
+      description: 'assigns numbers of rows for this component',
+      defaultValue: 5,
       category: 'Input Block',
     }),
     displayHighlight: booleanControllers({
@@ -119,7 +95,7 @@ const meta: Meta<typeof MclInputText> = {
     }),
   },
   args: {
-    id: 'mcl-input-text',
+    id: 'mcl-text-area',
     displayBorder: false,
     borderColor: 'light-4',
     rounded: false,
@@ -127,41 +103,28 @@ const meta: Meta<typeof MclInputText> = {
     highlightColor: 'primary',
     bgColor: 'light-1',
     placeholder: '',
-    type: 'text',
     displayShadow: true,
     required: false,
+    rows: 5,
   },
 }
 
 export default meta
 
-type Story = StoryObj<typeof MclInputText>
-export const MclInputTextExample: Story = {
+type Story = StoryObj<typeof MclTextArea>
+export const MclTextAreaExample: Story = {
   render: (args) => ({
-    components: { 'mcl-input-text': MclInputText },
+    components: { 'mcl-text-area': MclTextArea },
     setup() {
       return { args }
     },
-    template: '<mcl-input-text v-bind="args"></mcl-input-text>',
+    template: '<mcl-text-area v-bind="args"></mcl-text-area>',
   }),
 }
 
-export const MclInputTextWithLabelExample: Story = {
+export const MclTextAreaWithLabelExample: Story = {
   render: () => ({
-    components: {
-      'mcl-input-text-with-label': MclInputTextWithLabel,
-    },
-    template: '<mcl-input-text-with-label></mcl-input-text-with-label>',
-  }),
-}
-
-export const MclInputTextCustomInvalidFeedback: Story = {
-  render: (args) => ({
-    components: { 'mcl-input-text': MclInputText },
-    setup() {
-      return { args }
-    },
-    template:
-      '<mcl-input-text v-bind="args"><template #invalid-feedback><div><p class="text-md text-warning font-bold">{{ args.invalidFeedback}}</p></div></template></mcl-input-text>',
+    components: { 'mcl-text-area-with-label': MclTextAreaWithLabel },
+    template: '<mcl-text-area-with-label></mcl-text-area-with-label>',
   }),
 }
