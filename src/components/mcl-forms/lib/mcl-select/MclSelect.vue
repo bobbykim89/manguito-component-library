@@ -20,6 +20,7 @@ const props = withDefaults(
     required?: boolean
     options: SelectOptions
     selectColor?: ColorPalette
+    invalidFeedback?: string
     modelValue?: string
   }>(),
   {
@@ -35,6 +36,7 @@ const props = withDefaults(
     placeholder: '',
     displayShadow: true,
     required: false,
+    invalidFeedback: 'No match.',
   }
 )
 
@@ -53,6 +55,7 @@ const handleEscapeKeyUp = () => {
   selectedValue.value = ''
   inputFocus.value = false
   inputBox.value?.blur()
+  emit('update:modelValue', '')
 }
 
 const handleClickOutside = () => {
@@ -270,7 +273,7 @@ onUnmounted(() => {
             :class="[generateClass('HVBGCOLOR', selectColor)]"
           >
             <slot name="no-match">
-              <span>No Match.</span>
+              <span>{{ invalidFeedback }}</span>
             </slot>
           </li>
         </ul>

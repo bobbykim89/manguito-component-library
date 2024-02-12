@@ -1,0 +1,38 @@
+import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import * as Stories from './mcl-select/select.stories'
+
+<Meta of={Stories} />
+
+# MCL Select
+
+Included in `@bobbykim/mcl-forms`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-forms
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclSelect } from '@bobbykim/mcl-forms'
+</script>
+
+<template>
+  <mcl-select v-model="inputData"></mcl-select>
+</template>
+```
+
+<Canvas of={Stories.MclSelectExample} />
+
+## Controls
+
+<Controls of={Stories.MclSelectExample} />
+
+## Example with Options as string array
+
+<Canvas of={Stories.MclSelectExampleStringArrayOptions} />
