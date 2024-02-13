@@ -188,7 +188,9 @@ onUnmounted(() => {
     <div
       class="p-2xs flex relative gap-3xs"
       :class="[
-        inputFocus && generateClass('RINGCOLOR', borderColor) + ' ring-4',
+        !displayHighlight &&
+          inputFocus &&
+          generateClass('RINGCOLOR', borderColor) + ' ring-4',
         containerClass,
       ]"
     >

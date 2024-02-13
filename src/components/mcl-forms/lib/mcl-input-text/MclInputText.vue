@@ -12,6 +12,7 @@ const props = withDefaults(
     rounded?: boolean
     displayHighlight?: boolean
     highlightColor?: ColorPalette
+    textcolor?: ColorPalette
     bgColor?: ColorPalette
     placeholder?: string
     type?: InputType
@@ -29,6 +30,7 @@ const props = withDefaults(
     rounded: false,
     displayHighlight: true,
     highlightColor: 'primary',
+    textcolor: 'black',
     bgColor: 'light-1',
     placeholder: '',
     type: 'text',
@@ -47,46 +49,38 @@ const inputValue = computed({
   },
 })
 
-const getInputClass = (
-  bgColor: ColorPalette,
-  dBorder: boolean,
-  bColor: ColorPalette,
-  dHL: boolean,
-  dShadow: boolean,
-  rounded: boolean
-): string => {
-  /**
-   * @bgColor - bgColor
-   * @dBorder - displayBorder
-   * @bColor - borderColor
-   * @dHL - displayHighlight
-   * @dShadow - displayShadow
-   * @rounded - rounded
-   */
-
-  const classArray: string[] = [generateClass('BGCOLOR', bgColor)]
-  const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
-  if (!lightColor.includes(bgColor)) {
-    classArray.push('text-white')
-  }
-  if (dBorder) {
+const inputClass = computed(() => {
+  const {
+    bgColor,
+    displayBorder,
+    borderColor,
+    displayHighlight,
+    displayShadow,
+    rounded,
+    textcolor,
+  } = props
+  const classArray: string[] = [
+    generateClass('BGCOLOR', bgColor),
+    generateClass('TEXTCOLOR', textcolor),
+  ]
+  if (displayBorder) {
     classArray.push('border-2')
-    classArray.push(generateClass('BORDER', bColor))
+    classArray.push(generateClass('BORDER', borderColor))
   }
-  if (!dHL) {
+  if (!displayHighlight) {
     classArray.push(
       'focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear'
     )
-    classArray.push(generateClass('FOCUSRING', bColor))
+    classArray.push(generateClass('FOCUSRING', borderColor))
   }
-  if (dShadow) {
+  if (displayShadow) {
     classArray.push('shadow-md')
   }
   if (rounded) {
     classArray.push('rounded-md')
   }
   return classArray.join(' ')
-}
+})
 </script>
 
 <template>
@@ -95,16 +89,7 @@ const getInputClass = (
       :id="id"
       :type="type"
       class="w-full p-2xs outline-none peer peer/validation"
-      :class="
-        getInputClass(
-          bgColor,
-          displayBorder,
-          borderColor,
-          displayHighlight,
-          displayShadow,
-          rounded
-        )
-      "
+      :class="inputClass"
       v-model="inputValue"
       :placeholder="placeholder"
       :required="required"

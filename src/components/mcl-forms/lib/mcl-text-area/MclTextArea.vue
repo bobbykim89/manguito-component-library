@@ -13,6 +13,7 @@ const props = withDefaults(
     displayHighlight?: boolean
     highlightColor?: ColorPalette
     bgColor?: ColorPalette
+    textcolor?: ColorPalette
     placeholder?: string
     displayShadow?: boolean
     required?: boolean
@@ -26,6 +27,7 @@ const props = withDefaults(
     displayHighlight: true,
     highlightColor: 'primary',
     bgColor: 'light-1',
+    textcolor: 'black',
     placeholder: '',
     displayShadow: true,
     required: false,
@@ -43,114 +45,51 @@ const inputValue = computed({
   },
 })
 
-// const getLabelClass = (
-//   size: BodyText,
-//   color: ColorPalette,
-//   bold: boolean
-// ): string => {
-//   /**
-//    * @size - labelSize
-//    * @color - labelColor
-//    * @bold - labelBold
-//    */
-
-//   const classArray: string[] = [
-//     generateClass('BODYTEXT', size),
-//     generateClass('TEXTCOLOR', color),
-//   ]
-
-//   if (bold) {
-//     classArray.push('font-bold')
-//   }
-
-//   return classArray.join(' ')
-// }
-
-const getInputClass = (
-  bgColor: ColorPalette,
-  dBorder: boolean,
-  bColor: ColorPalette,
-  dHL: boolean,
-  dShadow: boolean,
-  rounded: boolean
-): string => {
-  /**
-   * @bgColor - bgColor
-   * @dBorder - displayBorder
-   * @bColor - borderColor
-   * @dHL - displayHighlight
-   * @dShadow - displayShadow
-   * @rounded - rounded
-   */
-
-  const classArray: string[] = [generateClass('BGCOLOR', bgColor)]
-  const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
-  if (!lightColor.includes(bgColor)) {
-    classArray.push('text-white')
-  }
-  if (dBorder) {
+const inputClass = computed(() => {
+  const {
+    bgColor,
+    displayBorder,
+    borderColor,
+    displayHighlight,
+    displayShadow,
+    rounded,
+    textcolor,
+  } = props
+  const classArray: string[] = [
+    generateClass('BGCOLOR', bgColor),
+    generateClass('TEXTCOLOR', textcolor),
+  ]
+  if (displayBorder) {
     classArray.push('border-2')
-    classArray.push(generateClass('BORDER', bColor))
+    classArray.push(generateClass('BORDER', borderColor))
   }
-  if (!dHL) {
+  if (!displayHighlight) {
     classArray.push(
       'focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear'
     )
-    classArray.push(generateClass('FOCUSRING', bColor))
+    classArray.push(generateClass('FOCUSRING', borderColor))
   }
-  if (dShadow) {
+  if (displayShadow) {
     classArray.push('shadow-md')
   }
   if (rounded) {
     classArray.push('rounded-md')
   }
   return classArray.join(' ')
-}
-// const getHighlightClass = (color: ColorPalette, rounded: boolean): string => {
-//   /**
-//    * @color - highlightColor
-//    * @rounded - rounded
-//    */
-//   const classArray: string[] = [generateClass('BEFOREBG', color)]
-//   if (rounded) {
-//     classArray.push('rounded-b-md')
-//   }
-//   return classArray.join(' ')
-// }
+})
 </script>
 
 <template>
   <div>
-    <!-- <label
-      v-if="displayLabel"
-      :for="identifier"
-      v-html="labelText"
-      class="inline-block mb-2xs"
-      :class="getLabelClass(labelSize, labelColor, labelBold)"
-    ></label> -->
     <textarea
       :id="id"
       class="w-full p-2xs outline-none input__text peer"
-      :class="
-        getInputClass(
-          bgColor,
-          displayBorder,
-          borderColor,
-          displayHighlight,
-          displayShadow,
-          rounded
-        )
-      "
+      :class="inputClass"
       v-model="inputValue"
       :placeholder="placeholder"
       :required="required"
       :rows="rows"
     />
-    <!-- <div
-      v-if="displayHighlight"
-      class="relative -top-2.5 h-3xs overflow-hidden input__decorator"
-      :class="getHighlightClass(highlightColor, rounded)"
-    ></div> -->
     <input-highlight
       v-if="displayHighlight"
       :color="highlightColor"
@@ -159,21 +98,3 @@ const getInputClass = (
     ></input-highlight>
   </div>
 </template>
-
-<style lang="scss" scoped>
-// .input__decorator {
-//   &::before {
-//     content: '';
-//     position: absolute;
-//     bottom: 0;
-//     left: 0;
-//     height: 100%;
-//     width: 0;
-//     transition: width 0.3s linear;
-//   }
-// }
-
-// .input__text:focus + .input__decorator::before {
-//   width: 100%;
-// }
-</style>
