@@ -11,37 +11,24 @@ import type { SwitchSizeType, ColorMap } from './index.types'
 const props = withDefaults(
   defineProps<{
     id: string
-    horizontal?: boolean
-    displayLabel?: boolean
-    labelText?: string
-    labelSize?: BodyText
-    labelColor?: ColorPalette
-    labelBold?: boolean
     sliderColor?: ColorPalette
     onColor?: ColorPalette
     offColor?: ColorPalette
     switchSize?: SwitchSizeType
     rounded?: boolean
-    spacing?: SpacingLevel
     modelValue?: boolean
   }>(),
   {
-    horizontal: true,
-    displayLabel: true,
-    labelSize: 'md',
-    labelColor: 'dark-3',
-    labelBold: true,
     sliderColor: 'light-1',
     onColor: 'success',
     offColor: 'dark-1',
     switchSize: 'md',
     rounded: true,
-    spacing: 'sm',
   }
 )
 
 const emit = defineEmits(['update:modelValue'])
-const inputRef = ref()
+const inputRef = ref<HTMLInputElement>()
 
 const peerBgColor: ColorMap = {
   primary: 'peer-checked/input:bg-primary',
@@ -63,8 +50,8 @@ const peerBgColor: ColorMap = {
   white: 'peer-checked/input:bg-white',
 }
 
-const onLabelClick = (): void => {
-  inputRef.value.click()
+const onSwitchClick = (): void => {
+  inputRef.value?.click()
 }
 const inputValue = computed({
   get() {
@@ -74,40 +61,7 @@ const inputValue = computed({
     emit('update:modelValue', value)
   },
 })
-const alignmentClass = computed<string>(() => {
-  /**
-   * @summary - handle alignment of the component whether to aign label and switch vertically or horizontally, and spacing below the component
-   * @param {Boolean} displayLabel - whether or not to display label
-   * @param {Boolean} horizontal - whether label and switch is aligned horizontally
-   * @param {SpacingLevel} spacing - margin bottom under the componnet
-   */
-  const { displayLabel, horizontal, spacing } = props
-  const classArray: string[] = [generateClass('MARGINB', spacing)]
-  if (displayLabel && horizontal) {
-    classArray.push('flex items-center gap-2xs')
-  }
-  if (displayLabel && !horizontal) {
-    classArray.push('flex flex-col gap-2xs')
-  }
-  return classArray.join(' ')
-})
-const labelClass = computed<string>(() => {
-  /**
-   * @summary - handle styling classes for label
-   * @param {BodyText} labelSize - font size of the label
-   * @param {ColorPalette} labelColor - text color of the label
-   * @param {Boolean} labelBold - font weight of the label
-   */
-  const { labelSize, labelColor, labelBold } = props
-  const classArray: string[] = [
-    generateClass('BODYTEXT', labelSize),
-    generateClass('TEXTCOLOR', labelColor),
-  ]
-  if (labelBold) {
-    classArray.push('font-bold')
-  }
-  return classArray.join(' ')
-})
+
 const switchSize = computed(() => {
   /**
    * @summary - handle value of variables determining the size of the switch
@@ -158,27 +112,18 @@ const switchClass = computed<string>(() => {
 </script>
 
 <template>
-  <div :class="alignmentClass">
-    <p
-      v-if="displayLabel"
-      class="inline-block cursor-default"
-      :class="labelClass"
-      @click="onLabelClick"
-      v-html="labelText"
-    ></p>
-    <label :for="id" class="switch relative inline-block" :style="switchSize">
-      <input
-        :id="id"
-        class="hidden peer/input"
-        v-model="inputValue"
-        ref="inputRef"
-        type="checkbox"
-      />
-      <span
-        class="slider absolute inset-0 cursor-pointer transition-all duration-300 before:absolute before:transition-all before:duration-300"
-        :class="switchClass"
-      ></span>
-    </label>
+  <div class="switch relative" :style="switchSize" @click="onSwitchClick">
+    <input
+      :id="id"
+      class="hidden peer/input"
+      v-model="inputValue"
+      ref="inputRef"
+      type="checkbox"
+    />
+    <span
+      class="slider absolute inset-0 cursor-pointer transition-all duration-300 before:absolute before:transition-all before:duration-300"
+      :class="switchClass"
+    ></span>
   </div>
 </template>
 
