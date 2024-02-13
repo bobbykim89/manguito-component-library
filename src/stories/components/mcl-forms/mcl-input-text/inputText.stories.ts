@@ -1,12 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import {
   colorControllers,
-  headingTextControllers,
   textControllers,
   booleanControllers,
-  bodyTextControllers,
-  spacingControllers,
-  arrayControllers,
   inputTypeControllers,
   numberControllers,
 } from '@/assets/composables'

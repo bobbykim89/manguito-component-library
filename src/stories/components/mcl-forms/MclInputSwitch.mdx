@@ -1,0 +1,36 @@
+import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import * as Stories from './mcl-input-switch/inputSwitch.stories'
+
+<Meta of={Stories} />
+
+# MCL Input Switch
+
+Included in `@bobbykim/mcl-forms`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-forms
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclInputSwitch } from '@bobbykim/mcl-forms'
+</script>
+
+<template>
+  <mcl-input-switch v-model="inputData"></mcl-input-switch>
+</template>
+```
+
+## MCL Input Switch with MCL Form Group Component
+
+<Canvas of={Stories.MclInputSwitchExample} />
+
+## Controls
+
+<Controls of={Stories.MclInputSwitchExample} />
