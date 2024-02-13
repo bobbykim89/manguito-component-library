@@ -50,6 +50,13 @@ const meta: Meta<typeof MclTextArea> = {
       defaultValue: 'light-1',
       category: 'Input Block',
     }),
+    textcolor: colorControllers({
+      name: 'text-color',
+      required: false,
+      description: 'assigns text color of the input component',
+      defaultValue: 'black',
+      category: 'Input Block',
+    }),
     placeholder: textControllers({
       name: 'placeholder',
       required: false,
@@ -102,6 +109,7 @@ const meta: Meta<typeof MclTextArea> = {
     displayHighlight: true,
     highlightColor: 'primary',
     bgColor: 'light-1',
+    textcolor: 'black',
     placeholder: '',
     displayShadow: true,
     required: false,
