@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import type { ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
-import type {
-  ColorPalette,
-  SpacingLevel,
-  BodyText,
-} from '@bobbykim/manguito-theme'
-import type { SwitchSizeType, ColorMap } from './index.types'
+import { computed, ref } from 'vue'
+import type { ColorMap } from '../common/index.types'
+import type { SwitchSizeType } from './index.types'
 
 const props = withDefaults(
   defineProps<{

@@ -1,0 +1,34 @@
+import { ArgsTable, Canvas, Controls, Meta, Story } from '@storybook/blocks'
+import * as Stories from './mcl-input-file/input-file.stories'
+
+<Meta of={Stories} />
+
+# MCL Input File
+
+Included in `@bobbykim/mcl-forms`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-forms
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclInputFile } from '@bobbykim/mcl-forms'
+</script>
+
+<template>
+  <mcl-input-file v-model="inputData"></mcl-input-file>
+</template>
+```
+
+<Canvas of={Stories.MclInputFileExample} />
+
+## Controls
+
+<Controls of={Stories.MclInputFileExample} />
