@@ -75,11 +75,11 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
 }, {
     type: InputType;
-    displayBorder: boolean;
     displayLabel: boolean;
     labelSize: BodyText;
     labelColor: ColorPalette;
     labelBold: boolean;
+    displayBorder: boolean;
     borderColor: ColorPalette;
     rounded: boolean;
     displayHighlight: boolean;

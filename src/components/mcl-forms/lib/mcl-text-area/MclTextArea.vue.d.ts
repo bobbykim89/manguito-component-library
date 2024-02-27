@@ -58,8 +58,8 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
 }, {
     required: boolean;
     placeholder: string;
-    displayBorder: boolean;
     rounded: boolean;
+    displayBorder: boolean;
     borderColor: ColorPalette;
     bgColor: ColorPalette;
     displayShadow: boolean;
