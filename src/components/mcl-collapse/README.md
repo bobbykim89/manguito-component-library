@@ -1,16 +1,38 @@
 # @bobbykim/mcl-collapse
 
-Add description
-
 ## Demo
 
-[MCL Histoire Page](https://manguito-component-library.vercel.app/story/{%story-link%})
+[MCL Storybook Page](https://manguito-component-library.vercel.app/)
+
+- [MCL Collapse A](https://manguito-component-library.vercel.app/?path=/docs/components-collapse-mclcollapsea--mclcollapsea)
+- [MCL Collapse B](https://manguito-component-library.vercel.app/?path=/docs/components-collapse-mclcollapseb--mclcollapseb)
 
 ## Install
 
+```sh
+npm i @bobbykim/mcl-collapse
+```
+
 ## Usage
 
-`import MclCollapse from "@bobbykim/mcl-collapse"`;
+`import { MclCollapseA, MclCollapseB } from "@bobbykim/mcl-collapse"`;
+
+```vue
+<script setup lang="ts">
+...
+import { MclCollapseA, MclCollapseB } from '@bobbykim/mcl-collapse'
+...
+</script>
+
+<template>
+  <mcl-collapse-a></mcl-collapse-a>
+  <mcl-collapse-b></mcl-collapse-b>
+</template>
+```
+
+## Dependencies
+
+- @bobbykim/manguito-theme
 
 ## Maintainer
 

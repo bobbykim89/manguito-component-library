@@ -1,15 +1,27 @@
 # @bobbykim/manguito-theme
 
-manguito-theme includes basic config for MCL, including theme.types and generateClass function that returns tailwindCSS style classes.
+manguito-theme includes basic config for MCL, including type definitions for theme and base components, and generateClass function that returns tailwindCSS style classes.
 
 ## Demo
 
-[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-documentation-mcltheme-story-vue?variantId=src-stories-documentation-mcltheme-story-vue-0)
+[MCL Storybook Page](https://manguito-component-library.vercel.app/)
+
+- [Installation](https://manguito-component-library.vercel.app/?path=/docs/introduction-installation--docs)
+- Base Components
+  - [Collapse](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-collapse-component--collapse)
+  - [Dropdown](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-dropdown-component--dropdown)
+  - [Modal](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-modal-component--modal)
+  - [Sidebar](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-sidebar-component--sidebar)
+  - [Tooltip](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-tooltip-component--tooltip)
+- Utility Class
+  - [Button Class](https://manguito-component-library.vercel.app/?path=/docs/base-utility-class-button-class--button)
+  - [Link Class](https://manguito-component-library.vercel.app/?path=/docs/base-utility-class-link-class--link)
+  - [List Class](https://manguito-component-library.vercel.app/?path=/docs/base-utility-class-list-class--list)
 
 ## Install
 
 ```sh
-npm i -D tailwindcss postcss autoprefixer sass
+npm i -D tailwindcss postcss autoprefixer sass @vueuse/core
 npm i @bobbykim/manguito-theme
 npx tailwindcss init -p
 ```
@@ -83,12 +95,24 @@ in Vue component file.
 <script setup lang="ts">
 ...
 import generateClass from '@bobbykim/manguito-theme'
-import type { <Type you need> } from '@bobbykim/manguito-theme/theme/theme.types'
+import type { <Type you need> } from '@bobbykim/manguito-theme'
 ...
 </script>
 
 <template>...</template>
 ```
+
+## Dependencies
+
+- @vueuse/core
+- vue
+
+## Dev Dependencies
+
+- autoprefixer
+- postcss
+- sass
+- tailwindcss
 
 ## Maintainers
 

@@ -1,16 +1,36 @@
 # @bobbykim/mcl-footer
 
-Add description
-
 ## Demo
 
-[MCL Histoire Page](https://manguito-component-library.vercel.app/story/{%story-link%})
+[MCL Storybook Page](https://manguito-component-library.vercel.app/)
+
+- [MCL Footer A](https://manguito-component-library.vercel.app/?path=/docs/sections-footer-mclfootera--mclfootera)
 
 ## Install
 
+```sh
+npm i @bobbykim/mcl-footer
+```
+
 ## Usage
 
-`import MclFooter from "@bobbykim/mcl-footer"`;
+`import { MclFooterA } from "@bobbykim/mcl-footer"`;
+
+```vue
+<script setup lang="ts">
+...
+import { MclFooterA } from "@bobbykim/mcl-footer"
+...
+</script>
+
+<template>
+  <mcl-footer-a></mcl-footer-a>
+</template>
+```
+
+## Dependencies
+
+- @bobbykim/manguito-theme
 
 ## Maintainer
 
