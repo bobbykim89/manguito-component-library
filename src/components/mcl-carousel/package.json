@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/mcl-carousel",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "",
   "type": "module",
   "main": "index.ts",
@@ -21,7 +21,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@bobbykim/manguito-theme": "^0.14.0",
-    "@bobbykim/mcl-cards": "^0.2.0"
+    "@bobbykim/manguito-theme": "^0.15.0",
+    "@bobbykim/mcl-cards": "^0.3.0"
   }
 }
