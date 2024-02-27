@@ -1,4 +1,4 @@
-import type { ColorPalette, HeadingSize, CtaTarget, CrossOrigin } from '@bobbykim/manguito-theme';
+import type { ColorPalette, CrossOrigin, CtaTarget, HeadingSize } from '@bobbykim/manguito-theme';
 import type { ColorMap } from './index.types';
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     displayImage?: boolean | undefined;

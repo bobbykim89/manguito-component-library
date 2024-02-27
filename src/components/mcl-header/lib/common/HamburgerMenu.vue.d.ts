@@ -1,4 +1,4 @@
-import type { ColorPalette } from '../../index.js';
+import type { ColorPalette } from '@bobbykim/manguito-theme';
 declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     color?: ColorPalette | undefined;
     displayBorder?: boolean | undefined;
