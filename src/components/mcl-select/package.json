@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/mcl-select",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "",
   "type": "module",
   "main": "index.ts",
@@ -21,6 +21,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@bobbykim/manguito-theme": "^0.13.0"
+    "@bobbykim/manguito-theme": "^0.14.0"
   }
 }

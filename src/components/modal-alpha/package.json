@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/modal-alpha",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "",
   "type": "module",
   "main": "index.ts",
@@ -21,7 +21,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@bobbykim/manguito-theme": "^0.13.0"
+    "@bobbykim/manguito-theme": "^0.14.0"
   },
   "gitHead": "4e6b9b908a17893f6e6baab01741dc0dde771ac8"
 }

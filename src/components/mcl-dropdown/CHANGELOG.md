@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-dropdown@0.5.0...@bobbykim/mcl-dropdown@0.6.0) (2024-02-27)
+
+
+### Features
+
+* **components/*:** run package:build ([fcc2d09](https://github.com/bobbykim89/manguito-component-library/commit/fcc2d0953d77ecaa317be27eb212c927dec33b17))
+* **mcl-dropdown:** restructure mcl-dropdown ([fb9f5b9](https://github.com/bobbykim89/manguito-component-library/commit/fb9f5b9e8598f3e8903524a67ab52ab02f430edb))
+* **stories/*:** ran package:build to build type declaration, move deprecated story files into deprecated folder ([ffc487d](https://github.com/bobbykim89/manguito-component-library/commit/ffc487dbcc093be7a3ccfeae98c5e10e8372a0e3))
+
+
+
+
+
 # [0.5.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-dropdown@0.4.2...@bobbykim/mcl-dropdown@0.5.0) (2023-12-06)
 
 
