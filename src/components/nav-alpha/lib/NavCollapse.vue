@@ -38,12 +38,14 @@ const toggle = ref<boolean>(false)
 const handleNavId = computed<string>(() => {
   const { navId } = props
   const navLower = navId.toLowerCase()
+  // @ts-ignore: Unreachable code error
   const navKebab = navLower.replaceAll(' ', '-')
   return `nav-${navKebab}`
 })
 const handleNavAccordionGroupName = computed<string>(() => {
   const { navAccordionGroup } = props
   const toLowerCase = navAccordionGroup.toLocaleLowerCase()
+  // @ts-ignore: Unreachable code error
   const toKebabCase = toLowerCase.replaceAll(' ', '-')
   return `accordion-${toKebabCase}`
 })

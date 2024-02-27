@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, Transition, onMounted, onBeforeUnmount } from 'vue'
+import { Transition, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { observeVisibleAttr } from '../composables/index.js'
 
 const props = withDefaults(

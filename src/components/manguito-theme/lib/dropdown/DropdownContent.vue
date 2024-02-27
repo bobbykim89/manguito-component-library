@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { computed, ref, inject, Transition } from 'vue'
+import { useWindowSize } from '@vueuse/core'
+import { Transition, computed, inject, ref } from 'vue'
 import type { InjectType } from './index.types.js'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     className?: string
   }>(),
@@ -10,6 +11,7 @@ const props = withDefaults(
     className: '',
   }
 )
+const { height } = useWindowSize()
 const contentRef = ref<HTMLAreaElement>()
 const dropdownState = inject<InjectType>('dropdownState', {
   active: false,
@@ -25,16 +27,10 @@ const buttonHeight = computed(() => {
   return { '--button-height': `${dropdownState.buttonHeight}px` }
 })
 const dropdownDirection = computed<string | undefined>(() => {
-  if (typeof window === undefined) {
-    return
-  }
   if (!dropdownState.active || !contentRef.value) {
     return
   }
-  if (
-    window.innerHeight - contentRef.value.getBoundingClientRect().bottom <
-    0
-  ) {
+  if (height.value - contentRef.value.getBoundingClientRect().bottom < 0) {
     return 'dropup-bottom'
   }
 })

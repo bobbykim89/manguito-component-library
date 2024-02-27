@@ -1,0 +1,87 @@
+import { Canvas, Meta } from '@storybook/blocks'
+import * as Stories from './sidebar/sidebar.stories'
+
+<Meta of={Stories} />
+
+# Sidebar component
+
+Included in `@bobbykim/manguito-theme`
+
+## Usage
+
+```js
+<script lang="ts" setup>
+import { Sidebar, vToggle } from '@bobbykim/manguito-theme'
+</script>
+
+<template>
+  <div>
+    <!-- trigger collapse toggle  -->
+    <button v-sidebar:sidebar-component-id>{{Tab button name}}</button>
+    <button v-sidebar:[when calling sidebar-id dynamically]>
+      {{Tab button name}}
+    </button>
+    <!-- trigger by 'a' tag -->
+    <a href="#sidebar-component-id" v-sidebar>{{Tab button name here}}</a>
+    <sidebar
+      id="sidebar-component-id"
+      placement="'left'|'right'"
+      class-name="taildind css class"
+      backdrop-color="dark-1"
+      color="light-1"
+      width="300"
+      @open="$event"
+      @close="$event"
+    >
+      <!-- add custom close button to close sidebar -->
+      <template #header="{ close }">
+        <button @click="close">Button</button>
+      </template>
+      <template #body> ...body content </template>
+      <template #footer> ...footer content </template>
+    </sidebar>
+    <!-- sidebar with default header -->
+    <sidebar id="sidebar-component-id" title="sidebar title"></sidebar>
+    <!-- sidebar with no header -->
+    <sidebar id="sidebar-component-id" no-header></sidebar>
+    <!-- sidebar with no backdrop -->
+    <sidebar id="sidebar-component-id" no-backdrop></sidebar>
+    <!-- load page with open sidebar -->
+    <sidebar id="sidebar-component-id" visible></sidebar>
+  </div>
+</template>
+```
+
+<Canvas of={Stories.sidebarExample} />
+
+### Trigger sidebar through ref
+
+```js
+<script lang="ts" setup>
+import { Sidebar } from '@bobbykim/manguito-theme'
+import { ref } from 'vue'
+
+const sidebarRef = ref<InstanceType<typeof Sidebar>>()
+
+const handleSidebar = () => {
+  // toggle sidebar
+  sidebarRef.value.toggle()
+  // open sidebar
+  sidebarRef.value.open()
+  // close sidebar
+  sidebarRef.value.close()
+}
+</script>
+
+<template>
+  <div>
+    <button @click="handleSidebar">Button Name</button>
+    <sidebar ref="sidebarRef">...</sidebar>
+  </div>
+</template>
+```
+
+### Events
+
+- `open` - \$event - Emitted when sidebar component opens
+- `close` - \$event - Emitted when sidebar component closes

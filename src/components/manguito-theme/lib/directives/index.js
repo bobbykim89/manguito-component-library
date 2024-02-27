@@ -16,6 +16,7 @@ export const vClickOutside = {
 export const vToggle = {
     mounted(el, binding) {
         el.__ClickToggleHandler = (e) => {
+            e.preventDefault();
             const eTarget = e.target;
             let target;
             if (eTarget.tagName === 'A') {
@@ -45,38 +46,8 @@ export const vToggle = {
 };
 export const vCollapse = {
     mounted(el, binding) {
-        // el.__HandleToggler = (event: Event): void => {
-        //   const eTarget = event.target as HTMLElement
-        //   let target: HTMLElement
-        //   if (eTarget.tagName === 'A') {
-        //     const targetId = eTarget.getAttribute('href')
-        //     const formattedTargetId =
-        //       targetId?.charAt(0) === '#' ? targetId.substring(1) : targetId
-        //     target = document.getElementById(formattedTargetId as string)!
-        //   } else {
-        //     target = document.getElementById(binding.arg as string) as HTMLElement
-        //   }
-        //   if (!target.hasAttribute('accordion')) {
-        //     // run when it is not accordion component case
-        //     target.click()
-        //     return
-        //   }
-        //   const accordionName = target.getAttribute('accordion')
-        //   const accordionList: NodeListOf<HTMLElement> = document.querySelectorAll(
-        //     `button[accordion="${accordionName}"]`
-        //   )
-        //   // loop through each accordion items and handle reaction for each case
-        //   for (let i = 0; i < accordionList.length; i++) {
-        //     const isVisible = accordionList[i].getAttribute('visible')
-        //     if (accordionList[i].id !== target.id && isVisible === 'true') {
-        //       accordionList[i].click()
-        //     }
-        //     if (accordionList[i].id === target.id) {
-        //       accordionList[i].click()
-        //     }
-        //   }
-        // }
         el.__HandleToggler = (event) => {
+            event.preventDefault();
             const eTarget = event.target;
             let target;
             if (eTarget.tagName === 'A') {
@@ -169,10 +140,10 @@ export const vTooltip = {
             }
             // handle tooltip width
             let tooltipWidth;
-            if (el.hasAttribute('width')) {
-                tooltipWidth = el.getAttribute('width');
+            if (el.hasAttribute('tooltip-width')) {
+                tooltipWidth = el.getAttribute('tooltip-width');
             }
-            if (!el.hasAttribute('width') &&
+            if (!el.hasAttribute('tooltip-width') &&
                 typeof binding.value !== 'undefined' &&
                 typeof binding.value !== 'string' &&
                 typeof binding.value.width === ('number' || 'string')) {

@@ -1,0 +1,52 @@
+import { ArgsTable, Canvas, Controls, Meta, Story } from '@storybook/blocks'
+import * as Stories from './mcl-input-radio/inputRadio.stories'
+
+<Meta of={Stories} />
+
+# MCL Input Radio
+
+Included in `@bobbykim/mcl-forms`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-forms
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclInputRadio } from '@bobbykim/mcl-forms'
+import type { RadioEventType } from '@/components/mcl-forms'
+import { ref } from 'vue'
+
+const valueRef = ref<string>('')
+const sampleData = {
+  id: 'item-1',
+  value: 'first-item',
+}
+
+const setValue = (e: RadioEventType) => {
+  valueRef.value = e.value
+}
+</script>
+
+<template>
+  <mcl-input-switch :id="sampleData.id" :value="sampleData.value" :checked="valueRef === sampleData.value" @change="setValue"></mcl-input-switch>
+</template>
+```
+
+## MCL Input Radio with MCL Form Group Component
+
+<Canvas of={Stories.MclInputRadioExample} />
+
+## Controls
+
+<Controls of={Stories.MclInputRadioExample} />
+
+## Mcl Input Radio Example A
+
+<Canvas of={Stories.MclInputRadioExampleA} />

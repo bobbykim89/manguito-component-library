@@ -1,0 +1,64 @@
+import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import * as Stories from './mcl-carousel-a/carouselA.stories'
+
+<Meta of={Stories} />
+
+# MCL Carousel A
+
+Included in `@bobbykim/mcl-carousel`
+
+## Install
+
+```zsh
+npm i @bobbykim/mcl-carousel
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclCollapseA } from '@bobbykim/mcl-carousel'
+</script>
+
+<template>
+  <carousel-alpha>
+    <!-- adding nested card-components -->
+    <template #carousel="{ setRef, cards }">
+      <card-component
+        v-for="(card, i) in cards"
+        :key="i"
+        :ref="(el) => setRef(el)"
+        class="mr-xs last:mr-0 h-full"
+      ></card-component>
+    </template>
+  </carousel-alpha>
+</template>
+```
+
+<Canvas of={Stories.MclCarouselExampleA} />
+
+## Controls
+
+<Controls of={Stories.MclCarouselExampleA} />
+
+## Events
+
+- `btn-prev` - \$event - Emitted on clicking prev button
+- `btn-next` - \$event - Emitted on clicking next button
+
+## Slots
+
+- `#description`: slot in the text section
+- `#carousel`: default card slider-section at the bottom of the component
+
+## Examples
+
+### MCL Card B Example
+
+<Canvas of={Stories.MclCarouselCardBExample} />
+
+### MCL Card D Example
+
+<Canvas of={Stories.MclCarouselCardDExample} />

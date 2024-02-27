@@ -1,4 +1,4 @@
-import MclDropdown from './MclDropdown.vue'
+import MclDropdownA from './lib/mcl-dropdown-a/MclDropdownA.vue'
 
-export default MclDropdown
-export * from './index.types'
+export * from './lib/mcl-dropdown-a/index.types'
+export { MclDropdownA }

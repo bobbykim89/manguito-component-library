@@ -1,8 +1,3 @@
-// const inquirer = require('inquirer')
-// const { camelCase, upperFirst, kebabCase } = require('lodash')
-// const fs = require('fs')
-// const path = require('path')
-
 import inquirer from 'inquirer'
 import lodash from 'lodash'
 import fs from 'fs'
@@ -72,6 +67,11 @@ inquirer.prompt(questions).then((answers) => {
   const directoryName = kebabCase(answers['component_name'])
   const authorName = upperFirst(answers['author_name'])
   const storyConfirm = answers['create_story']
+  const manguitoThemePackage = fs.readFileSync(
+    path.resolve(`${COMPONENTS_PATH}/manguito-theme/package.json`),
+    { encoding: 'utf8' }
+  )
+  const manguitoThemeVersion = JSON.parse(manguitoThemePackage).version
 
   const storyName = directoryName.replace(/-/gi, '')
 
@@ -80,12 +80,14 @@ inquirer.prompt(questions).then((answers) => {
       encoding: 'utf8',
     })
     .replace(/{%componentName%}/gi, componentName)
+  console.log('Created component files')
 
   const licenseTemplate = fs
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_license.md`), {
       encoding: 'utf8',
     })
     .replace(/{%author-name%}/gi, authorName)
+  console.log('Created license file')
 
   const packageTemplate = fs
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_package.md`), {
@@ -93,18 +95,27 @@ inquirer.prompt(questions).then((answers) => {
     })
     .replace(/{%componentName%}/gi, `@bobbykim/${directoryName}`)
     .replace(/{%authorName%}/gi, authorName)
+    .replace(/{%packageVersion%}/gi, manguitoThemeVersion)
+
+  console.log('Created package.json file')
 
   const tsConfigTemplate = fs.readFileSync(
-    path.resolve(`${TEMPLATE_PATH}/_tsconfig.md`, {
+    path.resolve(`${TEMPLATE_PATH}/_tsconfig.md`),
+    {
       encoding: 'utf8',
-    })
+    }
   )
 
+  console.log('Created tsconfig.json file')
+
   const tsVueConfigTemplate = fs.readFileSync(
-    path.resolve(`${TEMPLATE_PATH}/_tsconfig.vue.md`, {
+    path.resolve(`${TEMPLATE_PATH}/_tsconfig.vue.md`),
+    {
       encoding: 'utf8',
-    })
+    }
   )
+
+  console.log('Created tsconfig.vue.json file')
 
   const readmeTemplate = fs
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_readme.md`), {
@@ -114,8 +125,17 @@ inquirer.prompt(questions).then((answers) => {
     .replace(/{%componentName%}/gi, `@bobbykim/${directoryName}`)
     .replace(/{%authorName%}/gi, authorName)
 
+  console.log('created readme file')
+
   const storyTemplate = fs
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_story.md`), {
+      encoding: 'utf8',
+    })
+    .replace(/{%componentName%}/gi, componentName)
+    .replace(/{%componentDir%}/gi, directoryName)
+
+  const storyMdxTemplate = fs
+    .readFileSync(path.resolve(`${TEMPLATE_PATH}/_story.mdx.md`), {
       encoding: 'utf8',
     })
     .replace(/{%componentName%}/gi, componentName)
@@ -126,6 +146,8 @@ inquirer.prompt(questions).then((answers) => {
       encoding: 'utf8',
     })
     .replace(/{%componentName%}/gi, componentName)
+
+  console.log('create index file')
 
   fs.mkdir(`${COMPONENTS_PATH}/${directoryName}`, (error) => {
     if (error) {
@@ -147,8 +169,15 @@ inquirer.prompt(questions).then((answers) => {
               fs.writeFileSync(
                 `${STORIES_PATH}/${answers[
                   'component_type'
-                ].toLowerCase()}/${directoryName}/${componentName}.story.vue`,
+                ].toLowerCase()}/${directoryName}/${componentName}.stories.ts`,
                 storyTemplate
+              )
+              // create story mdx file
+              fs.writeFileSync(
+                `${STORIES_PATH}/${answers[
+                  'component_type'
+                ].toLowerCase()}/${directoryName}/${componentName}.mdx`,
+                storyMdxTemplate
               )
             }
           }
