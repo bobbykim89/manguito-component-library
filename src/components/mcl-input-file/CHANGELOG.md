@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-input-file@0.5.0...@bobbykim/mcl-input-file@0.6.0) (2024-02-27)
+
+
+### Features
+
+* **components/*:** run package:build ([fcc2d09](https://github.com/bobbykim89/manguito-component-library/commit/fcc2d0953d77ecaa317be27eb212c927dec33b17))
+
+
+
+
+
 # [0.5.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-input-file@0.4.2...@bobbykim/mcl-input-file@0.5.0) (2023-12-06)
 
 
