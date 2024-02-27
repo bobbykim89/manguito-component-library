@@ -1,16 +1,17 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import {
+  arrayControllers,
+  bodyTextControllers,
+  booleanControllers,
   colorControllers,
   headingTextControllers,
-  textControllers,
-  booleanControllers,
-  bodyTextControllers,
-  arrayControllers,
-  targetOptionControllers,
   numberControllers,
+  targetOptionControllers,
+  textControllers,
 } from '@/assets/composables'
-import { MclHeaderA } from '@/components/mcl-header'
 import type { MenuCollapseType, MenuItemType } from '@/components/mcl-header'
+import { MclHeaderA } from '@/components/mcl-header'
+import type { Meta, StoryObj } from '@storybook/vue3'
+import MclHeaderScroll from './MclHeaderScroll.vue'
 
 const navItems: Array<MenuItemType | MenuCollapseType> = [
   {
@@ -287,5 +288,15 @@ export const MclHeaderAExample: Story = {
       return { args }
     },
     template: '<mcl-header-a v-bind="args"></mcl-header-a>',
+  }),
+}
+
+export const MclHeaderScrollExample: Story = {
+  render: (args) => ({
+    components: { 'mcl-header-scroll': MclHeaderScroll },
+    setup() {
+      return { args }
+    },
+    template: '<mcl-header-scroll v-bind="args"></mcl-header-scroll>',
   }),
 }

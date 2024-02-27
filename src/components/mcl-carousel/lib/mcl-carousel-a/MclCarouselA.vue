@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
 import type {
-  HeadingSize,
-  ColorPalette,
   BodyText,
+  ColorPalette,
+  HeadingSize,
   SpacingLevel,
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 import { MclCardA, MclCardB, MclCardC, MclCardD } from '@bobbykim/mcl-cards'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 type BtnNav = 'prev' | 'next'
 
@@ -182,17 +182,14 @@ const handleTransitionEnd = (): void => {
 }
 
 onMounted(() => {
-  if (typeof window !== undefined) {
-    // handle slide movement
-    slideContainer.value.addEventListener('sliderMove', handleSlide)
-    // handle transition end event
-    slideContainer.value.addEventListener('transitionend', handleTransitionEnd)
-
-    // intersection observer for slider
-    slideObserver.observe(
-      carouselCards.value![carouselCards.value!.length - 1].$el
-    )
-  }
+  // handle slide movement
+  slideContainer.value.addEventListener('sliderMove', handleSlide)
+  // handle transition end event
+  slideContainer.value.addEventListener('transitionend', handleTransitionEnd)
+  // intersection observer for slider
+  slideObserver.observe(
+    carouselCards.value![carouselCards.value!.length - 1].$el
+  )
 })
 
 onBeforeUnmount(() => {

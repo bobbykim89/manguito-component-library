@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import type {
   ColorPalette,
-  HeadingSize,
-  CtaTarget,
   CrossOrigin,
+  CtaTarget,
+  HeadingSize,
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
+import type { CardClickEvent } from '../common/index.types'
 
 withDefaults(
   defineProps<{
@@ -88,7 +89,7 @@ const handleCardClick = (
   e: Event,
   title: string,
   link: string,
-  target: CtaTarget,
+  target: CtaTarget = '_self',
   ctaLink: boolean
 ): void => {
   /**
@@ -98,11 +99,15 @@ const handleCardClick = (
    * @target - ctaTarget
    * @ctaLink - ctaAsLink
    */
-  if (ctaLink) {
-    window.open(link, target)
-  } else {
-    emit('card-click', { event: e, title: title, url: link, target: target })
+  !ctaLink && e.preventDefault()
+  const cardEvent: CardClickEvent = {
+    event: e,
+    title,
+    url: link,
+    target: target ? target : '_self',
   }
+  console.log(cardEvent)
+  emit('card-click', cardEvent)
 }
 </script>
 
@@ -110,25 +115,30 @@ const handleCardClick = (
   <div
     class="relative max-w-[450px] sm:max-w-[350px] w-full xs:w-auto flex-grow flex-shrink-0 cursor-pointer overflow-hidden border border-light-3"
     :class="getBorderClass(borderColor, rounded)"
-    @click="handleCardClick($event, title, ctaLink, ctaTarget, ctaAsLink)"
   >
-    <div
-      class="absolute z-[15] flex flex-col justify-end items-start inset-0 p-xs [@media(hover:hover)]:opacity-0 hover:opacity-100 peer transition-opacity duration-200"
+    <a
+      :href="ctaLink"
+      :target="ctaTarget"
+      @click="handleCardClick($event, title, ctaLink, ctaTarget, ctaAsLink)"
     >
-      <h3
-        v-html="title"
-        class="inline-block px-xs py-2xs mb-2xs pointer-events-none tracking-wide"
-        :class="handleTitleClass(titleSize, titleColor, titleBlockColor)"
-      ></h3>
-      <slot></slot>
-    </div>
-    <img
-      :src="imageSource"
-      :alt="imageAlt"
-      :crossorigin="imageCors"
-      class="relative z-10 object-cover aspect-[3/4] transition-all duration-200"
-      :class="handleHoverEffect(displayGrayScale)"
-    />
+      <div
+        class="absolute z-[15] flex flex-col justify-end items-start inset-0 p-xs [@media(hover:hover)]:opacity-0 hover:opacity-100 peer transition-opacity duration-200"
+      >
+        <h3
+          v-html="title"
+          class="inline-block px-xs py-2xs mb-2xs pointer-events-none tracking-wide"
+          :class="handleTitleClass(titleSize, titleColor, titleBlockColor)"
+        ></h3>
+        <slot></slot>
+      </div>
+      <img
+        :src="imageSource"
+        :alt="imageAlt"
+        :crossorigin="imageCors"
+        class="relative z-10 object-cover aspect-[3/4] transition-all duration-200"
+        :class="handleHoverEffect(displayGrayScale)"
+      />
+    </a>
   </div>
 </template>
 
