@@ -1,10 +1,10 @@
 # @bobbykim/mcl-dropdown
 
-Add description
-
 ## Demo
 
-[MCL Histoire Page](https://manguito-component-library.vercel.app/story/src-stories-components-dropdown-dropdown-story-vue?variantId=src-stories-components-dropdown-dropdown-story-vue-0)
+[MCL Storybook Page](https://manguito-component-library.vercel.app/)
+
+- [MCL Dropdown A](https://manguito-component-library.vercel.app/?path=/docs/components-dropdown-mcldropdowna--mcldropdowna)
 
 ## Install
 
@@ -21,12 +21,12 @@ In your code
 ```vue
 <script setup lang="ts">
 ...
-import MclDropdown from '@bobbykim/mcl-dropdown'
+import { MclDropdownA } from '@bobbykim/mcl-dropdown'
 ...
 </script>
 
 <template>
-  <mcl-dropdown></mcl-dropdown>
+  <mcl-dropdown-a></mcl-dropdown-a>
 </template>
 ```
 

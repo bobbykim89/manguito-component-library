@@ -1,3 +1,3 @@
-import MclTabsA from './lib/MclTabsA.vue';
-export * from './lib/index.types.js';
+import MclTabsA from './lib/mcl-tabs-a/MclTabsA.vue';
+export * from './lib/mcl-tabs-a/index.types.js';
 export { MclTabsA };

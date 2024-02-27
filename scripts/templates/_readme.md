@@ -1,16 +1,18 @@
 # {%componentName%}
 
-Add description
-
 ## Demo
 
-[MCL Histoire Page](https://manguito-component-library.vercel.app/story/{%story-link%})
+[MCL Storybook Page](https://manguito-component-library.vercel.app/)
 
 ## Install
 
+```sh
+npm i {%componentName%}
+```
+
 ## Usage
 
-`import {%vueFileName%} from "{%componentName%}"`;
+`import { } from "{%componentName%}"`;
 
 ## Maintainer
 

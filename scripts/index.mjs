@@ -1,6 +1,6 @@
+import fs from 'fs'
 import inquirer from 'inquirer'
 import lodash from 'lodash'
-import fs from 'fs'
 import path from 'path'
 
 const { camelCase, upperFirst, kebabCase } = lodash
@@ -121,7 +121,6 @@ inquirer.prompt(questions).then((answers) => {
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_readme.md`), {
       encoding: 'utf8',
     })
-    .replace(/{%vueFileName%}/gi, componentName)
     .replace(/{%componentName%}/gi, `@bobbykim/${directoryName}`)
     .replace(/{%authorName%}/gi, authorName)
 
