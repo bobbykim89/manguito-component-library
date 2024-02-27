@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-dropdown@0.6.0...@bobbykim/mcl-dropdown@0.7.0) (2024-02-27)
+
+
+### Features
+
+* **/components/**/README.md,/deprecated:** update readme files, move deprecated packages to deprecated folder ([c0f8f7d](https://github.com/bobbykim89/manguito-component-library/commit/c0f8f7df158b8fcd99b4e3d191e02e3c8a9c144d))
+
+
+
+
+
 # [0.6.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-dropdown@0.5.0...@bobbykim/mcl-dropdown@0.6.0) (2024-02-27)
 
 
