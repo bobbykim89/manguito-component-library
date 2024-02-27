@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, Transition, onUnmounted } from 'vue'
-import generateClass, { vClickOutside } from '@bobbykim/manguito-theme'
 import type { ColorPalette } from '@bobbykim/manguito-theme'
+import generateClass, { vClickOutside } from '@bobbykim/manguito-theme'
+import { useResizeObserver } from '@vueuse/core'
+import { Transition, computed, ref } from 'vue'
 import type { SelectOptionType, SelectOptions } from './index.types'
 
 const props = withDefaults(
@@ -156,26 +157,14 @@ const filteredOptions = computed(() => {
   }
 })
 
-const initObserver = (): ResizeObserver => {
-  const observer = new ResizeObserver(() => {
-    if (componentRef.value) {
-      optionsWidth.value = componentRef.value.clientWidth
-    }
-  })
-  return observer
-}
-
 const handleOptionsWidth = computed(() => {
   return { width: `${optionsWidth.value}px` }
 })
 
-onMounted(() => {
-  if (typeof window !== 'undefined') {
-    initObserver().observe(componentRef.value as Element)
+useResizeObserver(componentRef, () => {
+  if (componentRef.value) {
+    optionsWidth.value = componentRef.value.clientWidth
   }
-})
-onUnmounted(() => {
-  initObserver().disconnect()
 })
 </script>
 

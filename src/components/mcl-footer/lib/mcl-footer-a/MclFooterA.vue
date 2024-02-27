@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type {
-  ColorPalette,
-  HeadingSize,
-  CtaTarget,
   BodyText,
+  ColorPalette,
+  CtaTarget,
+  HeadingSize,
 } from '@bobbykim/manguito-theme'
-import type { MenuItemType, SocialUrl } from './index.types'
 import generateClass from '@bobbykim/manguito-theme'
 import SocialIcons from './SocialIcons.vue'
+import type { MenuItemEvent, MenuItemType, SocialUrl } from './index.types'
 
 const props = withDefaults(
   defineProps<{
@@ -104,7 +104,7 @@ const footerItemClick = (
   e: Event,
   title: string,
   link: string,
-  target: string | undefined,
+  target: CtaTarget = '_self',
   itemLink: boolean,
   emitType: EmitType
 ): void => {
@@ -116,24 +116,22 @@ const footerItemClick = (
    * @itemlink - menuItemAsLink / logoAsLink
    * @emitType - Non prop value type EmitType
    */
-  e.preventDefault()
-  if (itemLink) {
-    window.open(link, target)
-  } else {
-    if (emitType === 'menu') {
-      emit('menu-click', { event: e, title: title, link: link, target: target })
-    }
-    if (emitType === 'logo') {
-      emit('logo-click', { event: e, title: title, link: link, target: target })
-    }
-    if (emitType === 'secondary') {
-      emit('secondary-menu-click', {
-        event: e,
-        title: title,
-        link: link,
-        target: target,
-      })
-    }
+  !itemLink && e.preventDefault()
+
+  const eventObj: MenuItemEvent = {
+    event: e,
+    title,
+    link,
+    target: target ? target : '_self',
+  }
+  if (emitType === 'menu') {
+    emit('menu-click', eventObj)
+  }
+  if (emitType === 'logo') {
+    emit('logo-click', eventObj)
+  }
+  if (emitType === 'secondary') {
+    emit('secondary-menu-click', eventObj)
   }
 }
 </script>

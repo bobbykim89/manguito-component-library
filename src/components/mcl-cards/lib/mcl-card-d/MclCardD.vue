@@ -1,13 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import generateClass from '@bobbykim/manguito-theme'
 import type {
   ColorPalette,
-  HeadingSize,
-  CtaTarget,
-  Range,
   CrossOrigin,
+  CtaTarget,
+  HeadingSize,
+  Range,
 } from '@bobbykim/manguito-theme'
+import generateClass from '@bobbykim/manguito-theme'
+import { computed } from 'vue'
+import type { CardClickEvent } from '../common/index.types'
 import type { ColorMap } from './index.types'
 
 // gradient color options objects
@@ -178,17 +179,21 @@ const gradientClass = computed<string>(() => {
   return classArray.join(' ')
 })
 
-const handleCardClick = (e: Event, link: boolean) => {
+const handleCardClick = (e: Event) => {
   /**
    * @param {Event} e - click event
    * @param {Boolean} link - ctaAsLink
    */
 
-  const { title, ctaLink, ctaLinkTarget } = props
-  if (!link) {
-    e.preventDefault()
+  const { title, ctaLink, ctaLinkTarget, ctaAsLink } = props
+  const cardEvent: CardClickEvent = {
+    event: e,
+    title,
+    url: ctaLink,
+    target: ctaLinkTarget ? ctaLinkTarget : '_self',
   }
-  emit('card-click', { event: e, title, url: ctaLink, target: ctaLinkTarget })
+  !ctaAsLink && e.preventDefault()
+  emit('card-click', cardEvent)
 }
 </script>
 
@@ -223,7 +228,7 @@ const handleCardClick = (e: Event, link: boolean) => {
             :href="ctaLink"
             :target="ctaLinkTarget"
             :class="buttonClass(ctaButton, ctaButtonColor, ctaButtonBlock)"
-            @click="handleCardClick($event, ctaAsLink)"
+            @click="handleCardClick"
             >{{ ctaText }}</a
           >
         </div>

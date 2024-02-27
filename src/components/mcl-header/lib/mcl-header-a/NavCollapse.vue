@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import generateClass, { Collapse, vCollapse } from '@bobbykim/manguito-theme'
-import type { CollapseEvent } from '@bobbykim/manguito-theme'
-import type { ColorPalette, BodyText } from '@bobbykim/manguito-theme'
 import type {
-  MenuItemType,
+  BodyText,
+  CollapseEvent,
+  ColorPalette,
+} from '@bobbykim/manguito-theme'
+import generateClass, { Collapse, vCollapse } from '@bobbykim/manguito-theme'
+import { computed, ref } from 'vue'
+import type {
   MenuCollapseType,
+  MenuItemType,
   NavChildClickEventType,
 } from './index.types'
 
@@ -21,6 +24,7 @@ const props = withDefaults(
     menuTextBold?: boolean
     displayHighlight?: boolean
     highlightColor?: ColorPalette
+    asLink?: boolean
   }>(),
   {
     menuTextSize: 'md',
@@ -30,6 +34,7 @@ const props = withDefaults(
     menuTextBold: false,
     displayHighlight: true,
     highlightColor: 'primary',
+    asLink: true,
   }
 )
 
@@ -54,6 +59,8 @@ const toggleAction = (e: CollapseEvent): void => {
   //   emit('nav-link', { event: e, title: props.navItem.title })
 }
 const navItemClick = (e: Event, item: MenuItemType) => {
+  const { asLink } = props
+  !asLink && e.preventDefault()
   const customEvent: NavChildClickEventType = {
     event: e,
     item,
@@ -76,18 +83,6 @@ const getMenuItemClass = (
   ]
   if (bold) {
     classArray.push('font-bold')
-  }
-  return classArray.join(' ')
-}
-const getnestedItemClass = (hlColor: ColorPalette, dHl: boolean): string => {
-  /**
-   * @param {ColorPalette} hlColor - highlightColor
-   * @param {boolean} dHl - displayHighlight
-   */
-  const classArray: string[] = ['px-2xs']
-  if (dHl) {
-    classArray.push(generateClass('BORDER', hlColor))
-    classArray.push('border-l-[4px]')
   }
   return classArray.join(' ')
 }

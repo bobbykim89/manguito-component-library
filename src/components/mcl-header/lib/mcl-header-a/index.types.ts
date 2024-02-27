@@ -15,3 +15,10 @@ export interface NavChildClickEventType {
   event: Event
   item: MenuItemType
 }
+
+export interface MenuEventType {
+  event: Event
+  title: string
+  link: string
+  target?: CtaTarget
+}

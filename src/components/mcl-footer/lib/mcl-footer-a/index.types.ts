@@ -12,3 +12,10 @@ export interface SocialUrl {
   github?: string
   twitter?: string
 }
+
+export interface MenuItemEvent {
+  event: Event
+  title: string
+  link: string
+  target?: CtaTarget
+}

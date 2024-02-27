@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import generateClass from '@bobbykim/manguito-theme'
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
+import generateClass from '@bobbykim/manguito-theme'
 import type { MenuItemType } from './index.types'
 
 const props = withDefaults(
@@ -11,6 +11,7 @@ const props = withDefaults(
     menuTextBold?: boolean
     displayHighlight?: boolean
     highlightColor?: ColorPalette
+    asLink?: boolean
   }>(),
   {
     menuTextSize: 'md',
@@ -18,6 +19,7 @@ const props = withDefaults(
     menuTextBold: false,
     displayHighlight: true,
     highlightColor: 'primary',
+    asLink: true,
   }
 )
 
@@ -43,7 +45,8 @@ const getMenuItemClass = (
   return classArray.join(' ')
 }
 const handleNavLinkClick = (e: Event) => {
-  e.preventDefault()
+  const { asLink } = props
+  !asLink && e.preventDefault()
   emit('nav-link', e)
 }
 </script>

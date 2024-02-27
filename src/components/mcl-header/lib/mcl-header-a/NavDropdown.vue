@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass, {
   DropdownContainer,
   DropdownContent,
 } from '@bobbykim/manguito-theme'
-import type { ColorPalette, BodyText } from '@bobbykim/manguito-theme'
+import { ref } from 'vue'
 import type {
-  MenuItemType,
   MenuCollapseType,
+  MenuItemType,
   NavChildClickEventType,
 } from './index.types'
 
@@ -21,6 +21,7 @@ const props = withDefaults(
     menuTextBold?: boolean
     displayHighlight?: boolean
     highlightColor?: ColorPalette
+    asLink?: boolean
   }>(),
   {
     menuTextSize: 'md',
@@ -30,6 +31,7 @@ const props = withDefaults(
     menuTextBold: false,
     displayHighlight: true,
     highlightColor: 'primary',
+    asLink: true,
   }
 )
 
@@ -75,6 +77,8 @@ const dropdownButtonClick = (e: Event): void => {
   navIndexRef.value = -1
 }
 const navItemClick = (e: Event, item: MenuItemType) => {
+  const { asLink } = props
+  !asLink && e.preventDefault()
   const customEvent: NavChildClickEventType = {
     event: e,
     item,
@@ -122,8 +126,10 @@ const navItemClick = (e: Event, item: MenuItemType) => {
         v-slot="{ itemClick }"
         className="border drop-shadow-sm"
       >
-        <button
+        <a
           v-for="(item, idx) in navItem.children"
+          :href="item.url"
+          :target="item.target"
           :key="idx"
           ref="navItemRef"
           class="px-xs py-2xs block w-full hover:bg-opacity-50 focus:bg-opacity-50"
@@ -137,7 +143,7 @@ const navItemClick = (e: Event, item: MenuItemType) => {
           @click="itemClick(), navItemClick($event, item)"
         >
           {{ item.title }}
-        </button>
+        </a>
       </dropdown-content>
     </dropdown-container>
   </div>

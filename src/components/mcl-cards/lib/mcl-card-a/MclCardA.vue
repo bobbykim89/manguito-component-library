@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import generateClass from '@bobbykim/manguito-theme'
 import type {
   ColorPalette,
-  HeadingSize,
-  CtaTarget,
   CrossOrigin,
+  CtaTarget,
+  HeadingSize,
 } from '@bobbykim/manguito-theme'
+import generateClass from '@bobbykim/manguito-theme'
+import type { CardClickEvent } from '../common/index.types'
 
 const props = withDefaults(
   defineProps<{
@@ -153,7 +154,7 @@ const handleButtonClick = (
   e: Event,
   title: string,
   link: string,
-  target: CtaTarget,
+  target: CtaTarget = '_self',
   btnLink: boolean
 ): void => {
   /**
@@ -162,26 +163,24 @@ const handleButtonClick = (
    * @target - ctaTarget
    * @btnLink - ctaAsLink
    */
-  if (btnLink) {
-    window.open(link, target)
-  } else {
-    e.preventDefault()
-    emit('card-btn-click', {
-      event: e,
-      title: title,
-      url: link,
-      target: target,
-    })
+  const cardEvent: CardClickEvent = {
+    event: e,
+    title,
+    url: link,
+    target: target ? target : '_self',
   }
+  !btnLink && e.preventDefault()
+  emit('card-btn-click', cardEvent)
 }
 const handleCardClick = (e: Event): void => {
   const { title, ctaLink, ctaTarget } = props
-  emit('card-click', {
+  const cardEvent: CardClickEvent = {
     event: e,
-    title: title,
+    title,
     url: ctaLink,
-    target: ctaTarget,
-  })
+    target: ctaTarget ? ctaTarget : '_self',
+  }
+  emit('card-click', cardEvent)
 }
 </script>
 

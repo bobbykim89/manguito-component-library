@@ -1,21 +1,23 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, Transition } from 'vue'
 import type {
+  BodyText,
   ColorPalette,
   CtaTarget,
   HeadingSize,
-  BodyText,
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
+import { useWindowScroll } from '@vueuse/core'
+import { Transition, computed, ref, useSlots } from 'vue'
+import HamburgerMenu from '../common/HamburgerMenu.vue'
+import NavCollapse from './NavCollapse.vue'
+import NavDropdown from './NavDropdown.vue'
+import NavLink from './NavLink.vue'
 import type {
-  MenuItemType,
   MenuCollapseType,
+  MenuEventType,
+  MenuItemType,
   NavChildClickEventType,
 } from './index.types'
-import HamburgerMenu from '../common/HamburgerMenu.vue'
-import NavLink from './NavLink.vue'
-import NavDropdown from './NavDropdown.vue'
-import NavCollapse from './NavCollapse.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -67,18 +69,19 @@ const props = withDefaults(
   }
 )
 
-const navScroll = ref<boolean>(false)
 const navOpen = ref<boolean>(false)
+const slots = useSlots()
 const emit = defineEmits([
   'toggle-menu',
   'menu-click',
   'title-click',
   'logo-click',
 ])
+const { y } = useWindowScroll()
 
 type EmitType = 'menu' | 'title' | 'logo'
 
-const closeNav = (e: Event): void => {
+const closeNav = (): void => {
   navOpen.value = false
 }
 
@@ -87,51 +90,39 @@ const toggleNavButton = (e: Event): void => {
   emit('toggle-menu', e)
 }
 
-const handleScroll = (): any => {
-  if (typeof window !== undefined) {
-    return
-  }
-  if (window.scrollY >= props.scrollDistance) {
-    navScroll.value = true
-  } else {
-    navScroll.value = false
-  }
-}
-
 const navItemClick = (
   e: Event,
   title: string,
   link: string,
-  target: string = '_self',
+  target: CtaTarget = '_self',
   itemLink: boolean,
   emitType: EmitType
 ): void => {
   /**
    * @param {Event} e - $event
    * @param {string} link - menuItems[#].url / titleLink
-   * @param {string} target - menuItems[#].target / titleLinkTaget
+   * @param {CtaTarget} target - menuItems[#].target / titleLinkTaget
    * @param {boolean} itemlink - menuItemAsLink /
    * @param {EmitType} emitType - Non prop value type EmitType
    */
-  e.preventDefault()
   navOpen.value = false
-  if (itemLink) {
-    window.open(link, target)
-  } else {
-    if (emitType === 'menu') {
-      emit('menu-click', { event: e, title: title, link: link, target: target })
-    }
-    if (emitType === 'title') {
-      emit('title-click', {
-        event: e,
-        title: title,
-        link: link,
-        target: target,
-      })
-    }
-    if (emitType === 'logo') {
-      emit('logo-click', { event: e, title: title, link: link, target: target })
-    }
+  const menuEvent: MenuEventType = {
+    event: e,
+    title: title,
+    link: link,
+    target: target ? target : '_self',
+  }
+  if (!itemLink) {
+    e.preventDefault()
+  }
+  if (emitType === 'menu') {
+    emit('menu-click', menuEvent)
+  }
+  if (emitType === 'title') {
+    emit('title-click', menuEvent)
+  }
+  if (emitType === 'logo') {
+    emit('logo-click', menuEvent)
   }
 }
 const navChildLinkClick = (e: NavChildClickEventType): void => {
@@ -140,16 +131,13 @@ const navChildLinkClick = (e: NavChildClickEventType): void => {
    */
   const { title, url, target } = e.item
   navOpen.value = false
-  if (props.menuItemAsLink) {
-    window.open(url, target)
-  } else {
-    emit('menu-click', {
-      event: e,
-      title,
-      link: url,
-      target: target ? target : '_self',
-    })
+  const menuEvent: MenuEventType = {
+    event: e.event,
+    title,
+    link: url,
+    target: target ? target : '_self',
   }
+  emit('menu-click', menuEvent)
 }
 
 const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
@@ -192,23 +180,21 @@ const hasChildren = (item: MenuItemType | MenuCollapseType) => {
   return NavCollapse.children.length > 0
 }
 
-onMounted(() => {
-  if (typeof window !== 'undefined') {
-    window.addEventListener('scroll', handleScroll())
+const handleFadeInOnScroll = computed(() => {
+  const { fadeInOnScroll, scrollDistance } = props
+  if (!fadeInOnScroll) {
+    return ''
   }
-})
-onBeforeUnmount(() => {
-  window.removeEventListener('scroll', handleScroll())
+  return y.value >= scrollDistance
+    ? 'lg:shadow-md bg-opacity-70'
+    : 'bg-opacity-100'
 })
 </script>
 
 <template>
   <header
-    :class="[
-      navScroll ? 'lg:shadow-md bg-opacity-70' : 'bg-opacity-100',
-      'w-full top-0 md:sticky items-center z-50 transition ease-in duration-500 delay-150',
-      generateClass('BGCOLOR', bgColor),
-    ]"
+    class="w-full top-0 md:sticky items-center z-50 transition ease-in duration-500 delay-150"
+    :class="[handleFadeInOnScroll, generateClass('BGCOLOR', bgColor)]"
   >
     <nav
       class="flex flex-wrap items-center py-xs md:py-2xs mx-xs md:mx-sm align-middle justify-between sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px]"
@@ -279,6 +265,7 @@ onBeforeUnmount(() => {
                 :menu-text-bold="menuTextBold"
                 :display-highlight="displayHighlight"
                 :highlight-color="highlightColor"
+                :as-link="menuItemAsLink"
                 @nav-link="
                   navItemClick(
                     $event,
@@ -300,6 +287,7 @@ onBeforeUnmount(() => {
                 :highlight-color="highlightColor"
                 :bg-color="bgColor"
                 :hover-bg-color="secondaryColor"
+                :as-link="menuItemAsLink"
                 @nav-link="navChildLinkClick"
               ></nav-dropdown>
             </li>
@@ -315,7 +303,7 @@ onBeforeUnmount(() => {
           :toggle="navOpen"
           :nav-color="bgColor"
         ></hamburger-menu>
-        <div class="hidden lg:block">
+        <div v-if="slots['nav-slot']" class="hidden lg:block">
           <slot name="nav-slot"></slot>
         </div>
       </div>
@@ -348,6 +336,7 @@ onBeforeUnmount(() => {
                 :menu-text-bold="menuTextBold"
                 :display-highlight="displayHighlight"
                 :highlight-color="highlightColor"
+                :as-link="menuItemAsLink"
                 @nav-link="
                   navItemClick(
                     $event,
@@ -369,11 +358,12 @@ onBeforeUnmount(() => {
                 :display-highlight="displayHighlight"
                 :highlight-color="highlightColor"
                 :nav-accordion-group="title"
+                :as-link="menuItemAsLink"
                 @nav-link="navChildLinkClick"
               ></nav-collapse>
             </li>
           </ul>
-          <div>
+          <div v-if="slots['mobile-slot']">
             <slot name="mobile-slot" :close-nav="closeNav"></slot>
           </div>
         </div>

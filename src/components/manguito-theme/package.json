@@ -10,6 +10,9 @@
   "scripts": {
     "build": "vue-tsc --project tsconfig.vue.json && tsc"
   },
+  "dependencies": {
+    "@vueuse/core": "^10.8.0"
+  },
   "author": {
     "name": "Bobby Kim",
     "url": "https://www.devbobbykim.com/"
