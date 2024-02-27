@@ -5,7 +5,6 @@ import DropdownContent from './lib/dropdown/DropdownContent.vue';
 import Collapse from './lib/collapse/Collapse.vue';
 import Sidebar from './lib/sidebar/Sidebar.vue';
 import Modal from './lib/modal/Modal.vue';
-import HamburgerMenu from './lib/nav/HamburgerMenu.vue';
 const generateClass = (type, value) => {
     const mclGenerate = new GenerateMCLClass(type, value);
     if (colorType.includes(type)) {
@@ -24,7 +23,7 @@ const generateClass = (type, value) => {
     return mclGenerate.generateSpacingClass();
 };
 export default generateClass;
-export { DropdownContainer, DropdownContent, Collapse, HamburgerMenu, Sidebar, Modal, };
+export { DropdownContainer, DropdownContent, Collapse, Sidebar, Modal };
 export * from './lib/directives/index.js';
 export * from './theme/theme.types.js';
 export * from './lib/collapse/index.types.js';

@@ -1,0 +1,82 @@
+import { Canvas, Meta } from '@storybook/blocks'
+import * as Stories from './modal/modal.stories'
+
+<Meta of={Stories} />
+
+# Modal component
+
+Included in `@bobbykim/manguito-theme`
+
+## Usage
+
+```js
+<template>
+  <div>
+    <!-- trigger collapse toggle  -->
+    <button v-modal:modal-component-id>{{Tab button name}}</button>
+    <button v-modal:[when calling modal-id dynamically]>
+      {{Tab button name}}
+    </button>
+    <!-- trigger by 'a' tag -->
+    <a href="#modal-component-id" v-modal>{{Tab button name here}}</a>
+    <modal
+      id="modal-component-id"
+      placement="'top'|'center'|'bottom'"
+      class-name="taildind css class"
+      backdrop-color="dark-1"
+      color="light-1"
+      @open="$event"
+      @close="$event"
+    >
+      <!-- add a button to close modal -->
+      <template #header="{ close, status }">
+        <button @click="close">Button</button>
+      </template>
+      <template #body> ...body content </template>
+      <template #footer> ...footer content </template>
+    </modal>
+    <!-- modal with default header -->
+    <modal id="modal-component-id" title="modal title"></modal>
+    <!-- modal with no header -->
+    <modal id="modal-component-id" no-header></modal>
+    <!-- modal with no backdrop -->
+    <modal id="modal-component-id" no-backdrop></modal>
+    <!-- load page with open modal -->
+    <modal id="modal-component-id" visible></modal>
+  </div>
+</template>
+```
+
+<Canvas of={Stories.modalExample} />
+
+### Trigger modal through ref
+
+```js
+<script lang="ts" setup>
+import { Modal } from '@bobbykim/manguito-theme'
+import { ref } from 'vue'
+
+const modalRef = ref<InstanceType<typeof Modal>>()
+
+const handlemodal = () => {
+  // toggle modal
+  modalRef.value.toggle()
+  // open modal
+  modalRef.value.open()
+  // close modal
+  modalRef.value.close()
+}
+</script>
+
+<template>
+  <div>
+    <button @click="handleModal">Button Name</button>
+    <modal ref="modalRef">...</modal>
+  </div>
+</template>
+```
+
+### Events
+
+- `open` - \$event - Emitted when modal component opens
+- `close` - \$event - Emitted when modal component closes

@@ -1,0 +1,38 @@
+import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import * as Stories from './mcl-hero-c/heroC.stories'
+
+<Meta of={Stories} />
+
+# MCL Hero C
+
+Included in `@bobbykim/mcl-hero`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-hero
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclHeroC } from '@bobbykim/mcl-hero'
+</script>
+
+<template>
+  <mcl-hero-c></mcl-hero-c>
+</template>
+```
+
+<Canvas of={Stories.MclHeroCExample} />
+
+## Controls
+
+<Controls of={Stories.MclHeroCExample} />
+
+### Slot
+
+-Default slot

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { reactive, provide, ref, onMounted } from 'vue'
-import type { InjectType } from './index.types.js'
+import { onMounted, provide, reactive, ref } from 'vue'
 import { vClickOutside } from '../directives/index.js'
+import type { InjectType } from './index.types.js'
 
 const emit = defineEmits(['click-outside', 'toggle'])
 const dropdownTarget = ref()
@@ -22,9 +22,7 @@ const onEscape = (): void => {
   dropdownState.active = false
 }
 onMounted(() => {
-  if (typeof window !== undefined) {
-    dropdownState.buttonHeight = dropdownTarget.value.scrollHeight
-  }
+  dropdownState.buttonHeight = dropdownTarget.value.scrollHeight
 })
 </script>
 

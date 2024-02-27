@@ -1,0 +1,42 @@
+import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import * as Stories from './mcl-form-group/formGroup.stories.ts'
+
+<Meta of={Stories} />
+
+# MCL Input Text
+
+Included in `@bobbykim/mcl-forms`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-forms
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclFormGroup } from '@bobbykim/mcl-forms'
+</script>
+
+<template>
+  <mcl-form-group label-for=""></mcl-form-group>
+</template>
+```
+
+<Canvas of={Stories.MclFormGroupExample} />
+
+## Controls
+
+<Controls of={Stories.MclFormGroupExample} />
+
+## Custom label example
+
+<Canvas of={Stories.MclCustomLabelExample} />
+
+## Slot
+
+- `#label`: Slot to add custom label

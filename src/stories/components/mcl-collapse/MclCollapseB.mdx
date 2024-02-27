@@ -1,0 +1,50 @@
+import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import * as Stories from './collapse-b/collapseB.stories'
+
+<Meta of={Stories} />
+
+# MCL Collapse B
+
+Included in `@bobbykim/mcl-collapse`
+
+## Installation
+
+```zsh
+npm i @bobbykim/mcl-collapse
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import {MclCollapseB} from '@bobbykim/mcl-collapse'
+
+</script>
+
+<template>
+  <mcl-collapse-b></mcl-collapse-b>
+</template>
+```
+
+<Canvas of={Stories.MclCollapseBExample} />
+
+## Controls
+
+<Controls of={Stories.MclCollapseBExample} />
+
+## Events
+
+- `collapse-open` - (visible: boolean, title: string) - Emitted when collapse component opens
+- `collapse-close` - (visible: boolean, title: string) - Emitted when collapse component closes
+
+## Slots
+
+- Default slot available
+
+## Examples
+
+### Accordion
+
+<Canvas of={Stories.AccordionExample} />

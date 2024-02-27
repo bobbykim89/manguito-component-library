@@ -1,0 +1,54 @@
+import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import * as Stories from './collapse-a/collapseA.stories'
+
+<Meta of={Stories} />
+
+# MCL Collapse A
+
+Included in `@bobbykim/mcl-collapse`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-collapse
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclCollapseA } from '@bobbykim/mcl-collapse'
+</script>
+
+<template>
+  <mcl-collapse-a></mcl-collapse-a>
+</template>
+```
+
+<Canvas of={Stories.MclCollapseAExample} />
+
+## Controls
+
+<Controls of={Stories.MclCollapseAExample} />
+
+## Events
+
+- `collapse-open` - (visible: boolean, title: string) - Emitted when collapse component opens
+- `collapse-close` - (visible: boolean, title: string) - Emitted when collapse component closes
+
+## Slots
+
+- `#tab`: slot in the right side of accordion head, does not affected by default accordion click behavior (toggle)
+- `#content`: slot in the content area
+
+## Examples
+
+### Using Tab slot
+
+<Canvas of={Stories.MclCollapseAExample2} />
+
+### Accordion
+
+<Canvas of={Stories.AccordionExample} />

@@ -1,0 +1,62 @@
+import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import * as Stories from './mcl-dropdown-a/dropdownA.stories'
+
+<Meta of={Stories} />
+
+# MCL Container B
+
+Included in `@bobbykim/mcl-dropdown`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-dropdown
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclDropdown } from '@bobbykim/mcl-dropdown'
+</script>
+
+<template>
+  <mcl-dropdown-a></mcl-dropdown-a>
+</template>
+```
+
+<Canvas of={Stories.MclDropdownAExample} />
+
+## Controls
+
+<Controls of={Stories.MclDropdownAExample} />
+
+## Events
+
+-`button-click`: (event: Event) - Event fired on dropdown button click.
+
+-`item-click`: (event: Event, item: DropdownItem) - Event fired on dropdown item click.
+
+## Keyboard accessibility
+
+-`escape`: closes dropdown
+
+-`arrow up`: focus dropdown item below (no effect if the last dropdown item is selected)
+
+-`arrow down`: focus dropdown item above (no effect if the first dropdown item is focused)
+
+## types
+
+```js
+export interface DropdownItem {
+  title: string
+  [key: string]: string
+}
+export interface ItemClickEvent {
+  event: Event
+  item: DropdownItem
+}
+
+```

@@ -1,0 +1,46 @@
+import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import * as Stories from './mcl-input-text/inputText.stories'
+
+<Meta of={Stories} />
+
+# MCL Input Text
+
+Included in `@bobbykim/mcl-forms`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-forms
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclInputText } from '@bobbykim/mcl-forms'
+</script>
+
+<template>
+  <mcl-input-text v-model="inputData"></mcl-input-text>
+</template>
+```
+
+<Canvas of={Stories.MclInputTextExample} />
+
+## Controls
+
+<Controls of={Stories.MclInputTextExample} />
+
+## Example with mcl-form-group
+
+<Canvas of={Stories.MclInputTextWithLabelExample} />
+
+## Custom invalid feedback example
+
+<Canvas of={Stories.MclInputTextCustomInvalidFeedback} />
+
+## Slot
+
+- `#invalid-feedback`: Slot to add custom invalid feedbacks

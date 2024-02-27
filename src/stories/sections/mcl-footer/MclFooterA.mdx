@@ -1,0 +1,44 @@
+import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import * as Stories from './mcl-footer-a/footerA.stories'
+
+<Meta of={Stories} />
+
+# MCL Footer A
+
+Included in `@bobbykim/mcl-footer`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-footer
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclFooterA } from '@bobbykim/mcl-footer'
+</script>
+
+<template>
+  <mcl-footer-a></mcl-footer-a>
+</template>
+```
+
+<Canvas of={Stories.MclFooterAExample} />
+
+## Controls
+
+<Controls of={Stories.MclFooterAExample} />
+
+## Slot
+
+- Default slot
+
+## Events
+
+- `logo-click` - (event, title, link, target) - event fired on logo image click
+- `menu-click` - (event, title, link, target) - event fired on menu item click
+- `secondary-menu-click` - (event, title, link, target) - event fired on secondary menu item click

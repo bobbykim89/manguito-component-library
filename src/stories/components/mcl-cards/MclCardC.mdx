@@ -1,0 +1,44 @@
+import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import * as Stories from './mcl-card-c/mclCardC.stories'
+
+<Meta of={Stories} />
+
+# MCL Card C
+
+Included in `@bobbykim/mcl-cards`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-cards
+```
+
+## Usage
+
+`import { MclCardC } from "@bobbykim/mcl-cards"`
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclCardC } from '@bobbykim/mcl-cards'
+</script>
+
+<template>
+  <mcl-card-c></mcl-card-c>
+</template>
+```
+
+<Canvas of={Stories.MclCardCExample} />
+
+## Controls
+
+<Controls of={Stories.MclCardCExample} />
+
+### Events
+
+- `card-click` - \$event - Emitted on card click
+
+### Slots
+
+- card-body - a slot in the content area

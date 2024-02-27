@@ -1,0 +1,38 @@
+import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import * as Stories from './mcl-text-area/textArea.stories'
+
+<Meta of={Stories} />
+
+# MCL Text Area
+
+Included in `@bobbykim/mcl-forms`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-forms
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclTextArea } from '@bobbykim/mcl-forms'
+</script>
+
+<template>
+  <mcl-text-area v-model="inputData"></mcl-text-area>
+</template>
+```
+
+<Canvas of={Stories.MclTextAreaExample} />
+
+## Controls
+
+<Controls of={Stories.MclTextAreaExample} />
+
+## Example with mcl-form-group
+
+<Canvas of={Stories.MclTextAreaWithLabelExample} />
