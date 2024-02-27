@@ -1,16 +1,36 @@
 # @bobbykim/mcl-tabs
 
-Add description
-
 ## Demo
 
-[MCL Histoire Page](https://manguito-component-library.vercel.app/story/{%story-link%})
+[MCL Storybook Page](https://manguito-component-library.vercel.app/)
+
+- [MCL Tabs A](https://manguito-component-library.vercel.app/?path=/docs/components-tabs-mcltabsa--mcltabsa)
 
 ## Install
 
+```sh
+npm i @bobbykim/mcl-tabs
+```
+
 ## Usage
 
-`import MclTabs from "@bobbykim/mcl-tabs"`;
+`import { MclTabsA } from "@bobbykim/mcl-tabs"`
+
+```vue
+<script setup lang="ts">
+...
+import { MclTabsA } from "@bobbykim/mcl-tabs"
+...
+</script>
+
+<template>
+  <mcl-tabs-a></mcl-tabs-a>
+</template>
+```
+
+## Dependencies
+
+- @bobbykim/manguito-theme
 
 ## Maintainer
 

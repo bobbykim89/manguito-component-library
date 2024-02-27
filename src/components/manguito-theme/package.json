@@ -11,7 +11,14 @@
     "build": "vue-tsc --project tsconfig.vue.json && tsc"
   },
   "dependencies": {
-    "@vueuse/core": "^10.8.0"
+    "@vueuse/core": "^10.8.0",
+    "vue": "^3.3.10"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "sass": "^1.69.5",
+    "tailwindcss": "^3.3.6"
   },
   "author": {
     "name": "Bobby Kim",
