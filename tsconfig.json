@@ -21,6 +21,6 @@
     }
   },
   "include": ["src/**/*.ts", "src/**/*.vue", "src/env.d.ts"],
-  "exclude": ["node_modules", "**/*.spec.ts"],
+  "exclude": ["node_modules", "**/*.spec.ts", "**/deprecated/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
