@@ -1,0 +1,69 @@
+import { Canvas, Controls, Meta } from '@storybook/blocks'
+import * as Stories from './header/headerHorizontal.stories'
+
+<Meta of={Stories} />
+
+# Header Horizontal
+
+Included in `@bobbykim/manguito-theme`
+
+## Usage
+
+```js
+<script lang="ts" setup>
+import { HeaderHorizontal } from '@bobbykim/manguito-theme'
+
+const headerRef = ref<InstanceType<typeof HeaderHorizontal>>()
+
+const handleMenuClick = (e: Event) => {
+  e.preventDefault()
+  headerRef.value!.headerClose()
+}
+</script>
+
+<template>
+  <HeaderHorizontal ref="headerRef" v-bind="props">
+    <template #content>
+      <div class="flex flex-shrink-0 items-center self-center">
+        <!-- content -->
+    </template>
+    <template #nav-desktop-right>
+      <!-- header right content -->
+    </template>
+    <template #mobile-content="{ headerClose }">
+      <!-- mobile menu content -->
+      <div>
+        <a href="#" @click="handleMenuClick($event)">Mobile Menu 1</a>
+        <a href="#" @click="handleMenuClick($event)">Mobile Menu 2</a>
+        <a href="#" @click="handleMenuClick($event)">Mobile Menu 3</a>
+        <div>
+          <button class="btn btn-primary" @click="headerClose">
+            Button A
+          </button>
+          <button class="btn btn-secondary" @click="headerClose">
+            Button B
+          </button>
+        </div>
+      </div>
+    </template>
+  </HeaderHorizontal>
+</template>
+```
+
+### Example
+
+<Canvas of={Stories.HeaderHorizontalEmptySlots} />
+
+## Controls
+
+<Controls of={Stories.HeaderHorizontalEmptySlots} />
+
+## Slot
+
+- `#content`: main content slot on left side of the component
+- `#nav-desktop-right`: slot at the right side of the component
+- `#mobile-content`: slot inside expanded mobile menu
+
+## Events
+
+-`toggle-drawer` - (event: Event) - Emitted nav drawer button click
