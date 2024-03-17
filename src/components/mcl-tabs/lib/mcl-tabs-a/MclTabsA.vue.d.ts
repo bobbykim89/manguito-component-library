@@ -43,8 +43,8 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
 }>>> & {
     "onTab-click"?: ((...args: any[]) => any) | undefined;
 }, {
-    borderColor: ColorPalette;
     bgColor: ColorPalette;
+    borderColor: ColorPalette;
     tabColor: ColorPalette;
     titleSize: HeadingSize;
     activeTitleColor: ColorPalette;

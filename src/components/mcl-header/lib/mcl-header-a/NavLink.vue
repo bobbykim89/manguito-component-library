@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
-import type { MenuItemType } from './index.types'
+import type { MenuItemType } from '../common/index.types'
 
 const props = withDefaults(
   defineProps<{

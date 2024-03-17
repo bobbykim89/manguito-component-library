@@ -89,6 +89,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     "onLogo-click"?: ((...args: any[]) => any) | undefined;
     "onSecondary-menu-click"?: ((...args: any[]) => any) | undefined;
 }, {
+    bgColor: ColorPalette;
     titleColor: ColorPalette;
     titleSize: HeadingSize;
     logoAsLink: boolean;
@@ -101,7 +102,6 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     menuTextBold: boolean;
     displayHighlight: boolean;
     highlightColor: ColorPalette;
-    bgColor: ColorPalette;
     borderTopColor: ColorPalette;
     headlineColor: ColorPalette;
 }, {}>, {

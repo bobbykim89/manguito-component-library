@@ -67,10 +67,10 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     type: InputType;
     required: boolean;
     placeholder: string;
-    rounded: boolean;
     displayBorder: boolean;
-    borderColor: ColorPalette;
     bgColor: ColorPalette;
+    rounded: boolean;
+    borderColor: ColorPalette;
     displayShadow: boolean;
     displayHighlight: boolean;
     highlightColor: ColorPalette;

@@ -64,9 +64,9 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     "onBtn-prev"?: ((...args: any[]) => any) | undefined;
     "onBtn-next"?: ((...args: any[]) => any) | undefined;
 }, {
+    bgColor: ColorPalette;
     titleColor: ColorPalette;
     titleSize: HeadingSize;
-    bgColor: ColorPalette;
     displayHighlight: boolean;
     highlightColor: ColorPalette;
     displayTagLine: boolean;

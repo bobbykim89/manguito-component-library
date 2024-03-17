@@ -1,5 +1,5 @@
 import type { BodyText, ColorPalette, CtaTarget, HeadingSize } from '@bobbykim/manguito-theme';
-import type { MenuCollapseType, MenuItemType } from './index.types';
+import type { MenuCollapseType, MenuItemType } from '../common/index.types';
 declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     logo: string;
     logoSmall?: string | undefined;
@@ -101,8 +101,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     "onTitle-click"?: ((...args: any[]) => any) | undefined;
     "onLogo-click"?: ((...args: any[]) => any) | undefined;
 }, {
-    titleColor: ColorPalette;
     bgColor: ColorPalette;
+    mobileMenuBgColor: ColorPalette;
+    fadeInOnScroll: boolean;
+    scrollDistance: number;
+    titleColor: ColorPalette;
     menuTextSize: BodyText;
     menuTextColor: ColorPalette;
     menuTextBold: boolean;
@@ -114,11 +117,8 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     titleAsLink: boolean;
     titleLinkTarget: CtaTarget;
     menuItemAsLink: boolean;
-    mobileMenuBgColor: ColorPalette;
     secondaryColor: ColorPalette;
     hamburgerBorder: boolean;
-    fadeInOnScroll: boolean;
-    scrollDistance: number;
 }, {}>, {
     "nav-slot"?(_: {}): any;
     "mobile-slot"?(_: {
