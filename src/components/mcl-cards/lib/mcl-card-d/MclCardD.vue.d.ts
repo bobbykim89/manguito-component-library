@@ -89,10 +89,10 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
 }>>> & {
     "onCard-click"?: ((...args: any[]) => any) | undefined;
 }, {
+    bgColor: ColorPalette;
     titleColor: ColorPalette;
     titleSize: HeadingSize;
     borderColor: ColorPalette;
-    bgColor: ColorPalette;
     displayImage: boolean;
     imageAlt: string;
     imageCors: CrossOrigin;

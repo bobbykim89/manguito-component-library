@@ -54,10 +54,10 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
 }, {
     visible: boolean;
     className: string;
+    color: ColorPalette;
     titleColor: ColorPalette;
     noBackdrop: boolean;
     noHeader: boolean;
-    color: ColorPalette;
     backdropColor: ColorPalette;
     placement: DirectionX;
     width: string | number;

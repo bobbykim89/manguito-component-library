@@ -66,6 +66,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     displayFilter: boolean;
     filterOpacity: number;
 }>>>, {
+    bgColor: ColorPalette;
     titleColor: ColorPalette;
     titleLevel: HeadingLevel;
     titleSize: HeadingSize;
@@ -75,7 +76,6 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     subTitleColor: ColorPalette;
     displayHighlight: boolean;
     highlightColor: ColorPalette;
-    bgColor: ColorPalette;
     mobileImageBlur: boolean;
     imgPosition: DirectionX;
     displayFilter: boolean;

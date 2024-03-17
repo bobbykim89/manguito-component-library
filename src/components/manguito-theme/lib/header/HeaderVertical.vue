@@ -1,32 +1,37 @@
 <script setup lang="ts">
-import { Transition, computed, ref, useSlots } from 'vue'
+import { Transition, computed, ref } from 'vue'
 import type { ColorPalette } from '../../'
 import generateClass from '../../'
 import NavDrawer from './NavDrawer.vue'
 const props = withDefaults(
   defineProps<{
     bgColor?: ColorPalette
-    mobileMenuBgColor?: ColorPalette
     drawerBtnColor?: ColorPalette
     drawerBtnBorder?: boolean
     headerWidth?: number
   }>(),
   {
     bgColor: 'light-1',
-    mobileMenuBgColor: 'light-2',
     drawerBtnColor: 'dark-1',
     drawerBtnBorder: true,
     headerWidth: 160,
   }
 )
 
-const slots = useSlots()
+const slots = defineSlots<{
+  default: any
+  content: any
+  'content-bottom': any
+  'mobile-content'(props: { headerClose: () => void }): any
+}>()
+const emit = defineEmits<{
+  (e: 'toggle-drawer', event: Event, open: boolean): void
+}>()
 const navOpen = ref<boolean>(false)
-const emit = defineEmits(['toggle-drawer'])
 
 const toggleNavButton = (e: Event): void => {
   navOpen.value = !navOpen.value
-  emit('toggle-drawer', e)
+  emit('toggle-drawer', e, navOpen.value)
 }
 
 const closeNav = (): void => {
@@ -77,7 +82,7 @@ defineExpose({
           <div
             class="fixed inset-0 overflow-y-scroll py-lg px-sm"
             v-if="navOpen"
-            :class="generateClass('BGCOLOR', mobileMenuBgColor)"
+            :class="generateClass('BGCOLOR', bgColor)"
           >
             <div v-if="slots['mobile-content']">
               <slot name="mobile-content" :header-close="closeNav" />

@@ -53,12 +53,12 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     "onCollapse-close"?: ((...args: any[]) => any) | undefined;
 }, {
     visible: boolean;
+    bgColor: ColorPalette;
     titleColor: ColorPalette;
     borderColor: ColorPalette;
     rounded: boolean;
     titleSize: HeadingSize;
     iconColor: ColorPalette;
-    bgColor: ColorPalette;
     btnColor: ColorPalette;
     displayShadow: boolean;
 }, {}>, {

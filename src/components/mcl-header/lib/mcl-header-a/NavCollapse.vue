@@ -6,11 +6,8 @@ import type {
 } from '@bobbykim/manguito-theme'
 import generateClass, { Collapse, vCollapse } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
-import type {
-  MenuCollapseType,
-  MenuItemType,
-  NavChildClickEventType,
-} from './index.types'
+import type { MenuCollapseType, MenuItemType } from '../common/index.types'
+import type { NavChildClickEventType } from './index.types'
 
 const props = withDefaults(
   defineProps<{

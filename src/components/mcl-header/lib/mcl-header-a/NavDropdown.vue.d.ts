@@ -1,5 +1,5 @@
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme';
-import type { MenuCollapseType } from './index.types';
+import type { MenuCollapseType } from '../common/index.types';
 declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     navItem: MenuCollapseType;
     bgColor?: ColorPalette | undefined;

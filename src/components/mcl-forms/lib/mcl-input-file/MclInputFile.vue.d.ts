@@ -62,10 +62,10 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
 }, {
     textColor: ColorPalette;
     accept: string;
-    rounded: boolean;
     displayBorder: boolean;
-    borderColor: ColorPalette;
     bgColor: ColorPalette;
+    rounded: boolean;
+    borderColor: ColorPalette;
     buttonText: string;
     buttonTextColor: ColorPalette;
     buttonColor: ColorPalette;

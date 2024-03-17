@@ -1,5 +1,5 @@
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme';
-import type { MenuItemType } from './index.types';
+import type { MenuItemType } from '../common/index.types';
 declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     navItem: MenuItemType;
     menuTextSize?: BodyText | undefined;

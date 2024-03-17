@@ -16,13 +16,6 @@ const meta: Meta<typeof HeaderVertical> = {
       defaultValue: 'light-1',
       category: 'Colors',
     }),
-    mobileMenuBgColor: colorControllers({
-      name: 'mobile-menu-bg-color',
-      required: false,
-      defaultValue: 'light-2',
-      description: 'assigns background color for mobile menu',
-      category: 'Colors',
-    }),
     drawerBtnColor: colorControllers({
       name: 'drawer-btn-color',
       required: false,
@@ -52,7 +45,6 @@ const meta: Meta<typeof HeaderVertical> = {
   },
   args: {
     bgColor: 'light-1',
-    mobileMenuBgColor: 'light-2',
     drawerBtnColor: 'dark-1',
     drawerBtnBorder: true,
     headerWidth: 160,

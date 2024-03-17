@@ -9,15 +9,11 @@ import generateClass from '@bobbykim/manguito-theme'
 import { useWindowScroll } from '@vueuse/core'
 import { Transition, computed, ref, useSlots } from 'vue'
 import HamburgerMenu from '../common/HamburgerMenu.vue'
+import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 import NavCollapse from './NavCollapse.vue'
 import NavDropdown from './NavDropdown.vue'
 import NavLink from './NavLink.vue'
-import type {
-  MenuCollapseType,
-  MenuEventType,
-  MenuItemType,
-  NavChildClickEventType,
-} from './index.types'
+import type { MenuEventType, NavChildClickEventType } from './index.types'
 
 const props = withDefaults(
   defineProps<{
