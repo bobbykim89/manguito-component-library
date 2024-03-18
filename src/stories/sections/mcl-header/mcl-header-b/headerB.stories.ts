@@ -95,6 +95,7 @@ export const MclHeaderBExample: Story = {
     setup() {
       return { args }
     },
-    template: '<mcl-header-b v-bind="args"></mcl-header-b>',
+    template:
+      '<mcl-header-b v-bind="args"><template #default><div class="min-h-[100vh] bg-primary"><h3 class="h3-md text-center pt-md">Inside Header Component</h3></div><div class="min-h-[100vh] bg-secondary"><h3 class="h3-md text-center pt-md">Inside Header Component</h3></div></template></mcl-header-b>',
   }),
 }
