@@ -5,8 +5,11 @@ import type {
   CtaTarget,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
-import { HeaderVertical } from '@bobbykim/manguito-theme'
+import generateClass, { HeaderVertical } from '@bobbykim/manguito-theme'
+import { computed } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
+import NavCollapseVertical from './NavCollapseVertical.vue'
+import NavLinkVertical from './NavLinkVertical.vue'
 
 const props = withDefaults(
   defineProps<{
@@ -58,6 +61,21 @@ const emit = defineEmits<{
 const handleDrawerClick = (e: Event, status: boolean) => {
   emit('toggle-drawer', e, status)
 }
+const titleTextClass = computed<string>(() => {
+  const { titleSize, titleColor } = props
+  const classArray = [
+    generateClass('H3', titleSize),
+    generateClass('TEXTCOLOR', titleColor),
+  ]
+  return classArray.join(' ')
+})
+const hasChildren = (item: MenuItemType | MenuCollapseType) => {
+  const NavCollapse = item as MenuCollapseType
+  if (typeof NavCollapse.children === 'undefined') {
+    return false
+  }
+  return NavCollapse.children.length > 0
+}
 </script>
 
 <template>
@@ -72,7 +90,38 @@ const handleDrawerClick = (e: Event, status: boolean) => {
       <slot name="default"></slot>
     </template>
     <template #content>
-      <div>content</div>
+      <div>
+        <!-- logo block -->
+        <div class="p-md">
+          <a :href="titleBlockLink" :target="titleBlockLinkTarget">
+            <img :src="logo" :alt="logoAlt" class="h-full inline-block" />
+          </a>
+        </div>
+        <!-- title block -->
+        <div>
+          <h3
+            :class="titleTextClass"
+            class="text-center mb-md"
+            v-html="title"
+          ></h3>
+        </div>
+        <!-- menu item block -->
+        <ul class="flex flex-col">
+          <li v-for="(item, index) in menuItems" :key="`menu-${index}`">
+            <NavLinkVertical
+              v-if="!hasChildren(item)"
+              :menu-item="(item as MenuItemType)"
+            />
+            <NavCollapseVertical
+              v-else
+              :nav-id="item.title"
+              nav-location="desktop"
+              :nav-accordion-group="title"
+              :menu-item="(item as MenuCollapseType)"
+            />
+          </li>
+        </ul>
+      </div>
     </template>
     <template #content-bottom>
       <div>bottom</div>
