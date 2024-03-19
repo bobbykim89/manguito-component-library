@@ -11,7 +11,7 @@ import {
 import type { MenuCollapseType, MenuItemType } from '@/components/mcl-header'
 import { MclHeaderB } from '@/components/mcl-header'
 import type { Meta, StoryObj } from '@storybook/vue3'
-import headerBSlotItem from './headerBSlotItem.vue'
+import HeaderBSlotItem from './HeaderBSlotItem.vue'
 
 const navItems: Array<MenuItemType | MenuCollapseType> = [
   {
@@ -252,12 +252,12 @@ export const MclHeaderBSlotExample: Story = {
   render: (args) => ({
     components: {
       'mcl-header-b': MclHeaderB,
-      'header-b-slot-item': headerBSlotItem,
+      'header-b-slot-item': HeaderBSlotItem,
     },
     setup() {
       return { args }
     },
     template:
-      '<section><mcl-header-b v-bind="args"><template #default><div class="min-h-[100vh] bg-primary"><h3 class="h3-md text-center pt-md">Inside Header Component</h3></div><div class="min-h-[100vh] bg-secondary"><h3 class="h3-md text-center pt-md">Inside Header Component</h3></div></template><template #content-bottom><header-b-slot-item :color="args.menuTextColor"></header-b-slot-item></template><template #mobile-bottom><header-b-slot-item :color="args.menuTextColor"></header-b-slot-item></template></mcl-header-b></section><div class="min-h-[50vh] bg-success"><h3 class="h3-md text-center pt-md">Outside Header Component</h3></div>',
+      '<section><mcl-header-b v-bind="args"><template #default><div class="min-h-[100vh] bg-primary"><h3 class="h3-md text-center pt-md">Inside Header Component</h3></div><div class="min-h-[100vh] bg-secondary"><h3 class="h3-md text-center pt-md">Inside Header Component</h3></div></template><template #content-bottom><header-b-slot-item :color="args.highlightColor"></header-b-slot-item></template><template #mobile-bottom><header-b-slot-item :color="args.highlightColor"></header-b-slot-item></template></mcl-header-b></section><div class="min-h-[50vh] bg-success"><h3 class="h3-md text-center pt-md">Outside Header Component</h3></div>',
   }),
 }

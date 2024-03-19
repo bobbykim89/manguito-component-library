@@ -1,0 +1,47 @@
+import { ArgsTable, Canvas, Controls, Meta, Story } from '@storybook/blocks'
+import * as Stories from './mcl-header-b/headerB.stories'
+
+<Meta of={Stories} />
+
+# MCL Header B
+
+Included in `@bobbykim/mcl-header`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-header
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { MclHeaderB } from '@bobbykim/mcl-header'
+</script>
+
+<template>
+  <mcl-header-b></mcl-header-b>
+</template>
+```
+
+<Canvas of={Stories.MclHeaderBExample} />
+
+## Controls
+
+<Controls of={Stories.MclHeaderBExample} />
+
+## Slot
+
+- `#default`: slot to place page content
+- `#content-bottom`: slot at the bottom of component in desktop screen
+- `#mobile-bottom`: slot at the bottom of component in mobile screen
+
+## Events
+
+- `toggle-drawer` - (event: Event, open: boolean) - event fired on drawer button click
+- `title-click` - (event: Event, url: string, target: CtaTarget) - event fired on title block click
+- `menu-click` - (event: Event, item: MenuItemType) - event fired on menu item click
+- `collapse-click` - (event: Event, title: string, visible: boolean) - event fired on clicking collapse label in menu list

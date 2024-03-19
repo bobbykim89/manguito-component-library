@@ -4,14 +4,14 @@
  * @Export RDSTheme - an abstract class
  */
 import type {
-  ColorPalette,
-  HeadingSize,
   BodyText,
+  ColorPalette,
   FontWeight,
-  Range,
+  HeadingSize,
   OpacityRange,
-  SpacingLevel,
   Alignment as Position,
+  Range,
+  SpacingLevel,
 } from './theme.types.js'
 
 export type ColorClass = {
@@ -199,6 +199,26 @@ abstract class MCLTheme {
     black: 'hover:text-black',
     white: 'hover:text-white',
     transparent: 'hover:text-transparent',
+  }
+  // focus text color class
+  protected static focusTextColor: ColorClass = {
+    primary: 'focus:text-primary',
+    secondary: 'focus:text-secondary',
+    success: 'focus:text-success',
+    danger: 'focus:text-danger',
+    info: 'focus:text-info',
+    warning: 'focus:text-warning',
+    'light-1': 'focus:text-light-1',
+    'light-2': 'focus:text-light-2',
+    'light-3': 'focus:text-light-3',
+    'light-4': 'focus:text-light-4',
+    'dark-1': 'focus:text-dark-1',
+    'dark-2': 'focus:text-dark-2',
+    'dark-3': 'focus:text-dark-3',
+    'dark-4': 'focus:text-dark-4',
+    black: 'focus:text-black',
+    white: 'focus:text-white',
+    transparent: 'focus:text-transparent',
   }
   // disabled text color class
   protected static disabledTextColor: ColorClass = {

@@ -51,6 +51,7 @@ const handleChildClick = (e: Event, item: MenuItemType) => {
     e.preventDefault()
   }
   emit('child-click', e, item)
+  collapseRef.value?.close()
   closeCollapse()
 }
 const getNavId = computed<string>(() => {
@@ -67,16 +68,22 @@ const getAccordionGroup = computed<string>(() => {
 
 const colorClass = computed<string>(() => {
   const { textColor, textSize, dHl, hlColor, fontBold } = props
-  const classArray: string[] = [
-    generateClass('TEXTCOLOR', textColor),
-    generateClass('BODYTEXT', textSize),
-  ]
+  const classArray: string[] = [generateClass('BODYTEXT', textSize)]
+  if (!dHl) {
+    classArray.push(generateClass('TEXTCOLOR', textColor))
+    classArray.push(generateClass('HVTEXTCOLOR', hlColor))
+    classArray.push(generateClass('FCTEXTCOLOR', hlColor))
+  }
   if (dHl) {
     const highlightColor: string = generateClass('BEFOREBG', hlColor)
     const hlClass: string =
       'before:inset-y-0 before:left-0 before:transition-[width] before:duration-300 before:ease-linear before:w-0 hover:before:w-full focus:before:w-full '
     classArray.push(hlClass + highlightColor)
+    classArray.push(generateClass('TEXTCOLOR', hlColor))
+    classArray.push(generateClass('HVTEXTCOLOR', textColor))
+    classArray.push(generateClass('FCTEXTCOLOR', textColor))
   }
+  console.log(generateClass('FCTEXTCOLOR', textColor))
   if (fontBold) {
     classArray.push('font-bold')
   }
@@ -89,7 +96,7 @@ const collapseHighlightClass = computed<string>(() => {
     return ''
   }
   const classNames: string =
-    'before:absolute before:w-xs before:h-full before:bg-primary before:bg-opacity-25 '
+    'before:absolute before:w-xs before:h-full before:bg-primary before:bg-opacity-70 '
   const hlLocation: string =
     navLocation === 'desktop' ? 'before:left-0 ' : 'before:right-0 '
   classArray.push(classNames + hlLocation + generateClass('BEFOREBG', hlColor))
@@ -112,16 +119,23 @@ const childItemColorClass = computed<string>(() => {
   if (navLocation === 'mobile') {
     classArray.push('text-end')
   }
-
+  if (!dHl) {
+    classArray.push(generateClass('TEXTCOLOR', textColor))
+    classArray.push(generateClass('HVTEXTCOLOR', hlColor))
+    classArray.push(generateClass('FCTEXTCOLOR', hlColor))
+  }
   if (dHl) {
     const highlightColor: string = generateClass('BEFOREBG', hlColor)
     const hlClass: string =
-      'before:inset-y-0 before:duration-300 before:ease-linear before:w-0 hover:before:w-full focus:before:w-full before:bg-opacity-25 '
+      'before:inset-y-0 before:duration-300 before:ease-linear before:w-0 hover:before:w-full focus:before:w-full before:bg-opacity-70 '
     const hlLocation: string =
       navLocation === 'desktop'
         ? 'before:left-0 before:transition-[width] '
         : 'before:left-full hover:before:left-0 focus:before:left-0 before:transition-[all] '
     classArray.push(hlClass + hlLocation + highlightColor)
+    classArray.push(generateClass('TEXTCOLOR', hlColor))
+    classArray.push(generateClass('HVTEXTCOLOR', textColor))
+    classArray.push(generateClass('FCTEXTCOLOR', textColor))
   }
   if (fontBold) {
     classArray.push('font-bold')
@@ -137,7 +151,7 @@ defineExpose({
   <div>
     <button
       v-collapse:[getNavId]
-      class="px-xs py-2xs relative text-center block w-full before:absolute"
+      class="px-xs py-2xs relative text-center block w-full before:absolute transition-colors duration-300 ease-linear"
       @click="handleCollapseLabelClick($event, menuItem.title)"
       :class="[colorClass]"
     >
@@ -176,7 +190,7 @@ defineExpose({
             :href="item.url"
             :target="item.target"
             @click="handleChildClick($event, item)"
-            class="relative before:absolute w-full px-2xs py-3xs block overflow-x-hidden"
+            class="relative before:absolute w-full px-2xs py-3xs block overflow-x-hidden transition-colors duration-300 ease-linear"
             :class="[childItemColorClass]"
           >
             <span class="relative">

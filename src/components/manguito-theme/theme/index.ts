@@ -1,13 +1,13 @@
 import MCLTheme from './theme.js'
 import type {
-  ColorPalette,
-  HeadingSize,
-  BodyText,
-  FontWeight,
-  Range,
-  OpacityRange,
-  SpacingLevel,
   Alignment,
+  BodyText,
+  ColorPalette,
+  FontWeight,
+  HeadingSize,
+  OpacityRange,
+  Range,
+  SpacingLevel,
 } from './theme.types.js'
 
 /**
@@ -25,6 +25,7 @@ export const colorType = [
   'ACTIVEBG',
   'TEXTCOLOR',
   'HVTEXTCOLOR',
+  'FCTEXTCOLOR',
   'DISABLEDTEXTCOLOR',
   'SVGFILL',
   'RINGCOLOR',
@@ -132,6 +133,8 @@ class GenerateMCLClass extends MCLTheme {
         return this.getTextColorClass()
       case 'HVTEXTCOLOR':
         return this.getHoverTextColorClass()
+      case 'FCTEXTCOLOR':
+        return this.getFocusTextColorClass()
       case 'DISABLEDTEXTCOLOR':
         return this.getDisabledTextColorClass()
       case 'SVGFILL':
@@ -313,6 +316,12 @@ class GenerateMCLClass extends MCLTheme {
       return ' '
     }
     return MCLTheme.hoverTextColor[this.classValue as ColorPalette]
+  }
+  getFocusTextColorClass(): string {
+    if (!this.validateColorType) {
+      return ' '
+    }
+    return MCLTheme.focusTextColor[this.classValue as ColorPalette]
   }
   getDisabledTextColorClass(): string {
     if (!this.validateColorType) {
