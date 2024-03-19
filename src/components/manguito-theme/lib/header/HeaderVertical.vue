@@ -84,7 +84,7 @@ defineExpose({
             v-if="navOpen"
             :class="generateClass('BGCOLOR', bgColor)"
           >
-            <div v-if="slots['mobile-content']">
+            <div v-if="slots['mobile-content']" class="h-full">
               <slot name="mobile-content" :header-close="closeNav" />
             </div>
           </div>
