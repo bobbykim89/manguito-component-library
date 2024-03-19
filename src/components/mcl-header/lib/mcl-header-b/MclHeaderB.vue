@@ -34,6 +34,7 @@ const props = withDefaults(
     headerWidth?: number
   }>(),
   {
+    logoAlt: '',
     titleBlockAsLink: false,
     titleBlockLinkTarget: '_self',
     titleSize: 'md',
@@ -62,11 +63,17 @@ const emit = defineEmits<{
   (e: 'collapse-click', event: Event, title: string, visible: boolean): void
 }>()
 const componentRef = ref<InstanceType<typeof HeaderVertical>>()
+const collapseRef = ref<InstanceType<typeof NavCollapseVertical>>()
+const collapseMobileRef = ref<InstanceType<typeof NavCollapseVertical>>()
 const handleDrawerClick = (e: Event, status: boolean) => {
   emit('toggle-drawer', e, status)
 }
 const closeDrawer = (): void => {
   componentRef.value?.headerClose()
+}
+const closeCollapse = (): void => {
+  collapseRef.value?.closeCollapse()
+  collapseMobileRef.value?.closeCollapse()
 }
 const handleTitleClick = (e: Event) => {
   const { titleBlockAsLink, titleBlockLink, titleBlockLinkTarget } = props
@@ -75,6 +82,7 @@ const handleTitleClick = (e: Event) => {
   }
   emit('title-click', e, titleBlockLink, titleBlockLinkTarget)
   closeDrawer()
+  closeCollapse()
 }
 const handleMenuClick = (e: Event, item: MenuItemType) => {
   const { menuItemAsLink } = props
@@ -83,6 +91,7 @@ const handleMenuClick = (e: Event, item: MenuItemType) => {
   }
   emit('menu-click', e, item)
   closeDrawer()
+  closeCollapse()
 }
 const handleCollapseMenuClick = (e: Event, title: string, visible: boolean) => {
   emit('collapse-click', e, title, visible)
@@ -165,6 +174,7 @@ defineExpose({
             />
             <NavCollapseVertical
               v-else
+              ref="collapseRef"
               :nav-id="item.title"
               nav-location="desktop"
               :nav-accordion-group="title"
@@ -220,7 +230,7 @@ defineExpose({
             </a>
           </div>
           <!-- menu item block -->
-          <ul class="flex flex-col border rounded-md overflow-hidden">
+          <ul class="flex flex-col">
             <li v-for="(item, index) in menuItems" :key="`menu-${index}`">
               <NavLinkVertical
                 v-if="!hasChildren(item)"
@@ -235,6 +245,7 @@ defineExpose({
               />
               <NavCollapseVertical
                 v-else
+                ref="collapseMobileRef"
                 :nav-id="item.title"
                 nav-location="mobile"
                 :nav-accordion-group="title"
