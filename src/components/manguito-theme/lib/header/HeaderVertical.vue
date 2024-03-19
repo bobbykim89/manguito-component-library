@@ -51,7 +51,7 @@ defineExpose({
   <section class="lg:flex">
     <header class="relative" :style="componentWidth">
       <nav
-        class="hidden lg:block lg:sticky lg:top-0 lg:left-0 lg:h-[100vh] py-sm header-desktop"
+        class="hidden lg:block lg:sticky lg:top-0 lg:left-0 lg:h-[100vh] py-sm header-desktop overscroll-contain overflow-y-scroll"
         :class="[generateClass('BGCOLOR', bgColor)]"
       >
         <div class="flex flex-col justify-between h-full">
@@ -77,10 +77,10 @@ defineExpose({
 
       <!-- mobile menu -->
 
-      <div class="block lg:hidden relative overscroll-contain">
+      <div class="block lg:hidden relative">
         <Transition name="slide-down" appear>
           <div
-            class="fixed inset-0 overflow-y-scroll py-lg px-sm"
+            class="fixed inset-0 overflow-y-scroll overscroll-contain py-lg px-sm"
             v-if="navOpen"
             :class="generateClass('BGCOLOR', bgColor)"
           >

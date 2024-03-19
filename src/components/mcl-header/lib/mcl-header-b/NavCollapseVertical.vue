@@ -39,6 +39,9 @@ const emit = defineEmits<{
 const toggleCollapse = (e: CollapseEvent): void => {
   toggle.value = e.visible
 }
+const closeCollapse = () => {
+  collapseRef.value?.close()
+}
 const handleCollapseLabelClick = (e: Event, title: string) => {
   emit('label-click', e, title, toggle.value)
 }
@@ -48,7 +51,7 @@ const handleChildClick = (e: Event, item: MenuItemType) => {
     e.preventDefault()
   }
   emit('child-click', e, item)
-  collapseRef.value?.close()
+  closeCollapse()
 }
 const getNavId = computed<string>(() => {
   const { navId, navLocation } = props
@@ -124,6 +127,9 @@ const childItemColorClass = computed<string>(() => {
     classArray.push('font-bold')
   }
   return classArray.join(' ')
+})
+defineExpose({
+  closeCollapse: closeCollapse,
 })
 </script>
 
