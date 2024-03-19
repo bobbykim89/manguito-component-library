@@ -63,8 +63,7 @@ const emit = defineEmits<{
   (e: 'collapse-click', event: Event, title: string, visible: boolean): void
 }>()
 const componentRef = ref<InstanceType<typeof HeaderVertical>>()
-const collapseRef = ref<InstanceType<typeof NavCollapseVertical>>()
-const collapseMobileRef = ref<InstanceType<typeof NavCollapseVertical>>()
+const collapseRef = ref<InstanceType<typeof NavCollapseVertical>[]>()
 const handleDrawerClick = (e: Event, status: boolean) => {
   emit('toggle-drawer', e, status)
 }
@@ -72,8 +71,9 @@ const closeDrawer = (): void => {
   componentRef.value?.headerClose()
 }
 const closeCollapse = (): void => {
-  collapseRef.value?.closeCollapse()
-  collapseMobileRef.value?.closeCollapse()
+  for (let i = 0; i < collapseRef.value!.length; i++) {
+    collapseRef.value![i].closeCollapse()
+  }
 }
 const handleTitleClick = (e: Event) => {
   const { titleBlockAsLink, titleBlockLink, titleBlockLinkTarget } = props
@@ -245,7 +245,6 @@ defineExpose({
               />
               <NavCollapseVertical
                 v-else
-                ref="collapseMobileRef"
                 :nav-id="item.title"
                 nav-location="mobile"
                 :nav-accordion-group="title"

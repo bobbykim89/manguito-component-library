@@ -35,14 +35,22 @@ const handleLinkClick = (e: Event, item: MenuItemType) => {
 const colorClass = computed<string>(() => {
   const { textColor, textSize, dHl, hlColor, fontBold } = props
   const classArray: string[] = [
-    generateClass('TEXTCOLOR', textColor),
+    // generateClass('TEXTCOLOR', textColor),
     generateClass('BODYTEXT', textSize),
   ]
+  if (!dHl) {
+    classArray.push(generateClass('TEXTCOLOR', textColor))
+    classArray.push(generateClass('HVTEXTCOLOR', hlColor))
+    classArray.push(generateClass('FCTEXTCOLOR', hlColor))
+  }
   if (dHl) {
     const highlightColor: string = generateClass('BEFOREBG', hlColor)
     const hlClass: string =
       'before:inset-y-0 before:left-0 before:transition-[width] before:duration-300 before:ease-linear before:w-0 hover:before:w-full focus:before:w-full '
     classArray.push(hlClass + highlightColor)
+    classArray.push(generateClass('TEXTCOLOR', hlColor))
+    classArray.push(generateClass('HVTEXTCOLOR', textColor))
+    classArray.push(generateClass('FCTEXTCOLOR', textColor))
   }
   if (fontBold) {
     classArray.push('font-bold')
@@ -54,7 +62,7 @@ const colorClass = computed<string>(() => {
 <template>
   <a
     :class="[colorClass]"
-    class="px-xs py-2xs relative text-center block w-full before:absolute"
+    class="px-xs py-2xs relative text-center block w-full before:absolute transition-colors duration-300 ease-linear"
     :href="menuItem.url"
     :target="menuItem.target ? menuItem.target : '_self'"
     @click="handleLinkClick($event, menuItem)"
