@@ -6,7 +6,7 @@ import type {
 } from '@bobbykim/manguito-theme'
 import generateClass, { Collapse, vCollapse } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
-import type { MenuCollapseType } from '../common/index.types'
+import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 type NavLocationType = 'desktop' | 'mobile'
 const props = withDefaults(
   defineProps<{
@@ -31,8 +31,24 @@ const props = withDefaults(
   }
 )
 const toggle = ref<boolean>(false)
+const collapseRef = ref<InstanceType<typeof Collapse>>()
+const emit = defineEmits<{
+  (e: 'label-click', event: Event, title: string, open: boolean): void
+  (e: 'child-click', event: Event, item: MenuItemType): void
+}>()
 const toggleCollapse = (e: CollapseEvent): void => {
   toggle.value = e.visible
+}
+const handleCollapseLabelClick = (e: Event, title: string) => {
+  emit('label-click', e, title, toggle.value)
+}
+const handleChildClick = (e: Event, item: MenuItemType) => {
+  const { asLink } = props
+  if (!asLink) {
+    e.preventDefault()
+  }
+  emit('child-click', e, item)
+  collapseRef.value?.close()
 }
 const getNavId = computed<string>(() => {
   const { navId, navLocation } = props
@@ -45,7 +61,7 @@ const getAccordionGroup = computed<string>(() => {
   const agKebab = navAccordionGroup.toLowerCase().replaceAll(' ', '-')
   return `nav-accordion-group-${navLocation}-${agKebab}`
 })
-const collapseHighlightClass = () => {}
+
 const colorClass = computed<string>(() => {
   const { textColor, textSize, dHl, hlColor, fontBold } = props
   const classArray: string[] = [
@@ -63,8 +79,21 @@ const colorClass = computed<string>(() => {
   }
   return classArray.join(' ')
 })
+const collapseHighlightClass = computed<string>(() => {
+  const { dHl, hlColor, navLocation } = props
+  const classArray: string[] = []
+  if (!dHl) {
+    return ''
+  }
+  const classNames: string =
+    'before:absolute before:w-xs before:h-full before:bg-primary before:bg-opacity-25 '
+  const hlLocation: string =
+    navLocation === 'desktop' ? 'before:left-0 ' : 'before:right-0 '
+  classArray.push(classNames + hlLocation + generateClass('BEFOREBG', hlColor))
+  return classArray.join(' ')
+})
 const childItemColorClass = computed<string>(() => {
-  const { textColor, textSize, dHl, hlColor, fontBold } = props
+  const { textColor, textSize, dHl, hlColor, fontBold, navLocation } = props
   let childBodyText: BodyText =
     textSize === 'xl'
       ? 'lg'
@@ -77,12 +106,19 @@ const childItemColorClass = computed<string>(() => {
     generateClass('TEXTCOLOR', textColor),
     generateClass('BODYTEXT', childBodyText),
   ]
+  if (navLocation === 'mobile') {
+    classArray.push('text-end')
+  }
 
   if (dHl) {
     const highlightColor: string = generateClass('BEFOREBG', hlColor)
     const hlClass: string =
-      'before:inset-y-0 before:left-0 before:transition-[width] before:duration-300 before:ease-linear before:w-0 hover:before:w-full focus:before:w-full before:bg-opacity-25 '
-    classArray.push(hlClass + highlightColor)
+      'before:inset-y-0 before:duration-300 before:ease-linear before:w-0 hover:before:w-full focus:before:w-full before:bg-opacity-25 '
+    const hlLocation: string =
+      navLocation === 'desktop'
+        ? 'before:left-0 before:transition-[width] '
+        : 'before:left-full hover:before:left-0 focus:before:left-0 before:transition-[all] '
+    classArray.push(hlClass + hlLocation + highlightColor)
   }
   if (fontBold) {
     classArray.push('font-bold')
@@ -96,6 +132,7 @@ const childItemColorClass = computed<string>(() => {
     <button
       v-collapse:[getNavId]
       class="px-xs py-2xs relative text-center block w-full before:absolute"
+      @click="handleCollapseLabelClick($event, menuItem.title)"
       :class="[colorClass]"
     >
       <div class="relative flex gap-2 items-center justify-center">
@@ -117,19 +154,23 @@ const childItemColorClass = computed<string>(() => {
       </div>
     </button>
     <Collapse
+      ref="collapseRef"
       :id="getNavId"
       :accordion="getAccordionGroup"
       @open="toggleCollapse"
       @close="toggleCollapse"
     >
-      <ul
-        class="relative before:absolute before:w-xs before:h-full before:bg-primary before:bg-opacity-25"
-      >
-        <li v-for="(item, idx) in menuItem.children" :key="idx" class="ml-xs">
+      <ul class="relative" :class="[collapseHighlightClass]">
+        <li
+          v-for="(item, idx) in menuItem.children"
+          :key="idx"
+          :class="[navLocation === 'desktop' ? 'ml-xs' : 'mr-xs']"
+        >
           <a
             :href="item.url"
             :target="item.target"
-            class="relative before:absolute w-full px-2xs py-3xs block"
+            @click="handleChildClick($event, item)"
+            class="relative before:absolute w-full px-2xs py-3xs block overflow-x-hidden"
             :class="[childItemColorClass]"
           >
             <span class="relative">
@@ -141,5 +182,3 @@ const childItemColorClass = computed<string>(() => {
     </Collapse>
   </div>
 </template>
-
-<style scoped></style>

@@ -13,21 +13,21 @@ const customViewports = {
     name: 'Tablet',
     styles: {
       width: '768px',
-      height: '1024px',
+      height: '835px',
     },
   },
   laptop: {
     name: 'Laptop',
     styles: {
       width: '1024px',
-      height: '1024px',
+      height: '835px',
     },
   },
   desktop: {
     name: 'Desktop',
     styles: {
       width: '1440px',
-      height: '1024px',
+      height: '835px',
     },
   },
 }
