@@ -7,7 +7,6 @@ import type {
 import generateClass, { Collapse, vCollapse } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
-import type { NavChildClickEventType } from './index.types'
 
 const props = withDefaults(
   defineProps<{
@@ -35,34 +34,33 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['nav-link'])
+const emit = defineEmits<{
+  (e: 'child-click', event: Event, item: MenuItemType): void
+  (e: 'label-click', event: Event, title: string, open: boolean): void
+}>()
 const toggle = ref<boolean>(false)
 const handleNavId = computed<string>(() => {
   const { navId } = props
   const navLower = navId.toLowerCase()
-  // @ts-ignore: Unreachable code error
   const navKebab = navLower.replaceAll(' ', '-')
   return `nav-${navKebab}`
 })
 const handleNavAccordionGroupName = computed<string>(() => {
   const { navAccordionGroup } = props
   const toLowerCase = navAccordionGroup.toLocaleLowerCase()
-  // @ts-ignore: Unreachable code error
   const toKebabCase = toLowerCase.replaceAll(' ', '-')
   return `accordion-${toKebabCase}`
 })
 const toggleAction = (e: CollapseEvent): void => {
   toggle.value = e.visible
-  //   emit('nav-link', { event: e, title: props.navItem.title })
+}
+const handleCollapseLabelClick = (e: Event, title: string) => {
+  emit('label-click', e, title, toggle.value)
 }
 const navItemClick = (e: Event, item: MenuItemType) => {
   const { asLink } = props
   !asLink && e.preventDefault()
-  const customEvent: NavChildClickEventType = {
-    event: e,
-    item,
-  }
-  emit('nav-link', customEvent)
+  emit('child-click', e, item)
 }
 const getMenuItemClass = (
   size: BodyText,
@@ -92,6 +90,7 @@ const getMenuItemClass = (
         class="tracking-wider align-middle outline-none nav__text flex items-center gap-3xs"
         :class="getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)"
         v-collapse:[handleNavId]
+        @click=""
       >
         <span>
           {{ navItem.title }}

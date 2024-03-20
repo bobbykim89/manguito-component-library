@@ -23,7 +23,9 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['nav-link'])
+const emit = defineEmits<{
+  (e: 'nav-link', event: Event, item: MenuItemType): void
+}>()
 
 const getMenuItemClass = (
   size: BodyText,
@@ -44,10 +46,10 @@ const getMenuItemClass = (
   }
   return classArray.join(' ')
 }
-const handleNavLinkClick = (e: Event) => {
+const handleNavLinkClick = (e: Event, item: MenuItemType) => {
   const { asLink } = props
   !asLink && e.preventDefault()
-  emit('nav-link', e)
+  emit('nav-link', e, item)
 }
 </script>
 
@@ -59,7 +61,7 @@ const handleNavLinkClick = (e: Event) => {
       v-html="navItem.title"
       class="tracking-wider outline-none nav__text"
       :class="getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)"
-      @click="handleNavLinkClick"
+      @click="handleNavLinkClick($event, navItem)"
     ></a>
     <div
       v-if="displayHighlight"

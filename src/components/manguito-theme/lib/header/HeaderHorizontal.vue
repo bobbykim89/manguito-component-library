@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useWindowScroll } from '@vueuse/core'
-import { computed, ref, useSlots } from 'vue'
+import { computed, ref } from 'vue'
 import type { ColorPalette } from '../../'
 import generateClass from '../../'
 import NavDrawer from './NavDrawer.vue'
@@ -27,10 +27,16 @@ const props = withDefaults(
   }
 )
 
-const slots = useSlots()
+const slots = defineSlots<{
+  content: any
+  'content-right': any
+  'mobile-content'(props: { headerClose: () => void }): any
+}>()
 const navOpen = ref<boolean>(false)
 const { y } = useWindowScroll()
-const emit = defineEmits(['toggle-drawer'])
+const emit = defineEmits<{
+  (e: 'toggle-drawer', event: Event, open: boolean): void
+}>()
 
 const closeNav = (): void => {
   navOpen.value = false
@@ -38,7 +44,7 @@ const closeNav = (): void => {
 
 const toggleNavButton = (e: Event): void => {
   navOpen.value = !navOpen.value
-  emit('toggle-drawer', e)
+  emit('toggle-drawer', e, navOpen.value)
 }
 
 /**
@@ -114,8 +120,8 @@ defineExpose({
           :toggle="navOpen"
           :nav-color="bgColor"
         ></NavDrawer>
-        <div v-if="slots['nav-desktop-right']" class="hidden lg:block">
-          <slot name="nav-desktop-right"></slot>
+        <div v-if="slots['content-right']" class="hidden lg:block">
+          <slot name="content-right"></slot>
         </div>
       </div>
     </nav>

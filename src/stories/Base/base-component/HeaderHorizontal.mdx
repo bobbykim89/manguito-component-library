@@ -61,9 +61,9 @@ const handleMenuClick = (e: Event) => {
 ## Slot
 
 - `#content`: main content slot on left side of the component
-- `#nav-desktop-right`: slot at the right side of the component
-- `#mobile-content`: slot inside expanded mobile menu
+- `#content-right`: slot at the right side of the component
+- `#mobile-content(props: { headerClose: () => void })`: slot inside expanded mobile menu
 
 ## Events
 
--`toggle-drawer` - (event: Event) - Emitted nav drawer button click
+-`toggle-drawer` - (event: Event, open: boolean) - Emitted nav drawer button click
