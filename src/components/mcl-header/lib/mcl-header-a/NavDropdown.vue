@@ -6,7 +6,6 @@ import generateClass, {
 } from '@bobbykim/manguito-theme'
 import { ref } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
-import type { NavChildClickEventType } from './index.types'
 
 const props = withDefaults(
   defineProps<{
@@ -32,7 +31,10 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['nav-link'])
+const emit = defineEmits<{
+  (e: 'label-click', event: Event, title: string, open: boolean): void
+  (e: 'child-click', event: Event, item: MenuItemType): void
+}>()
 const navIndexRef = ref<number>(-1)
 const navItemRef = ref<HTMLButtonElement[]>()
 
@@ -69,18 +71,15 @@ const navKeyUp = (direction: KeyDirection): void => {
   }
   navItemRef.value[navIndexRef.value].focus()
 }
-const dropdownButtonClick = (e: Event): void => {
+const dropdownButtonClick = (e: Event, title: string, state: boolean): void => {
   // resets index
   navIndexRef.value = -1
+  emit('label-click', e, title, state)
 }
 const navItemClick = (e: Event, item: MenuItemType) => {
   const { asLink } = props
   !asLink && e.preventDefault()
-  const customEvent: NavChildClickEventType = {
-    event: e,
-    item,
-  }
-  emit('nav-link', customEvent)
+  emit('child-click', e, item)
 }
 </script>
 
@@ -92,7 +91,10 @@ const navItemClick = (e: Event, item: MenuItemType) => {
           <button
             class="tracking-wider align-middle outline-none nav__text flex items-center gap-3xs"
             :class="getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)"
-            @click="toggle($event), dropdownButtonClick($event)"
+            @click="
+              toggle($event),
+                dropdownButtonClick($event, navItem.title, dropdownState)
+            "
           >
             <span>
               {{ navItem.title }}
