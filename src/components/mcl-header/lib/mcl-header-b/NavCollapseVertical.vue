@@ -70,20 +70,25 @@ const colorClass = computed<string>(() => {
   const { textColor, textSize, dHl, hlColor, fontBold } = props
   const classArray: string[] = [generateClass('BODYTEXT', textSize)]
   if (!dHl) {
-    classArray.push(generateClass('TEXTCOLOR', textColor))
-    classArray.push(generateClass('HVTEXTCOLOR', hlColor))
-    classArray.push(generateClass('FCTEXTCOLOR', hlColor))
+    const nonHlTextClass: string[] = [
+      generateClass('TEXTCOLOR', textColor),
+      generateClass('HVTEXTCOLOR', hlColor),
+      generateClass('FCTEXTCOLOR', hlColor),
+    ]
+    classArray.push(nonHlTextClass.join(' '))
   }
   if (dHl) {
     const highlightColor: string = generateClass('BEFOREBG', hlColor)
     const hlClass: string =
       'before:inset-y-0 before:left-0 before:transition-[width] before:duration-300 before:ease-linear before:w-0 hover:before:w-full focus:before:w-full '
     classArray.push(hlClass + highlightColor)
-    classArray.push(generateClass('TEXTCOLOR', hlColor))
-    classArray.push(generateClass('HVTEXTCOLOR', textColor))
-    classArray.push(generateClass('FCTEXTCOLOR', textColor))
+    const hlTextClass: string[] = [
+      generateClass('TEXTCOLOR', hlColor),
+      generateClass('HVTEXTCOLOR', textColor),
+      generateClass('FCTEXTCOLOR', textColor),
+    ]
+    classArray.push(hlTextClass.join(' '))
   }
-  console.log(generateClass('FCTEXTCOLOR', textColor))
   if (fontBold) {
     classArray.push('font-bold')
   }
@@ -120,9 +125,12 @@ const childItemColorClass = computed<string>(() => {
     classArray.push('text-end')
   }
   if (!dHl) {
-    classArray.push(generateClass('TEXTCOLOR', textColor))
-    classArray.push(generateClass('HVTEXTCOLOR', hlColor))
-    classArray.push(generateClass('FCTEXTCOLOR', hlColor))
+    const nonHlTextClass: string[] = [
+      generateClass('TEXTCOLOR', textColor),
+      generateClass('HVTEXTCOLOR', hlColor),
+      generateClass('FCTEXTCOLOR', hlColor),
+    ]
+    classArray.push(nonHlTextClass.join(' '))
   }
   if (dHl) {
     const highlightColor: string = generateClass('BEFOREBG', hlColor)
@@ -133,9 +141,12 @@ const childItemColorClass = computed<string>(() => {
         ? 'before:left-0 before:transition-[width] '
         : 'before:left-full hover:before:left-0 focus:before:left-0 before:transition-[all] '
     classArray.push(hlClass + hlLocation + highlightColor)
-    classArray.push(generateClass('TEXTCOLOR', hlColor))
-    classArray.push(generateClass('HVTEXTCOLOR', textColor))
-    classArray.push(generateClass('FCTEXTCOLOR', textColor))
+    const hlTextClass: string[] = [
+      generateClass('TEXTCOLOR', hlColor),
+      generateClass('HVTEXTCOLOR', textColor),
+      generateClass('FCTEXTCOLOR', textColor),
+    ]
+    classArray.push(hlTextClass.join(' '))
   }
   if (fontBold) {
     classArray.push('font-bold')
