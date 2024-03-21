@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import generateClass, { Collapse, vCollapse } from '@bobbykim/manguito-theme'
-import type { CollapseEvent } from '@bobbykim/manguito-theme'
 import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
+import generateClass, { Collapse, vCollapse } from '@bobbykim/manguito-theme'
+import { ref, watch } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -35,14 +34,22 @@ const props = withDefaults(
 )
 
 const toggle = ref(props.visible)
-const emit = defineEmits(['collapse-open', 'collapse-close'])
+const slots = defineSlots<{
+  content: any
+  tab: any
+}>()
+const emit = defineEmits<{
+  (e: 'collapse-open', visible: boolean, title: string): void
+  (e: 'collapse-close', visible: boolean, title: string): void
+}>()
 
-const toggleAction = (e: CollapseEvent): void => {
-  toggle.value = e.visible
-  if (e.visible === true) {
-    emit('collapse-open', { ...e, title: props.title })
+const toggleAction = (visible: boolean): void => {
+  const { title } = props
+  toggle.value = visible
+  if (visible === true) {
+    emit('collapse-open', visible, title)
   } else {
-    emit('collapse-close', { ...e, title: props.title })
+    emit('collapse-close', visible, title)
   }
 }
 
@@ -111,7 +118,7 @@ watch(
         <h3 :class="getTitleClass(titleSize, titleColor)">
           {{ title }}
         </h3>
-        <div @click.stop class="cursor-default">
+        <div @click.stop class="cursor-default" v-if="slots['tab']">
           <slot name="tab"></slot>
         </div>
       </div>
@@ -154,5 +161,3 @@ watch(
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped></style>

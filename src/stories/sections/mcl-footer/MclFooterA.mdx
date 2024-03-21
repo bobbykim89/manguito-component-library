@@ -1,4 +1,4 @@
-import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import { ArgsTable, Canvas, Controls, Meta, Story } from '@storybook/blocks'
 import * as Stories from './mcl-footer-a/footerA.stories'
 
 <Meta of={Stories} />
@@ -39,6 +39,5 @@ import { MclFooterA } from '@bobbykim/mcl-footer'
 
 ## Events
 
-- `logo-click` - (event, title, link, target) - event fired on logo image click
-- `menu-click` - (event, title, link, target) - event fired on menu item click
-- `secondary-menu-click` - (event, title, link, target) - event fired on secondary menu item click
+- `logo-click` - (event: Event, link: string, target: CtaTarget) - event fired on logo image click
+- `menu-click` - (event: Event, item: MenuItemType) - event fired on menu item click

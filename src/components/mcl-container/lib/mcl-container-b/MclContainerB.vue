@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import generateClass from '@bobbykim/manguito-theme'
 import type {
   ColorPalette,
   HeadingLevel,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
+import generateClass from '@bobbykim/manguito-theme'
+import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -29,6 +29,10 @@ const props = withDefaults(
     titleColor: 'dark-3',
   }
 )
+
+const slots = defineSlots<{
+  content: any
+}>()
 
 const getTitleClass = (
   level: HeadingLevel,

@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import type {
-  BodyText,
-  CollapseEvent,
-  ColorPalette,
-} from '@bobbykim/manguito-theme'
+import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass, { Collapse, vCollapse } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
@@ -51,8 +47,8 @@ const handleNavAccordionGroupName = computed<string>(() => {
   const toKebabCase = toLowerCase.replaceAll(' ', '-')
   return `accordion-${toKebabCase}`
 })
-const toggleAction = (e: CollapseEvent): void => {
-  toggle.value = e.visible
+const toggleAction = (visible: boolean): void => {
+  toggle.value = visible
 }
 const handleCollapseLabelClick = (e: Event, title: string) => {
   emit('label-click', e, title, toggle.value)

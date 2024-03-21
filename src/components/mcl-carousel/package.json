@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.ts",
   "scripts": {
-    "build": "vue-tsc --project tsconfig.vue.json && tsc"
+    "build": "vue-tsc --project tsconfig.vue.json && tsc --project tsconfig.ts.json"
   },
   "author": {
     "name": "Bobby Kim",

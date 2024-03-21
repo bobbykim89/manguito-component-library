@@ -7,7 +7,7 @@ import type {
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 import SocialIcons from './SocialIcons.vue'
-import type { MenuItemEvent, MenuItemType, SocialUrl } from './index.types'
+import type { MenuItemType, SocialUrl } from './index.types'
 
 const props = withDefaults(
   defineProps<{
@@ -54,8 +54,13 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['menu-click', 'logo-click', 'secondary-menu-click'])
-type EmitType = 'menu' | 'logo' | 'secondary'
+const slots = defineSlots<{
+  default: any
+}>()
+const emit = defineEmits<{
+  (e: 'logo-click', event: Event, link: string, target: CtaTarget): void
+  (e: 'menu-click', event: Event, item: MenuItemType): void
+}>()
 
 const getFooterClass = (bg: ColorPalette, border: ColorPalette): string => {
   /**
@@ -100,39 +105,16 @@ const getMenuItemClass = (
   return classArray.join(' ')
 }
 
-const footerItemClick = (
-  e: Event,
-  title: string,
-  link: string,
-  target: CtaTarget = '_self',
-  itemLink: boolean,
-  emitType: EmitType
-): void => {
-  /**
-   * @e - $event
-   * @title - menuItems[#].title / title
-   * @link - menuItems[#].url / logoLink
-   * @target - menuItems[#].target / logoLinkTaget
-   * @itemlink - menuItemAsLink / logoAsLink
-   * @emitType - Non prop value type EmitType
-   */
-  !itemLink && e.preventDefault()
+const handleTitleClick = (e: Event) => {
+  const { logoAsLink, logoLink, logoLinkTarget } = props
+  !logoAsLink && e.preventDefault()
+  emit('logo-click', e, logoLink, logoLinkTarget)
+}
 
-  const eventObj: MenuItemEvent = {
-    event: e,
-    title,
-    link,
-    target: target ? target : '_self',
-  }
-  if (emitType === 'menu') {
-    emit('menu-click', eventObj)
-  }
-  if (emitType === 'logo') {
-    emit('logo-click', eventObj)
-  }
-  if (emitType === 'secondary') {
-    emit('secondary-menu-click', eventObj)
-  }
+const handleMenuItemClick = (e: Event, item: MenuItemType) => {
+  const { menuItemAsLink } = props
+  !menuItemAsLink && e.preventDefault()
+  emit('menu-click', e, item)
 }
 </script>
 
@@ -152,16 +134,7 @@ const footerItemClick = (
             :target="logoLinkTarget"
             class="h-full inline-block outline-none focus:ring-2 ring-offset-2 ring-offset-transparent rounded-md transition-all duration-300 ease-linear"
             :class="generateClass('RINGCOLOR', titleColor)"
-            @click="
-              footerItemClick(
-                $event,
-                title,
-                logoLink,
-                logoLinkTarget,
-                logoAsLink,
-                'logo'
-              )
-            "
+            @click="handleTitleClick($event)"
           >
             <img class="inline-block h-full" :src="logo" :alt="logoAlt" />
           </a>
@@ -206,21 +179,12 @@ const footerItemClick = (
             >
               <a
                 :href="item.url"
-                :target="item.target"
+                :target="item.target ? item.target : '_self'"
                 class="tracking-wide outline-none nav__text"
                 :class="
                   getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)
                 "
-                @click="
-                  footerItemClick(
-                    $event,
-                    item.title,
-                    item.url,
-                    item.target,
-                    menuItemAsLink,
-                    'menu'
-                  )
-                "
+                @click="handleMenuItemClick($event, item)"
                 v-html="item.title"
               >
               </a>
@@ -244,21 +208,12 @@ const footerItemClick = (
             >
               <a
                 :href="item.url"
-                :target="item.target"
+                :target="item.target ? item.target : '_self'"
                 class="tracking-wide outline-none nav__text"
                 :class="
                   getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)
                 "
-                @click="
-                  footerItemClick(
-                    $event,
-                    item.title,
-                    item.url,
-                    item.target,
-                    menuItemAsLink,
-                    'secondary'
-                  )
-                "
+                @click="handleMenuItemClick($event, item)"
                 v-html="item.title"
               >
               </a>
