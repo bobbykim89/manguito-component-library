@@ -1,4 +1,4 @@
-import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import { ArgsTable, Canvas, Controls, Meta, Story } from '@storybook/blocks'
 import * as Stories from './mcl-header-a/headerA.stories'
 
 <Meta of={Stories} />
@@ -35,11 +35,12 @@ import { MclHeaderA } from '@bobbykim/mcl-header'
 
 ## Slot
 
-- `#nav-slot`: slot on the right side of the component
-- `#mobile-slot`: slot at the bottom of collapse menu on mobile screen
+- `#content-right`: slot on the right side of the component
+- `#mobile-bottom(props: { headerClose: () => void })`: slot at the bottom of collapse menu on mobile screen
 
 ## Events
 
-- `logo-click` - (event, title, link, target) - event fired on logo click
-- `title-click` - (event, title, link, target) - event fired on title text click
-- `menu-click` - (event, menuItem.title, menuItem.link, menuItem.target) - event fired on menu item click
+- `toggle-drawer` - (event: Event, open: boolean) - event fired on drawer button click
+- `title-click` - (event: Event, url: string, target: CtaTarget) - event fired on title block (title, logo) click
+- `menu-click` - (event: Event, item: MenuItemType) - event fired on menu item click
+- `collapse-click` - (event: Event, title: string, visible: boolean) - event fired on collapsable menu label click
