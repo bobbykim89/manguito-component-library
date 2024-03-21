@@ -8,7 +8,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "vue-tsc --project tsconfig.vue.json && tsc"
+    "build": "vue-tsc --project tsconfig.vue.json && tsc --project tsconfig.ts.json"
   },
   "dependencies": {
     "@vueuse/core": "^10.8.0",

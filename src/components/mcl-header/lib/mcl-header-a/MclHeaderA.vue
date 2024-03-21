@@ -5,34 +5,24 @@ import type {
   CtaTarget,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
-import { useWindowScroll } from '@vueuse/core'
-import { Transition, computed, ref, useSlots } from 'vue'
-import HamburgerMenu from '../common/HamburgerMenu.vue'
+import generateClass, { HeaderHorizontal } from '@bobbykim/manguito-theme'
+import { ref } from 'vue'
+import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 import NavCollapse from './NavCollapse.vue'
 import NavDropdown from './NavDropdown.vue'
 import NavLink from './NavLink.vue'
-import type {
-  MenuCollapseType,
-  MenuEventType,
-  MenuItemType,
-  NavChildClickEventType,
-} from './index.types'
 
 const props = withDefaults(
   defineProps<{
     logo: string
     logoSmall?: string
     logoAlt?: string
-    logoAsLink?: boolean
-    logoLink: string
-    logoLinkTarget?: CtaTarget
     title: string
     titleSize?: HeadingSize
     titleColor?: ColorPalette
-    titleAsLink?: boolean
-    titleLink: string
-    titleLinkTarget?: CtaTarget
+    titleBlockAsLink?: boolean
+    titleBlockLinkTarget?: CtaTarget
+    titleBlockLink: string
     menuItems: Array<MenuItemType | MenuCollapseType>
     menuItemAsLink?: boolean
     menuTextSize?: BodyText
@@ -42,19 +32,18 @@ const props = withDefaults(
     highlightColor?: ColorPalette
     bgColor?: ColorPalette
     mobileMenuBgColor?: ColorPalette
-    secondaryColor?: ColorPalette
-    hamburgerBorder?: boolean
+    drawerBtnColor?: ColorPalette
+    drawerBtnBorder?: boolean
     fadeInOnScroll?: boolean
     scrollDistance?: number
   }>(),
   {
-    logoAsLink: true,
-    logoLinkTarget: '_self',
+    logoAlt: '',
     titleSize: 'md',
     titleColor: 'dark-3',
-    titleAsLink: true,
-    titleLinkTarget: '_self',
-    menuItemAsLink: true,
+    titleBlockAsLink: false,
+    titleBlockLinkTarget: '_self',
+    menuItemAsLink: false,
     menuTextSize: 'md',
     menuTextColor: 'dark-3',
     menuTextBold: false,
@@ -62,82 +51,51 @@ const props = withDefaults(
     highlightColor: 'primary',
     bgColor: 'light-1',
     mobileMenuBgColor: 'light-2',
-    secondaryColor: 'dark-1',
-    hamburgerBorder: true,
+    drawerBtnColor: 'dark-1',
+    drawerBtnBorder: true,
     fadeInOnScroll: true,
     scrollDistance: 50,
   }
 )
 
-const navOpen = ref<boolean>(false)
-const slots = useSlots()
-const emit = defineEmits([
-  'toggle-menu',
-  'menu-click',
-  'title-click',
-  'logo-click',
-])
-const { y } = useWindowScroll()
-
-type EmitType = 'menu' | 'title' | 'logo'
+const componentRef = ref<InstanceType<typeof HeaderHorizontal>>()
+const slots = defineSlots<{
+  'content-right': any
+  'mobile-bottom'(props: { headerClose: () => void }): any
+}>()
+const emit = defineEmits<{
+  (e: 'toggle-drawer', event: Event, open: boolean): void
+  (e: 'title-click', event: Event, url: string, target: CtaTarget): void
+  (e: 'menu-click', event: Event, item: MenuItemType): void
+  (e: 'collapse-click', event: Event, title: string, visible: boolean): void
+}>()
 
 const closeNav = (): void => {
-  navOpen.value = false
+  componentRef.value?.headerClose()
 }
 
-const toggleNavButton = (e: Event): void => {
-  navOpen.value = !navOpen.value
-  emit('toggle-menu', e)
-}
-
-const navItemClick = (
-  e: Event,
-  title: string,
-  link: string,
-  target: CtaTarget = '_self',
-  itemLink: boolean,
-  emitType: EmitType
-): void => {
-  /**
-   * @param {Event} e - $event
-   * @param {string} link - menuItems[#].url / titleLink
-   * @param {CtaTarget} target - menuItems[#].target / titleLinkTaget
-   * @param {boolean} itemlink - menuItemAsLink /
-   * @param {EmitType} emitType - Non prop value type EmitType
-   */
-  navOpen.value = false
-  const menuEvent: MenuEventType = {
-    event: e,
-    title: title,
-    link: link,
-    target: target ? target : '_self',
-  }
-  if (!itemLink) {
+const handleTitleClick = (e: Event): void => {
+  const { titleBlockAsLink, titleBlockLink, titleBlockLinkTarget } = props
+  if (!titleBlockAsLink) {
     e.preventDefault()
   }
-  if (emitType === 'menu') {
-    emit('menu-click', menuEvent)
-  }
-  if (emitType === 'title') {
-    emit('title-click', menuEvent)
-  }
-  if (emitType === 'logo') {
-    emit('logo-click', menuEvent)
-  }
+  emit('title-click', e, titleBlockLink, titleBlockLinkTarget)
+  closeNav()
 }
-const navChildLinkClick = (e: NavChildClickEventType): void => {
-  /**
-   * @param {NavChildClickEventType} e - Event emitted from dropdown/collapse click events
-   */
-  const { title, url, target } = e.item
-  navOpen.value = false
-  const menuEvent: MenuEventType = {
-    event: e.event,
-    title,
-    link: url,
-    target: target ? target : '_self',
+const handleMenuItemClick = (e: Event, item: MenuItemType): void => {
+  const { menuItemAsLink } = props
+  if (!menuItemAsLink) {
+    e.preventDefault()
   }
-  emit('menu-click', menuEvent)
+  emit('menu-click', e, item)
+  closeNav()
+}
+const handleCollapsableMenuClick = (
+  e: Event,
+  title: string,
+  visible: boolean
+) => {
+  emit('collapse-click', e, title, visible)
 }
 
 const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
@@ -152,26 +110,6 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
   return classArray.join(' ')
 }
 
-/**
- * @TransitionFunctions
- * @param {HTMLElement} el - passed any since transition handlers don't accept HTMLElement (accepts Element)
- */
-const onEnter = (el: any) => {
-  el.style.height = 'auto'
-  const endWidth = getComputedStyle(el).height
-  el.style.height = '0px'
-  el.offsetHeight // force repaint
-  el.style.height = endWidth
-}
-const onAfterEnter = (el: any) => {
-  el.style.height = 'auto'
-}
-const onLeave = (el: any) => {
-  el.style.height = getComputedStyle(el).height
-  el.offsetHeight // force repaint
-  el.style.height = '0px'
-}
-
 const hasChildren = (item: MenuItemType | MenuCollapseType) => {
   const NavCollapse = item as MenuCollapseType
   if (typeof NavCollapse.children === 'undefined') {
@@ -180,40 +118,27 @@ const hasChildren = (item: MenuItemType | MenuCollapseType) => {
   return NavCollapse.children.length > 0
 }
 
-const handleFadeInOnScroll = computed(() => {
-  const { fadeInOnScroll, scrollDistance } = props
-  if (!fadeInOnScroll) {
-    return ''
-  }
-  return y.value >= scrollDistance
-    ? 'lg:shadow-md bg-opacity-70'
-    : 'bg-opacity-100'
+defineExpose({
+  headerClose: closeNav,
 })
 </script>
 
 <template>
-  <header
-    class="w-full top-0 md:sticky items-center z-50 transition ease-in duration-500 delay-150"
-    :class="[handleFadeInOnScroll, generateClass('BGCOLOR', bgColor)]"
+  <HeaderHorizontal
+    ref="componentRef"
+    :bg-color="bgColor"
+    :drawer-btn-border="drawerBtnBorder"
+    :drawer-btn-color="drawerBtnColor"
+    :fade-in-on-scroll="fadeInOnScroll"
+    :mobile-menu-bg-color="mobileMenuBgColor"
   >
-    <nav
-      class="flex flex-wrap items-center py-xs md:py-2xs mx-xs md:mx-sm align-middle justify-between sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px]"
-    >
+    <template #content>
       <div class="flex flex-shrink-0 items-center self-center">
         <div class="h-md md:h-lg lg:h-xl mr-2xs md:mr-sm align-middle">
           <a
-            :href="logoLink"
-            :target="logoLinkTarget"
-            @click="
-              navItemClick(
-                $event,
-                title,
-                logoLink,
-                logoLinkTarget,
-                logoAsLink,
-                'logo'
-              )
-            "
+            :href="titleBlockLink"
+            :target="titleBlockLinkTarget"
+            @click="handleTitleClick"
           >
             <img
               :src="logo"
@@ -231,18 +156,9 @@ const handleFadeInOnScroll = computed(() => {
         </div>
         <div class="flex flex-col justify-center ml-2">
           <a
-            :href="titleLink"
-            :target="titleLinkTarget"
-            @click="
-              navItemClick(
-                $event,
-                title,
-                titleLink,
-                titleLinkTarget,
-                titleAsLink,
-                'title'
-              )
-            "
+            :href="titleBlockLink"
+            :target="titleBlockLinkTarget"
+            @click="handleTitleClick"
           >
             <h2
               class="inline-block align-middle tracking-wider"
@@ -266,16 +182,7 @@ const handleFadeInOnScroll = computed(() => {
                 :display-highlight="displayHighlight"
                 :highlight-color="highlightColor"
                 :as-link="menuItemAsLink"
-                @nav-link="
-                  navItemClick(
-                    $event,
-                    item.title,
-                    (item as MenuItemType).url,
-                    (item as MenuItemType).target,
-                    menuItemAsLink,
-                    'menu'
-                  )
-                "
+                @nav-link="handleMenuItemClick"
               ></nav-link>
               <nav-dropdown
                 v-else
@@ -286,97 +193,59 @@ const handleFadeInOnScroll = computed(() => {
                 :display-highlight="displayHighlight"
                 :highlight-color="highlightColor"
                 :bg-color="bgColor"
-                :hover-bg-color="secondaryColor"
                 :as-link="menuItemAsLink"
-                @nav-link="navChildLinkClick"
+                @child-click="handleMenuItemClick"
+                @label-click="handleCollapsableMenuClick"
               ></nav-dropdown>
             </li>
           </ul>
         </div>
       </div>
+    </template>
+    <template #content-right>
+      <div v-if="slots['content-right']" class="hidden lg:block">
+        <slot name="content-right"></slot>
+      </div>
+    </template>
+    <template #mobile-content="{ headerClose }">
       <div>
-        <hamburger-menu
-          :color="secondaryColor"
-          :display-border="hamburgerBorder"
-          class="block lg:hidden"
-          @hbg-click="toggleNavButton"
-          :toggle="navOpen"
-          :nav-color="bgColor"
-        ></hamburger-menu>
-        <div v-if="slots['nav-slot']" class="hidden lg:block">
-          <slot name="nav-slot"></slot>
+        <ul class="flex flex-col items-center justify-center p-xs">
+          <li
+            class="mb-2xs last:mb-0"
+            v-for="(item, index) in menuItems"
+            :key="`mobile-${index}`"
+          >
+            <nav-link
+              v-if="!hasChildren(item)"
+              :nav-item="(item as MenuItemType)"
+              :menu-text-color="menuTextColor"
+              :menu-text-size="menuTextSize"
+              :menu-text-bold="menuTextBold"
+              :display-highlight="displayHighlight"
+              :highlight-color="highlightColor"
+              :as-link="menuItemAsLink"
+              @nav-link="handleMenuItemClick"
+            ></nav-link>
+            <nav-collapse
+              v-else
+              :nav-id="item.title"
+              :nav-item="(item as MenuCollapseType)"
+              :menu-text-color="menuTextColor"
+              :menu-text-size="menuTextSize"
+              :menu-text-bold="menuTextBold"
+              :display-highlight="displayHighlight"
+              :highlight-color="highlightColor"
+              :nav-accordion-group="title"
+              :as-link="menuItemAsLink"
+              @child-click="handleMenuItemClick"
+              @label-click="handleCollapsableMenuClick"
+            ></nav-collapse>
+          </li>
+        </ul>
+        <div v-if="slots['mobile-bottom']">
+          <slot name="mobile-bottom" :header-close="closeNav"></slot>
         </div>
       </div>
-    </nav>
-    <!-- mobile menu -->
-
-    <div class="overflow-hidden lg:hidden">
-      <transition
-        name="collapse"
-        @enter="onEnter"
-        @after-enter="onAfterEnter"
-        @leave="onLeave"
-      >
-        <div
-          class="bg-opacity-80 rounded-md my-2xs mx-xs overflow-hidden"
-          v-if="navOpen"
-          :class="generateClass('BGCOLOR', mobileMenuBgColor)"
-        >
-          <ul class="flex flex-col items-center justify-center p-xs">
-            <li
-              class="mb-2xs last:mb-0"
-              v-for="(item, index) in menuItems"
-              :key="`mobile-${index}`"
-            >
-              <nav-link
-                v-if="!hasChildren(item)"
-                :nav-item="(item as MenuItemType)"
-                :menu-text-color="menuTextColor"
-                :menu-text-size="menuTextSize"
-                :menu-text-bold="menuTextBold"
-                :display-highlight="displayHighlight"
-                :highlight-color="highlightColor"
-                :as-link="menuItemAsLink"
-                @nav-link="
-                  navItemClick(
-                    $event,
-                    item.title,
-                    (item as MenuItemType).url,
-                    (item as MenuItemType).target,
-                    menuItemAsLink,
-                    'menu'
-                  )
-                "
-              ></nav-link>
-              <nav-collapse
-                v-else
-                :nav-id="item.title"
-                :nav-item="(item as MenuCollapseType)"
-                :menu-text-color="menuTextColor"
-                :menu-text-size="menuTextSize"
-                :menu-text-bold="menuTextBold"
-                :display-highlight="displayHighlight"
-                :highlight-color="highlightColor"
-                :nav-accordion-group="title"
-                :as-link="menuItemAsLink"
-                @nav-link="navChildLinkClick"
-              ></nav-collapse>
-            </li>
-          </ul>
-          <div v-if="slots['mobile-slot']">
-            <slot name="mobile-slot" :close-nav="closeNav"></slot>
-          </div>
-        </div>
-      </transition>
-    </div>
-  </header>
+    </template>
+  </HeaderHorizontal>
 </template>
-
-<style lang="scss" scoped>
-.collapse-enter-active {
-  transition: height 0.5s ease-in;
-}
-.collapse-leave-active {
-  transition: height 0.5s ease-out;
-}
-</style>

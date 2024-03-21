@@ -13,6 +13,8 @@ manguito-theme includes basic config for MCL, including type definitions for the
   - [Modal](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-modal-component--modal)
   - [Sidebar](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-sidebar-component--sidebar)
   - [Tooltip](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-tooltip-component--tooltip)
+  - [Header (Horizontal)](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-header-horizontal--headerhorizontal)
+  - [Header (Vertical)](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-header-vertical--headervertical)
 - Utility Class
   - [Button Class](https://manguito-component-library.vercel.app/?path=/docs/base-utility-class-button-class--button)
   - [Link Class](https://manguito-component-library.vercel.app/?path=/docs/base-utility-class-link-class--link)

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import generateClass from '@bobbykim/manguito-theme'
 import type {
   ColorPalette,
   CrossOrigin,
   HeadingSize,
   OpacityRange,
 } from '@bobbykim/manguito-theme'
+import generateClass from '@bobbykim/manguito-theme'
+import { computed, ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -34,8 +34,13 @@ const props = withDefaults(
   }
 )
 
+const slots = defineSlots<{
+  'card-body': any
+}>()
 const cardFlipped = ref<boolean>(false)
-const emit = defineEmits(['card-click'])
+const emit = defineEmits<{
+  (e: 'card-click', event: Event): void
+}>()
 
 const cardClass = computed(() => {
   const classArray: string[] = [generateClass('BGCOLOR', props.cardColor)]

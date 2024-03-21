@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import {
-  ref,
-  computed,
-  watch,
   Transition,
-  onMounted,
+  computed,
   onBeforeUnmount,
+  onMounted,
+  ref,
+  watch,
 } from 'vue'
-import generateClass, { vClickOutside } from '../../index.js'
-import type { ColorPalette, DirectionX } from '../../index.js'
-import { observeVisibleAttr } from '../composables/index.js'
+import type { ColorPalette, DirectionX } from '../../'
+import generateClass, { vClickOutside } from '../../'
+import { observeVisibleAttr } from '../composables'
 
 const props = withDefaults(
   defineProps<{
@@ -37,7 +37,15 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['open', 'close'])
+const slots = defineSlots<{
+  header(props: { close: () => void; status: boolean }): any
+  body(props: { close: () => void; status: boolean }): any
+  footer(props: { close: () => void; status: boolean }): any
+}>()
+const emit = defineEmits<{
+  (e: 'open', visible: boolean): void
+  (e: 'close', visible: boolean): void
+}>()
 const toggle = ref<boolean>(props.visible)
 const toggleComplete = ref<boolean>(false)
 const sidebarRef = ref<HTMLElement | undefined>()
@@ -50,16 +58,16 @@ const toggleSidebar = (): void => {
 const openSidebar = (): void => {
   toggle.value = true
 }
-const closeSidebar = (e: Event): void => {
+const closeSidebar = (): void => {
   if (toggleComplete.value === true) {
     toggle.value = false
   }
 }
 const emitOpenEvent = () => {
-  emit('open', { visible: true })
+  emit('open', true)
 }
 const emitCloseEvent = () => {
-  emit('close', { visible: false })
+  emit('close', false)
 }
 const handleStyleVariables = computed(() => {
   return {
@@ -185,7 +193,7 @@ onBeforeUnmount(() => {
             <slot name="body" :close="closeSidebar" :status="toggle" />
           </div>
 
-          <div class="sticky bottom-0" ref="footerRef">
+          <div class="sticky bottom-0" ref="footerRef" v-if="slots['footer']">
             <slot name="footer" :close="closeSidebar" :status="toggle" />
           </div>
         </div>

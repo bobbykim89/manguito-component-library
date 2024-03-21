@@ -81,7 +81,13 @@ const handleSidebar = () => {
 </template>
 ```
 
+## Slot
+
+- `#header(props: { close: () => void; status: boolean })`: custom header slot
+- `#body(props: { close: () => void; status: boolean })`: main content slot
+- `#footer(props: { close: () => void; status: boolean })`: custom footer slot
+
 ### Events
 
-- `open` - \$event - Emitted when sidebar component opens
-- `close` - \$event - Emitted when sidebar component closes
+- `open` - (visible: boolean) - Emitted when modal component opens
+- `close` - (visible: boolean) - Emitted when modal component closes
