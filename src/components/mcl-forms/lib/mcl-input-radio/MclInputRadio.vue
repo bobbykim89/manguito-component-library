@@ -2,7 +2,7 @@
 import type { ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
-import type { RadioEventType, RadioSizeType } from './index.types'
+import type { RadioSizeType } from './index.types'
 
 const props = withDefaults(
   defineProps<{
@@ -25,7 +25,9 @@ const props = withDefaults(
 )
 
 const radioRef = ref<HTMLInputElement>()
-const emit = defineEmits(['change'])
+const emit = defineEmits<{
+  (e: 'change', event: Event, value: string | number): void
+}>()
 
 const radioClick = () => {
   radioRef.value?.click()
@@ -64,11 +66,8 @@ const getColorClass = computed(() => {
 })
 
 const handleChange = (e: Event) => {
-  const customEvent: RadioEventType = {
-    event: e,
-    value: (e.target as HTMLInputElement).value,
-  }
-  emit('change', customEvent)
+  const value = (e.target as HTMLInputElement).value
+  emit('change', e, value)
 }
 </script>
 

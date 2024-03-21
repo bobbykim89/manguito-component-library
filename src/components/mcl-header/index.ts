@@ -1,4 +1,5 @@
 import MclHeaderA from './lib/mcl-header-a/MclHeaderA.vue'
-export * from './lib/mcl-header-a/index.types'
+import MclHeaderB from './lib/mcl-header-b/MclHeaderB.vue'
+export * from './lib/common/index.types'
 
-export { MclHeaderA }
+export { MclHeaderA, MclHeaderB }

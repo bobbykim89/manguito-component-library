@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import type {
+  BodyText,
+  ColorPalette,
+  FontWeight,
+} from '@bobbykim/manguito-theme'
 import generateClass, {
   DropdownContainer,
   DropdownContent,
 } from '@bobbykim/manguito-theme'
-import type {
-  ColorPalette,
-  BodyText,
-  FontWeight,
-} from '@bobbykim/manguito-theme'
-import type { DropdownItem, ItemClickEvent } from './index.types'
+import { computed, ref } from 'vue'
+import type { DropdownItem } from './index.types'
 
 const props = withDefaults(
   defineProps<{
@@ -46,7 +46,10 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['button-click', 'item-click'])
+const emit = defineEmits<{
+  (e: 'button-click', event: Event): void
+  (e: 'item-click', event: Event, item: DropdownItem): void
+}>()
 const contentIndexRef = ref<number>(-1)
 const contentItemRef = ref<HTMLButtonElement[]>()
 
@@ -123,11 +126,7 @@ const dropdownButtonClick = (e: Event): void => {
   emit('button-click', e)
 }
 const dropdownItemClick = (e: Event, item: DropdownItem): void => {
-  const customEvent: ItemClickEvent = {
-    event: e,
-    item,
-  }
-  emit('item-click', customEvent)
+  emit('item-click', e, item)
 }
 type KeyDirection = 'up' | 'down'
 const dropdownItemKeyUp = (direction: KeyDirection): void => {
@@ -194,5 +193,3 @@ const dropdownItemKeyUp = (direction: KeyDirection): void => {
     </dropdown-container>
   </div>
 </template>
-
-<style lang="scss" scoped></style>

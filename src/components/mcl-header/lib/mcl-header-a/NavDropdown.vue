@@ -5,17 +5,12 @@ import generateClass, {
   DropdownContent,
 } from '@bobbykim/manguito-theme'
 import { ref } from 'vue'
-import type {
-  MenuCollapseType,
-  MenuItemType,
-  NavChildClickEventType,
-} from './index.types'
+import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 
 const props = withDefaults(
   defineProps<{
     navItem: MenuCollapseType
     bgColor?: ColorPalette
-    hoverBgColor?: ColorPalette
     menuTextSize?: BodyText
     menuTextColor?: ColorPalette
     menuTextBold?: boolean
@@ -26,7 +21,6 @@ const props = withDefaults(
   {
     menuTextSize: 'md',
     bgColor: 'light-1',
-    hoverBgColor: 'dark-1',
     menuTextColor: 'dark-3',
     menuTextBold: false,
     displayHighlight: true,
@@ -35,7 +29,10 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['nav-link'])
+const emit = defineEmits<{
+  (e: 'label-click', event: Event, title: string, open: boolean): void
+  (e: 'child-click', event: Event, item: MenuItemType): void
+}>()
 const navIndexRef = ref<number>(-1)
 const navItemRef = ref<HTMLButtonElement[]>()
 
@@ -72,18 +69,15 @@ const navKeyUp = (direction: KeyDirection): void => {
   }
   navItemRef.value[navIndexRef.value].focus()
 }
-const dropdownButtonClick = (e: Event): void => {
+const dropdownButtonClick = (e: Event, title: string, state: boolean): void => {
   // resets index
   navIndexRef.value = -1
+  emit('label-click', e, title, state)
 }
 const navItemClick = (e: Event, item: MenuItemType) => {
   const { asLink } = props
   !asLink && e.preventDefault()
-  const customEvent: NavChildClickEventType = {
-    event: e,
-    item,
-  }
-  emit('nav-link', customEvent)
+  emit('child-click', e, item)
 }
 </script>
 
@@ -95,7 +89,10 @@ const navItemClick = (e: Event, item: MenuItemType) => {
           <button
             class="tracking-wider align-middle outline-none nav__text flex items-center gap-3xs"
             :class="getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)"
-            @click="toggle($event), dropdownButtonClick($event)"
+            @click="
+              toggle($event),
+                dropdownButtonClick($event, navItem.title, dropdownState)
+            "
           >
             <span>
               {{ navItem.title }}
@@ -132,11 +129,11 @@ const navItemClick = (e: Event, item: MenuItemType) => {
           :target="item.target"
           :key="idx"
           ref="navItemRef"
-          class="px-xs py-2xs block w-full hover:bg-opacity-50 focus:bg-opacity-50"
+          class="px-xs py-2xs block w-full hover:bg-opacity-50 focus:bg-opacity-50 transition-all duration-200 ease-linear"
           :class="[
             generateClass('BGCOLOR', bgColor),
-            generateClass('HVBGCOLOR', hoverBgColor),
-            generateClass('FCBGCOLOR', hoverBgColor),
+            generateClass('HVBGCOLOR', highlightColor),
+            generateClass('FCBGCOLOR', highlightColor),
             generateClass('TEXTCOLOR', menuTextColor),
             generateClass('BODYTEXT', menuTextSize),
           ]"

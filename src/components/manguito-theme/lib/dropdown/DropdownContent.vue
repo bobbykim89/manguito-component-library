@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core'
 import { Transition, computed, inject, ref } from 'vue'
-import type { InjectType } from './index.types.js'
+import type { InjectType } from './index.types'
 
 withDefaults(
   defineProps<{
@@ -12,6 +12,9 @@ withDefaults(
   }
 )
 const { height } = useWindowSize()
+const slots = defineSlots<{
+  default(props: { itemClick: () => void }): any
+}>()
 const contentRef = ref<HTMLAreaElement>()
 const dropdownState = inject<InjectType>('dropdownState', {
   active: false,

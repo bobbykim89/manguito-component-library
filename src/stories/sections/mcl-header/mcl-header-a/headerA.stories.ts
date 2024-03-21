@@ -11,7 +11,6 @@ import {
 import type { MenuCollapseType, MenuItemType } from '@/components/mcl-header'
 import { MclHeaderA } from '@/components/mcl-header'
 import type { Meta, StoryObj } from '@storybook/vue3'
-import MclHeaderScroll from './MclHeaderScroll.vue'
 
 const navItems: Array<MenuItemType | MenuCollapseType> = [
   {
@@ -92,30 +91,31 @@ const meta: Meta<typeof MclHeaderA> = {
       description: 'assigns alt text for logo icons',
       category: 'Title Block',
     }),
-    logoAsLink: booleanControllers({
-      name: 'logo-as-link',
-      required: false,
-      description: 'whether or not to handle logo click event as link event',
-      defaultValue: true,
-      category: 'Title Block',
-    }),
-    logoLink: textControllers({
-      name: 'logo-link',
-      required: true,
-      description: 'assigns link url for link click event',
-      category: 'Title Block',
-    }),
-    logoLinkTarget: targetOptionControllers({
-      name: 'logo-link-target',
-      required: false,
-      description: 'assigns target option for logo link anchor tag',
-      defaultValue: '_self',
-      category: 'Title Block',
-    }),
     title: textControllers({
       name: 'title',
       required: true,
       description: 'assigns title text of the component',
+      category: 'Title Block',
+    }),
+    titleBlockLink: textControllers({
+      name: 'title-block-link',
+      required: true,
+      description: 'assigns link url for title block (logo, title)',
+      category: 'Title Block',
+    }),
+    titleBlockAsLink: booleanControllers({
+      name: 'title-block-as-link',
+      required: false,
+      defaultValue: false,
+      description:
+        'whether or not to have title block click event as link event',
+      category: 'Title Block',
+    }),
+    titleBlockLinkTarget: targetOptionControllers({
+      name: 'title-block-link-target',
+      required: false,
+      defaultValue: '_self',
+      description: 'assigns target option for title block link',
       category: 'Title Block',
     }),
     titleSize: headingTextControllers({
@@ -132,26 +132,6 @@ const meta: Meta<typeof MclHeaderA> = {
       defaultValue: 'dark-3',
       category: 'Title Block',
     }),
-    titleAsLink: booleanControllers({
-      name: 'title-as-link',
-      required: false,
-      description: 'whether or not to handle title click event as link event',
-      defaultValue: true,
-      category: 'Title Block',
-    }),
-    titleLink: textControllers({
-      name: 'title-link',
-      required: true,
-      description: 'assigns link url for title text click event',
-      category: 'Title Block',
-    }),
-    titleLinkTarget: targetOptionControllers({
-      name: 'title-link-target',
-      required: false,
-      description: 'assigns target option for title link anchor tag',
-      defaultValue: '_self',
-      category: 'Title Block',
-    }),
     menuItems: arrayControllers({
       name: 'menu-items',
       required: true,
@@ -163,7 +143,7 @@ const meta: Meta<typeof MclHeaderA> = {
       required: false,
       description:
         'whether or not to handle menu item click event as link event',
-      defaultValue: true,
+      defaultValue: false,
       category: 'Menu Block',
     }),
     menuTextSize: bodyTextControllers({
@@ -216,7 +196,7 @@ const meta: Meta<typeof MclHeaderA> = {
       defaultValue: 'light-2',
       category: 'Colors',
     }),
-    secondaryColor: colorControllers({
+    drawerBtnColor: colorControllers({
       name: 'secondary-color',
       required: false,
       description:
@@ -224,7 +204,7 @@ const meta: Meta<typeof MclHeaderA> = {
       defaultValue: 'dark-1',
       category: 'Colors',
     }),
-    hamburgerBorder: booleanControllers({
+    drawerBtnBorder: booleanControllers({
       name: 'hamburgerBorder',
       required: false,
       description: 'whether or not to display border for hamburger menu',
@@ -252,17 +232,14 @@ const meta: Meta<typeof MclHeaderA> = {
     logoSmall:
       'https://res.cloudinary.com/dwgni1x3t/image/upload/v1670275930/MCL/mcl-logo-square_jvgyxx.png',
     logoAlt: 'Manguito Component Library (MCL) logo',
-    logoAsLink: true,
-    logoLink: '/',
-    logoLinkTarget: '_self',
     title: 'MCL Header A',
+    titleBlockLink: '/',
+    titleBlockAsLink: false,
+    titleBlockLinkTarget: '_self',
     titleSize: 'md',
     titleColor: 'dark-3',
-    titleAsLink: true,
-    titleLink: '/',
-    titleLinkTarget: '_self',
     menuItems: navItems,
-    menuItemAsLink: true,
+    menuItemAsLink: false,
     menuTextSize: 'md',
     menuTextColor: 'dark-3',
     menuTextBold: false,
@@ -270,8 +247,8 @@ const meta: Meta<typeof MclHeaderA> = {
     highlightColor: 'primary',
     bgColor: 'light-1',
     mobileMenuBgColor: 'light-2',
-    secondaryColor: 'dark-1',
-    hamburgerBorder: true,
+    drawerBtnColor: 'dark-1',
+    drawerBtnBorder: true,
     fadeInOnScroll: true,
     scrollDistance: 50,
   },
@@ -293,10 +270,16 @@ export const MclHeaderAExample: Story = {
 
 export const MclHeaderScrollExample: Story = {
   render: (args) => ({
-    components: { 'mcl-header-scroll': MclHeaderScroll },
-    setup() {
-      return { args }
+    components: {
+      'mcl-header-a': MclHeaderA,
     },
-    template: '<mcl-header-scroll v-bind="args"></mcl-header-scroll>',
+    setup() {
+      const setConsole = () => {
+        console.log('close-header')
+      }
+      return { args, setConsole }
+    },
+    template:
+      '<section><mcl-header-a v-bind="args"><template #content-right><div class="flex justify-center items-center gap-4"><button class="btn btn-primary" @click="setConsole">Button 1</button><button class="btn btn-secondary" @click="setConsole">Button 2</button></div></template><template #mobile-bottom="{headerClose}"><div class="flex justify-center items-center gap-4"><button class="btn" btn-primary @click="headerClose(), setConsole()">Button 1</button><button class="btn btn-secondary" @click="headerClose(), setConsole()">Button 2</button></div></template></mcl-header-a><div class="h-[1000px] bg-primary"></div><div class="h-[1000px] bg-secondary"></div></section>',
   }),
 }
