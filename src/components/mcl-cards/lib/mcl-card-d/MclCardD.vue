@@ -117,7 +117,12 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['card-click'])
+const slots = defineSlots<{
+  default: any
+}>()
+const emit = defineEmits<{
+  (e: 'card-click', event: Event, item: CardClickEvent): void
+}>()
 
 const titleClass = (size: HeadingSize, color: ColorPalette): string => {
   /**
@@ -187,13 +192,12 @@ const handleCardClick = (e: Event) => {
 
   const { title, ctaLink, ctaLinkTarget, ctaAsLink } = props
   const cardEvent: CardClickEvent = {
-    event: e,
     title,
     url: ctaLink,
     target: ctaLinkTarget ? ctaLinkTarget : '_self',
   }
   !ctaAsLink && e.preventDefault()
-  emit('card-click', cardEvent)
+  emit('card-click', e, cardEvent)
 }
 </script>
 

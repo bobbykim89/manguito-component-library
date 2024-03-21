@@ -8,7 +8,7 @@ import type {
 import generateClass from '@bobbykim/manguito-theme'
 import type { CardClickEvent } from '../common/index.types'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title: string
     titleSize?: HeadingSize
@@ -38,7 +38,12 @@ withDefaults(
   }
 )
 
-const emit = defineEmits(['card-click'])
+const slots = defineSlots<{
+  default: any
+}>()
+const emit = defineEmits<{
+  (e: 'card-click', event: Event, item: CardClickEvent): void
+}>()
 
 const getBorderClass = (bColor: ColorPalette, rounded: boolean): string => {
   /**
@@ -85,29 +90,19 @@ const handleTitleClass = (
   return classArray.join(' ')
 }
 
-const handleCardClick = (
-  e: Event,
-  title: string,
-  link: string,
-  target: CtaTarget = '_self',
-  ctaLink: boolean
-): void => {
+const handleCardClick = (e: Event): void => {
   /**
    * @e - Event
-   * @title - title
-   * @link - ctaLink
-   * @target - ctaTarget
-   * @ctaLink - ctaAsLink
    */
-  !ctaLink && e.preventDefault()
+  const { title, ctaLink, ctaTarget, ctaAsLink } = props
+  !ctaAsLink && e.preventDefault()
   const cardEvent: CardClickEvent = {
-    event: e,
     title,
-    url: link,
-    target: target ? target : '_self',
+    url: ctaLink,
+    target: ctaTarget ? ctaTarget : '_self',
   }
   console.log(cardEvent)
-  emit('card-click', cardEvent)
+  emit('card-click', e, cardEvent)
 }
 </script>
 
@@ -116,11 +111,7 @@ const handleCardClick = (
     class="relative max-w-[450px] sm:max-w-[350px] w-full xs:w-auto flex-grow flex-shrink-0 cursor-pointer overflow-hidden border border-light-3"
     :class="getBorderClass(borderColor, rounded)"
   >
-    <a
-      :href="ctaLink"
-      :target="ctaTarget"
-      @click="handleCardClick($event, title, ctaLink, ctaTarget, ctaAsLink)"
-    >
+    <a :href="ctaLink" :target="ctaTarget" @click="handleCardClick($event)">
       <div
         class="absolute z-[15] flex flex-col justify-end items-start inset-0 p-xs [@media(hover:hover)]:opacity-0 hover:opacity-100 peer transition-opacity duration-200"
       >

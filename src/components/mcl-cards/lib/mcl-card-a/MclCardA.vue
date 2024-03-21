@@ -60,7 +60,13 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['card-click', 'card-btn-click'])
+const slots = defineSlots<{
+  default: any
+}>()
+const emit = defineEmits<{
+  (e: 'card-click', event: Event, item: CardClickEvent): void
+  (e: 'card-btn-click', event: Event, item: CardClickEvent): void
+}>()
 
 const getBorderClass = (
   border: ColorPalette,
@@ -150,37 +156,24 @@ const getCtaClass = (color: ColorPalette, round: boolean): string => {
 
   return classArray.join(' ')
 }
-const handleButtonClick = (
-  e: Event,
-  title: string,
-  link: string,
-  target: CtaTarget = '_self',
-  btnLink: boolean
-): void => {
-  /**
-   * @title - title
-   * @link - ctaLink
-   * @target - ctaTarget
-   * @btnLink - ctaAsLink
-   */
+const handleButtonClick = (e: Event): void => {
+  const { title, ctaLink, ctaTarget, ctaAsLink } = props
   const cardEvent: CardClickEvent = {
-    event: e,
-    title,
-    url: link,
-    target: target ? target : '_self',
-  }
-  !btnLink && e.preventDefault()
-  emit('card-btn-click', cardEvent)
-}
-const handleCardClick = (e: Event): void => {
-  const { title, ctaLink, ctaTarget } = props
-  const cardEvent: CardClickEvent = {
-    event: e,
     title,
     url: ctaLink,
     target: ctaTarget ? ctaTarget : '_self',
   }
-  emit('card-click', cardEvent)
+  !ctaAsLink && e.preventDefault()
+  emit('card-btn-click', e, cardEvent)
+}
+const handleCardClick = (e: Event): void => {
+  const { title, ctaLink, ctaTarget } = props
+  const cardEvent: CardClickEvent = {
+    title,
+    url: ctaLink,
+    target: ctaTarget ? ctaTarget : '_self',
+  }
+  emit('card-click', e, cardEvent)
 }
 </script>
 
@@ -242,9 +235,7 @@ const handleCardClick = (e: Event): void => {
             :target="ctaTarget"
             class="btn btn-full"
             :class="getCtaClass(ctaColor, rounded)"
-            @click="
-              handleButtonClick($event, title, ctaLink, ctaTarget, ctaAsLink)
-            "
+            @click="handleButtonClick($event)"
             >{{ ctaText }}</a
           >
         </div>
