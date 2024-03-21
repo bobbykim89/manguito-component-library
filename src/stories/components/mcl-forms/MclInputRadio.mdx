@@ -20,7 +20,6 @@ In your code
 ```js
 <script setup lang="ts">
 import { MclInputRadio } from '@bobbykim/mcl-forms'
-import type { RadioEventType } from '@/components/mcl-forms'
 import { ref } from 'vue'
 
 const valueRef = ref<string>('')
@@ -29,8 +28,8 @@ const sampleData = {
   value: 'first-item',
 }
 
-const setValue = (e: RadioEventType) => {
-  valueRef.value = e.value
+const setValue = (e: Event, value: string | number) => {
+  valueRef.value = value
 }
 </script>
 

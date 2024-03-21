@@ -1,9 +1,5 @@
 {
   "extends": "../../../tsconfig.json",
-  "include": ["./**/*.ts"],
-  "exclude": ["node_modules", "./**/*.vue.d.ts"],
-  "compilerOptions": {
-    "skipLibCheck": true,
-    "declaration": true
-  }
+  "include": ["./**/*.ts", "./**/*.vue"],
+  "exclude": ["node_modules", "./**/*.vue.d.ts"]
 }

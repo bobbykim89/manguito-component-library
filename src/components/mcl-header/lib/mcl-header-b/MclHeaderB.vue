@@ -268,5 +268,3 @@ defineExpose({
     </template>
   </HeaderVertical>
 </template>
-
-<style scoped lang="scss"></style>

@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import generateClass from '@bobbykim/manguito-theme'
 import type {
-  HeadingLevel,
-  HeadingSize,
   ColorPalette,
   DirectionX,
+  HeadingLevel,
+  HeadingSize,
   OpacityRange,
 } from '@bobbykim/manguito-theme'
+import generateClass from '@bobbykim/manguito-theme'
 
 const props = withDefaults(
   defineProps<{
@@ -195,5 +195,3 @@ const getTitleClass = (
     </div>
   </section>
 </template>
-
-<style lang="scss" scoped></style>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Transition, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { observeVisibleAttr } from '../composables/index.js'
+import { observeVisibleAttr } from '../composables'
 
 const props = withDefaults(
   defineProps<{
@@ -13,7 +13,13 @@ const props = withDefaults(
     visible: false,
   }
 )
-const emit = defineEmits(['open', 'close'])
+const slots = defineSlots<{
+  default: any
+}>()
+const emit = defineEmits<{
+  (e: 'open', visible: boolean): void
+  (e: 'close', visible: boolean): void
+}>()
 const collapseRef = ref<HTMLElement | undefined>()
 const toggle = ref<boolean>(props.visible)
 
@@ -27,10 +33,10 @@ const closeCollapse = (): void => {
   toggle.value = false
 }
 const emitOpenEvent = () => {
-  emit('open', { visible: true })
+  emit('open', true)
 }
 const emitCloseEvent = () => {
-  emit('close', { visible: false })
+  emit('close', false)
 }
 
 /**

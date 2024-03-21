@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, Transition } from 'vue'
-import generateClass from '@bobbykim/manguito-theme'
 import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
+import generateClass from '@bobbykim/manguito-theme'
+import { ref, Transition } from 'vue'
 import type { ContentType } from './index.types'
 
 const props = withDefaults(
@@ -29,14 +29,16 @@ const props = withDefaults(
 )
 
 const currentTab = ref(0)
-const emit = defineEmits(['tab-click'])
+const emit = defineEmits<{
+  (e: 'tab-click', event: Event, title: string): void
+}>()
 const transitionClass = ref<string>('')
 
 const hadleTabClick = (e: Event, index: number, title: string): void => {
   e.preventDefault()
   transitionClass.value = currentTab.value < index ? 'slide-next' : 'slide-prev'
   currentTab.value = index
-  emit('tab-click', { event: e, title: title })
+  emit('tab-click', e, title)
 }
 
 const getBorderClass = (

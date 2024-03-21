@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import { onMounted, provide, reactive, ref } from 'vue'
-import { vClickOutside } from '../directives/index.js'
-import type { InjectType } from './index.types.js'
+import { vClickOutside } from '../directives'
+import type { InjectType } from './index.types'
 
-const emit = defineEmits(['click-outside', 'toggle'])
+const slots = defineSlots<{
+  default: any
+  toggler: any
+}>()
+const emit = defineEmits<{
+  (e: 'click-outside', event: Event): void
+  (e: 'toggle', event: Event): void
+}>()
 const dropdownTarget = ref()
 const dropdownState = reactive<InjectType>({
   active: false,
@@ -41,5 +48,3 @@ onMounted(() => {
     <slot></slot>
   </div>
 </template>
-
-<style lang="scss" scoped></style>

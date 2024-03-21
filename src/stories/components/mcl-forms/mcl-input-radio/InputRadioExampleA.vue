@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { RadioEventType, RadioSizeType } from '@/components/mcl-forms'
+import type { RadioSizeType } from '@/components/mcl-forms'
 import { MclInputRadio } from '@/components/mcl-forms'
 import type { ColorPalette } from '@bobbykim/manguito-theme'
 import { ref } from 'vue'
@@ -19,7 +19,7 @@ withDefaults(
   }
 )
 
-const valueRef = ref<string>('')
+const valueRef = ref<string | number>('')
 const sampleData = [
   {
     id: 'item-1',
@@ -38,8 +38,8 @@ const sampleData = [
   },
 ]
 
-const setValue = (e: RadioEventType) => {
-  valueRef.value = e.value
+const setValue = (e: Event, value: string | number) => {
+  valueRef.value = value
 }
 </script>
 

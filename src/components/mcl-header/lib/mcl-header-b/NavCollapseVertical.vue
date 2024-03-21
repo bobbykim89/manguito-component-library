@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import type {
-  BodyText,
-  CollapseEvent,
-  ColorPalette,
-} from '@bobbykim/manguito-theme'
+import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass, { Collapse, vCollapse } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
@@ -36,8 +32,8 @@ const emit = defineEmits<{
   (e: 'label-click', event: Event, title: string, open: boolean): void
   (e: 'child-click', event: Event, item: MenuItemType): void
 }>()
-const toggleCollapse = (e: CollapseEvent): void => {
-  toggle.value = e.visible
+const toggleCollapse = (visible: boolean): void => {
+  toggle.value = visible
 }
 const closeCollapse = () => {
   collapseRef.value?.close()

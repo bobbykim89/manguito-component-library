@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type {
   ColorPalette,
-  DirectionX,
   ColumnWidth,
+  DirectionX,
   DirectionY,
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
@@ -25,6 +25,11 @@ const props = withDefaults(
     leftColumnWidth: 50,
   }
 )
+const slots = defineSlots<{
+  'left-column': any
+  'right-column': any
+}>()
+
 const generatePoints = (
   location: DirectionY,
   direction: DirectionX
