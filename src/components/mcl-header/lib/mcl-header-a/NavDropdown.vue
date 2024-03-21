@@ -11,7 +11,6 @@ const props = withDefaults(
   defineProps<{
     navItem: MenuCollapseType
     bgColor?: ColorPalette
-    hoverBgColor?: ColorPalette
     menuTextSize?: BodyText
     menuTextColor?: ColorPalette
     menuTextBold?: boolean
@@ -22,7 +21,6 @@ const props = withDefaults(
   {
     menuTextSize: 'md',
     bgColor: 'light-1',
-    hoverBgColor: 'dark-1',
     menuTextColor: 'dark-3',
     menuTextBold: false,
     displayHighlight: true,
@@ -131,11 +129,11 @@ const navItemClick = (e: Event, item: MenuItemType) => {
           :target="item.target"
           :key="idx"
           ref="navItemRef"
-          class="px-xs py-2xs block w-full hover:bg-opacity-50 focus:bg-opacity-50"
+          class="px-xs py-2xs block w-full hover:bg-opacity-50 focus:bg-opacity-50 transition-all duration-200 ease-linear"
           :class="[
             generateClass('BGCOLOR', bgColor),
-            generateClass('HVBGCOLOR', hoverBgColor),
-            generateClass('FCBGCOLOR', hoverBgColor),
+            generateClass('HVBGCOLOR', highlightColor),
+            generateClass('FCBGCOLOR', highlightColor),
             generateClass('TEXTCOLOR', menuTextColor),
             generateClass('BODYTEXT', menuTextSize),
           ]"
