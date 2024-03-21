@@ -1,4 +1,4 @@
-import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import { ArgsTable, Canvas, Controls, Meta, Story } from '@storybook/blocks'
 import * as Stories from './mcl-card-b/mclCardB.stories'
 
 <Meta of={Stories} />
@@ -34,9 +34,19 @@ import {MclCardB} from '@bobbykim/mcl-cards'
 
 <Controls of={Stories.MclCardBExample} />
 
+## types
+
+```ts
+interface CardClickEvent {
+  title: string
+  url: string
+  target?: CtaTarget
+}
+```
+
 ## Events
 
-- `card-click` - \$event, title, url, target - Emitted on card click
+- `card-click` - (event: Event, item: CardClickEvent) - Emitted on card click
 
 ### Slot
 
