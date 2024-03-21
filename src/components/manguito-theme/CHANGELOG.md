@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.16.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.15.0...@bobbykim/manguito-theme@0.16.0) (2024-03-21)
+
+
+### Features
+
+* code refactor ([8a025e7](https://github.com/bobbykim89/manguito-component-library/commit/8a025e7cf870ff3dd0cb35878a08793e99ec5cef))
+* **manguito-theme:** add header-vertical component ([05c339d](https://github.com/bobbykim89/manguito-component-library/commit/05c339d77cdded35d2e45a5c22c3833329e41532))
+* **manguito-theme:** add new base component header-horizontal ([d3826ee](https://github.com/bobbykim89/manguito-component-library/commit/d3826ee1da15ea0edd2fa7f959269704f22008b3))
+* **mcl-header-a:** wip) update mcl-header-a ([344a13f](https://github.com/bobbykim89/manguito-component-library/commit/344a13f3cd25c6b02fc99866f19ae65bc89d9ec5))
+* **mcl-header-b:** add mobile layout for mcl-header-b ([ca961ec](https://github.com/bobbykim89/manguito-component-library/commit/ca961ecbaecab1d2e879cb62e905e713878539c0))
+* **mcl-header-b:** add more layouts for desktop screen ([bfd1c7e](https://github.com/bobbykim89/manguito-component-library/commit/bfd1c7e8ed3d9b839bea0dd1a7c3b5740a345c41))
+* **mcl-header-b:** fix minor issues with mcl closing collapses in menu item click, update text color of menu items ([1ecfcf3](https://github.com/bobbykim89/manguito-component-library/commit/1ecfcf3ec474e6a6097a34bb9861cbb680280530))
+* **mcl-header-b:** wip) adding story file for mcl-header-b ([2a80675](https://github.com/bobbykim89/manguito-component-library/commit/2a8067553df9a138398aef2a898ebdf3b4a9a268))
+* **mcl-header:** move deprecated items to deprecated folder in root dir, update configs, init mcl-header-b component ([19aa842](https://github.com/bobbykim89/manguito-component-library/commit/19aa842faa7f1594f7be030b97d5093014efe7cb))
+* tsconfig update, slots and emits update ([c30ff80](https://github.com/bobbykim89/manguito-component-library/commit/c30ff804c961d205ac097e20cd51285a15ca8966))
+
+
+
+
+
 # [0.15.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.14.0...@bobbykim/manguito-theme@0.15.0) (2024-02-27)
 
 
