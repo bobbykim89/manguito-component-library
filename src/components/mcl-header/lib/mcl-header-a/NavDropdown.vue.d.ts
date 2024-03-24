@@ -20,7 +20,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "label-click": (event: Event, title: string, open: boolean) => void;
     "child-click": (event: Event, item: MenuItemType) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     navItem: MenuCollapseType;
     bgColor?: ColorPalette | undefined;
     menuTextSize?: BodyText | undefined;

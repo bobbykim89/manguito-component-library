@@ -8,7 +8,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     color: string;
     rounded: boolean;
     offset: number;
-}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     color?: ColorPalette | undefined;
     rounded?: boolean | undefined;
     offset?: OffsetType | undefined;

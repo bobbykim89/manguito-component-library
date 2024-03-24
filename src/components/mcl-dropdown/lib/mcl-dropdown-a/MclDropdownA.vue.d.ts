@@ -33,7 +33,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "button-click": (event: Event) => void;
     "item-click": (event: Event, item: DropdownItem) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     title: string;
     buttonColor?: ColorPalette | undefined;
     buttonRounded?: boolean | undefined;

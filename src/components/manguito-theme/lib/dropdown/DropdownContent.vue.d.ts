@@ -2,7 +2,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     className?: string | undefined;
 }>, {
     className: string;
-}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     className?: string | undefined;
 }>, {
     className: string;
@@ -12,7 +12,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     default(props: {
         itemClick: () => void;
     }): any;
-}>>;
+}> & {
+    default(props: {
+        itemClick: () => void;
+    }): any;
+}>;
 export default _default;
 type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
 type __VLS_TypePropsToRuntimeProps<T> = {

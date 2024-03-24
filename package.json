@@ -18,7 +18,7 @@
     "commit": "cz",
     "release": "standard-version",
     "package:build": "lerna run build",
-    "publish": "lerna run build && lerna publish"
+    "publish": "lerna publish"
   },
   "workspaces": [
     "src/components/*"

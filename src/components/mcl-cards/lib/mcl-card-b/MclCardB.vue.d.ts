@@ -27,7 +27,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     rounded: boolean;
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "card-click": (event: Event, item: CardClickEvent) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     title: string;
     titleSize?: HeadingSize | undefined;
     titleColor?: ColorPalette | undefined;
@@ -67,7 +67,9 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     displayGrayScale: boolean;
 }, {}>, Readonly<{
     default: any;
-}>>;
+}> & {
+    default: any;
+}>;
 export default _default;
 type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
 type __VLS_TypePropsToRuntimeProps<T> = {

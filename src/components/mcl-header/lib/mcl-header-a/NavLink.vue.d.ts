@@ -17,7 +17,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     asLink: boolean;
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "nav-link": (event: Event, item: MenuItemType) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     navItem: MenuItemType;
     menuTextSize?: BodyText | undefined;
     menuTextColor?: ColorPalette | undefined;
