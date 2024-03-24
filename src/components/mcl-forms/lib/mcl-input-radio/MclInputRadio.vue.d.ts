@@ -17,7 +17,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     checked: boolean;
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     change: (event: Event, value: string | number) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     id: string;
     radioSize?: RadioSizeType | undefined;
     bgColor?: ColorPalette | undefined;

@@ -17,7 +17,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     titleLevel: string;
     titleSize: string;
     titleColor: string;
-}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+}>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     sectionBgColor?: ColorPalette | undefined;
     containerBgColor?: ColorPalette | undefined;
     imageSource: string;
@@ -45,7 +45,9 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     titleSize: HeadingSize;
 }, {}>, Readonly<{
     content: any;
-}>>;
+}> & {
+    content: any;
+}>;
 export default _default;
 type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
 type __VLS_TypePropsToRuntimeProps<T> = {

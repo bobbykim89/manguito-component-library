@@ -48,7 +48,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     "title-click": (event: Event, url: string, target: CtaTarget) => void;
     "menu-click": (event: Event, item: MenuItemType) => void;
     "collapse-click": (event: Event, title: string, visible: boolean) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     logo: string;
     logoSmall?: string | undefined;
     logoAlt?: string | undefined;
@@ -117,7 +117,12 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     'mobile-bottom'(props: {
         headerClose: () => void;
     }): any;
-}>>;
+}> & {
+    'content-right': any;
+    'mobile-bottom'(props: {
+        headerClose: () => void;
+    }): any;
+}>;
 export default _default;
 type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
 type __VLS_TypePropsToRuntimeProps<T> = {

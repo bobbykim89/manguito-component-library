@@ -9,7 +9,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     displayBorder: boolean;
 }>, {}, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "hbg-click": (...args: any[]) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     color?: ColorPalette | undefined;
     displayBorder?: boolean | undefined;
     toggle: boolean;

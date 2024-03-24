@@ -13,7 +13,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     headerClose: () => void;
 }, unknown, {}, {}, import("vue").ComponentOptionsMixin, import("vue").ComponentOptionsMixin, {
     "toggle-drawer": (event: Event, open: boolean) => void;
-}, string, import("vue").VNodeProps & import("vue").AllowedComponentProps & import("vue").ComponentCustomProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
+}, string, import("vue").PublicProps, Readonly<import("vue").ExtractPropTypes<__VLS_WithDefaults<__VLS_TypePropsToRuntimeProps<{
     bgColor?: ColorPalette | undefined;
     drawerBtnColor?: ColorPalette | undefined;
     drawerBtnBorder?: boolean | undefined;
@@ -37,7 +37,14 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     'mobile-content'(props: {
         headerClose: () => void;
     }): any;
-}>>;
+}> & {
+    default: any;
+    content: any;
+    'content-bottom': any;
+    'mobile-content'(props: {
+        headerClose: () => void;
+    }): any;
+}>;
 export default _default;
 type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;
 type __VLS_TypePropsToRuntimeProps<T> = {
