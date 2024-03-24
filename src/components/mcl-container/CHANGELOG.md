@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.5.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-container@0.3.0...@bobbykim/mcl-container@0.5.0) (2024-03-24)
+
+
+### Features
+
+* build and release ([a372086](https://github.com/bobbykim89/manguito-component-library/commit/a3720861fb40dd6ec1d0e3dda1f06e2479967432))
+* **components/*:** prepublish build ([c8eb95a](https://github.com/bobbykim89/manguito-component-library/commit/c8eb95a0ede6727bf183d2e9ad634ae64af1411d))
+* tsconfig update, slots and emits update ([c30ff80](https://github.com/bobbykim89/manguito-component-library/commit/c30ff804c961d205ac097e20cd51285a15ca8966))
+
+
+
+
+
 # [0.4.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-container@0.3.0...@bobbykim/mcl-container@0.4.0) (2024-03-21)
 
 
