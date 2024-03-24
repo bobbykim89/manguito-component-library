@@ -1,14 +1,14 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import {
-  colorControllers,
-  textControllers,
-  booleanControllers,
   arrayControllers,
   bodyTextControllers,
+  booleanControllers,
+  colorControllers,
   fontWeightControllers,
+  textControllers,
 } from '@/assets/composables'
-import { MclDropdownA } from '@/components/mcl-dropdown'
 import type { DropdownItem } from '@/components/mcl-dropdown'
+import { MclDropdownA } from '@/components/mcl-dropdown'
+import type { Meta, StoryObj } from '@storybook/vue3'
 
 const dropdownItems: DropdownItem[] = [
   {
@@ -165,6 +165,7 @@ export const MclDropdownAExample: Story = {
     setup() {
       return { args }
     },
-    template: '<mcl-dropdown-a v-bind="args"></mcl-dropdown-a>',
+    template:
+      '<section class="h-[40vh]"><mcl-dropdown-a v-bind="args"></mcl-dropdown-a></section>',
   }),
 }
