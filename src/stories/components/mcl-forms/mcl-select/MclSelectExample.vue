@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { MclFormGroup, MclSelect } from '@/components/mcl-forms'
 import { ref } from 'vue'
-import { MclSelect, MclFormGroup } from '@/components/mcl-forms'
 
 const options = [
   'Manguito',
@@ -18,7 +18,7 @@ const selectedVal = ref<string>('')
 </script>
 
 <template>
-  <div class="py-md">
+  <div class="py-md min-h-[40vh] rounded">
     <mcl-form-group
       label-for="mcl-select-example"
       label="MCL Select with String Options"

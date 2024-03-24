@@ -12,6 +12,7 @@ import { Meta } from '@storybook/blocks'
 
 ```zsh
 npm i -D tailwindcss postcss autoprefixer sass
+npm i @vueuse/core
 npm i @bobbykim/manguito-theme
 npx tailwindcss init -p
 ```
@@ -94,9 +95,30 @@ import type { <Type you need> } from '@bobbykim/manguito-theme'
 <template>...</template>
 ```
 
+### Nuxt 3
+
+```js
+// in nuxt.config.ts
+export default defineNuxtConfig({
+  //...
+  build: {
+    transphile: ['@bobbykim'],
+  },
+  components: [
+    // only import vue component files
+    {
+      path: '~node_modules/@bobbykim/',
+      ignore: ['**/index.ts', '**/index.js', '**/node_modules'],
+    },
+  ],
+  // ...
+})
+```
+
 ### Dependencies
 
 - vue
+- @vueuse/core
 - tailwindcss
 - autoprefixer
 - postcss

@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import {
+  arrayControllers,
+  booleanControllers,
   colorControllers,
   textControllers,
-  booleanControllers,
-  arrayControllers,
 } from '@/assets/composables'
-import { MclSelect, MclFormGroup } from '@/components/mcl-forms'
+import { MclFormGroup, MclSelect } from '@/components/mcl-forms'
+import type { Meta, StoryObj } from '@storybook/vue3'
 import MclSelectExampleVue from './MclSelectExample.vue'
 
 const selectOptions = [
@@ -153,7 +153,7 @@ export const MclSelectExample: Story = {
       return { args }
     },
     template:
-      '<mcl-form-group :label-for="args.id" label="MCL Select"><mcl-select v-bind="args"></mcl-select></mcl-form-group>',
+      '<section class="h-[40vh] bg-light-1 p-md rounded"><mcl-form-group :label-for="args.id" label="MCL Select"><mcl-select v-bind="args"></mcl-select></mcl-form-group></section>',
   }),
 }
 
