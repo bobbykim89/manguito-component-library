@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.18.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.17.0...@bobbykim/manguito-theme@0.18.0) (2024-04-01)
+
+
+### Features
+
+* **manguito-theme:** update alert component event, update readme files, update story files ([99d4a7e](https://github.com/bobbykim89/manguito-component-library/commit/99d4a7ef192dfb628cf5b37b1cce34bb33aeb4c1))
+* **manguito-theme:** update observeVisibleAttr composable, add alert component ([1629762](https://github.com/bobbykim89/manguito-component-library/commit/16297624b667066bd7076b02001f0ca8db65630d))
+* ready for production ([4e2fc04](https://github.com/bobbykim89/manguito-component-library/commit/4e2fc048edd67791b4e917e0a764f301d4c610cb))
+
+
+
+
+
 # [0.17.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.15.0...@bobbykim/manguito-theme@0.17.0) (2024-03-24)
 
 
