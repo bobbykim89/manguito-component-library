@@ -56,11 +56,11 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     "onCollapse-open"?: ((visible: boolean, title: string) => any) | undefined;
     "onCollapse-close"?: ((visible: boolean, title: string) => any) | undefined;
 }, {
+    rounded: boolean;
     visible: boolean;
     bgColor: ColorPalette;
     titleColor: ColorPalette;
     borderColor: ColorPalette;
-    rounded: boolean;
     displayHighlight: boolean;
     highlightColor: ColorPalette;
     titleSize: HeadingSize;

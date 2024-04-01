@@ -10,15 +10,19 @@ Included in `@bobbykim/manguito-theme`
 ## Usage
 
 ```js
+<script lang="ts" setup>
+import { Modal, vToggle } from '@bobbykim/manguito-theme'
+</script>
+
 <template>
   <div>
     <!-- trigger collapse toggle  -->
-    <button v-modal:modal-component-id>{{Tab button name}}</button>
-    <button v-modal:[when calling modal-id dynamically]>
+    <button v-toggle:modal-component-id>{{Tab button name}}</button>
+    <button v-toggle:[when calling modal-id dynamically]>
       {{Tab button name}}
     </button>
     <!-- trigger by 'a' tag -->
-    <a href="#modal-component-id" v-modal>{{Tab button name here}}</a>
+    <a href="#modal-component-id" v-toggle>{{Tab button name here}}</a>
     <modal
       id="modal-component-id"
       placement="'top'|'center'|'bottom'"
