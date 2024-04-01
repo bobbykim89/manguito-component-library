@@ -24,7 +24,7 @@ const slots = defineSlots<{
 }>()
 
 const emit = defineEmits<{
-  (e: 'on-close', event: Event): void
+  (e: 'close', event: Event): void
 }>()
 
 const showAlert = ref<boolean>(props.show)
@@ -41,7 +41,7 @@ const componentClass = computed<string>(() => {
 })
 const handleClose = (e: Event) => {
   showAlert.value = false
-  emit('on-close', e)
+  emit('close', e)
 }
 const closeAlert = () => {
   showAlert.value = false
