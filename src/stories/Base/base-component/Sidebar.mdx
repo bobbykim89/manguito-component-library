@@ -17,12 +17,12 @@ import { Sidebar, vToggle } from '@bobbykim/manguito-theme'
 <template>
   <div>
     <!-- trigger collapse toggle  -->
-    <button v-sidebar:sidebar-component-id>{{Tab button name}}</button>
-    <button v-sidebar:[when calling sidebar-id dynamically]>
+    <button v-toggle:sidebar-component-id>{{Tab button name}}</button>
+    <button v-toggle:[when calling sidebar-id dynamically]>
       {{Tab button name}}
     </button>
     <!-- trigger by 'a' tag -->
-    <a href="#sidebar-component-id" v-sidebar>{{Tab button name here}}</a>
+    <a href="#sidebar-component-id" v-toggle>{{Tab button name here}}</a>
     <sidebar
       id="sidebar-component-id"
       placement="'left'|'right'"

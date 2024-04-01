@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 import Collapse from './Collapse.vue'
-import CollapseRef from './CollapseRef.vue'
 import CollapseAccordion from './CollapseAccordion.vue'
+import CollapseRef from './CollapseRef.vue'
 
 const meta: Meta<typeof Collapse> = {
   title: 'Base/Base Component/Collapse Component',
@@ -25,7 +25,7 @@ export const collapseRefExample: Story = {
 
 export const collapseAccordionExample: Story = {
   render: () => ({
-    components: { 'collapse-accordionf': CollapseAccordion },
-    template: '<collapse-accordionf></collapse-accordionf>',
+    components: { 'collapse-accordion': CollapseAccordion },
+    template: '<collapse-accordion></collapse-accordion>',
   }),
 }

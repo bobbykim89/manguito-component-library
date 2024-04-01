@@ -15,6 +15,7 @@ import { Alert } from '@bobbykim/manguito-theme'
 
 const alertRef = ref<InstanceType<typeof Alert>>()
 
+// to handle through exposed function
 const handleMenuClick = (e: Event) => {
   e.preventDefault()
   alertRef.value!.close()
@@ -44,4 +45,4 @@ const handleMenuClick = (e: Event) => {
 
 ## Events
 
--`on-close` - (event: Event) - Emitted on dismiss button click
+-`close` - (event: Event) - Emitted on dismiss button click
