@@ -1,12 +1,5 @@
 <script setup lang="ts">
-import {
-  Transition,
-  computed,
-  onBeforeUnmount,
-  onMounted,
-  ref,
-  watch,
-} from 'vue'
+import { Transition, computed, ref, watch } from 'vue'
 import type { ColorPalette, VerticalAlignment } from '../../'
 import generateClass, { vClickOutside } from '../../'
 import { observeVisibleAttr } from '../composables'
@@ -92,7 +85,8 @@ const onAfterLeave = () => {
 const handleVisibility = (visible: boolean = false) => {
   toggle.value = visible
 }
-const observer = observeVisibleAttr(handleVisibility)
+// const observer = observeVisibleAttr(modalRef, handleVisibility)
+observeVisibleAttr(modalRef, handleVisibility)
 
 watch(
   () => props.visible,
@@ -112,14 +106,14 @@ defineExpose({
   close: closeModal,
   open: openModal,
 })
-onMounted(() => {
-  if (modalRef.value) {
-    observer.observe(modalRef.value, { attributes: true })
-  }
-})
-onBeforeUnmount(() => {
-  observer.disconnect()
-})
+// onMounted(() => {
+//   if (modalRef.value) {
+//     observer.observe(modalRef.value, { attributes: true })
+//   }
+// })
+// onBeforeUnmount(() => {
+//   observer.disconnect()
+// })
 </script>
 
 <template>
