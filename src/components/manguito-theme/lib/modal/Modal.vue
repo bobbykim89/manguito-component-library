@@ -85,7 +85,7 @@ const onAfterLeave = () => {
 const handleVisibility = (visible: boolean = false) => {
   toggle.value = visible
 }
-// const observer = observeVisibleAttr(modalRef, handleVisibility)
+
 observeVisibleAttr(modalRef, handleVisibility)
 
 watch(
@@ -106,14 +106,6 @@ defineExpose({
   close: closeModal,
   open: openModal,
 })
-// onMounted(() => {
-//   if (modalRef.value) {
-//     observer.observe(modalRef.value, { attributes: true })
-//   }
-// })
-// onBeforeUnmount(() => {
-//   observer.disconnect()
-// })
 </script>
 
 <template>

@@ -94,7 +94,7 @@ const onAfterLeave = () => {
 const handleVisibility = (visible: boolean = false) => {
   toggle.value = visible
 }
-// const observer = observeVisibleAttr(handleVisibility)
+
 observeVisibleAttr(sidebarRef, handleVisibility)
 
 watch(
@@ -115,14 +115,6 @@ defineExpose({
   open: openSidebar,
   close: closeSidebar,
 })
-// onMounted(() => {
-//   if (sidebarRef.value) {
-//     observer.observe(sidebarRef.value, { attributes: true })
-//   }
-// })
-// onBeforeUnmount(() => {
-//   observer.disconnect()
-// })
 </script>
 
 <template>

@@ -43,6 +43,7 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
 }>>> & {
     "onTab-click"?: ((event: Event, title: string) => any) | undefined;
 }, {
+    rounded: boolean;
     bgColor: ColorPalette;
     borderColor: ColorPalette;
     tabColor: ColorPalette;
@@ -50,7 +51,6 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     activeTitleColor: ColorPalette;
     inactiveTitleColor: ColorPalette;
     displayShadow: boolean;
-    rounded: boolean;
 }, {}>;
 export default _default;
 type __VLS_NonUndefinedable<T> = T extends undefined ? never : T;

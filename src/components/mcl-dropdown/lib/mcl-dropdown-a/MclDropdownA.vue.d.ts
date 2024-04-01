@@ -67,13 +67,13 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
     "onButton-click"?: ((event: Event) => any) | undefined;
     "onItem-click"?: ((event: Event, item: DropdownItem) => any) | undefined;
 }, {
+    rounded: boolean;
     displayBorder: boolean;
     buttonColor: ColorPalette;
     buttonRounded: boolean;
     buttonTextColor: ColorPalette;
     buttonInvert: boolean;
     dropdownColor: ColorPalette;
-    rounded: boolean;
     displayShadow: boolean;
     hoverBgColor: ColorPalette;
     dropdownTextSize: BodyText;
