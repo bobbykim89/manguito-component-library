@@ -55,12 +55,12 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     visible: boolean;
     className: string;
     color: ColorPalette;
+    width: string | number;
     titleColor: ColorPalette;
     noBackdrop: boolean;
     noHeader: boolean;
     backdropColor: ColorPalette;
     placement: DirectionX;
-    width: string | number;
 }, {}>, Readonly<{
     header(props: {
         close: () => void;
