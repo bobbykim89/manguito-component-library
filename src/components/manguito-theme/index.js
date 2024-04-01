@@ -1,6 +1,7 @@
 // generate class function
 import { generateClass } from './lib/theme/generateClass';
 // base components
+import Alert from './lib/alert/Alert.vue';
 import Collapse from './lib/collapse/Collapse.vue';
 import DropdownContainer from './lib/dropdown/DropdownContainer.vue';
 import DropdownContent from './lib/dropdown/DropdownContent.vue';
@@ -14,5 +15,5 @@ export * from './lib/directives';
 export * from './lib/header/index.types';
 export * from './lib/theme/theme.types';
 // export components
-export { Collapse, DropdownContainer, DropdownContent, HeaderHorizontal, HeaderVertical, Modal, Sidebar, };
+export { Alert, Collapse, DropdownContainer, DropdownContent, HeaderHorizontal, HeaderVertical, Modal, Sidebar, };
 export default generateClass;

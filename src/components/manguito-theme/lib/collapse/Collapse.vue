@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Transition, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { Transition, ref, watch } from 'vue'
 import { observeVisibleAttr } from '../composables'
 
 const props = withDefaults(
@@ -67,7 +67,7 @@ const onLeave = (el: any) => {
 const handleVisibility = (visible: boolean = false) => {
   toggle.value = visible
 }
-const observer = observeVisibleAttr(handleVisibility)
+observeVisibleAttr(collapseRef, handleVisibility)
 
 watch(
   () => props.visible,
@@ -86,14 +86,6 @@ defineExpose({
   toggle: toggleCollapse,
   close: closeCollapse,
   open: openCollapse,
-})
-onMounted(() => {
-  if (collapseRef.value) {
-    observer.observe(collapseRef.value, { attributes: true })
-  }
-})
-onBeforeUnmount(() => {
-  observer.disconnect()
 })
 </script>
 

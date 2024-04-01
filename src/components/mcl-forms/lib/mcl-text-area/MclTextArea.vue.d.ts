@@ -56,11 +56,11 @@ declare const _default: import("vue").DefineComponent<__VLS_WithDefaults<__VLS_T
 }>>> & {
     "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
 }, {
+    rounded: boolean;
     required: boolean;
     placeholder: string;
     displayBorder: boolean;
     bgColor: ColorPalette;
-    rounded: boolean;
     borderColor: ColorPalette;
     displayShadow: boolean;
     displayHighlight: boolean;

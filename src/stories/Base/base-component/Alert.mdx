@@ -1,0 +1,48 @@
+import { Canvas, Controls, Meta } from '@storybook/blocks'
+import * as Stories from './alert/alert.stories'
+
+<Meta of={Stories} />
+
+# Alert
+
+Included in `@bobbykim/manguito-theme`
+
+## Usage
+
+```js
+<script lang="ts" setup>
+import { Alert } from '@bobbykim/manguito-theme'
+
+const alertRef = ref<InstanceType<typeof Alert>>()
+
+// to handle through exposed function
+const handleMenuClick = (e: Event) => {
+  e.preventDefault()
+  alertRef.value!.close()
+}
+</script>
+
+<template>
+  <Alert show ref="alertRef">
+    <div>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?
+    </div>
+  </Alert>
+</template>
+```
+
+### Example
+
+<Canvas of={Stories.AlertExample} />
+
+## Controls
+
+<Controls of={Stories.AlertExample} />
+
+## Slot
+
+- `#default`
+
+## Events
+
+-`close` - (event: Event) - Emitted on dismiss button click

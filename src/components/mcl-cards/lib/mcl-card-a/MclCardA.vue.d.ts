@@ -101,6 +101,7 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     "onCard-click"?: ((event: Event, item: CardClickEvent) => any) | undefined;
     "onCard-btn-click"?: ((event: Event, item: CardClickEvent) => any) | undefined;
 }, {
+    rounded: boolean;
     bgColor: ColorPalette;
     titleColor: ColorPalette;
     titleSize: HeadingSize;
@@ -120,7 +121,6 @@ declare const _default: __VLS_WithTemplateSlots<import("vue").DefineComponent<__
     enlargeOnHover: boolean;
     displayHighlight: boolean;
     highlightColor: ColorPalette;
-    rounded: boolean;
     displayShadow: boolean;
 }, {}>, Readonly<{
     default: any;
