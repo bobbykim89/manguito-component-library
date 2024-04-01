@@ -1,6 +1,7 @@
 // generate class function
 import { generateClass } from './lib/theme/generateClass'
 // base components
+import Alert from './lib/alert/Alert.vue'
 import Collapse from './lib/collapse/Collapse.vue'
 import DropdownContainer from './lib/dropdown/DropdownContainer.vue'
 import DropdownContent from './lib/dropdown/DropdownContent.vue'
@@ -17,6 +18,7 @@ export * from './lib/theme/theme.types'
 
 // export components
 export {
+  Alert,
   Collapse,
   DropdownContainer,
   DropdownContent,
