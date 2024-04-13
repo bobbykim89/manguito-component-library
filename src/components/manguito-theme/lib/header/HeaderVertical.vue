@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Transition, computed, ref } from 'vue'
-import type { ColorPalette } from '../../'
-import generateClass from '../../'
+import type { ColorPalette } from '../../index'
+import generateClass from '../../index'
 import NavDrawer from './NavDrawer.vue'
 const props = withDefaults(
   defineProps<{

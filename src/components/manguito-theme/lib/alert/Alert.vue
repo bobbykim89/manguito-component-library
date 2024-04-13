@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import type { ColorPalette } from '../../'
-import generateClass from '../../'
+import type { ColorPalette } from '../../index'
+import generateClass from '../../index'
 const props = withDefaults(
   defineProps<{
     color?: ColorPalette

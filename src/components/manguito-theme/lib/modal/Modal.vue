@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Transition, computed, ref, watch } from 'vue'
-import type { ColorPalette, VerticalAlignment } from '../../'
-import generateClass, { vClickOutside } from '../../'
+import type { ColorPalette, VerticalAlignment } from '../../index'
+import generateClass, { vClickOutside } from '../../index'
 import { observeVisibleAttr } from '../composables'
 
 const props = withDefaults(
