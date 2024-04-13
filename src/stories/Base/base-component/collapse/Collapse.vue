@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Collapse, vCollapse } from '@/components/manguito-theme'
+import { Collapse, vCollapse } from '@/components/manguito-theme/index'
 </script>
 
 <template>

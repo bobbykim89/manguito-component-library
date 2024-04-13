@@ -1,1 +1,2 @@
-export * from './observeVisible.js'
+export * from './clientSideRender'
+export * from './observeVisible'

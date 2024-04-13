@@ -1,4 +1,4 @@
-import MCLTheme from './theme.js'
+import MCLTheme from './theme'
 import type {
   Alignment,
   BodyText,
@@ -8,7 +8,7 @@ import type {
   OpacityRange,
   Range,
   SpacingLevel,
-} from './theme.types.js'
+} from './theme.types'
 
 /**
  * @TailwindCSS - Good practice is to let all of used classes to be in full instead of generated dynamically using methods such as string literal.

@@ -12,7 +12,7 @@ import type {
   Alignment as Position,
   Range,
   SpacingLevel,
-} from './theme.types.js'
+} from './theme.types'
 
 export type ColorClass = {
   [key in ColorPalette]: string
