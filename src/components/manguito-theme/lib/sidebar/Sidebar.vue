@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Transition, computed, ref, watch } from 'vue'
-import type { ColorPalette, DirectionX } from '../../index'
-import generateClass, { vClickOutside } from '../../index'
+import type { ColorPalette, DirectionX } from '..'
+import generateClass, { vClickOutside } from '..'
 import { observeVisibleAttr } from '../composables'
 
 const props = withDefaults(
@@ -240,3 +240,4 @@ defineExpose({
   }
 }
 </style>
+../index../index

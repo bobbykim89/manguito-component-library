@@ -1,13 +1,13 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import {
-  colorControllers,
-  headingTextControllers,
-  textControllers,
   booleanControllers,
+  colorControllers,
   corsOptionControllers,
+  headingTextControllers,
   targetOptionControllers,
+  textControllers,
 } from '@/assets/composables'
-import { MclCardA } from '@/components/mcl-cards'
+import { MclCardA } from '@/components/mcl-cards/lib'
+import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof MclCardA> = {
   title: 'Components/Cards/MclCardA',
@@ -111,7 +111,7 @@ const meta: Meta<typeof MclCardA> = {
       name: 'cta-as-link',
       required: false,
       description: 'let cta button default behavior as a link',
-      defaultValue: true,
+      defaultValue: false,
       category: 'CTA',
     }),
     ctaColor: colorControllers({
@@ -203,7 +203,7 @@ const meta: Meta<typeof MclCardA> = {
     enlargeOnHover: false,
     rounded: true,
     displayShadow: true,
-    ctaAsLink: true,
+    ctaAsLink: false,
   },
 }
 

@@ -1,5 +1,5 @@
 import { booleanControllers, colorControllers } from '@/assets/composables'
-import { Alert } from '@/components/manguito-theme'
+import { Alert } from '@/components/manguito-theme/lib'
 import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof Alert> = {

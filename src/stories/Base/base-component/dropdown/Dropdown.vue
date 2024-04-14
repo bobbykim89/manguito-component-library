@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import {
+  DropdownContainer,
+  DropdownContent,
+} from '@/components/manguito-theme/lib'
 import { ref } from 'vue'
-import { DropdownContainer, DropdownContent } from '@/components/manguito-theme'
 
 const dropdownItems = [
   {

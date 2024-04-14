@@ -3,7 +3,7 @@ import {
   colorControllers,
   rangeControllers,
 } from '@/assets/composables'
-import { HeaderVertical } from '@/components/manguito-theme'
+import { HeaderVertical } from '@/components/manguito-theme/lib'
 import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof HeaderVertical> = {

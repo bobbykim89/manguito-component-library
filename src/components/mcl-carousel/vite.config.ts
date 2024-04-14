@@ -9,23 +9,28 @@ export default defineConfig({
     vue(),
     cssInjectedByJsPlugin({
       jsAssetsFilterFunction: (outputChunk) => {
-        return outputChunk.fileName.includes('core')
+        return outputChunk.fileName.includes('mcl-carousel')
       },
     }),
   ],
   build: {
     lib: {
-      entry: {
-        core: resolve(__dirname, 'lib/index.ts'),
-        'mcl-theme': resolve(__dirname, 'lib/mclTheme.ts'),
-      },
-      formats: ['es', 'cjs'],
+      entry: resolve(__dirname, 'lib/index.ts'),
+      name: 'MclCarousel',
+      fileName: 'mcl-carousel',
     },
     rollupOptions: {
-      external: ['vue', '@vueuse/core'],
+      external: [
+        'vue',
+        '@bobbykim/manguito-theme',
+        '@vueuse/core',
+        '@bobbykim/mcl-cards',
+      ],
       output: {
         globals: {
           vue: 'Vue',
+          '@bobbykim/manguito-theme': 'ManguitoTheme',
+          '@bobbykim/mcl-cards': 'MclCards',
         },
       },
     },
