@@ -2,7 +2,7 @@
 import type {
   ColorPalette,
   HeaderStickyOptionType,
-} from '@/components/manguito-theme'
+} from '@/components/manguito-theme/lib'
 import { HeaderHorizontal } from '@/components/manguito-theme/lib'
 import { ref } from 'vue'
 

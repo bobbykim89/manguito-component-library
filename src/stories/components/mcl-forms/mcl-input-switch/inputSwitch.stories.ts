@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import {
-  colorControllers,
-  textControllers,
   booleanControllers,
+  colorControllers,
   switchSizeControllers,
+  textControllers,
 } from '@/assets/composables'
-import { MclFormGroup, MclInputSwitch } from '@/components/mcl-forms'
+import { MclFormGroup, MclInputSwitch } from '@/components/mcl-forms/lib'
+import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof MclInputSwitch> = {
   title: 'Components/Form/MclInputSwitch',

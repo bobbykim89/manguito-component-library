@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { ColorClass } from '@/components/manguito-theme/theme/theme'
-import type { ColorPalette } from '@/components/manguito-theme'
-import generateClass from '@/components/manguito-theme'
+import type { ColorPalette } from '@/components/manguito-theme/lib'
+import generateClass from '@/components/manguito-theme/lib'
+import type { ColorClass } from '@/components/manguito-theme/lib/theme/theme'
 
 const colors: ColorClass = {
   primary: 'bg-primary',

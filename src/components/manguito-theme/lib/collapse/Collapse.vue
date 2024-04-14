@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Transition, ref, watch } from 'vue'
-import { ClientSideRender, observeVisibleAttr } from '../composables'
+import { observeVisibleAttr } from '../composables'
+import { ClientSideRender } from '../util'
 
 const props = withDefaults(
   defineProps<{

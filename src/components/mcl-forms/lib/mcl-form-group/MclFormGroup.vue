@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import generateClass from '@bobbykim/manguito-theme'
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
+import generateClass from '@bobbykim/manguito-theme'
 import { computed } from 'vue'
 const props = withDefaults(
   defineProps<{
@@ -44,5 +44,3 @@ const handleLabelText = computed((): string => {
     <slot />
   </div>
 </template>
-
-<style scoped></style>

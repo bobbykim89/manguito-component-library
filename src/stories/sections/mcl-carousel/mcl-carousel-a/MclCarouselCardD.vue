@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MclCardD } from '@/components/mcl-cards'
+import { MclCardD } from '@/components/mcl-cards/lib'
 import { MclCarouselA } from '@/components/mcl-carousel/lib'
 
 const cardInfo: any[] = [

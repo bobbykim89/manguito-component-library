@@ -12,6 +12,8 @@ import Sidebar from './sidebar/Sidebar.vue'
 
 // directives
 export * from './directives'
+// utility components
+export * from './util'
 // types
 export * from './header/index.types'
 export * from './theme/theme.types'

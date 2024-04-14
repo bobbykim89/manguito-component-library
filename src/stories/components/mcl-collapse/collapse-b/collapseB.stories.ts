@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import {
+  booleanControllers,
   colorControllers,
   headingTextControllers,
   textControllers,
-  booleanControllers,
 } from '@/assets/composables'
-import { MclCollapseB } from '@/components/mcl-collapse'
+import { MclCollapseB } from '@/components/mcl-collapse/lib'
+import type { Meta, StoryObj } from '@storybook/vue3'
 import CollapseBAccordion from './CollapseBAccordion.vue'
 
 const meta: Meta<typeof MclCollapseB> = {

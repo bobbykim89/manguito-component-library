@@ -86,7 +86,7 @@ const getMenuItemClass = (
         class="tracking-wider align-middle outline-none nav__text flex items-center gap-3xs"
         :class="getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)"
         v-collapse:[handleNavId]
-        @click=""
+        @click="handleCollapseLabelClick($event, navItem.title)"
       >
         <span>
           {{ navItem.title }}
