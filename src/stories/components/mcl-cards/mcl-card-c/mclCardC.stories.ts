@@ -11,6 +11,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof MclCardC> = {
   title: 'Components/Cards/MclCardC',
+  component: MclCardC,
   argTypes: {
     title: textControllers({
       name: 'title',

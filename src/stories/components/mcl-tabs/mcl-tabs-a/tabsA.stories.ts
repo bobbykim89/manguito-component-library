@@ -28,6 +28,7 @@ const contentInfo: ContentType[] = [
 
 const meta: Meta<typeof MclTabsA> = {
   title: 'Components/Tabs/MclTabsA',
+  component: MclTabsA,
   argTypes: {
     content: arrayControllers({
       name: 'content',

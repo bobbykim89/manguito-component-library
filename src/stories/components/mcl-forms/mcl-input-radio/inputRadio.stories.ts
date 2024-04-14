@@ -10,6 +10,7 @@ import InputRadioExampleA from './InputRadioExampleA.vue'
 
 const meta: Meta<typeof MclInputRadio> = {
   title: 'Components/Form/MclInputRadio',
+  component: MclInputRadio,
   argTypes: {
     id: textControllers({
       name: 'id',

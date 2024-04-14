@@ -16,6 +16,10 @@ const props = withDefaults(
     textBold: false,
   }
 )
+const slots = defineSlots<{
+  default: any
+  label: any
+}>()
 const handleLabelText = computed((): string => {
   /**
    * @param {ColorPalette} textColor - handles text color of label text

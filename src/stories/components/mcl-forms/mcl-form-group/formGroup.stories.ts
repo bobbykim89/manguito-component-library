@@ -9,6 +9,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof MclFormGroup> = {
   title: 'Components/Form/MclFormGroup',
+  component: MclFormGroup,
   argTypes: {
     labelFor: textControllers({
       name: 'label-for',

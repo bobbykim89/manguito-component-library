@@ -10,6 +10,7 @@ import MclTextAreaWithLabel from './MclTextAreaWithLabel.vue'
 
 const meta: Meta<typeof MclTextArea> = {
   title: 'Components/Form/MclTextArea',
+  component: MclTextArea,
   argTypes: {
     id: textControllers({
       name: 'id',

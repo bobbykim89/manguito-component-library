@@ -24,7 +24,6 @@ withDefaults(
     labelTextSize?: BodyText
     labelTextColor?: ColorPalette
     labelBgColor?: ColorPalette
-    useSlot?: boolean
   }>(),
   {
     titleLevel: 'h1',
@@ -39,9 +38,11 @@ withDefaults(
     labelTextSize: 'md',
     labelTextColor: 'light-1',
     labelBgColor: 'dark-3',
-    useSlot: true,
   }
 )
+const slots = defineSlots<{
+  default: any
+}>()
 
 const getBgImage = (img: string) => {
   /**
@@ -176,7 +177,7 @@ const generateGradientColor = (color: ColorPalette): string => {
       ></div>
     </div>
     <div
-      v-if="useSlot"
+      v-if="slots.default"
       class="px-sm md:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[40vw] 2xl:max-w-[35vw] relative"
     >
       <slot></slot>

@@ -10,6 +10,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof MclContainerB> = {
   title: 'Sections/Container/MclContainerB',
+  component: MclContainerB,
   argTypes: {
     title: textControllers({
       name: 'title',

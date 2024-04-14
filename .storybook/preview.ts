@@ -34,7 +34,6 @@ const customViewports = {
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
         expanded: true,

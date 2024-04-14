@@ -18,6 +18,7 @@ const selectOptions = [
 
 const meta: Meta<typeof MclSelect> = {
   title: 'Components/Form/MclSelect',
+  component: MclSelect,
   argTypes: {
     id: textControllers({
       name: 'id',

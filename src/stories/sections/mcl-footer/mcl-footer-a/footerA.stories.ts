@@ -56,6 +56,7 @@ const socialLinks: SocialUrl = {
 
 const meta: Meta<typeof MclFooterA> = {
   title: 'Sections/Footer/MclFooterA',
+  component: MclFooterA,
   argTypes: {
     title: textControllers({
       name: 'title',

@@ -11,6 +11,7 @@ import CollapseATabSlotExample from './CollapseATabSlotExample.vue'
 
 const meta: Meta<typeof MclCollapseA> = {
   title: 'Components/Collapse/MclCollapseA',
+  component: MclCollapseA,
   argTypes: {
     collapseId: textControllers({
       name: 'collapse-id',

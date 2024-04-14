@@ -9,6 +9,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof MclInputSwitch> = {
   title: 'Components/Form/MclInputSwitch',
+  component: MclInputSwitch,
   argTypes: {
     id: textControllers({
       name: 'id',
