@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import {
-  colorControllers,
-  textControllers,
   booleanControllers,
+  colorControllers,
   numberControllers,
+  textControllers,
 } from '@/assets/composables'
-import { MclTextArea } from '@/components/mcl-forms'
+import { MclTextArea } from '@/components/mcl-forms/lib'
+import type { Meta, StoryObj } from '@storybook/vue3'
 import MclTextAreaWithLabel from './MclTextAreaWithLabel.vue'
 
 const meta: Meta<typeof MclTextArea> = {

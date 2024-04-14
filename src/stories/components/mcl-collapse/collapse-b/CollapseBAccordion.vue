@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MclCollapseB } from '@/components/mcl-collapse'
+import { MclCollapseB } from '@/components/mcl-collapse/lib'
 
 const accordionContent = [
   {

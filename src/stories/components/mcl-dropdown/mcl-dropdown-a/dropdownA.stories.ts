@@ -6,8 +6,8 @@ import {
   fontWeightControllers,
   textControllers,
 } from '@/assets/composables'
-import type { DropdownItem } from '@/components/mcl-dropdown'
-import { MclDropdownA } from '@/components/mcl-dropdown'
+import type { DropdownItem } from '@/components/mcl-dropdown/lib'
+import { MclDropdownA } from '@/components/mcl-dropdown/lib'
 import type { Meta, StoryObj } from '@storybook/vue3'
 
 const dropdownItems: DropdownItem[] = [

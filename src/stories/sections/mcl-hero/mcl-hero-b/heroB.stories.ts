@@ -1,14 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import {
-  colorControllers,
-  headingTextControllers,
-  headingLevelControllers,
-  textControllers,
   booleanControllers,
-  xDirControllers,
-  rangeControllers,
+  colorControllers,
+  headingLevelControllers,
+  headingTextControllers,
+  textControllers,
 } from '@/assets/composables'
-import { MclHeroB } from '@/components/mcl-hero'
+import { MclHeroB } from '@/components/mcl-hero/lib'
+import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof MclHeroB> = {
   title: 'Sections/Hero/MclHeroB',

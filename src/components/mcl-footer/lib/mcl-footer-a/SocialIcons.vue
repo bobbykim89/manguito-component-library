@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, markRaw, onMounted, computed } from 'vue'
 import type { ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
+import { markRaw, onMounted, ref } from 'vue'
 import type { SocialUrl } from './index.types'
 // Import Icon files
 import GithubIcon from '../common//icons/GithubIcon.vue'
@@ -24,7 +24,7 @@ interface IconList {
   icon: any
   label: string
 }
-const iconsRef = ref<any>([])
+const iconsRef = ref<IconList[]>([])
 
 const handleIconsList = (): void => {
   const { linkedin, instagram, github, twitter } = props.socialLinks!
@@ -61,10 +61,6 @@ const handleIconsList = (): void => {
   iconsRef.value = iconsList
 }
 
-const getIconList = computed(() => {
-  return iconsRef.value
-})
-
 const getIconColor = (color: ColorPalette): string => {
   /**
    * @color - iconColor
@@ -96,5 +92,3 @@ onMounted(() => {
     </li>
   </ul>
 </template>
-
-<style lang="scss" scoped></style>

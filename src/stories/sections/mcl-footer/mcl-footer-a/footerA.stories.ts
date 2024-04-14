@@ -1,17 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import {
+  arrayControllers,
+  bodyTextControllers,
+  booleanControllers,
   colorControllers,
   headingTextControllers,
-  textControllers,
-  booleanControllers,
-  bodyTextControllers,
-  spacingControllers,
-  arrayControllers,
-  targetOptionControllers,
   objectControllers,
+  targetOptionControllers,
+  textControllers,
 } from '@/assets/composables'
-import { MclFooterA } from '@/components/mcl-footer'
-import type { MenuItemType, SocialUrl } from '@/components/mcl-footer'
+import type { MenuItemType, SocialUrl } from '@/components/mcl-footer/lib'
+import { MclFooterA } from '@/components/mcl-footer/lib'
+import type { Meta, StoryObj } from '@storybook/vue3'
 
 const navItems: MenuItemType[] = [
   {

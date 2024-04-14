@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MclFormGroup, MclTextArea } from '@/components/mcl-forms'
+import { MclFormGroup, MclTextArea } from '@/components/mcl-forms/lib'
 </script>
 
 <template>

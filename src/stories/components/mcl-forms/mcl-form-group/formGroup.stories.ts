@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import {
+  bodyTextControllers,
+  booleanControllers,
   colorControllers,
   textControllers,
-  booleanControllers,
-  bodyTextControllers,
 } from '@/assets/composables'
-import { MclFormGroup } from '@/components/mcl-forms'
+import { MclFormGroup } from '@/components/mcl-forms/lib'
+import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof MclFormGroup> = {
   title: 'Components/Form/MclFormGroup',

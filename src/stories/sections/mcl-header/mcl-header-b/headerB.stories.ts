@@ -8,8 +8,11 @@ import {
   targetOptionControllers,
   textControllers,
 } from '@/assets/composables'
-import type { MenuCollapseType, MenuItemType } from '@/components/mcl-header'
-import { MclHeaderB } from '@/components/mcl-header'
+import type {
+  MenuCollapseType,
+  MenuItemType,
+} from '@/components/mcl-header/lib'
+import { MclHeaderB } from '@/components/mcl-header/lib'
 import type { Meta, StoryObj } from '@storybook/vue3'
 import HeaderBSlotItem from './HeaderBSlotItem.vue'
 

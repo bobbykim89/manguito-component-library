@@ -3,7 +3,7 @@ import {
   colorControllers,
   textControllers,
 } from '@/assets/composables'
-import { MclFormGroup, MclInputFile } from '@/components/mcl-forms'
+import { MclFormGroup, MclInputFile } from '@/components/mcl-forms/lib'
 import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof MclInputFile> = {

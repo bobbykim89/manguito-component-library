@@ -1,16 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import {
-  colorControllers,
-  headingTextControllers,
-  textControllers,
   booleanControllers,
-  bodyTextControllers,
-  spacingControllers,
-  arrayControllers,
-  xDirControllers,
+  colorControllers,
   columnWidthControllers,
+  xDirControllers,
 } from '@/assets/composables'
-import { MclContainerA } from '@/components/mcl-container'
+import { MclContainerA } from '@/components/mcl-container/lib'
+import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof MclContainerA> = {
   title: 'Sections/Container/MclContainerA',
