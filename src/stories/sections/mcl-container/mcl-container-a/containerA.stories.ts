@@ -9,6 +9,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof MclContainerA> = {
   title: 'Sections/Container/MclContainerA',
+  component: MclContainerA,
   argTypes: {
     sectionBg: colorControllers({
       name: 'section-bg',

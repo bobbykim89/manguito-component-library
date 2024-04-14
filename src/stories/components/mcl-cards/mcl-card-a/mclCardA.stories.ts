@@ -11,6 +11,22 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof MclCardA> = {
   title: 'Components/Cards/MclCardA',
+  component: MclCardA,
+}
+
+export default meta
+
+type Story = StoryObj<typeof MclCardA>
+
+export const MclCardAExample: Story = {
+  render: (args) => ({
+    components: { 'mcl-card-a': MclCardA },
+    setup() {
+      return { args }
+    },
+    template:
+      '<section class="container"><mcl-card-a v-bind="args"><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></mcl-card-a></section>',
+  }),
   argTypes: {
     title: textControllers({
       name: 'title',
@@ -205,19 +221,4 @@ const meta: Meta<typeof MclCardA> = {
     displayShadow: true,
     ctaAsLink: false,
   },
-}
-
-export default meta
-
-type Story = StoryObj<typeof MclCardA>
-
-export const MclCardAExample: Story = {
-  render: (args) => ({
-    components: { 'mcl-card-a': MclCardA },
-    setup() {
-      return { args }
-    },
-    template:
-      '<section class="container"><mcl-card-a v-bind="args"><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></mcl-card-a></section>',
-  }),
 }

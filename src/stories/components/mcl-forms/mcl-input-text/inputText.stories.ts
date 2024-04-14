@@ -11,6 +11,7 @@ import MclInputTextWithLabel from './MclInputTextWithLabel.vue'
 
 const meta: Meta<typeof MclInputText> = {
   title: 'Components/Form/MclInputText',
+  component: MclInputText,
   argTypes: {
     id: textControllers({
       name: 'id',

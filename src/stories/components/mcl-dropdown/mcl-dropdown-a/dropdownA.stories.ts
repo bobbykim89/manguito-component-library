@@ -31,6 +31,7 @@ const dropdownItems: DropdownItem[] = [
 
 const meta: Meta<typeof MclDropdownA> = {
   title: 'Components/Dropdown/MclDropdownA',
+  component: MclDropdownA,
   argTypes: {
     title: textControllers({
       name: 'title',

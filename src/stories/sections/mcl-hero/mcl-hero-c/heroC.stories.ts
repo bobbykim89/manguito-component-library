@@ -11,6 +11,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof MclHeroC> = {
   title: 'Sections/Hero/MclHeroC',
+  component: MclHeroC,
   argTypes: {
     title: textControllers({
       name: 'title',
@@ -114,13 +115,6 @@ const meta: Meta<typeof MclHeroC> = {
       defaultValue: 'primary',
       category: 'Background',
     }),
-    useSlot: booleanControllers({
-      name: 'display-slot',
-      required: false,
-      description: 'whether or not to add slot in component',
-      defaultValue: true,
-      category: 'Slot',
-    }),
   },
   args: {
     title: 'MCL Hero C',
@@ -139,7 +133,6 @@ const meta: Meta<typeof MclHeroC> = {
     labelTextSize: 'md',
     labelTextColor: 'light-1',
     labelBgColor: 'dark-3',
-    useSlot: true,
   },
 }
 

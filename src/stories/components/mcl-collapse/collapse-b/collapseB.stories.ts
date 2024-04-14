@@ -10,6 +10,7 @@ import CollapseBAccordion from './CollapseBAccordion.vue'
 
 const meta: Meta<typeof MclCollapseB> = {
   title: 'Components/Collapse/MclCollapseB',
+  component: MclCollapseB,
   argTypes: {
     collapseId: textControllers({
       name: 'collapse-id',

@@ -76,6 +76,7 @@ const navItems: Array<MenuItemType | MenuCollapseType> = [
 
 const meta: Meta<typeof MclHeaderB> = {
   title: 'Sections/Header/MclHeaderB',
+  component: MclHeaderB,
   argTypes: {
     logo: textControllers({
       name: 'logo',

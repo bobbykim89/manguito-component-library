@@ -74,6 +74,7 @@ const cardInfo: any[] = [
 
 const meta: Meta<typeof MclCarouselA> = {
   title: 'Sections/Carousel/MclCarouselA',
+  component: MclCarouselA,
   argTypes: {
     title: textControllers({
       name: 'title',

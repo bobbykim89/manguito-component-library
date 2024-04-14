@@ -9,6 +9,7 @@ import HeaderHorizontalExample from './HeaderHorizontalExample.vue'
 
 const meta: Meta<typeof HeaderHorizontal> = {
   title: 'Base/Base Component/Header (Horizontal)',
+  component: HeaderHorizontal,
   argTypes: {
     bgColor: colorControllers({
       name: 'bg-color',

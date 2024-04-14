@@ -8,6 +8,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof HeaderVertical> = {
   title: 'Base/Base Component/Header (Vertical)',
+  component: HeaderVertical,
   argTypes: {
     bgColor: colorControllers({
       name: 'bg-color',
