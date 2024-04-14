@@ -1,17 +1,3 @@
-import {
-  colors,
-  spacingOptions,
-  bodyTextSize,
-  headingTextSize,
-  directionsX,
-  headingTextLevel,
-  targetOption,
-  columnWidth,
-  corsOptions,
-  inputOptions,
-  switchSizeOptions,
-  fontWeightOptions,
-} from '../options'
 import type {
   BodyText,
   ColorPalette,
@@ -24,7 +10,21 @@ import type {
   HeadingSize,
   InputType,
   SpacingLevel,
-} from '@/components/manguito-theme'
+} from '@/components/manguito-theme/lib'
+import {
+  bodyTextSize,
+  colors,
+  columnWidth,
+  corsOptions,
+  directionsX,
+  fontWeightOptions,
+  headingTextLevel,
+  headingTextSize,
+  inputOptions,
+  spacingOptions,
+  switchSizeOptions,
+  targetOption,
+} from '../options'
 
 interface ControllerGenericInput {
   name: string
