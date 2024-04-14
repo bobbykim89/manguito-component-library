@@ -263,8 +263,27 @@ importers:
   src/components/mcl-collapse:
     dependencies:
       '@bobbykim/manguito-theme':
-        specifier: ^0.18.0
+        specifier: workspace:*
         version: link:../manguito-theme
+      vue:
+        specifier: ^3.3.10
+        version: 3.4.21(typescript@5.4.5)
+    devDependencies:
+      '@vitejs/plugin-vue':
+        specifier: ^4.5.2
+        version: 4.6.2(vite@4.5.3)(vue@3.4.21)
+      typescript:
+        specifier: ^5.3.3
+        version: 5.4.5
+      vite:
+        specifier: ^4.5.1
+        version: 4.5.3(@types/node@20.12.7)(sass@1.75.0)
+      vite-plugin-css-injected-by-js:
+        specifier: ^3.5.0
+        version: 3.5.0(vite@4.5.3)
+      vue-tsc:
+        specifier: ^1.8.25
+        version: 1.8.27(typescript@5.4.5)
 
   src/components/mcl-container:
     dependencies:
