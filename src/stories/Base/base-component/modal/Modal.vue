@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { Modal, vToggle } from '@/components/manguito-theme/lib'
 import { ref } from 'vue'
-import { vToggle, Modal } from '@/components/manguito-theme'
 
 const modalRef = ref<InstanceType<typeof Modal>>()
 const openModal = () => {

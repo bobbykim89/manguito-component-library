@@ -9,23 +9,22 @@ export default defineConfig({
     vue(),
     cssInjectedByJsPlugin({
       jsAssetsFilterFunction: (outputChunk) => {
-        return outputChunk.fileName.includes('core')
+        return outputChunk.fileName.includes('mcl-collapse')
       },
     }),
   ],
   build: {
     lib: {
-      entry: {
-        core: resolve(__dirname, 'lib/index.ts'),
-        'mcl-theme': resolve(__dirname, 'lib/mclTheme.ts'),
-      },
-      formats: ['es', 'cjs'],
+      entry: resolve(__dirname, 'lib/index.ts'),
+      name: 'MclCollapse',
+      fileName: 'mcl-collapse',
     },
     rollupOptions: {
-      external: ['vue', '@vueuse/core'],
+      external: ['vue', '@bobbykim/manguito-theme'],
       output: {
         globals: {
           vue: 'Vue',
+          '@bobbykim/manguito-theme': 'ManguitoTheme',
         },
       },
     },

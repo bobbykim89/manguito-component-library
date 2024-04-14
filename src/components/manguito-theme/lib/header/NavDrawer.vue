@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { ColorPalette } from '../../index'
-import generateClass from '../../index'
+import type { ColorPalette } from '..'
+import generateClass from '..'
 
 const props = withDefaults(
   defineProps<{
@@ -119,3 +119,4 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
   transform: rotate(-135deg);
 }
 </style>
+../index../index

@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { Sidebar, vToggle } from '@/components/manguito-theme/lib'
 import { ref } from 'vue'
-import { Sidebar, vToggle } from '@/components/manguito-theme'
 
 const sidebarRef = ref<InstanceType<typeof Sidebar>>()
 const openSidebar = () => {

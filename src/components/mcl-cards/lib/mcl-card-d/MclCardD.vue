@@ -106,7 +106,7 @@ const props = withDefaults(
     highlightColor: 'primary',
     ctaText: 'Read more',
     ctaLinkTarget: '_self',
-    ctaAsLink: true,
+    ctaAsLink: false,
     ctaButton: false,
     ctaButtonColor: 'warning',
     ctaButtonBlock: false,

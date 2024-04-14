@@ -8,10 +8,8 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
-    // "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    // "noEmit": true,
     "jsx": "preserve",
 
     "outDir": "dist",
@@ -23,12 +21,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "lib/**/*.ts",
-    "lib/**/*.tsx",
-    "lib/**/*.vue",
-    "index.ts",
-    "mclTheme.ts"
-  ],
+  "include": ["lib/**/*.ts", "lib/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

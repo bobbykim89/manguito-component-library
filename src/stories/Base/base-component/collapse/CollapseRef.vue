@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Collapse } from '@/components/manguito-theme/index'
+import { Collapse } from '@/components/manguito-theme/lib'
 import { ref } from 'vue'
 const collapseRef = ref<InstanceType<typeof Collapse>>()
 
@@ -34,3 +34,4 @@ const handleCollapse = () => {
     </div>
   </section>
 </template>
+@/components/manguito-theme/lib/index
