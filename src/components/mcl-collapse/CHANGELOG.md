@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-collapse@0.6.0...@bobbykim/mcl-collapse@0.7.0) (2024-04-15)
+
+
+### Features
+
+* **components/*:** add vite-plugin-dts ([765aec7](https://github.com/bobbykim89/manguito-component-library/commit/765aec738227b68b8483f8b3e02d1bd191b90f20))
+* **manguito-theme,mcl-cards,mcl-carousel,mcl-collapse:** move index.ts file inside lib folder update mcl-cards,mcl-carousel,mcl-collapse components to be bundled on build process. update imports of story files accordingly ([d405a2e](https://github.com/bobbykim89/manguito-component-library/commit/d405a2e81deef1ea28e6fdb4fceb90398c56e467))
+* **scripts,components/**/tsconfig.json:** update scripts ([3ca588d](https://github.com/bobbykim89/manguito-component-library/commit/3ca588d692a2b9b685a1804696b1722d5f9fd874))
+
+
+
+
+
 # [0.6.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-collapse@0.5.0...@bobbykim/mcl-collapse@0.6.0) (2024-04-01)
 
 

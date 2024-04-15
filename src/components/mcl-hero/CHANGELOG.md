@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-hero@0.5.1...@bobbykim/mcl-hero@0.6.0) (2024-04-15)
+
+
+### Features
+
+* **components/*:** add vite-plugin-dts ([765aec7](https://github.com/bobbykim89/manguito-component-library/commit/765aec738227b68b8483f8b3e02d1bd191b90f20))
+* **src/components:** finish updating rest of components ([bfbd4b1](https://github.com/bobbykim89/manguito-component-library/commit/bfbd4b15dcae4a244de1ac15836fa74870d20818))
+* **src/stories:** update to storybook 8, update story pages accordingly ([f8a1502](https://github.com/bobbykim89/manguito-component-library/commit/f8a1502b83c056cef9e141c4e0c3821c992e9720))
+
+
+
+
+
 ## [0.5.1](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-hero@0.5.0...@bobbykim/mcl-hero@0.5.1) (2024-04-01)
 
 **Note:** Version bump only for package @bobbykim/mcl-hero

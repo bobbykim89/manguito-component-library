@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.6.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-header@0.5.1...@bobbykim/mcl-header@0.6.0) (2024-04-15)
+
+
+### Features
+
+* **components/*:** add vite-plugin-dts ([765aec7](https://github.com/bobbykim89/manguito-component-library/commit/765aec738227b68b8483f8b3e02d1bd191b90f20))
+* **src/components:** finish updating rest of components ([bfbd4b1](https://github.com/bobbykim89/manguito-component-library/commit/bfbd4b15dcae4a244de1ac15836fa74870d20818))
+
+
+
+
+
 ## [0.5.1](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-header@0.5.0...@bobbykim/mcl-header@0.5.1) (2024-04-01)
 
 **Note:** Version bump only for package @bobbykim/mcl-header
