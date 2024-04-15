@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/mcl-collapse",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "collapse component built on top of @bobbykim/manguito-theme",
   "type": "module",
   "files": [
