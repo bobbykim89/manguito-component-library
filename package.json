@@ -18,7 +18,7 @@
     "package:create": "node ./scripts/index.mjs",
     "package:build": "lerna run build",
     "package:clear": "lerna clean",
-    "publish": "lerna run build && lerna publish --no-private"
+    "package:publish": "lerna run build && lerna publish --no-private"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1",
