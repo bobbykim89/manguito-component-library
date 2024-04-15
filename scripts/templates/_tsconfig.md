@@ -1,9 +1,27 @@
 {
-"extends": "../../../tsconfig.json",
-"include": ["./**/*.ts"],
-"exclude": ["node_modules", "./**/*.vue.d.ts", "./**/*.vue"],
 "compilerOptions": {
+"target": "ES2021",
+"useDefineForClassFields": true,
+"module": "ESNext",
+"lib": ["ES2021", "DOM", "DOM.Iterable"],
 "skipLibCheck": true,
-"declaration": true
-}
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+
+    "outDir": "dist",
+    "declaration": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+
+},
+"include": ["lib/**/*.ts", "lib/**/*.vue"],
+"references": [{ "path": "./tsconfig.node.json" }]
 }

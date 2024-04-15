@@ -207,7 +207,7 @@ defineExpose({
         <slot name="content-right"></slot>
       </div>
     </template>
-    <template #mobile-content="{ headerClose }">
+    <template #mobile-content>
       <div>
         <ul class="flex flex-col items-center justify-center p-xs">
           <li

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import generateClass from '@bobbykim/manguito-theme'
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
+import generateClass from '@bobbykim/manguito-theme'
 import { computed } from 'vue'
 const props = withDefaults(
   defineProps<{
@@ -16,6 +16,10 @@ const props = withDefaults(
     textBold: false,
   }
 )
+const slots = defineSlots<{
+  default: any
+  label: any
+}>()
 const handleLabelText = computed((): string => {
   /**
    * @param {ColorPalette} textColor - handles text color of label text
@@ -44,5 +48,3 @@ const handleLabelText = computed((): string => {
     <slot />
   </div>
 </template>
-
-<style scoped></style>

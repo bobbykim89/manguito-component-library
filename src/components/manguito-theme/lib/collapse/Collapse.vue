@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Transition, ref, watch } from 'vue'
 import { observeVisibleAttr } from '../composables'
+import { ClientSideRender } from '../util'
 
 const props = withDefaults(
   defineProps<{
@@ -91,20 +92,22 @@ defineExpose({
 
 <template>
   <div :accordion="accordion" :visible="toggle" ref="collapseRef">
-    <transition
-      name="collapse"
-      tag="div"
-      @enter="onEnter"
-      @after-enter="onAfterEnter"
-      @leave="onLeave"
-      class="overflow-y-clip"
-    >
-      <div v-show="toggle">
-        <div :class="[className]">
-          <slot />
+    <ClientSideRender>
+      <Transition
+        name="collapse"
+        tag="div"
+        @enter="onEnter"
+        @after-enter="onAfterEnter"
+        @leave="onLeave"
+        class="overflow-y-clip"
+      >
+        <div v-show="toggle">
+          <div :class="[className]">
+            <slot />
+          </div>
         </div>
-      </div>
-    </transition>
+      </Transition>
+    </ClientSideRender>
   </div>
 </template>
 

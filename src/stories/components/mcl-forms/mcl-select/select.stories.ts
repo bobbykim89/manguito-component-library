@@ -4,7 +4,7 @@ import {
   colorControllers,
   textControllers,
 } from '@/assets/composables'
-import { MclFormGroup, MclSelect } from '@/components/mcl-forms'
+import { MclFormGroup, MclSelect } from '@/components/mcl-forms/lib'
 import type { Meta, StoryObj } from '@storybook/vue3'
 import MclSelectExampleVue from './MclSelectExample.vue'
 
@@ -18,6 +18,7 @@ const selectOptions = [
 
 const meta: Meta<typeof MclSelect> = {
   title: 'Components/Form/MclSelect',
+  component: MclSelect,
   argTypes: {
     id: textControllers({
       name: 'id',

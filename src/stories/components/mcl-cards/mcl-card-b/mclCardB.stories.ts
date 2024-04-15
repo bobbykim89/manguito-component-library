@@ -1,16 +1,17 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import {
-  colorControllers,
-  headingTextControllers,
-  textControllers,
   booleanControllers,
+  colorControllers,
   corsOptionControllers,
+  headingTextControllers,
   targetOptionControllers,
+  textControllers,
 } from '@/assets/composables'
-import { MclCardB } from '@/components/mcl-cards'
+import { MclCardB } from '@/components/mcl-cards/lib'
+import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof MclCardB> = {
   title: 'Components/Cards/MclCardB',
+  component: MclCardB,
   argTypes: {
     title: textControllers({
       name: 'title',

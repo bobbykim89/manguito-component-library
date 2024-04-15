@@ -2,8 +2,8 @@
 import type {
   ColorPalette,
   HeaderStickyOptionType,
-} from '@/components/manguito-theme'
-import { HeaderHorizontal } from '@/components/manguito-theme'
+} from '@/components/manguito-theme/lib'
+import { HeaderHorizontal } from '@/components/manguito-theme/lib'
 import { ref } from 'vue'
 
 const props = withDefaults(

@@ -1,16 +1,17 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import {
-  colorControllers,
-  textControllers,
   booleanControllers,
+  colorControllers,
   inputTypeControllers,
   numberControllers,
+  textControllers,
 } from '@/assets/composables'
-import { MclInputText } from '@/components/mcl-forms'
+import { MclInputText } from '@/components/mcl-forms/lib'
+import type { Meta, StoryObj } from '@storybook/vue3'
 import MclInputTextWithLabel from './MclInputTextWithLabel.vue'
 
 const meta: Meta<typeof MclInputText> = {
   title: 'Components/Form/MclInputText',
+  component: MclInputText,
   argTypes: {
     id: textControllers({
       name: 'id',

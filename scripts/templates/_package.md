@@ -1,11 +1,23 @@
 {
-"name": "{%componentName%}",
+"name": "{%packageName%}",
 "version": "0.1.0",
 "description": "",
 "type": "module",
-"main": "index.ts",
+"files": [
+"dist"
+],
+"main": "./dist/{%fileName%}.umd.cjs",
+"module": "./dist/{%fileName%}.js",
+"types": "./dist/index.d.ts",
+"exports": {
+".": {
+"import": "./dist/{%fileName%}.js",
+"require": "./dist/{%fileName%}.umd.cjs",
+"types": "./dist/index.d.ts"
+}
+},
 "scripts": {
-"build": "vue-tsc --project tsconfig.vue.json && tsc"
+"build": "vite build"
 },
 "author": {
 "name": "{%authorName%}",
@@ -21,6 +33,16 @@
 },
 "license": "MIT",
 "dependencies": {
-"@bobbykim/manguito-theme": "^{%packageVersion%}"
+"@bobbykim/manguito-theme": "{%workspace%}",
+"@vueuse/core": "^10.8.0",
+"vue": "^3.3.10"
+},
+"devDependencies": {
+"@vitejs/plugin-vue": "^4.5.2",
+"sass": "^1.69.5",
+"vite": "^4.5.1",
+"vite-plugin-css-injected-by-js": "^3.5.0",
+"vite-plugin-dts": "^3.8.3",
+"vue-tsc": "^1.8.25"
 }
 }

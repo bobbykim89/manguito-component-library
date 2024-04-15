@@ -7,6 +7,7 @@ import type {
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 import { MclCardA, MclCardB, MclCardC, MclCardD } from '@bobbykim/mcl-cards'
+import { useEventListener } from '@vueuse/core'
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 type BtnNav = 'prev' | 'next'
@@ -44,7 +45,7 @@ const props = withDefaults(
     cardsGap: 'xs',
   }
 )
-const slideContainer = ref()
+const slideContainer = ref<HTMLElement | null>(null)
 const carouselCards = ref<
   | null
   | InstanceType<
@@ -102,7 +103,7 @@ const handleSlideBtnClick = (e: Event, btn: BtnNav): void => {
     currentIndex.value++
     emit('btn-next', e)
   }
-  slideContainer.value.dispatchEvent(new Event('sliderMove'))
+  slideContainer.value?.dispatchEvent(new Event('sliderMove'))
 }
 
 // intersection observer
@@ -169,7 +170,7 @@ const getButtonClass = (color: ColorPalette, bgColor: ColorPalette): string => {
 }
 
 const handleSlide = (): void => {
-  slideContainer.value.style.transform = `translateX(-${
+  slideContainer.value!.style.transform = `translateX(-${
     currentIndex.value *
     (carouselCards.value![0].$el.clientWidth + cardsSpace(props.cardsGap) + 2)
   }px)`
@@ -181,11 +182,12 @@ const handleTransitionEnd = (): void => {
   isMoving = false
 }
 
+// handle slide movement
+useEventListener(slideContainer, 'sliderMove', handleSlide)
+// handle transition end event
+useEventListener(slideContainer, 'transitionend', handleTransitionEnd)
+
 onMounted(() => {
-  // handle slide movement
-  slideContainer.value.addEventListener('sliderMove', handleSlide)
-  // handle transition end event
-  slideContainer.value.addEventListener('transitionend', handleTransitionEnd)
   // intersection observer for slider
   slideObserver.observe(
     carouselCards.value![carouselCards.value!.length - 1].$el
@@ -193,8 +195,6 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  slideContainer.value.removeEventListener('sliderMove', handleSlide)
-  slideContainer.value.removeEventListener('transitionend', handleTransitionEnd)
   slideObserver.unobserve(
     carouselCards.value![carouselCards.value!.length - 1].$el
   )
@@ -288,5 +288,3 @@ onBeforeUnmount(() => {
     </div>
   </section>
 </template>
-
-<style lang="scss" scoped></style>

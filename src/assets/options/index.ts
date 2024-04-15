@@ -1,16 +1,16 @@
 import type {
-  ColorClass,
-  HeaderSizeClass,
-  BodyTextClass,
-  FontWeightClass,
-  Spacing,
-} from '@/components/manguito-theme/theme/theme'
-import type {
-  DirectionX,
-  CtaTarget,
   CrossOrigin,
+  CtaTarget,
+  DirectionX,
   InputType,
-} from '@/components/manguito-theme'
+} from '@/components/manguito-theme/lib'
+import type {
+  BodyTextClass,
+  ColorClass,
+  FontWeightClass,
+  HeaderSizeClass,
+  Spacing,
+} from '@/components/manguito-theme/lib/theme/theme'
 
 type HeadingLevel = 'h1' | 'h2' | 'h3' | 'h4'
 type ColWidth = '25' | '50' | '75' | '100'

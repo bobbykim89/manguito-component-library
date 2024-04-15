@@ -1,15 +1,15 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import {
+  arrayControllers,
+  bodyTextControllers,
+  booleanControllers,
   colorControllers,
   headingTextControllers,
-  textControllers,
-  booleanControllers,
-  bodyTextControllers,
   spacingControllers,
-  arrayControllers,
+  textControllers,
 } from '@/assets/composables'
-import { MclCarouselA } from '@/components/mcl-carousel'
-import { MclCardA } from '@/components/mcl-cards'
+import { MclCardA } from '@/components/mcl-cards/lib'
+import { MclCarouselA } from '@/components/mcl-carousel/lib'
+import type { Meta, StoryObj } from '@storybook/vue3'
 import MclCarouselACardB from './MclCarouselACardB.vue'
 import MclCarouselCardD from './MclCarouselCardD.vue'
 
@@ -74,6 +74,7 @@ const cardInfo: any[] = [
 
 const meta: Meta<typeof MclCarouselA> = {
   title: 'Sections/Carousel/MclCarouselA',
+  component: MclCarouselA,
   argTypes: {
     title: textControllers({
       name: 'title',

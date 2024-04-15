@@ -1,15 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import {
+  arrayControllers,
+  booleanControllers,
   colorControllers,
   headingTextControllers,
-  textControllers,
-  booleanControllers,
-  bodyTextControllers,
-  spacingControllers,
-  arrayControllers,
 } from '@/assets/composables'
-import { MclTabsA } from '@/components/mcl-tabs'
-import type { ContentType } from '@/components/mcl-tabs'
+import type { ContentType } from '@/components/mcl-tabs/lib'
+import { MclTabsA } from '@/components/mcl-tabs/lib'
+import type { Meta, StoryObj } from '@storybook/vue3'
 
 const contentInfo: ContentType[] = [
   {
@@ -31,6 +28,7 @@ const contentInfo: ContentType[] = [
 
 const meta: Meta<typeof MclTabsA> = {
   title: 'Components/Tabs/MclTabsA',
+  component: MclTabsA,
   argTypes: {
     content: arrayControllers({
       name: 'content',

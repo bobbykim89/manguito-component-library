@@ -8,8 +8,11 @@ import {
   targetOptionControllers,
   textControllers,
 } from '@/assets/composables'
-import type { MenuCollapseType, MenuItemType } from '@/components/mcl-header'
-import { MclHeaderB } from '@/components/mcl-header'
+import type {
+  MenuCollapseType,
+  MenuItemType,
+} from '@/components/mcl-header/lib'
+import { MclHeaderB } from '@/components/mcl-header/lib'
 import type { Meta, StoryObj } from '@storybook/vue3'
 import HeaderBSlotItem from './HeaderBSlotItem.vue'
 
@@ -73,6 +76,7 @@ const navItems: Array<MenuItemType | MenuCollapseType> = [
 
 const meta: Meta<typeof MclHeaderB> = {
   title: 'Sections/Header/MclHeaderB',
+  component: MclHeaderB,
   argTypes: {
     logo: textControllers({
       name: 'logo',

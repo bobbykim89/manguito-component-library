@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Transition, computed, ref } from 'vue'
-import type { ColorPalette } from '../../'
-import generateClass from '../../'
+import type { ColorPalette } from '..'
+import generateClass from '..'
 import NavDrawer from './NavDrawer.vue'
 const props = withDefaults(
   defineProps<{
@@ -114,3 +114,4 @@ defineExpose({
   transform: translateY(-100%);
 }
 </style>
+../index../index

@@ -1,3 +1,1 @@
-import {%componentName%} from "./{%componentName%}.vue";
-
-export default {%componentName%};
+// index file for {%componentName%}

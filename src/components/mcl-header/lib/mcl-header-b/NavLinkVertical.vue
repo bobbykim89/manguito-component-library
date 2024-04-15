@@ -34,10 +34,7 @@ const handleLinkClick = (e: Event, item: MenuItemType) => {
 }
 const colorClass = computed<string>(() => {
   const { textColor, textSize, dHl, hlColor, fontBold } = props
-  const classArray: string[] = [
-    // generateClass('TEXTCOLOR', textColor),
-    generateClass('BODYTEXT', textSize),
-  ]
+  const classArray: string[] = [generateClass('BODYTEXT', textSize)]
   if (!dHl) {
     const nonHlTextClass: string[] = [
       generateClass('TEXTCOLOR', textColor),

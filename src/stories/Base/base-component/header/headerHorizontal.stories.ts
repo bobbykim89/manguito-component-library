@@ -3,12 +3,13 @@ import {
   colorControllers,
   numberControllers,
 } from '@/assets/composables'
-import { HeaderHorizontal } from '@/components/manguito-theme'
+import { HeaderHorizontal } from '@/components/manguito-theme/lib'
 import type { Meta, StoryObj } from '@storybook/vue3'
 import HeaderHorizontalExample from './HeaderHorizontalExample.vue'
 
 const meta: Meta<typeof HeaderHorizontal> = {
   title: 'Base/Base Component/Header (Horizontal)',
+  component: HeaderHorizontal,
   argTypes: {
     bgColor: colorControllers({
       name: 'bg-color',

@@ -1,11 +1,23 @@
 {
   "name": "@bobbykim/mcl-cards",
   "version": "0.6.0",
-  "description": "",
+  "description": "card components based on @bobbykim/manguito-theme",
   "type": "module",
-  "main": "index.ts",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/mcl-cards.umd.cjs",
+  "module": "./dist/mcl-cards.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/mcl-cards.js",
+      "require": "./dist/mcl-cards.umd.cjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
-    "build": "vue-tsc --project tsconfig.vue.json && tsc --project tsconfig.ts.json"
+    "build": "vite build"
   },
   "author": {
     "name": "Bobby Kim",
@@ -21,6 +33,16 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@bobbykim/manguito-theme": "^0.18.0"
+    "@bobbykim/manguito-theme": "workspace:*",
+    "vue": "^3.3.10"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.2",
+    "sass": "^1.69.5",
+    "typescript": "^5.3.3",
+    "vite": "^4.5.1",
+    "vite-plugin-css-injected-by-js": "^3.5.0",
+    "vite-plugin-dts": "^3.8.3",
+    "vue-tsc": "^1.8.25"
   }
 }

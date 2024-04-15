@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MclInputText, MclFormGroup } from '@/components/mcl-forms'
+import { MclFormGroup, MclInputText } from '@/components/mcl-forms/lib'
 </script>
 
 <template>
