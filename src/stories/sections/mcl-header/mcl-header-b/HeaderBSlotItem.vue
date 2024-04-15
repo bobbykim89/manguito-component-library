@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { ColorPalette } from '@/components/manguito-theme'
-import generateClass from '@/components/manguito-theme'
+import type { ColorPalette } from '@/components/manguito-theme/lib'
+import generateClass from '@/components/manguito-theme/lib'
 import { computed } from 'vue'
 const props = withDefaults(
   defineProps<{

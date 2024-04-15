@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import generateClass from '@bobbykim/manguito-theme'
 import type {
   ColorPalette,
-  HeadingSize,
   HeadingLevel,
+  HeadingSize,
 } from '@bobbykim/manguito-theme'
+import generateClass from '@bobbykim/manguito-theme'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     title: string
     titleLevel?: HeadingLevel

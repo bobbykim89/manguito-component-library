@@ -70,11 +70,8 @@ const borderClass = computed<string>(() => {
 })
 
 const inputClass = computed<string>(() => {
-  const { bgColor, textColor } = props
-  const classArray: string[] = [
-    // generateClass('BGCOLOR', bgColor),
-    generateClass('TEXTCOLOR', textColor),
-  ]
+  const { textColor } = props
+  const classArray: string[] = [generateClass('TEXTCOLOR', textColor)]
   return classArray.join(' ')
 })
 

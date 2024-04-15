@@ -17,6 +17,8 @@ const config: StorybookConfig = {
     '@storybook/addon-outline',
     '@storybook/addon-toolbars',
     '@storybook/addon-viewport',
+    '@storybook/addon-mdx-gfm',
+    '@chromatic-com/storybook'
   ],
   framework: {
     name: '@storybook/vue3-vite',

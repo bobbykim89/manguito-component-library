@@ -1,9 +1,25 @@
 import { booleanControllers, colorControllers } from '@/assets/composables'
-import { Alert } from '@/components/manguito-theme'
+import { Alert } from '@/components/manguito-theme/lib'
 import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof Alert> = {
   title: 'Base/Base Component/Alert Component',
+  component: Alert,
+}
+
+export default meta
+
+type Story = StoryObj<typeof Alert>
+
+export const AlertExample: Story = {
+  render: (args) => ({
+    components: { alert: Alert },
+    setup() {
+      return { args }
+    },
+    template:
+      '<section class="container"><alert v-bind="args"><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></alert></section>',
+  }),
   argTypes: {
     color: colorControllers({
       name: 'color',
@@ -49,19 +65,4 @@ const meta: Meta<typeof Alert> = {
     show: false,
     dismissible: false,
   },
-}
-
-export default meta
-
-type Story = StoryObj<typeof Alert>
-
-export const AlertExample: Story = {
-  render: (args) => ({
-    components: { alert: Alert },
-    setup() {
-      return { args }
-    },
-    template:
-      '<section class="container"><alert v-bind="args"><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></alert></section>',
-  }),
 }

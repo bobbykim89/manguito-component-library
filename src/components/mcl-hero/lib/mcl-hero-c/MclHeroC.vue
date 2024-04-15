@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import type {
-  HeadingSize,
-  HeadingLevel,
-  ColorPalette,
   BodyText,
+  ColorPalette,
+  HeadingLevel,
+  HeadingSize,
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     title: string
     titleLevel?: HeadingLevel
@@ -24,7 +24,6 @@ const props = withDefaults(
     labelTextSize?: BodyText
     labelTextColor?: ColorPalette
     labelBgColor?: ColorPalette
-    useSlot?: boolean
   }>(),
   {
     titleLevel: 'h1',
@@ -39,9 +38,11 @@ const props = withDefaults(
     labelTextSize: 'md',
     labelTextColor: 'light-1',
     labelBgColor: 'dark-3',
-    useSlot: true,
   }
 )
+const slots = defineSlots<{
+  default: any
+}>()
 
 const getBgImage = (img: string) => {
   /**
@@ -176,7 +177,7 @@ const generateGradientColor = (color: ColorPalette): string => {
       ></div>
     </div>
     <div
-      v-if="useSlot"
+      v-if="slots.default"
       class="px-sm md:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[40vw] 2xl:max-w-[35vw] relative"
     >
       <slot></slot>

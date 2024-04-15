@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { MclFormGroup, MclSelect } from '@/components/mcl-forms'
+import { MclFormGroup, MclSelect } from '@/components/mcl-forms/lib'
 import { ref } from 'vue'
 
 const options = [

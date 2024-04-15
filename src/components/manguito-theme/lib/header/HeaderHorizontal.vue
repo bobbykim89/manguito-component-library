@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useWindowScroll } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import type { ColorPalette } from '../../'
-import generateClass from '../../'
+import type { ColorPalette } from '..'
+import generateClass from '..'
 import NavDrawer from './NavDrawer.vue'
 import type { HeaderStickyOptionType } from './index.types'
 
@@ -156,3 +156,4 @@ defineExpose({
   transition: height 0.5s ease-out;
 }
 </style>
+../index../index

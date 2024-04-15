@@ -1,1 +1,1 @@
-import { Canvas, Meta, Story, ArgsTable, Controls } from '@storybook/blocks'
+import { Canvas, Meta, Story, Controls } from '@storybook/blocks'

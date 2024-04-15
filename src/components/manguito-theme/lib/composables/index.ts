@@ -1,1 +1,1 @@
-export * from './observeVisible.js'
+export * from './observeVisible'

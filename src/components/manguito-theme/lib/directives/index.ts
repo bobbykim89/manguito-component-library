@@ -1,8 +1,8 @@
-import { render, createVNode } from 'vue'
 import type { Directive, DirectiveBinding } from 'vue'
-import type { Direction } from '../../index.js'
-import tooltip from '../tooltip/index.js'
-import type { TooltipElementType, TooltipValueType } from './index.types.js'
+import { createVNode, render } from 'vue'
+import type { Direction } from '..'
+import tooltip from '../tooltip'
+import type { TooltipElementType, TooltipValueType } from './index.types'
 
 export const vClickOutside: Directive = {
   mounted(el, binding) {

@@ -1,16 +1,17 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
 import {
-  colorControllers,
-  headingTextControllers,
-  textControllers,
   booleanControllers,
+  colorControllers,
   corsOptionControllers,
+  headingTextControllers,
   rangeControllers,
+  textControllers,
 } from '@/assets/composables'
-import { MclCardD } from '@/components/mcl-cards'
+import { MclCardD } from '@/components/mcl-cards/lib'
+import type { Meta, StoryObj } from '@storybook/vue3'
 
 const meta: Meta<typeof MclCardD> = {
   title: 'Components/Cards/MclCardD',
+  component: MclCardD,
   argTypes: {
     title: textControllers({
       name: 'title',
@@ -116,7 +117,7 @@ const meta: Meta<typeof MclCardD> = {
       name: 'cta-as-link',
       required: false,
       description: 'let cta button default behavior as a link',
-      defaultValue: true,
+      defaultValue: false,
       category: 'CTA',
     }),
     ctaButton: booleanControllers({
@@ -172,7 +173,7 @@ const meta: Meta<typeof MclCardD> = {
     ctaLinkTarget: '_self',
     ctaButton: false,
     ctaButtonColor: 'warning',
-    ctaAsLink: true,
+    ctaAsLink: false,
     ctaButtonBlock: false,
     borderWidth: 3,
     borderColor: 'light-3',

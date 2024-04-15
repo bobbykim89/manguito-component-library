@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { RadioSizeType } from '@/components/mcl-forms'
-import { MclInputRadio } from '@/components/mcl-forms'
-import type { ColorPalette } from '@bobbykim/manguito-theme'
+import type { ColorPalette } from '@/components/manguito-theme/lib'
+import type { RadioSizeType } from '@/components/mcl-forms/lib'
+import { MclInputRadio } from '@/components/mcl-forms/lib'
 import { ref } from 'vue'
 
 withDefaults(

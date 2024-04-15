@@ -3,22 +3,43 @@
   "version": "0.18.0",
   "description": "main theme file for manguito components library. Other MCL components will need to import this file to run.",
   "type": "module",
-  "main": "index.ts",
   "publishConfig": {
     "access": "public"
   },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/core.cjs",
+  "module": "./dist/core.js",
+  "types": "./dist/core.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/core.js",
+      "require": "./dist/core.cjs",
+      "types": "./dist/core.d.ts"
+    },
+    "./mcl-theme": {
+      "import": "./dist/mcl-theme.js",
+      "require": "./dist/mcl-theme.cjs",
+      "types": "./dist/mcl-theme.d.ts"
+    }
+  },
   "scripts": {
-    "build": "vue-tsc --project tsconfig.vue.json && tsc --project tsconfig.ts.json"
+    "build": "vite build"
   },
   "dependencies": {
     "@vueuse/core": "^10.8.0",
     "vue": "^3.3.10"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.16",
-    "postcss": "^8.4.32",
+    "@vitejs/plugin-vue": "^4.5.2",
     "sass": "^1.69.5",
-    "tailwindcss": "^3.3.6"
+    "tailwindcss": "^3.3.6",
+    "typescript": "^5.3.3",
+    "vite": "^4.5.1",
+    "vite-plugin-css-injected-by-js": "^3.5.0",
+    "vite-plugin-dts": "^3.8.3",
+    "vue-tsc": "^1.8.25"
   },
   "author": {
     "name": "Bobby Kim",

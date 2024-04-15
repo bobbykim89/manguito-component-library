@@ -1,6 +1,6 @@
 v
 <script setup lang="ts">
-import { Collapse, vCollapse } from '@/components/manguito-theme'
+import { Collapse, vCollapse } from '@/components/manguito-theme/lib'
 
 const collapseContent = [
   {
@@ -82,3 +82,4 @@ const customButtonColor = (idx: number): string => {
 </template>
 
 <style scoped></style>
+@/components/manguito-theme/lib/index

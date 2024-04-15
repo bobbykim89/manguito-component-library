@@ -34,7 +34,7 @@ npx tailwindcss init -p
 tailwind.config.cjs
 
 ```cjs
-const { mclTheme } = require('@bobbykim/manguito-theme/themeVariables.cjs')
+const { mclTheme } = require('@bobbykim/manguito-theme/mcl-theme')
 module.exports = {
   content: [
     './src/**/*.{vue,ts,js,cjs}',
@@ -46,7 +46,7 @@ module.exports = {
 
 ## Theme color configuration
 
-You can change theme colors by adding colors/spacing in `tailwind.config.cjs`
+You can change theme colors by adding colors/spacing in `tailwind.config.cjs` | `tailwind.config.js` | `tailwind.config.ts`
 
 ```cjs
 module.exports = {

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { ColorPalette } from '@/components/manguito-theme'
-import generateClass from '@/components/manguito-theme'
 import MclLogo from '@/assets/images/manguito-logo.png'
+import type { ColorPalette } from '@/components/manguito-theme/lib'
+import generateClass from '@/components/manguito-theme/lib'
 
 interface SizeItem {
   size: string

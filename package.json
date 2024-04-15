@@ -11,35 +11,37 @@
   },
   "scripts": {
     "story:dev": "storybook dev -p 6006",
-    "story:build": "storybook build -o dist",
+    "story:build": "lerna run build && storybook build -o dist",
     "story:install": "npm install && npm install @bobbykim/manguito-theme",
-    "bootstrap": "lerna bootstrap",
-    "create": "node ./scripts/index.mjs",
     "commit": "cz",
     "release": "standard-version",
+    "package:create": "node ./scripts/index.mjs",
     "package:build": "lerna run build",
-    "publish": "lerna publish"
+    "package:clear": "lerna clean",
+    "publish": "lerna run build && lerna publish --no-private"
   },
-  "workspaces": [
-    "src/components/*"
-  ],
   "devDependencies": {
-    "@storybook/addon-a11y": "^7.6.4",
-    "@storybook/addon-actions": "^7.6.4",
-    "@storybook/addon-backgrounds": "^7.6.4",
-    "@storybook/addon-controls": "^7.6.4",
-    "@storybook/addon-docs": "^7.6.4",
-    "@storybook/addon-essentials": "^7.6.4",
-    "@storybook/addon-interactions": "^7.6.4",
-    "@storybook/addon-links": "^7.6.4",
-    "@storybook/addon-outline": "^7.6.4",
-    "@storybook/addon-toolbars": "^7.6.4",
-    "@storybook/addon-viewport": "^7.6.4",
-    "@storybook/blocks": "^7.6.4",
-    "@storybook/builder-vite": "^7.6.4",
-    "@storybook/test": "^7.6.4",
-    "@storybook/vue3": "^7.6.4",
-    "@storybook/vue3-vite": "^7.6.4",
+    "@chromatic-com/storybook": "^1",
+    "@storybook/addon-a11y": "^8.0.8",
+    "@storybook/addon-actions": "^8.0.8",
+    "@storybook/addon-backgrounds": "^8.0.8",
+    "@storybook/addon-controls": "^8.0.8",
+    "@storybook/addon-docs": "^8.0.8",
+    "@storybook/addon-essentials": "^8.0.8",
+    "@storybook/addon-interactions": "^8.0.8",
+    "@storybook/addon-links": "^8.0.8",
+    "@storybook/addon-mdx-gfm": "^8.0.8",
+    "@storybook/addon-outline": "^8.0.8",
+    "@storybook/addon-toolbars": "^8.0.8",
+    "@storybook/addon-viewport": "^8.0.8",
+    "@storybook/blocks": "^8.0.8",
+    "@storybook/icons": "^1.2.9",
+    "@storybook/manager-api": "^8.0.8",
+    "@storybook/test": "^8.0.8",
+    "@storybook/theming": "^8.0.8",
+    "@storybook/types": "^8.0.8",
+    "@storybook/vue3": "^8.0.8",
+    "@storybook/vue3-vite": "^8.0.8",
     "@tsconfig/node18": "^18.2.2",
     "@types/inquirer": "^9.0.7",
     "@types/lodash": "^4.14.202",
@@ -53,14 +55,15 @@
     "lerna": "^8.0.0",
     "lodash": "^4.17.21",
     "postcss": "^8.4.32",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
     "sass": "^1.69.5",
     "standard-version": "^9.5.0",
-    "storybook": "^7.6.4",
+    "storybook": "^8.0.8",
     "tailwindcss": "^3.3.6",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3",
     "vite": "^4.5.1",
+    "vite-plugin-css-injected-by-js": "^3.5.0",
+    "vite-plugin-dts": "^3.8.3",
     "vue-tsc": "^1.8.25"
   },
   "dependencies": {
@@ -70,6 +73,23 @@
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "packageManager": "pnpm@8.15.6",
+  "pnpm": {
+    "overrides": {
+      "@vitejs/plugin-vue": "$@vitejs/plugin-vue",
+      "autoprefixer": "$autoprefixer",
+      "postcss": "$postcss",
+      "sass": "$sass",
+      "tailwindcss": "$tailwindcss",
+      "typescript": "$typescript",
+      "vite": "$vite",
+      "vite-plugin-css-injected-by-js": "$vite-plugin-css-injected-by-js",
+      "vite-plugin-dts": "$vite-plugin-dts",
+      "vue-tsc": "$vue-tsc",
+      "@vueuse/core": "$@vueuse/core",
+      "vue": "$vue"
     }
   }
 }

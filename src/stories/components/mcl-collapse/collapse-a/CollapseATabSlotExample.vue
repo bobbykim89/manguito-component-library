@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { MclCollapseA } from '@/components/mcl-collapse/lib'
 import { ref } from 'vue'
-import { MclCollapseA } from '@/components/mcl-collapse'
 
 const headSlotToggle = ref<boolean>(false)
 const handleHeadSlotClick = (): void => {

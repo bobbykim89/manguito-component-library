@@ -43,7 +43,7 @@ const props = withDefaults(
     displayImage: true,
     imageCors: 'anonymous',
     displayCta: true,
-    ctaAsLink: true,
+    ctaAsLink: false,
     ctaColor: 'primary',
     ctaLink: '#',
     ctaTarget: '_self',
