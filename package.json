@@ -13,12 +13,12 @@
     "story:dev": "storybook dev -p 6006",
     "story:build": "lerna run build && storybook build -o dist",
     "story:install": "npm install && npm install @bobbykim/manguito-theme",
-    "create": "node ./scripts/index.mjs",
     "commit": "cz",
     "release": "standard-version",
+    "package:create": "node ./scripts/index.mjs",
     "package:build": "lerna run build",
     "package:clear": "lerna clean",
-    "publish": "lerna run build && lerna publish"
+    "publish": "lerna run build && lerna publish --no-private"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^1",

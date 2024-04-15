@@ -8,3 +8,4 @@ bodyTextControllers,
 spacingControllers,
 arrayControllers,
 } from '@/assets/composables'
+import {} from '@/components/{%componentDir%}/lib'
