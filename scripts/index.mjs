@@ -67,25 +67,13 @@ inquirer.prompt(questions).then((answers) => {
   const directoryName = kebabCase(answers['component_name'])
   const authorName = upperFirst(answers['author_name'])
   const storyConfirm = answers['create_story']
-  const manguitoThemePackage = fs.readFileSync(
-    path.resolve(`${COMPONENTS_PATH}/manguito-theme/package.json`),
-    { encoding: 'utf8' }
-  )
-  const manguitoThemeVersion = JSON.parse(manguitoThemePackage).version
-
-  const storyName = directoryName.replace(/-/gi, '')
-
-  const compTemplate = fs
-    .readFileSync(path.resolve(`${TEMPLATE_PATH}/_component.md`), {
-      encoding: 'utf8',
-    })
-    .replace(/{%componentName%}/gi, componentName)
-  console.log('Created component files')
+  const currentYear = new Date().getFullYear().toString()
 
   const licenseTemplate = fs
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_license.md`), {
       encoding: 'utf8',
     })
+    .replace(/{%current-year%}/gi, currentYear)
     .replace(/{%author-name%}/gi, authorName)
   console.log('Created license file')
 
@@ -93,9 +81,10 @@ inquirer.prompt(questions).then((answers) => {
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_package.md`), {
       encoding: 'utf8',
     })
-    .replace(/{%componentName%}/gi, `@bobbykim/${directoryName}`)
+    .replace(/{%packageName%}/gi, `@bobbykim/${directoryName}`)
+    .replace(/{%fileName%}/gi, directoryName)
     .replace(/{%authorName%}/gi, authorName)
-    .replace(/{%packageVersion%}/gi, manguitoThemeVersion)
+    .replace(/{%workspace%}/gi, 'workspace:*')
 
   console.log('Created package.json file')
 
@@ -105,17 +94,14 @@ inquirer.prompt(questions).then((answers) => {
       encoding: 'utf8',
     }
   )
-
   console.log('Created tsconfig.json file')
-
-  const tsVueConfigTemplate = fs.readFileSync(
-    path.resolve(`${TEMPLATE_PATH}/_tsconfig.vue.md`),
+  const tsconfigNodeTemplate = fs.readFileSync(
+    path.resolve(TEMPLATE_PATH, '_tsconfig.node.md'),
     {
       encoding: 'utf8',
     }
   )
-
-  console.log('Created tsconfig.vue.json file')
+  console.log('Created tsconfig.node.json file')
 
   const readmeTemplate = fs
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_readme.md`), {
@@ -130,23 +116,43 @@ inquirer.prompt(questions).then((answers) => {
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_story.md`), {
       encoding: 'utf8',
     })
-    .replace(/{%componentName%}/gi, componentName)
     .replace(/{%componentDir%}/gi, directoryName)
 
-  const storyMdxTemplate = fs
-    .readFileSync(path.resolve(`${TEMPLATE_PATH}/_story.mdx.md`), {
+  console.log('Created story template')
+
+  const storyMdxTemplate = fs.readFileSync(
+    path.resolve(`${TEMPLATE_PATH}/_story.mdx.md`),
+    {
       encoding: 'utf8',
-    })
-    .replace(/{%componentName%}/gi, componentName)
-    .replace(/{%componentDir%}/gi, directoryName)
+    }
+  )
+  console.log('created mdx template')
 
   const indexTemplate = fs
     .readFileSync(path.resolve(`${TEMPLATE_PATH}/_index.md`), {
       encoding: 'utf8',
     })
-    .replace(/{%componentName%}/gi, componentName)
+    .replace(/{%componentName%}/gi, directoryName)
 
-  console.log('create index file')
+  console.log('Created index file')
+
+  const viteConfigTemplate = fs
+    .readFileSync(path.resolve(TEMPLATE_PATH, '_vite.config.md'), {
+      encoding: 'utf8',
+    })
+    .replace(/{%fileName%}/gi, directoryName)
+    .replace(/{%packageName}/gi, componentName)
+    .replace(/{%dirname%}/gi, '__dirname')
+
+  console.log('Created vite.config.ts file')
+
+  const viteEnvTemplate = fs.readFileSync(
+    path.resolve(TEMPLATE_PATH, '_vite-env.d.md'),
+    {
+      encoding: 'utf8',
+    }
+  )
+  console.log('Created vite-env.d.ts file')
 
   fs.mkdir(`${COMPONENTS_PATH}/${directoryName}`, (error) => {
     if (error) {
@@ -154,6 +160,13 @@ inquirer.prompt(questions).then((answers) => {
       console.log(error)
       return
     } else {
+      // create lib path inside component directory
+      fs.mkdir(`${COMPONENTS_PATH}/${directoryName}/lib`, (error) => {
+        if (error) {
+          console.log('failed to create lib folder inside component directory')
+          console.log(error)
+        }
+      })
       if (storyConfirm) {
         fs.mkdir(
           `${STORIES_PATH}/${answers[
@@ -182,15 +195,9 @@ inquirer.prompt(questions).then((answers) => {
           }
         )
       }
-      // create component file
-      fs.writeFileSync(
-        `${COMPONENTS_PATH}/${directoryName}/${componentName}.vue`,
-        compTemplate
-      )
-
       // create index file
       fs.writeFileSync(
-        `${COMPONENTS_PATH}/${directoryName}/index.ts`,
+        `${COMPONENTS_PATH}/${directoryName}/lib/index.ts`,
         indexTemplate
       )
 
@@ -217,8 +224,18 @@ inquirer.prompt(questions).then((answers) => {
         tsConfigTemplate
       )
       fs.writeFileSync(
-        `${COMPONENTS_PATH}/${directoryName}/tsconfig.vue.json`,
-        tsVueConfigTemplate
+        `${COMPONENTS_PATH}/${directoryName}/tsconfig.node.json`,
+        tsconfigNodeTemplate
+      )
+      // create vite.config file
+      fs.writeFileSync(
+        `${COMPONENTS_PATH}/${directoryName}/vite.config.ts`,
+        viteConfigTemplate
+      )
+      // create vite-env file
+      fs.writeFileSync(
+        `${COMPONENTS_PATH}/${directoryName}/lib/vite-env.d.ts`,
+        viteEnvTemplate
       )
     }
   })
