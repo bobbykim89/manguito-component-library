@@ -17,7 +17,7 @@
 }
 },
 "scripts": {
-"build": "vite build && vue-tsc --emitDeclarationOnly"
+"build": "vite build"
 },
 "author": {
 "name": "{%authorName%}",
@@ -42,6 +42,7 @@
 "sass": "^1.69.5",
 "vite": "^4.5.1",
 "vite-plugin-css-injected-by-js": "^3.5.0",
+"vite-plugin-dts": "^3.8.3",
 "vue-tsc": "^1.8.25"
 }
 }
