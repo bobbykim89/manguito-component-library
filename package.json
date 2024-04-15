@@ -63,6 +63,7 @@
     "typescript": "^5.3.3",
     "vite": "^4.5.1",
     "vite-plugin-css-injected-by-js": "^3.5.0",
+    "vite-plugin-dts": "^3.8.3",
     "vue-tsc": "^1.8.25"
   },
   "dependencies": {
@@ -85,6 +86,7 @@
       "typescript": "$typescript",
       "vite": "$vite",
       "vite-plugin-css-injected-by-js": "$vite-plugin-css-injected-by-js",
+      "vite-plugin-dts": "$vite-plugin-dts",
       "vue-tsc": "$vue-tsc",
       "@vueuse/core": "$@vueuse/core",
       "vue": "$vue"
