@@ -1,0 +1,137 @@
+import { Canvas, Meta } from '@storybook/blocks'
+import * as Stories from './tabs/tabs.stories'
+
+<Meta of={Stories} />
+
+# Tabs component
+
+Included in `@bobbykim/manguito-theme`
+
+Unstyled components to build flexible tab components
+
+## Usage
+
+```js
+<script setup lang="ts">
+import {
+  TabContainer,
+  TabContent,
+  vCollapse,
+  Collapse,
+} from '@bobbykim/manguito-theme'
+</script>
+
+<template>
+  <TabContainer
+    :body-class="['flex flex-col gap-sm py-lg md:py-2xl']"
+    :btn-container-class="['border-b-2 border-b-warning']"
+    :content-container-class="[
+      'bg-light-4',
+      'px-xs',
+      'py-sm',
+      'rounded-md',
+      'overflow-hidden',
+    ]"
+  >
+    <template #tab-button="{ update, activeTab }">
+      <div class="flex justify-start">
+        <button
+          role="tab"
+          :tabindex="activeTab === 0 ? -1 : 0"
+          aria-controls="tab-0"
+          :aria-selected="activeTab === 0"
+          @click="update(0)"
+        >
+          Tab 0
+        </button>
+        <button
+          role="tab"
+          :tabindex="activeTab === 1 ? -1 : 0"
+          aria-controls="tab-1"
+          :aria-selected="activeTab === 1"
+          @click="update(1)"
+        >
+          Tab 1
+        </button>
+        <button
+          role="tab"
+          :tabindex="activeTab === 2 ? -1 : 0"
+          aria-controls="tab-2"
+          :aria-selected="activeTab === 2"
+          @click="update(2)"
+        >
+          Tab 2
+        </button>
+        <button
+          role="tab"
+          :tabindex="activeTab === 3 ? -1 : 0"
+          aria-controls="tab-3"
+          :aria-selected="activeTab === 3"
+          @click="update(3)"
+        >
+          Tab 3
+        </button>
+      </div>
+    </template>
+    <template #tab-content>
+      <TabContent :tab-number="0" id="tab-0">
+        <div>
+          <!-- tab 0 content -->
+        </div>
+      </TabContent>
+      <TabContent :tab-number="1" id="tab-1">
+        <div>
+          <!-- tab 1 content -->
+        </div>
+      </TabContent>
+      <TabContent :tab-number="2" id="tab-2">
+        <div>
+          <!-- tab 2 content -->
+        </div>
+      </TabContent>
+      <TabContent :tab-number="3" id="tab-3">
+        <div>
+          <!-- tab 3 content -->
+        </div>
+      </TabContent>
+    </template>
+  </TabContainer>
+</template>
+```
+
+### Examples
+
+<Canvas of={Stories.tabExample} />
+
+<Canvas of={Stories.tabExample2} />
+
+### Props
+
+#### TabContainer
+
+- bodyClass?: string | string[]
+- btnContainerClass?: string | string[]
+- contentContainerClass?: string | string[]
+
+#### TabContent
+
+- tabNumber: number
+- id: string
+- tabClass?: string | string[]
+
+### Slots
+
+#### TabContainer
+
+- \#tab-button (props: \{ update: (num: number) => void; activeTab: number \}) - slot for tab buttons
+- \#tab-content - slot for tab contents
+
+#### TabContent
+
+- default - default slot
+
+### Exposes
+
+#### TabContainer
+
+- update: (num: number) => void - update active tab index

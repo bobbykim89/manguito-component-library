@@ -16,7 +16,7 @@ withDefaults(
 )
 
 const slots = defineSlots<{
-  'tab-button'(props: { update: (num: number) => void }): any
+  'tab-button'(props: { update: (num: number) => void; activeTab: number }): any
   'tab-content': any
 }>()
 
@@ -39,12 +39,21 @@ const updateActiveTab = (num: number) => {
 const containerHeightVar = computed(() => {
   return { '--container-hts': `${containerHts.value}px` }
 })
+defineExpose<{
+  update: (arg: number) => void
+}>({
+  update: updateActiveTab,
+})
 </script>
 
 <template>
   <div :class="bodyClass" :style="containerHeightVar">
     <div :class="btnContainerClass" role="tablist">
-      <slot name="tab-button" :update="updateActiveTab"></slot>
+      <slot
+        name="tab-button"
+        :update="updateActiveTab"
+        :activeTab="activeTabIdx"
+      ></slot>
     </div>
     <div :class="contentContainerClass">
       <div class="relative container-hts">

@@ -5,7 +5,8 @@ import { useElementSize } from '@vueuse/core'
 
 const props = withDefaults(
   defineProps<{
-    tabIndex: number
+    tabNumber: number
+    id: string
     tabClass?: string | string[]
   }>(),
   {
@@ -21,12 +22,8 @@ const slotRef = ref<HTMLElement | null>(null)
 
 const { height } = useElementSize(slotRef)
 
-// const handleTransitionDir = computed<string>(() => {
-//   const { tabIndex } = props
-//   return activeTabKey!.value < tabIndex ? 'slide-next' : 'slide-prev'
-// })
 const isActive = computed<boolean>(() => {
-  if (activeTabIdx!.value === props.tabIndex) {
+  if (activeTabIdx!.value === props.tabNumber) {
     updateHeight(height.value)
     return true
   }
@@ -49,13 +46,16 @@ watch(
   <Transition :name="slideDirection" mode="out-in">
     <div
       ref="slotRef"
+      :id="id"
       :class="tabClass"
-      class="absolute"
+      class="absolute w-full"
       role="tabpanel"
-      :tabindex="tabIndex"
+      tabindex="-1"
       v-show="isActive"
     >
-      <slot></slot>
+      <div class="relative">
+        <slot></slot>
+      </div>
     </div>
   </Transition>
 </template>
