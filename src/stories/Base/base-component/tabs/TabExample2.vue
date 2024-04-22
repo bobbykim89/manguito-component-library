@@ -79,9 +79,10 @@ const handleFormSubmit = () => {
 <template>
   <div class="container bg-light-1 px-xs">
     <TabContainer
-      :body-class="['flex flex-col gap-sm py-lg md:py-2xl']"
-      :btn-container-class="['border-b-2 border-b-warning']"
+      :body-class="['grid md:grid-cols-5 gap-sm py-lg md:py-2xl']"
+      :btn-container-class="['border-b-2 md:border-b-0 border-b-warning']"
       :content-container-class="[
+        'md:col-span-4',
         'bg-light-4',
         'px-xs',
         'py-sm',
@@ -90,13 +91,13 @@ const handleFormSubmit = () => {
       ]"
     >
       <template #tab-button="{ update, activeTab }">
-        <div class="flex justify-start gap-[2px]">
+        <div class="flex md:flex-col justify-start gap-[2px]">
           <button
             role="tab"
             :tabindex="activeTab === 0 ? -1 : 0"
             aria-controls="tab-0"
             :aria-selected="activeTab === 0"
-            class="px-xs py-2xs bg-light-4 hover:bg-opacity-70 transition-all duration-300 font-bold rounded-tl-md"
+            class="px-xs py-2xs bg-light-4 hover:bg-opacity-70 transition-all duration-300 font-bold rounded-tl-md md:rounded-t-md"
             @click="update(0)"
           >
             Tab 0
@@ -126,7 +127,7 @@ const handleFormSubmit = () => {
             :tabindex="activeTab === 3 ? -1 : 0"
             aria-controls="tab-3"
             :aria-selected="activeTab === 3"
-            class="px-xs py-2xs bg-light-4 hover:bg-opacity-70 transition-all duration-300 font-bold rounded-tr-md"
+            class="px-xs py-2xs bg-light-4 hover:bg-opacity-70 transition-all duration-300 font-bold rounded-tr-md md:rounded-tr-none md:rounded-b-md"
             @click="update(3)"
           >
             Tab 3
