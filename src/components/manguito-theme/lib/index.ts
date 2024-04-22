@@ -9,6 +9,8 @@ import HeaderHorizontal from './header/HeaderHorizontal.vue'
 import HeaderVertical from './header/HeaderVertical.vue'
 import Modal from './modal/Modal.vue'
 import Sidebar from './sidebar/Sidebar.vue'
+import TabContainer from './tabs/TabContainer.vue'
+import TabContent from './tabs/TabContent.vue'
 
 // directives
 export * from './directives'
@@ -28,6 +30,8 @@ export {
   HeaderVertical,
   Modal,
   Sidebar,
+  TabContainer,
+  TabContent,
 }
 
 export default generateClass
