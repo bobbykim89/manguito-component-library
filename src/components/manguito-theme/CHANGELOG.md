@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.20.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.19.0...@bobbykim/manguito-theme@0.20.0) (2024-04-23)
+
+
+### Features
+
+* **manguito-theme,-mcl-carousel:** update type definition for dropdown components, code refactor on mcl-carousel ([6b36c73](https://github.com/bobbykim89/manguito-component-library/commit/6b36c73a70b188886a66416c14e50ed37826406a))
+* **manguito-theme,stories:** finalize tab components, add stories ([4bbf9d0](https://github.com/bobbykim89/manguito-component-library/commit/4bbf9d05ae257c04ed06de52b80af21acec51704))
+* **manguito-theme:** add transition property on tab-container ([b6e6c04](https://github.com/bobbykim89/manguito-component-library/commit/b6e6c046c837338a7516db4c24cda98b67e4a833))
+* **manguito-theme:** init tabs component ([e1bb650](https://github.com/bobbykim89/manguito-component-library/commit/e1bb650be38304872f4d6e5fa6158764b4852198))
+
+
+
+
+
 # [0.19.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.18.0...@bobbykim/manguito-theme@0.19.0) (2024-04-15)
 
 

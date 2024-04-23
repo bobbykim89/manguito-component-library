@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/mcl-forms",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "form group components based on manguito-theme",
   "type": "module",
   "files": [

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-tabs@0.7.0...@bobbykim/mcl-tabs@0.8.0) (2024-04-23)
+
+
+### Features
+
+* **.gitignore,mcl-tabs:** include .vscode folder, update accessibility of mcl-tabs ([a6f5b08](https://github.com/bobbykim89/manguito-component-library/commit/a6f5b08c1b5d0119e1e5f99232f5b3989c539459))
+* **mcl-tabs:** minor type update ([9175233](https://github.com/bobbykim89/manguito-component-library/commit/9175233e50287661daa7c8e2faba27a37123235d))
+
+
+
+
+
 # [0.7.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-tabs@0.6.0...@bobbykim/mcl-tabs@0.7.0) (2024-04-15)
 
 
