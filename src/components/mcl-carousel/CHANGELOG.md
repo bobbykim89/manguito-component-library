@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-carousel@0.6.0...@bobbykim/mcl-carousel@0.7.0) (2024-04-23)
+
+
+### Features
+
+* **manguito-theme,-mcl-carousel:** update type definition for dropdown components, code refactor on mcl-carousel ([6b36c73](https://github.com/bobbykim89/manguito-component-library/commit/6b36c73a70b188886a66416c14e50ed37826406a))
+
+
+
+
+
 # [0.6.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-carousel@0.5.1...@bobbykim/mcl-carousel@0.6.0) (2024-04-15)
 
 
