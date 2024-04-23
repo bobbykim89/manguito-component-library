@@ -11,48 +11,42 @@
 
 ### Install packages
 
-```
-npm install
-```
-
-### Bootstrap packages
-
-```
-npm run bootstrap
+```sh
+pnpm install
 ```
 
 ### Run dev server
 
-```
-npm run story:dev
+```sh
+pnpm run story:dev
 ```
 
 ### Create new component
 
-```
-npm run create
+```sh
+pnpm run package:create
 ```
 
 ### Commit changes
 
-```
+```sh
 git add . --or-- git add <file-name>
-npm run commit
+pnpm commit
 git push
 ```
 
 ## Installation
 
 ```sh
-npm i -D tailwindcss postcss autoprefixer sass
-npm i @bobbykim/manguito-theme
+pnpm i -D tailwindcss postcss autoprefixer sass
+pnpm i @bobbykim/manguito-theme
 npx tailwindcss init -p
 ```
 
-tailwind.config.cjs
+tailwind.config.js
 
-```cjs
-const { mclTheme } = require('@bobbykim/manguito-theme/themeVariables.cjs')
+```js
+const { mclTheme } = require('@bobbykim/mcl-theme')
 module.exports = {
   content: [
     './src/**/*.{vue,ts,js,cjs}',
@@ -90,15 +84,17 @@ import ComponentName from '@bobbykim/<ComponentName>'
 > Tailwind CSS (tailwindcss, autoprefixer, postcss)
 > @vitejs/plugin-vue
 > vue-tsc
+> @vueuse/core
 
-### Histoire Page
+### Story Page
 
-> Histoire
-> @histoire/plugin-vue
+> Storybook
+> @storybook/vue3
 
 ### Package management
 
 > Lerna
+> pnpm workspace
 
 ## License
 

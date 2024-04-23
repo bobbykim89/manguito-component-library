@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core'
 import { Transition, computed, inject, ref } from 'vue'
-import type { InjectType } from './index.types'
+import { dropdownInjectionKey } from './DropdownInjectionKey'
+import type { DropdownInjectType } from './index.types'
 
 withDefaults(
   defineProps<{
@@ -16,21 +17,14 @@ const slots = defineSlots<{
   default(props: { itemClick: () => void }): any
 }>()
 const contentRef = ref<HTMLAreaElement>()
-const dropdownState = inject<InjectType>('dropdownState', {
-  active: false,
-  buttonHeight: 0,
-})
-const active = computed<boolean>(() => {
-  return dropdownState.active
-})
-const handleItemClick = () => {
-  dropdownState.active = false
-}
-const buttonHeight = computed(() => {
-  return { '--button-height': `${dropdownState.buttonHeight}px` }
+const { active, buttonHeight, closeDropdown } = inject(
+  dropdownInjectionKey
+) as DropdownInjectType
+const btnHeight = computed(() => {
+  return { '--button-height': `${buttonHeight}px` }
 })
 const dropdownDirection = computed<string | undefined>(() => {
-  if (!dropdownState.active || !contentRef.value) {
+  if (!active || !contentRef.value) {
     return
   }
   if (height.value - contentRef.value.getBoundingClientRect().bottom < 0) {
@@ -46,9 +40,9 @@ const dropdownDirection = computed<string | undefined>(() => {
       ref="contentRef"
       class="absolute my-2xs max-w-[14rem] w-max overflow-hidden"
       :class="[dropdownDirection, className]"
-      :style="buttonHeight"
+      :style="btnHeight"
     >
-      <slot :item-click="handleItemClick" />
+      <slot :item-click="closeDropdown" />
     </div>
   </transition>
 </template>

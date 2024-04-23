@@ -13,6 +13,7 @@ manguito-theme includes basic config for MCL, including type definitions for the
   - [Dropdown](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-dropdown-component--dropdown)
   - [Modal](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-modal-component--modal)
   - [Sidebar](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-sidebar-component--sidebar)
+  - [Tabs](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-tab-component--tabs)
   - [Tooltip](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-tooltip-component--tooltip)
   - [Header (Horizontal)](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-header-horizontal--headerhorizontal)
   - [Header (Vertical)](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-header-vertical--headervertical)
@@ -31,17 +32,16 @@ npx tailwindcss init -p
 
 ## Setup
 
-tailwind.config.cjs
+tailwind.config.{js|ts}
 
-```cjs
-const { mclTheme } = require('@bobbykim/manguito-theme/mcl-theme')
-module.exports = {
-  content: [
-    './src/**/*.{vue,ts,js,cjs}',
-    './node_modules/@bobbykim/**/*.{vue,ts,js,cjs}',
-  ],
-  plugins: [mclTheme()],
-}
+```ts
+import type { Config } from 'tailwindcss'
+import { mclTheme } from '@bobbykim/manguito-theme/mcl-theme'
+
+export default {
+  content: ['./src/**/*.{vue,ts,js,cjs}'],
+  plugins: [mclTheme({})],
+} satisfies Config
 ```
 
 ## Theme color configuration
@@ -97,7 +97,7 @@ in Vue component file.
 ```vue
 <script setup lang="ts">
 ...
-import generateClass from '@bobbykim/manguito-theme'
+import generateClass, { <Base component you need>} from '@bobbykim/manguito-theme'
 import type { <Type you need> } from '@bobbykim/manguito-theme'
 ...
 </script>
