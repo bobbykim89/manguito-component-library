@@ -34,7 +34,6 @@
   "license": "MIT",
   "dependencies": {
     "@bobbykim/manguito-theme": "workspace:*",
-    "@bobbykim/mcl-cards": "workspace:*",
     "@vueuse/core": "^10.8.0",
     "vue": "^3.3.10"
   },

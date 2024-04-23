@@ -101,14 +101,10 @@ import type { <Type you need> } from '@bobbykim/manguito-theme'
 // in nuxt.config.ts
 export default defineNuxtConfig({
   //...
-  build: {
-    transphile: ['@bobbykim'],
-  },
   components: [
     // only import vue component files
     {
       path: '~node_modules/@bobbykim/',
-      ignore: ['**/index.ts', '**/index.js', '**/node_modules'],
     },
   ],
   // ...
