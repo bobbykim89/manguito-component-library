@@ -28,7 +28,7 @@ const props = withDefaults(
   }
 )
 
-const currentTab = ref(0)
+const currentTab = ref<number>(0)
 const emit = defineEmits<{
   (e: 'tab-click', event: Event, title: string): void
 }>()
@@ -155,6 +155,7 @@ const getInactiveBtnClass = (fColor: ColorPalette): string => {
       <Transition :name="transitionClass" mode="out-in">
         <div
           role="tabpanel"
+          ref="tabPanelRef"
           tabindex="-1"
           :key="currentTab"
           v-html="content[currentTab].content"
