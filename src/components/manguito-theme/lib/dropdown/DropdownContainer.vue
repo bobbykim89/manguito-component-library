@@ -1,35 +1,40 @@
 <script setup lang="ts">
-import { onMounted, provide, reactive, ref } from 'vue'
+import { onMounted, provide, ref } from 'vue'
 import { vClickOutside } from '../directives'
-import type { InjectType } from './index.types'
+import { dropdownInjectionKey } from './DropdownInjectionKey'
 
 const slots = defineSlots<{
   default: any
-  toggler: any
+  toggler(props: { dropdownState: boolean; toggle: (arg: Event) => void }): any
 }>()
 const emit = defineEmits<{
   (e: 'click-outside', event: Event): void
   (e: 'toggle', event: Event): void
 }>()
-const dropdownTarget = ref()
-const dropdownState = reactive<InjectType>({
-  active: false,
-  buttonHeight: 0,
+const dropdownTarget = ref<HTMLElement>()
+const dropdownActive = ref<boolean>(false)
+const dropdownBtnHeight = ref<number>(0)
+const closeDropdown = () => {
+  dropdownActive.value = false
+}
+provide(dropdownInjectionKey, {
+  active: dropdownActive,
+  buttonHeight: dropdownBtnHeight,
+  closeDropdown,
 })
-provide('dropdownState', dropdownState)
 const toggle = (e: Event): void => {
-  dropdownState.active = !dropdownState.active
+  dropdownActive.value = !dropdownActive.value
   emit('toggle', e)
 }
 const onClickOutside = (e: Event): void => {
-  dropdownState.active = false
+  dropdownActive.value = false
   emit('click-outside', e)
 }
 const onEscape = (): void => {
-  dropdownState.active = false
+  dropdownActive.value = false
 }
 onMounted(() => {
-  dropdownState.buttonHeight = dropdownTarget.value.scrollHeight
+  dropdownBtnHeight.value = dropdownTarget.value!.scrollHeight
 })
 </script>
 
@@ -40,11 +45,7 @@ onMounted(() => {
     v-click-outside="onClickOutside"
     @keyup.esc="onEscape"
   >
-    <slot
-      name="toggler"
-      :toggle="toggle"
-      :dropdown-state="dropdownState.active"
-    />
+    <slot name="toggler" :toggle="toggle" :dropdown-state="dropdownActive" />
     <slot></slot>
   </div>
 </template>
