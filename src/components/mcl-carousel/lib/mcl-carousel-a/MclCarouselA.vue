@@ -6,9 +6,9 @@ import type {
   SpacingLevel,
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
-import { MclCardA, MclCardB, MclCardC, MclCardD } from '@bobbykim/mcl-cards'
 import { useEventListener } from '@vueuse/core'
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { onMounted, ref, type ComponentPublicInstance } from 'vue'
+import { useIntersectionObserver } from '@vueuse/core'
 
 type BtnNav = 'prev' | 'next'
 
@@ -46,13 +46,12 @@ const props = withDefaults(
   }
 )
 const slideContainer = ref<HTMLElement | null>(null)
-const carouselCards = ref<
-  | null
-  | InstanceType<
-      typeof MclCardA | typeof MclCardB | typeof MclCardC | typeof MclCardD
-    >[]
->([])
-const emit = defineEmits(['btn-prev', 'btn-next'])
+const carouselCards = ref<ComponentPublicInstance[]>([])
+const lastCarouselElement = ref<ComponentPublicInstance>()
+const emit = defineEmits<{
+  (e: 'btn-prev', event: Event): void
+  (e: 'btn-next', event: Event): void
+}>()
 
 const currentIndex = ref(0)
 const isNextBtnDisabled = ref(false)
@@ -83,9 +82,8 @@ const cardsSpace = (gap: SpacingLevel): number => {
 }
 
 // assign ref as
-const setCarouselRef = (el: any): void => {
-  carouselCards.value!.push(el)
-  // carouselCards.value = el
+const setCarouselRef = (el: ComponentPublicInstance | Element | null): void => {
+  carouselCards.value!.push(el as ComponentPublicInstance)
 }
 
 // navigation btn control function
@@ -94,7 +92,6 @@ const handleSlideBtnClick = (e: Event, btn: BtnNav): void => {
     return
   }
   isMoving = true
-  // btn === 'prev' ? currentIndex.value-- : currentIndex.value++
   if (btn === 'prev') {
     currentIndex.value--
     emit('btn-prev', e)
@@ -105,17 +102,6 @@ const handleSlideBtnClick = (e: Event, btn: BtnNav): void => {
   }
   slideContainer.value?.dispatchEvent(new Event('sliderMove'))
 }
-
-// intersection observer
-const slideObserver = new IntersectionObserver(
-  (slide) => {
-    if (slide[0].isIntersecting) {
-      // add disable attribute
-      isNextBtnDisabled.value = true
-    }
-  },
-  { threshold: 0.75 }
-)
 
 const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
   /**
@@ -186,18 +172,21 @@ const handleTransitionEnd = (): void => {
 useEventListener(slideContainer, 'sliderMove', handleSlide)
 // handle transition end event
 useEventListener(slideContainer, 'transitionend', handleTransitionEnd)
+// set intersection observer
+useIntersectionObserver(
+  lastCarouselElement,
+  (slide) => {
+    if (slide[0].isIntersecting) {
+      isNextBtnDisabled.value = true
+    }
+  },
+  { threshold: 0.75 }
+)
 
 onMounted(() => {
-  // intersection observer for slider
-  slideObserver.observe(
-    carouselCards.value![carouselCards.value!.length - 1].$el
-  )
-})
-
-onBeforeUnmount(() => {
-  slideObserver.unobserve(
-    carouselCards.value![carouselCards.value!.length - 1].$el
-  )
+  // set last element value on mount
+  lastCarouselElement.value =
+    carouselCards.value[carouselCards.value!.length - 1].$el
 })
 </script>
 

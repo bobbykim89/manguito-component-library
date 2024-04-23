@@ -28,7 +28,7 @@ const props = withDefaults(
   }
 )
 
-const currentTab = ref(0)
+const currentTab = ref<number>(0)
 const emit = defineEmits<{
   (e: 'tab-click', event: Event, title: string): void
 }>()
@@ -110,7 +110,8 @@ const getInactiveBtnClass = (fColor: ColorPalette): string => {
    */
   const classArray: string[] = [
     generateClass('TEXTCOLOR', fColor),
-    'hover:bg-white/25',
+    'hover:bg-white/35',
+    'focus:bg-white/35',
     'transition',
     'ease-in',
     'duration-300',
@@ -124,12 +125,19 @@ const getInactiveBtnClass = (fColor: ColorPalette): string => {
     class="w-full p-2xs border overflow-hidden"
     :class="getBorderClass(bgColor, borderColor, rounded, displayShadow)"
   >
-    <div class="flex p-3xs space-x-1" :class="getTabClass(tabColor, rounded)">
+    <div
+      role="tablist"
+      class="flex p-3xs space-x-1"
+      :class="getTabClass(tabColor, rounded)"
+    >
       <button
         v-for="(item, index) in props.content"
         :key="index"
+        role="tab"
+        :aria-selected="currentTab === index"
+        :tabindex="currentTab === index ? -1 : 0"
         @click="hadleTabClick($event, index, item.title)"
-        class="text-center focus:outline-none w-full py-2.5"
+        class="text-center w-full py-2.5 focus:outline-none"
         :class="[
           currentTab === index
             ? getActiveBtnClass(bgColor, activeTitleColor, displayShadow)
@@ -145,7 +153,13 @@ const getInactiveBtnClass = (fColor: ColorPalette): string => {
     </div>
     <div class="mt-2xs relative p-xs lg:px-sm whitespace-pre-line">
       <Transition :name="transitionClass" mode="out-in">
-        <div :key="currentTab" v-html="content[currentTab].content"></div>
+        <div
+          role="tabpanel"
+          ref="tabPanelRef"
+          tabindex="-1"
+          :key="currentTab"
+          v-html="content[currentTab].content"
+        ></div>
       </Transition>
     </div>
   </div>
