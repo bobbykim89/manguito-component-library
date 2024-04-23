@@ -56,7 +56,7 @@ defineExpose<{
       ></slot>
     </div>
     <div :class="contentContainerClass">
-      <div class="relative container-hts">
+      <div class="relative container-hts transition-[min-height] duration-300">
         <slot name="tab-content"></slot>
       </div>
     </div>
