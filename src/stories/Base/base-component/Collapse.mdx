@@ -126,7 +126,23 @@ import { Collapse, vCollapse } from '@bobbykim/manguito-theme'
 
 <Canvas of={Stories.collapseAccordionExample} />
 
+### Props
+
+- `accordion?` - string
+- `className?` - string | string[]
+- `visible?` - boolean
+
+### Slots
+
+- `#default` - default slot
+
+### Exposes
+
+- `toggle` - () => void
+- `close` - () => void
+- `open` - () => void
+
 ### Events
 
-- `open` - \$event - Emitted when collapse component opens
-- `close` - \$event - Emitted when collapse component closes
+- `open` - (visible: boolean) - Emitted when collapse component opens
+- `close` - (visible: boolean) - Emitted when collapse component closes

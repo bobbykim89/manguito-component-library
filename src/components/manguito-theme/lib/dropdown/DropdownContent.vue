@@ -6,7 +6,7 @@ import type { DropdownInjectType } from './index.types'
 
 withDefaults(
   defineProps<{
-    className?: string
+    className?: string | string[]
   }>(),
   {
     className: '',
