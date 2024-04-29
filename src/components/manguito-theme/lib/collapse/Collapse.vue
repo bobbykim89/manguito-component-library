@@ -6,7 +6,7 @@ import { ClientSideRender } from '../util'
 const props = withDefaults(
   defineProps<{
     accordion?: string
-    className?: string
+    className?: string | string[]
     visible?: boolean
   }>(),
   {
@@ -83,7 +83,11 @@ watch(toggle, (newValue) => {
     emitCloseEvent()
   }
 })
-defineExpose({
+defineExpose<{
+  toggle: () => void
+  close: () => void
+  open: () => void
+}>({
   toggle: toggleCollapse,
   close: closeCollapse,
   open: openCollapse,
@@ -102,7 +106,7 @@ defineExpose({
         class="overflow-y-clip"
       >
         <div v-show="toggle">
-          <div :class="[className]">
+          <div :class="className">
             <slot />
           </div>
         </div>

@@ -215,7 +215,14 @@ const handleFormSubmit = () => {
         <TabContent :tab-number="3" id="tab-3">
           <div class="bg-info text-light-3 rounded-md p-xs">
             <h3 class="h3-md mb-xs">Title text</h3>
-            <p class="mb-xs">
+            <p
+              class="mb-xs"
+              :class="[
+                ['bg-secondary', 'px-md'],
+                ['py-sm', 'rounded-md'],
+                'text-dark-3',
+              ]"
+            >
               Lorem ipsum, dolor sit amet consectetur adipisicing elit.
               Corrupti, asperiores neque. Neque consectetur delectus ut in
               molestias, distinctio praesentium similique voluptas quasi numquam

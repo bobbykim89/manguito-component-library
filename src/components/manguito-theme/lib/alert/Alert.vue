@@ -52,7 +52,9 @@ watch(
     showAlert.value = newValue
   }
 )
-defineExpose({
+defineExpose<{
+  close: () => void
+}>({
   close: closeAlert,
 })
 </script>
