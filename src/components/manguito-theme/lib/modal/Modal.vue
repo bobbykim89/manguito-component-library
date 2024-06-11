@@ -8,7 +8,7 @@ const props = withDefaults(
   defineProps<{
     title?: string
     titleColor?: ColorPalette
-    className?: string
+    className?: string | string[]
     visible?: boolean
     noBackdrop?: boolean
     noHeader?: boolean
@@ -101,7 +101,11 @@ watch(toggle, (newValue) => {
     emitCloseEvent()
   }
 })
-defineExpose({
+defineExpose<{
+  toggle: () => void
+  close: () => void
+  open: () => void
+}>({
   toggle: toggleModal,
   close: closeModal,
   open: openModal,

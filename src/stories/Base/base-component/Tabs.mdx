@@ -109,29 +109,29 @@ import {
 
 #### TabContainer
 
-- bodyClass?: string | string[]
-- btnContainerClass?: string | string[]
-- contentContainerClass?: string | string[]
+- `bodyClass?` - string | string[]
+- `btnContainerClass?` - string | string[]
+- `contentContainerClass?` - string | string[]
 
 #### TabContent
 
-- tabNumber: number
-- id: string
-- tabClass?: string | string[]
+- `tabNumber` - number
+- `id` - string
+- `tabClass?` - string | string[]
 
 ### Slots
 
 #### TabContainer
 
-- \#tab-button (props: \{ update: (num: number) => void; activeTab: number \}) - slot for tab buttons
-- \#tab-content - slot for tab contents
+- `#tab-button(props: { update: (num: number) => void; activeTab: number })` - slot for tab buttons
+- `#tab-content` - slot for tab contents
 
 #### TabContent
 
-- default - default slot
+- `#default` - default slot
 
 ### Exposes
 
 #### TabContainer
 
-- update: (num: number) => void - update active tab index
+- `update` - (num: number) => void - update active tab index
