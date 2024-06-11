@@ -406,10 +406,11 @@ export const mclTheme = plugin.withOptions(
           'font-size': '1.125rem',
         },
         '.btn-group': {
-          '@apply flex rounded overflow-hidden': {},
+          '@apply inline-flex': {},
         },
         '.btn-group .btn': {
-          '@apply rounded-none ring-offset-0': {},
+          '@apply first:rounded-l last:rounded-r rounded-none ring-offset-0':
+            {},
 
           '&:focus': {
             '@apply ring-0': {},
