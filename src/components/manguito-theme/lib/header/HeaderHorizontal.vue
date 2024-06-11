@@ -95,7 +95,9 @@ const handleFadeInOnScroll = computed(() => {
     : 'bg-opacity-100'
 })
 
-defineExpose({
+defineExpose<{
+  headerClose: () => void
+}>({
   headerClose: closeNav,
 })
 </script>

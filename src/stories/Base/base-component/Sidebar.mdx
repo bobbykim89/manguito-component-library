@@ -81,11 +81,30 @@ const handleSidebar = () => {
 </template>
 ```
 
+## Props
+
+- `title?` - string
+- `titleColor?` - ColorPalette
+- `className?` - string | string[]
+- `visible?` - boolean
+- `noBackdrop?` - boolean
+- `noHeader?` - boolean
+- `color?` - ColorPalette
+- `backdropColor?` - ColorPalette
+- `placement?` - DirectionX
+- `width?` - string | number
+
 ## Slot
 
 - `#header(props: { close: () => void; status: boolean })`: custom header slot
 - `#body(props: { close: () => void; status: boolean })`: main content slot
 - `#footer(props: { close: () => void; status: boolean })`: custom footer slot
+
+## Exposes
+
+- `toggle` - () => void
+- `open` - () => void
+- `close` - () => void
 
 ### Events
 

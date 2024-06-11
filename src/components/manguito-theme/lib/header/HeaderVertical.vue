@@ -42,7 +42,9 @@ const componentWidth = computed(() => {
   return { '--header-width': `${props.headerWidth}px` }
 })
 
-defineExpose({
+defineExpose<{
+  headerClose: () => void
+}>({
   headerClose: closeNav,
 })
 </script>
@@ -106,7 +108,9 @@ defineExpose({
 }
 .slide-down-enter-active,
 .slide-down-leave-active {
-  transition: transform 0.5s ease-in, opacity 0.5s ease-in;
+  transition:
+    transform 0.5s ease-in,
+    opacity 0.5s ease-in;
 }
 .slide-down-enter-from,
 .slide-down-leave-to {
