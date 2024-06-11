@@ -71,10 +71,10 @@
       </div>
       <div class="col-span-3 place-self-center">
         <div class="btn-group">
-          <button class="btn">Button 1</button>
-          <button class="btn btn-secondary">Button 2</button>
+          <button class="btn btn-info">Button 1</button>
+          <button class="btn btn-success">Button 2</button>
           <button class="btn btn-warning">Button 3</button>
-          <button class="btn btn-danger btn-invert">Button 4</button>
+          <button class="btn btn-danger">Button 4</button>
         </div>
       </div>
       <div class="col-span-3">
