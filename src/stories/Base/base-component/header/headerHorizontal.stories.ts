@@ -86,7 +86,7 @@ export const HeaderHorizontalEmptySlots: Story = {
       return { args }
     },
     template:
-      '<section><header-horizontal v-bind="args"></header-horizontal></section>',
+      '<section><header-horizontal v-bind="args"><template #content><div><h2>Main Content</h2></div></template><template #content-right><div><h4>Content Right</h4></div></template><template #mobile-content><div class="p-md text-center">Mobile Content</div></template></header-horizontal></section>',
   }),
 }
 
