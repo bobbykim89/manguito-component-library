@@ -78,6 +78,17 @@
         </div>
       </div>
       <div class="col-span-3">
+        <h3>Button group span</h3>
+      </div>
+      <div class="col-span-3 justify-self-stretch place-self-center">
+        <div class="btn-group btn-group-span">
+          <button class="btn btn-danger">Button 1</button>
+          <button class="btn btn-warning">Button 2</button>
+          <button class="btn btn-success">Button 3</button>
+          <button class="btn btn-info">Button 4</button>
+        </div>
+      </div>
+      <div class="col-span-3">
         <h3>Button progress</h3>
       </div>
       <div class="place-self-center">

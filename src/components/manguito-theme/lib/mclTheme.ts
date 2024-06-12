@@ -408,6 +408,13 @@ export const mclTheme = plugin.withOptions(
         '.btn-group': {
           '@apply inline-flex': {},
         },
+        '.btn-group.btn-group-span': {
+          '@apply w-full': {},
+        },
+        '.btn-group.btn-group-span .btn': {
+          display: 'block',
+          width: '100%',
+        },
         '.btn-group .btn': {
           '@apply first:rounded-l last:rounded-r rounded-none ring-offset-0':
             {},
