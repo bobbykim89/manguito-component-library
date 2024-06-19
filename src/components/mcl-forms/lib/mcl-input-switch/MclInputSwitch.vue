@@ -3,7 +3,7 @@ import type { ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 import type { ColorMap } from '../common/index.types'
-import type { SwitchSizeType } from './index.types'
+import type { InputSizeType } from '../common/index.types'
 
 const props = withDefaults(
   defineProps<{
@@ -11,7 +11,7 @@ const props = withDefaults(
     sliderColor?: ColorPalette
     onColor?: ColorPalette
     offColor?: ColorPalette
-    switchSize?: SwitchSizeType
+    switchSize?: InputSizeType
     rounded?: boolean
     modelValue?: boolean
   }>(),
@@ -62,7 +62,7 @@ const inputValue = computed({
 const switchSize = computed(() => {
   /**
    * @summary - handle value of variables determining the size of the switch
-   * @param {SwitchSizeType} switchSize - size of switch sm|md|lg
+   * @param {InputSizeType} switchSize - size of switch sm|md|lg
    */
   if (props.switchSize === 'sm') {
     return {

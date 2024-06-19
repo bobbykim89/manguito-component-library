@@ -2,12 +2,12 @@
 import type { ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
-import type { RadioSizeType } from './index.types'
+import type { InputSizeType } from '../common/index.types'
 
 const props = withDefaults(
   defineProps<{
     id: string
-    radioSize?: RadioSizeType
+    radioSize?: InputSizeType
     bgColor?: ColorPalette
     checkedColor?: ColorPalette
     displayShadow?: boolean
