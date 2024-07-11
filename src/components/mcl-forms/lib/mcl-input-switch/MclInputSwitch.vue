@@ -13,7 +13,6 @@ const props = withDefaults(
     offColor?: ColorPalette
     switchSize?: InputSizeType
     rounded?: boolean
-    modelValue?: boolean
   }>(),
   {
     sliderColor: 'light-1',
@@ -24,7 +23,8 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['update:modelValue'])
+const model = defineModel<boolean>()
+
 const inputRef = ref<HTMLInputElement>()
 
 const peerBgColor: ColorMap = {
@@ -50,14 +50,6 @@ const peerBgColor: ColorMap = {
 const onSwitchClick = (): void => {
   inputRef.value?.click()
 }
-const inputValue = computed({
-  get() {
-    return props.modelValue
-  },
-  set(value) {
-    emit('update:modelValue', value)
-  },
-})
 
 const switchSize = computed(() => {
   /**
@@ -113,7 +105,7 @@ const switchClass = computed<string>(() => {
     <input
       :id="id"
       class="hidden peer/input"
-      v-model="inputValue"
+      v-model="model"
       ref="inputRef"
       type="checkbox"
     />

@@ -18,7 +18,6 @@ const props = withDefaults(
     displayClear?: boolean
     isRequired?: boolean
     accept?: string
-    modelValue?: File
   }>(),
   {
     displayBorder: false,
@@ -36,7 +35,7 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['update:modelValue'])
+const model = defineModel<File | null>()
 
 const inputRef = ref()
 const fileInputKey = ref<number>(0)
@@ -45,11 +44,11 @@ const onButtonClick = () => {
 }
 const onChangeFile = (e: Event) => {
   const file = (e.target as HTMLInputElement).files![0]
-  emit('update:modelValue', file)
+  model.value = file
 }
 
 const onClearFile = () => {
-  emit('update:modelValue', null)
+  model.value = null
   fileInputKey.value++
 }
 

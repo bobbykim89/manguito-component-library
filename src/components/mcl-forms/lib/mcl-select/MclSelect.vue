@@ -22,7 +22,6 @@ const props = withDefaults(
     options: SelectOptions
     selectColor?: ColorPalette
     invalidFeedback?: string
-    modelValue?: string
   }>(),
   {
     displayBorder: false,
@@ -41,7 +40,8 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['update:modelValue'])
+const model = defineModel<string | number>()
+
 const componentRef = ref<HTMLElement>()
 const inputBox = ref<HTMLInputElement>()
 const optionsWidth = ref<number>()
@@ -56,7 +56,7 @@ const handleEscapeKeyUp = () => {
   selectedValue.value = ''
   inputFocus.value = false
   inputBox.value?.blur()
-  emit('update:modelValue', '')
+  model.value = ''
 }
 
 const handleClickOutside = () => {
@@ -75,14 +75,14 @@ const clearInput = (e: Event) => {
   if (selectedValue.value !== '') {
     selectedValue.value = ''
   }
-  emit('update:modelValue', '')
+  model.value = ''
 }
 
 const handleOptionClick = (e: Event, option: string | SelectOptionType) => {
   e.preventDefault()
   selectedValue.value = typeof option === 'string' ? option : option.text
   const outputVal = typeof option === 'string' ? option : option.value
-  emit('update:modelValue', outputVal)
+  model.value = outputVal
   inputFocus.value = false
 }
 
