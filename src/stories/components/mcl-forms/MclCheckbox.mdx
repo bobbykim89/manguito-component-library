@@ -1,0 +1,69 @@
+import { Canvas, Controls, Meta, Story } from '@storybook/blocks'
+import * as Stories from './mcl-checkbox/checkbox.stories'
+
+<Meta of={Stories} />
+
+# MCL Input Radio
+
+Included in `@bobbykim/mcl-forms`
+
+## Installation
+
+```sh
+npm i @bobbykim/mcl-forms
+```
+
+## Usage
+
+### Using Events
+
+```js
+<script setup lang="ts">
+import { MclCheckbox } from '@bobbykim/mcl-forms'
+import { ref } from 'vue'
+
+const valueRef = ref<string>('')
+const isChecked = ref<boolean>(false)
+const sampleData = {
+  id: 'item-1',
+  value: 'first-item',
+}
+
+const setValue = (e: Event, value: string | number, checked: boolean) => {
+  valueRef.value = value
+  isChecked.value = checked
+}
+</script>
+
+<template>
+  <mcl-checkbox :id="sampleData.id" :value="sampleData.value" @checkbox-click="setValue"></mcl-checkbox>
+</template>
+```
+
+### Using v-model
+
+```js
+<script setup lang="ts">
+import { MclCheckbox } from '@bobbykim/mcl-forms'
+import { ref } from 'vue'
+
+const isChecked = ref<boolean>(false)
+
+</script>
+
+<template>
+  <mcl-checkbox id="my-checkbox" v-model="isChecked"></mcl-checkbox>
+</template>
+```
+
+## MCL Checkbox Component Example
+
+<Canvas of={Stories.MclCheckboxEventExample} />
+
+## Controls
+
+<Controls of={Stories.MclCheckboxEventExample} />
+
+## Multiple Checkbox Example
+
+<Canvas of={Stories.MultipleMclCheckboxExample} />
