@@ -6,6 +6,7 @@ import {
 } from '@/assets/composables'
 import { MclFormGroup, MclInputSwitch } from '@/components/mcl-forms/lib'
 import type { Meta, StoryObj } from '@storybook/vue3'
+import { ref } from 'vue'
 
 const meta: Meta<typeof MclInputSwitch> = {
   title: 'Components/Form/MclInputSwitch',
@@ -77,5 +78,20 @@ export const MclInputSwitchExample: Story = {
     },
     template:
       '<mcl-form-group :label-for="args.id" label="MCL Input Switch"><mcl-input-switch v-bind="args"></mcl-input-switch></mcl-form-group>',
+  }),
+}
+
+export const MclInputSwitchExample2: Story = {
+  render: (args) => ({
+    components: {
+      'mcl-input-switch': MclInputSwitch,
+      'mcl-form-group': MclFormGroup,
+    },
+    setup() {
+      const statusRef = ref<boolean>(true)
+      return { args, statusRef }
+    },
+    template:
+      '<section class="bg-light-1 rounded-md px-sm py-md"><mcl-form-group :label-for="args.id" label="MCL Input Switch Example 2"><mcl-input-switch v-bind="args" v-model="statusRef"></mcl-input-switch></mcl-form-group><div class="mt-xs">Switch status: {{ statusRef }}</div></section>',
   }),
 }
