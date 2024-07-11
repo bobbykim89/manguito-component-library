@@ -5,6 +5,7 @@ import {
 } from '@/assets/composables'
 import { MclFormGroup, MclInputFile } from '@/components/mcl-forms/lib'
 import type { Meta, StoryObj } from '@storybook/vue3'
+import { ref } from 'vue'
 
 const meta: Meta<typeof MclInputFile> = {
   title: 'Components/Form/MclInputFile',
@@ -129,9 +130,10 @@ export const MclInputFileExample: Story = {
       'mcl-form-group': MclFormGroup,
     },
     setup() {
-      return { args }
+      const fileRef = ref<File | null>()
+      return { args, fileRef }
     },
     template:
-      '<mcl-form-group :label-for="args.id" label="MCL Input Switch"><mcl-input-file v-bind="args"></mcl-input-file></mcl-form-group>',
+      '<section><mcl-form-group :label-for="args.id" label="MCL Input File"><mcl-input-file v-bind="args" v-model="fileRef"></mcl-input-file></mcl-form-group><div class="mt-sm">Selected file name: {{ fileRef ? fileRef.name : "" }}</div></section>',
   }),
 }

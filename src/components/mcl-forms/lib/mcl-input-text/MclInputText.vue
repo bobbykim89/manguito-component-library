@@ -18,7 +18,6 @@ const props = withDefaults(
     type?: InputType
     displayShadow?: boolean
     required?: boolean
-    modelValue?: string
     invalidFeedback?: string
     minLength?: number
     maxLength?: number
@@ -39,15 +38,7 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['update:modelValue'])
-const inputValue = computed({
-  get() {
-    return props.modelValue
-  },
-  set(value) {
-    emit('update:modelValue', value)
-  },
-})
+const model = defineModel<string>()
 
 const inputClass = computed(() => {
   const {
@@ -90,7 +81,7 @@ const inputClass = computed(() => {
       :type="type"
       class="w-full p-2xs outline-none peer peer/validation"
       :class="inputClass"
-      v-model="inputValue"
+      v-model="model"
       :placeholder="placeholder"
       :required="required"
       :minlength="minLength"

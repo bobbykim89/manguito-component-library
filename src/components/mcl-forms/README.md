@@ -4,6 +4,7 @@
 
 [MCL Storybook Page](https://manguito-component-library.vercel.app/)
 
+- [MCL Checkbox](https://manguito-component-library.vercel.app/?path=/docs/components-form-mclcheckbox--mclcheckbox)
 - [MCL Form Group](https://manguito-component-library.vercel.app/?path=/docs/components-form-mclformgroup--mclformgroup)
 - [MCL Input File](https://manguito-component-library.vercel.app/?path=/docs/components-form-mclinputfile--mclinputfile)
 - [MCL Input Radio](https://manguito-component-library.vercel.app/?path=/docs/components-form-mclinputradio--mclinputradio)
@@ -25,7 +26,7 @@ npm i @bobbykim/mcl-forms
 ```vue
 <script setup lang="ts">
 ...
-import { MclFormGroup, MclInputFile, MclInputRadio, MclInputSwitch, MclInputText, MclSelect, MclTextArea } from "@bobbykim/mcl-forms"
+import { MclFormGroup, MclInputFile, MclInputRadio, MclInputSwitch, MclInputText, MclSelect, MclTextArea, MclCheckbox } from "@bobbykim/mcl-forms"
 ...
 </script>
 
@@ -38,6 +39,9 @@ import { MclFormGroup, MclInputFile, MclInputRadio, MclInputSwitch, MclInputText
   </form-group>
   <form-group>
     <mcl-input-switch></mcl-input-switch>
+  </form-group>
+  <form-group>
+    <mcl-checkbox></mcl-checkbox>
   </form-group>
   <form-group>
     <mcl-input-text></mcl-input-text>

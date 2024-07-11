@@ -18,7 +18,6 @@ const props = withDefaults(
     displayShadow?: boolean
     required?: boolean
     rows?: number
-    modelValue?: string
   }>(),
   {
     displayBorder: false,
@@ -35,15 +34,7 @@ const props = withDefaults(
   }
 )
 
-const emit = defineEmits(['update:modelValue'])
-const inputValue = computed({
-  get() {
-    return props.modelValue
-  },
-  set(value) {
-    emit('update:modelValue', value)
-  },
-})
+const model = defineModel<string>()
 
 const inputClass = computed(() => {
   const {
@@ -85,7 +76,7 @@ const inputClass = computed(() => {
       :id="id"
       class="w-full p-2xs outline-none input__text peer"
       :class="inputClass"
-      v-model="inputValue"
+      v-model="model"
       :placeholder="placeholder"
       :required="required"
       :rows="rows"

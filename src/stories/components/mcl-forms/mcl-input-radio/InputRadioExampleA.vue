@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import type { ColorPalette } from '@/components/manguito-theme/lib'
-import type { RadioSizeType } from '@/components/mcl-forms/lib'
-import { MclInputRadio } from '@/components/mcl-forms/lib'
+import { MclInputRadio, type InputSizeType } from '@/components/mcl-forms/lib'
 import { ref } from 'vue'
 
 withDefaults(
   defineProps<{
-    radioSize?: RadioSizeType
+    radioSize?: InputSizeType
     bgColor?: ColorPalette
     checkedColor?: ColorPalette
     displayShadow?: boolean
