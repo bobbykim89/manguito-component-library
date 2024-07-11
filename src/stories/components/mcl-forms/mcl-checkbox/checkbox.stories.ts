@@ -100,7 +100,7 @@ export default meta
 
 type Story = StoryObj<typeof MclCheckbox>
 export const MclCheckboxEventExample: Story = {
-  render: (args: Meta<typeof MclCheckbox>['args']) => ({
+  render: (args) => ({
     components: { 'mcl-checkbox': MclCheckbox },
     setup() {
       const checkboxVal = ref<string | number>('')
@@ -134,7 +134,7 @@ export const MclCheckboxVModelExample: Story = {
 }
 
 export const MultipleMclCheckboxExample: Story = {
-  render: (args: Meta<typeof MclCheckbox>['args']) => ({
+  render: (args) => ({
     components: { 'mcl-checkbox-multiple': MclCheckboxMultiple },
     setup() {
       return { args }
