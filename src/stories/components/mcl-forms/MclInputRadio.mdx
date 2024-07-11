@@ -34,7 +34,7 @@ const setValue = (e: Event, value: string | number) => {
 </script>
 
 <template>
-  <mcl-input-switch :id="sampleData.id" :value="sampleData.value" :checked="valueRef === sampleData.value" @change="setValue"></mcl-input-switch>
+  <mcl-input-radio :id="sampleData.id" :value="sampleData.value" :checked="valueRef === sampleData.value" @change="setValue"></mcl-input-radio>
 </template>
 ```
 
