@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, defineModel } from 'vue'
+import { ref, computed } from 'vue'
 import generateClass, { ColorPalette } from '@bobbykim/manguito-theme'
 import type { InputSizeType, ColorMap } from '../common/index.types'
 
@@ -71,7 +71,12 @@ const model = defineModel<boolean>()
 
 const checkboxRef = ref<HTMLInputElement>()
 const emit = defineEmits<{
-  (e: 'checkbox-click', event: Event, value: string | number): void
+  (
+    e: 'checkbox-click',
+    event: Event,
+    checked: boolean,
+    value: string | number
+  ): void
 }>()
 
 const handleCheckboxClick = () => {
@@ -80,7 +85,12 @@ const handleCheckboxClick = () => {
 
 const handleChange = (e: Event) => {
   const value = (e.target as HTMLInputElement).value
-  emit('checkbox-click', e, checkboxRef.value?.checked ? value : '')
+  emit(
+    'checkbox-click',
+    e,
+    checkboxRef.value!.checked,
+    checkboxRef.value?.checked ? value : ''
+  )
 }
 
 const handleInputSize = computed<string>(() => {
