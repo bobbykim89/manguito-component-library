@@ -9,6 +9,7 @@ manguito-theme includes basic config for MCL, including type definitions for the
 - [Installation](https://manguito-component-library.vercel.app/?path=/docs/introduction-installation--docs)
 - Base Components
   - [Alert](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-alert-component--alert)
+  - [Carousel](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-carousel-component--carousel)
   - [Collapse](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-collapse-component--collapse)
   - [Dropdown](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-dropdown-component--dropdown)
   - [Modal](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-modal-component--modal)

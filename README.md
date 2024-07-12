@@ -62,7 +62,7 @@ in your-file.vue
 
 ```vue
 <script setup lang="ts">
-import ComponentName from '@bobbykim/<ComponentName>'
+import {ComponentName} from '@bobbykim/<PackageName>'
 ...
 </script>
 

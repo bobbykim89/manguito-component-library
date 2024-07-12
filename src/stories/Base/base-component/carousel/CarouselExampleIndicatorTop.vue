@@ -28,13 +28,24 @@ const contentData = [
   <section>
     <CarouselContainer
       loop
-      auto
-      body-class="bg-light-1 rounded-md drop-shadow-md"
-      content-container-class="py-lg px-md md:py-xl md:px-lg"
-      controller-top-class="absolute left-0 top-0 flex items-center h-full"
-      controller-bottom-class="absolute right-0 top-0 flex items-center h-full"
+      body-class="py-lg px-md md:py-xl md:px-lg bg-light-1 rounded-md drop-shadow-md"
+      controller-top-class="flex justify-end items-center gap-4 mb-xs"
     >
-      <template #controller-top="{ prev }">
+      <template #content>
+        <CarouselContent
+          v-for="(item, idx) in contentData"
+          :id="`slide-example3-${idx}`"
+          :slide-number="idx"
+        >
+          <div>
+            <h3 class="h3-md mb-sm">{{ item.title }}</h3>
+            <div v-html="item.text"></div>
+          </div>
+        </CarouselContent>
+      </template>
+      <template
+        #controller-top="{ prev, next, numberOfSlides, setActive, activeSlide }"
+      >
         <button
           @click="prev"
           class="pl-3xs md:pl-2xs text-dark-1 hover:opacity-60 transition-opacity duration-300"
@@ -51,20 +62,19 @@ const contentData = [
             />
           </svg>
         </button>
-      </template>
-      <template #content>
-        <CarouselContent
-          v-for="(item, idx) in contentData"
-          :id="`slide-example1-${idx}`"
-          :slide-number="idx"
-        >
-          <div>
-            <h3 class="h3-md mb-sm">{{ item.title }}</h3>
-            <div v-html="item.text"></div>
-          </div>
-        </CarouselContent>
-      </template>
-      <template #controller-bottom="{ next }">
+        <div class="flex gap-3">
+          <button
+            v-for="item in [...Array(numberOfSlides).keys()]"
+            @click="setActive(item)"
+            :disabled="item === activeSlide"
+            :class="[
+              item === activeSlide
+                ? 'bg-primary'
+                : 'bg-dark-1 hover:opacity-60',
+              'rounded-full transition-opacity duration-300 h-[12px] aspect-square',
+            ]"
+          ></button>
+        </div>
         <button
           @click="next"
           class="pr-3xs md:pr-2xs text-dark-1 hover:opacity-60 transition-opacity duration-300"

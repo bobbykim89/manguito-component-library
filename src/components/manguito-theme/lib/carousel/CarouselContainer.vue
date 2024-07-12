@@ -6,20 +6,29 @@ const props = withDefaults(
   defineProps<{
     bodyClass?: string | string[]
     contentContainerClass?: string | string[]
-    navigationClass?: string | string[]
+    controllerTopClass?: string | string[]
+    controllerBottomClass?: string | string[]
     loop?: boolean
   }>(),
   {
     bodyClass: '',
     contentContainerClass: '',
-    navigationClass: '',
+    controllerTopClass: '',
+    controllerBottomClass: '',
     loop: false,
   }
 )
 
 const slots = defineSlots<{
   content: any
-  navigation(props: {
+  'controller-top'(props: {
+    next: () => void
+    prev: () => void
+    setActive: (arg: number) => void
+    numberOfSlides: number
+    activeSlide: number
+  }): any
+  'controller-bottom'(props: {
     next: () => void
     prev: () => void
     setActive: (arg: number) => void
@@ -32,21 +41,30 @@ const activeIdx = ref<number>(0)
 const carouselSlides = ref<number[]>([])
 const slideLen = ref<number>(0)
 const slideDirection = ref<'slide-next' | 'slide-prev'>('slide-next')
+
+/**
+ * @summary assign number of slides inside the container component
+ * @param {number} idx - slide number
+ */
 const setSlide = (idx: number) => {
   carouselSlides.value.push(idx)
-  // carouselSlides.value++
   slideLen.value = [...new Set(carouselSlides.value)].length
-  console.log(slideLen.value)
 }
 const setActive = (idx: number) => {
   activeIdx.value = idx
 }
 
+/**
+ * @summary provide injection key
+ */
 provide(carouselInjectionKey, {
   activeIdx,
   setSlide,
 })
 
+/**
+ * @summary slide carousel to next slide (to first slide when loop === true and activeIdx is at the last slide)
+ */
 const nextSlide = (): void => {
   const { loop } = props
   if (loop && activeIdx.value === slideLen.value - 1) {
@@ -56,6 +74,9 @@ const nextSlide = (): void => {
     activeIdx.value = activeIdx.value + 1
   }
 }
+/**
+ * @summary slide carousel to previous slide (to last slide when loop === true and activeIdx is at the first slide)
+ */
 const prevSlide = (): void => {
   const { loop } = props
   if (loop && activeIdx.value === 0) {
@@ -92,10 +113,10 @@ defineExpose({
 </script>
 
 <template>
-  <div :class="bodyClass" class="relative">
-    <div :class="navigationClass">
+  <div :class="bodyClass" class="relative overflow-x-hidden">
+    <div :class="controllerTopClass" v-if="slots['controller-top']">
       <slot
-        name="navigation"
+        name="controller-top"
         :next="nextSlide"
         :prev="prevSlide"
         :set-active="setActive"
@@ -113,13 +134,20 @@ defineExpose({
         </div>
       </Transition>
     </div>
+    <div :class="controllerBottomClass" v-if="slots['controller-bottom']">
+      <slot
+        name="controller-bottom"
+        :next="nextSlide"
+        :prev="prevSlide"
+        :set-active="setActive"
+        :activeSlide="activeIdx"
+        :number-of-slides="slideLen"
+      ></slot>
+    </div>
   </div>
 </template>
 
-<style scoped>
-.container-hts {
-  max-height: var(--container-hts);
-}
+<style scoped lang="scss">
 /* transition animations */
 .slide-prev-enter-active {
   transition: all 0.5s linear;
