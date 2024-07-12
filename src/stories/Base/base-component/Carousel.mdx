@@ -1,0 +1,132 @@
+import { Canvas, Meta } from '@storybook/blocks'
+import * as Stories from './carousel/carousel.stories'
+
+<Meta of={Stories} />
+
+# Carousel component
+
+Included in `@bobbykim/manguito-theme`
+
+Unstyled carousel components to build flexible tab components
+
+## Usage
+
+```js
+<script setup lang="ts">
+import {
+  CarouselContainer,
+  CarouselContent
+} from '@bobbykim/manguito-theme'
+</script>
+
+<template>
+  <CarouselContainer
+    loop
+    body-class="bg-light-1 rounded-md drop-shadow-md"
+    content-container-class="py-lg px-md md:py-xl md:px-lg"
+    controller-top-class="absolute left-0 top-0 flex items-center h-full"
+    controller-bottom-class="absolute right-0 top-0 flex items-center h-full"
+  >
+    <template #controller-top="{ prev }">
+      <button
+        @click="prev"
+        class="pl-3xs md:pl-2xs text-dark-1 hover:opacity-60 transition-opacity duration-300"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 320 512"
+          fill="currentColor"
+          class="h-sm"
+        >
+          <!-- !Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. -->
+          <path
+            d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"
+          />
+        </svg>
+      </button>
+    </template>
+    <template #content>
+      <CarouselContent
+        v-for="(item, idx) in contentData"
+        :id="`slide-example1-${idx}`"
+        :slide-number="idx"
+      >
+        <div>
+          <h3 class="h3-md mb-sm">{{ item.title }}</h3>
+          <div v-html="item.text"></div>
+        </div>
+      </CarouselContent>
+    </template>
+    <template #controller-bottom="{ next }">
+      <button
+        @click="next"
+        class="pr-3xs md:pr-2xs text-dark-1 hover:opacity-60 transition-opacity duration-300"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 320 512"
+          fill="currentColor"
+          class="h-sm"
+        >
+          <!-- !Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. -->
+          <path
+            d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"
+          />
+        </svg>
+      </button>
+    </template>
+  </CarouselContainer>
+</template>
+```
+
+### Examples
+
+#### Carousel controllers on the side
+
+<Canvas of={Stories.CarouselExample1} />
+
+#### Carousel controllers at the bottom of component with indicators
+
+<Canvas of={Stories.CarouselExample2} />
+
+#### Carousel controllers at the top of component with indicators
+
+<Canvas of={Stories.CarouselExample3} />
+
+### Props
+
+#### CarouselContainer
+
+- `bodyClass?` - string | string[]
+- `contentContainerClass?` - string | string[]
+- `controllerTopClass?` - string | string[]
+- `controllerBottomClass?` - string | string[]
+- `loop?` - boolean
+
+#### CarouselContent
+
+- `slideNumber` - number
+- `id` - string
+- `slideClass?` - string | string[]
+
+### Slots
+
+#### CarouselContainer
+
+- `#controller-top(props: { next: () => void; prev: () => void; setActive: (arg: number) => void; numberOfSlides: number; activeSlide: number })` - slot for controller buttons on the top of the component
+- `#controller-bottom(props: { next: () => void; prev: () => void; setActive: (arg: number) => void; numberOfSlides: number; activeSlide: number })` - slot for controller buttons on the top of the component
+- `#content` - slot for tab contents
+
+#### CarouselContent
+
+- `#default` - default slot
+
+### Exposes
+
+#### TabContainer
+
+- `update` - (num: number) => void - update active tab index
+- `numberOfSlides` - Ref\<number\> - number of slides inside the tab container
+- `prev` - () => void - slide to previous slide
+- `next` - () => void - slide to next slide
+- `setActive` - (arg: number) => void - slide to the given slide
