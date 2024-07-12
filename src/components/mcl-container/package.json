@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/mcl-container",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "basic container components based on manguito-theme",
   "type": "module",
   "files": [
