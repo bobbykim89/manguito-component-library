@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-forms@0.7.1...@bobbykim/mcl-forms@0.8.0) (2024-07-12)
+
+
+### Features
+
+* ***,-mcl-forms:** dependency version bump, mcl-checkbox component (wip) ([132dee2](https://github.com/bobbykim89/manguito-component-library/commit/132dee276932c01930f48556ac6df2daf431f8da))
+* **mcl-forms:** bump dependency versions, wip on mcl-checkbox component ([85df289](https://github.com/bobbykim89/manguito-component-library/commit/85df289e7b3cf5b6396b711ed5d642ec95e402fc))
+* **mcl-forms:** init mcl-checkbox component ([6f06e49](https://github.com/bobbykim89/manguito-component-library/commit/6f06e4951da88f365f7064bfc6276b2ce43d3e80))
+* **mcl-forms:** update readme file ([17b2c89](https://github.com/bobbykim89/manguito-component-library/commit/17b2c89f5dcedbab063ae19d0e8354f18b14c928))
+
+
+
+
+
 ## [0.7.1](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-forms@0.7.0...@bobbykim/mcl-forms@0.7.1) (2024-04-23)
 
 **Note:** Version bump only for package @bobbykim/mcl-forms

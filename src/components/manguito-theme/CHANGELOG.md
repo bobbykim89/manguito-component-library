@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.21.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.20.0...@bobbykim/manguito-theme@0.21.0) (2024-07-12)
+
+
+### Features
+
+* **manguito-theme,stories/*:** update type def for className props, add type def for exposes ([74a1145](https://github.com/bobbykim89/manguito-component-library/commit/74a11450aabe6607c5b7e0c8b90cccbea569fe42))
+* **manguito-theme/mcl-theme:** add new button group class ([d614a01](https://github.com/bobbykim89/manguito-component-library/commit/d614a017b3518666f9510f142e085ff3366e1a6c))
+* **manguito-theme:** finalize carousel component and its story page ([a2584de](https://github.com/bobbykim89/manguito-component-library/commit/a2584ded96c575c970773e62f62cfa2d6f5ed5c6))
+* **manguito-theme:** update btn-group class ([1e53656](https://github.com/bobbykim89/manguito-component-library/commit/1e53656babaf67aafbac1440051cc6266da9374e))
+* **manguito-theme:** wip) initiate carousel base component ([7e60409](https://github.com/bobbykim89/manguito-component-library/commit/7e6040992861a3b565b4b825f49a02ac68d6db78))
+
+
+
+
+
 # [0.20.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.19.0...@bobbykim/manguito-theme@0.20.0) (2024-04-23)
 
 
