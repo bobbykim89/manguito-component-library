@@ -11,6 +11,8 @@ import Modal from './modal/Modal.vue'
 import Sidebar from './sidebar/Sidebar.vue'
 import TabContainer from './tabs/TabContainer.vue'
 import TabContent from './tabs/TabContent.vue'
+import CarouselContainer from './carousel/CarouselContainer.vue'
+import CarouselContent from './carousel/CarouselContent.vue'
 
 // directives
 export * from './directives'
@@ -32,6 +34,8 @@ export {
   Sidebar,
   TabContainer,
   TabContent,
+  CarouselContainer,
+  CarouselContent,
 }
 
 export default generateClass
