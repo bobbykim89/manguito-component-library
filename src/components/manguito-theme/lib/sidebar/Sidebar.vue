@@ -148,7 +148,7 @@ defineExpose<{
           class="relative h-full overscroll-contain overflow-y-scroll"
           :class="[generateClass('BGCOLOR', color), className]"
         >
-          <div v-if="!noHeader" class="sticky top-0" ref="headerRef">
+          <div v-if="!noHeader" class="sticky top-0 z-10" ref="headerRef">
             <slot name="header" :close="closeSidebar" :status="toggle">
               <div
                 class="flex justify-between items-center p-xs"
