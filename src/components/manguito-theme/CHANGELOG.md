@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.22.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.21.0...@bobbykim/manguito-theme@0.22.0) (2024-07-13)
+
+
+### Features
+
+* **manguito-theme:** minor fix on sidebar component ([67cbc82](https://github.com/bobbykim89/manguito-component-library/commit/67cbc824f3088015957b569e503a11df7289515b))
+
+
+
+
+
 # [0.21.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.20.0...@bobbykim/manguito-theme@0.21.0) (2024-07-12)
 
 
