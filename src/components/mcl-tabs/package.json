@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/mcl-tabs",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "tabs component built based on manguito theme",
   "type": "module",
   "files": [
