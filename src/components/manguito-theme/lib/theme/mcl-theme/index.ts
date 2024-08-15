@@ -95,14 +95,14 @@ type GroupTypes = typeof typeGroup
 type ClassTypesMap = {
   [K in keyof GroupTypes]: (typeof typeGroup)[K][number]
 }
-export type ColorClassType = ClassTypesMap['colorType']
-export type HeadingClassType = ClassTypesMap['headingSizeType']
-export type TextClassType = ClassTypesMap['textType']
-export type FontWeightClassType = ClassTypesMap['fontWeightType']
-export type TextAlignmentClassType = ClassTypesMap['textAlignType']
-export type BorderWidthClassType = ClassTypesMap['borderWidthType']
-export type ScaleClassType = ClassTypesMap['scaleType']
-export type SpacingClassType = ClassTypesMap['spacingType']
+type ColorClassType = ClassTypesMap['colorType']
+type HeadingClassType = ClassTypesMap['headingSizeType']
+type TextClassType = ClassTypesMap['textType']
+type FontWeightClassType = ClassTypesMap['fontWeightType']
+type TextAlignmentClassType = ClassTypesMap['textAlignType']
+type BorderWidthClassType = ClassTypesMap['borderWidthType']
+type ScaleClassType = ClassTypesMap['scaleType']
+type SpacingClassType = ClassTypesMap['spacingType']
 
 export type InputType<T extends ClassType> = T extends ColorClassType
   ? ColorPalette
