@@ -8,7 +8,7 @@ import type {
   Range,
   Alignment,
 } from '../static/theme.types'
-import type { ClassType, InputType, ColorClassType } from '../mcl-theme'
+import type { ClassType } from '../mcl-theme'
 import { typeGroup } from '../mcl-theme'
 
 type InputOptions =
