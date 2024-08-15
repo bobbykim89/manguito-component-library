@@ -1,47 +1,12 @@
-/**
- * @TailwindCSS - Good practice is to let all of used classes to be in full instead of generated dynamically using methods such as string literal.
- * @Interface - Classes for color, header text, body text, border color, border width(top, left).
- * @Export RDSTheme - an abstract class
- */
-import type {
-  BodyText,
-  ColorPalette,
-  FontWeight,
-  HeadingSize,
-  OpacityRange,
-  Alignment as Position,
-  Range,
-  SpacingLevel,
-} from './theme.types'
+import { ColorPalette } from './theme.types'
 
 export type ColorClass = {
   [key in ColorPalette]: string
 }
-export type HeaderSizeClass = {
-  [key in HeadingSize]: string
-}
-export type BodyTextClass = {
-  [key in BodyText]: string
-}
-export type FontWeightClass = {
-  [key in FontWeight]: string
-}
-export type BorderWidth = {
-  [key in Range<1, 12>]: string
-}
-export type Opacity = {
-  [key in OpacityRange]: string
-}
-export type Spacing = {
-  [key in SpacingLevel]: string
-}
-export type Alignment = {
-  [key in Position]: string
-}
 
-abstract class MCLTheme {
+export class MclColor {
   // bg color class
-  protected static bgColor: ColorClass = {
+  public bgColor: ColorClass = {
     primary: 'bg-primary',
     secondary: 'bg-secondary',
     success: 'bg-success',
@@ -61,7 +26,7 @@ abstract class MCLTheme {
     transparent: 'bg-transparent',
   }
   // hover: bg color class
-  protected static hoverBgColor: ColorClass = {
+  public hoverBgColor: ColorClass = {
     primary: 'hover:bg-primary',
     secondary: 'hover:bg-secondary',
     success: 'hover:bg-success',
@@ -81,7 +46,7 @@ abstract class MCLTheme {
     transparent: 'hover:bg-transparent',
   }
   // focus: bg color class
-  protected static focusBgColor: ColorClass = {
+  public focusBgColor: ColorClass = {
     primary: 'focus:bg-primary',
     secondary: 'focus:bg-secondary',
     success: 'focus:bg-success',
@@ -101,7 +66,7 @@ abstract class MCLTheme {
     transparent: 'focus:bg-transparent',
   }
   // ::before bg color class
-  protected static beforeBgColor: ColorClass = {
+  public beforeBgColor: ColorClass = {
     primary: 'before:bg-primary',
     secondary: 'before:bg-secondary',
     success: 'before:bg-success',
@@ -121,7 +86,7 @@ abstract class MCLTheme {
     transparent: 'before:bg-transparent',
   }
   // ::after bg color class
-  protected static afterBgColor: ColorClass = {
+  public afterBgColor: ColorClass = {
     primary: 'after:bg-primary',
     secondary: 'after:bg-secondary',
     success: 'after:bg-success',
@@ -141,7 +106,7 @@ abstract class MCLTheme {
     transparent: 'after:bg-transparent',
   }
   // active:bg color class
-  protected static bgActiveColor: ColorClass = {
+  public bgActiveColor: ColorClass = {
     primary: 'active:bg-primary',
     secondary: 'active:bg-secondary',
     success: 'active:bg-success',
@@ -161,7 +126,7 @@ abstract class MCLTheme {
     transparent: 'active:bg-transparent',
   }
   // text color class
-  protected static textColor: ColorClass = {
+  public textColor: ColorClass = {
     primary: 'text-primary',
     secondary: 'text-secondary',
     success: 'text-success',
@@ -181,7 +146,7 @@ abstract class MCLTheme {
     transparent: 'text-transparent',
   }
   // hover text color class
-  protected static hoverTextColor: ColorClass = {
+  public hoverTextColor: ColorClass = {
     primary: 'hover:text-primary',
     secondary: 'hover:text-secondary',
     success: 'hover:text-success',
@@ -201,7 +166,7 @@ abstract class MCLTheme {
     transparent: 'hover:text-transparent',
   }
   // focus text color class
-  protected static focusTextColor: ColorClass = {
+  public focusTextColor: ColorClass = {
     primary: 'focus:text-primary',
     secondary: 'focus:text-secondary',
     success: 'focus:text-success',
@@ -221,7 +186,7 @@ abstract class MCLTheme {
     transparent: 'focus:text-transparent',
   }
   // disabled text color class
-  protected static disabledTextColor: ColorClass = {
+  public disabledTextColor: ColorClass = {
     primary: 'disabled:text-primary',
     secondary: 'disabled:text-secondary',
     success: 'disabled:text-success',
@@ -241,7 +206,7 @@ abstract class MCLTheme {
     transparent: 'disabled:text-transparent',
   }
   // SVG fill color class
-  protected static svgFillColor: ColorClass = {
+  public svgFillColor: ColorClass = {
     primary: 'fill-primary',
     secondary: 'fill-secondary',
     success: 'fill-success',
@@ -261,7 +226,7 @@ abstract class MCLTheme {
     transparent: 'fill-transparent',
   }
   // ring color class
-  protected static ringColor: ColorClass = {
+  public ringColor: ColorClass = {
     primary: 'ring-primary',
     secondary: 'ring-secondary',
     success: 'ring-success',
@@ -281,7 +246,7 @@ abstract class MCLTheme {
     transparent: 'ring-transparent',
   }
   // focus:ring color class
-  protected static ringFocusColor: ColorClass = {
+  public ringFocusColor: ColorClass = {
     primary: 'focus:ring-primary',
     secondary: 'focus:ring-secondary',
     success: 'focus:ring-success',
@@ -301,7 +266,7 @@ abstract class MCLTheme {
     transparent: 'focus:ring-transparent',
   }
   // active:ring color class
-  protected static ringActiveColor: ColorClass = {
+  public ringActiveColor: ColorClass = {
     primary: 'active:ring-primary',
     secondary: 'active:ring-secondary',
     success: 'active:ring-success',
@@ -321,26 +286,7 @@ abstract class MCLTheme {
     transparent: 'active:ring-transparent',
   }
   // ring-offset color class
-  protected static ringOffsetColor: ColorClass = {
-    primary: 'ring-offset-primary',
-    secondary: 'ring-offset-secondary',
-    success: 'ring-offset-success',
-    danger: 'ring-offset-danger',
-    info: 'ring-offset-info',
-    warning: 'ring-offset-warning',
-    'light-1': 'ring-offset-light-1',
-    'light-2': 'ring-offset-light-2',
-    'light-3': 'ring-offset-light-3',
-    'light-4': 'ring-offset-light-4',
-    'dark-1': 'ring-offset-dark-1',
-    'dark-2': 'ring-offset-dark-2',
-    'dark-3': 'ring-offset-dark-3',
-    'dark-4': 'ring-offset-dark-4',
-    black: 'ring-offset-black',
-    white: 'ring-offset-white',
-    transparent: 'ring-offset-transparent',
-  }
-  protected static dummyColor: ColorClass = {
+  public ringOffsetColor: ColorClass = {
     primary: 'ring-offset-primary',
     secondary: 'ring-offset-secondary',
     success: 'ring-offset-success',
@@ -360,7 +306,7 @@ abstract class MCLTheme {
     transparent: 'ring-offset-transparent',
   }
   // btn color class
-  protected static btnColor: ColorClass = {
+  public btnColor: ColorClass = {
     primary: 'btn-primary',
     secondary: 'btn-secondary',
     success: 'btn-success',
@@ -380,7 +326,7 @@ abstract class MCLTheme {
     transparent: 'btn-transparent',
   }
   // list color class
-  protected static listColor: ColorClass = {
+  public listColor: ColorClass = {
     primary: 'mcl-list-primary',
     secondary: 'mcl-list-secondary',
     success: 'mcl-list-success',
@@ -399,50 +345,8 @@ abstract class MCLTheme {
     white: 'mcl-list-white',
     transparent: 'mcl-list-transparent',
   }
-  // h1 class
-  protected static heading1: HeaderSizeClass = {
-    sm: 'h1-sm',
-    md: 'h1-md',
-    lg: 'h1-lg',
-    xl: 'h1-xl',
-  }
-  // h2 class
-  protected static heading2: HeaderSizeClass = {
-    sm: 'h2-sm',
-    md: 'h2-md',
-    lg: 'h2-lg',
-    xl: 'h2-xl',
-  }
-  // h3 class
-  protected static heading3: HeaderSizeClass = {
-    sm: 'h3-sm',
-    md: 'h3-md',
-    lg: 'h3-lg',
-    xl: 'h3-xl',
-  }
-  // h4 class
-  protected static heading4: HeaderSizeClass = {
-    sm: 'h4-sm',
-    md: 'h4-md',
-    lg: 'h4-lg',
-    xl: 'h4-xl',
-  }
-  // body text class
-  protected static bodyText: BodyTextClass = {
-    xs: 'text-xs',
-    sm: 'text-sm',
-    md: 'text-md',
-    lg: 'text-lg',
-    xl: 'text-xl',
-  }
-  // font weight class
-  protected static fontweight: FontWeightClass = {
-    light: 'font-light',
-    normal: 'font-normal',
-    bold: 'font-bold',
-  }
   // border color classes
-  protected static borderColor: ColorClass = {
+  public borderColor: ColorClass = {
     primary: 'border-primary',
     secondary: 'border-secondary',
     success: 'border-success',
@@ -461,7 +365,7 @@ abstract class MCLTheme {
     white: 'border-white',
     transparent: 'border-transparent',
   }
-  protected static borderXColor: ColorClass = {
+  public borderXColor: ColorClass = {
     primary: 'border-x-primary',
     secondary: 'border-x-secondary',
     success: 'border-x-success',
@@ -480,7 +384,7 @@ abstract class MCLTheme {
     white: 'border-x-white',
     transparent: 'border-x-transparent',
   }
-  protected static borderYColor: ColorClass = {
+  public borderYColor: ColorClass = {
     primary: 'border-y-primary',
     secondary: 'border-y-secondary',
     success: 'border-y-success',
@@ -499,7 +403,7 @@ abstract class MCLTheme {
     white: 'border-y-white',
     transparent: 'border-y-transparent',
   }
-  protected static borderTopColor: ColorClass = {
+  public borderTopColor: ColorClass = {
     primary: 'border-t-primary',
     secondary: 'border-t-secondary',
     success: 'border-t-success',
@@ -518,7 +422,7 @@ abstract class MCLTheme {
     white: 'border-t-white',
     transparent: 'border-t-transparent',
   }
-  protected static borderBottomColor: ColorClass = {
+  public borderBottomColor: ColorClass = {
     primary: 'border-b-primary',
     secondary: 'border-b-secondary',
     success: 'border-b-success',
@@ -537,7 +441,7 @@ abstract class MCLTheme {
     white: 'border-b-white',
     transparent: 'border-b-transparent',
   }
-  protected static borderLeftColor: ColorClass = {
+  public borderLeftColor: ColorClass = {
     primary: 'border-l-primary',
     secondary: 'border-l-secondary',
     success: 'border-l-success',
@@ -556,7 +460,7 @@ abstract class MCLTheme {
     white: 'border-l-white',
     transparent: 'border-l-transparent',
   }
-  protected static borderRightColor: ColorClass = {
+  public borderRightColor: ColorClass = {
     primary: 'border-r-primary',
     secondary: 'border-r-secondary',
     success: 'border-r-success',
@@ -575,319 +479,4 @@ abstract class MCLTheme {
     white: 'border-r-white',
     transparent: 'border-r-transparent',
   }
-  // Border width class
-  protected static borderWidth: BorderWidth = {
-    1: 'border-[1px]',
-    2: 'border-[2px]',
-    3: 'border-[3px]',
-    4: 'border-[4px]',
-    5: 'border-[5px]',
-    6: 'border-[6px]',
-    7: 'border-[7px]',
-    8: 'border-[8px]',
-    9: 'border-[9px]',
-    10: 'border-[10px]',
-    11: 'border-[11px]',
-    12: 'border-[12px]',
-  }
-  protected static borderXWidth: BorderWidth = {
-    1: 'border-x-[1px]',
-    2: 'border-x-[2px]',
-    3: 'border-x-[3px]',
-    4: 'border-x-[4px]',
-    5: 'border-x-[5px]',
-    6: 'border-x-[6px]',
-    7: 'border-x-[7px]',
-    8: 'border-x-[8px]',
-    9: 'border-x-[9px]',
-    10: 'border-x-[10px]',
-    11: 'border-x-[11px]',
-    12: 'border-x-[12px]',
-  }
-  protected static borderYWidth: BorderWidth = {
-    1: 'border-y-[1px]',
-    2: 'border-y-[2px]',
-    3: 'border-y-[3px]',
-    4: 'border-y-[4px]',
-    5: 'border-y-[5px]',
-    6: 'border-y-[6px]',
-    7: 'border-y-[7px]',
-    8: 'border-y-[8px]',
-    9: 'border-y-[9px]',
-    10: 'border-y-[10px]',
-    11: 'border-y-[11px]',
-    12: 'border-y-[12px]',
-  }
-  protected static borderTopWidth: BorderWidth = {
-    1: 'border-t-[1px]',
-    2: 'border-t-[2px]',
-    3: 'border-t-[3px]',
-    4: 'border-t-[4px]',
-    5: 'border-t-[5px]',
-    6: 'border-t-[6px]',
-    7: 'border-t-[7px]',
-    8: 'border-t-[8px]',
-    9: 'border-t-[9px]',
-    10: 'border-t-[10px]',
-    11: 'border-t-[11px]',
-    12: 'border-t-[12px]',
-  }
-  protected static borderBottomWidth: BorderWidth = {
-    1: 'border-b-[1px]',
-    2: 'border-b-[2px]',
-    3: 'border-b-[3px]',
-    4: 'border-b-[4px]',
-    5: 'border-b-[5px]',
-    6: 'border-b-[6px]',
-    7: 'border-b-[7px]',
-    8: 'border-b-[8px]',
-    9: 'border-b-[9px]',
-    10: 'border-b-[10px]',
-    11: 'border-b-[11px]',
-    12: 'border-b-[12px]',
-  }
-  protected static borderLeftWidth: BorderWidth = {
-    1: 'border-l-[1px]',
-    2: 'border-l-[2px]',
-    3: 'border-l-[3px]',
-    4: 'border-l-[4px]',
-    5: 'border-l-[5px]',
-    6: 'border-l-[6px]',
-    7: 'border-l-[7px]',
-    8: 'border-l-[8px]',
-    9: 'border-l-[9px]',
-    10: 'border-l-[10px]',
-    11: 'border-l-[11px]',
-    12: 'border-l-[12px]',
-  }
-  protected static borderRightWidth: BorderWidth = {
-    1: 'border-r-[1px]',
-    2: 'border-r-[2px]',
-    3: 'border-r-[3px]',
-    4: 'border-r-[4px]',
-    5: 'border-r-[5px]',
-    6: 'border-r-[6px]',
-    7: 'border-r-[7px]',
-    8: 'border-r-[8px]',
-    9: 'border-r-[9px]',
-    10: 'border-r-[10px]',
-    11: 'border-r-[11px]',
-    12: 'border-r-[12px]',
-  }
-  // opacity
-  protected static backgroundOpacity: Opacity = {
-    10: 'bg-opacity-10',
-    20: 'bg-opacity-20',
-    30: 'bg-opacity-30',
-    40: 'bg-opacity-40',
-    50: 'bg-opacity-50',
-    60: 'bg-opacity-60',
-    70: 'bg-opacity-70',
-    80: 'bg-opacity-80',
-    90: 'bg-opacity-90',
-    100: 'bg-opacity-100',
-  }
-  protected static opacity: Opacity = {
-    10: 'opacity-10',
-    20: 'opacity-20',
-    30: 'opacity-30',
-    40: 'opacity-40',
-    50: 'opacity-50',
-    60: 'opacity-60',
-    70: 'opacity-70',
-    80: 'opacity-80',
-    90: 'opacity-90',
-    100: 'opacity-100',
-  }
-  // spacing: margin
-  protected static margin: Spacing = {
-    '0': 'm-0',
-    '3xs': 'm-3xs',
-    '2xs': 'm-2xs',
-    xs: 'm-xs',
-    sm: 'm-sm',
-    md: 'm-md',
-    lg: 'm-lg',
-    xl: 'm-xl',
-    '2xl': 'm-2xl',
-    '3xl': 'm-3xl',
-  }
-  protected static marginX: Spacing = {
-    '0': 'mx-0',
-    '3xs': 'mx-3xs',
-    '2xs': 'mx-2xs',
-    xs: 'mx-xs',
-    sm: 'mx-sm',
-    md: 'mx-md',
-    lg: 'mx-lg',
-    xl: 'mx-xl',
-    '2xl': 'mx-2xl',
-    '3xl': 'mx-3xl',
-  }
-  protected static marginY: Spacing = {
-    '0': 'my-0',
-    '3xs': 'my-3xs',
-    '2xs': 'my-2xs',
-    xs: 'my-xs',
-    sm: 'my-sm',
-    md: 'my-md',
-    lg: 'my-lg',
-    xl: 'my-xl',
-    '2xl': 'my-2xl',
-    '3xl': 'my-3xl',
-  }
-  protected static marginTop: Spacing = {
-    '0': 'mt-0',
-    '3xs': 'mt-3xs',
-    '2xs': 'mt-2xs',
-    xs: 'mt-xs',
-    sm: 'mt-sm',
-    md: 'mt-md',
-    lg: 'mt-lg',
-    xl: 'mt-xl',
-    '2xl': 'mt-2xl',
-    '3xl': 'mt-3xl',
-  }
-  protected static marginBottom: Spacing = {
-    '0': 'mb-0',
-    '3xs': 'mb-3xs',
-    '2xs': 'mb-2xs',
-    xs: 'mb-xs',
-    sm: 'mb-sm',
-    md: 'mb-md',
-    lg: 'mb-lg',
-    xl: 'mb-xl',
-    '2xl': 'mb-2xl',
-    '3xl': 'mb-3xl',
-  }
-  protected static marginLeft: Spacing = {
-    '0': 'ml-0',
-    '3xs': 'ml-3xs',
-    '2xs': 'ml-2xs',
-    xs: 'ml-xs',
-    sm: 'ml-sm',
-    md: 'ml-md',
-    lg: 'ml-lg',
-    xl: 'ml-xl',
-    '2xl': 'ml-2xl',
-    '3xl': 'ml-3xl',
-  }
-  protected static marginRight: Spacing = {
-    '0': 'mr-0',
-    '3xs': 'mr-3xs',
-    '2xs': 'mr-2xs',
-    xs: 'mr-xs',
-    sm: 'mr-sm',
-    md: 'mr-md',
-    lg: 'mr-lg',
-    xl: 'mr-xl',
-    '2xl': 'mr-2xl',
-    '3xl': 'mr-3xl',
-  }
-  // spacing: padding
-  protected static padding: Spacing = {
-    '0': 'p-0',
-    '3xs': 'p-3xs',
-    '2xs': 'p-2xs',
-    xs: 'p-xs',
-    sm: 'p-sm',
-    md: 'p-md',
-    lg: 'p-lg',
-    xl: 'p-xl',
-    '2xl': 'p-2xl',
-    '3xl': 'p-3xl',
-  }
-  protected static paddingX: Spacing = {
-    '0': 'px-0',
-    '3xs': 'px-3xs',
-    '2xs': 'px-2xs',
-    xs: 'px-xs',
-    sm: 'px-sm',
-    md: 'px-md',
-    lg: 'px-lg',
-    xl: 'px-xl',
-    '2xl': 'px-2xl',
-    '3xl': 'px-3xl',
-  }
-  protected static paddingY: Spacing = {
-    '0': 'py-0',
-    '3xs': 'py-3xs',
-    '2xs': 'py-2xs',
-    xs: 'py-xs',
-    sm: 'py-sm',
-    md: 'py-md',
-    lg: 'py-lg',
-    xl: 'py-xl',
-    '2xl': 'py-2xl',
-    '3xl': 'py-3xl',
-  }
-  protected static paddingTop: Spacing = {
-    '0': 'pt-0',
-    '3xs': 'pt-3xs',
-    '2xs': 'pt-2xs',
-    xs: 'pt-xs',
-    sm: 'pt-sm',
-    md: 'pt-md',
-    lg: 'pt-lg',
-    xl: 'pt-xl',
-    '2xl': 'pt-2xl',
-    '3xl': 'pt-3xl',
-  }
-  protected static paddingBottom: Spacing = {
-    '0': 'pb-0',
-    '3xs': 'pb-3xs',
-    '2xs': 'pb-2xs',
-    xs: 'pb-xs',
-    sm: 'pb-sm',
-    md: 'pb-md',
-    lg: 'pb-lg',
-    xl: 'pb-xl',
-    '2xl': 'pb-2xl',
-    '3xl': 'pb-3xl',
-  }
-  protected static paddingLeft: Spacing = {
-    '0': 'pl-0',
-    '3xs': 'pl-3xs',
-    '2xs': 'pl-2xs',
-    xs: 'pl-xs',
-    sm: 'pl-sm',
-    md: 'pl-md',
-    lg: 'pl-lg',
-    xl: 'pl-xl',
-    '2xl': 'pl-2xl',
-    '3xl': 'pl-3xl',
-  }
-  protected static paddingRight: Spacing = {
-    '0': 'pr-0',
-    '3xs': 'pr-3xs',
-    '2xs': 'pr-2xs',
-    xs: 'pr-xs',
-    sm: 'pr-sm',
-    md: 'pr-md',
-    lg: 'pr-lg',
-    xl: 'pr-xl',
-    '2xl': 'pr-2xl',
-    '3xl': 'pr-3xl',
-  }
-  // spacing gap class for flex/grid
-  protected static gap: Spacing = {
-    '0': 'gap-0',
-    '3xs': 'gap-3xs',
-    '2xs': 'gap-2xs',
-    xs: 'gap-xs',
-    sm: 'gap-sm',
-    md: 'gap-md',
-    lg: 'gap-lg',
-    xl: 'gap-xl',
-    '2xl': 'gap-2xl',
-    '3xl': 'gap-3xl',
-  }
-  // text alignment
-  protected static textAlign: Alignment = {
-    left: 'text-left',
-    center: 'text-center',
-    right: 'text-right',
-  }
 }
-
-export default MCLTheme

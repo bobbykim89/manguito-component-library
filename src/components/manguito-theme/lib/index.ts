@@ -1,5 +1,5 @@
 // generate class function
-import { generateClass } from './theme/generateClass'
+import { generateClass } from './theme'
 // base components
 import Alert from './alert/Alert.vue'
 import Collapse from './collapse/Collapse.vue'
@@ -20,7 +20,7 @@ export * from './directives'
 export * from './util'
 // types
 export * from './header/index.types'
-export * from './theme/theme.types'
+export * from './theme/static/theme.types'
 
 // export components
 export {
