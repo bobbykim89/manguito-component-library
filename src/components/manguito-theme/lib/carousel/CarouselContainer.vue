@@ -70,7 +70,6 @@ const nextSlide = (): void => {
   if (loop && activeIdx.value === slideLen.value - 1) {
     activeIdx.value = 0
   } else if (activeIdx.value < slideLen.value - 1) {
-    console.log(activeIdx.value, slideLen.value)
     activeIdx.value = activeIdx.value + 1
   }
 }

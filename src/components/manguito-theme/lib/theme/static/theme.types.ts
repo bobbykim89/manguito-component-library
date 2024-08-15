@@ -49,12 +49,12 @@ export type DirectionX = 'left' | 'right'
 // available ranges
 type _RangeArray<
   T extends number,
-  R extends unknown[] = []
+  R extends unknown[] = [],
 > = R['length'] extends T ? R : _RangeArray<T, [...R, 1]>
 type IntRange<
   T extends number[],
   E extends number,
-  R extends number = never
+  R extends number = never,
 > = T['length'] extends E ? R | E : IntRange<[...T, 1], E, R | T['length']>
 export type Range<T extends number, R extends number> = IntRange<
   _RangeArray<T>,
