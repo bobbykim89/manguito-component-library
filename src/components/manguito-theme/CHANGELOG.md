@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.22.1](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.22.0...@bobbykim/manguito-theme@0.22.1) (2024-08-15)
+
+**Note:** Version bump only for package @bobbykim/manguito-theme
+
+
+
+
+
 # [0.22.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.21.0...@bobbykim/manguito-theme@0.22.0) (2024-07-13)
 
 

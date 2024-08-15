@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.6.4](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-container@0.6.3...@bobbykim/mcl-container@0.6.4) (2024-08-15)
+
+**Note:** Version bump only for package @bobbykim/mcl-container
+
+
+
+
+
 ## [0.6.3](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-container@0.6.2...@bobbykim/mcl-container@0.6.3) (2024-07-13)
 
 **Note:** Version bump only for package @bobbykim/mcl-container
