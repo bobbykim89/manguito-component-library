@@ -8,6 +8,7 @@ import type {
 import generateClass from '@bobbykim/manguito-theme'
 import SocialIcons from './SocialIcons.vue'
 import type { MenuItemType, SocialUrl } from './index.types'
+import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -38,11 +39,11 @@ const props = withDefaults(
   {
     titleSize: 'md',
     titleColor: 'light-1',
-    logoAsLink: true,
+    logoAsLink: false,
     logoLinkTarget: '_self',
     displaySocialIcons: true,
     socialIconColor: 'light-1',
-    menuItemAsLink: true,
+    menuItemAsLink: false,
     menuTextSize: 'md',
     menuTextColor: 'light-1',
     menuTextBold: false,
@@ -62,48 +63,77 @@ const emit = defineEmits<{
   (e: 'menu-click', event: Event, item: MenuItemType): void
 }>()
 
-const getFooterClass = (bg: ColorPalette, border: ColorPalette): string => {
-  /**
-   * @bg - bgColor
-   * @border - borderTopColor
-   */
+// const getFooterClass = (bg: ColorPalette, border: ColorPalette): string => {
+//   /**
+//    * @bg - bgColor
+//    * @border - borderTopColor
+//    */
+
+//   const classArray: string[] = [
+//     generateClass('BGCOLOR', bg),
+//     generateClass('BORDER', border),
+//   ]
+//   return classArray.join(' ')
+// }
+
+const footerClass = computed<string>(() => {
+  const { bgColor, borderTopColor } = props
 
   const classArray: string[] = [
-    generateClass('BGCOLOR', bg),
-    generateClass('BORDER', border),
+    generateClass('BGCOLOR', bgColor),
+    generateClass('BORDER', borderTopColor),
   ]
   return classArray.join(' ')
-}
-const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
-  /**
-   * @size - titleSize
-   * @color - titleColor
-   */
+})
+// const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
+//   /**
+//    * @size - titleSize
+//    * @color - titleColor
+//    */
+//   const classArray: string[] = [
+//     generateClass('H2', size),
+//     generateClass('TEXTCOLOR', color),
+//   ]
+//   return classArray.join(' ')
+// }
+const titleClass = computed<string>(() => {
+  const { titleSize, titleColor } = props
   const classArray: string[] = [
-    generateClass('H2', size),
-    generateClass('TEXTCOLOR', color),
+    generateClass('H2', titleSize),
+    generateClass('TEXTCOLOR', titleColor),
   ]
   return classArray.join(' ')
-}
-const getMenuItemClass = (
-  size: BodyText,
-  color: ColorPalette,
-  bold: boolean
-): string => {
-  /**
-   * @size - menuTextSize
-   * @color - menuTextColor
-   * @bold - menuTextBold
-   */
+})
+// const getMenuItemClass = (
+//   size: BodyText,
+//   color: ColorPalette,
+//   bold: boolean
+// ): string => {
+//   /**
+//    * @size - menuTextSize
+//    * @color - menuTextColor
+//    * @bold - menuTextBold
+//    */
+//   const classArray: string[] = [
+//     generateClass('BODYTEXT', size),
+//     generateClass('TEXTCOLOR', color),
+//   ]
+//   if (bold) {
+//     classArray.push('font-bold')
+//   }
+//   return classArray.join(' ')
+// }
+const menuItemClass = computed<string>(() => {
+  const { menuTextSize, menuTextColor, menuTextBold } = props
   const classArray: string[] = [
-    generateClass('BODYTEXT', size),
-    generateClass('TEXTCOLOR', color),
+    generateClass('BODYTEXT', menuTextSize),
+    generateClass('TEXTCOLOR', menuTextColor),
   ]
-  if (bold) {
-    classArray.push('font-bold')
+  if (menuTextBold) {
+    classArray.join('font-bold')
   }
   return classArray.join(' ')
-}
+})
 
 const handleTitleClick = (e: Event) => {
   const { logoAsLink, logoLink, logoLinkTarget } = props
@@ -119,10 +149,7 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
 </script>
 
 <template>
-  <footer
-    class="border-t-2 py-6 sm:py-8 md:py-12"
-    :class="getFooterClass(bgColor, borderTopColor)"
-  >
+  <footer class="border-t-2 py-6 sm:py-8 md:py-12" :class="footerClass">
     <div class="container px-xs md:px-lg lg:px-xl">
       <div
         class="flex flex-col md:flex-row flex-wrap justify-between mb-xs md:mb-md px-xs md:px-md border-b-2"
@@ -156,7 +183,7 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
         <div class="grid gap-2 justify-items-center basis-full md:basis-1/3">
           <h2
             class="inline-block align-middle tracking-wider"
-            :class="getTitleClass(titleSize, titleColor)"
+            :class="titleClass"
             v-html="title"
           ></h2>
           <small v-if="copyText" class="text-xs text-white align-middle mb-2">
@@ -181,9 +208,7 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
                 :href="item.url"
                 :target="item.target ? item.target : '_self'"
                 class="tracking-wide outline-none nav__text"
-                :class="
-                  getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)
-                "
+                :class="menuItemClass"
                 @click="handleMenuItemClick($event, item)"
                 v-html="item.title"
               >
@@ -210,9 +235,7 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
                 :href="item.url"
                 :target="item.target ? item.target : '_self'"
                 class="tracking-wide outline-none nav__text"
-                :class="
-                  getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)
-                "
+                :class="menuItemClass"
                 @click="handleMenuItemClick($event, item)"
                 v-html="item.title"
               >
