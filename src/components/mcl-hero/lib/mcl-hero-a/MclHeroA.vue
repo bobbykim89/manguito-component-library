@@ -7,8 +7,9 @@ import type {
   OpacityRange,
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
+import { computed } from 'vue'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title: string
     titleLevel?: HeadingLevel
@@ -54,49 +55,39 @@ const getBgImage = (img: string) => {
     'background-image': `url('${img}')`,
   }
 }
-const getFilterClass = (
-  bgColor: ColorPalette,
-  opacity: OpacityRange
-): string => {
+const filterClass = computed<string>(() => {
   /**
-   * @summary a function to handle filter color(=bgColor) and opacity of filter
+   * @summary a computed ref to handle filter color(=bgColor) and opacity of filter
    * @param {ColorPalette} bgColor - background color of component
    * @param {OpacityRange} filterOpacity - opacity of filter from 0 to 100 with step of 10
    */
+  const { bgColor, filterOpacity } = props
   const classArray: string[] = [
     generateClass('BGCOLOR', bgColor),
-    generateClass('OPACITY', opacity),
+    generateClass('OPACITY', filterOpacity),
   ]
   return classArray.join(' ')
-}
+})
 const getTitleClass = (
   level: HeadingLevel,
   size: HeadingSize,
   color: ColorPalette
 ): string => {
   /**
-   * @level - titleLevel/subTitleLevel
-   * @size - titleSize/subTitleSize
-   * @color - titleColor/subTitleColor
+   * @summary a function to set heading class for title/subtitle
+   * @param {HeadingLevel} level - titleLevel/subTitleLevel
+   * @param {HeadingSize} size - titleSize/subTitleSize
+   * @param {ColorPalette} color - titleColor/subTitleColor
    */
 
-  type TitleLevelInputType = 'H1' | 'H2' | 'H3' | 'H4'
-
-  let titleLevel: TitleLevelInputType
-  if (level === 'h1') {
-    titleLevel = 'H1'
-  } else if (level === 'h2') {
-    titleLevel = 'H2'
-  } else if (level === 'h3') {
-    titleLevel = 'H3'
-  } else {
-    titleLevel = 'H4'
+  const titleClass: Record<HeadingLevel, string> = {
+    h1: generateClass('H1', size),
+    h2: generateClass('H2', size),
+    h3: generateClass('H3', size),
+    h4: generateClass('H4', size),
   }
 
-  const classArray = [
-    generateClass(titleLevel, size),
-    generateClass('TEXTCOLOR', color),
-  ]
+  const classArray = [titleClass[level], generateClass('TEXTCOLOR', color)]
 
   return classArray.join(' ')
 }
@@ -109,7 +100,7 @@ const getTitleClass = (
   >
     <div class="grid lg:grid-cols-2">
       <div
-        class="relative px-xs md:px-md xl:px-lg xl:pl-[18%] flex flex-col justify-center min-h-[60vh] md:min-h-[420px]"
+        class="relative px-xs md:px-md xl:px-lg xl:pl-[18%] flex flex-col justify-end lg:justify-center min-h-[60vh] md:min-h-[420px]"
         :class="{ 'lg:order-2': imgPosition === 'left' }"
       >
         <!-- display on mobile -->
@@ -121,15 +112,15 @@ const getTitleClass = (
           <div
             v-if="displayFilter"
             class="absolute inset-0"
-            :class="getFilterClass(bgColor, filterOpacity)"
+            :class="filterClass"
           ></div>
         </div>
         <div
-          class="relative py-xl px-0"
+          class="relative py-md lg:py-xl px-0"
           :class="[imgPosition === 'right' ? 'lg:pl-md' : 'lg:pr-md']"
         >
           <div
-            class="relative mb-sm md:mb-md lg:mb-lg ml-xs md:ml-0"
+            class="relative mb-xs md:mb-sm lg:mb-md ml-xs md:ml-0"
             :class="{ 'pl-xs': displayHighlight }"
           >
             <!-- highlight -->
@@ -143,7 +134,7 @@ const getTitleClass = (
               <!-- title -->
               <component
                 :is="titleLevel"
-                class="mb-xs md:mb-sm"
+                class="pb-xs md:pb-sm"
                 :class="getTitleClass(titleLevel, titleSize, titleColor)"
               >
                 <span v-html="title"></span>
