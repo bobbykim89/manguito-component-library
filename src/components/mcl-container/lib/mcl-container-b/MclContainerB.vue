@@ -5,15 +5,15 @@ import type {
   HeadingSize,
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import { useElementSize } from '@vueuse/core'
 
 const props = withDefaults(
   defineProps<{
     sectionBgColor?: ColorPalette
     containerBgColor?: ColorPalette
     imageSource: string
-    imgHeightMobile?: number
-    imgHeightDesktop?: number
+    imageAlt: string
     title: string
     titleLevel?: HeadingLevel
     titleSize?: HeadingSize
@@ -22,8 +22,6 @@ const props = withDefaults(
   {
     sectionBgColor: 'transparent',
     containerBgColor: 'light-2',
-    imgHeightMobile: 256,
-    imgHeightDesktop: 384,
     titleLevel: 'h2',
     titleSize: 'md',
     titleColor: 'dark-3',
@@ -33,56 +31,45 @@ const props = withDefaults(
 const slots = defineSlots<{
   content: any
 }>()
+const mainContentElem = ref<HTMLDivElement>()
+const { height } = useElementSize(mainContentElem)
 
-const getTitleClass = (
-  level: HeadingLevel,
-  size: HeadingSize,
-  color: ColorPalette
-): string => {
-  /**
-   * @level - titleLevel
-   * @size - titleSize
-   * @Color - titleColor
-   */
-  let heading: string
-  // let textColor: string = textColorClass[Color]
-  if (level === 'h1') {
-    // heading = h1Class[size]
-    heading = generateClass('H1', size)
-  } else if (level === 'h2') {
-    // heading = h2Class[size]
-    heading = generateClass('H2', size)
-  } else {
-    // heading = h3Class[size]
-    heading = generateClass('H3', size)
+const titleClass = computed<string>(() => {
+  const { titleLevel, titleSize, titleColor } = props
+
+  const headingOptions: Record<HeadingLevel, string> = {
+    h1: generateClass('H1', titleSize),
+    h2: generateClass('H2', titleSize),
+    h3: generateClass('H3', titleSize),
+    h4: generateClass('H4', titleSize),
   }
-  return `${heading} ${generateClass('TEXTCOLOR', color)}`
-}
+  const classArray: string[] = [
+    generateClass('TEXTCOLOR', titleColor),
+    headingOptions[titleLevel],
+  ]
+  return classArray.join(' ')
+})
 
 const parallaxImage = computed(() => {
   return {
     '--bg-image': `url('${props.imageSource}')`,
-    '--container-height-mobile': `${props.imgHeightMobile}px`,
-    '--container-height-desktop': `${
-      props.imgHeightDesktop > props.imgHeightMobile
-        ? props.imgHeightDesktop
-        : props.imgHeightMobile
-    }px`,
+    '--space-height': `${height.value / 2}px`,
   }
 })
 </script>
 
 <template>
-  <section
-    class="relative pt-xl md:pt-3xl"
-    :class="generateClass('BGCOLOR', sectionBgColor)"
-  >
-    <div class="relative parallax-container" :style="parallaxImage">
+  <section class="relative" :style="parallaxImage">
+    <div :class="[generateClass('BGCOLOR', sectionBgColor), 'space-hts']"></div>
+    <div class="relative">
       <div
-        class="absolute parallax-image bg-fixed bg-cover w-full top-0 left-0 bg-no-repeat"
+        class="absolute bg-fixed bg-cover bg-top inset-0 bg-no-repeat bg-image"
+        role="img"
+        :aria-label="imageAlt"
       ></div>
       <div
-        class="container relative z-[10] px-xs top-[-48px] md:top-[-96px] max-w-[1140px]"
+        class="container relative z-[10] -translate-y-1/2 px-xs max-w-[1140px]"
+        ref="mainContentElem"
       >
         <div
           :class="generateClass('BGCOLOR', containerBgColor)"
@@ -90,10 +77,7 @@ const parallaxImage = computed(() => {
         >
           <div class="w-full">
             <compoenent :is="titleLevel">
-              <span
-                :class="getTitleClass(titleLevel, titleSize, titleColor)"
-                v-html="title"
-              ></span>
+              <span :class="titleClass" v-html="title"></span>
             </compoenent>
             <div class="mt-sm">
               <slot name="content" />
@@ -106,20 +90,17 @@ const parallaxImage = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-.parallax-container {
-  height: var(--container-height-mobile, 256px);
+.space-hts {
+  height: calc(var(--space-height) + 36px);
+
+  @media screen and (min-width: 768px) {
+    height: calc(var(--space-height) + 48px);
+  }
+  @media screen and (min-width: 1024px) {
+    height: calc(var(--space-height) + 64px);
+  }
 }
-.parallax-image {
-  height: var(--container-height-mobile, 256px);
+.bg-image {
   background-image: var(--bg-image);
-  background-position: center top;
-}
-@media screen and (min-width: 768px) {
-  .parallax-container {
-    height: var(--container-height-desktop, 384px);
-  }
-  .parallax-image {
-    height: var(--container-height-desktop, 384px);
-  }
 }
 </style>

@@ -63,19 +63,6 @@ const emit = defineEmits<{
   (e: 'menu-click', event: Event, item: MenuItemType): void
 }>()
 
-// const getFooterClass = (bg: ColorPalette, border: ColorPalette): string => {
-//   /**
-//    * @bg - bgColor
-//    * @border - borderTopColor
-//    */
-
-//   const classArray: string[] = [
-//     generateClass('BGCOLOR', bg),
-//     generateClass('BORDER', border),
-//   ]
-//   return classArray.join(' ')
-// }
-
 const footerClass = computed<string>(() => {
   const { bgColor, borderTopColor } = props
 
@@ -85,17 +72,6 @@ const footerClass = computed<string>(() => {
   ]
   return classArray.join(' ')
 })
-// const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
-//   /**
-//    * @size - titleSize
-//    * @color - titleColor
-//    */
-//   const classArray: string[] = [
-//     generateClass('H2', size),
-//     generateClass('TEXTCOLOR', color),
-//   ]
-//   return classArray.join(' ')
-// }
 const titleClass = computed<string>(() => {
   const { titleSize, titleColor } = props
   const classArray: string[] = [
@@ -104,25 +80,6 @@ const titleClass = computed<string>(() => {
   ]
   return classArray.join(' ')
 })
-// const getMenuItemClass = (
-//   size: BodyText,
-//   color: ColorPalette,
-//   bold: boolean
-// ): string => {
-//   /**
-//    * @size - menuTextSize
-//    * @color - menuTextColor
-//    * @bold - menuTextBold
-//    */
-//   const classArray: string[] = [
-//     generateClass('BODYTEXT', size),
-//     generateClass('TEXTCOLOR', color),
-//   ]
-//   if (bold) {
-//     classArray.push('font-bold')
-//   }
-//   return classArray.join(' ')
-// }
 const menuItemClass = computed<string>(() => {
   const { menuTextSize, menuTextColor, menuTextBold } = props
   const classArray: string[] = [
