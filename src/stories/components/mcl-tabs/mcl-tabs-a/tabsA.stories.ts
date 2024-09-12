@@ -3,6 +3,7 @@ import {
   booleanControllers,
   colorControllers,
   headingTextControllers,
+  textControllers,
 } from '@/assets/composables'
 import type { ContentType } from '@/components/mcl-tabs/lib'
 import { MclTabsA } from '@/components/mcl-tabs/lib'
@@ -30,6 +31,12 @@ const meta: Meta<typeof MclTabsA> = {
   title: 'Components/Tabs/MclTabsA',
   component: MclTabsA,
   argTypes: {
+    tabName: textControllers({
+      name: 'tab-name',
+      required: true,
+      description: 'assign the name of tab (will be used for creating tab id)',
+      category: 'Content Block',
+    }),
     content: arrayControllers({
       name: 'content',
       required: true,
@@ -95,6 +102,7 @@ const meta: Meta<typeof MclTabsA> = {
     }),
   },
   args: {
+    tabName: 'mcl-tab-a',
     content: contentInfo,
     borderColor: 'light-3',
     bgColor: 'light-1',

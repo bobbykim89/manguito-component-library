@@ -5,8 +5,9 @@ import type {
   HeadingSize,
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
+import { computed } from 'vue'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title: string
     titleLevel?: HeadingLevel
@@ -32,66 +33,55 @@ withDefaults(
 )
 const getBgImage = (img: string) => {
   /**
-   * @img - imageSource
+   * @param {string} img - imageSource
    */
   return { 'background-image': `url('${img}')` }
 }
-const getSectionWidth = (sWidth: boolean): string => {
+const sectionWidthClass = computed<string>(() => {
   /**
-   * @sWidth - fullWidth
+   * @param {boolean} fullWidth
    */
-  return sWidth ? '' : 'xl:container'
-}
-
-const getTitleClass = (
-  level: HeadingLevel,
-  size: HeadingSize,
-  color: ColorPalette
-): string => {
+  const { fullWidth } = props
+  return fullWidth ? '' : 'xl:container'
+})
+const titleClass = computed<string>(() => {
   /**
-   * @level - titleLevel
-   * @size - titleSize
-   * @color - titleColor
+   * @param {HeadingLevel} titleLevel
+   * @param {HeadingSize} titleSize
+   * @param {ColorPalette} titleColor
    */
-
-  let titleLevel: 'H1' | 'H2' | 'H3' | 'H4'
-  if (level === 'h1') {
-    titleLevel = 'H1'
-  } else if (level === 'h2') {
-    titleLevel = 'H2'
-  } else if (level === 'h3') {
-    titleLevel = 'H3'
-  } else {
-    titleLevel = 'H4'
+  const { titleLevel, titleSize, titleColor } = props
+  const titleClass: Record<HeadingLevel, 'H1' | 'H2' | 'H3' | 'H4'> = {
+    h1: 'H1',
+    h2: 'H2',
+    h3: 'H3',
+    h4: 'H4',
   }
-
-  const classArray = [
-    generateClass(titleLevel, size),
-    generateClass('TEXTCOLOR', color),
+  const classArray: string[] = [
+    generateClass(titleClass[titleLevel], titleSize),
+    generateClass('TEXTCOLOR', titleColor),
   ]
-
   return classArray.join(' ')
-}
-
-const getTitleHighlightClass = (
-  color: ColorPalette,
-  display: boolean
-): string => {
+})
+const titleHighlightClass = computed<string>(() => {
   /**
-   * @color - highlightColor
-   * @display - displayHighlight
+   * @param {ColorPalette} highlightColor
+   * @param {boolean} displayHighlight
    */
-
-  const classArray = [generateClass('BGCOLOR', color), 'shadow-lg', 'px-xs']
-
-  return display ? classArray.join(' ') : ''
-}
-
-const generateGradientColor = (color: ColorPalette): string => {
+  const { highlightColor, displayHighlight } = props
+  const classArray: string[] = [
+    generateClass('BGCOLOR', highlightColor),
+    'shadow-lg',
+    'px-xs',
+  ]
+  return displayHighlight ? classArray.join(' ') : ''
+})
+const gradientColorClass = computed<string>(() => {
+  const { gradientColor } = props
   /**
-   * @color - gradientColor
+   * @param {ColorPalette} gradientColor
    */
-  switch (color) {
+  switch (gradientColor) {
     case 'primary':
       return 'from-primary/80'
     case 'secondary':
@@ -127,30 +117,27 @@ const generateGradientColor = (color: ColorPalette): string => {
     default:
       return ''
   }
-}
+})
 </script>
 
 <template>
   <section
     class="relative bg-image-container flex flex-col justify-end"
-    :class="getSectionWidth(fullWidth)"
+    :class="sectionWidthClass"
     :style="getBgImage(imageSource)"
   >
     <div
       v-if="displayGradients"
       class="absolute bg-gradient-to-t inset-0 top-1/3 to-transparent"
-      :class="generateGradientColor(gradientColor)"
+      :class="gradientColorClass"
     ></div>
     <div class="relative h-full px-xs">
       <div class="container">
         <div class="py-md lg:py-lg px-0">
-          <component
-            :is="titleLevel"
-            :class="getTitleClass(titleLevel, titleSize, titleColor)"
-          >
+          <component :is="titleLevel" :class="titleClass">
             <span
               class="box-decoration-clone py-2xs"
-              :class="getTitleHighlightClass(highlightColor, displayHighlight)"
+              :class="titleHighlightClass"
               v-html="title"
             >
             </span>

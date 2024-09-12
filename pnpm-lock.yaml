@@ -291,6 +291,9 @@ importers:
       '@bobbykim/manguito-theme':
         specifier: workspace:*
         version: link:../manguito-theme
+      '@vueuse/core':
+        specifier: ^10.8.0
+        version: 10.9.0(vue@3.4.31(typescript@5.4.5))
       vue:
         specifier: ^3.4.31
         version: 3.4.31(typescript@5.4.5)
@@ -6196,8 +6199,8 @@ packages:
   vue-component-type-helpers@2.0.13:
     resolution: {integrity: sha512-xNO5B7DstNWETnoYflLkVgh8dK8h2ZDgxY1M2O0zrqGeBNq5yAZ8a10yCS9+HnixouNGYNX+ggU9MQQq86HTpg==}
 
-  vue-component-type-helpers@2.0.26:
-    resolution: {integrity: sha512-sO9qQ8oC520SW6kqlls0iqDak53gsTVSrYylajgjmkt1c0vcgjsGSy1KzlDrbEx8pm02IEYhlUkU5hCYf8rwtg==}
+  vue-component-type-helpers@2.1.6:
+    resolution: {integrity: sha512-ng11B8B/ZADUMMOsRbqv0arc442q7lifSubD0v8oDXIFoMg/mXwAPUunrroIDkY+mcD0dHKccdaznSVp8EoX3w==}
 
   vue-demi@0.14.7:
     resolution: {integrity: sha512-EOG8KXDQNwkJILkx/gPcoL/7vH+hORoBaKgGe+6W7VFMvCYJfmF2dGbvgDroVnI8LU7/kTu8mbjRZGBU1z9NTA==}
@@ -8497,7 +8500,7 @@ snapshots:
       ts-dedent: 2.2.0
       type-fest: 2.19.0
       vue: 3.4.31(typescript@5.4.5)
-      vue-component-type-helpers: 2.0.26
+      vue-component-type-helpers: 2.1.6
     transitivePeerDependencies:
       - encoding
       - supports-color
@@ -13363,7 +13366,7 @@ snapshots:
 
   vue-component-type-helpers@2.0.13: {}
 
-  vue-component-type-helpers@2.0.26: {}
+  vue-component-type-helpers@2.1.6: {}
 
   vue-demi@0.14.7(vue@3.4.31(typescript@5.4.5)):
     dependencies:

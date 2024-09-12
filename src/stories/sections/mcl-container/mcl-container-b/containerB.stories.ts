@@ -59,18 +59,10 @@ const meta: Meta<typeof MclContainerB> = {
       description: 'assigns url for parallax image',
       category: 'Image',
     }),
-    imgHeightDesktop: numberControllers({
-      name: 'img-height-desktop',
-      required: false,
-      description: 'assigns image height for desktop screen size',
-      defaultValue: 384,
-      category: 'Image',
-    }),
-    imgHeightMobile: numberControllers({
-      name: 'img-heright-mobile',
-      required: false,
-      description: 'assigns image height for mobile screen size',
-      defaultValue: 256,
+    imageAlt: textControllers({
+      name: 'image-alt',
+      required: true,
+      description: 'assigns image alt text for parallax image',
       category: 'Image',
     }),
   },
@@ -79,8 +71,7 @@ const meta: Meta<typeof MclContainerB> = {
     containerBgColor: 'light-2',
     imageSource:
       'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1653539465/ManguitoPage/u94iug4r8non1fwprlmh.jpg',
-    imgHeightMobile: 256,
-    imgHeightDesktop: 384,
+    imageAlt: 'manguito is working as a gardener',
     title: 'MCL Container B',
     titleLevel: 'h2',
     titleSize: 'md',

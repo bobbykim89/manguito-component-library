@@ -1,8 +1,17 @@
 <p align="center">
+  <a href="https://manguito-component-library.vercel.app" target="_blank">
     <img width="180" src="public/mcl-logo-square.png" alt="MCL Logo" />
+  </a>
 </p>
 
 # Manguito Component Library (MCL)
+
+<div align="center">
+<a href="https://www.npmjs.com/package/@bobbykim/manguito-theme" target="_blank"><img src="https://img.shields.io/npm/v/@bobbykim/manguito-theme.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/package/@bobbykim/manguito-theme" target="_blank"><img src="https://img.shields.io/npm/l/@bobbykim/manguito-theme.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/package/@bobbykim/manguito-theme" target="_blank"><img src="https://img.shields.io/npm/dm/@bobbykim/manguito-theme.svg" alt="NPM Downloads" /></a>
+</div>
+<br></br>
 
 > A simple component library based on Vue 3, SASS and Tailwind CSS
 > MCL uses vite as bundler
