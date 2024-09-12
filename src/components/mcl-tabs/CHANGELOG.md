@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-tabs@0.8.3...@bobbykim/mcl-tabs@0.9.0) (2024-09-12)
+
+
+### Features
+
+* **mcl-tabs:** refactor mcl-tabs using base component ([91450d1](https://github.com/bobbykim89/manguito-component-library/commit/91450d11141f389a3ad0a178656cb5a64f0c2fb1))
+
+
+
+
+
 ## [0.8.3](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-tabs@0.8.2...@bobbykim/mcl-tabs@0.8.3) (2024-08-15)
 
 **Note:** Version bump only for package @bobbykim/mcl-tabs

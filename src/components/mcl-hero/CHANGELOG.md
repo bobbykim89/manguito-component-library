@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-hero@0.6.4...@bobbykim/mcl-hero@0.7.0) (2024-09-12)
+
+
+### Features
+
+* **mcl-hero,mcl-container:** refactor mcl-hero components ([616a758](https://github.com/bobbykim89/manguito-component-library/commit/616a758d3e1c3d02b230ec6c64a94bd3a634ea9d))
+
+
+
+
+
 ## [0.6.4](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-hero@0.6.3...@bobbykim/mcl-hero@0.6.4) (2024-08-15)
 
 **Note:** Version bump only for package @bobbykim/mcl-hero
