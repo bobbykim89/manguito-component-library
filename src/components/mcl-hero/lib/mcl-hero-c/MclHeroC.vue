@@ -6,8 +6,9 @@ import type {
   HeadingSize,
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
+import { computed } from 'vue'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     title: string
     titleLevel?: HeadingLevel
@@ -52,60 +53,49 @@ const getBgImage = (img: string) => {
     '--bg-image': `url('${img}')`,
   }
 }
-
-const getTitleClass = (
-  level: HeadingLevel,
-  size: HeadingSize,
-  color: ColorPalette,
-  shadow: boolean
-): string => {
+const titleClass = computed<string>(() => {
   /**
-   * @level - titleLevel
-   * @size - titleSize
-   * @color - titleColor
-   * @shadow - displayTitleShadow
+   * @param {HeadingLevel} titleLevel
+   * @param {HeadingSize} titleSize
+   * @param {ColorPalette} titleColor
+   * @param {boolean} displayTitleShadow
    */
-  const classArray = [generateClass('TEXTCOLOR', color)]
-
-  if (level === 'h1') {
-    classArray.push(generateClass('H1', size))
+  const { titleLevel, titleSize, titleColor, displayTitleShadow } = props
+  const headingClass: Record<HeadingLevel, 'H1' | 'H2' | 'H3' | 'H4'> = {
+    h1: 'H1',
+    h2: 'H2',
+    h3: 'H3',
+    h4: 'H4',
   }
-  if (level === 'h2') {
-    classArray.push(generateClass('H2', size))
-  }
-  if (level === 'h3') {
-    classArray.push(generateClass('H3', size))
-  }
-  if (level === 'h4') {
-    classArray.push(generateClass('H4', size))
-  }
-  if (shadow) {
+  const classArray: string[] = [
+    generateClass(headingClass[titleLevel], titleSize),
+    generateClass('TEXTCOLOR', titleColor),
+  ]
+  if (displayTitleShadow) {
     classArray.push('drop-shadow-lg')
   }
   return classArray.join(' ')
-}
-const getLabelClass = (
-  size: BodyText,
-  tColor: ColorPalette,
-  bgColor: ColorPalette
-): string => {
+})
+const labelClass = computed<string>(() => {
   /**
-   * @size - labelTextSize
-   * @tColor - labelTextColor
-   * @bgColor - labelBgColor
+   * @param {BodyText} labelTextSize
+   * @param {ColorPalette} labelTextColor
+   * @param {ColorPalette} labelBgColor
    */
-  const classArray = [
-    generateClass('BODYTEXT', size),
-    generateClass('TEXTCOLOR', tColor),
-    generateClass('BGCOLOR', bgColor),
+  const { labelTextSize, labelTextColor, labelBgColor } = props
+  const classArray: string[] = [
+    generateClass('BODYTEXT', labelTextSize),
+    generateClass('TEXTCOLOR', labelTextColor),
+    generateClass('BGCOLOR', labelBgColor),
   ]
   return classArray.join(' ')
-}
-const generateGradientColor = (color: ColorPalette): string => {
+})
+const gradientColorClass = computed<string>(() => {
+  const { gradientColor } = props
   /**
-   * @color - gradientColor
+   * @param {ColorPalette} gradientColor
    */
-  switch (color) {
+  switch (gradientColor) {
     case 'primary':
       return 'from-primary/80'
     case 'secondary':
@@ -141,7 +131,7 @@ const generateGradientColor = (color: ColorPalette): string => {
     default:
       return ''
   }
-}
+})
 </script>
 
 <template>
@@ -152,22 +142,20 @@ const generateGradientColor = (color: ColorPalette): string => {
     <div
       v-if="displayGradient"
       class="absolute bg-gradient-to-t inset-0 top-1/3 to-transparent"
-      :class="generateGradientColor(gradientColor)"
+      :class="gradientColorClass"
     ></div>
     <div class="relative py-md px-sm md:py-lg md:px-md">
       <div v-if="displayLabel" class="mb-2xs">
         <span
           v-html="labelText"
           class="py-3xs px-2xs"
-          :class="getLabelClass(labelTextSize, labelTextColor, labelBgColor)"
+          :class="labelClass"
         ></span>
       </div>
       <component
         :is="titleLevel"
         class="tracking-wide mb-2xs"
-        :class="
-          getTitleClass(titleLevel, titleSize, titleColor, displayTitleShadow)
-        "
+        :class="titleClass"
         v-html="title"
       ></component>
       <div
