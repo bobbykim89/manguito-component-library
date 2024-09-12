@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
-import { ref, Transition } from 'vue'
+import generateClass, {
+  TabContainer,
+  TabContent,
+} from '@bobbykim/manguito-theme'
+import { computed } from 'vue'
 import type { ContentType } from './index.types'
 
 const props = withDefaults(
   defineProps<{
+    tabName: string
     content: ContentType[]
     borderColor?: ColorPalette
     bgColor?: ColorPalette
@@ -28,171 +32,107 @@ const props = withDefaults(
   }
 )
 
-const currentTab = ref<number>(0)
 const emit = defineEmits<{
   (e: 'tab-click', event: Event, title: string): void
 }>()
-const transitionClass = ref<string>('')
 
-const hadleTabClick = (e: Event, index: number, title: string): void => {
+const hadleTabClick = (e: Event, title: string): void => {
   e.preventDefault()
-  transitionClass.value = currentTab.value < index ? 'slide-next' : 'slide-prev'
-  currentTab.value = index
   emit('tab-click', e, title)
 }
-
-const getBorderClass = (
-  bgColor: ColorPalette,
-  border: ColorPalette,
-  rounded: boolean,
-  shadow: boolean
-): string => {
+const borderClass = computed<string>(() => {
   /**
-   * @bgColor - bgColor
-   * @border - borderColor
-   * @rounded - rounded
-   * @shadow - displayShadow
+   * @param {ColorPalette} bgColor
+   * @param {ColorPalette} borderColor
+   * @param {boolean} rounded
+   * @param {boolean} displayShadow
    */
-
+  const { bgColor, borderColor, rounded, displayShadow } = props
   const classArray: string[] = [
     generateClass('BGCOLOR', bgColor),
-    generateClass('BORDER', border),
+    generateClass('BORDER', borderColor),
   ]
-
-  if (rounded) {
-    classArray.push('rounded-xl')
-  }
-  if (shadow) {
-    classArray.push('shadow-xl')
-  }
+  rounded && classArray.push('rounded-xl')
+  displayShadow && classArray.push('shadow-xl')
   return classArray.join(' ')
-}
-
-const getActiveBtnClass = (
-  tColor: ColorPalette,
-  fColor: ColorPalette,
-  shadow: boolean
-): string => {
+})
+const tabClass = computed<string>(() => {
   /**
-   * @tColor - bgColor
-   * @fColor - activeTitleColor
-   * @shadow - displayShadow
+   * @param {ColorPalette} tabColor
+   * @param {boolean} rounded
    */
+  const { tabColor, rounded } = props
+  const classArray: string[] = [generateClass('BGCOLOR', tabColor)]
+  rounded && classArray.push('rounded-xl')
+  return classArray.join(' ')
+})
+const activeBtnClass = computed<string>(() => {
+  /**
+   * @param {ColorPalette} bgColor
+   * @param {ColorPalette} activeTitleColor
+   * @param {boolean} displayShadow
+   */
+  const { bgColor, activeTitleColor, displayShadow } = props
   const classArray: string[] = [
-    generateClass('TEXTCOLOR', fColor),
-    generateClass('BGCOLOR', tColor),
-    'ring-4',
-    'ring-white',
-    'ring-opacity-60',
+    generateClass('TEXTCOLOR', activeTitleColor),
+    generateClass('BGCOLOR', bgColor),
+    'ring-4 ring-white ring-opacity-60',
   ]
-
-  if (shadow) {
-    classArray.push('drop-shadow')
-  }
+  displayShadow && classArray.push('drop-shadow')
   return classArray.join(' ')
-}
-
-const getTabClass = (tColor: ColorPalette, rounded: boolean): string => {
-  /**
-   * @tColor - tabColor
-   * @rounded - rounded
-   */
-  const classArray: string[] = [generateClass('BGCOLOR', tColor)]
-  if (rounded) {
-    classArray.push('rounded-xl')
-  }
-  return classArray.join(' ')
-}
-
-const getInactiveBtnClass = (fColor: ColorPalette): string => {
-  /**
-   * @fColor - inactiveTitleColor
-   */
+})
+const inactiveBtnClass = computed<string>(() => {
+  const { inactiveTitleColor } = props
   const classArray: string[] = [
-    generateClass('TEXTCOLOR', fColor),
-    'hover:bg-white/35',
-    'focus:bg-white/35',
-    'transition',
-    'ease-in',
-    'duration-300',
+    generateClass('TEXTCOLOR', inactiveTitleColor),
+    'hover:bg-white/35 focus:bg-white/35 transition-colors ease-in duration-300',
   ]
   return classArray.join(' ')
+})
+const generateTabId = (idx: number) => {
+  const { tabName } = props
+
+  return `${tabName}-tab-${idx}`
 }
 </script>
 
 <template>
-  <div
-    class="w-full p-2xs border overflow-hidden"
-    :class="getBorderClass(bgColor, borderColor, rounded, displayShadow)"
+  <TabContainer
+    :body-class="['w-full p-2xs border overflow-hidden', borderClass]"
+    :btn-container-class="['flex p-3xs space-x-1', tabClass]"
+    :content-container-class="[
+      'mt-2xs relative p-xs lg:px-sm whitespace-pre-line',
+    ]"
   >
-    <div
-      role="tablist"
-      class="flex p-3xs space-x-1"
-      :class="getTabClass(tabColor, rounded)"
-    >
+    <template #tab-button="{ update, activeTab }">
       <button
-        v-for="(item, index) in props.content"
-        :key="index"
+        v-for="(item, idx) in content"
+        :key="idx"
         role="tab"
-        :aria-selected="currentTab === index"
-        :tabindex="currentTab === index ? -1 : 0"
-        @click="hadleTabClick($event, index, item.title)"
-        class="text-center w-full py-2.5 focus:outline-none"
+        :aria-selected="activeTab === idx"
+        :tabindex="activeTab === idx ? -1 : 0"
         :class="[
-          currentTab === index
-            ? getActiveBtnClass(bgColor, activeTitleColor, displayShadow)
-            : getInactiveBtnClass(inactiveTitleColor),
+          activeTab === idx ? activeBtnClass : inactiveBtnClass,
           rounded && 'rounded-lg',
+          'text-center w-full py-2.5 focus:outline-none',
         ]"
-        :disabled="currentTab === index"
+        :disabled="activeTab === idx"
+        @click="hadleTabClick($event, item.title), update(idx)"
       >
         <h3 :class="generateClass('H3', titleSize)">
           {{ item.title }}
         </h3>
       </button>
-    </div>
-    <div class="mt-2xs relative p-xs lg:px-sm whitespace-pre-line">
-      <Transition :name="transitionClass" mode="out-in">
-        <div
-          role="tabpanel"
-          ref="tabPanelRef"
-          tabindex="-1"
-          :key="currentTab"
-          v-html="content[currentTab].content"
-        ></div>
-      </Transition>
-    </div>
-  </div>
+    </template>
+    <template #tab-content>
+      <TabContent
+        v-for="(item, idx) in content"
+        :key="idx"
+        :tab-number="idx"
+        :id="generateTabId(idx)"
+      >
+        <div v-html="item.content"></div>
+      </TabContent>
+    </template>
+  </TabContainer>
 </template>
-
-<style lang="scss" scoped>
-// transition animations
-.slide-prev-enter-active {
-  transition: all 0.5s linear;
-}
-.slide-prev-leave-active {
-  transition: all 0.5s;
-}
-.slide-prev-enter-from {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-.slide-prev-leave-to {
-  transform: translateX(100%);
-  opacity: 0;
-}
-.slide-next-enter-active {
-  transition: all 0.5s linear;
-}
-.slide-next-leave-active {
-  transition: all 0.5s;
-}
-.slide-next-enter-from {
-  transform: translateX(100%);
-  opacity: 0;
-}
-.slide-next-leave-to {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-</style>
