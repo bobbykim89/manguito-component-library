@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.7.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-footer@0.6.4...@bobbykim/mcl-footer@0.7.0) (2024-09-12)
+
+
+### Features
+
+* **mcl-footer,mcl-container:** update social-icons of mcl-footer, refactor mcl-container-b ([1123d48](https://github.com/bobbykim89/manguito-component-library/commit/1123d48d0be1195e35a2c348f5082585e29eeae4))
+* **mcl-footer:** update footer code refactor ([2f824b6](https://github.com/bobbykim89/manguito-component-library/commit/2f824b6816fda3edaa3013bcae70c1b34f97ae44))
+
+
+
+
+
 ## [0.6.4](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-footer@0.6.3...@bobbykim/mcl-footer@0.6.4) (2024-08-15)
 
 **Note:** Version bump only for package @bobbykim/mcl-footer
