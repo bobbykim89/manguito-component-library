@@ -15,7 +15,6 @@ const props = withDefaults(
     title: string
     titleSize?: HeadingSize
     titleColor?: ColorPalette
-    copyText?: string
     logo: string
     logoAlt?: string
     logoAsLink?: boolean
@@ -143,9 +142,6 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
             :class="titleClass"
             v-html="title"
           ></h2>
-          <small v-if="copyText" class="text-xs text-white align-middle mb-2">
-            &copy; {{ copyText + ' ' + new Date().getFullYear() }}
-          </small>
           <div class="px-xs md:px-0">
             <slot></slot>
           </div>
