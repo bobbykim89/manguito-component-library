@@ -78,12 +78,6 @@ const meta: Meta<typeof MclFooterA> = {
       defaultValue: 'light-1',
       category: 'Title Block',
     }),
-    copyText: textControllers({
-      name: 'copy-text',
-      required: false,
-      description: 'assigns copy text of the component',
-      category: 'Title Block',
-    }),
     logo: textControllers({
       name: 'logo',
       required: true,
@@ -219,7 +213,6 @@ const meta: Meta<typeof MclFooterA> = {
     title: 'MCL Footer A',
     titleSize: 'md',
     titleColor: 'light-1',
-    copyText: 'Manguito Component Library',
     logo: 'https://res.cloudinary.com/dwgni1x3t/image/upload/v1670261556/MCL/mcl-logo-light_eqxliq.png',
     logoAlt: 'Manguito Component Library (MCL) logo',
     logoAsLink: false,
