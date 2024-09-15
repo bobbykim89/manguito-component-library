@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type {
   ColorPalette,
-  CrossOrigin,
   CtaTarget,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 import type { CardClickEvent } from '../common/index.types'
+import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -18,7 +18,6 @@ const props = withDefaults(
     displayImage?: boolean
     imageSource?: string
     imageAlt?: string
-    imageCors?: CrossOrigin
     displayCta?: boolean
     ctaAsLink?: boolean
     ctaText?: string
@@ -41,7 +40,6 @@ const props = withDefaults(
     borderColor: 'light-3',
     bgColor: 'light-1',
     displayImage: true,
-    imageCors: 'anonymous',
     displayCta: true,
     ctaAsLink: false,
     ctaColor: 'primary',
@@ -68,94 +66,64 @@ const emit = defineEmits<{
   (e: 'card-btn-click', event: Event, item: CardClickEvent): void
 }>()
 
-const getBorderClass = (
-  border: ColorPalette,
-  bg: ColorPalette,
-  rounded: boolean,
-  enlarge: boolean,
-  shadow: boolean
-): string => {
+const borderClass = computed<string>(() => {
   /**
-   * @border - borderColor
-   * @bg - bgColor
-   * @rounded - rounded
-   * @enlarge - enlargeOnHover
-   * @shadow - displayShadow
+   * @param {ColorPalette} borderColor
+   * @param {ColorPalette} bgColor
+   * @param {boolean} rounded
+   * @param {boolean} enlargeOnHover
+   * @param {boolean} displayShadow
    */
-
-  const classArray = [
-    generateClass('BORDER', border),
-    generateClass('BGCOLOR', bg),
+  const { borderColor, bgColor, rounded, enlargeOnHover, displayShadow } = props
+  const classArray: string[] = [
+    generateClass('BORDER', borderColor),
+    generateClass('BGCOLOR', bgColor),
   ]
-
-  if (rounded) {
-    classArray.push('rounded-md')
-  } else {
-    classArray.push('rounded-sm')
-  }
-  if (enlarge) {
+  classArray.push(rounded ? 'rounded-md' : 'rounded-sm')
+  enlargeOnHover &&
     classArray.push('hover:scale-105 transition ease-in duration-300')
-  }
-  if (shadow) {
-    classArray.push('drop-shadow-md')
-  }
-
+  displayShadow && classArray.push('drop-shadow-md')
   return classArray.join(' ')
-}
-const getTitleClass = (
-  size: HeadingSize,
-  color: ColorPalette,
-  hl: boolean
-): string => {
+})
+const titleClass = computed<string>(() => {
   /**
-   * @size - titleSize
-   * @color - titleColor
-   * @hl - displayHighlight
+   * @param {HeadingSize} titleSize
+   * @param {ColorPalette} titleColor
+   * @param {boolean} displayHighlight
    */
-
-  const classArray = [
-    generateClass('H3', size),
-    generateClass('TEXTCOLOR', color),
+  const { titleSize, titleColor, displayHighlight } = props
+  const classArray: string[] = [
+    generateClass('H3', titleSize),
+    generateClass('TEXTCOLOR', titleColor),
   ]
-
-  if (hl) {
-    classArray.push('mb-2xs')
-  } else {
-    classArray.push('mb-xs')
-  }
-
+  classArray.push(displayHighlight ? 'mb-2xs' : 'mb-xs')
   return classArray.join(' ')
-}
-const getLabelClass = (tColor: ColorPalette, bColor: ColorPalette): string => {
+})
+const labelClass = computed<string>(() => {
   /**
-   * @tColor - labelTextColor
-   * @bColor - labelColor
+   * @param {ColorPalette} labelTextColor
+   * @param {ColorPalette} labelColor
    */
-  const classArray = [
-    generateClass('TEXTCOLOR', tColor),
-    generateClass('BGCOLOR', bColor),
+  const { labelTextColor, labelColor } = props
+  const classArray: string[] = [
+    generateClass('TEXTCOLOR', labelTextColor),
+    generateClass('BGCOLOR', labelColor),
   ]
   return classArray.join(' ')
-}
-const getCtaClass = (color: ColorPalette, round: boolean): string => {
+})
+const ctaClass = computed<string>(() => {
   /**
-   * @color - ctaColor
-   * @round - rounded
+   * @param {ColorPalette} ctaColor
+   * @param {boolean} rounded
    */
-  const classArray: string[] = [generateClass('BTNCOLOR', color)]
-
+  const { ctaColor, rounded } = props
+  const classArray: string[] = [generateClass('BTNCOLOR', ctaColor)]
   const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
-
-  let textColor = lightColor.includes(color) ? 'text-black' : 'text-white'
-
+  let textColor = lightColor.includes(ctaColor) ? 'text-black' : 'text-white'
   classArray.push(textColor)
-
-  if (round) {
-    classArray.push('btn-round')
-  }
-
+  rounded && classArray.push('btn-round')
   return classArray.join(' ')
-}
+})
 const handleButtonClick = (e: Event): void => {
   const { title, ctaLink, ctaTarget, ctaAsLink } = props
   const cardEvent: CardClickEvent = {
@@ -180,28 +148,19 @@ const handleCardClick = (e: Event): void => {
 <template>
   <div
     class="overflow-hidden border max-w-[450px] sm:max-w-[350px] w-full xs:w-auto flex-grow flex-shrink-0 cursor-pointer"
-    :class="
-      getBorderClass(
-        borderColor,
-        bgColor,
-        rounded,
-        enlargeOnHover,
-        displayShadow
-      )
-    "
+    :class="borderClass"
     @click="handleCardClick"
   >
     <div class="relative" v-if="displayImage">
       <img
         :src="imageSource"
         :alt="imageAlt"
-        :crossorigin="imageCors"
         class="object-cover object-top h-[220px] min-w-full"
       />
       <span
         v-if="displayLabel"
         class="py-3xs px-2xs ml-xs inline-block font-bold text-xs absolute bottom-0 translate-y-[50%]"
-        :class="getLabelClass(labelTextColor, labelColor)"
+        :class="labelClass"
         v-html="labelText"
       ></span>
     </div>
@@ -211,13 +170,10 @@ const handleCardClick = (e: Event): void => {
           <span
             v-if="!displayImage && displayLabel"
             class="py-3xs px-2xs mb-2xs inline-block font-bold text-xs"
-            :class="getLabelClass(labelTextColor, labelColor)"
+            :class="labelClass"
             v-html="labelText"
           ></span>
-          <h3
-            :class="getTitleClass(titleSize, titleColor, displayHighlight)"
-            v-html="title"
-          ></h3>
+          <h3 :class="titleClass" v-html="title"></h3>
           <div
             v-if="displayHighlight"
             class="mb-xs h-3xs w-md"
@@ -234,7 +190,7 @@ const handleCardClick = (e: Event): void => {
             :href="ctaLink"
             :target="ctaTarget"
             class="btn btn-full"
-            :class="getCtaClass(ctaColor, rounded)"
+            :class="ctaClass"
             @click="handleButtonClick($event)"
             >{{ ctaText }}</a
           >
