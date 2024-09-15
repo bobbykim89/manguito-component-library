@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.5](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-cards@0.7.4...@bobbykim/mcl-cards@0.7.5) (2024-09-15)
+
+
+### Bug Fixes
+
+* **mcl-cards:** fix issue where card images are not being displayed properly for mcl-card-b and mcl-card-c, refactor code ([b2fb429](https://github.com/bobbykim89/manguito-component-library/commit/b2fb42905af5c7fd53e7d3bfe7a530d45d8c8bac))
+
+
+
+
+
 ## [0.7.4](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-cards@0.7.3...@bobbykim/mcl-cards@0.7.4) (2024-08-15)
 
 **Note:** Version bump only for package @bobbykim/mcl-cards
