@@ -1,7 +1,6 @@
 import {
   booleanControllers,
   colorControllers,
-  corsOptionControllers,
   headingTextControllers,
   rangeControllers,
   textControllers,
@@ -52,13 +51,6 @@ const meta: Meta<typeof MclCardC> = {
       description: 'alt text for card image',
       category: 'Image Block',
     }),
-    imageCors: corsOptionControllers({
-      name: 'image-cors',
-      required: false,
-      description: 'cors option for image (anonymous|use-credentials)',
-      defaultValue: 'anonymous',
-      category: 'Image Block',
-    }),
     cardColor: colorControllers({
       name: 'card-color',
       required: false,
@@ -105,7 +97,6 @@ const meta: Meta<typeof MclCardC> = {
     highlightOpacity: 80,
     displayTitle: false,
     cardColor: 'primary',
-    imageCors: 'anonymous',
   },
 }
 

@@ -1,7 +1,6 @@
 import {
   booleanControllers,
   colorControllers,
-  corsOptionControllers,
   headingTextControllers,
   targetOptionControllers,
   textControllers,
@@ -65,13 +64,6 @@ export const MclCardAExample: Story = {
       name: 'image-alt',
       required: false,
       description: 'image alt text on the card',
-      category: 'Image Block',
-    }),
-    imageCors: corsOptionControllers({
-      name: 'image-cors',
-      required: false,
-      description: 'cors option for image (anonymous|use-credentials)',
-      defaultValue: 'anonymous',
       category: 'Image Block',
     }),
     borderColor: colorControllers({
@@ -204,7 +196,6 @@ export const MclCardAExample: Story = {
     imageSource:
       'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg',
     imageAlt: 'Manguito is perching',
-    imageCors: 'anonymous',
     displayCta: true,
     ctaColor: 'primary',
     ctaLink: 'https://manguitopage.herokuapp.com/',
