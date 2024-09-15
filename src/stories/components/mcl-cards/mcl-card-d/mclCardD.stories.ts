@@ -45,13 +45,6 @@ const meta: Meta<typeof MclCardD> = {
       description: 'alt text for card image',
       category: 'Image Block',
     }),
-    imageCors: corsOptionControllers({
-      name: 'image-cors',
-      required: false,
-      description: 'cors option for image (anonymous|use-credentials)',
-      defaultValue: 'anonymous',
-      category: 'Image Block',
-    }),
     displayImage: booleanControllers({
       name: 'displayImage',
       required: false,
@@ -161,7 +154,6 @@ const meta: Meta<typeof MclCardD> = {
     imageSource:
       'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg',
     imageAlt: 'picture of a bird',
-    imageCors: 'anonymous',
     title: 'MCL Card D',
     titleSize: 'md',
     titleColor: 'dark-4',
