@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type {
   ColorPalette,
-  CrossOrigin,
   CtaTarget,
   HeadingSize,
   Range,
@@ -75,7 +74,6 @@ const props = withDefaults(
     displayImage?: boolean
     imageSource?: string
     imageAlt?: string
-    imageCors?: CrossOrigin
     title: string
     titleSize?: HeadingSize
     titleColor?: ColorPalette
@@ -98,7 +96,6 @@ const props = withDefaults(
   {
     displayImage: true,
     imageAlt: '',
-    imageCors: 'anonymous',
     titleSize: 'md',
     titleColor: 'dark-4',
     bgColor: 'light-1',
@@ -124,45 +121,33 @@ const emit = defineEmits<{
   (e: 'card-click', event: Event, item: CardClickEvent): void
 }>()
 
-const titleClass = (size: HeadingSize, color: ColorPalette): string => {
+const titleClass = computed<string>(() => {
   /**
-   * @param {HeadingSize} size - titleSize
-   * @param {ColorPalette} color - titleColor
+   * @param {HeadingSize} titleSize
+   * @param {ColorPalette}  titleColor
    */
-
+  const { titleSize, titleColor } = props
   const classArray: string[] = [
-    generateClass('H2', size),
-    generateClass('TEXTCOLOR', color),
+    generateClass('H2', titleSize),
+    generateClass('TEXTCOLOR', titleColor),
   ]
   return classArray.join(' ')
-}
-const buttonClass = (
-  dBtn: boolean,
-  color: ColorPalette,
-  block: boolean
-): string => {
-  /**
-   * @param {boolean} - dBtn = ctaButton
-   * @param {ColorPalette} - color = ctaButtonColor
-   * @param {boolean} - block = ctaButtonBlock
-   */
+})
+const btnClass = computed<string>(() => {
+  const { ctaButton, ctaButtonColor, ctaButtonBlock } = props
   const classArray: string[] = []
   const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
-  if (!dBtn) {
-    classArray.push('mcl-link')
-  }
-  if (dBtn) {
-    classArray.push('btn')
-    classArray.push(generateClass('BTNCOLOR', color))
-  }
-  if (dBtn && block) {
+  ctaButton
+    ? classArray.push('btn', generateClass('BTNCOLOR', ctaButtonColor))
+    : classArray.push('mcl-link')
+  if (ctaButton && ctaButtonBlock) {
     classArray.push('btn-full')
   }
-  if (dBtn && !lightColor.includes(color)) {
+  if (ctaButton && !lightColor.includes(ctaButtonColor)) {
     classArray.push('text-white')
   }
   return classArray.join(' ')
-}
+})
 
 const borderVariable = computed(() => {
   return {
@@ -211,12 +196,11 @@ const handleCardClick = (e: Event) => {
       <img
         v-if="displayImage"
         :src="imageSource"
-        :crossorigin="imageCors"
-        class="object-cover object-top max-h-[200px]"
+        class="object-cover object-top max-h-[200px] min-w-full"
         :alt="imageAlt"
       />
       <div class="p-xs" :class="generateClass('BGCOLOR', bgColor)">
-        <h3 class="mb-xs" :class="titleClass(titleSize, titleColor)">
+        <h3 class="mb-xs" :class="titleClass">
           {{ title }}
         </h3>
         <div
@@ -231,7 +215,7 @@ const handleCardClick = (e: Event) => {
           <a
             :href="ctaLink"
             :target="ctaLinkTarget"
-            :class="buttonClass(ctaButton, ctaButtonColor, ctaButtonBlock)"
+            :class="btnClass"
             @click="handleCardClick"
             >{{ ctaText }}</a
           >

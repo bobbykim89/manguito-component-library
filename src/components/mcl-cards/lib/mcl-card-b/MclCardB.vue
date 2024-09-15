@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type {
   ColorPalette,
-  CrossOrigin,
   CtaTarget,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
 import type { CardClickEvent } from '../common/index.types'
+import { computed } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -17,7 +17,6 @@ const props = withDefaults(
     borderColor?: ColorPalette
     imageSource?: string
     imageAlt?: string
-    imageCors?: CrossOrigin
     displayGrayScale?: boolean
     ctaAsLink?: boolean
     ctaLink?: string
@@ -30,7 +29,6 @@ const props = withDefaults(
     titleBlockColor: 'dark-4',
     borderColor: 'light-3',
     displayGrayScale: true,
-    imageCors: 'anonymous',
     ctaAsLink: false,
     ctaLink: '#',
     ctaTarget: '_self',
@@ -44,55 +42,43 @@ const slots = defineSlots<{
 const emit = defineEmits<{
   (e: 'card-click', event: Event, item: CardClickEvent): void
 }>()
-
-const getBorderClass = (bColor: ColorPalette, rounded: boolean): string => {
+const borderClass = computed<string>(() => {
   /**
-   * @bColor - borderColor
-   * @rounded - rounded
+   * @param {ColorPalette} borderColor
+   * @param {boolean} rounded
    */
-  const classArray = [generateClass('BORDER', bColor)]
-  if (rounded) {
-    classArray.push('rounded-md')
-  } else {
-    classArray.push('rounded-sm')
-  }
-
+  const { borderColor, rounded } = props
+  const classArray: string[] = [generateClass('BORDER', borderColor)]
+  classArray.push(rounded ? 'rounded-md' : 'rounded-sm')
   return classArray.join(' ')
-}
-
-const handleHoverEffect = (dGray: boolean): string => {
+})
+const hoverEffect = computed<string>(() => {
   /**
-   * @dgray - displayGrayScale
+   * @param {boolean} displayGrayScale
    */
-  if (dGray) {
-    return '[@media(hover:hover)]:grayscale peer-hover:grayscale-0'
-  }
-  return ''
-}
-
-const handleTitleClass = (
-  tSize: HeadingSize,
-  tColor: ColorPalette,
-  tBgColor: ColorPalette
-): string => {
+  const { displayGrayScale } = props
+  return displayGrayScale
+    ? '[@media(hover:hover)]:grayscale peer-hover:grayscale-0'
+    : ''
+})
+const titleClass = computed<string>(() => {
   /**
-   * @tSize - titleSize
-   * @tColor - titleColor
-   * @tBgColor - titleBlockColor
+   * @param {HeadingSize} titleSize
+   * @param {ColorPalette} titleColor
+   * @param {ColorPalette} titleBlockColor
    */
-
-  const classArray = [
-    generateClass('H3', tSize),
-    generateClass('TEXTCOLOR', tColor),
-    generateClass('BGCOLOR', tBgColor),
+  const { titleSize, titleColor, titleBlockColor } = props
+  const classArray: string[] = [
+    generateClass('H3', titleSize),
+    generateClass('TEXTCOLOR', titleColor),
+    generateClass('BGCOLOR', titleBlockColor),
   ]
-
   return classArray.join(' ')
-}
+})
 
 const handleCardClick = (e: Event): void => {
   /**
-   * @e - Event
+   * @param {Event} e
    */
   const { title, ctaLink, ctaTarget, ctaAsLink } = props
   !ctaAsLink && e.preventDefault()
@@ -108,8 +94,8 @@ const handleCardClick = (e: Event): void => {
 
 <template>
   <div
-    class="relative max-w-[450px] sm:max-w-[350px] w-full xs:w-auto flex-grow flex-shrink-0 cursor-pointer overflow-hidden border border-light-3"
-    :class="getBorderClass(borderColor, rounded)"
+    class="relative max-w-[450px] sm:max-w-[350px] w-full xs:w-auto flex-grow flex-shrink-0 cursor-pointer overflow-hidden border"
+    :class="borderClass"
   >
     <a :href="ctaLink" :target="ctaTarget" @click="handleCardClick($event)">
       <div
@@ -118,16 +104,15 @@ const handleCardClick = (e: Event): void => {
         <h3
           v-html="title"
           class="inline-block px-xs py-2xs mb-2xs pointer-events-none tracking-wide"
-          :class="handleTitleClass(titleSize, titleColor, titleBlockColor)"
+          :class="titleClass"
         ></h3>
         <slot></slot>
       </div>
       <img
         :src="imageSource"
         :alt="imageAlt"
-        :crossorigin="imageCors"
-        class="relative z-10 object-cover aspect-[3/4] transition-all duration-200"
-        :class="handleHoverEffect(displayGrayScale)"
+        class="relative h-full w-full z-10 object-cover object-center aspect-[3/4] transition-all duration-200"
+        :class="hoverEffect"
       />
     </a>
   </div>

@@ -1,7 +1,6 @@
 import {
   booleanControllers,
   colorControllers,
-  corsOptionControllers,
   headingTextControllers,
   targetOptionControllers,
   textControllers,
@@ -66,13 +65,6 @@ const meta: Meta<typeof MclCardB> = {
       description: 'alt text for card image',
       category: 'Image Block',
     }),
-    imageCors: corsOptionControllers({
-      name: 'image-cors',
-      required: false,
-      description: 'cors option for image (anonymous|use-credentials)',
-      defaultValue: 'anonymous',
-      category: 'Image Block',
-    }),
     displayGrayScale: booleanControllers({
       name: 'display-grayscale',
       required: false,
@@ -112,7 +104,6 @@ const meta: Meta<typeof MclCardB> = {
     imageSource:
       'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg',
     imageAlt: 'Manguito is perching',
-    imageCors: 'anonymous',
     ctaAsLink: false,
     ctaLink: 'https://manguitopage.herokuapp.com/',
     ctaTarget: '_self',

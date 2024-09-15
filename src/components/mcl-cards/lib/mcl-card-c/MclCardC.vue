@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type {
   ColorPalette,
-  CrossOrigin,
   HeadingSize,
   OpacityRange,
 } from '@bobbykim/manguito-theme'
@@ -20,7 +19,6 @@ const props = withDefaults(
     highlightOpacity?: OpacityRange
     displayTitle?: boolean
     cardColor?: ColorPalette
-    imageCors?: CrossOrigin
   }>(),
   {
     titleSize: 'md',
@@ -30,7 +28,6 @@ const props = withDefaults(
     highlightOpacity: 80,
     displayTitle: false,
     cardColor: 'primary',
-    imageCors: 'anonymous',
   }
 )
 
@@ -50,31 +47,32 @@ const cardClass = computed(() => {
 
   return classArray.join(' ')
 })
-const titleClass = (
-  tSize: HeadingSize,
-  tColor: ColorPalette,
-  dHl: boolean,
-  hlColor: ColorPalette,
-  hlOpacity: OpacityRange
-): string => {
+const titleClass = computed<string>(() => {
   /**
-   * @tSize - titleSize
-   * @tColor - titleColor
-   * @dHl - displayHighlight
-   * @hlColor - highlightColor
-   * @hlOpacity - highlightOpacity
+   * @param {HeadingSize} titleSize
+   * @param {ColorPalette} titleColor
+   * @param {boolean} displayHighlight
+   * @param {ColorPalette} highlightColor
+   * @param {OpacityRange} highlightOpacity
    */
+  const {
+    titleSize,
+    titleColor,
+    displayHighlight,
+    highlightColor,
+    highlightOpacity,
+  } = props
   const classArray: string[] = [
-    generateClass('H3', tSize),
-    generateClass('TEXTCOLOR', tColor),
+    generateClass('H3', titleSize),
+    generateClass('TEXTCOLOR', titleColor),
   ]
-  if (dHl) {
+  if (displayHighlight) {
     classArray.push('px-xs py-2xs mb-2xs rounded')
-    classArray.push(generateClass('BGCOLOR', hlColor))
-    classArray.push(generateClass('BGOPACITY', hlOpacity))
+    classArray.push(generateClass('BGCOLOR', highlightColor)),
+      classArray.push(generateClass('BGOPACITY', highlightOpacity))
   }
   return classArray.join(' ')
-}
+})
 const handleCardClick = (e: Event) => {
   e.preventDefault()
   if (cardFlipped.value) {
@@ -95,9 +93,8 @@ const handleCardClick = (e: Event) => {
       :alt="imageAlt"
       :class="[
         cardFlipped ? 'opacity-100' : 'opacity-0',
-        'absolute inset-0 object-cover object-center transition-opacity delay-500 duration-[800ms] grayscale-0 hover:grayscale',
+        'absolute w-full h-full object-cover object-center aspect-square transition-opacity delay-500 duration-[800ms]',
       ]"
-      :crossorigin="imageCors"
     />
     <div
       :class="[
@@ -105,19 +102,7 @@ const handleCardClick = (e: Event) => {
         'relative flex flex-col justify-end p-sm h-full transition delay-500 duration-[800ms]',
       ]"
     >
-      <h3
-        v-if="displayTitle"
-        class="relative self-start"
-        :class="
-          titleClass(
-            titleSize,
-            titleColor,
-            displayHighlight,
-            highlightColor,
-            highlightOpacity
-          )
-        "
-      >
+      <h3 v-if="displayTitle" class="relative self-start" :class="titleClass">
         <span>
           {{ title }}
         </span>
