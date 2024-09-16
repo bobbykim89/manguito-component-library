@@ -76,9 +76,9 @@ const parallaxImage = computed(() => {
           class="py-md md:py-lg px-xs md:px-md lg:p-xl"
         >
           <div class="w-full">
-            <compoenent :is="titleLevel">
-              <span :class="titleClass" v-html="title"></span>
-            </compoenent>
+            <component :is="titleLevel">
+              <span :class="titleClass">{{ title }}</span>
+            </component>
             <div class="mt-sm">
               <slot name="content" />
             </div>
