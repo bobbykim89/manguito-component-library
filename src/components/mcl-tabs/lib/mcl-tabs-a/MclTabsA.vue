@@ -99,7 +99,10 @@ const generateTabId = (idx: number) => {
 <template>
   <TabContainer
     :body-class="['w-full p-2xs border overflow-hidden', borderClass]"
-    :btn-container-class="['flex p-3xs space-x-1', tabClass]"
+    :btn-container-class="[
+      'flex flex-nowrap p-3xs space-x-1 overflow-x-auto',
+      tabClass,
+    ]"
     :content-container-class="[
       'mt-2xs relative p-xs lg:px-sm whitespace-pre-line',
     ]"
@@ -114,7 +117,7 @@ const generateTabId = (idx: number) => {
         :class="[
           activeTab === idx ? activeBtnClass : inactiveBtnClass,
           rounded && 'rounded-lg',
-          'text-center w-full py-2.5 focus:outline-none',
+          'min-w-[50%] md:min-w-[33%] lg:min-w-fit text-center w-full py-2.5 focus:outline-none',
         ]"
         :disabled="activeTab === idx"
         @click="hadleTabClick($event, item.title), update(idx)"
