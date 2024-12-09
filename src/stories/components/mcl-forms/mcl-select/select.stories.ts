@@ -7,6 +7,7 @@ import {
 import { MclFormGroup, MclSelect } from '@/components/mcl-forms/lib'
 import type { Meta, StoryObj } from '@storybook/vue3'
 import MclSelectExampleVue from './MclSelectExample.vue'
+import MclSelectCustomSlot from './MclSelectCustomSlot.vue'
 
 const selectOptions = [
   { text: 'Item 1', value: 'value 1' },
@@ -158,9 +159,27 @@ export const MclSelectExample: Story = {
   }),
 }
 
+export const MclSelectExampleFloatingUi: Story = {
+  render: (args) => ({
+    components: { 'mcl-select': MclSelect, 'mcl-form-group': MclFormGroup },
+    setup() {
+      return { args }
+    },
+    template:
+      '<section class="bg-warning h-[50vh]"></section><section class="h-[40vh] bg-light-1 p-md rounded"><mcl-form-group :label-for="args.id" label="MCL Select"><mcl-select v-bind="args"></mcl-select></mcl-form-group></section><section class="bg-success h-[50vh]"></section>',
+  }),
+}
+
 export const MclSelectExampleStringArrayOptions: Story = {
   render: () => ({
     components: { 'mcl-select-example-vue': MclSelectExampleVue },
     template: '<mcl-select-example-vue></mcl-select-example-vue>',
+  }),
+}
+
+export const MclSelectExampleCustomSlotExample: Story = {
+  render: () => ({
+    components: { 'mcl-select-custom-slot': MclSelectCustomSlot },
+    template: '<mcl-select-custom-slot></mcl-select-custom-slot>',
   }),
 }

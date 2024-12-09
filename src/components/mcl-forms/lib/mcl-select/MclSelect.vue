@@ -3,6 +3,7 @@ import type { ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass, { vClickOutside } from '@bobbykim/manguito-theme'
 import { useResizeObserver } from '@vueuse/core'
 import { Transition, computed, ref } from 'vue'
+import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
 import type { SelectOptionType, SelectOptions } from './index.types'
 
 const props = withDefaults(
@@ -40,13 +41,23 @@ const props = withDefaults(
   }
 )
 
+const slots = defineSlots<{
+  'dropdown'(props: {
+    optionClick: (e: Event, option: string | SelectOptionType) => void
+    options: (string | SelectOptionType)[]
+  }): any
+  'no-match': any
+}>()
+
 const model = defineModel<string | number>()
 
 const componentRef = ref<HTMLElement>()
 const inputBox = ref<HTMLInputElement>()
+const dropdownRef = ref<HTMLElement>()
 const optionsWidth = ref<number>()
 const inputFocus = ref<boolean>(false)
 const selectedValue = ref<string | SelectOptionType>('')
+const activeItemIdx = ref<number>(0)
 
 const setInputFocus = () => {
   inputFocus.value = true
@@ -61,10 +72,12 @@ const handleEscapeKeyUp = () => {
 
 const handleClickOutside = () => {
   inputFocus.value = false
+  activeItemIdx.value = 0
 }
 
 const handleToggle = () => {
   inputFocus.value = !inputFocus.value
+  activeItemIdx.value = 0
   if (inputFocus.value === true) {
     inputBox.value?.focus()
   }
@@ -75,7 +88,19 @@ const clearInput = (e: Event) => {
   if (selectedValue.value !== '') {
     selectedValue.value = ''
   }
+  activeItemIdx.value = 0
   model.value = ''
+}
+
+const handleDropdownHide = (el: Element) => {
+  ;(el as HTMLElement).style.pointerEvents = 'none'
+}
+const handleDropdownShown = (el: Element) => {
+  ;(el as HTMLElement).style.pointerEvents = 'auto'
+}
+
+const handleDropDownItemMouseOver = (idx: number) => {
+  activeItemIdx.value = idx
 }
 
 const handleOptionClick = (e: Event, option: string | SelectOptionType) => {
@@ -116,17 +141,17 @@ const containerClass = computed(() => {
   return classArray.join(' ')
 })
 
-const getHighlightClass = (color: ColorPalette, rounded: boolean): string => {
+const getHighlightClass = computed<string>(() => {
   /**
-   * @color - highlightColor
-   * @rounded - rounded
+   * @param {ColorPalette} highlightColor
+   * @param {boolean} rounded
    */
-  const classArray: string[] = [generateClass('BEFOREBG', color)]
-  if (rounded) {
-    classArray.push('rounded-b-md')
-  }
+
+  const { highlightColor, rounded } = props
+  const classArray: string[] = [generateClass('BEFOREBG', highlightColor)]
+  if (rounded) classArray.push('rounded-b-md')
   return classArray.join(' ')
-}
+})
 
 const optionsBlockClass = computed(() => {
   const { displayHighlight, bgColor, borderColor, rounded } = props
@@ -161,18 +186,54 @@ const handleOptionsWidth = computed(() => {
   return { width: `${optionsWidth.value}px` }
 })
 
+const { floatingStyles } = useFloating(componentRef, dropdownRef, {
+  whileElementsMounted: autoUpdate,
+  strategy: 'absolute',
+  open: inputFocus,
+  transform: false,
+  placement: 'bottom',
+  middleware: [flip(), offset(-2.2), shift()],
+})
+
 useResizeObserver(componentRef, () => {
   if (componentRef.value) {
     optionsWidth.value = componentRef.value.clientWidth
   }
 })
+
+const handleArrowButtonKeyUp = (key: 'up' | 'down') => {
+  if (!inputFocus.value) return
+  if (key === 'up' && activeItemIdx.value > 0) activeItemIdx.value--
+  if (key === 'down' && activeItemIdx.value < filteredOptions.value.length - 1)
+    activeItemIdx.value++
+  console.log(activeItemIdx.value)
+}
+const handleEnterKeyUp = () => {
+  if (!inputFocus.value) return
+  const currentPointer: string | SelectOptionType =
+    filteredOptions.value[activeItemIdx.value]
+  let outputVal: string | number
+  if (typeof currentPointer === 'string') {
+    selectedValue.value = currentPointer
+    outputVal = currentPointer
+  } else {
+    selectedValue.value = currentPointer.text
+    outputVal = currentPointer.value
+  }
+  model.value = outputVal
+  inputFocus.value = false
+}
 </script>
 
 <template>
   <div
     @keyup.esc="handleEscapeKeyUp"
+    @keyup.down="handleArrowButtonKeyUp('down')"
+    @keyup.up="handleArrowButtonKeyUp('up')"
+    @keyup.enter="handleEnterKeyUp"
     v-click-outside="handleClickOutside"
     ref="componentRef"
+    class="relative"
   >
     <div
       class="p-2xs flex relative gap-3xs"
@@ -190,6 +251,7 @@ useResizeObserver(componentRef, () => {
         v-model="selectedValue"
         ref="inputBox"
         role="combobox"
+        autocomplete="off"
         :placeholder="placeholder"
         aria-autocomplete="list"
         :aria-expanded="inputFocus"
@@ -235,41 +297,55 @@ useResizeObserver(componentRef, () => {
     <div
       v-if="displayHighlight"
       class="relative h-3xs overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-full before:w-0 before:transition-[width] before:duration-300 before:ease-linear -top-1"
-      :class="[
-        inputFocus ? 'before:w-full' : 'before:w-0',
-        getHighlightClass(highlightColor, rounded),
-      ]"
+      :class="[inputFocus ? 'before:w-full' : 'before:w-0', getHighlightClass]"
     ></div>
-    <transition name="options">
-      <div class="absolute" v-if="inputFocus">
-        <ul
-          :class="[optionsBlockClass]"
-          class="max-h-[200px] overflow-y-auto border-2"
-          :style="handleOptionsWidth"
-          role="listbox"
-        >
-          <li
-            v-for="(option, idx) in filteredOptions"
-            :key="idx"
-            class="p-2xs cursor-pointer"
-            role="option"
-            :class="[generateClass('HVBGCOLOR', highlightColor)]"
-            @click="handleOptionClick($event, option)"
+    <Transition
+      name="options"
+      @before-leave="handleDropdownHide"
+      @enter="handleDropdownShown"
+    >
+      <ul
+        :class="[optionsBlockClass]"
+        class="max-h-[200px] overflow-y-auto border-2"
+        :style="{ ...handleOptionsWidth, ...floatingStyles }"
+        role="listbox"
+        ref="dropdownRef"
+        v-if="inputFocus"
+      >
+        <template v-if="filteredOptions.length > 0">
+          <slot
+            name="dropdown"
+            :option-click="handleOptionClick"
+            :options="filteredOptions"
           >
-            {{ typeof option === 'string' ? option : option.text }}
-          </li>
-          <li
-            v-if="selectedValue !== '' && filteredOptions.length === 0"
-            class="p-2xs cursor-pointer"
-            :class="[generateClass('HVBGCOLOR', selectColor)]"
-          >
-            <slot name="no-match">
+            <li
+              v-for="(option, idx) in filteredOptions"
+              :key="idx"
+              class="p-2xs cursor-pointer"
+              role="option"
+              :class="[
+                activeItemIdx === idx &&
+                  generateClass('BGCOLOR', highlightColor),
+              ]"
+              @click="handleOptionClick($event, option)"
+              @mouseenter="handleDropDownItemMouseOver(idx)"
+            >
+              {{ typeof option === 'string' ? option : option.text }}
+            </li>
+          </slot>
+        </template>
+        <template v-else>
+          <slot name="no-match">
+            <li
+              class="p-2xs cursor-pointer"
+              :class="[generateClass('HVBGCOLOR', selectColor)]"
+            >
               <span>{{ invalidFeedback }}</span>
-            </slot>
-          </li>
-        </ul>
-      </div>
-    </transition>
+            </li>
+          </slot>
+        </template>
+      </ul>
+    </Transition>
   </div>
 </template>
 
@@ -277,7 +353,7 @@ useResizeObserver(componentRef, () => {
 .options-enter-active,
 .options-leave-active {
   opacity: 1;
-  transition: all 0.3s;
+  transition: opacity 0.3s linear, transform 0.3s linear;
 }
 .options-enter-from,
 .options-leave-to {
