@@ -67,6 +67,7 @@
     "vue-tsc": "^1.8.27"
   },
   "dependencies": {
+    "@floating-ui/vue": "^1.1.5",
     "@vueuse/core": "^10.8.0",
     "vue": "^3.4.31"
   },
@@ -89,7 +90,8 @@
       "vite-plugin-dts": "$vite-plugin-dts",
       "vue-tsc": "$vue-tsc",
       "@vueuse/core": "$@vueuse/core",
-      "vue": "$vue"
+      "vue": "$vue",
+      "@floating-ui/vue": "$@floating-ui/vue"
     }
   }
 }
