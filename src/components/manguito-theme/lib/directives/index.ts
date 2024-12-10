@@ -168,7 +168,7 @@ export const vTooltip: Directive<TooltipElementType, TooltipValueType> = {
         !el.hasAttribute('tooltip-width') &&
         typeof binding.value !== 'undefined' &&
         typeof binding.value !== 'string' &&
-        typeof binding.value.width === ('number' || 'string')
+        ['number', 'string'].includes(typeof binding.value.width)
       ) {
         tooltipWidth = binding.value.width
       }
