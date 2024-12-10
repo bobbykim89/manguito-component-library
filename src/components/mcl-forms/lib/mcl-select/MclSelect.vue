@@ -2,13 +2,7 @@
 import type { ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass, { vClickOutside } from '@bobbykim/manguito-theme'
 import { useResizeObserver } from '@vueuse/core'
-import {
-  type ComponentPublicInstance,
-  Transition,
-  computed,
-  ref,
-  watch,
-} from 'vue'
+import { type ComponentPublicInstance, computed, ref, watch } from 'vue'
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
 import type { SelectOptionType, SelectOptions } from './index.types'
 
@@ -216,6 +210,29 @@ const filteredOptions = computed(() => {
   }
 })
 
+const handleArrowButtonKeyUp = (key: 'up' | 'down') => {
+  if (!inputFocus.value) return
+  if (key === 'up' && activeItemIdx.value > 0) activeItemIdx.value--
+  if (key === 'down' && activeItemIdx.value < filteredOptions.value.length - 1)
+    activeItemIdx.value++
+}
+const handleEnterKeyUp = () => {
+  if (!inputFocus.value) return
+  const currentPointer: string | SelectOptionType =
+    filteredOptions.value[activeItemIdx.value]
+  let outputVal: string | number
+  if (typeof currentPointer === 'string') {
+    selectedValue.value = currentPointer
+    outputVal = currentPointer
+  } else {
+    selectedValue.value = currentPointer.text
+    outputVal = currentPointer.value
+  }
+  model.value = outputVal
+  inputFocus.value = false
+  emit('select', outputVal)
+}
+
 const handleOptionsWidth = computed(() => {
   return { width: `${optionsWidth.value}px` }
 })
@@ -235,29 +252,6 @@ useResizeObserver(componentRef, () => {
   }
 })
 
-const handleArrowButtonKeyUp = (key: 'up' | 'down') => {
-  if (!inputFocus.value) return
-  if (key === 'up' && activeItemIdx.value > 0) activeItemIdx.value--
-  if (key === 'down' && activeItemIdx.value < filteredOptions.value.length - 1)
-    activeItemIdx.value++
-  console.log(activeItemIdx.value)
-}
-const handleEnterKeyUp = () => {
-  if (!inputFocus.value) return
-  const currentPointer: string | SelectOptionType =
-    filteredOptions.value[activeItemIdx.value]
-  let outputVal: string | number
-  if (typeof currentPointer === 'string') {
-    selectedValue.value = currentPointer
-    outputVal = currentPointer
-  } else {
-    selectedValue.value = currentPointer.text
-    outputVal = currentPointer.value
-  }
-  model.value = outputVal
-  inputFocus.value = false
-  emit('select', outputVal)
-}
 watch(inputFocus, (newVal) => {
   if (newVal === true) {
     emit('open')
