@@ -2,7 +2,13 @@
 import type { ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass, { vClickOutside } from '@bobbykim/manguito-theme'
 import { useResizeObserver } from '@vueuse/core'
-import { Transition, computed, ref } from 'vue'
+import {
+  type ComponentPublicInstance,
+  Transition,
+  computed,
+  ref,
+  watch,
+} from 'vue'
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
 import type { SelectOptionType, SelectOptions } from './index.types'
 
@@ -45,15 +51,33 @@ const slots = defineSlots<{
   'dropdown'(props: {
     optionClick: (e: Event, option: string | SelectOptionType) => void
     options: (string | SelectOptionType)[]
+    activeIndex: number
+    setRef: (
+      el: Element | ComponentPublicInstance | null,
+      index: number
+    ) => void
+    hover: (index: number) => void
   }): any
   'no-match': any
 }>()
 
-const model = defineModel<string | number>()
+const emit = defineEmits<{
+  (e: 'open'): void
+  (e: 'close'): void
+  (e: 'clear'): void
+  (e: 'changed', value: string | number): void
+  (e: 'select', value: string | number): void
+}>()
+
+const model = defineModel<string | number | null>({ default: null })
 
 const componentRef = ref<HTMLElement>()
 const inputBox = ref<HTMLInputElement>()
 const dropdownRef = ref<HTMLElement>()
+const listItemsRef = ref<Array<Element | ComponentPublicInstance | null | []>>(
+  []
+)
+const selectedItemRef = ref<HTMLElement | null>(null)
 const optionsWidth = ref<number>()
 const inputFocus = ref<boolean>(false)
 const selectedValue = ref<string | SelectOptionType>('')
@@ -66,6 +90,7 @@ const setInputFocus = () => {
 const handleEscapeKeyUp = () => {
   selectedValue.value = ''
   inputFocus.value = false
+  selectedItemRef.value = null
   inputBox.value?.blur()
   model.value = ''
 }
@@ -90,6 +115,14 @@ const clearInput = (e: Event) => {
   }
   activeItemIdx.value = 0
   model.value = ''
+  emit('clear')
+}
+
+const setItemRef = (
+  el: Element | ComponentPublicInstance | null,
+  idx: number
+) => {
+  listItemsRef.value[idx] = el
 }
 
 const handleDropdownHide = (el: Element) => {
@@ -109,6 +142,7 @@ const handleOptionClick = (e: Event, option: string | SelectOptionType) => {
   const outputVal = typeof option === 'string' ? option : option.value
   model.value = outputVal
   inputFocus.value = false
+  emit('select', outputVal)
 }
 
 const containerClass = computed(() => {
@@ -222,7 +256,31 @@ const handleEnterKeyUp = () => {
   }
   model.value = outputVal
   inputFocus.value = false
+  emit('select', outputVal)
 }
+watch(inputFocus, (newVal) => {
+  if (newVal === true) {
+    emit('open')
+  } else {
+    emit('close')
+  }
+})
+
+watch(model, (newVal) => {
+  if (newVal === null) {
+    inputFocus.value = false
+    selectedItemRef.value = null
+    return
+  }
+  emit('changed', newVal)
+})
+
+watch(activeItemIdx, () => {
+  selectedItemRef.value = listItemsRef.value[activeItemIdx.value] as HTMLElement
+  if (selectedItemRef.value && selectedItemRef.value.scrollIntoView) {
+    selectedItemRef.value.scrollIntoView({ block: 'nearest' })
+  }
+})
 </script>
 
 <template>
@@ -317,6 +375,9 @@ const handleEnterKeyUp = () => {
             name="dropdown"
             :option-click="handleOptionClick"
             :options="filteredOptions"
+            :active-index="activeItemIdx"
+            :set-ref="setItemRef"
+            :hover="handleDropDownItemMouseOver"
           >
             <li
               v-for="(option, idx) in filteredOptions"
@@ -327,6 +388,7 @@ const handleEnterKeyUp = () => {
                 activeItemIdx === idx &&
                   generateClass('BGCOLOR', highlightColor),
               ]"
+              :ref="(el) => setItemRef(el, idx)"
               @click="handleOptionClick($event, option)"
               @mouseenter="handleDropDownItemMouseOver(idx)"
             >

@@ -32,11 +32,16 @@ const imageUrl =
         rounded
         v-model="selectedVal"
       >
-        <template #dropdown="{ optionClick, options }">
+        <template
+          #dropdown="{ optionClick, options, activeIndex, setRef, hover }"
+        >
           <li
             v-for="(item, idx) in options"
             @click="optionClick($event, item)"
-            class="cursor-pointer flex gap-4 py-3xs px-2xs items-center hover:bg-warning transition-colors duration-300 ease-linear"
+            class="cursor-pointer flex gap-4 py-3xs px-2xs items-center transition-colors duration-300 ease-linear"
+            :class="[activeIndex === idx && 'bg-warning']"
+            :ref="(el) => setRef(el, idx)"
+            @mouseover="hover(idx)"
           >
             <img
               :src="imageUrl"
