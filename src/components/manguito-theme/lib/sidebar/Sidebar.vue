@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Transition, computed, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { ColorPalette, DirectionX } from '..'
 import generateClass, { vClickOutside } from '..'
 import { observeVisibleAttr } from '../composables'

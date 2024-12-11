@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Transition, computed, ref } from 'vue'
+import { computed, ref } from 'vue'
 import type { ColorPalette } from '..'
 import generateClass from '..'
 import NavDrawer from './NavDrawer.vue'
@@ -108,9 +108,7 @@ defineExpose<{
 }
 .slide-down-enter-active,
 .slide-down-leave-active {
-  transition:
-    transform 0.5s ease-in,
-    opacity 0.5s ease-in;
+  transition: transform 0.5s ease-in, opacity 0.5s ease-in;
 }
 .slide-down-enter-from,
 .slide-down-leave-to {

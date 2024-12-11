@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, provide, Transition, watch } from 'vue'
+import { ref, provide, watch } from 'vue'
 import { carouselInjectionKey } from './CarouselInjectionKey'
 
 const props = withDefaults(
