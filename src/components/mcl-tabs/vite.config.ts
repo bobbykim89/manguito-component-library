@@ -22,7 +22,7 @@ export default defineConfig({
       fileName: 'mcl-tabs',
     },
     rollupOptions: {
-      external: ['vue', '@bobbykim/manguito-theme'],
+      external: ['vue', '@bobbykim/manguito-theme', '@vueuse/core'],
       output: {
         globals: {
           vue: 'Vue',

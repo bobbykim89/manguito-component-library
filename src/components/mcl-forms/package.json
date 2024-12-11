@@ -34,11 +34,11 @@
   "license": "MIT",
   "dependencies": {
     "@bobbykim/manguito-theme": "workspace:*",
+    "@floating-ui/vue": "^1.1.5",
     "@vueuse/core": "^12.0.0",
     "vue": "^3.5.13"
   },
   "devDependencies": {
-    "@floating-ui/vue": "^1.1.5",
     "@vitejs/plugin-vue": "^5.2.1",
     "sass": "^1.82.0",
     "typescript": "^5.7.2",
