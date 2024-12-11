@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, provide, ref, Transition, watch } from 'vue'
+import { computed, provide, ref, watch } from 'vue'
 import { tabInjectionKey } from './InjectionKey'
 
 withDefaults(

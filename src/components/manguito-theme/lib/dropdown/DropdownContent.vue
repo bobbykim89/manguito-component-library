@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useWindowSize } from '@vueuse/core'
-import { Transition, computed, inject, ref } from 'vue'
+import { computed, inject, ref } from 'vue'
 import { dropdownInjectionKey } from './DropdownInjectionKey'
 import type { DropdownInjectType } from './index.types'
 
@@ -34,7 +34,7 @@ const dropdownDirection = computed<string | undefined>(() => {
 </script>
 
 <template>
-  <transition name="dropdown-content">
+  <Transition name="dropdown-content">
     <div
       v-if="active"
       ref="contentRef"
@@ -44,7 +44,7 @@ const dropdownDirection = computed<string | undefined>(() => {
     >
       <slot :item-click="closeDropdown" />
     </div>
-  </transition>
+  </Transition>
 </template>
 
 <style scoped lang="scss">
