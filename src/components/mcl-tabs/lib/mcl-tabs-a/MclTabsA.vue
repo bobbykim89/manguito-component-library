@@ -20,6 +20,7 @@ const props = withDefaults(
     inactiveTitleColor?: ColorPalette
     displayShadow?: boolean
     rounded?: boolean
+    displayScrollButtons?: boolean
   }>(),
   {
     borderColor: 'light-3',
@@ -30,6 +31,7 @@ const props = withDefaults(
     inactiveTitleColor: 'light-1',
     displayShadow: true,
     rounded: true,
+    displayScrollButtons: true,
   }
 )
 
@@ -157,7 +159,7 @@ onMounted(() => {
   >
     <template #tab-button="{ update, activeTab }">
       <button
-        v-show="canScrollLeft"
+        v-if="displayScrollButtons && canScrollLeft"
         class="lg:hidden absolute left-0 top-1/2 transform -translate-y-1/2 z-10 px-3xs h-full"
         :class="[rounded && 'rounded-l-lg', scrollBtnClass]"
         aria-label="scroll left"
@@ -200,7 +202,7 @@ onMounted(() => {
         </button>
       </div>
       <button
-        v-show="canScrollRight"
+        v-if="displayScrollButtons && canScrollRight"
         class="lg:hidden absolute right-0 top-1/2 transform -translate-y-1/2 z-10 px-3xs h-full"
         :class="[rounded && 'rounded-r-lg', scrollBtnClass]"
         aria-label="scroll right"

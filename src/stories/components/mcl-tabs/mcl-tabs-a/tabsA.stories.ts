@@ -110,6 +110,13 @@ const meta: Meta<typeof MclTabsA> = {
       defaultValue: true,
       category: 'Borders',
     }),
+    displayScrollButtons: booleanControllers({
+      name: 'display-scroll-buttons',
+      required: false,
+      description: 'whether or not to display scroll buttons in mobile devices',
+      defaultValue: true,
+      category: 'Controls',
+    }),
   },
   args: {
     tabName: 'mcl-tab-a',
@@ -122,6 +129,7 @@ const meta: Meta<typeof MclTabsA> = {
     inactiveTitleColor: 'light-1',
     displayShadow: true,
     rounded: true,
+    displayScrollButtons: true,
   },
 }
 
