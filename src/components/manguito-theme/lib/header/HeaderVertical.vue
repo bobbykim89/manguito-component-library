@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { useScrollLock } from '@vueuse/core'
+import { computed, ref, Teleport } from 'vue'
 import type { ColorPalette } from '..'
 import generateClass from '..'
 import NavDrawer from './NavDrawer.vue'
+
 const props = withDefaults(
   defineProps<{
     bgColor?: ColorPalette
@@ -28,14 +30,17 @@ const emit = defineEmits<{
   (e: 'toggle-drawer', event: Event, open: boolean): void
 }>()
 const navOpen = ref<boolean>(false)
+const scrollLock = useScrollLock(document)
 
 const toggleNavButton = (e: Event): void => {
   navOpen.value = !navOpen.value
+  scrollLock.value = !scrollLock.value
   emit('toggle-drawer', e, navOpen.value)
 }
 
 const closeNav = (): void => {
   navOpen.value = false
+  scrollLock.value = false
 }
 
 const componentWidth = computed(() => {
@@ -50,42 +55,41 @@ defineExpose<{
 </script>
 
 <template>
-  <section class="lg:flex">
-    <header class="relative" :style="componentWidth">
-      <nav
-        class="hidden lg:block lg:sticky lg:top-0 lg:left-0 lg:h-[100vh] py-sm header-desktop overscroll-contain overflow-y-scroll"
-        :class="[generateClass('BGCOLOR', bgColor)]"
-      >
-        <div class="flex flex-col justify-between h-full">
-          <div>
-            <slot name="content" />
-          </div>
-          <div v-if="slots['content-bottom']">
-            <slot name="content-bottom" />
-          </div>
+  <header class="relative" :style="componentWidth">
+    <nav
+      class="hidden lg:block lg:sticky lg:top-0 lg:left-0 lg:h-[100vh] py-sm header-desktop overscroll-contain overflow-y-scroll"
+      :class="[generateClass('BGCOLOR', bgColor)]"
+    >
+      <div class="flex flex-col justify-between h-full">
+        <div>
+          <slot name="content" />
         </div>
-      </nav>
-
-      <!-- nav drawer button -->
-      <div
-        v-if="slots['mobile-content']"
-        class="block fixed lg:hidden top-0 right-0 mr-xs mt-xs z-50"
-      >
-        <NavDrawer
-          :color="drawerBtnColor"
-          :display-border="drawerBtnBorder"
-          class="block lg:hidden relative"
-          @hbg-click="toggleNavButton"
-          :toggle="navOpen"
-          :nav-color="bgColor"
-        ></NavDrawer>
+        <div v-if="slots['content-bottom']">
+          <slot name="content-bottom" />
+        </div>
       </div>
+    </nav>
 
-      <!-- mobile menu -->
-
+    <!-- mobile menu -->
+    <Teleport to="body">
       <div class="block lg:hidden relative z-40">
+        <!-- nav drawer button -->
+        <div
+          v-if="slots['mobile-content']"
+          class="block fixed lg:hidden top-0 right-0 mr-xs mt-xs z-50"
+        >
+          <NavDrawer
+            :color="drawerBtnColor"
+            :display-border="drawerBtnBorder"
+            class="block lg:hidden relative"
+            @hbg-click="toggleNavButton"
+            :toggle="navOpen"
+            :nav-color="bgColor"
+          ></NavDrawer>
+        </div>
+
         <Transition name="slide-down" appear>
-          <div
+          <nav
             class="fixed inset-0 overflow-y-scroll overscroll-contain py-lg px-sm"
             v-if="navOpen"
             :class="generateClass('BGCOLOR', bgColor)"
@@ -93,14 +97,11 @@ defineExpose<{
             <div v-if="slots['mobile-content']" class="h-full">
               <slot name="mobile-content" :header-close="closeNav" />
             </div>
-          </div>
+          </nav>
         </Transition>
       </div>
-    </header>
-    <div class="w-full">
-      <slot />
-    </div>
-  </section>
+    </Teleport>
+  </header>
 </template>
 
 <style scoped lang="scss">
@@ -110,9 +111,11 @@ defineExpose<{
     width: var(--header-width);
   }
 }
-.slide-down-enter-active,
+.slide-down-enter-active {
+  transition: transform 0.3s ease-in 0.2s, opacity 0.5s ease-in;
+}
 .slide-down-leave-active {
-  transition: transform 0.5s ease-in, opacity 0.5s ease-in;
+  transition: transform 0.5s ease-in, opacity 0.3s ease-in 0.2s;
 }
 .slide-down-enter-from,
 .slide-down-leave-to {
