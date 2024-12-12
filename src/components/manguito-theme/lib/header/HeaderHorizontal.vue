@@ -158,4 +158,3 @@ defineExpose<{
   transition: height 0.5s ease-out;
 }
 </style>
-../index../index
