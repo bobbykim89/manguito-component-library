@@ -66,7 +66,11 @@ defineExpose<{
         </div>
       </nav>
 
-      <div class="block fixed lg:hidden top-0 right-0 mr-xs mt-xs z-20">
+      <!-- nav drawer button -->
+      <div
+        v-if="slots['mobile-content']"
+        class="block fixed lg:hidden top-0 right-0 mr-xs mt-xs z-50"
+      >
         <NavDrawer
           :color="drawerBtnColor"
           :display-border="drawerBtnBorder"
@@ -79,7 +83,7 @@ defineExpose<{
 
       <!-- mobile menu -->
 
-      <div class="block lg:hidden relative">
+      <div class="block lg:hidden relative z-40">
         <Transition name="slide-down" appear>
           <div
             class="fixed inset-0 overflow-y-scroll overscroll-contain py-lg px-sm"
@@ -116,4 +120,3 @@ defineExpose<{
   transform: translateY(-100%);
 }
 </style>
-../index../index

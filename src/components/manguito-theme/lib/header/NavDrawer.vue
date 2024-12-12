@@ -119,4 +119,3 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
   transform: rotate(-135deg);
 }
 </style>
-../index../index
