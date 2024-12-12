@@ -4,8 +4,8 @@ import generateClass, {
   TabContainer,
   TabContent,
 } from '@bobbykim/manguito-theme'
-import { computed, ref, onMounted } from 'vue'
-import { useEventListener } from '@vueuse/core'
+import { useElementSize } from '@vueuse/core'
+import { computed, onMounted, ref, watch } from 'vue'
 import type { ContentType } from './index.types'
 
 const props = withDefaults(
@@ -38,6 +38,7 @@ const props = withDefaults(
 const buttonContainerRef = ref<HTMLElement>()
 const canScrollLeft = ref<boolean>(false)
 const canScrollRight = ref<boolean>(false)
+const { width } = useElementSize(buttonContainerRef)
 
 const emit = defineEmits<{
   (e: 'tab-click', event: Event, title: string): void
@@ -142,11 +143,11 @@ const generateTabId = (idx: number) => {
   return `${tabName}-tab-${idx}`
 }
 
-useEventListener(buttonContainerRef, 'resize', updateScrollButtons)
-
 onMounted(() => {
   updateScrollButtons()
 })
+
+watch(width, updateScrollButtons)
 </script>
 
 <template>
