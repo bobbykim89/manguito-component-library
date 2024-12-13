@@ -25,6 +25,16 @@ const contentInfo: ContentType[] = [
     content:
       'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Asperiores laboriosam totam, error reprehenderit quasi commodi, aspernatur a deserunt eligendi nobis sequi vero fuga in consequuntur ipsum. Quod nesciunt nulla corrupti voluptatibus? Natus, corporis quisquam! Corrupti eos, placeat, similique nostrum possimus officia aperiam cupiditate neque ducimus deserunt in quas earum, illo veritatis quos. Laudantium maxime voluptates facilis temporibus repellendus pariatur, quisquam, molestias quam, autem iste officia rerum hic rem. Minus, mollitia?',
   },
+  {
+    title: 'Fourth',
+    content:
+      'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Asperiores laboriosam totam, error reprehenderit quasi commodi, aspernatur a deserunt eligendi nobis sequi vero fuga in consequuntur ipsum. Quod nesciunt nulla corrupti voluptatibus? Natus, corporis quisquam! Corrupti eos, placeat, similique nostrum possimus officia aperiam cupiditate neque ducimus deserunt in quas earum, illo veritatis quos. Laudantium maxime voluptates facilis temporibus repellendus pariatur, quisquam, molestias quam, autem iste officia rerum hic rem. Minus, mollitia?',
+  },
+  {
+    title: 'Fifth',
+    content:
+      'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Asperiores laboriosam totam, error reprehenderit quasi commodi, aspernatur a deserunt eligendi nobis sequi vero fuga in consequuntur ipsum. Quod nesciunt nulla corrupti voluptatibus? Natus, corporis quisquam! Corrupti eos, placeat, similique nostrum possimus officia aperiam cupiditate neque ducimus deserunt in quas earum, illo veritatis quos. Laudantium maxime voluptates facilis temporibus repellendus pariatur, quisquam, molestias quam, autem iste officia rerum hic rem. Minus, mollitia?',
+  },
 ]
 
 const meta: Meta<typeof MclTabsA> = {
@@ -100,6 +110,13 @@ const meta: Meta<typeof MclTabsA> = {
       defaultValue: true,
       category: 'Borders',
     }),
+    displayScrollButtons: booleanControllers({
+      name: 'display-scroll-buttons',
+      required: false,
+      description: 'whether or not to display scroll buttons in mobile devices',
+      defaultValue: true,
+      category: 'Controls',
+    }),
   },
   args: {
     tabName: 'mcl-tab-a',
@@ -112,6 +129,7 @@ const meta: Meta<typeof MclTabsA> = {
     inactiveTitleColor: 'light-1',
     displayShadow: true,
     rounded: true,
+    displayScrollButtons: true,
   },
 }
 

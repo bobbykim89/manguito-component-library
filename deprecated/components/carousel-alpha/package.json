@@ -24,7 +24,7 @@
     "@bobbykim/card-alpha": "^0.5.1",
     "@bobbykim/card-beta": "^0.5.1",
     "@bobbykim/card-delta": "^0.5.1",
-    "@bobbykim/manguito-theme": "^0.14.0"
+    "@bobbykim/manguito-theme": "^0.22.1"
   },
   "gitHead": "4e6b9b908a17893f6e6baab01741dc0dde771ac8"
 }

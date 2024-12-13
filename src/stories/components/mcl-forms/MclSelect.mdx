@@ -36,3 +36,50 @@ import { MclSelect } from '@bobbykim/mcl-forms'
 ## Example with Options as string array
 
 <Canvas of={Stories.MclSelectExampleStringArrayOptions} />
+
+## Example with Custom Slot Content
+
+<Canvas of={Stories.MclSelectExampleCustomSlotExample} />
+
+### Slots
+
+#### `#dropdown`: This slot is used to customize the rendering of the dropdown options.
+
+| Prop        | Type                              | Description                                                                                           |
+| ----------- | --------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| optionClick | `(e, option) => void`             | handles event when option is clicked                                                                  |
+| options     | `Array<string, SelectOptionType>` | returns list of options available in the list                                                         |
+| activeIndex | `number`                          | The index of the currently active (highlighted) option.                                               |
+| setRef      | `(el: Element)`                   | set elements into ref variable                                                                        |
+| hover       | `(index: number) => void`         | A function triggered when an option is hovered. Takes the index of the hovered option as an argument. |
+
+##### Example
+
+```vue
+<template>
+  <MclSelect>
+    <template #dropdown="{ options, optionClick, activeIndex, setRef, hover }">
+      <li
+        v-for="(option, index) in options"
+        :key="index"
+        :class="{ active: index === activeIndex }"
+        ref="el => setRef(el, index)"
+        @click="(e) => optionClick(e, option)"
+        @mouseover="() => hover(index)"
+      >
+        {{ option }}
+      </li>
+    </template>
+  </MclSelect>
+</template>
+```
+
+#### `#no-match`: This slot is used to customize the rendering of the "no match" state when there are no matching options.
+
+### Events
+
+- `open` - Event fired on dropdown open
+- `close` - Event fired on dropdown cose
+- `clear` - Event fired clear icon click
+- `changed` - (value: string | number) - Event fired on change of value
+- `select` - (value: string | number) - Event fired on select item in the dropdown list

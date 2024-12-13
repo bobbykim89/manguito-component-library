@@ -18,6 +18,9 @@ const openSidebar = () => {
       <button class="btn btn-warning" v-toggle:sidebar-right>
         Sidebar Right
       </button>
+      <button class="btn btn-info" v-toggle:sidebar-right-2>
+        Default Sidebar Right
+      </button>
     </div>
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi dui neque,
@@ -221,7 +224,52 @@ const openSidebar = () => {
         </div>
       </template>
     </sidebar>
+    <sidebar
+      id="sidebar-right-2"
+      placement="right"
+      title="Default Sidebar Right"
+      color="info"
+    >
+      <template #body>
+        <div class="p-xs">
+          <h2 class="h2-md mb-md">This is sidebar right with default header</h2>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+            fermentum commodo dolor eget aliquet. Donec malesuada lorem dictum,
+            varius augue ut, congue lacus. Proin ornare nisl cursus vehicula
+            bibendum. Maecenas gravida semper erat quis posuere. Suspendisse eu
+            interdum orci. Suspendisse pellentesque finibus lacus, ac ultrices
+            libero placerat sed. Vestibulum ac purus velit. Duis at euismod mi,
+            quis malesuada erat. Sed feugiat cursus massa, et posuere tellus
+            sagittis non. Suspendisse consectetur ligula eu nunc malesuada
+            bibendum. Maecenas quis leo a tellus vulputate imperdiet.
+            Suspendisse suscipit lobortis massa, nec tristique quam sagittis
+            sed. Nulla eget accumsan orci, laoreet mollis quam. Proin neque
+            velit, suscipit ac tortor ut, mattis rhoncus massa. Suspendisse non
+            eros mi. Sed ut urna sed ex finibus consectetur.
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+            fermentum commodo dolor eget aliquet. Donec malesuada lorem dictum,
+            varius augue ut, congue lacus. Proin ornare nisl cursus vehicula
+            bibendum. Maecenas gravida semper erat quis posuere. Suspendisse eu
+            interdum orci. Suspendisse pellentesque finibus lacus, ac ultrices
+            libero placerat sed. Vestibulum ac purus velit. Duis at euismod mi,
+            quis malesuada erat. Sed feugiat cursus massa, et posuere tellus
+            sagittis non. Suspendisse consectetur ligula eu nunc malesuada
+            bibendum. Maecenas quis leo a tellus vulputate imperdiet.
+            Suspendisse suscipit lobortis massa, nec tristique quam sagittis
+            sed. Nulla eget accumsan orci, laoreet mollis quam. Proin neque
+            velit, suscipit ac tortor ut, mattis rhoncus massa. Suspendisse non
+            eros mi. Sed ut urna sed ex finibus consectetur.
+          </p>
+        </div>
+      </template>
+      <template #footer>
+        <div class="p-xs bg-info">
+          <h3 class="h3-sm">Footer text</h3>
+        </div>
+      </template>
+    </sidebar>
   </section>
 </template>
-
-<style scoped></style>
