@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.8.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-container@0.7.1...@bobbykim/mcl-container@0.8.0) (2024-12-13)
+
+
+### Features
+
+* resolve build error fix ([5f9d3c8](https://github.com/bobbykim89/manguito-component-library/commit/5f9d3c83bb82404ff09795e847e62e2a6c49df27))
+
+
+
+
+
 ## [0.7.1](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-container@0.7.0...@bobbykim/mcl-container@0.7.1) (2024-09-16)
 
 

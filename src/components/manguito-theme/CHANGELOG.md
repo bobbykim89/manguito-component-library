@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.23.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.22.1...@bobbykim/manguito-theme@0.23.0) (2024-12-13)
+
+
+### Features
+
+* **manguito-theme/:** update manguito-theme base components ([ccbf500](https://github.com/bobbykim89/manguito-component-library/commit/ccbf500f6f339d91d353939427b424341d8d9070))
+* **manguito-theme:** code cleanup ([442ae40](https://github.com/bobbykim89/manguito-component-library/commit/442ae40adec137e2b9ed59c9363dcf8f7148839b))
+* **manguito-theme:** update header-vertical component ([e3d43b0](https://github.com/bobbykim89/manguito-component-library/commit/e3d43b0664795a1dd665d8127f53a3f10e81d3ed))
+* resolve build error fix ([5f9d3c8](https://github.com/bobbykim89/manguito-component-library/commit/5f9d3c83bb82404ff09795e847e62e2a6c49df27))
+
+
+
+
+
 ## [0.22.1](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.22.0...@bobbykim/manguito-theme@0.22.1) (2024-08-15)
 
 **Note:** Version bump only for package @bobbykim/manguito-theme

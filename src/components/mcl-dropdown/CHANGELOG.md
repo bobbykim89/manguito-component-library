@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.12.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-dropdown@0.11.4...@bobbykim/mcl-dropdown@0.12.0) (2024-12-13)
+
+
+### Features
+
+* resolve build error fix ([5f9d3c8](https://github.com/bobbykim89/manguito-component-library/commit/5f9d3c83bb82404ff09795e847e62e2a6c49df27))
+
+
+
+
+
 ## [0.11.4](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-dropdown@0.11.3...@bobbykim/mcl-dropdown@0.11.4) (2024-08-15)
 
 **Note:** Version bump only for package @bobbykim/mcl-dropdown
