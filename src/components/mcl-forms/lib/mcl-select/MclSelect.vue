@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import type { ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass, { vClickOutside } from '@bobbykim/manguito-theme'
+import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
 import { useResizeObserver } from '@vueuse/core'
 import { type ComponentPublicInstance, computed, ref, watch } from 'vue'
-import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
 import type { SelectOptionType, SelectOptions } from './index.types'
 
 const props = withDefaults(
@@ -82,6 +82,9 @@ const setInputFocus = () => {
 }
 
 const handleEscapeKeyUp = () => {
+  /**
+   * @summary handles esc key up interaction to clear selected value and close dropdown.
+   */
   selectedValue.value = ''
   inputFocus.value = false
   selectedItemRef.value = null
@@ -211,12 +214,18 @@ const filteredOptions = computed(() => {
 })
 
 const handleArrowButtonKeyUp = (key: 'up' | 'down') => {
+  /**
+   * @summary handles keyboard up/down arrow interactions.
+   */
   if (!inputFocus.value) return
   if (key === 'up' && activeItemIdx.value > 0) activeItemIdx.value--
   if (key === 'down' && activeItemIdx.value < filteredOptions.value.length - 1)
     activeItemIdx.value++
 }
 const handleEnterKeyUp = () => {
+  /**
+   * @summary handles keyboard enter key up to select focused dropdown item as as selected item.
+   */
   if (!inputFocus.value) return
   const currentPointer: string | SelectOptionType =
     filteredOptions.value[activeItemIdx.value]
@@ -270,6 +279,9 @@ watch(model, (newVal) => {
 })
 
 watch(activeItemIdx, () => {
+  /**
+   * @summary a watcher to ensure focused dropdown item is visible on keyboard interaction.
+   */
   selectedItemRef.value = listItemsRef.value[activeItemIdx.value] as HTMLElement
   if (selectedItemRef.value && selectedItemRef.value.scrollIntoView) {
     selectedItemRef.value.scrollIntoView({ block: 'nearest' })
