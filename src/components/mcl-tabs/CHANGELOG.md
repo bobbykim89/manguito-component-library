@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.10.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-tabs@0.9.0...@bobbykim/mcl-tabs@0.10.0) (2024-12-13)
+
+
+### Features
+
+* **components/mcl-tabs:** update mcl-tabs component ([f8fb3f7](https://github.com/bobbykim89/manguito-component-library/commit/f8fb3f79efd19e9d9acf1aa3bbac71fca552fc03))
+* **mcl-tabs:** add new prop: display-scroll-buttons ([8090a3d](https://github.com/bobbykim89/manguito-component-library/commit/8090a3d67401eda69e0ad18bf3e5fca14b38bd75))
+* **mcl-tabs:** bug fix ([81db400](https://github.com/bobbykim89/manguito-component-library/commit/81db4001d5e99e57d1c3cd0cf5026fd69f73923e))
+* **mcl-tabs:** mcl-tabs ui update ([0111f43](https://github.com/bobbykim89/manguito-component-library/commit/0111f43dfbea0865fc3037ca36e58d91a717376d))
+* resolve build error fix ([5f9d3c8](https://github.com/bobbykim89/manguito-component-library/commit/5f9d3c83bb82404ff09795e847e62e2a6c49df27))
+
+
+
+
+
 # [0.9.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-tabs@0.8.3...@bobbykim/mcl-tabs@0.9.0) (2024-09-12)
 
 

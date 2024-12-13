@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/mcl-hero",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "hero components based on manguito theme",
   "type": "module",
   "files": [

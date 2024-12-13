@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.9.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-forms@0.8.2...@bobbykim/mcl-forms@0.9.0) (2024-12-13)
+
+
+### Features
+
+* **mcl-forms/:** update mcl-select component documentation ([8e5652d](https://github.com/bobbykim89/manguito-component-library/commit/8e5652dd7f82947402ec309bba49744eccf5646d))
+* **mcl-forms/:** wip) update on mcl-select component ([5b01068](https://github.com/bobbykim89/manguito-component-library/commit/5b01068729caf7cd2e3c4c038b0aa44af2b09454))
+* **mcl-forms:** mcl-select component keyboard interactions update ([813abbd](https://github.com/bobbykim89/manguito-component-library/commit/813abbd60cc47b2270754c781c4fc38ce4275b6a))
+* **mcl-forms:** mcl-select descriptive comments ([53e2119](https://github.com/bobbykim89/manguito-component-library/commit/53e2119c1c4614ddddffcecc0381252f4096c68b))
+* **mcl-tabs:** mcl-tabs ui update ([0111f43](https://github.com/bobbykim89/manguito-component-library/commit/0111f43dfbea0865fc3037ca36e58d91a717376d))
+* resolve build error fix ([5f9d3c8](https://github.com/bobbykim89/manguito-component-library/commit/5f9d3c83bb82404ff09795e847e62e2a6c49df27))
+
+
+
+
+
 ## [0.8.2](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-forms@0.8.1...@bobbykim/mcl-forms@0.8.2) (2024-08-15)
 
 **Note:** Version bump only for package @bobbykim/mcl-forms
