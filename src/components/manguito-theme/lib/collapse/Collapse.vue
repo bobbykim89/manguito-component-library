@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Transition, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { observeVisibleAttr } from '../composables'
 import { ClientSideRender } from '../util'
 

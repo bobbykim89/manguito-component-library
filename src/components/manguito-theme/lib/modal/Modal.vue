@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Transition, computed, ref, watch } from 'vue'
+import { useScrollLock } from '@vueuse/core'
+import { computed, ref, watch } from 'vue'
 import type { ColorPalette, VerticalAlignment } from '..'
 import generateClass, { vClickOutside } from '..'
 import { observeVisibleAttr } from '../composables'
@@ -40,16 +41,20 @@ const emit = defineEmits<{
 const modalRef = ref<HTMLElement | undefined>()
 const toggle = ref<boolean>(props.visible)
 const toggleComplete = ref<boolean>(false)
+const scrollLock = useScrollLock(document)
 
 const toggleModal = (): void => {
   toggle.value = !toggle.value
+  scrollLock.value = !scrollLock.value
 }
 const openModal = (): void => {
   toggle.value = true
+  scrollLock.value = true
 }
 const closeModal = (): void => {
   if (toggleComplete.value === true) {
     toggle.value = false
+    scrollLock.value = false
   }
 }
 const emitOpenEvent = () => {
@@ -84,6 +89,7 @@ const onAfterLeave = () => {
 // set nutation observer watching `visible` attribute in element
 const handleVisibility = (visible: boolean = false) => {
   toggle.value = visible
+  scrollLock.value = visible
 }
 
 observeVisibleAttr(modalRef, handleVisibility)
@@ -215,4 +221,3 @@ defineExpose<{
   }
 }
 </style>
-../index../index
