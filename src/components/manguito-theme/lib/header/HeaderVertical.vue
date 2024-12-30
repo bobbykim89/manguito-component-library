@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useScrollLock } from '@vueuse/core'
-import { computed, ref, Teleport } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import type { ColorPalette } from '..'
 import generateClass from '..'
 import NavDrawer from './NavDrawer.vue'
@@ -30,21 +30,26 @@ const emit = defineEmits<{
   (e: 'toggle-drawer', event: Event, open: boolean): void
 }>()
 const navOpen = ref<boolean>(false)
-const scrollLock = useScrollLock(document)
 
 const toggleNavButton = (e: Event): void => {
   navOpen.value = !navOpen.value
-  scrollLock.value = !scrollLock.value
   emit('toggle-drawer', e, navOpen.value)
 }
 
 const closeNav = (): void => {
   navOpen.value = false
-  scrollLock.value = false
 }
 
 const componentWidth = computed(() => {
   return { '--header-width': `${props.headerWidth}px` }
+})
+
+onMounted(() => {
+  const scrollLock = useScrollLock(document)
+
+  watch(navOpen, (val) => {
+    scrollLock.value = val
+  })
 })
 
 defineExpose<{
