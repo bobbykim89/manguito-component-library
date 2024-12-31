@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.23.1](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.23.0...@bobbykim/manguito-theme@0.23.1) (2024-12-31)
+
+
+### Bug Fixes
+
+* **manguito-theme:** accessibility improvement on nav-drawer ([2563ff9](https://github.com/bobbykim89/manguito-component-library/commit/2563ff92764bcde0e670f335d27292d10dc5cfea))
+* **manguito-theme:** SSR incompatibility fix ([364be07](https://github.com/bobbykim89/manguito-component-library/commit/364be07ca1421f868a13f961bd63a83a8239b8c8))
+
+
+
+
+
 # [0.23.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.22.1...@bobbykim/manguito-theme@0.23.0) (2024-12-13)
 
 
