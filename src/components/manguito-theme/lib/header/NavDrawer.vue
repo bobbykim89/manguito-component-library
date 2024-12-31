@@ -73,6 +73,8 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
     class="p-3xs rounded-md aspect-square outline-none focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear hover:opacity-70 focus:opacity-70 hamburger__button"
     :class="getBorderClass(color, displayBorder, navColor)"
     @click="handleButtonToggle"
+    :aria-label="toggle ? 'Close' : 'Open'"
+    :aria-expanded="toggle"
   >
     <input
       type="checkbox"
