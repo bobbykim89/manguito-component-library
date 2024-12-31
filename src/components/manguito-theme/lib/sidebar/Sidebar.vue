@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useScrollLock } from '@vueuse/core'
-import { computed, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import type { ColorPalette, DirectionX } from '..'
 import generateClass, { vClickOutside } from '..'
 import { observeVisibleAttr } from '../composables'
@@ -45,20 +45,16 @@ const toggleComplete = ref<boolean>(false)
 const sidebarRef = ref<HTMLElement | undefined>()
 const headerRef = ref<HTMLElement>()
 const footerRef = ref<HTMLElement>()
-const scrollLock = useScrollLock(document)
 
 const toggleSidebar = (): void => {
   toggle.value = !toggle.value
-  scrollLock.value = !scrollLock.value
 }
 const openSidebar = (): void => {
   toggle.value = true
-  scrollLock.value = true
 }
 const closeSidebar = (): void => {
   if (toggleComplete.value === true) {
     toggle.value = false
-    scrollLock.value = false
   }
 }
 const emitOpenEvent = () => {
@@ -98,7 +94,6 @@ const onAfterLeave = () => {
 // set nutation observer watching `visible` attribute in element
 const handleVisibility = (visible: boolean = false) => {
   toggle.value = visible
-  scrollLock.value = visible
 }
 
 observeVisibleAttr(sidebarRef, handleVisibility)
@@ -116,6 +111,12 @@ watch(toggle, (newValue) => {
     emitCloseEvent()
   }
 })
+onMounted(() => {
+  const scrollLock = useScrollLock(document)
+  watch(toggle, (newVal) => {
+    scrollLock.value = newVal
+  })
+})
 defineExpose<{
   toggle: () => void
   open: () => void
@@ -129,7 +130,6 @@ defineExpose<{
 
 <template>
   <div :style="handleStyleVariables" :visible="toggle" ref="sidebarRef">
-    <!-- <button :id="sidebarId" @click="handleToggleEvent" class="hidden"></button> -->
     <Transition name="fade" appear tag="div" v-if="!noBackdrop">
       <section
         v-if="toggle"
