@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.1](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-collapse@0.8.0...@bobbykim/mcl-collapse@0.8.1) (2024-12-31)
+
+**Note:** Version bump only for package @bobbykim/mcl-collapse
+
+
+
+
+
 # [0.8.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-collapse@0.7.4...@bobbykim/mcl-collapse@0.8.0) (2024-12-13)
 
 
