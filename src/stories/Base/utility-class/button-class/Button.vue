@@ -149,6 +149,11 @@
           <span>Full width</span>
         </button>
       </div>
+      <div class="col-span-3 justify-self-stretch place-self-center">
+        <button class="btn btn-no-ring btn-warning btn-full">
+          <span>Full Powered Pollito!</span>
+        </button>
+      </div>
     </div>
   </section>
 </template>
