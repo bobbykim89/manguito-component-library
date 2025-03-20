@@ -5,187 +5,218 @@ import type { Config } from 'tailwindcss/types/config'
 export const mclTheme = plugin.withOptions(
   () => {
     return ({ addBase, theme, addComponents, addUtilities, e }) => {
-      const colors = theme('colors')
-      const listColors = Object.keys(colors!).reduce((accumulator, key) => {
-        if (typeof colors![key] === 'string') {
-          return {
-            ...accumulator,
-            [`.mcl-list-${e(key)} li::before`]: {
-              color: colors![key],
-            },
-          }
-        }
-        const colorShades = Object.keys(colors![key])
+      const colors = theme('colors') as Record<
+        string,
+        string | Record<string, string>
+      >
+      const themeColors = [
+        'primary',
+        'secondary',
+        'success',
+        'info',
+        'warning',
+        'danger',
+        'light-1',
+        'light-2',
+        'light-3',
+        'light-4',
+        'dark-1',
+        'dark-2',
+        'dark-3',
+        'dark-4',
+      ]
 
+      const listColors = themeColors.reduce((accumulator, key) => {
+        if (!(key in colors)) return accumulator
+        if (typeof colors[key] !== 'string') return accumulator
         return {
           ...accumulator,
-          ...colorShades.reduce(
-            (acc, level) => ({
-              ...acc,
-              [`.mcl-list-${e(key)}-${level} li::before`]: {
-                color: colors![key][level],
-              },
-            }),
-            {}
-          ),
+          [`.mcl-list-${e(key)} li::before`]: {
+            color: colors![key],
+          },
         }
+        // if (typeof colors![key] === 'string') {
+        //   return {
+        //     ...accumulator,
+        //     [`.mcl-list-${e(key)} li::before`]: {
+        //       color: colors![key],
+        //     },
+        //   }
+        // }
+        // const colorShades = Object.keys(colors![key])
+
+        // return {
+        //   ...accumulator,
+        //   ...colorShades.reduce(
+        //     (acc, level) => ({
+        //       ...acc,
+        //       [`.mcl-list-${e(key)}-${level} li::before`]: {
+        //         color: colors![key][level],
+        //       },
+        //     }),
+        //     {}
+        //   ),
+        // }
       }, {})
-      const linkColors: {} = Object.keys(colors!).reduce(
-        (accumulator: {}, key) => {
-          const invalidKeys = ['current', 'transparent', 'inherit']
-          if (invalidKeys.includes(key)) {
-            return
-          }
-          if (typeof colors![key] === 'string') {
-            return {
-              ...accumulator,
-              [`.mcl-link.text-${e(key)}`]: {
-                '&:hover': {
-                  [`@apply text-${key}/60`]: {},
-                },
-              },
-            }
-          }
-          const colorShades: any = Object.keys(colors![key])
-          return {
-            ...accumulator,
-            ...colorShades.reduce((acc: {}, level: string) => ({
-              ...acc,
-              [`.mcl-link.text-${e(key)}-${level}`]: {
-                '&:hover': {
-                  [`@apply text-${key}-${level}/60`]: {},
-                },
-              },
-            })),
-          }
-        }
-      )
-      const btnColors = Object.keys(colors!).reduce((accumulator, key) => {
-        if (typeof colors![key] === 'string') {
-          return {
-            ...accumulator,
-            [`.btn.btn-${e(key)}`]: {
-              [`@apply bg-${key}`]: {},
-              '&:hover': {
-                '@apply bg-opacity-70': {},
-              },
-              '&:focus': {
-                [`@apply ring-4 ring-${key}`]: {},
-              },
-            },
-            [`.btn.btn-invert.btn-${e(key)}`]: {
-              [`@apply border-2 bg-transparent border-${key} text-${key}`]: {},
-              '&:hover': {
-                [`@apply bg-${key} text-white bg-opacity-100`]: {},
-              },
-              '&:focus': {
-                [`@apply bg-${key} text-white`]: {},
-              },
-            },
-            [`.btn-group .btn.btn-${e(key)}`]: {
-              '&:focus': {
-                '@apply ring-0': {},
-              },
-            },
-            [`.btn.btn-${e(key)}.btn-no-ring`]: {
-              '&:focus': {
-                '@apply ring-0': {},
-              },
-            },
-            [`.btn.btn-progress.btn-${e(key)}`]: {
-              [`@apply before:bg-${key} border-${key} text-${key} bg-transparent`]:
-                {},
-              '&:hover, &:focus': {
-                '@apply text-white': {},
-              },
-            },
-          }
-        }
-
-        const colorShades = Object.keys(colors![key])
-
+      const linkColors = themeColors.reduce((accumulator, key) => {
+        const invalidKeys = ['current', 'transparent', 'inherit']
+        if (invalidKeys.includes(key)) return accumulator
+        if (!(key in colors)) return accumulator
+        if (typeof colors![key] !== 'string') return accumulator
+        // if (typeof colors![key] === 'string') {
         return {
           ...accumulator,
-          ...colorShades.reduce(
-            (acc, level) => ({
-              ...acc,
-              [`.btn.btn-${e(key)}-${level}`]: {
-                [`@apply bg-${key}-${level}`]: {},
-                '&:hover': {
-                  '@apply bg-opacity-70': {},
-                },
-                '&:focus': {
-                  [`@apply ring-4 ring-${key}-${level}`]: {},
-                },
-              },
-              [`.btn.btn-invert.btn-${e(key)}-${level}`]: {
-                [`@apply border-2 bg-white border-${key}-${level} text-${key}-${level}`]:
-                  {},
-                '&:hover': {
-                  [`@apply bg-${key}-${level} text-white bg-opacity-100`]: {},
-                },
-                '&:focus': {
-                  [`@apply bg-${key}-${level} text-white`]: {},
-                },
-              },
-              [`.btn-group .btn.btn-${e(key)}-${level}`]: {
-                '&:focus': {
-                  '@apply ring-0': {},
-                },
-              },
-              [`.btn.btn-progress.btn-${e(key)}-${level}`]: {
-                [`@apply before:bg-${key}-${level} border-${key}-${level} text-${key}-${level} bg-transparent`]:
-                  {},
-                '&:hover, &:focus': {
-                  '@apply text-white': {},
-                },
-              },
-            }),
-            {}
-          ),
+          [`.mcl-link.text-${e(key)}`]: {
+            '&:hover': {
+              [`@apply text-${key}/60`]: {},
+            },
+          },
         }
+        // }
+
+        // const colorShades: any = Object.keys(colors![key])
+        // return {
+        //   ...accumulator,
+        //   ...colorShades.reduce((acc: {}, level: string) => ({
+        //     ...acc,
+        //     [`.mcl-link.text-${e(key)}-${level}`]: {
+        //       '&:hover': {
+        //         [`@apply text-${key}-${level}/60`]: {},
+        //       },
+        //     },
+        //   })),
+        // }
       }, {})
-      const tooltipColors = Object.keys(colors!).reduce((accumulator, key) => {
+      const btnColors = themeColors.reduce((accumulator, key) => {
+        if (!(key in colors)) return accumulator
+        if (typeof colors![key] !== 'string') return accumulator
+        // if (typeof colors![key] === 'string') {
+        return {
+          ...accumulator,
+          [`.btn.btn-${e(key)}`]: {
+            [`@apply bg-${key}`]: {},
+            '&:hover': {
+              '@apply bg-opacity-70': {},
+            },
+            '&:focus': {
+              [`@apply ring-4 ring-${key}`]: {},
+            },
+          },
+          [`.btn.btn-invert.btn-${e(key)}`]: {
+            [`@apply border-2 bg-transparent border-${key} text-${key}`]: {},
+            '&:hover': {
+              [`@apply bg-${key} text-white bg-opacity-100`]: {},
+            },
+            '&:focus': {
+              [`@apply bg-${key} text-white`]: {},
+            },
+          },
+          [`.btn-group .btn.btn-${e(key)}`]: {
+            '&:focus': {
+              '@apply ring-0': {},
+            },
+          },
+          [`.btn.btn-${e(key)}.btn-no-ring`]: {
+            '&:focus': {
+              '@apply ring-0': {},
+            },
+          },
+          [`.btn.btn-progress.btn-${e(key)}`]: {
+            [`@apply before:bg-${key} border-${key} text-${key} bg-transparent`]:
+              {},
+            '&:hover, &:focus': {
+              '@apply text-white': {},
+            },
+          },
+        }
+        // }
+
+        // const colorShades = Object.keys(colors![key])
+
+        // return {
+        //   ...accumulator,
+        //   ...colorShades.reduce(
+        //     (acc, level) => ({
+        //       ...acc,
+        //       [`.btn.btn-${e(key)}-${level}`]: {
+        //         [`@apply bg-${key}-${level}`]: {},
+        //         '&:hover': {
+        //           '@apply bg-opacity-70': {},
+        //         },
+        //         '&:focus': {
+        //           [`@apply ring-4 ring-${key}-${level}`]: {},
+        //         },
+        //       },
+        //       [`.btn.btn-invert.btn-${e(key)}-${level}`]: {
+        //         [`@apply border-2 bg-white border-${key}-${level} text-${key}-${level}`]:
+        //           {},
+        //         '&:hover': {
+        //           [`@apply bg-${key}-${level} text-white bg-opacity-100`]: {},
+        //         },
+        //         '&:focus': {
+        //           [`@apply bg-${key}-${level} text-white`]: {},
+        //         },
+        //       },
+        //       [`.btn-group .btn.btn-${e(key)}-${level}`]: {
+        //         '&:focus': {
+        //           '@apply ring-0': {},
+        //         },
+        //       },
+        //       [`.btn.btn-progress.btn-${e(key)}-${level}`]: {
+        //         [`@apply before:bg-${key}-${level} border-${key}-${level} text-${key}-${level} bg-transparent`]:
+        //           {},
+        //         '&:hover, &:focus': {
+        //           '@apply text-white': {},
+        //         },
+        //       },
+        //     }),
+        //     {}
+        //   ),
+        // }
+      }, {})
+      const tooltipColors = themeColors.reduce((accumulator, key) => {
         // const invalidKeys = ['current', 'transparent', 'inherit']
         // if (invalidKeys.includes(key)) {
         //   return
         // }
-        if (typeof colors![key] === 'string') {
-          return {
-            ...accumulator,
-            [`.tooltip.tooltip-top.bg-${e(key)}`]: {
-              [`@apply after:border-t-${key}`]: {},
-            },
-            [`.tooltip.tooltip-bottom.bg-${e(key)}`]: {
-              [`@apply after:border-b-${key}`]: {},
-            },
-            [`.tooltip.tooltip-right.bg-${e(key)}`]: {
-              [`@apply after:border-r-${key}`]: {},
-            },
-            [`.tooltip.tooltip-left.bg-${e(key)}`]: {
-              [`@apply after:border-l-${key}`]: {},
-            },
-          }
-        }
-        const colorShades: any = Object.keys(colors![key])
+        if (!(key in colors)) return accumulator
+        if (typeof colors![key] !== 'string') return accumulator
+        // if (typeof colors![key] === 'string') {
         return {
           ...accumulator,
-          ...colorShades.reduce((acc: {}, level: string) => ({
-            ...acc,
-            [`.tooltip.tooltip-top.bg-${e(key)}-${level}`]: {
-              [`@apply after:border-t-${key}-${level}`]: {},
-            },
-            [`.tooltip.tooltip-bottom.bg-${e(key)}-${level}`]: {
-              [`@apply after:border-b-${key}-${level}`]: {},
-            },
-            [`.tooltip.tooltip-right.bg-${e(key)}-${level}`]: {
-              [`@apply after:border-r-${key}-${level}`]: {},
-            },
-            [`.tooltip.tooltip-left.bg-${e(key)}-${level}`]: {
-              [`@apply after:border-l-${key}-${level}`]: {},
-            },
-          })),
+          [`.tooltip.tooltip-top.bg-${e(key)}`]: {
+            [`@apply after:border-t-${key}`]: {},
+          },
+          [`.tooltip.tooltip-bottom.bg-${e(key)}`]: {
+            [`@apply after:border-b-${key}`]: {},
+          },
+          [`.tooltip.tooltip-right.bg-${e(key)}`]: {
+            [`@apply after:border-r-${key}`]: {},
+          },
+          [`.tooltip.tooltip-left.bg-${e(key)}`]: {
+            [`@apply after:border-l-${key}`]: {},
+          },
         }
+        // }
+        // const colorShades: any = Object.keys(colors![key])
+        // return {
+        //   ...accumulator,
+        //   ...colorShades.reduce((acc: {}, level: string) => ({
+        //     ...acc,
+        //     [`.tooltip.tooltip-top.bg-${e(key)}-${level}`]: {
+        //       [`@apply after:border-t-${key}-${level}`]: {},
+        //     },
+        //     [`.tooltip.tooltip-bottom.bg-${e(key)}-${level}`]: {
+        //       [`@apply after:border-b-${key}-${level}`]: {},
+        //     },
+        //     [`.tooltip.tooltip-right.bg-${e(key)}-${level}`]: {
+        //       [`@apply after:border-r-${key}-${level}`]: {},
+        //     },
+        //     [`.tooltip.tooltip-left.bg-${e(key)}-${level}`]: {
+        //       [`@apply after:border-l-${key}-${level}`]: {},
+        //     },
+        //   })),
+        // }
       }, {})
 
       addBase({
