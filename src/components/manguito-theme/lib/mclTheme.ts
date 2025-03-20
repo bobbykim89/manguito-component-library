@@ -1,4 +1,3 @@
-// const plugin = require('tailwindcss/plugin')
 import plugin from 'tailwindcss/plugin'
 import type { Config } from 'tailwindcss/types/config'
 
@@ -9,22 +8,9 @@ export const mclTheme = plugin.withOptions(
         string,
         string | Record<string, string>
       >
-      const themeColors = [
-        'primary',
-        'secondary',
-        'success',
-        'info',
-        'warning',
-        'danger',
-        'light-1',
-        'light-2',
-        'light-3',
-        'light-4',
-        'dark-1',
-        'dark-2',
-        'dark-3',
-        'dark-4',
-      ]
+      const themeColors = Object.keys(colors).filter(
+        (key) => typeof colors[key] === 'string'
+      )
 
       const listColors = themeColors.reduce((accumulator, key) => {
         if (!(key in colors)) return accumulator
@@ -35,35 +21,12 @@ export const mclTheme = plugin.withOptions(
             color: colors![key],
           },
         }
-        // if (typeof colors![key] === 'string') {
-        //   return {
-        //     ...accumulator,
-        //     [`.mcl-list-${e(key)} li::before`]: {
-        //       color: colors![key],
-        //     },
-        //   }
-        // }
-        // const colorShades = Object.keys(colors![key])
-
-        // return {
-        //   ...accumulator,
-        //   ...colorShades.reduce(
-        //     (acc, level) => ({
-        //       ...acc,
-        //       [`.mcl-list-${e(key)}-${level} li::before`]: {
-        //         color: colors![key][level],
-        //       },
-        //     }),
-        //     {}
-        //   ),
-        // }
       }, {})
       const linkColors = themeColors.reduce((accumulator, key) => {
         const invalidKeys = ['current', 'transparent', 'inherit']
         if (invalidKeys.includes(key)) return accumulator
         if (!(key in colors)) return accumulator
         if (typeof colors![key] !== 'string') return accumulator
-        // if (typeof colors![key] === 'string') {
         return {
           ...accumulator,
           [`.mcl-link.text-${e(key)}`]: {
@@ -72,25 +35,10 @@ export const mclTheme = plugin.withOptions(
             },
           },
         }
-        // }
-
-        // const colorShades: any = Object.keys(colors![key])
-        // return {
-        //   ...accumulator,
-        //   ...colorShades.reduce((acc: {}, level: string) => ({
-        //     ...acc,
-        //     [`.mcl-link.text-${e(key)}-${level}`]: {
-        //       '&:hover': {
-        //         [`@apply text-${key}-${level}/60`]: {},
-        //       },
-        //     },
-        //   })),
-        // }
       }, {})
       const btnColors = themeColors.reduce((accumulator, key) => {
         if (!(key in colors)) return accumulator
         if (typeof colors![key] !== 'string') return accumulator
-        // if (typeof colors![key] === 'string') {
         return {
           ...accumulator,
           [`.btn.btn-${e(key)}`]: {
@@ -129,59 +77,10 @@ export const mclTheme = plugin.withOptions(
             },
           },
         }
-        // }
-
-        // const colorShades = Object.keys(colors![key])
-
-        // return {
-        //   ...accumulator,
-        //   ...colorShades.reduce(
-        //     (acc, level) => ({
-        //       ...acc,
-        //       [`.btn.btn-${e(key)}-${level}`]: {
-        //         [`@apply bg-${key}-${level}`]: {},
-        //         '&:hover': {
-        //           '@apply bg-opacity-70': {},
-        //         },
-        //         '&:focus': {
-        //           [`@apply ring-4 ring-${key}-${level}`]: {},
-        //         },
-        //       },
-        //       [`.btn.btn-invert.btn-${e(key)}-${level}`]: {
-        //         [`@apply border-2 bg-white border-${key}-${level} text-${key}-${level}`]:
-        //           {},
-        //         '&:hover': {
-        //           [`@apply bg-${key}-${level} text-white bg-opacity-100`]: {},
-        //         },
-        //         '&:focus': {
-        //           [`@apply bg-${key}-${level} text-white`]: {},
-        //         },
-        //       },
-        //       [`.btn-group .btn.btn-${e(key)}-${level}`]: {
-        //         '&:focus': {
-        //           '@apply ring-0': {},
-        //         },
-        //       },
-        //       [`.btn.btn-progress.btn-${e(key)}-${level}`]: {
-        //         [`@apply before:bg-${key}-${level} border-${key}-${level} text-${key}-${level} bg-transparent`]:
-        //           {},
-        //         '&:hover, &:focus': {
-        //           '@apply text-white': {},
-        //         },
-        //       },
-        //     }),
-        //     {}
-        //   ),
-        // }
       }, {})
       const tooltipColors = themeColors.reduce((accumulator, key) => {
-        // const invalidKeys = ['current', 'transparent', 'inherit']
-        // if (invalidKeys.includes(key)) {
-        //   return
-        // }
         if (!(key in colors)) return accumulator
         if (typeof colors![key] !== 'string') return accumulator
-        // if (typeof colors![key] === 'string') {
         return {
           ...accumulator,
           [`.tooltip.tooltip-top.bg-${e(key)}`]: {
@@ -197,26 +96,6 @@ export const mclTheme = plugin.withOptions(
             [`@apply after:border-l-${key}`]: {},
           },
         }
-        // }
-        // const colorShades: any = Object.keys(colors![key])
-        // return {
-        //   ...accumulator,
-        //   ...colorShades.reduce((acc: {}, level: string) => ({
-        //     ...acc,
-        //     [`.tooltip.tooltip-top.bg-${e(key)}-${level}`]: {
-        //       [`@apply after:border-t-${key}-${level}`]: {},
-        //     },
-        //     [`.tooltip.tooltip-bottom.bg-${e(key)}-${level}`]: {
-        //       [`@apply after:border-b-${key}-${level}`]: {},
-        //     },
-        //     [`.tooltip.tooltip-right.bg-${e(key)}-${level}`]: {
-        //       [`@apply after:border-r-${key}-${level}`]: {},
-        //     },
-        //     [`.tooltip.tooltip-left.bg-${e(key)}-${level}`]: {
-        //       [`@apply after:border-l-${key}-${level}`]: {},
-        //     },
-        //   })),
-        // }
       }, {})
 
       addBase({
@@ -641,6 +520,17 @@ export const mclTheme = plugin.withOptions(
           spacing: spacingList,
         },
       },
+      safelist: [
+        // static patterns
+        'mcl-list',
+        'mcl-link',
+        'btn',
+        'tooltip',
+        // dynamic patterns
+        { pattern: /^btn-/ },
+        { pattern: /^tooltip-/ },
+        { pattern: /^mcl-list-/ },
+      ],
     }
   }
 )
