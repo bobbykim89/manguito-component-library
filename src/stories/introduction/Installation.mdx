@@ -79,6 +79,17 @@ module.exports = {
 }
 ```
 
+### VS Code Settings
+
+To reduce lags due to TailwindCSS Intellisense add following in `.vscode/settings.json`:
+
+```json
+{
+  "tailwindCSS.validate": false,
+  "tailwindCSS.experimental.classRegex": []
+}
+```
+
 ### Usage
 
 `import generateClass from '@bobbykim/manguito-theme'`
