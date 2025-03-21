@@ -62,32 +62,29 @@ const emitCloseEvent = () => {
   emit('close', false)
 }
 const handlePlacementVar = computed(() => {
-  let placementVariable: number
-  if (props.placement === 'top') {
-    placementVariable = 25
-  } else if (props.placement === 'bottom') {
-    placementVariable = 75
-  } else {
-    placementVariable = 50
+  const modalPlacementObj: Record<VerticalAlignment, number> = {
+    top: 25,
+    center: 50,
+    bottom: 75,
   }
-  return { '--vertical-placement': placementVariable + '%' }
+  const { placement } = props
+  const placemenntNumber =
+    modalPlacementObj[placement] ?? modalPlacementObj['center']
+  return { '--vertical-placement': placemenntNumber + '%' }
 })
-type ModalWidthObj = {
-  [key in SizeOption]: string
-}
 const handleModalWidth = computed(() => {
   const { modalWidth } = props
-  const modalWidthClassObj: ModalWidthObj = {
+  const modalWidthClassObj: Record<SizeOption, string> = {
     small: 'max-w-md',
     medium: 'max-w-md md:max-w-xl',
     large: 'max-w-md md:max-w-4xl',
   }
-  return modalWidthClassObj[modalWidth]
+  return modalWidthClassObj[modalWidth] ?? modalWidthClassObj['small']
 })
 
 /**
  * @TransitionFunctions
- * Handle toggleComplete value after completion of animation
+ * @summary Handle toggleComplete value after completion of animation
  */
 const onAfterEnter = () => {
   toggleComplete.value = true
@@ -135,7 +132,6 @@ defineExpose<{
 
 <template>
   <div :style="handlePlacementVar" :visible="toggle" ref="modalRef">
-    <!-- <button :id="modalId" @click="handleToggleEvent" class="hidden"></button> -->
     <Transition name="fade" appear tag="div" v-if="!noBackdrop">
       <section
         v-if="toggle"

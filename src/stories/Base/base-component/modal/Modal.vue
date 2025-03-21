@@ -258,6 +258,7 @@ const openModal = () => {
         class-name="px-xs rounded-md"
         color="light-1"
         modal-width="large"
+        placement="top"
       >
         <template #header="{ close }">
           <div class="flex justify-between py-xs bg-light-1 border-b-2">
