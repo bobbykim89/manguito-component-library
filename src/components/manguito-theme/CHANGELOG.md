@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.24.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.23.1...@bobbykim/manguito-theme@0.24.0) (2025-03-21)
+
+
+### Bug Fixes
+
+* **manguito-theme:** add modal base component to have option to choose width ([643c21f](https://github.com/bobbykim89/manguito-component-library/commit/643c21f213b8cfe7bb82863e47ad0cbacb1ea6fa))
+* **manguito-theme:** refactor modal and sidebar components ([7360389](https://github.com/bobbykim89/manguito-component-library/commit/73603898f2074b62f1ddc7cc723de9dd0619566f))
+
+
+### Features
+
+* **manguito-theme,stories:** add custom class list to the safeList pattern in plugin settings ([1399be3](https://github.com/bobbykim89/manguito-component-library/commit/1399be30cd3a931c571762cfa9c5ff49d7393923))
+* **manguito-theme/lib/mclTheme.ts:** refactor theme plugin ([d1d055e](https://github.com/bobbykim89/manguito-component-library/commit/d1d055e541c4d2124e188f70c44abc3203f61737))
+
+
+
+
+
 ## [0.23.1](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.23.0...@bobbykim/manguito-theme@0.23.1) (2024-12-31)
 
 
