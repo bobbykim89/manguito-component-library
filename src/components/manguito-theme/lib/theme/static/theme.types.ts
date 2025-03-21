@@ -49,19 +49,19 @@ export type DirectionX = 'left' | 'right'
 // available ranges
 type _RangeArray<
   T extends number,
-  R extends unknown[] = [],
+  R extends unknown[] = []
 > = R['length'] extends T ? R : _RangeArray<T, [...R, 1]>
 type IntRange<
   T extends number[],
   E extends number,
-  R extends number = never,
+  R extends number = never
 > = T['length'] extends E ? R | E : IntRange<[...T, 1], E, R | T['length']>
 export type Range<T extends number, R extends number> = IntRange<
   _RangeArray<T>,
   R
 >
 
-export type ButtonSize = 'small' | 'medium' | 'large'
+export type SizeOption = 'small' | 'medium' | 'large'
 export type OpacityRange = 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100
 export type ColumnWidth = 25 | 50 | 75 | 100
 export type CrossOrigin = 'use-credentials' | 'anonymous'

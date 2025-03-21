@@ -64,16 +64,12 @@ const emitCloseEvent = () => {
   emit('close', false)
 }
 const handleStyleVariables = computed(() => {
+  const getHeight = (elem?: HTMLElement | null) =>
+    elem && toggle.value ? `${elem.scrollHeight}px` : '0px'
   return {
     '--sidebar-width': `${props.width}px`,
-    '--header-height':
-      headerRef.value && toggle.value
-        ? headerRef.value.scrollHeight + 'px'
-        : '0px',
-    '--footer-height':
-      footerRef.value && toggle.value
-        ? footerRef.value.scrollHeight + 'px'
-        : '0px',
+    '--header-height': getHeight(headerRef.value),
+    '--footer-height': getHeight(footerRef.value),
   }
 })
 const sidebarClass = computed(() => {

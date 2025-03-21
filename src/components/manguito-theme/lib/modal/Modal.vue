@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useScrollLock } from '@vueuse/core'
 import { computed, onMounted, ref, watch } from 'vue'
-import type { ColorPalette, VerticalAlignment } from '..'
+import type { ColorPalette, SizeOption, VerticalAlignment } from '..'
 import generateClass, { vClickOutside } from '..'
 import { observeVisibleAttr } from '../composables'
 
@@ -16,6 +16,7 @@ const props = withDefaults(
     color?: ColorPalette
     backdropColor?: ColorPalette
     placement?: VerticalAlignment
+    modalWidth?: SizeOption
   }>(),
   {
     titleColor: 'dark-3',
@@ -26,6 +27,7 @@ const props = withDefaults(
     color: 'light-1',
     backdropColor: 'dark-4',
     placement: 'center',
+    modalWidth: 'small',
   }
 )
 
@@ -60,20 +62,29 @@ const emitCloseEvent = () => {
   emit('close', false)
 }
 const handlePlacementVar = computed(() => {
-  let placementVariable: number
-  if (props.placement === 'top') {
-    placementVariable = 25
-  } else if (props.placement === 'bottom') {
-    placementVariable = 75
-  } else {
-    placementVariable = 50
+  const modalPlacementObj: Record<VerticalAlignment, number> = {
+    top: 25,
+    center: 50,
+    bottom: 75,
   }
-  return { '--vertical-placement': placementVariable + '%' }
+  const { placement } = props
+  const placemenntNumber =
+    modalPlacementObj[placement] ?? modalPlacementObj['center']
+  return { '--vertical-placement': placemenntNumber + '%' }
+})
+const handleModalWidth = computed(() => {
+  const { modalWidth } = props
+  const modalWidthClassObj: Record<SizeOption, string> = {
+    small: 'max-w-md',
+    medium: 'max-w-md md:max-w-xl',
+    large: 'max-w-md md:max-w-4xl',
+  }
+  return modalWidthClassObj[modalWidth] ?? modalWidthClassObj['small']
 })
 
 /**
  * @TransitionFunctions
- * Handle toggleComplete value after completion of animation
+ * @summary Handle toggleComplete value after completion of animation
  */
 const onAfterEnter = () => {
   toggleComplete.value = true
@@ -121,7 +132,6 @@ defineExpose<{
 
 <template>
   <div :style="handlePlacementVar" :visible="toggle" ref="modalRef">
-    <!-- <button :id="modalId" @click="handleToggleEvent" class="hidden"></button> -->
     <Transition name="fade" appear tag="div" v-if="!noBackdrop">
       <section
         v-if="toggle"
@@ -139,7 +149,8 @@ defineExpose<{
     >
       <div
         v-if="toggle"
-        class="vertical-placement fixed w-full max-w-md z-[110] px-xs"
+        class="vertical-placement fixed w-full z-[110] px-xs"
+        :class="handleModalWidth"
       >
         <div
           v-click-outside="closeModal"

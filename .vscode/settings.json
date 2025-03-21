@@ -22,16 +22,8 @@
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
   },
-  "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/.DS_Store": true,
-    "**/Thumbs.db": true
-  },
-  "tailwindCSS.experimental.configFile": "./tailwind.config.ts",
   "tailwindCSS.validate": false,
+  "tailwindCSS.experimental.classRegex": [],
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "prettier.singleQuote": true,
