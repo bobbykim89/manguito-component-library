@@ -11,11 +11,15 @@ const openModal = () => {
 <template>
   <section class="container">
     <div>
-      <div class="flex justify-center gap-xs my-md">
+      <div class="flex justify-start md:justify-center gap-xs my-md flex-wrap">
         <button class="btn btn-danger" v-toggle:modal-1>Modal 1</button>
         <button class="btn btn-warning" v-toggle:modal-2>Modal 2</button>
         <button class="btn btn-success" v-toggle:modal-3>
           Modal Default Header
+        </button>
+        <button class="btn btn-info" v-toggle:modal-medium>Medium Modal</button>
+        <button class="btn btn-primary" v-toggle:modal-large>
+          Large Modal
         </button>
       </div>
       <p>
@@ -192,6 +196,114 @@ const openModal = () => {
               nunc malesuada bibendum. Maecenas quis leo a tellus vulputate
               imperdiet.
             </p>
+          </div>
+        </template>
+      </modal>
+      <modal
+        id="modal-medium"
+        class-name="px-xs rounded-md"
+        color="light-1"
+        modal-width="medium"
+      >
+        <template #header="{ close }">
+          <div class="flex justify-between py-xs bg-light-1 border-b-2">
+            <h3 class="h3-md">Medium Modal</h3>
+            <button @click="close">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="1em"
+                viewBox="0 0 384 512"
+                class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 transition-colors duration-300 ease-linear h-sm"
+              >
+                <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path
+                  d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
+                />
+              </svg>
+            </button>
+          </div>
+        </template>
+        <template #body>
+          <div class="my-sm">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+              fermentum commodo dolor eget aliquet. Donec malesuada lorem
+              dictum, varius augue ut, congue lacus. Proin ornare nisl cursus
+              vehicula bibendum. Maecenas gravida semper erat quis posuere.
+              Suspendisse eu interdum orci. Suspendisse pellentesque finibus
+              lacus, ac ultrices libero placerat sed. Vestibulum ac purus velit.
+              Duis at euismod mi, quis malesuada erat. Sed feugiat cursus massa,
+              et posuere tellus sagittis non. Suspendisse consectetur ligula eu
+              nunc malesuada bibendum. Maecenas quis leo a tellus vulputate
+              imperdiet. Suspendisse suscipit lobortis massa, nec tristique quam
+              sagittis sed. Nulla eget accumsan orci, laoreet mollis quam. Proin
+              neque velit, suscipit ac tortor ut, mattis rhoncus massa.
+              Suspendisse non eros mi. Sed ut urna sed ex finibus consectetur.
+            </p>
+          </div>
+        </template>
+        <template #footer="{ close }">
+          <div
+            class="bg-light-1 border-t-2 flex justify-between items-center py-xs"
+          >
+            <h4 class="h4-md">Footer Text</h4>
+            <button class="btn btn-round btn-warning" @click="close">
+              Close
+            </button>
+          </div>
+        </template>
+      </modal>
+      <modal
+        id="modal-large"
+        class-name="px-xs rounded-md"
+        color="light-1"
+        modal-width="large"
+      >
+        <template #header="{ close }">
+          <div class="flex justify-between py-xs bg-light-1 border-b-2">
+            <h3 class="h3-md">Large Modal</h3>
+            <button @click="close">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="1em"
+                viewBox="0 0 384 512"
+                class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 transition-colors duration-300 ease-linear h-sm"
+              >
+                <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                <path
+                  d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
+                />
+              </svg>
+            </button>
+          </div>
+        </template>
+        <template #body>
+          <div class="my-sm">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+              fermentum commodo dolor eget aliquet. Donec malesuada lorem
+              dictum, varius augue ut, congue lacus. Proin ornare nisl cursus
+              vehicula bibendum. Maecenas gravida semper erat quis posuere.
+              Suspendisse eu interdum orci. Suspendisse pellentesque finibus
+              lacus, ac ultrices libero placerat sed. Vestibulum ac purus velit.
+              Duis at euismod mi, quis malesuada erat. Sed feugiat cursus massa,
+              et posuere tellus sagittis non. Suspendisse consectetur ligula eu
+              nunc malesuada bibendum. Maecenas quis leo a tellus vulputate
+              imperdiet. Suspendisse suscipit lobortis massa, nec tristique quam
+              sagittis sed. Nulla eget accumsan orci, laoreet mollis quam. Proin
+              neque velit, suscipit ac tortor ut, mattis rhoncus massa.
+              Suspendisse non eros mi. Sed ut urna sed ex finibus consectetur.
+            </p>
+          </div>
+        </template>
+        <template #footer="{ close }">
+          <div
+            class="bg-light-1 border-t-2 flex justify-between items-center py-xs"
+          >
+            <h4 class="h4-md">Footer Text</h4>
+            <button class="btn btn-round btn-warning" @click="close">
+              Close
+            </button>
           </div>
         </template>
       </modal>
