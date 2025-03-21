@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useScrollLock } from '@vueuse/core'
 import { computed, onMounted, ref, watch } from 'vue'
-import type { ColorPalette, VerticalAlignment } from '..'
+import type { ColorPalette, SizeOption, VerticalAlignment } from '..'
 import generateClass, { vClickOutside } from '..'
 import { observeVisibleAttr } from '../composables'
 
@@ -16,6 +16,7 @@ const props = withDefaults(
     color?: ColorPalette
     backdropColor?: ColorPalette
     placement?: VerticalAlignment
+    modalWidth?: SizeOption
   }>(),
   {
     titleColor: 'dark-3',
@@ -26,6 +27,7 @@ const props = withDefaults(
     color: 'light-1',
     backdropColor: 'dark-4',
     placement: 'center',
+    modalWidth: 'small',
   }
 )
 
@@ -69,6 +71,18 @@ const handlePlacementVar = computed(() => {
     placementVariable = 50
   }
   return { '--vertical-placement': placementVariable + '%' }
+})
+type ModalWidthObj = {
+  [key in SizeOption]: string
+}
+const handleModalWidth = computed(() => {
+  const { modalWidth } = props
+  const modalWidthClassObj: ModalWidthObj = {
+    small: 'max-w-md',
+    medium: 'max-w-md md:max-w-xl',
+    large: 'max-w-md md:max-w-4xl',
+  }
+  return modalWidthClassObj[modalWidth]
 })
 
 /**
@@ -139,7 +153,8 @@ defineExpose<{
     >
       <div
         v-if="toggle"
-        class="vertical-placement fixed w-full max-w-md z-[110] px-xs"
+        class="vertical-placement fixed w-full z-[110] px-xs"
+        :class="handleModalWidth"
       >
         <div
           v-click-outside="closeModal"
