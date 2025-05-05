@@ -12,28 +12,12 @@ export const mclTheme = plugin.withOptions(
         (key) => typeof colors[key] === 'string'
       )
       const invalidKeys = new Set(['current', 'transparent', 'inherit'])
-      // const listColors: Record<string, any> = {}
-      // const linkColors: Record<string, any> = {}
-      // const btnColors: Record<string, any> = {}
-      // const tooltipColors: Record<string, any> = {}
       const generatedClass: Record<string, any> = {}
       for (const key of themeColors) {
         if (!colors[key]) continue
-        // listColors[`.mcl-list-${e(key)} li::before`] = {
-        //   color: colors[key],
-        // }
         generatedClass[`.mcl-list-${e(key)} li::before`] = {
           color: colors[key],
         }
-        // btnColors[`.btn.btn-${e(key)}`] = {
-        //   [`@apply bg-${key}`]: {},
-        //   '&:hover': {
-        //     '@apply bg-opacity-70': {},
-        //   },
-        //   '&:focus': {
-        //     [`@apply ring-4 ring-${key}`]: {},
-        //   },
-        // }
         generatedClass[`.btn.btn-${e(key)}`] = {
           [`@apply bg-${key}`]: {},
           '&:hover': {
@@ -43,15 +27,6 @@ export const mclTheme = plugin.withOptions(
             [`@apply ring-4 ring-${key}`]: {},
           },
         }
-        // btnColors[`.btn.btn-invert.btn-${e(key)}`] = {
-        //   [`@apply border-2 bg-transparent border-${key} text-${key}`]: {},
-        //   '&:hover': {
-        //     [`@apply bg-${key} text-white bg-opacity-100`]: {},
-        //   },
-        //   '&:focus': {
-        //     [`@apply bg-${key} text-white`]: {},
-        //   },
-        // }
         generatedClass[`.btn.btn-invert.btn-${e(key)}`] = {
           [`@apply border-2 bg-transparent border-${key} text-${key}`]: {},
           '&:hover': {
@@ -61,33 +36,16 @@ export const mclTheme = plugin.withOptions(
             [`@apply bg-${key} text-white`]: {},
           },
         }
-        // btnColors[`.btn-group .btn.btn-${e(key)}`] = {
-        //   '&:focus': {
-        //     '@apply ring-0': {},
-        //   },
-        // }
         generatedClass[`.btn-group .btn.btn-${e(key)}`] = {
           '&:focus': {
             '@apply ring-0': {},
           },
         }
-        // btnColors[`.btn.btn-${e(key)}.btn-no-ring`] = {
-        //   '&:focus': {
-        //     '@apply ring-0': {},
-        //   },
-        // }
         generatedClass[`.btn.btn-${e(key)}.btn-no-ring`] = {
           '&:focus': {
             '@apply ring-0': {},
           },
         }
-        // btnColors[`.btn.btn-progress.btn-${e(key)}`] = {
-        //   [`@apply before:bg-${key} border-${key} text-${key} bg-transparent`]:
-        //     {},
-        //   '&:hover, &:focus': {
-        //     '@apply text-white': {},
-        //   },
-        // }
         generatedClass[`.btn.btn-progress.btn-${e(key)}`] = {
           [`@apply before:bg-${key} border-${key} text-${key} bg-transparent`]:
             {},
@@ -95,36 +53,19 @@ export const mclTheme = plugin.withOptions(
             '@apply text-white': {},
           },
         }
-        // tooltipColors[`.tooltip.tooltip-top.bg-${e(key)}`] = {
-        //   [`@apply after:border-t-${key}`]: {},
-        // }
         generatedClass[`.tooltip.tooltip-top.bg-${e(key)}`] = {
           [`@apply after:border-t-${key}`]: {},
         }
-        // tooltipColors[`.tooltip.tooltip-bottom.bg-${e(key)}`] = {
-        //   [`@apply after:border-b-${key}`]: {},
-        // }
         generatedClass[`.tooltip.tooltip-bottom.bg-${e(key)}`] = {
           [`@apply after:border-b-${key}`]: {},
         }
-        // tooltipColors[`.tooltip.tooltip-right.bg-${e(key)}`] = {
-        //   [`@apply after:border-r-${key}`]: {},
-        // }
         generatedClass[`.tooltip.tooltip-right.bg-${e(key)}`] = {
           [`@apply after:border-r-${key}`]: {},
         }
-        // tooltipColors[`.tooltip.tooltip-left.bg-${e(key)}`] = {
-        //   [`@apply after:border-l-${key}`]: {},
-        // }
         generatedClass[`.tooltip.tooltip-left.bg-${e(key)}`] = {
           [`@apply after:border-l-${key}`]: {},
         }
         if (!invalidKeys.has(key)) {
-          // linkColors[`.mcl-link.text-${e(key)}`] = {
-          //   '&:hover': {
-          //     [`@apply text-${key}/60`]: {},
-          //   },
-          // }
           generatedClass[`.mcl-link.text-${e(key)}`] = {
             '&:hover': {
               [`@apply text-${key}/60`]: {},
@@ -132,91 +73,6 @@ export const mclTheme = plugin.withOptions(
           }
         }
       }
-      // const listColors = themeColors.reduce((accumulator, key) => {
-      //   if (!(key in colors)) return accumulator
-      //   if (typeof colors[key] !== 'string') return accumulator
-      //   return {
-      //     ...accumulator,
-      //     [`.mcl-list-${e(key)} li::before`]: {
-      //       color: colors![key],
-      //     },
-      //   }
-      // }, {})
-      // const linkColors = themeColors.reduce((accumulator, key) => {
-      //   const invalidKeys = ['current', 'transparent', 'inherit']
-      //   if (invalidKeys.includes(key)) return accumulator
-      //   if (!(key in colors)) return accumulator
-      //   if (typeof colors![key] !== 'string') return accumulator
-      //   return {
-      //     ...accumulator,
-      //     [`.mcl-link.text-${e(key)}`]: {
-      //       '&:hover': {
-      //         [`@apply text-${key}/60`]: {},
-      //       },
-      //     },
-      //   }
-      // }, {})
-      // const btnColors = themeColors.reduce((accumulator, key) => {
-      //   if (!(key in colors)) return accumulator
-      //   if (typeof colors![key] !== 'string') return accumulator
-      //   return {
-      //     ...accumulator,
-      //     [`.btn.btn-${e(key)}`]: {
-      //       [`@apply bg-${key}`]: {},
-      //       '&:hover': {
-      //         '@apply bg-opacity-70': {},
-      //       },
-      //       '&:focus': {
-      //         [`@apply ring-4 ring-${key}`]: {},
-      //       },
-      //     },
-      //     [`.btn.btn-invert.btn-${e(key)}`]: {
-      //       [`@apply border-2 bg-transparent border-${key} text-${key}`]: {},
-      //       '&:hover': {
-      //         [`@apply bg-${key} text-white bg-opacity-100`]: {},
-      //       },
-      //       '&:focus': {
-      //         [`@apply bg-${key} text-white`]: {},
-      //       },
-      //     },
-      //     [`.btn-group .btn.btn-${e(key)}`]: {
-      //       '&:focus': {
-      //         '@apply ring-0': {},
-      //       },
-      //     },
-      //     [`.btn.btn-${e(key)}.btn-no-ring`]: {
-      //       '&:focus': {
-      //         '@apply ring-0': {},
-      //       },
-      //     },
-      //     [`.btn.btn-progress.btn-${e(key)}`]: {
-      //       [`@apply before:bg-${key} border-${key} text-${key} bg-transparent`]:
-      //         {},
-      //       '&:hover, &:focus': {
-      //         '@apply text-white': {},
-      //       },
-      //     },
-      //   }
-      // }, {})
-      // const tooltipColors = themeColors.reduce((accumulator, key) => {
-      //   if (!(key in colors)) return accumulator
-      //   if (typeof colors![key] !== 'string') return accumulator
-      //   return {
-      //     ...accumulator,
-      //     [`.tooltip.tooltip-top.bg-${e(key)}`]: {
-      //       [`@apply after:border-t-${key}`]: {},
-      //     },
-      //     [`.tooltip.tooltip-bottom.bg-${e(key)}`]: {
-      //       [`@apply after:border-b-${key}`]: {},
-      //     },
-      //     [`.tooltip.tooltip-right.bg-${e(key)}`]: {
-      //       [`@apply after:border-r-${key}`]: {},
-      //     },
-      //     [`.tooltip.tooltip-left.bg-${e(key)}`]: {
-      //       [`@apply after:border-l-${key}`]: {},
-      //     },
-      //   }
-      // }, {})
 
       addBase({
         body: {
