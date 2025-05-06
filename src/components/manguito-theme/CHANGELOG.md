@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.25.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.24.0...@bobbykim/manguito-theme@0.25.0) (2025-05-06)
+
+
+### Features
+
+* **manguito-theme:** remove commented out lines ([7292bd0](https://github.com/bobbykim89/manguito-component-library/commit/7292bd062c4cc5215785f4f717503f2897c40583))
+* **manguito-theme:** storybook version bump minor fix ([247e33d](https://github.com/bobbykim89/manguito-component-library/commit/247e33d94d684994705ec95ae8bc225151a99d47))
+
+
+
+
+
 # [0.24.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.23.1...@bobbykim/manguito-theme@0.24.0) (2025-03-21)
 
 
