@@ -15,7 +15,7 @@ overrides:
   vite-plugin-css-injected-by-js: ^3.5.2
   vite-plugin-dts: 4.3.0
   vue-tsc: 2.1.10
-  '@vueuse/core': 12.0.0
+  '@vueuse/core': 13.1.0
   vue: ^3.5.13
   '@floating-ui/vue': ^1.1.5
 
@@ -27,8 +27,8 @@ importers:
         specifier: ^1.1.5
         version: 1.1.6(vue@3.5.13(typescript@5.8.3))
       '@vueuse/core':
-        specifier: 12.0.0
-        version: 12.0.0(typescript@5.8.3)
+        specifier: 13.1.0
+        version: 13.1.0(vue@3.5.13(typescript@5.8.3))
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.3)
@@ -37,68 +37,68 @@ importers:
         specifier: 3.2.2
         version: 3.2.2(react@19.1.0)(storybook@8.6.12)
       '@storybook/addon-a11y':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
       '@storybook/addon-actions':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
       '@storybook/addon-backgrounds':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
       '@storybook/addon-controls':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
       '@storybook/addon-docs':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(@types/react@19.1.2)(storybook@8.6.12)
       '@storybook/addon-essentials':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(@types/react@19.1.2)(storybook@8.6.12)
       '@storybook/addon-interactions':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
       '@storybook/addon-links':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(react@19.1.0)(storybook@8.6.12)
       '@storybook/addon-mdx-gfm':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
       '@storybook/addon-outline':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
       '@storybook/addon-toolbars':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
       '@storybook/addon-viewport':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
       '@storybook/blocks':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@8.6.12)
       '@storybook/icons':
         specifier: ^1.3.0
         version: 1.4.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@storybook/manager-api':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
       '@storybook/test':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
       '@storybook/theming':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
       '@storybook/types':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)
       '@storybook/vue3':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)(vue@3.5.13(typescript@5.8.3))
       '@storybook/vue3-vite':
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12(storybook@8.6.12)(vite@6.0.3(@types/node@22.10.1)(jiti@2.4.2)(sass@1.87.0)(yaml@2.7.1))(vue@3.5.13(typescript@5.8.3))
-      '@tsconfig/node18':
-        specifier: ^18.2.4
-        version: 18.2.4
+      '@tsconfig/node20':
+        specifier: ^20.1.5
+        version: 20.1.5
       '@types/inquirer':
         specifier: ^9.0.7
         version: 9.0.8
@@ -142,7 +142,7 @@ importers:
         specifier: ^9.5.0
         version: 9.5.0
       storybook:
-        specifier: ^8.4.7
+        specifier: ^8.6.12
         version: 8.6.12
       tailwindcss:
         specifier: ^3.4.16
@@ -169,8 +169,8 @@ importers:
   src/components/manguito-theme:
     dependencies:
       '@vueuse/core':
-        specifier: 12.0.0
-        version: 12.0.0(typescript@5.8.3)
+        specifier: 13.1.0
+        version: 13.1.0(vue@3.5.13(typescript@5.8.3))
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.3)
@@ -237,8 +237,8 @@ importers:
         specifier: workspace:*
         version: link:../manguito-theme
       '@vueuse/core':
-        specifier: 12.0.0
-        version: 12.0.0(typescript@5.8.3)
+        specifier: 13.1.0
+        version: 13.1.0(vue@3.5.13(typescript@5.8.3))
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.3)
@@ -296,8 +296,8 @@ importers:
         specifier: workspace:*
         version: link:../manguito-theme
       '@vueuse/core':
-        specifier: 12.0.0
-        version: 12.0.0(typescript@5.8.3)
+        specifier: 13.1.0
+        version: 13.1.0(vue@3.5.13(typescript@5.8.3))
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.3)
@@ -392,8 +392,8 @@ importers:
         specifier: ^1.1.5
         version: 1.1.6(vue@3.5.13(typescript@5.8.3))
       '@vueuse/core':
-        specifier: 12.0.0
-        version: 12.0.0(typescript@5.8.3)
+        specifier: 13.1.0
+        version: 13.1.0(vue@3.5.13(typescript@5.8.3))
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.3)
@@ -488,8 +488,8 @@ importers:
         specifier: workspace:*
         version: link:../manguito-theme
       '@vueuse/core':
-        specifier: 12.0.0
-        version: 12.0.0(typescript@5.8.3)
+        specifier: 13.1.0
+        version: 13.1.0(vue@3.5.13(typescript@5.8.3))
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.3)
@@ -1715,8 +1715,8 @@ packages:
   '@tsconfig/node16@1.0.4':
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
 
-  '@tsconfig/node18@18.2.4':
-    resolution: {integrity: sha512-5xxU8vVs9/FNcvm3gE07fPbn9tl6tqGGWA9tSlwsUEkBxtRnTsNmwrV8gasZ9F/EobaSv9+nu8AxUKccw77JpQ==}
+  '@tsconfig/node20@20.1.5':
+    resolution: {integrity: sha512-Vm8e3WxDTqMGPU4GATF9keQAIy1Drd7bPwlgzKJnZtoOsTm1tduUTbDjg0W5qERvGuxPI2h9RbMufH0YdfBylA==}
 
   '@tufjs/canonical-json@2.0.0':
     resolution: {integrity: sha512-yVtV8zsdo8qFHe+/3kw81dSLyF7D576A5cCFCi4X7B39tWT7SekaEFUnvnWJHz+9qO7qJTah1JbrDjWKqFtdWA==}
@@ -1783,8 +1783,8 @@ packages:
   '@types/uuid@9.0.8':
     resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
 
-  '@types/web-bluetooth@0.0.20':
-    resolution: {integrity: sha512-g9gZnnXVq7gM7v3tJCWV/qw7w+KeOlSHAhgF9RytFyifW6AF61hdT2ucrYhPq9hLs5JIryeupHV3qGk95dH9ow==}
+  '@types/web-bluetooth@0.0.21':
+    resolution: {integrity: sha512-oIQLCGWtcFZy2JW77j9k8nHzAOpqMHLQejDA48XXMWH6tjCQHz5RCFz1bzsmROyL6PUm+LLnUiI4BCn221inxA==}
 
   '@vitejs/plugin-vue@5.2.3':
     resolution: {integrity: sha512-IYSLEQj4LgZZuoVpdSUCw3dIynTWQgPlaRP6iAvMle4My0HdYwr5g5wQAfwOeHQBmYwEkqF70nRpSilr6PoUDg==}
@@ -1887,14 +1887,18 @@ packages:
       vue:
         optional: true
 
-  '@vueuse/core@12.0.0':
-    resolution: {integrity: sha512-C12RukhXiJCbx4MGhjmd/gH52TjJsc3G0E0kQj/kb19H3Nt6n1CA4DRWuTdWWcaFRdlTe0npWDS942mvacvNBw==}
+  '@vueuse/core@13.1.0':
+    resolution: {integrity: sha512-PAauvdRXZvTWXtGLg8cPUFjiZEddTqmogdwYpnn60t08AA5a8Q4hZokBnpTOnVNqySlFlTcRYIC8OqreV4hv3Q==}
+    peerDependencies:
+      vue: ^3.5.13
 
-  '@vueuse/metadata@12.0.0':
-    resolution: {integrity: sha512-Yzimd1D3sjxTDOlF05HekU5aSGdKjxhuhRFHA7gDWLn57PRbBIh+SF5NmjhJ0WRgF3my7T8LBucyxdFJjIfRJQ==}
+  '@vueuse/metadata@13.1.0':
+    resolution: {integrity: sha512-+TDd7/a78jale5YbHX9KHW3cEDav1lz1JptwDvep2zSG8XjCsVE+9mHIzjTOaPbHUAk5XiE4jXLz51/tS+aKQw==}
 
-  '@vueuse/shared@12.0.0':
-    resolution: {integrity: sha512-3i6qtcq2PIio5i/vVYidkkcgvmTjCqrf26u+Fd4LhnbBmIT6FN8y6q/GJERp8lfcB9zVEfjdV0Br0443qZuJpw==}
+  '@vueuse/shared@13.1.0':
+    resolution: {integrity: sha512-IVS/qRRjhPTZ6C2/AM3jieqXACGwFZwWTdw5sNTSKk2m/ZpkuuN+ri+WCVUP8TqaKwJYt/KuMwmXspMAw8E6ew==}
+    peerDependencies:
+      vue: ^3.5.13
 
   '@yarnpkg/lockfile@1.1.0':
     resolution: {integrity: sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==}
@@ -6367,7 +6371,7 @@ snapshots:
 
   '@tsconfig/node16@1.0.4': {}
 
-  '@tsconfig/node18@18.2.4': {}
+  '@tsconfig/node20@20.1.5': {}
 
   '@tufjs/canonical-json@2.0.0': {}
 
@@ -6432,7 +6436,7 @@ snapshots:
 
   '@types/uuid@9.0.8': {}
 
-  '@types/web-bluetooth@0.0.20': {}
+  '@types/web-bluetooth@0.0.21': {}
 
   '@vitejs/plugin-vue@5.2.3(vite@6.0.3(@types/node@22.10.1)(jiti@2.4.2)(sass@1.87.0)(yaml@2.7.1))(vue@3.5.13(typescript@5.8.3))':
     dependencies:
@@ -6586,22 +6590,18 @@ snapshots:
       typescript: 5.8.3
       vue: 3.5.13(typescript@5.8.3)
 
-  '@vueuse/core@12.0.0(typescript@5.8.3)':
+  '@vueuse/core@13.1.0(vue@3.5.13(typescript@5.8.3))':
     dependencies:
-      '@types/web-bluetooth': 0.0.20
-      '@vueuse/metadata': 12.0.0
-      '@vueuse/shared': 12.0.0(typescript@5.8.3)
+      '@types/web-bluetooth': 0.0.21
+      '@vueuse/metadata': 13.1.0
+      '@vueuse/shared': 13.1.0(vue@3.5.13(typescript@5.8.3))
       vue: 3.5.13(typescript@5.8.3)
-    transitivePeerDependencies:
-      - typescript
 
-  '@vueuse/metadata@12.0.0': {}
+  '@vueuse/metadata@13.1.0': {}
 
-  '@vueuse/shared@12.0.0(typescript@5.8.3)':
+  '@vueuse/shared@13.1.0(vue@3.5.13(typescript@5.8.3))':
     dependencies:
       vue: 3.5.13(typescript@5.8.3)
-    transitivePeerDependencies:
-      - typescript
 
   '@yarnpkg/lockfile@1.1.0': {}
 
