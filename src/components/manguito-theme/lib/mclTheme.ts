@@ -1,9 +1,10 @@
 import plugin from 'tailwindcss/plugin'
-import type { Config } from 'tailwindcss/types/config'
+import type { Config, PluginAPI } from 'tailwindcss/types/config'
 
 export const mclTheme = plugin.withOptions(
   () => {
-    return ({ addBase, theme, addComponents, addUtilities, e }) => {
+    return (api: PluginAPI) => {
+      const { addBase, theme, addComponents, addUtilities, e } = api
       const colors = theme('colors') as Record<
         string,
         string | Record<string, string>
@@ -11,92 +12,68 @@ export const mclTheme = plugin.withOptions(
       const themeColors = Object.keys(colors).filter(
         (key) => typeof colors[key] === 'string'
       )
-
-      const listColors = themeColors.reduce((accumulator, key) => {
-        if (!(key in colors)) return accumulator
-        if (typeof colors[key] !== 'string') return accumulator
-        return {
-          ...accumulator,
-          [`.mcl-list-${e(key)} li::before`]: {
-            color: colors![key],
+      const invalidKeys = new Set(['current', 'transparent', 'inherit'])
+      const generatedClass: Record<string, any> = {}
+      for (const key of themeColors) {
+        if (!colors[key]) continue
+        generatedClass[`.mcl-list-${e(key)} li::before`] = {
+          color: colors[key],
+        }
+        generatedClass[`.btn.btn-${e(key)}`] = {
+          [`@apply bg-${key}`]: {},
+          '&:hover': {
+            '@apply bg-opacity-70': {},
+          },
+          '&:focus': {
+            [`@apply ring-4 ring-${key}`]: {},
           },
         }
-      }, {})
-      const linkColors = themeColors.reduce((accumulator, key) => {
-        const invalidKeys = ['current', 'transparent', 'inherit']
-        if (invalidKeys.includes(key)) return accumulator
-        if (!(key in colors)) return accumulator
-        if (typeof colors![key] !== 'string') return accumulator
-        return {
-          ...accumulator,
-          [`.mcl-link.text-${e(key)}`]: {
+        generatedClass[`.btn.btn-invert.btn-${e(key)}`] = {
+          [`@apply border-2 bg-transparent border-${key} text-${key}`]: {},
+          '&:hover': {
+            [`@apply bg-${key} text-white bg-opacity-100`]: {},
+          },
+          '&:focus': {
+            [`@apply bg-${key} text-white`]: {},
+          },
+        }
+        generatedClass[`.btn-group .btn.btn-${e(key)}`] = {
+          '&:focus': {
+            '@apply ring-0': {},
+          },
+        }
+        generatedClass[`.btn.btn-${e(key)}.btn-no-ring`] = {
+          '&:focus': {
+            '@apply ring-0': {},
+          },
+        }
+        generatedClass[`.btn.btn-progress.btn-${e(key)}`] = {
+          [`@apply before:bg-${key} border-${key} text-${key} bg-transparent`]:
+            {},
+          '&:hover, &:focus': {
+            '@apply text-white': {},
+          },
+        }
+        generatedClass[`.tooltip.tooltip-top.bg-${e(key)}`] = {
+          [`@apply after:border-t-${key}`]: {},
+        }
+        generatedClass[`.tooltip.tooltip-bottom.bg-${e(key)}`] = {
+          [`@apply after:border-b-${key}`]: {},
+        }
+        generatedClass[`.tooltip.tooltip-right.bg-${e(key)}`] = {
+          [`@apply after:border-r-${key}`]: {},
+        }
+        generatedClass[`.tooltip.tooltip-left.bg-${e(key)}`] = {
+          [`@apply after:border-l-${key}`]: {},
+        }
+        if (!invalidKeys.has(key)) {
+          generatedClass[`.mcl-link.text-${e(key)}`] = {
             '&:hover': {
               [`@apply text-${key}/60`]: {},
             },
-          },
+          }
         }
-      }, {})
-      const btnColors = themeColors.reduce((accumulator, key) => {
-        if (!(key in colors)) return accumulator
-        if (typeof colors![key] !== 'string') return accumulator
-        return {
-          ...accumulator,
-          [`.btn.btn-${e(key)}`]: {
-            [`@apply bg-${key}`]: {},
-            '&:hover': {
-              '@apply bg-opacity-70': {},
-            },
-            '&:focus': {
-              [`@apply ring-4 ring-${key}`]: {},
-            },
-          },
-          [`.btn.btn-invert.btn-${e(key)}`]: {
-            [`@apply border-2 bg-transparent border-${key} text-${key}`]: {},
-            '&:hover': {
-              [`@apply bg-${key} text-white bg-opacity-100`]: {},
-            },
-            '&:focus': {
-              [`@apply bg-${key} text-white`]: {},
-            },
-          },
-          [`.btn-group .btn.btn-${e(key)}`]: {
-            '&:focus': {
-              '@apply ring-0': {},
-            },
-          },
-          [`.btn.btn-${e(key)}.btn-no-ring`]: {
-            '&:focus': {
-              '@apply ring-0': {},
-            },
-          },
-          [`.btn.btn-progress.btn-${e(key)}`]: {
-            [`@apply before:bg-${key} border-${key} text-${key} bg-transparent`]:
-              {},
-            '&:hover, &:focus': {
-              '@apply text-white': {},
-            },
-          },
-        }
-      }, {})
-      const tooltipColors = themeColors.reduce((accumulator, key) => {
-        if (!(key in colors)) return accumulator
-        if (typeof colors![key] !== 'string') return accumulator
-        return {
-          ...accumulator,
-          [`.tooltip.tooltip-top.bg-${e(key)}`]: {
-            [`@apply after:border-t-${key}`]: {},
-          },
-          [`.tooltip.tooltip-bottom.bg-${e(key)}`]: {
-            [`@apply after:border-b-${key}`]: {},
-          },
-          [`.tooltip.tooltip-right.bg-${e(key)}`]: {
-            [`@apply after:border-r-${key}`]: {},
-          },
-          [`.tooltip.tooltip-left.bg-${e(key)}`]: {
-            [`@apply after:border-l-${key}`]: {},
-          },
-        }
-      }, {})
+      }
 
       addBase({
         body: {
@@ -451,10 +428,11 @@ export const mclTheme = plugin.withOptions(
         },
       })
 
-      addUtilities(listColors)
-      addUtilities(btnColors)
-      addUtilities(linkColors)
-      addUtilities(tooltipColors)
+      // addUtilities(listColors)
+      // addUtilities(btnColors)
+      // addUtilities(linkColors)
+      // addUtilities(tooltipColors)
+      addUtilities(generatedClass)
     }
   },
   (options: Partial<Config> = {}) => {
@@ -486,7 +464,6 @@ export const mclTheme = plugin.withOptions(
       '2xl': '96px',
       '3xl': '128px',
     }
-
     Object.keys(colorsList).forEach((key) => {
       if (options.colors !== undefined && options.colors[key] !== undefined) {
         colorsList[key] = options.colors[key]
