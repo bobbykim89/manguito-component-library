@@ -1,9 +1,10 @@
 import plugin from 'tailwindcss/plugin'
-import type { Config } from 'tailwindcss/types/config'
+import type { Config, PluginAPI } from 'tailwindcss/types/config'
 
 export const mclTheme = plugin.withOptions(
   () => {
-    return ({ addBase, theme, addComponents, addUtilities, e }) => {
+    return (api: PluginAPI) => {
+      const { addBase, theme, addComponents, addUtilities, e } = api
       const colors = theme('colors') as Record<
         string,
         string | Record<string, string>
@@ -463,7 +464,6 @@ export const mclTheme = plugin.withOptions(
       '2xl': '96px',
       '3xl': '128px',
     }
-
     Object.keys(colorsList).forEach((key) => {
       if (options.colors !== undefined && options.colors[key] !== undefined) {
         colorsList[key] = options.colors[key]
