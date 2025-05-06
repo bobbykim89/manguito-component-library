@@ -8,9 +8,9 @@ const config: StorybookConfig = {
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
+    '@storybook/addon-actions',
     '@storybook/addon-interactions',
     '@storybook/addon-a11y',
-    '@storybook/addon-actions',
     '@storybook/addon-backgrounds',
     '@storybook/addon-controls',
     '@storybook/addon-docs',
@@ -18,15 +18,12 @@ const config: StorybookConfig = {
     '@storybook/addon-toolbars',
     '@storybook/addon-viewport',
     '@storybook/addon-mdx-gfm',
-    '@chromatic-com/storybook'
   ],
   framework: {
     name: '@storybook/vue3-vite',
     options: {},
   },
-  docs: {
-    autodocs: 'tag',
-  },
+  docs: {},
   staticDirs: ['../public'],
 }
 export default config
