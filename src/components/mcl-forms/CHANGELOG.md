@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.4](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-forms@0.9.3...@bobbykim/mcl-forms@0.9.4) (2025-07-11)
+
+
+### Bug Fixes
+
+* **mcl-forms:** mcl-checkbox fix ([c55aa57](https://github.com/bobbykim89/manguito-component-library/commit/c55aa57626f0c4bdf0d3a2363866d95dc7cb27b4))
+
+
+
+
+
 ## [0.9.3](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-forms@0.9.2...@bobbykim/mcl-forms@0.9.3) (2025-05-06)
 
 **Note:** Version bump only for package @bobbykim/mcl-forms
