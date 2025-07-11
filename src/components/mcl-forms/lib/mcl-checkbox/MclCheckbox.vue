@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
 import generateClass, { ColorPalette } from '@bobbykim/manguito-theme'
-import type { InputSizeType, ColorMap } from '../common/index.types'
+import { computed, ref } from 'vue'
+import type { ColorMap, InputSizeType } from '../common/index.types'
 
 const peerBgColor: ColorMap = {
   primary: 'peer-checked/input:bg-primary',
@@ -23,23 +23,23 @@ const peerBgColor: ColorMap = {
   white: 'peer-checked/input:bg-white',
 }
 const beforeColor: ColorMap = {
-  primary: 'before:text-primary',
-  secondary: 'before:text-secondary',
-  success: 'before:text-success',
-  info: 'before:text-info',
-  warning: 'before:text-warning',
-  danger: 'before:text-danger',
-  'light-1': 'before:text-light-1',
-  'light-2': 'before:text-light-2',
-  'light-3': 'before:text-light-3',
-  'light-4': 'before:text-light-4',
-  'dark-1': 'before:text-dark-1',
-  'dark-2': 'before:text-dark-2',
-  'dark-3': 'before:text-dark-3',
-  'dark-4': 'before:text-dark-1',
-  transparent: 'before:text-transparent',
-  black: 'before:text-black',
-  white: 'before:text-white',
+  primary: 'before:bg-primary',
+  secondary: 'before:bg-secondary',
+  success: 'before:bg-success',
+  info: 'before:bg-info',
+  warning: 'before:bg-warning',
+  danger: 'before:bg-danger',
+  'light-1': 'before:bg-light-1',
+  'light-2': 'before:bg-light-2',
+  'light-3': 'before:bg-light-3',
+  'light-4': 'before:bg-light-4',
+  'dark-1': 'before:bg-dark-1',
+  'dark-2': 'before:bg-dark-2',
+  'dark-3': 'before:bg-dark-3',
+  'dark-4': 'before:bg-dark-1',
+  transparent: 'before:bg-transparent',
+  black: 'before:bg-black',
+  white: 'before:bg-white',
 }
 
 const props = withDefaults(
@@ -96,12 +96,12 @@ const handleChange = (e: Event) => {
 const handleInputSize = computed<string>(() => {
   const { inputSize } = props
   if (inputSize === 'sm') {
-    return 'h-xs w-xs'
+    return 'h-xs w-xs before:h-2xs before:w-2xs'
   }
   if (inputSize === 'lg') {
-    return 'h-md w-md'
+    return 'h-md w-md before:h-xs before:w-xs'
   }
-  return 'h-sm w-sm'
+  return 'h-sm w-sm before:w-[12px] before:h-[12px]'
 })
 const handleCheckboxLayout = computed<string>(() => {
   const {
@@ -122,7 +122,7 @@ const handleCheckboxLayout = computed<string>(() => {
     classArray.push('drop-shadow-md')
   }
   if (rounded) {
-    classArray.push('rounded-md')
+    classArray.push('rounded-md before:rounded-[3px]')
   }
   return classArray.join(' ')
 })
@@ -141,12 +141,10 @@ const handleCheckboxLayout = computed<string>(() => {
       @change="handleChange"
     />
     <span
-      class="relative border peer-checked/input:border-2 inline-block p-3xs hover:bg-opacity-60 peer-checked/input:hover:bg-opacity-60 peer-checked/input:before:content-['\2713'] peer-checked/input:before:inline-block peer-checked/input:before:absolute before:top-1/2 before:-translate-y-1/2 before:left-1/2 before:-translate-x-1/2 transition-colors duration-200 ease-linear"
+      class="relative border inline-block p-3xs hover:bg-opacity-60 peer-checked/input:hover:bg-opacity-60 before:opacity-0 peer-checked/input:before:opacity-100 before:absolute before:top-1/2 before:-translate-y-1/2 before:left-1/2 before:-translate-x-1/2 transition-colors duration-200 ease-linear before:transition-opacity before:duration-200 before:ease-linar"
       :class="[handleCheckboxLayout, handleInputSize]"
       @click="handleCheckboxClick"
     >
     </span>
   </div>
 </template>
-
-<style scoped></style>
