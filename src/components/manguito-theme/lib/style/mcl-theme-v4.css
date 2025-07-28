@@ -93,6 +93,37 @@
 }
 
 @layer components {
+  /* container class */
+  .container {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  @media (min-width: theme(--breakpoint-sm)) {
+    .container {
+      max-width: theme(--breakpoint-sm);
+    }
+  }
+  @media (min-width: theme(--breakpoint-md)) {
+    .container {
+      max-width: theme(--breakpoint-md);
+    }
+  }
+  @media (min-width: theme(--breakpoint-lg)) {
+    .container {
+      max-width: theme(--breakpoint-lg);
+    }
+  }
+  @media (min-width: theme(--breakpoint-xl)) {
+    .container {
+      max-width: theme(--breakpoint-xl);
+    }
+  }
+  @media (min-width: theme(--breakpoint-2xl)) {
+    .container {
+      max-width: theme(--breakpoint-2xl);
+    }
+  }
   /* Heading size variants */
   .h1-sm {
     font-size: 1.5rem; /* 24px */
