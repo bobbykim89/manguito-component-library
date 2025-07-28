@@ -1,1 +1,2 @@
-@import '../components/manguito-theme/lib/style/mcl-theme-v4.css';
+@import "tailwindcss";
+@import "../components/manguito-theme/lib/style/mcl-theme-v4.css";

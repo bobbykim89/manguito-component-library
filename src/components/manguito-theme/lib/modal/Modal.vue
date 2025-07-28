@@ -1,133 +1,133 @@
 <script setup lang="ts">
-import { useScrollLock } from '@vueuse/core'
-import { computed, onMounted, ref, watch } from 'vue'
-import type { ColorPalette, SizeOption, VerticalAlignment } from '..'
-import generateClass, { vClickOutside } from '..'
-import { observeVisibleAttr } from '../composables'
+import { useScrollLock } from "@vueuse/core";
+import { computed, onMounted, ref, watch } from "vue";
+import type { ColorPalette, SizeOption, VerticalAlignment } from "..";
+import generateClass, { vClickOutside } from "..";
+import { observeVisibleAttr } from "../composables";
 
 const props = withDefaults(
   defineProps<{
-    title?: string
-    titleColor?: ColorPalette
-    className?: string | string[]
-    visible?: boolean
-    noBackdrop?: boolean
-    noHeader?: boolean
-    color?: ColorPalette
-    backdropColor?: ColorPalette
-    placement?: VerticalAlignment
-    modalWidth?: SizeOption
+    title?: string;
+    titleColor?: ColorPalette;
+    className?: string | string[];
+    visible?: boolean;
+    noBackdrop?: boolean;
+    noHeader?: boolean;
+    color?: ColorPalette;
+    backdropColor?: ColorPalette;
+    placement?: VerticalAlignment;
+    modalWidth?: SizeOption;
   }>(),
   {
-    titleColor: 'dark-3',
-    className: '',
+    titleColor: "dark-3",
+    className: "",
     visible: false,
     noBackdrop: false,
     noHeader: false,
-    color: 'light-1',
-    backdropColor: 'dark-4',
-    placement: 'center',
-    modalWidth: 'small',
-  }
-)
+    color: "light-1",
+    backdropColor: "dark-4",
+    placement: "center",
+    modalWidth: "small",
+  },
+);
 
 const slots = defineSlots<{
-  header(props: { close: () => void; status: boolean }): any
-  body(props: { close: () => void; status: boolean }): any
-  footer(props: { close: () => void; status: boolean }): any
-}>()
+  header(props: { close: () => void; status: boolean }): any;
+  body(props: { close: () => void; status: boolean }): any;
+  footer(props: { close: () => void; status: boolean }): any;
+}>();
 const emit = defineEmits<{
-  (e: 'open', visible: boolean): void
-  (e: 'close', visible: boolean): void
-}>()
-const modalRef = ref<HTMLElement | undefined>()
-const toggle = ref<boolean>(props.visible)
-const toggleComplete = ref<boolean>(false)
+  (e: "open", visible: boolean): void;
+  (e: "close", visible: boolean): void;
+}>();
+const modalRef = ref<HTMLElement | undefined>();
+const toggle = ref<boolean>(props.visible);
+const toggleComplete = ref<boolean>(false);
 
 const toggleModal = (): void => {
-  toggle.value = !toggle.value
-}
+  toggle.value = !toggle.value;
+};
 const openModal = (): void => {
-  toggle.value = true
-}
+  toggle.value = true;
+};
 const closeModal = (): void => {
   if (toggleComplete.value === true) {
-    toggle.value = false
+    toggle.value = false;
   }
-}
+};
 const emitOpenEvent = () => {
-  emit('open', true)
-}
+  emit("open", true);
+};
 const emitCloseEvent = () => {
-  emit('close', false)
-}
+  emit("close", false);
+};
 const handlePlacementVar = computed(() => {
   const modalPlacementObj: Record<VerticalAlignment, number> = {
     top: 25,
     center: 50,
     bottom: 75,
-  }
-  const { placement } = props
+  };
+  const { placement } = props;
   const placemenntNumber =
-    modalPlacementObj[placement] ?? modalPlacementObj['center']
-  return { '--vertical-placement': placemenntNumber + '%' }
-})
+    modalPlacementObj[placement] ?? modalPlacementObj["center"];
+  return { "--vertical-placement": placemenntNumber + "%" };
+});
 const handleModalWidth = computed(() => {
-  const { modalWidth } = props
+  const { modalWidth } = props;
   const modalWidthClassObj: Record<SizeOption, string> = {
-    small: 'max-w-md',
-    medium: 'max-w-md md:max-w-xl',
-    large: 'max-w-md md:max-w-4xl',
-  }
-  return modalWidthClassObj[modalWidth] ?? modalWidthClassObj['small']
-})
+    small: "max-w-[28rem]",
+    medium: "max-w-[28rem] md:max-w-[36rem]",
+    large: "max-w-[28rem] md:max-w-[56rem]",
+  };
+  return modalWidthClassObj[modalWidth] ?? modalWidthClassObj["small"];
+});
 
 /**
  * @TransitionFunctions
  * @summary Handle toggleComplete value after completion of animation
  */
 const onAfterEnter = () => {
-  toggleComplete.value = true
-}
+  toggleComplete.value = true;
+};
 const onAfterLeave = () => {
-  toggleComplete.value = false
-}
+  toggleComplete.value = false;
+};
 
 // set mutation observer watching `visible` attribute in element
 const handleVisibility = (visible: boolean = false) => {
-  toggle.value = visible
-}
+  toggle.value = visible;
+};
 
-observeVisibleAttr(modalRef, handleVisibility)
+observeVisibleAttr(modalRef, handleVisibility);
 
 watch(
   () => props.visible,
   (newValue) => {
-    toggle.value = newValue
-  }
-)
+    toggle.value = newValue;
+  },
+);
 watch(toggle, (newValue) => {
   if (newValue === true) {
-    emitOpenEvent()
+    emitOpenEvent();
   } else if (newValue === false && toggleComplete.value === true) {
-    emitCloseEvent()
+    emitCloseEvent();
   }
-})
+});
 onMounted(() => {
-  const scrollLock = useScrollLock(document)
+  const scrollLock = useScrollLock(document);
   watch(toggle, (newVal) => {
-    scrollLock.value = newVal
-  })
-})
+    scrollLock.value = newVal;
+  });
+});
 defineExpose<{
-  toggle: () => void
-  close: () => void
-  open: () => void
+  toggle: () => void;
+  close: () => void;
+  open: () => void;
 }>({
   toggle: toggleModal,
   close: closeModal,
   open: openModal,
-})
+});
 </script>
 
 <template>
@@ -136,7 +136,7 @@ defineExpose<{
       <section
         v-if="toggle"
         @click="closeModal"
-        class="fixed inset-0 overflow-y-auto bg-opacity-70 backdrop-blur z-[100]"
+        class="fixed inset-0 z-[100] overflow-y-auto bg-opacity-70 backdrop-blur"
         :class="generateClass('BGCOLOR', backdropColor)"
       ></section>
     </Transition>
@@ -149,18 +149,18 @@ defineExpose<{
     >
       <div
         v-if="toggle"
-        class="vertical-placement fixed w-full z-[110] px-xs"
+        class="vertical-placement px-xs fixed z-[110] w-full"
         :class="handleModalWidth"
       >
         <div
           v-click-outside="closeModal"
           :class="[generateClass('BGCOLOR', color), className]"
-          class="relative overscroll-contain overflow-y-scroll max-h-[80vh] md:max-h-[60vh]"
+          class="relative max-h-[80vh] overflow-y-scroll overscroll-contain md:max-h-[60vh]"
         >
           <div v-if="!noHeader" class="sticky top-0">
             <slot name="header" :close="closeModal" :status="toggle">
               <div
-                class="flex justify-between items-center p-xs border-b-2"
+                class="p-xs flex items-center justify-between border-b-2"
                 :class="generateClass('BGCOLOR', color)"
               >
                 <h3
@@ -175,7 +175,7 @@ defineExpose<{
                     xmlns="http://www.w3.org/2000/svg"
                     height="1em"
                     viewBox="0 0 384 512"
-                    class="hover:opacity-75 focus:opacity-75 transition-opacity duration-300 ease-in h-sm"
+                    class="h-sm transition-opacity duration-300 ease-in hover:opacity-75 focus:opacity-75"
                     :class="[generateClass('SVGFILL', titleColor)]"
                   >
                     <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
