@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 /* 
   Default Theme Variables
@@ -263,12 +263,12 @@
   }
   /* MCL Link */
   .mcl-link {
-    color: theme(--color-primary);
+    color: var(--mcl-link-color, theme(--color-primary));
     text-decoration: underline;
     transition: color 200ms ease-in;
   }
   .mcl-link:hover {
-    color: --alpha(theme(--color-primary) / 60%);
+    color: --alpha(var(--mcl-link-color, theme(--color-primary)) / 60%);
   }
   /* MCL List */
   .mcl-list {
@@ -281,12 +281,12 @@
     margin-bottom: 0.5rem;
   }
   .mcl-list li::before {
-    content: '•';
+    content: "•";
     font-weight: 700;
     display: inline-block;
     width: 1rem;
     margin-left: -1rem;
-    color: theme(--color-primary);
+    color: var(--mcl-list-color, theme(--color-primary));
   }
   .mcl-list.mcl-list-sm li::before {
     font-weight: 500;
@@ -294,6 +294,7 @@
   .mcl-list.mcl-list-lg li::before {
     font-weight: 900;
   }
+
   /* Button Base */
   .btn {
     padding: 0.5rem 1rem;
@@ -308,13 +309,13 @@
     outline-style: solid;
     outline-width: 0;
     outline-offset: 0.125rem; /* 2px */
-    outline-color: theme(--color-primary);
-    background-color: theme(--color-primary);
+    outline-color: var(--btn-color, theme(--color-primary));
+    background-color: var(--btn-color, theme(--color-primary));
     text-align: center;
     border-radius: theme(--radius-sm);
   }
   .btn:hover {
-    background-color: --alpha(theme(--color-primary) / 70%);
+    background-color: --alpha(var(--btn-color, theme(--color-primary)) / 70%);
   }
   .btn:focus {
     outline-width: 0.25rem; /* 4px */
@@ -340,31 +341,31 @@
   }
   /* Inverted button */
   .btn.btn-invert {
-    border: 2px solid theme(--color-primary);
-    color: theme(--color-primary);
+    border: 2px solid var(--btn-color, theme(--color-primary));
+    color: var(--btn-color, theme(--color-primary));
     background-color: transparent;
   }
   .btn.btn-invert:hover {
-    background-color: theme(--color-primary);
+    background-color: var(--btn-color, theme(--color-primary));
     color: white;
   }
   /* Progress button */
   .btn.btn-progress {
     position: relative;
-    border: 2px solid theme(--color-primary);
-    color: theme(--color-primary);
+    border: 2px solid var(--btn-color, theme(--color-primary));
+    color: var(--btn-color, theme(--color-primary));
     background-color: transparent;
   }
 
   .btn.btn-progress::before {
-    content: '';
+    content: "";
     position: absolute;
     height: 100%;
     width: 0;
     bottom: 0;
     left: 0;
     transition: width 300ms linear;
-    background-color: theme(--color-primary);
+    background-color: var(--btn-color, theme(--color-primary));
   }
 
   .btn.btn-progress > * {
@@ -440,7 +441,7 @@
   }
 
   .tooltip.tooltip-top::after {
-    content: ' ';
+    content: " ";
     position: absolute;
     top: 100%;
     left: 50%;
@@ -460,7 +461,7 @@
   }
 
   .tooltip.tooltip-bottom::after {
-    content: ' ';
+    content: " ";
     position: absolute;
     bottom: 100%;
     left: 50%;
@@ -480,7 +481,7 @@
   }
 
   .tooltip.tooltip-left::after {
-    content: ' ';
+    content: " ";
     position: absolute;
     top: 50%;
     left: 100%;
@@ -500,7 +501,7 @@
   }
 
   .tooltip.tooltip-right::after {
-    content: ' ';
+    content: " ";
     position: absolute;
     top: 50%;
     right: 100%;
@@ -514,541 +515,23 @@
   }
 }
 
+/* set variable for color-specific button variants */
+@utility btn-* {
+  --btn-color: --value(--color-*);
+}
+
+/* set varibale for list color variants */
+@utility mcl-list-* {
+  --mcl-list-color: --value(--color-*);
+}
+
+/* set variable for link color variants */
+@utility mcl-link-* {
+  --mcl-link-color: --value(--color-*);
+}
+
 /* Utility Classes - replaces addUtilities from your plugin */
 @layer utilities {
-  /* Color-specific button variants */
-  .btn-primary {
-    background-color: theme(--color-primary);
-    outline-color: theme(--color-primary);
-  }
-  .btn-primary:hover {
-    background-color: --alpha(theme(--color-primary) / 70%);
-  }
-  .btn-secondary {
-    background-color: theme(--color-secondary);
-    outline-color: theme(--color-secondary);
-  }
-  .btn-secondary:hover {
-    background-color: --alpha(theme(--color-secondary) / 70%);
-  }
-  .btn-success {
-    background-color: theme(--color-success);
-    outline-color: theme(--color-success);
-  }
-  .btn-success:hover {
-    background-color: --alpha(theme(--color-success) / 70%);
-  }
-  .btn-info {
-    background-color: theme(--color-info);
-    outline-color: theme(--color-info);
-  }
-  .btn-info:hover {
-    background-color: --alpha(theme(--color-info) / 70%);
-  }
-  .btn-warning {
-    background-color: theme(--color-warning);
-    outline-color: theme(--color-warning);
-  }
-  .btn-warning:hover {
-    background-color: --alpha(theme(--color-warning) / 70%);
-  }
-  .btn-danger {
-    background-color: theme(--color-danger);
-    outline-color: theme(--color-danger);
-  }
-  .btn-danger:hover {
-    background-color: --alpha(theme(--color-danger) / 70%);
-  }
-  .btn-light-1 {
-    background-color: theme(--color-light-1);
-    outline-color: theme(--color-light-1);
-  }
-  .btn-light-1:hover {
-    background-color: --alpha(theme(--color-light-1) / 70%);
-  }
-  .btn-light-2 {
-    background-color: theme(--color-light-2);
-    outline-color: theme(--color-light-2);
-  }
-  .btn-light-2:hover {
-    background-color: --alpha(theme(--color-light-2) / 70%);
-  }
-  .btn-light-3 {
-    background-color: theme(--color-light-3);
-    outline-color: theme(--color-light-3);
-  }
-  .btn-light-3:hover {
-    background-color: --alpha(theme(--color-light-3) / 70%);
-  }
-  .btn-light-4 {
-    background-color: theme(--color-light-4);
-    outline-color: theme(--color-light-4);
-  }
-  .btn-light-4:hover {
-    background-color: --alpha(theme(--color-light-4) / 70%);
-  }
-  .btn-dark-1 {
-    background-color: theme(--color-dark-1);
-    outline-color: theme(--color-dark-1);
-  }
-  .btn-dark-1:hover {
-    background-color: --alpha(theme(--color-dark-1) / 70%);
-  }
-  .btn-dark-2 {
-    background-color: theme(--color-dark-2);
-    outline-color: theme(--color-dark-2);
-  }
-  .btn-dark-2:hover {
-    background-color: --alpha(theme(--color-dark-2) / 70%);
-  }
-  .btn-dark-3 {
-    background-color: theme(--color-dark-3);
-    outline-color: theme(--color-dark-3);
-  }
-  .btn-dark-3:hover {
-    background-color: --alpha(theme(--color-dark-3) / 70%);
-  }
-  .btn-dark-4 {
-    background-color: theme(--color-dark-4);
-    outline-color: theme(--color-dark-4);
-  }
-  .btn-dark-4:hover {
-    background-color: --alpha(theme(--color-dark-4) / 70%);
-  }
-  /* Inverted button variants */
-  .btn-invert.btn-primary {
-    border-color: theme(--color-primary);
-    background-color: transparent;
-    color: theme(--color-primary);
-  }
-  .btn-invert.btn-primary:hover {
-    background-color: theme(--color-primary);
-  }
-
-  .btn-invert.btn-secondary {
-    border-color: theme(--color-secondary);
-    background-color: transparent;
-    color: theme(--color-secondary);
-  }
-  .btn-invert.btn-secondary:hover {
-    background-color: theme(--color-secondary);
-    color: #ffffff;
-  }
-
-  .btn-invert.btn-success {
-    border-color: theme(--color-success);
-    background-color: transparent;
-    color: theme(--color-success);
-  }
-  .btn-invert.btn-success:hover {
-    background-color: theme(--color-success);
-    color: #ffffff;
-  }
-
-  .btn-invert.btn-info {
-    border-color: theme(--color-info);
-    background-color: transparent;
-    color: theme(--color-info);
-  }
-  .btn-invert.btn-info:hover {
-    background-color: theme(--color-info);
-    color: #ffffff;
-  }
-
-  .btn-invert.btn-warning {
-    border-color: theme(--color-warning);
-    background-color: transparent;
-    color: theme(--color-warning);
-  }
-  .btn-invert.btn-warning:hover {
-    background-color: theme(--color-warning);
-    color: #ffffff;
-  }
-
-  .btn-invert.btn-danger {
-    border-color: theme(--color-danger);
-    background-color: transparent;
-    color: theme(--color-danger);
-  }
-  .btn-invert.btn-danger:hover {
-    background-color: theme(--color-danger);
-    color: #ffffff;
-  }
-
-  .btn-invert.btn-light-1 {
-    border-color: theme(--color-light-1);
-    background-color: transparent;
-    color: theme(--color-light-1);
-  }
-  .btn-invert.btn-light-1:hover {
-    background-color: theme(--color-light-1);
-    color: #ffffff;
-  }
-
-  .btn-invert.btn-light-2 {
-    border-color: theme(--color-light-2);
-    background-color: transparent;
-    color: theme(--color-light-2);
-  }
-  .btn-invert.btn-light-2:hover {
-    background-color: theme(--color-light-2);
-    color: #ffffff;
-  }
-
-  .btn-invert.btn-light-3 {
-    border-color: theme(--color-light-3);
-    background-color: transparent;
-    color: theme(--color-light-3);
-  }
-  .btn-invert.btn-light-3:hover {
-    background-color: theme(--color-light-3);
-    color: #ffffff;
-  }
-
-  .btn-invert.btn-light-4 {
-    border-color: theme(--color-light-4);
-    background-color: transparent;
-    color: theme(--color-light-4);
-  }
-  .btn-invert.btn-light-4:hover {
-    background-color: theme(--color-light-4);
-    color: #ffffff;
-  }
-
-  .btn-invert.btn-dark-1 {
-    border-color: theme(--color-dark-1);
-    background-color: transparent;
-    color: theme(--color-dark-1);
-  }
-  .btn-invert.btn-dark-1:hover {
-    background-color: theme(--color-dark-1);
-    color: #ffffff;
-  }
-
-  .btn-invert.btn-dark-2 {
-    border-color: theme(--color-dark-2);
-    background-color: transparent;
-    color: theme(--color-dark-2);
-  }
-  .btn-invert.btn-dark-2:hover {
-    background-color: theme(--color-dark-2);
-    color: #ffffff;
-  }
-
-  .btn-invert.btn-dark-3 {
-    border-color: theme(--color-dark-3);
-    background-color: transparent;
-    color: theme(--color-dark-3);
-  }
-  .btn-invert.btn-dark-3:hover {
-    background-color: theme(--color-dark-3);
-    color: #ffffff;
-  }
-
-  .btn-invert.btn-dark-4 {
-    border-color: theme(--color-dark-4);
-    background-color: transparent;
-    color: theme(--color-dark-4);
-  }
-  .btn-invert.btn-dark-4:hover {
-    background-color: theme(--color-dark-4);
-    color: #ffffff;
-  }
-  /* Progress button variants */
-  .btn-progress.btn-primary::before {
-    background-color: theme(--color-primary);
-  }
-  .btn-progress.btn-primary {
-    border-color: theme(--color-primary);
-    color: theme(--color-primary);
-  }
-  .btn-progress.btn-primary:hover,
-  .btn-progress.btn-primary:focus {
-    color: white;
-  }
-
-  .btn-progress.btn-secondary::before {
-    background-color: theme(--color-secondary);
-  }
-  .btn-progress.btn-secondary {
-    border-color: theme(--color-secondary);
-    color: theme(--color-secondary);
-    background-color: transparent;
-  }
-  .btn-progress.btn-secondary:hover,
-  .btn-progress.btn-secondary:focus {
-    color: white;
-  }
-
-  .btn-progress.btn-success::before {
-    background-color: theme(--color-success);
-  }
-  .btn-progress.btn-success {
-    border-color: theme(--color-success);
-    color: theme(--color-success);
-    background-color: transparent;
-  }
-  .btn-progress.btn-success:hover,
-  .btn-progress.btn-success:focus {
-    color: white;
-  }
-
-  .btn-progress.btn-info::before {
-    background-color: theme(--color-info);
-  }
-  .btn-progress.btn-info {
-    border-color: theme(--color-info);
-    color: theme(--color-info);
-    background-color: transparent;
-  }
-  .btn-progress.btn-info:hover,
-  .btn-progress.btn-info:focus {
-    color: white;
-  }
-
-  .btn-progress.btn-warning::before {
-    background-color: theme(--color-warning);
-  }
-  .btn-progress.btn-warning {
-    border-color: theme(--color-warning);
-    color: theme(--color-warning);
-    background-color: transparent;
-  }
-  .btn-progress.btn-warning:hover,
-  .btn-progress.btn-warning:focus {
-    color: white;
-  }
-
-  .btn-progress.btn-danger::before {
-    background-color: theme(--color-danger);
-  }
-  .btn-progress.btn-danger {
-    border-color: theme(--color-danger);
-    color: theme(--color-danger);
-    background-color: transparent;
-  }
-  .btn-progress.btn-danger:hover,
-  .btn-progress.btn-danger:focus {
-    color: white;
-  }
-
-  .btn-progress.btn-light-1::before {
-    background-color: theme(--color-light-1);
-  }
-  .btn-progress.btn-light-1 {
-    border-color: theme(--color-light-1);
-    color: theme(--color-light-1);
-    background-color: transparent;
-  }
-  .btn-progress.btn-light-1:hover,
-  .btn-progress.btn-light-1:focus {
-    color: white;
-  }
-
-  .btn-progress.btn-light-2::before {
-    background-color: theme(--color-light-2);
-  }
-  .btn-progress.btn-light-2 {
-    border-color: theme(--color-light-2);
-    color: theme(--color-light-2);
-    background-color: transparent;
-  }
-  .btn-progress.btn-light-2:hover,
-  .btn-progress.btn-light-2:focus {
-    color: white;
-  }
-
-  .btn-progress.btn-light-3::before {
-    background-color: theme(--color-light-3);
-  }
-  .btn-progress.btn-light-3 {
-    border-color: theme(--color-light-3);
-    color: theme(--color-light-3);
-    background-color: transparent;
-  }
-  .btn-progress.btn-light-3:hover,
-  .btn-progress.btn-light-3:focus {
-    color: white;
-  }
-
-  .btn-progress.btn-light-4::before {
-    background-color: theme(--color-light-4);
-  }
-  .btn-progress.btn-light-4 {
-    border-color: theme(--color-light-4);
-    color: theme(--color-light-4);
-    background-color: transparent;
-  }
-  .btn-progress.btn-light-4:hover,
-  .btn-progress.btn-light-4:focus {
-    color: white;
-  }
-
-  .btn-progress.btn-dark-1::before {
-    background-color: theme(--color-dark-1);
-  }
-  .btn-progress.btn-dark-1 {
-    border-color: theme(--color-dark-1);
-    color: theme(--color-dark-1);
-    background-color: transparent;
-  }
-  .btn-progress.btn-dark-1:hover,
-  .btn-progress.btn-dark-1:focus {
-    color: white;
-  }
-
-  .btn-progress.btn-dark-2::before {
-    background-color: theme(--color-dark-2);
-  }
-  .btn-progress.btn-dark-2 {
-    border-color: theme(--color-dark-2);
-    color: theme(--color-dark-2);
-    background-color: transparent;
-  }
-  .btn-progress.btn-dark-2:hover,
-  .btn-progress.btn-dark-2:focus {
-    color: white;
-  }
-
-  .btn-progress.btn-dark-3::before {
-    background-color: theme(--color-dark-3);
-  }
-  .btn-progress.btn-dark-3 {
-    border-color: theme(--color-dark-3);
-    color: theme(--color-dark-3);
-    background-color: transparent;
-  }
-  .btn-progress.btn-dark-3:hover,
-  .btn-progress.btn-dark-3:focus {
-    color: white;
-  }
-
-  .btn-progress.btn-dark-4::before {
-    background-color: theme(--color-dark-4);
-  }
-  .btn-progress.btn-dark-4 {
-    border-color: theme(--color-dark-4);
-    color: theme(--color-dark-4);
-    background-color: transparent;
-  }
-  .btn-progress.btn-dark-4:hover,
-  .btn-progress.btn-dark-4:focus {
-    color: white;
-  }
-  /* MCL List color variants */
-  .mcl-list-primary li::before {
-    color: theme(--color-primary);
-  }
-
-  .mcl-list-secondary li::before {
-    color: theme(--color-secondary);
-  }
-
-  .mcl-list-success li::before {
-    color: theme(--color-success);
-  }
-
-  .mcl-list-info li::before {
-    color: theme(--color-info);
-  }
-
-  .mcl-list-warning li::before {
-    color: theme(--color-warning);
-  }
-
-  .mcl-list-danger li::before {
-    color: theme(--color-danger);
-  }
-
-  .mcl-list-light-1 li::before {
-    color: theme(--color-light-1);
-  }
-
-  .mcl-list-light-2 li::before {
-    color: theme(--color-light-2);
-  }
-
-  .mcl-list-light-3 li::before {
-    color: theme(--color-light-3);
-  }
-
-  .mcl-list-light-4 li::before {
-    color: theme(--color-light-4);
-  }
-
-  .mcl-list-dark-1 li::before {
-    color: theme(--color-dark-1);
-  }
-
-  .mcl-list-dark-2 li::before {
-    color: theme(--color-dark-2);
-  }
-
-  .mcl-list-dark-3 li::before {
-    color: theme(--color-dark-3);
-  }
-
-  .mcl-list-dark-4 li::before {
-    color: theme(--color-dark-4);
-  }
-
-  /* MCL Link color variants */
-  .mcl-link.text-primary:hover {
-    color: --alpha(theme(--color-primary) / 60%);
-  }
-
-  .mcl-link.text-secondary:hover {
-    color: --alpha(theme(--color-secondary) / 60%);
-  }
-
-  .mcl-link.text-success:hover {
-    color: --alpha(theme(--color-success) / 60%);
-  }
-
-  .mcl-link.text-info:hover {
-    color: --alpha(theme(--color-info) / 60%);
-  }
-
-  .mcl-link.text-warning:hover {
-    color: --alpha(theme(--color-warning) / 60%);
-  }
-
-  .mcl-link.text-danger:hover {
-    color: --alpha(theme(--color-danger) / 60%);
-  }
-
-  .mcl-link.text-light-1:hover {
-    color: --alpha(theme(--color-light-1) / 60%);
-  }
-
-  .mcl-link.text-light-2:hover {
-    color: --alpha(theme(--color-light-2) / 60%);
-  }
-
-  .mcl-link.text-light-3:hover {
-    color: --alpha(theme(--color-light-3) / 60%);
-  }
-
-  .mcl-link.text-light-4:hover {
-    color: --alpha(theme(--color-light-4) / 60%);
-  }
-
-  .mcl-link.text-dark-1:hover {
-    color: --alpha(theme(--color-dark-1) / 60%);
-  }
-
-  .mcl-link.text-dark-2:hover {
-    color: --alpha(theme(--color-dark-2) / 60%);
-  }
-
-  .mcl-link.text-dark-3:hover {
-    color: --alpha(theme(--color-dark-3) / 60%);
-  }
-
-  .mcl-link.text-dark-4:hover {
-    color: --alpha(theme(--color-dark-4) / 60%);
-  }
-
   /* Tooltip color variants */
   /* primary */
   .tooltip.bg-primary::after {

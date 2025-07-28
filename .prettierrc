@@ -1,0 +1,4 @@
+{
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "tailwindStylesheet": "./src/components/manguito-theme/lib/style/mcl-theme-v4.css"
+}
