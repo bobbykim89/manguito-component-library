@@ -13,6 +13,9 @@
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "files.associations": {
     "*.ts": "typescript"
   },
@@ -22,7 +25,7 @@
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
   },
-  "tailwindCSS.validate": false,
+  // "tailwindCSS.validate": false,
   "tailwindCSS.experimental.classRegex": [],
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
