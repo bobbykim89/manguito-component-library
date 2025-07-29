@@ -32,7 +32,7 @@ const props = withDefaults(
     displayShadow: true,
     rounded: true,
     displayScrollButtons: true,
-  }
+  },
 )
 
 const buttonContainerRef = ref<HTMLElement>()
@@ -111,7 +111,8 @@ const activeBtnClass = computed<string>(() => {
   const classArray: string[] = [
     generateClass('TEXTCOLOR', activeTitleColor),
     generateClass('BGCOLOR', bgColor),
-    'ring-4 ring-white ring-opacity-60',
+    // 'ring-4 ring-white ring-opacity-60',
+    'outline-4 outline-white outline-opacity-60',
   ]
   displayShadow && classArray.push('drop-shadow')
   return classArray.join(' ')
@@ -161,7 +162,7 @@ watch(width, updateScrollButtons)
     <template #tab-button="{ update, activeTab }">
       <button
         v-if="displayScrollButtons && canScrollLeft"
-        class="lg:hidden absolute left-0 top-1/2 transform -translate-y-1/2 z-10 px-3xs h-full"
+        class="px-3xs absolute left-0 top-1/2 z-10 h-full -translate-y-1/2 transform lg:hidden"
         :class="[rounded && 'rounded-l-lg', scrollBtnClass]"
         aria-label="scroll left"
         @click="scrollLeft"
@@ -180,7 +181,7 @@ watch(width, updateScrollButtons)
       </button>
       <div
         ref="buttonContainerRef"
-        :class="['flex flex-nowrap p-3xs space-x-1 overflow-x-auto', tabClass]"
+        :class="['p-3xs flex flex-nowrap space-x-1 overflow-x-auto', tabClass]"
         @scroll="updateScrollButtons"
       >
         <button
@@ -192,10 +193,10 @@ watch(width, updateScrollButtons)
           :class="[
             activeTab === idx ? activeBtnClass : inactiveBtnClass,
             rounded && 'rounded-lg',
-            'min-w-[50%] md:min-w-[33%] lg:min-w-fit text-center w-full py-2.5 focus:outline-none',
+            'w-full min-w-[50%] py-2.5 text-center focus:outline-none md:min-w-[33%] lg:min-w-fit',
           ]"
           :disabled="activeTab === idx"
-          @click="hadleTabClick($event, item.title), update(idx)"
+          @click="(hadleTabClick($event, item.title), update(idx))"
         >
           <h3 :class="generateClass('H3', titleSize)">
             {{ item.title }}
@@ -204,7 +205,7 @@ watch(width, updateScrollButtons)
       </div>
       <button
         v-if="displayScrollButtons && canScrollRight"
-        class="lg:hidden absolute right-0 top-1/2 transform -translate-y-1/2 z-10 px-3xs h-full"
+        class="px-3xs absolute right-0 top-1/2 z-10 h-full -translate-y-1/2 transform lg:hidden"
         :class="[rounded && 'rounded-r-lg', scrollBtnClass]"
         aria-label="scroll right"
         @click="scrollRight"
