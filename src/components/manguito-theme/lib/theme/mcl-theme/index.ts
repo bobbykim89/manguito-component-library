@@ -1,10 +1,10 @@
 import {
+  MclBorderWidthClass,
   MclColor,
   MclHeadingSize,
   MclOpacityClass,
   MclSpacingClass,
   MclText,
-  MclBorderWidthClass,
 } from '../static'
 import type {
   Alignment,
@@ -34,6 +34,9 @@ export const typeGroup = {
     'RINGCOLOR',
     'FOCUSRING',
     'ACTIVERING',
+    'OUTLINE',
+    'FOCUSOUTLINE',
+    'ACTIVEOUTLINE',
     'OFFSETRING',
     'BTNCOLOR',
     'LISTCOLOR',
@@ -58,7 +61,7 @@ export const typeGroup = {
     'BORDERLW',
     'BORDERRW',
   ] as const,
-  scaleType: ['BGOPACITY', 'OPACITY'] as const,
+  scaleType: ['BGOPACITY', 'OPACITY', 'OUTLINEOPACITY'] as const,
   spacingType: [
     'MARGIN',
     'MARGINX',
@@ -177,6 +180,12 @@ export class MclClass<T extends ClassType> {
         return this.getActiveRingColorClass()
       case 'OFFSETRING':
         return this.getRingOffsetColorClass()
+      case 'OUTLINE':
+        return this.getOutlineColorClass()
+      case 'FOCUSOUTLINE':
+        return this.getFocusOutlineColorClass()
+      case 'ACTIVEOUTLINE':
+        return this.getActiveOutlineColorClass()
       case 'BTNCOLOR':
         return this.getBtnColorClass()
       case 'LISTCOLOR':
@@ -233,6 +242,8 @@ export class MclClass<T extends ClassType> {
         return this.getOpacityClass()
       case 'BGOPACITY':
         return this.getBgOpacityClass()
+      case 'OUTLINEOPACITY':
+        return this.getOutlineOpacityClass()
       // case: margins
       case 'MARGIN':
         return this.getMarginClass()
@@ -362,6 +373,25 @@ export class MclClass<T extends ClassType> {
   private getRingOffsetColorClass(): string {
     if (this.validator.validateColorType(this.classValue)) {
       return this.colorClass.ringOffsetColor[this.classValue]
+    }
+    return ' '
+  }
+  // outline color
+  private getOutlineColorClass(): string {
+    if (this.validator.validateColorType(this.classValue)) {
+      return this.colorClass.outlineColor[this.classValue]
+    }
+    return ' '
+  }
+  private getFocusOutlineColorClass(): string {
+    if (this.validator.validateColorType(this.classValue)) {
+      return this.colorClass.focusOutlineColor[this.classValue]
+    }
+    return ' '
+  }
+  private getActiveOutlineColorClass(): string {
+    if (this.validator.validateColorType(this.classValue)) {
+      return this.colorClass.activeOutlineColor[this.classValue]
     }
     return ' '
   }
@@ -520,6 +550,12 @@ export class MclClass<T extends ClassType> {
   private getBgOpacityClass(): string {
     if (this.validator.validateOpacityType(this.classValue)) {
       return this.opacityClass.backgroundOpacity[this.classValue]
+    }
+    return ' '
+  }
+  private getOutlineOpacityClass(): string {
+    if (this.validator.validateOpacityType(this.classValue)) {
+      return this.opacityClass.outlineOpacity[this.classValue]
     }
     return ' '
   }
