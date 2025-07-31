@@ -281,7 +281,7 @@
     margin-bottom: 0.5rem;
   }
   .mcl-list li::before {
-    content: "•";
+    content: '•';
     font-weight: 700;
     display: inline-block;
     width: 1rem;
@@ -300,7 +300,8 @@
     padding: 0.5rem 1rem;
     cursor: pointer;
     font-size: 1rem;
-    transition-property: color, background-color, outline-width, outline-offset, transform;
+    transition-property:
+      color, background-color, outline-width, outline-offset, outline-color;
     transition-duration: 300ms;
     transition-timing-function: linear;
     overflow: hidden;
@@ -318,6 +319,7 @@
     background-color: --alpha(
       var(--mcl-btn-color, theme(--color-primary)) / 70%
     );
+    outline-color: --alpha(var(--mcl-btn-color, theme(--color-primary)) / 70%);
   }
   .btn:focus {
     outline-width: 0.25rem; /* 4px */
@@ -350,6 +352,7 @@
   }
   .btn.btn-invert:hover {
     background-color: var(--mcl-btn-color, theme(--color-primary));
+    outline-color: var(--mcl-btn-color, theme(--color-primary));
     color: white;
   }
   /* Progress button */
@@ -361,7 +364,7 @@
   }
 
   .btn.btn-progress::before {
-    content: "";
+    content: '';
     position: absolute;
     height: 100%;
     width: 0;
@@ -383,6 +386,7 @@
   .btn.btn-progress:hover,
   .btn.btn-progress:focus {
     color: white;
+    outline-color: var(--mcl-btn-color, theme(--color-primary));
   }
 
   .btn.btn-progress:hover::before,
@@ -444,7 +448,7 @@
   }
 
   .tooltip.tooltip-top::after {
-    content: " ";
+    content: ' ';
     position: absolute;
     top: 100%;
     left: 50%;
@@ -464,7 +468,7 @@
   }
 
   .tooltip.tooltip-bottom::after {
-    content: " ";
+    content: ' ';
     position: absolute;
     bottom: 100%;
     left: 50%;
@@ -484,7 +488,7 @@
   }
 
   .tooltip.tooltip-left::after {
-    content: " ";
+    content: ' ';
     position: absolute;
     top: 50%;
     left: 100%;
@@ -504,7 +508,7 @@
   }
 
   .tooltip.tooltip-right::after {
-    content: " ";
+    content: ' ';
     position: absolute;
     top: 50%;
     right: 100%;
@@ -550,7 +554,9 @@
 }
 
 @utility outline-* {
-  outline-color: --alpha(--value(--color-*) / calc(var(--mcl-outline-opacity, 1) * 100%));
+  outline-color: --alpha(
+    --value(--color-*) / calc(var(--mcl-outline-opacity, 1) * 100%)
+  );
 }
 
 /* Utility Classes - replaces addUtilities from your plugin */
