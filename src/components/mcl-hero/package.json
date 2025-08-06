@@ -11,9 +11,9 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/mcl-hero.js",
-      "require": "./dist/mcl-hero.umd.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/mcl-hero.umd.cjs"
     }
   },
   "scripts": {
