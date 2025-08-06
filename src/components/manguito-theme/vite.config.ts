@@ -13,23 +13,24 @@ export default defineConfig({
         return outputChunk.fileName.includes('core')
       },
     }),
-    dts({ rollupTypes: true }),
+    dts({ rollupTypes: true, exclude: ['**/*.css'] }),
   ],
   build: {
     lib: {
       entry: {
         core: resolve(__dirname, 'lib/index.ts'),
-        'mcl-theme': resolve(__dirname, 'lib/mclTheme.ts'),
       },
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
-      external: ['vue', '@vueuse/core'],
+      external: ['vue', '@vueuse/core', 'tailwindcss'],
       output: {
         globals: {
           vue: 'Vue',
         },
       },
     },
+    // Allow CSS code splitting for component styles
+    cssCodeSplit: false, // Keep false to inject CSS into JS for components
   },
 })

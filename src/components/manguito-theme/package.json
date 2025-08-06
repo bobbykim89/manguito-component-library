@@ -6,26 +6,35 @@
   "publishConfig": {
     "access": "public"
   },
+  "keywords": [
+    "vue",
+    "vue3",
+    "components",
+    "tailwindcss",
+    "tailwind",
+    "theme",
+    "ui",
+    "design-system",
+    "component-library"
+  ],
   "files": [
-    "dist"
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
   ],
   "main": "./dist/core.cjs",
   "module": "./dist/core.js",
   "types": "./dist/core.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/core.d.ts",
       "import": "./dist/core.js",
-      "require": "./dist/core.cjs",
-      "types": "./dist/core.d.ts"
+      "require": "./dist/core.cjs"
     },
-    "./mcl-theme": {
-      "import": "./dist/mcl-theme.js",
-      "require": "./dist/mcl-theme.cjs",
-      "types": "./dist/mcl-theme.d.ts"
-    }
+    "./theme-v4.css": "./dist/mcl-theme-v4.css"
   },
   "scripts": {
-    "build": "vite build"
+    "build": "vite build && cp lib/style/mcl-theme-v4.css dist/mcl-theme-v4.css"
   },
   "dependencies": {
     "@vueuse/core": "^12.0.0",
