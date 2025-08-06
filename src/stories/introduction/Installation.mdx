@@ -108,6 +108,44 @@ Users can implement theme switching by changing CSS variables dynamically:
 @import '@bobbykim/manguito-theme/mcl-theme-v4.css';
 ```
 
+#### Theme Variables
+
+```css
+/* Colors - Can be overridden by users */
+--color-primary: var(--mcl-primary, #ec489a);
+--color-secondary: var(--mcl-secondary, #00feda);
+--color-success: var(--mcl-success, #78be20);
+--color-info: var(--mcl-info, #00a3e0);
+--color-warning: var(--mcl-warning, #f1ac18);
+--color-danger: var(--mcl-danger, #cc2f2f);
+--color-light-1: var(--mcl-light-1, #fafafa);
+--color-light-2: var(--mcl-light-2, #f1f1f1);
+--color-light-3: var(--mcl-light-3, #e8e8e8);
+--color-light-4: var(--mcl-light-4, #d0d0d0);
+--color-dark-1: var(--mcl-dark-1, #747474);
+--color-dark-2: var(--mcl-dark-2, #484848);
+--color-dark-3: var(--mcl-dark-3, #1f2937);
+--color-dark-4: var(--mcl-dark-4, #191919);
+
+/* Custom Spacing - Can be overridden by users */
+--spacing-3xs: var(--mcl-spacing-3xs, 0.25rem); /* 4px */
+--spacing-2xs: var(--mcl-spacing-2xs, 0.5rem); /* 8px */
+--spacing-xs: var(--mcl-spacing-xs, 1rem); /* 16px */
+--spacing-sm: var(--mcl-spacing-sm, 1.5rem); /* 24px */
+--spacing-md: var(--mcl-spacing-md, 2rem); /* 32px */
+--spacing-lg: var(--mcl-spacing-lg, 3rem); /* 48px */
+--spacing-xl: var(--mcl-spacing-xl, 4rem); /* 64px */
+--spacing-2xl: var(--mcl-spacing-2xl, 6rem); /* 96px */
+--spacing-3xl: var(--mcl-spacing-3xl, 8rem); /* 128px */
+
+/* Font Sizes - Can be overridden by users */
+--text-xs: var(--mcl-text-size-xs, 0.75rem); /* 12px */
+--text-sm: var(--mcl-text-size-sm, 0.875rem); /* 14px */
+--text-md: var(--mcl-text-size-md, 1rem); /* 16px */
+--text-lg: var(--mcl-text-size-lg, 1.125rem); /* 18px */
+--text-xl: var(--mcl-text-size-xl, 1.25rem); /* 20px */
+```
+
 ### Usage
 
 `import generateClass from '@bobbykim/manguito-theme'`
