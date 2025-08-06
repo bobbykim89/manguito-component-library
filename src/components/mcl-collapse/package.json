@@ -11,9 +11,9 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/mcl-collapse.js",
-      "require": "./dist/mcl-collapse.umd.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/mcl-collapse.umd.cjs"
     }
   },
   "scripts": {

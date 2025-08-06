@@ -11,9 +11,9 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/mcl-cards.js",
-      "require": "./dist/mcl-cards.umd.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/mcl-cards.umd.cjs"
     }
   },
   "scripts": {
