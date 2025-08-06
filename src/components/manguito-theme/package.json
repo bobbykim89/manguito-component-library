@@ -31,7 +31,7 @@
       "import": "./dist/core.js",
       "require": "./dist/core.cjs"
     },
-    "./theme-v4.css": "./dist/mcl-theme-v4.css"
+    "./mcl-theme-v4.css": "./dist/mcl-theme-v4.css"
   },
   "scripts": {
     "build": "vite build && cp lib/style/mcl-theme-v4.css dist/mcl-theme-v4.css"
