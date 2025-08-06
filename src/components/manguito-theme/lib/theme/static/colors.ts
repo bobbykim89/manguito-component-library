@@ -305,6 +305,66 @@ export class MclColor {
     white: 'ring-offset-white',
     transparent: 'ring-offset-transparent',
   }
+  // outline class
+  public outlineColor: ColorClass = {
+    primary: 'outline-primary',
+    secondary: 'outline-secondary',
+    success: 'outline-success',
+    danger: 'outline-danger',
+    info: 'outline-info',
+    warning: 'outline-warning',
+    'light-1': 'outline-light-1',
+    'light-2': 'outline-light-2',
+    'light-3': 'outline-light-3',
+    'light-4': 'outline-light-4',
+    'dark-1': 'outline-dark-1',
+    'dark-2': 'outline-dark-2',
+    'dark-3': 'outline-dark-3',
+    'dark-4': 'outline-dark-4',
+    black: 'outline-black',
+    white: 'outline-white',
+    transparent: 'outline-transparent',
+  }
+  // focus:outline class
+  public focusOutlineColor: ColorClass = {
+    primary: 'focus:outline-primary',
+    secondary: 'focus:outline-secondary',
+    success: 'focus:outline-success',
+    danger: 'focus:outline-danger',
+    info: 'focus:outline-info',
+    warning: 'focus:outline-warning',
+    'light-1': 'focus:outline-light-1',
+    'light-2': 'focus:outline-light-2',
+    'light-3': 'focus:outline-light-3',
+    'light-4': 'focus:outline-light-4',
+    'dark-1': 'focus:outline-dark-1',
+    'dark-2': 'focus:outline-dark-2',
+    'dark-3': 'focus:outline-dark-3',
+    'dark-4': 'focus:outline-dark-4',
+    black: 'focus:outline-black',
+    white: 'focus:outline-white',
+    transparent: 'focus:outline-transparent',
+  }
+  // active:outline class
+  public activeOutlineColor: ColorClass = {
+    primary: 'active:outline-primary',
+    secondary: 'active:outline-secondary',
+    success: 'active:outline-success',
+    danger: 'active:outline-danger',
+    info: 'active:outline-info',
+    warning: 'active:outline-warning',
+    'light-1': 'active:outline-light-1',
+    'light-2': 'active:outline-light-2',
+    'light-3': 'active:outline-light-3',
+    'light-4': 'active:outline-light-4',
+    'dark-1': 'active:outline-dark-1',
+    'dark-2': 'active:outline-dark-2',
+    'dark-3': 'active:outline-dark-3',
+    'dark-4': 'active:outline-dark-4',
+    black: 'active:outline-black',
+    white: 'active:outline-white',
+    transparent: 'active:outline-transparent',
+  }
   // btn color class
   public btnColor: ColorClass = {
     primary: 'btn-primary',

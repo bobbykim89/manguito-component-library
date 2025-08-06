@@ -30,4 +30,16 @@ export class MclOpacityClass {
     90: 'opacity-90',
     100: 'opacity-100',
   }
+  public outlineOpacity: Opacity = {
+    10: 'outline-opacity-10',
+    20: 'outline-opacity-20',
+    30: 'outline-opacity-30',
+    40: 'outline-opacity-40',
+    50: 'outline-opacity-50',
+    60: 'outline-opacity-60',
+    70: 'outline-opacity-70',
+    80: 'outline-opacity-80',
+    90: 'outline-opacity-90',
+    100: 'outline-opacity-100',
+  }
 }
