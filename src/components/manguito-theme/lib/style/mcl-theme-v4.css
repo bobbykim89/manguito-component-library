@@ -1,0 +1,747 @@
+/* 
+  Default Theme Variables
+  Users can override these by defining them before importing this file
+  or by using CSS layers with higher specificity
+*/
+
+@theme {
+  /* Colors - Can be overridden by users */
+  --color-primary: var(--mcl-primary, #ec489a);
+  --color-secondary: var(--mcl-secondary, #00feda);
+  --color-success: var(--mcl-success, #78be20);
+  --color-info: var(--mcl-info, #00a3e0);
+  --color-warning: var(--mcl-warning, #f1ac18);
+  --color-danger: var(--mcl-danger, #cc2f2f);
+  --color-light-1: var(--mcl-light-1, #fafafa);
+  --color-light-2: var(--mcl-light-2, #f1f1f1);
+  --color-light-3: var(--mcl-light-3, #e8e8e8);
+  --color-light-4: var(--mcl-light-4, #d0d0d0);
+  --color-dark-1: var(--mcl-dark-1, #747474);
+  --color-dark-2: var(--mcl-dark-2, #484848);
+  --color-dark-3: var(--mcl-dark-3, #1f2937);
+  --color-dark-4: var(--mcl-dark-4, #191919);
+
+  /* Custom Spacing - Can be overridden by users */
+  --spacing-3xs: var(--mcl-spacing-3xs, 0.25rem); /* 4px */
+  --spacing-2xs: var(--mcl-spacing-2xs, 0.5rem); /* 8px */
+  --spacing-xs: var(--mcl-spacing-xs, 1rem); /* 16px */
+  --spacing-sm: var(--mcl-spacing-sm, 1.5rem); /* 24px */
+  --spacing-md: var(--mcl-spacing-md, 2rem); /* 32px */
+  --spacing-lg: var(--mcl-spacing-lg, 3rem); /* 48px */
+  --spacing-xl: var(--mcl-spacing-xl, 4rem); /* 64px */
+  --spacing-2xl: var(--mcl-spacing-2xl, 6rem); /* 96px */
+  --spacing-3xl: var(--mcl-spacing-3xl, 8rem); /* 128px */
+
+  /* Font Sizes - Can be overridden by users */
+  --text-xs: var(--mcl-text-size-xs, 0.75rem); /* 12px */
+  --text-sm: var(--mcl-text-size-sm, 0.875rem); /* 14px */
+  --text-md: var(--mcl-text-size-md, 1rem); /* 16px */
+  --text-lg: var(--mcl-text-size-lg, 1.125rem); /* 18px */
+  --text-xl: var(--mcl-text-size-xl, 1.25rem); /* 20px */
+
+  /* Container breakpoints */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 40rem; /* 640px */
+  --breakpoint-md: 48rem; /* 768px */
+  --breakpoint-lg: 64rem; /* 1024px */
+  --breakpoint-xl: 80rem; /* 1280px */
+  --breakpoint-2xl: 96rem; /* 1536px */
+}
+
+/* Base Styles - replaces addBase from your plugin */
+@layer base {
+  body {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  h1 {
+    font-size: 1.875rem;
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  h3 {
+    font-size: 1.125rem;
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  h4 {
+    font-size: 1rem;
+    font-weight: bold;
+    line-height: 1.2;
+  }
+
+  /* Responsive typography */
+  @media (min-width: theme(--breakpoint-lg)) {
+    h1 {
+      font-size: 3rem;
+    }
+    h2 {
+      font-size: 2.25rem;
+    }
+    h3 {
+      font-size: 1.25rem;
+    }
+    h4 {
+      font-size: 1.125rem;
+    }
+  }
+}
+
+@layer components {
+  /* container class */
+  .container {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  @media (min-width: var(--breakpoint-sm)) {
+    .container {
+      max-width: var(--breakpoint-sm);
+    }
+  }
+  @media (min-width: var(--breakpoint-md)) {
+    .container {
+      max-width: var(--breakpoint-md);
+    }
+  }
+  @media (min-width: var(--breakpoint-lg)) {
+    .container {
+      max-width: var(--breakpoint-lg);
+    }
+  }
+  @media (min-width: var(--breakpoint-xl)) {
+    .container {
+      max-width: var(--breakpoint-xl);
+    }
+  }
+  @media (min-width: var(--breakpoint-2xl)) {
+    .container {
+      max-width: var(--breakpoint-2xl);
+    }
+  }
+  /* Heading size variants */
+  .h1-sm {
+    font-size: 1.5rem; /* 24px */
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  .h1-md {
+    font-size: 1.875rem; /* 30px */
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  .h1-lg {
+    font-size: 2.25rem; /* 36px */
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  .h1-xl {
+    font-size: 3.5rem; /* 56px */
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  @media (min-width: theme(--breakpoint-lg)) {
+    .h1-sm {
+      font-size: 2.25rem; /* 36px */
+    }
+    .h1-md {
+      font-size: 3rem; /* 48px */
+    }
+    .h1-lg {
+      font-size: 3.5rem; /* 56px */
+    }
+    .h1-xl {
+      font-size: 4.5rem; /* 72px */
+    }
+  }
+  /* H2 variants */
+  .h2-sm {
+    font-size: 1.125rem; /* 18px */
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  .h2-md {
+    font-size: 1.5rem; /* 24px */
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  .h2-lg {
+    font-size: 1.875rem; /* 30px */
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  .h2-xl {
+    font-size: 3rem; /* 48px */
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  @media (min-width: theme(--breakpoint-lg)) {
+    .h2-sm {
+      font-size: 1.5rem; /* 24px */
+    }
+    .h2-md {
+      font-size: 2.25rem; /* 36px */
+    }
+    .h2-lg {
+      font-size: 3rem; /* 48px */
+    }
+    .h2-xl {
+      font-size: 3.75rem; /* 60px */
+    }
+  }
+  /* H3 variants */
+  .h3-sm {
+    font-size: 1rem; /* 16px */
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  .h3-md {
+    font-size: 1.125rem; /* 18px */
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  .h3-lg {
+    font-size: 1.125rem; /* 18px */
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  .h3-xl {
+    font-size: 1.875rem; /* 30px */
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  @media (min-width: theme(--breakpoint-lg)) {
+    .h3-md {
+      font-size: 1.25rem; /* 20px */
+    }
+    .h3-lg {
+      font-size: 1.5rem; /* 24px */
+    }
+    .h3-xl {
+      font-size: 2.25rem; /* 36px */
+    }
+  }
+  /* H4 variants */
+  .h4-sm {
+    font-size: 0.875rem; /* 14px */
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  .h4-md {
+    font-size: 1rem; /* 16px */
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  .h4-lg {
+    font-size: 1rem; /* 16px */
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  .h4-xl {
+    font-size: 1.5rem; /* 24px */
+    font-weight: bold;
+    line-height: 1.2;
+  }
+  @media (min-width: theme(--breakpoint-lg)) {
+    .h4-sm {
+      font-size: 1rem; /* 16px */
+    }
+    .h4-md {
+      font-size: 1.125rem; /* 18px */
+    }
+    .h4-lg {
+      font-size: 1.25rem; /* 20px */
+    }
+    .h4-xl {
+      font-size: 1.875rem; /* 30px */
+    }
+  }
+  /* MCL Link */
+  .mcl-link {
+    color: var(--mcl-link-color, theme(--color-primary));
+    text-decoration: underline;
+    transition: color 200ms ease-in;
+  }
+  .mcl-link:hover {
+    color: --alpha(var(--mcl-link-color, theme(--color-primary)) / 60%);
+  }
+  /* MCL List */
+  .mcl-list {
+    list-style-position: inside;
+    padding: 0;
+    margin-left: 1rem;
+    list-style: none;
+  }
+  .mcl-list li {
+    margin-bottom: 0.5rem;
+  }
+  .mcl-list li::before {
+    content: '•';
+    font-weight: 700;
+    display: inline-block;
+    width: 1rem;
+    margin-left: -1rem;
+    color: var(--mcl-list-color, theme(--color-primary));
+  }
+  .mcl-list.mcl-list-sm li::before {
+    font-weight: 500;
+  }
+  .mcl-list.mcl-list-lg li::before {
+    font-weight: 900;
+  }
+
+  /* Button Base */
+  .btn {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition-property:
+      color, background-color, outline-width, outline-offset, outline-color;
+    transition-duration: 300ms;
+    transition-timing-function: linear;
+    overflow: hidden;
+    display: inline-block;
+    font-weight: bold;
+    outline-style: solid;
+    outline-width: 0;
+    outline-offset: 0;
+    outline-color: var(--mcl-btn-color, theme(--color-primary));
+    background-color: var(--mcl-btn-color, theme(--color-primary));
+    text-align: center;
+    border-radius: theme(--radius-sm);
+  }
+  .btn:hover {
+    background-color: --alpha(
+      var(--mcl-btn-color, theme(--color-primary)) / 70%
+    );
+    outline-color: --alpha(var(--mcl-btn-color, theme(--color-primary)) / 70%);
+  }
+  .btn:focus {
+    outline-width: 0.25rem; /* 4px */
+    outline-offset: 0.125rem; /* 2px */
+  }
+  /* Button variants */
+  .btn.btn-round {
+    border-radius: 9999px;
+  }
+  .btn.btn-full {
+    display: block;
+    width: 100%;
+  }
+  .btn.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+  .btn.btn-lg {
+    padding: 0.625rem 1.25rem;
+    font-size: 1.125rem;
+  }
+  .btn.btn-no-ring {
+    outline: none;
+  }
+  /* Inverted button */
+  .btn.btn-invert {
+    border: 2px solid var(--mcl-btn-color, theme(--color-primary));
+    color: var(--mcl-btn-color, theme(--color-primary));
+    background-color: transparent;
+  }
+  .btn.btn-invert:hover {
+    background-color: var(--mcl-btn-color, theme(--color-primary));
+    outline-color: var(--mcl-btn-color, theme(--color-primary));
+    color: white;
+  }
+  /* Progress button */
+  .btn.btn-progress {
+    position: relative;
+    border: 2px solid var(--mcl-btn-color, theme(--color-primary));
+    color: var(--mcl-btn-color, theme(--color-primary));
+    background-color: transparent;
+  }
+
+  .btn.btn-progress::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    width: 0;
+    bottom: 0;
+    left: 0;
+    transition: width 300ms linear;
+    background-color: var(--mcl-btn-color, theme(--color-primary));
+  }
+
+  .btn.btn-progress > * {
+    position: relative;
+  }
+
+  .btn.btn-progress.btn-progress-r::before {
+    left: 100%;
+    transition: all 300ms linear;
+  }
+
+  .btn.btn-progress:hover,
+  .btn.btn-progress:focus {
+    color: white;
+    outline-color: var(--mcl-btn-color, theme(--color-primary));
+  }
+
+  .btn.btn-progress:hover::before,
+  .btn.btn-progress:focus::before {
+    width: 100%;
+  }
+
+  .btn.btn-progress.btn-progress-r:hover::before,
+  .btn.btn-progress.btn-progress-r:focus::before {
+    width: 100%;
+    left: 0;
+  }
+
+  /* Button Groups */
+  .btn-group {
+    display: inline-flex;
+  }
+
+  .btn-group.btn-group-span {
+    width: 100%;
+  }
+
+  .btn-group.btn-group-span .btn {
+    display: block;
+    width: 100%;
+  }
+
+  .btn-group .btn {
+    outline: none;
+    border-radius: 0;
+  }
+
+  .btn-group .btn:first-child {
+    border-top-left-radius: theme(--radius-sm);
+    border-bottom-left-radius: theme(--radius-sm);
+  }
+
+  .btn-group .btn:last-child {
+    border-top-right-radius: theme(--radius-sm);
+    border-bottom-right-radius: theme(--radius-sm);
+  }
+  /* Tooltips */
+  .tooltip {
+    font-weight: normal;
+    font-size: theme(--text-sm);
+    transition: opacity 200ms;
+    padding: theme(--spacing-2xs);
+    position: absolute;
+    border-radius: theme(--radius-sm);
+    text-align: center;
+    filter: drop-shadow(var(--drop-shadow-md));
+    background-color: theme(--color-dark-3);
+  }
+
+  .tooltip.tooltip-top {
+    left: 50%;
+    bottom: 110%;
+    transform: translateX(-50%);
+  }
+
+  .tooltip.tooltip-top::after {
+    content: ' ';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-top-color: theme(--color-dark-3);
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+  }
+
+  .tooltip-bottom {
+    left: 50%;
+    top: 110%;
+    transform: translateX(-50%);
+  }
+
+  .tooltip.tooltip-bottom::after {
+    content: ' ';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: theme(--color-dark-3);
+  }
+
+  .tooltip.tooltip-left {
+    top: 50%;
+    right: 110%;
+    transform: translateY(-50%);
+  }
+
+  .tooltip.tooltip-left::after {
+    content: ' ';
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: theme(--color-dark-3);
+  }
+
+  .tooltip.tooltip-right {
+    top: 50%;
+    left: 110%;
+    transform: translateY(-50%);
+  }
+
+  .tooltip.tooltip-right::after {
+    content: ' ';
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+    border-right-color: theme(--color-dark-3);
+  }
+}
+
+/* set variable for color-specific button variants */
+@utility btn-* {
+  --mcl-btn-color: --value(--color-*);
+}
+
+/* set varibale for list color variants */
+@utility mcl-list-* {
+  --mcl-list-color: --value(--color-*);
+}
+
+/* set variable for link color variants */
+@utility mcl-link-* {
+  --mcl-link-color: --value(--color-*);
+}
+
+/* background opacity class which has been deprecated with tailwind v4 */
+@utility bg-opacity-* {
+  --mcl-bg-opacity: calc(--value(integer) / 100);
+}
+
+@utility bg-* {
+  background-color: --alpha(
+    --value(--color-*) / calc(var(--mcl-bg-opacity, 1) * 100%)
+  );
+}
+
+/* new outline opacity class which will replace deprecated ring-opacity class */
+@utility outline-opacity-* {
+  --mcl-outline-opacity: calc(--value(integer) / 100);
+}
+
+@utility outline-* {
+  outline-color: --alpha(
+    --value(--color-*) / calc(var(--mcl-outline-opacity, 1) * 100%)
+  );
+}
+
+/* Utility Classes - replaces addUtilities from your plugin */
+@layer utilities {
+  /* Tooltip color variants */
+  /* primary */
+  .tooltip.bg-primary::after {
+    border-color: theme(--color-primary) transparent transparent transparent;
+  }
+  .tooltip.tooltip-bottom.bg-primary::after {
+    border-color: transparent transparent theme(--color-primary) transparent;
+  }
+  .tooltip.tooltip-left.bg-primary::after {
+    border-color: transparent transparent transparent theme(--color-primary);
+  }
+  .tooltip.tooltip-right.bg-primary::after {
+    border-color: transparent theme(--color-primary) transparent transparent;
+  }
+  /* secondary */
+  .tooltip.bg-secondary::after {
+    border-color: theme(--color-secondary) transparent transparent transparent;
+  }
+  .tooltip.tooltip-bottom.bg-secondary::after {
+    border-color: transparent transparent theme(--color-secondary) transparent;
+  }
+  .tooltip.tooltip-left.bg-secondary::after {
+    border-color: transparent transparent transparent theme(--color-secondary);
+  }
+  .tooltip.tooltip-right.bg-secondary::after {
+    border-color: transparent theme(--color-secondary) transparent transparent;
+  }
+  /* success */
+  .tooltip.bg-success::after {
+    border-color: theme(--color-success) transparent transparent transparent;
+  }
+  .tooltip.tooltip-bottom.bg-success::after {
+    border-color: transparent transparent theme(--color-success) transparent;
+  }
+  .tooltip.tooltip-left.bg-success::after {
+    border-color: transparent transparent transparent theme(--color-success);
+  }
+  .tooltip.tooltip-right.bg-success::after {
+    border-color: transparent theme(--color-success) transparent transparent;
+  }
+  /* danger */
+  .tooltip.bg-danger::after {
+    border-color: theme(--color-danger) transparent transparent transparent;
+  }
+  .tooltip.tooltip-bottom.bg-danger::after {
+    border-color: transparent transparent theme(--color-danger) transparent;
+  }
+  .tooltip.tooltip-left.bg-danger::after {
+    border-color: transparent transparent transparent theme(--color-danger);
+  }
+  .tooltip.tooltip-right.bg-danger::after {
+    border-color: transparent theme(--color-danger) transparent transparent;
+  }
+  /* info */
+  .tooltip.bg-info::after {
+    border-color: theme(--color-info) transparent transparent transparent;
+  }
+  .tooltip.tooltip-bottom.bg-info::after {
+    border-color: transparent transparent theme(--color-info) transparent;
+  }
+  .tooltip.tooltip-left.bg-info::after {
+    border-color: transparent transparent transparent theme(--color-info);
+  }
+  .tooltip.tooltip-right.bg-info::after {
+    border-color: transparent theme(--color-info) transparent transparent;
+  }
+  /* warning */
+  .tooltip.bg-warning::after {
+    border-color: theme(--color-warning) transparent transparent transparent;
+  }
+  .tooltip.tooltip-bottom.bg-warning::after {
+    border-color: transparent transparent theme(--color-warning) transparent;
+  }
+  .tooltip.tooltip-left.bg-warning::after {
+    border-color: transparent transparent transparent theme(--color-warning);
+  }
+  .tooltip.tooltip-right.bg-warning::after {
+    border-color: transparent theme(--color-warning) transparent transparent;
+  }
+  /* light-1 */
+  .tooltip.bg-light-1::after {
+    border-color: theme(--color-light-1) transparent transparent transparent;
+  }
+  .tooltip.tooltip-bottom.bg-light-1::after {
+    border-color: transparent transparent theme(--color-light-1) transparent;
+  }
+  .tooltip.tooltip-left.bg-light-1::after {
+    border-color: transparent transparent transparent theme(--color-light-1);
+  }
+  .tooltip.tooltip-right.bg-light-1::after {
+    border-color: transparent theme(--color-light-1) transparent transparent;
+  }
+  /* light-2 */
+  .tooltip.bg-light-2::after {
+    border-color: theme(--color-light-2) transparent transparent transparent;
+  }
+  .tooltip.tooltip-bottom.bg-light-2::after {
+    border-color: transparent transparent theme(--color-light-2) transparent;
+  }
+  .tooltip.tooltip-left.bg-light-2::after {
+    border-color: transparent transparent transparent theme(--color-light-2);
+  }
+  .tooltip.tooltip-right.bg-light-2::after {
+    border-color: transparent theme(--color-light-2) transparent transparent;
+  }
+  /* light-3 */
+  .tooltip.bg-light-3::after {
+    border-color: theme(--color-light-3) transparent transparent transparent;
+  }
+  .tooltip.tooltip-bottom.bg-light-3::after {
+    border-color: transparent transparent theme(--color-light-3) transparent;
+  }
+  .tooltip.tooltip-left.bg-light-3::after {
+    border-color: transparent transparent transparent theme(--color-light-3);
+  }
+  .tooltip.tooltip-right.bg-light-3::after {
+    border-color: transparent theme(--color-light-3) transparent transparent;
+  }
+  /* light-4 */
+  .tooltip.bg-light-4::after {
+    border-color: theme(--color-light-4) transparent transparent transparent;
+  }
+  .tooltip.tooltip-bottom.bg-light-4::after {
+    border-color: transparent transparent theme(--color-light-4) transparent;
+  }
+  .tooltip.tooltip-left.bg-light-4::after {
+    border-color: transparent transparent transparent theme(--color-light-4);
+  }
+  .tooltip.tooltip-right.bg-light-4::after {
+    border-color: transparent theme(--color-light-4) transparent transparent;
+  }
+  /* dark-1 */
+  .tooltip.bg-dark-1::after {
+    border-color: theme(--color-dark-1) transparent transparent transparent;
+  }
+  .tooltip.tooltip-bottom.bg-dark-1::after {
+    border-color: transparent transparent theme(--color-dark-1) transparent;
+  }
+  .tooltip.tooltip-left.bg-dark-1::after {
+    border-color: transparent transparent transparent theme(--color-dark-1);
+  }
+  .tooltip.tooltip-right.bg-dark-1::after {
+    border-color: transparent theme(--color-dark-1) transparent transparent;
+  }
+  /* dark-2 */
+  .tooltip.bg-dark-2::after {
+    border-color: theme(--color-dark-2) transparent transparent transparent;
+  }
+  .tooltip.tooltip-bottom.bg-dark-2::after {
+    border-color: transparent transparent theme(--color-dark-2) transparent;
+  }
+  .tooltip.tooltip-left.bg-dark-2::after {
+    border-color: transparent transparent transparent theme(--color-dark-2);
+  }
+  .tooltip.tooltip-right.bg-dark-2::after {
+    border-color: transparent theme(--color-dark-2) transparent transparent;
+  }
+  /* dark-3 */
+  .tooltip.bg-dark-3::after {
+    border-color: theme(--color-dark-3) transparent transparent transparent;
+  }
+  .tooltip.tooltip-bottom.bg-dark-3::after {
+    border-color: transparent transparent theme(--color-dark-3) transparent;
+  }
+  .tooltip.tooltip-left.bg-dark-3::after {
+    border-color: transparent transparent transparent theme(--color-dark-3);
+  }
+  .tooltip.tooltip-right.bg-dark-3::after {
+    border-color: transparent theme(--color-dark-3) transparent transparent;
+  }
+  /* dark-4 */
+  .tooltip.bg-dark-4::after {
+    border-color: theme(--color-dark-4) transparent transparent transparent;
+  }
+  .tooltip.tooltip-bottom.bg-dark-4::after {
+    border-color: transparent transparent theme(--color-dark-4) transparent;
+  }
+  .tooltip.tooltip-left.bg-dark-4::after {
+    border-color: transparent transparent transparent theme(--color-dark-4);
+  }
+  .tooltip.tooltip-right.bg-dark-4::after {
+    border-color: transparent theme(--color-dark-4) transparent transparent;
+  }
+}

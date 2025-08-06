@@ -47,22 +47,25 @@ git push
 ## Installation
 
 ```sh
-pnpm i -D tailwindcss postcss autoprefixer sass
-pnpm i @bobbykim/manguito-theme
-npx tailwindcss init -p
+npm i -D tailwindcss postcss @tailwindcss/postcss sass @vueuse/core
+npm i @bobbykim/manguito-theme
 ```
 
-tailwind.config.js
+in postcss.config.js file:
 
 ```js
-const { mclTheme } = require('@bobbykim/mcl-theme')
-module.exports = {
-  content: [
-    './src/**/*.{vue,ts,js,cjs}',
-    './node_modules/@bobbykim/**/*.{vue,ts,js,cjs}',
-  ],
-  plugins: [mclTheme()],
+export default {
+  plugins: {
+    '@tailwindcss/postcss': {},
+  },
 }
+```
+
+in you main css file
+
+```css
+@import 'tailwindcss';
+@import '@bobbykim/manguito-theme/mcl-theme-v4.css';
 ```
 
 ## Usage

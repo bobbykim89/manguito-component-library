@@ -21,6 +21,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["lib/**/*.ts", "lib/**/*.vue"],
+  "include": ["lib/**/*.ts", "lib/**/*.vue", "vite-plugin-copy-css.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

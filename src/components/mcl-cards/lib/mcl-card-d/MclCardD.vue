@@ -111,7 +111,7 @@ const props = withDefaults(
     borderColor: 'light-3',
     gradient1: 'primary',
     gradient2: 'secondary',
-  }
+  },
 )
 
 const slots = defineSlots<{
@@ -188,15 +188,15 @@ const handleCardClick = (e: Event) => {
 
 <template>
   <div
-    class="card [--border-angle:0deg] bg-[conic-gradient(from_var(--border-angle),var(--tw-gradient-stops))] from-20% overflow-hidden rounded-md max-w-[450px] sm:max-w-[350px] w-full xs:w-auto flex-grow flex-shrink-0 border"
+    class="card xs:w-auto w-full max-w-[450px] flex-shrink-0 flex-grow overflow-hidden rounded-md border from-20% sm:max-w-[350px]"
     :class="gradientClass"
     :style="borderVariable"
   >
-    <div class="flex flex-col rounded-md overflow-hidden">
+    <div class="flex flex-col overflow-hidden rounded-md">
       <img
         v-if="displayImage"
         :src="imageSource"
-        class="object-cover object-top max-h-[200px] min-w-full"
+        class="max-h-[200px] min-w-full object-cover object-top"
         :alt="imageAlt"
       />
       <div class="p-xs" :class="generateClass('BGCOLOR', bgColor)">
@@ -231,9 +231,18 @@ const handleCardClick = (e: Event) => {
   background-position: center center;
   background-repeat: no-repeat;
   padding: var(--border-width);
+  background: conic-gradient(
+    from var(--border-angle, 0deg),
+    var(--tw-gradient-from) var(--tw-gradient-from-position),
+    var(--tw-gradient-via),
+    var(--tw-gradient-to)
+  );
 
   animation: bg-spin 4s linear infinite;
   @keyframes bg-spin {
+    0% {
+      --border-angle: 0deg;
+    }
     to {
       --border-angle: 360deg;
     }
@@ -246,7 +255,7 @@ const handleCardClick = (e: Event) => {
 
 @property --border-angle {
   syntax: '<angle>';
-  inherits: true;
+  inherits: false;
   initial-value: 0deg;
 }
 </style>

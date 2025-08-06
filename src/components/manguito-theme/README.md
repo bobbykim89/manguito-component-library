@@ -26,78 +26,103 @@ manguito-theme includes basic config for MCL, including type definitions for the
 ## Install
 
 ```sh
-npm i -D tailwindcss postcss autoprefixer sass @vueuse/core
+npm i -D tailwindcss postcss @tailwindcss/postcss sass @vueuse/core
 npm i @bobbykim/manguito-theme
-npx tailwindcss init -p
 ```
 
 ## Setup
 
-tailwind.config.{js|ts}
+in postcss.config.js file:
 
-```ts
-import type { Config } from 'tailwindcss'
-import { mclTheme } from '@bobbykim/manguito-theme/mcl-theme'
-
+```js
 export default {
-  content: ['./src/**/*.{vue,ts,js,cjs}'],
-  plugins: [mclTheme({})],
-} satisfies Config
+  plugins: {
+    '@tailwindcss/postcss': {},
+  },
+}
+```
+
+in you main css file
+
+```css
+@import 'tailwindcss';
+@import '@bobbykim/manguito-theme/mcl-theme-v4.css';
 ```
 
 ## Theme color configuration
 
-You can change theme colors by adding colors/spacing in `tailwind.config.cjs` | `tailwind.config.js` | `tailwind.config.ts`
+You can change theme configurations through few different methods.
 
-```cjs
-module.exports = {
-  content: [
-    './src/**/*.{vue,ts,js,cjs}',
-    './node_modules/@bobbykim/**/*.{vue,ts,js,cjs}',
-  ],
-  plugins: [
-    mclTheme({
-      colors: {
-        primary: '#ec489a',
-        secondary: '#00feda',
-        success: '#78be20',
-        info: '#00a3e0',
-        warning: '#f1ac18',
-        danger: '#cc2f2f',
-        'light-1': '#fafafa',
-        'light-2': '#f1f1f1',
-        'light-3': '#e8e8e8',
-        'light-4': '#d0d0d0',
-        'dark-1': '#747474',
-        'dark-2': '#484848',
-        'dark-3': '#1f2937',
-        'dark-4': '#191919',
-      },
-      spacing: {
-        '3xs': '4px',
-        '2xs': '8px',
-        xs: '16px',
-        sm: '24px',
-        md: '32px',
-        lg: '48px',
-        xl: '64px',
-        '2xl': '96px',
-        '3xl': '128px',
-      },
-    }),
-  ],
+Method 1: CSS Variable Override
+
+```css
+@import 'tailwindcss';
+
+/* User's custom theme overrides */
+:root {
+  /* Custom color palette */
+  --mcl-primary: #3b82f6; /* Custom blue */
+  --mcl-secondary: #10b981; /* Custom green */
+  --mcl-danger: #ef4444; /* Custom red */
+  --mcl-warning: #f59e0b; /* Custom amber */
+
+  /* Custom spacing */
+  --mcl-spacing-xs: 12px; /* Instead of default 16px */
+  --mcl-spacing-md: 24px; /* Instead of default 32px */
+
+  /* Custom font sizes */
+  --mcl-text-size-lg: 20px; /* Instead of default 18px */
+}
+
+/* Import MCL theme after defining overrides */
+@import '@bobbykim/manguito-theme/mcl-theme-v4.css';
+```
+
+Method 2: CSS Layer Override
+
+```css
+@import 'tailwindcss';
+@import '@bobbykim/manguito-theme/mcl-theme-v4.css';
+
+@layer theme {
+  @theme {
+    /* Override specific colors */
+    --color-primary: #8b5cf6;
+    --color-secondary: #06b6d4;
+
+    /* Add new custom colors */
+    --color-brand: #ff6b35;
+    --color-accent: #4ade80;
+
+    /* Override spacing */
+    --spacing-lg: 56px;
+    --spacing-xl: 80px;
+  }
 }
 ```
 
-## VS Code Settings
+Method 3: Dynamic Theme Switching
+Users can implement theme switching by changing CSS variables dynamically:
 
-To reduce lags due to TailwindCSS Intellisense add following in `.vscode/settings.json`:
+```css
+@import 'tailwindcss';
 
-```json
-{
-  "tailwindCSS.validate": false,
-  "tailwindCSS.experimental.classRegex": []
+/* Light theme */
+[data-theme='light'] {
+  --mcl-primary: #2563eb;
+  --mcl-secondary: #059669;
+  --mcl-dark-3: #374151;
 }
+
+/* Dark theme */
+[data-theme='dark'] {
+  --mcl-primary: #3b82f6;
+  --mcl-secondary: #10b981;
+  --mcl-dark-3: #111827;
+}
+
+/* Import theme after defining theme variants */
+@import '@bobbykim/manguito-theme/mcl-theme-v4.css';
 ```
 
 ## Usage
