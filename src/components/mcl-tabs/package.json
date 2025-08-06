@@ -11,9 +11,9 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/mcl-tabs.js",
-      "require": "./dist/mcl-tabs.umd.cjs",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/mcl-tabs.umd.cjs"
     }
   },
   "scripts": {
