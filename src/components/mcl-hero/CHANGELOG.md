@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.5](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-hero@0.8.4...@bobbykim/mcl-hero@0.8.5) (2025-08-13)
+
+**Note:** Version bump only for package @bobbykim/mcl-hero
+
 ## [0.8.4](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-hero@0.8.3...@bobbykim/mcl-hero@0.8.4) (2025-08-06)
 
 **Note:** Version bump only for package @bobbykim/mcl-hero

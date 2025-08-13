@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.1](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-carousel@0.9.0...@bobbykim/mcl-carousel@0.9.1) (2025-08-13)
+
+**Note:** Version bump only for package @bobbykim/mcl-carousel
+
 # [0.9.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-carousel@0.8.3...@bobbykim/mcl-carousel@0.9.0) (2025-08-06)
 
 ### Features

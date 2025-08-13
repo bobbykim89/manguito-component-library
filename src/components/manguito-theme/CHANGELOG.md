@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.27.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.26.0...@bobbykim/manguito-theme@0.27.0) (2025-08-13)
+
+### Bug Fixes
+
+- **manguito-theme:** circular import fix ([3422509](https://github.com/bobbykim89/manguito-component-library/commit/3422509f87a7c16956e0c2288b11c6afe342cd36))
+
+### Features
+
+- **manguito-theme,README.md,stories/introduction/:** update readme files ([3e84112](https://github.com/bobbykim89/manguito-component-library/commit/3e84112b421db970175e4233617d753441ce0d72))
+
+### BREAKING CHANGES
+
+- **manguito-theme:** mcl-74
+
 # [0.26.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.25.0...@bobbykim/manguito-theme@0.26.0) (2025-08-06)
 
 ### Bug Fixes
