@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useScrollLock } from '@vueuse/core'
 import { computed, onMounted, ref, watch } from 'vue'
-import type { ColorPalette } from '..'
-import generateClass from '..'
+import { generateClass } from '../theme'
+import type { ColorPalette } from '../theme/static/theme.types'
 import NavDrawer from './NavDrawer.vue'
 
 const props = withDefaults(
@@ -17,7 +17,7 @@ const props = withDefaults(
     drawerBtnColor: 'dark-1',
     drawerBtnBorder: true,
     headerWidth: 160,
-  }
+  },
 )
 
 const slots = defineSlots<{
@@ -62,10 +62,10 @@ defineExpose<{
 <template>
   <header class="relative" :style="componentWidth">
     <nav
-      class="hidden lg:block lg:sticky lg:top-0 lg:left-0 lg:h-[100vh] py-sm header-desktop overscroll-contain overflow-y-scroll"
+      class="py-sm header-desktop hidden overflow-y-scroll overscroll-contain lg:sticky lg:left-0 lg:top-0 lg:block lg:h-[100vh]"
       :class="[generateClass('BGCOLOR', bgColor)]"
     >
-      <div class="flex flex-col justify-between h-full">
+      <div class="flex h-full flex-col justify-between">
         <div>
           <slot name="content" />
         </div>
@@ -77,16 +77,16 @@ defineExpose<{
 
     <!-- mobile menu -->
     <Teleport to="body">
-      <div class="block lg:hidden relative z-40">
+      <div class="relative z-40 block lg:hidden">
         <!-- nav drawer button -->
         <div
           v-if="slots['mobile-content']"
-          class="block fixed lg:hidden top-0 right-0 mr-xs mt-xs z-50"
+          class="mr-xs mt-xs fixed right-0 top-0 z-50 block lg:hidden"
         >
           <NavDrawer
             :color="drawerBtnColor"
             :display-border="drawerBtnBorder"
-            class="block lg:hidden relative"
+            class="relative block lg:hidden"
             @hbg-click="toggleNavButton"
             :toggle="navOpen"
             :nav-color="bgColor"
@@ -95,7 +95,7 @@ defineExpose<{
 
         <Transition name="slide-down" appear>
           <nav
-            class="fixed inset-0 overflow-y-scroll overscroll-contain py-lg px-sm"
+            class="py-lg px-sm fixed inset-0 overflow-y-scroll overscroll-contain"
             v-if="navOpen"
             :class="generateClass('BGCOLOR', bgColor)"
           >
@@ -117,10 +117,14 @@ defineExpose<{
   }
 }
 .slide-down-enter-active {
-  transition: transform 0.3s ease-in 0.2s, opacity 0.5s ease-in;
+  transition:
+    transform 0.3s ease-in 0.2s,
+    opacity 0.5s ease-in;
 }
 .slide-down-leave-active {
-  transition: transform 0.5s ease-in, opacity 0.3s ease-in 0.2s;
+  transition:
+    transform 0.5s ease-in,
+    opacity 0.3s ease-in 0.2s;
 }
 .slide-down-enter-from,
 .slide-down-leave-to {
