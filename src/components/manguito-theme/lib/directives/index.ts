@@ -1,6 +1,6 @@
 import type { Directive, DirectiveBinding } from 'vue'
 import { createVNode, render } from 'vue'
-import type { Direction } from '..'
+import type { Direction } from '../theme/static/theme.types'
 import tooltip from '../tooltip'
 import type { TooltipElementType, TooltipValueType } from './index.types'
 
@@ -80,7 +80,7 @@ export const vCollapse: Directive = {
       }
       const accordionName = target.getAttribute('accordion')
       const accordionList: NodeListOf<HTMLElement> = document.querySelectorAll(
-        `div[accordion="${accordionName}"]`
+        `div[accordion="${accordionName}"]`,
       )
       // loop through each accordion items and handle reaction for each case
       for (let i = 0; i < accordionList.length; i++) {
@@ -108,7 +108,7 @@ export const vTooltip: Directive<TooltipElementType, TooltipValueType> = {
   mounted(el, binding) {
     el.__HandleTooltip = (
       el: HTMLElement,
-      binding: DirectiveBinding<TooltipValueType>
+      binding: DirectiveBinding<TooltipValueType>,
     ) => {
       // parent element class
       el.classList.add('relative', 'group', 'overflow-visible')

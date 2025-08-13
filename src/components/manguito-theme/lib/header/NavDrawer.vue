@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { ColorPalette } from '..'
-import generateClass from '..'
+import { generateClass } from '../theme'
+import type { ColorPalette } from '../theme/static/theme.types'
 
 const props = withDefaults(
   defineProps<{
@@ -13,7 +13,7 @@ const props = withDefaults(
   {
     color: 'dark-2',
     displayBorder: true,
-  }
+  },
 )
 
 const emit = defineEmits(['hbg-click'])
@@ -34,7 +34,7 @@ const hamburgetButtonState = computed({
 const getBorderClass = (
   bColor: ColorPalette,
   border: boolean,
-  nColor: ColorPalette
+  nColor: ColorPalette,
 ): string => {
   /**
    * @bColor - color
@@ -70,7 +70,7 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
 
 <template>
   <button
-    class="p-3xs rounded-md aspect-square outline-none focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear hover:opacity-70 focus:opacity-70 hamburger__button"
+    class="p-3xs hamburger__button aspect-square rounded-md outline-none ring-offset-2 transition-all duration-300 ease-linear hover:opacity-70 focus:opacity-70 focus:ring-4"
     :class="getBorderClass(color, displayBorder, navColor)"
     @click="handleButtonToggle"
     :aria-label="toggle ? 'Close' : 'Open'"
@@ -79,10 +79,10 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
     <input
       type="checkbox"
       v-model="hamburgetButtonState"
-      class="hidden hamburger__checkbox"
+      class="hamburger__checkbox hidden"
     />
     <div
-      class="relative h-[3px] w-sm hamburger__icon before:w-sm after:w-sm before:h-[3px] after:h-[3px] transition-all duration-300 ease-linear"
+      class="w-sm hamburger__icon before:w-sm after:w-sm relative h-[3px] transition-all duration-300 ease-linear before:h-[3px] after:h-[3px]"
       :class="getHamburgerButtonClass(color)"
     ></div>
   </button>
