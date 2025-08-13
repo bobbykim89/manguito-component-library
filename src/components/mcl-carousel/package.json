@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/mcl-carousel",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "carousel component based on @bobbykim/manguito-theme",
   "type": "module",
   "files": [
