@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useWindowScroll } from '@vueuse/core'
 import { computed, ref } from 'vue'
-import type { ColorPalette } from '..'
-import generateClass from '..'
+import { generateClass } from '../theme'
+import type { ColorPalette } from '../theme/static/theme.types'
 import NavDrawer from './NavDrawer.vue'
 import type { HeaderStickyOptionType } from './index.types'
 
@@ -24,7 +24,7 @@ const props = withDefaults(
     fadeInOnScroll: true,
     scrollDistance: 50,
     sticky: 'all',
-  }
+  },
 )
 
 const slots = defineSlots<{
@@ -104,11 +104,11 @@ defineExpose<{
 
 <template>
   <header
-    class="w-full items-center z-50 transition ease-in duration-500 delay-150"
+    class="z-50 w-full items-center transition delay-150 duration-500 ease-in"
     :class="[handleFadeInOnScroll, handleHeaderClass]"
   >
     <nav
-      class="flex flex-wrap items-center py-xs md:py-2xs mx-xs md:mx-sm align-middle justify-between sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px]"
+      class="py-xs md:py-2xs mx-xs md:mx-sm flex flex-wrap items-center justify-between align-middle sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px]"
     >
       <div class="min-h-[24px]">
         <slot name="content"></slot>
@@ -137,7 +137,7 @@ defineExpose<{
         @leave="onLeave"
       >
         <div
-          class="bg-opacity-80 rounded-md my-2xs mx-xs overflow-hidden"
+          class="my-2xs mx-xs overflow-hidden rounded-md bg-opacity-80"
           v-if="navOpen"
           :class="generateClass('BGCOLOR', mobileMenuBgColor)"
         >

@@ -1,7 +1,7 @@
 import type { PropType } from 'vue'
 import { computed, defineComponent, h } from 'vue'
-import type { ColorPalette, Direction } from '..'
-import generateClass from '..'
+import { generateClass } from '../theme'
+import type { ColorPalette, Direction } from '../theme/static/theme.types'
 
 export default defineComponent({
   props: {

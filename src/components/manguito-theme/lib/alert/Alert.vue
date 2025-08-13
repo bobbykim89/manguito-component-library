@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import type { ColorPalette } from '..'
-import generateClass from '..'
+import { generateClass } from '../theme'
+import type { ColorPalette } from '../theme/static/theme.types'
 const props = withDefaults(
   defineProps<{
     color?: ColorPalette
@@ -16,7 +16,7 @@ const props = withDefaults(
     shadow: true,
     show: false,
     dismissible: false,
-  }
+  },
 )
 
 const slots = defineSlots<{
@@ -50,7 +50,7 @@ watch(
   () => props.show,
   (newValue) => {
     showAlert.value = newValue
-  }
+  },
 )
 defineExpose<{
   close: () => void
@@ -65,17 +65,17 @@ defineExpose<{
     role="alert"
     aria-live="polite"
     aria-atomic="true"
-    class="py-[0.75rem] px-[1.25rem] relative"
+    class="relative px-[1.25rem] py-[0.75rem]"
     :class="[componentClass]"
   >
-    <div class="w-full flex justify-between gap-2xs">
+    <div class="gap-2xs flex w-full justify-between">
       <div class="w-full">
         <slot></slot>
       </div>
       <button
         v-if="dismissible"
         @click="handleClose"
-        class="flex items-center opacity-60 hover:opacity-40 transition-opacity duration-300 ease-linear"
+        class="flex items-center opacity-60 transition-opacity duration-300 ease-linear hover:opacity-40"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

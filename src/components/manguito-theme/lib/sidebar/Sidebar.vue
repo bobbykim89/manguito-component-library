@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useScrollLock } from '@vueuse/core'
 import { computed, onMounted, ref, watch } from 'vue'
-import type { ColorPalette, DirectionX } from '..'
-import generateClass, { vClickOutside } from '..'
 import { observeVisibleAttr } from '../composables'
+import { vClickOutside } from '../directives'
+import { generateClass } from '../theme'
+import type { ColorPalette, DirectionX } from '../theme/static/theme.types'
 
 const props = withDefaults(
   defineProps<{
@@ -28,7 +29,7 @@ const props = withDefaults(
     backdropColor: 'dark-4',
     placement: 'left',
     width: 300,
-  }
+  },
 )
 
 const slots = defineSlots<{
@@ -98,7 +99,7 @@ watch(
   () => props.visible,
   (newValue) => {
     toggle.value = newValue
-  }
+  },
 )
 watch(toggle, (newValue) => {
   if (newValue === true) {
@@ -130,7 +131,7 @@ defineExpose<{
       <section
         v-if="toggle"
         @click="closeSidebar"
-        class="fixed inset-0 overflow-y-auto bg-opacity-70 backdrop-blur z-[100]"
+        class="fixed inset-0 z-[100] overflow-y-auto bg-opacity-70 backdrop-blur"
         :class="generateClass('BGCOLOR', backdropColor)"
       ></section>
     </Transition>
@@ -143,17 +144,17 @@ defineExpose<{
       <div
         v-if="toggle"
         v-click-outside="closeSidebar"
-        class="sidebar-body fixed h-full overflow-hidden inset-y-0 shadow z-[110]"
+        class="sidebar-body fixed inset-y-0 z-[110] h-full overflow-hidden shadow"
         :class="[placement === 'left' ? 'left-0' : 'right-0']"
       >
         <div
-          class="relative h-full overscroll-contain overflow-y-scroll"
+          class="relative h-full overflow-y-scroll overscroll-contain"
           :class="[generateClass('BGCOLOR', color), className]"
         >
           <div v-if="!noHeader" class="sticky top-0 z-10" ref="headerRef">
             <slot name="header" :close="closeSidebar" :status="toggle">
               <div
-                class="flex justify-between items-center p-xs"
+                class="p-xs flex items-center justify-between"
                 :class="generateClass('BGCOLOR', color)"
               >
                 <button @click="closeSidebar" v-if="placement === 'right'">
@@ -161,7 +162,7 @@ defineExpose<{
                     xmlns="http://www.w3.org/2000/svg"
                     height="1em"
                     viewBox="0 0 384 512"
-                    class="hover:opacity-75 focus:opacity-75 transition-opacity duration-300 ease-in h-sm"
+                    class="h-sm transition-opacity duration-300 ease-in hover:opacity-75 focus:opacity-75"
                     :class="[generateClass('SVGFILL', titleColor)]"
                   >
                     <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
@@ -182,7 +183,7 @@ defineExpose<{
                     xmlns="http://www.w3.org/2000/svg"
                     height="1em"
                     viewBox="0 0 384 512"
-                    class="hover:opacity-75 focus:opacity-75 transition-opacity duration-300 ease-in h-sm"
+                    class="h-sm transition-opacity duration-300 ease-in hover:opacity-75 focus:opacity-75"
                     :class="[generateClass('SVGFILL', titleColor)]"
                   >
                     <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
