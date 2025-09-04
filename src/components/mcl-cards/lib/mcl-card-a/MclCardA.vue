@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type {
+  BodyText,
   ColorPalette,
   CtaTarget,
   HeadingSize,
+  OpacityRange,
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
-import type { CardClickEvent } from '../common/index.types'
 import { computed } from 'vue'
+import type { CardClickEvent } from '../common/index.types'
 
 const props = withDefaults(
   defineProps<{
@@ -15,6 +17,9 @@ const props = withDefaults(
     titleColor?: ColorPalette
     borderColor?: ColorPalette
     bgColor?: ColorPalette
+    glassmorphBg?: boolean
+    blurSize?: BodyText
+    glassOpacity?: OpacityRange
     displayImage?: boolean
     imageSource?: string
     imageAlt?: string
@@ -39,6 +44,9 @@ const props = withDefaults(
     titleColor: 'dark-3',
     borderColor: 'light-3',
     bgColor: 'light-1',
+    glassmorphBg: false,
+    blurSize: 'sm',
+    glassOpacity: 20,
     displayImage: true,
     displayCta: true,
     ctaAsLink: false,
@@ -55,8 +63,16 @@ const props = withDefaults(
     enlargeOnHover: false,
     rounded: true,
     displayShadow: true,
-  }
+  },
 )
+
+const blurClass: Record<BodyText, string> = {
+  xs: 'backdrop-blur-xs',
+  sm: 'backdrop-blur-sm',
+  md: 'backdrop-blur-md',
+  lg: 'backdrop-blur-lg',
+  xl: 'backdrop-blur-xl',
+}
 
 const slots = defineSlots<{
   default: any
@@ -66,7 +82,7 @@ const emit = defineEmits<{
   (e: 'card-btn-click', event: Event, item: CardClickEvent): void
 }>()
 
-const borderClass = computed<string>(() => {
+const bodyClass = computed<string>(() => {
   /**
    * @param {ColorPalette} borderColor
    * @param {ColorPalette} bgColor
@@ -74,15 +90,28 @@ const borderClass = computed<string>(() => {
    * @param {boolean} enlargeOnHover
    * @param {boolean} displayShadow
    */
-  const { borderColor, bgColor, rounded, enlargeOnHover, displayShadow } = props
+  const {
+    borderColor,
+    bgColor,
+    rounded,
+    enlargeOnHover,
+    displayShadow,
+    glassmorphBg,
+    blurSize,
+    glassOpacity,
+  } = props
   const classArray: string[] = [
     generateClass('BORDER', borderColor),
     generateClass('BGCOLOR', bgColor),
   ]
-  classArray.push(rounded ? 'rounded-md' : 'rounded-sm')
+  classArray.push(rounded ? 'rounded-lg' : 'rounded-sm')
   enlargeOnHover &&
     classArray.push('hover:scale-105 transition ease-in duration-300')
   displayShadow && classArray.push('drop-shadow-md')
+  if (glassmorphBg) {
+    classArray.push(blurClass[blurSize])
+    classArray.push(generateClass('BGOPACITY', glassOpacity))
+  }
   return classArray.join(' ')
 })
 const titleClass = computed<string>(() => {
@@ -147,19 +176,19 @@ const handleCardClick = (e: Event): void => {
 
 <template>
   <div
-    class="overflow-hidden border max-w-[450px] sm:max-w-[350px] w-full xs:w-auto flex-grow flex-shrink-0 cursor-pointer"
-    :class="borderClass"
+    class="xs:w-auto w-full max-w-[450px] flex-shrink-0 flex-grow cursor-pointer overflow-hidden border sm:max-w-[350px]"
+    :class="bodyClass"
     @click="handleCardClick"
   >
     <div class="relative" v-if="displayImage">
       <img
         :src="imageSource"
         :alt="imageAlt"
-        class="object-cover object-top h-[220px] min-w-full"
+        class="h-[220px] min-w-full object-cover object-top"
       />
       <span
         v-if="displayLabel"
-        class="py-3xs px-2xs ml-xs inline-block font-bold text-xs absolute bottom-0 translate-y-[50%]"
+        class="py-3xs px-2xs ml-xs absolute bottom-0 inline-block translate-y-[50%] text-xs font-bold"
         :class="labelClass"
         v-html="labelText"
       ></span>
@@ -169,7 +198,7 @@ const handleCardClick = (e: Event): void => {
         <div class="px-xs pt-sm">
           <span
             v-if="!displayImage && displayLabel"
-            class="py-3xs px-2xs mb-2xs inline-block font-bold text-xs"
+            class="py-3xs px-2xs mb-2xs inline-block text-xs font-bold"
             :class="labelClass"
             v-html="labelText"
           ></span>
@@ -184,8 +213,8 @@ const handleCardClick = (e: Event): void => {
           </div>
         </div>
       </div>
-      <div class="pb-sm border-0 cursor-default" v-if="displayCta" @click.stop>
-        <div class="w-full px-xs">
+      <div class="pb-sm cursor-default border-0" v-if="displayCta" @click.stop>
+        <div class="px-xs w-full">
           <a
             :href="ctaLink"
             :target="ctaTarget"
