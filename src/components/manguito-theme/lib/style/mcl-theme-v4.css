@@ -48,6 +48,25 @@
   --breakpoint-2xl: 96rem; /* 1536px */
 }
 
+/* property for background opacity class which has been deprecated with tailwind v4 */
+@property --mcl-bg-opacity {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 100%;
+}
+
+/* @property --mcl-bg-opacity {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+} */
+
+@property --mcl-outline-opacity {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 100%;
+}
+
 /* Base Styles - replaces addBase from your plugin */
 @layer base {
   body {
@@ -537,26 +556,21 @@
   --mcl-link-color: --value(--color-*);
 }
 
-/* background opacity class which has been deprecated with tailwind v4 */
 @utility bg-opacity-* {
-  --mcl-bg-opacity: calc(--value(integer) / 100);
+  --mcl-bg-opacity: calc(--value(integer) * 1%);
 }
 
 @utility bg-* {
-  background-color: --alpha(
-    --value(--color-*) / calc(var(--mcl-bg-opacity, 1) * 100%)
-  );
+  background-color: --alpha(--value(--color-*) / var(--mcl-bg-opacity));
 }
 
 /* new outline opacity class which will replace deprecated ring-opacity class */
 @utility outline-opacity-* {
-  --mcl-outline-opacity: calc(--value(integer) / 100);
+  --mcl-outline-opacity: calc(--value(integer) * 1%);
 }
 
 @utility outline-* {
-  outline-color: --alpha(
-    --value(--color-*) / calc(var(--mcl-outline-opacity, 1) * 100%)
-  );
+  outline-color: --alpha(--value(--color-*) / var(--mcl-outline-opacity));
 }
 
 /* Utility Classes - replaces addUtilities from your plugin */
