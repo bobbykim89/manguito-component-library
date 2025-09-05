@@ -188,10 +188,10 @@ const meta: Meta<typeof MclCardA> = {
       defaultValue: 'sm',
       category: 'Body',
     }),
-    glassOpacity: rangeControllers({
-      name: 'glass-opacity',
+    glassRefraction: rangeControllers({
+      name: 'glass-refraction',
       required: false,
-      description: 'assogms the background opacity of the glassmorphism filter',
+      description: 'assogms the refraction opacity of the glassmorphism filter',
       defaultValue: 20,
       category: 'Body',
       controlOption: {
@@ -209,7 +209,7 @@ const meta: Meta<typeof MclCardA> = {
     bgColor: 'light-1',
     glassmorphBg: false,
     blurSize: 'sm',
-    glassOpacity: 20,
+    glassRefraction: 20,
     displayImage: true,
     imageSource:
       'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg',
