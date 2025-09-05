@@ -19,7 +19,7 @@ const props = withDefaults(
     bgColor?: ColorPalette
     glassmorphBg?: boolean
     blurSize?: BodyText
-    glassOpacity?: OpacityRange
+    glassRefraction?: OpacityRange
     displayImage?: boolean
     imageSource?: string
     imageAlt?: string
@@ -46,7 +46,7 @@ const props = withDefaults(
     bgColor: 'light-1',
     glassmorphBg: false,
     blurSize: 'sm',
-    glassOpacity: 20,
+    glassRefraction: 20,
     displayImage: true,
     displayCta: true,
     ctaAsLink: false,
@@ -74,6 +74,26 @@ const blurClass: Record<BodyText, string> = {
   xl: 'backdrop-blur-xl',
 }
 
+const depthColorClass: Record<ColorPalette, string> = {
+  primary: 'mcl-depth-color-primary',
+  secondary: 'mcl-depth-color-secondary',
+  success: 'mcl-depth-color-success',
+  info: 'mcl-depth-color-info',
+  danger: 'mcl-depth-color-danger',
+  warning: 'mcl-depth-color-warning',
+  'light-1': 'mcl-depth-color-light-1',
+  'light-2': 'mcl-depth-color-light-2',
+  'light-3': 'mcl-depth-color-light-3',
+  'light-4': 'mcl-depth-color-light-4',
+  'dark-1': 'mcl-depth-color-dark-1',
+  'dark-2': 'mcl-depth-color-dark-2',
+  'dark-3': 'mcl-depth-color-dark-3',
+  'dark-4': 'mcl-depth-color-dark-4',
+  black: 'mcl-depth-color-black',
+  white: 'mcl-depth-color-white',
+  transparent: 'mcl-depth-color-transparent',
+}
+
 const slots = defineSlots<{
   default: any
 }>()
@@ -98,7 +118,7 @@ const bodyClass = computed<string>(() => {
     displayShadow,
     glassmorphBg,
     blurSize,
-    glassOpacity,
+    glassRefraction,
   } = props
   const classArray: string[] = [
     generateClass('BORDER', borderColor),
@@ -110,7 +130,9 @@ const bodyClass = computed<string>(() => {
   displayShadow && classArray.push('drop-shadow-md')
   if (glassmorphBg) {
     classArray.push(blurClass[blurSize])
-    classArray.push(generateClass('BGOPACITY', glassOpacity))
+    classArray.push(generateClass('BGOPACITY', glassRefraction))
+    classArray.push('mcl-depth-10')
+    classArray.push(depthColorClass[bgColor])
   }
   return classArray.join(' ')
 })
