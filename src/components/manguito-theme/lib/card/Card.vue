@@ -12,12 +12,14 @@ const props = withDefaults(
   defineProps<{
     variant?: ColorPalette
     rounded?: boolean
+    shadow?: boolean
     glass?: boolean
     glassBlur?: BodyText
     glassOpacity?: OpacityRange
     imageSrc?: string
     imageAlt?: string
     noImage?: boolean
+    noBody?: boolean
     noHeader?: boolean
     noFooter?: boolean
     title?: string
@@ -27,11 +29,13 @@ const props = withDefaults(
   }>(),
   {
     variant: 'light-1',
+    shadow: false,
     rounded: false,
     glass: false,
     glassBlur: 'sm',
     glassOpacity: 10,
     noImage: false,
+    noBody: false,
     noHeader: false,
     noFooter: false,
     titleVariant: 'dark-4',
@@ -68,10 +72,18 @@ const depthColorClass: Record<ColorPalette, string> = {
   transparent: 'mcl-depth-color-transparent',
 }
 
+const slots = defineSlots<{
+  default: any
+  header: any
+  body: any
+  footer: any
+}>()
+
 const bodyClass = computed<string>(() => {
-  const { variant, rounded, glass, glassBlur, glassOpacity } = props
+  const { variant, rounded, shadow, glass, glassBlur, glassOpacity } = props
   const classArray: string[] = [generateClass('BGCOLOR', variant)]
   classArray.push(rounded ? 'rounded-lg' : 'rounded-sm')
+  shadow && classArray.push('drop-shadow-md')
   if (glass) {
     classArray.push(blurClass[glassBlur])
     classArray.push(generateClass('BGOPACITY', glassOpacity))
@@ -80,10 +92,46 @@ const bodyClass = computed<string>(() => {
   }
   return classArray.join(' ')
 })
+
+const titleClass = computed<string>(() => {
+  const { titleVariant, titleSize } = props
+  const classArray: string[] = [
+    generateClass('TEXTCOLOR', titleVariant),
+    generateClass('H3', titleSize),
+  ]
+  return classArray.join(' ')
+})
 </script>
 
 <template>
-  <div class="h-full w-full" :class="[bodyClass, cardClass]">Hello Pollito</div>
+  <div class="h-full w-full overflow-hidden" :class="[bodyClass, cardClass]">
+    <template v-if="!noHeader">
+      <slot name="header"> </slot>
+    </template>
+    <template v-if="!noImage">
+      <img
+        :src="imageSrc"
+        :alt="imageAlt"
+        class="h-[200px] min-w-full object-cover object-top"
+      />
+    </template>
+    <template v-if="!noBody">
+      <div class="px-xs py-2xs">
+        <h3 :class="[titleClass]" class="mb-xs">{{ title }}</h3>
+        <template v-if="slots.body">
+          <slot name="body"></slot>
+        </template>
+      </div>
+    </template>
+    <template v-if="noBody && slots.default">
+      <slot name="default"></slot>
+    </template>
+    <template v-if="!noFooter && slots.footer">
+      <div class="py-2xs border-t-dark-3/50 border-t">
+        <slot name="footer"></slot>
+      </div>
+    </template>
+  </div>
 </template>
 
 <style scoped></style>
