@@ -17,9 +17,9 @@ const props = withDefaults(
     titleColor?: ColorPalette
     borderColor?: ColorPalette
     bgColor?: ColorPalette
-    glassmorphBg?: boolean
-    blurSize?: BodyText
-    glassRefraction?: OpacityRange
+    glass?: boolean
+    glassBlur?: BodyText
+    glassOpacity?: OpacityRange
     displayImage?: boolean
     imageSource?: string
     imageAlt?: string
@@ -44,9 +44,9 @@ const props = withDefaults(
     titleColor: 'dark-3',
     borderColor: 'light-3',
     bgColor: 'light-1',
-    glassmorphBg: false,
-    blurSize: 'sm',
-    glassRefraction: 20,
+    glass: false,
+    glassBlur: 'sm',
+    glassOpacity: 20,
     displayImage: true,
     displayCta: true,
     ctaAsLink: false,
@@ -116,9 +116,9 @@ const bodyClass = computed<string>(() => {
     rounded,
     enlargeOnHover,
     displayShadow,
-    glassmorphBg,
-    blurSize,
-    glassRefraction,
+    glass,
+    glassBlur,
+    glassOpacity,
   } = props
   const classArray: string[] = [
     generateClass('BORDER', borderColor),
@@ -128,9 +128,9 @@ const bodyClass = computed<string>(() => {
   enlargeOnHover &&
     classArray.push('hover:scale-105 transition ease-in duration-300')
   displayShadow && classArray.push('drop-shadow-md')
-  if (glassmorphBg) {
-    classArray.push(blurClass[blurSize])
-    classArray.push(generateClass('BGOPACITY', glassRefraction))
+  if (glass) {
+    classArray.push(blurClass[glassBlur])
+    classArray.push(generateClass('BGOPACITY', glassOpacity))
     classArray.push('mcl-depth-10')
     classArray.push(depthColorClass[bgColor])
   }

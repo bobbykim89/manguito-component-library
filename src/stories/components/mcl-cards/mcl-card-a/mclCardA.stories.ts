@@ -174,22 +174,22 @@ const meta: Meta<typeof MclCardA> = {
       defaultValue: 'light-1',
       category: 'Body',
     }),
-    glassmorphBg: booleanControllers({
-      name: 'glassmorph-bg',
+    glass: booleanControllers({
+      name: 'glass',
       required: false,
       description: 'displays background to have glassmorphism',
       defaultValue: false,
       category: 'Body',
     }),
-    blurSize: bodyTextControllers({
-      name: 'blur-size',
+    glassBlur: bodyTextControllers({
+      name: 'glass-blur',
       required: false,
       description: 'assigns the size of backdrop blur filter',
       defaultValue: 'sm',
       category: 'Body',
     }),
-    glassRefraction: rangeControllers({
-      name: 'glass-refraction',
+    glassOpacity: rangeControllers({
+      name: 'glass-opacity',
       required: false,
       description: 'assogms the refraction opacity of the glassmorphism filter',
       defaultValue: 20,
@@ -207,9 +207,9 @@ const meta: Meta<typeof MclCardA> = {
     titleColor: 'dark-3',
     borderColor: 'light-3',
     bgColor: 'light-1',
-    glassmorphBg: false,
-    blurSize: 'sm',
-    glassRefraction: 20,
+    glass: false,
+    glassBlur: 'sm',
+    glassOpacity: 20,
     displayImage: true,
     imageSource:
       'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg',
