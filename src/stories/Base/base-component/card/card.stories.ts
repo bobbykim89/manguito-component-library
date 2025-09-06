@@ -186,7 +186,7 @@ export const BaseCardExample: Story = {
   }),
 }
 
-export const CardExamples = {
+export const MoreCardExamples = {
   render: () => ({
     components: { 'card-examples': CardExamplesVue },
     template: '<card-examples></card-examples>',

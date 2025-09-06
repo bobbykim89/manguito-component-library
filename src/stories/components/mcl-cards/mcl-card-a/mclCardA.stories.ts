@@ -11,6 +11,7 @@ import GrandCanyonImage from '@/assets/images/grandcanyon-image.jpg'
 import { MclCardA } from '@/components/mcl-cards/lib'
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { computed } from 'vue'
+import MclCardAExamplesVue from './MclCardAExamples.vue'
 
 const meta: Meta<typeof MclCardA> = {
   title: 'Components/Cards/MclCardA',
@@ -258,5 +259,12 @@ export const MclCardAWithBgImage: Story = {
     },
     template:
       '<section :style="bgImage" class="container bg-cover bg-no-repeat bg-center px-md py-lg"><mcl-card-a v-bind="args"><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></mcl-card-a></section>',
+  }),
+}
+
+export const MoreCardExamples = {
+  render: () => ({
+    components: { 'mcl-card-a-examples': MclCardAExamplesVue },
+    template: '<mcl-card-a-examples></mcl-card-a-examples>',
   }),
 }

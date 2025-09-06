@@ -7,6 +7,7 @@ import type {
   HeadingSize,
   OpacityRange,
 } from '../theme/static/theme.types'
+import { getGlassmorphismClass } from '../util'
 
 const props = withDefaults(
   defineProps<{
@@ -46,34 +47,6 @@ const props = withDefaults(
   },
 )
 
-const blurClass: Record<BodyText, string> = {
-  xs: 'backdrop-blur-xs',
-  sm: 'backdrop-blur-sm',
-  md: 'backdrop-blur-md',
-  lg: 'backdrop-blur-lg',
-  xl: 'backdrop-blur-xl',
-}
-
-const depthColorClass: Record<ColorPalette, string> = {
-  primary: 'mcl-depth-color-primary',
-  secondary: 'mcl-depth-color-secondary',
-  success: 'mcl-depth-color-success',
-  info: 'mcl-depth-color-info',
-  danger: 'mcl-depth-color-danger',
-  warning: 'mcl-depth-color-warning',
-  'light-1': 'mcl-depth-color-light-1',
-  'light-2': 'mcl-depth-color-light-2',
-  'light-3': 'mcl-depth-color-light-3',
-  'light-4': 'mcl-depth-color-light-4',
-  'dark-1': 'mcl-depth-color-dark-1',
-  'dark-2': 'mcl-depth-color-dark-2',
-  'dark-3': 'mcl-depth-color-dark-3',
-  'dark-4': 'mcl-depth-color-dark-4',
-  black: 'mcl-depth-color-black',
-  white: 'mcl-depth-color-white',
-  transparent: 'mcl-depth-color-transparent',
-}
-
 const slots = defineSlots<{
   default: any
   header: any
@@ -98,10 +71,7 @@ const bodyClass = computed<string>(() => {
     shadow && 'drop-shadow-md',
     border && 'border',
     border && generateClass('BORDER', borderVariant),
-    glass && blurClass[glassBlur],
-    glass && generateClass('BGOPACITY', glassOpacity),
-    glass && 'mcl-depth-10',
-    glass && depthColorClass[variant],
+    glass && getGlassmorphismClass(variant, glassBlur, glassOpacity),
   ]
     .filter(Boolean)
     .join(' ')
@@ -178,5 +148,3 @@ const footerClass = computed<string>(() => {
     </template>
   </div>
 </template>
-
-<style scoped></style>

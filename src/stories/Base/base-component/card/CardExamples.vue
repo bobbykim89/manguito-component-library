@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import BarcelonaImage from '@/assets/images/barcelona-image.jpg'
 import GrandCanyonImage from '@/assets/images/grandcanyon-image.jpg'
 import { Card } from '@/components/manguito-theme/lib'
 import { computed } from 'vue'
 
 const bgImage = computed(() => {
   return { 'background-image': `url('${GrandCanyonImage}')` }
+})
+
+const barcelonaBgImage = computed(() => {
+  return { 'background-image': `url('${BarcelonaImage}')` }
 })
 
 const polloUrl: string =
@@ -18,6 +23,9 @@ const polloAlt: string = 'Manguito is perching'
       :style="bgImage"
       class="px-md py-lg container bg-cover bg-center bg-no-repeat"
     >
+      <div>
+        <h2 class="h2-lg mb-sm">More Card Base Component Examples</h2>
+      </div>
       <div class="grid gap-4 lg:grid-cols-3">
         <Card title="Base Card" :image-src="polloUrl" :image-alt="polloAlt"
           ><template #body
@@ -55,7 +63,10 @@ const polloAlt: string = 'Manguito is perching'
         ></Card>
       </div>
     </section>
-    <section class="px-md py-lg bg-light-4 container">
+    <section
+      class="px-md py-lg container bg-cover bg-center bg-no-repeat"
+      :style="[barcelonaBgImage]"
+    >
       <div class="grid grid-cols-3 gap-4">
         <Card :image-src="polloUrl" :image-alt="polloAlt" no-body>
           <div class="py-2xs">
@@ -66,7 +77,13 @@ const polloAlt: string = 'Manguito is perching'
             <h2 class="h2-md">No body</h2>
           </div>
         </Card>
-        <Card title="No Image" no-image header="Card with no image">
+        <Card
+          title="No Image"
+          variant="success"
+          glass
+          no-image
+          header="Card with no image"
+        >
           <template #body>
             <div>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat,
@@ -75,7 +92,7 @@ const polloAlt: string = 'Manguito is perching'
             </div>
           </template>
         </Card>
-        <Card title="Custom Header & Footer" no-image>
+        <Card title="Custom Header & Footer" no-image variant="info">
           <template #header>
             <div
               class="py-2xs px-xs border-success flex items-center justify-between gap-2 border-b"
@@ -118,9 +135,10 @@ const polloAlt: string = 'Manguito is perching'
             glass
             border
             rounded
-            variant="dark-1"
             border-variant="danger"
             footer="Footer Text here.."
+            glass-blur="xs"
+            :glass-opacity="30"
           >
             <div class="grid grid-cols-3">
               <img
