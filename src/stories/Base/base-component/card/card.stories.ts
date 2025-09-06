@@ -10,6 +10,7 @@ import GrandCanyonImage from '@/assets/images/grandcanyon-image.jpg'
 import { Card } from '@/components/manguito-theme/lib'
 import type { Meta, StoryObj } from '@storybook/vue3'
 import { computed } from 'vue'
+import CardExamplesVue from './CardExamples.vue'
 
 const meta: Meta<typeof Card> = {
   title: 'Base/Base Component/Card Component',
@@ -182,5 +183,12 @@ export const BaseCardExample: Story = {
     },
     template:
       '<section :style="bgImage" class="container bg-cover bg-no-repeat bg-center px-md py-lg"><div class="grid lg:grid-cols-3 gap-4"><card v-bind="args"><template #body><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></template></card></div></section>',
+  }),
+}
+
+export const CardExamples = {
+  render: () => ({
+    components: { 'card-examples': CardExamplesVue },
+    template: '<card-examples></card-examples>',
   }),
 }
