@@ -6,7 +6,7 @@ import type {
   HeadingSize,
   OpacityRange,
 } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import generateClass, { getGlassmorphismClass } from '@bobbykim/manguito-theme'
 import { computed } from 'vue'
 import type { CardClickEvent } from '../common/index.types'
 
@@ -66,34 +66,6 @@ const props = withDefaults(
   },
 )
 
-const blurClass: Record<BodyText, string> = {
-  xs: 'backdrop-blur-xs',
-  sm: 'backdrop-blur-sm',
-  md: 'backdrop-blur-md',
-  lg: 'backdrop-blur-lg',
-  xl: 'backdrop-blur-xl',
-}
-
-const depthColorClass: Record<ColorPalette, string> = {
-  primary: 'mcl-depth-color-primary',
-  secondary: 'mcl-depth-color-secondary',
-  success: 'mcl-depth-color-success',
-  info: 'mcl-depth-color-info',
-  danger: 'mcl-depth-color-danger',
-  warning: 'mcl-depth-color-warning',
-  'light-1': 'mcl-depth-color-light-1',
-  'light-2': 'mcl-depth-color-light-2',
-  'light-3': 'mcl-depth-color-light-3',
-  'light-4': 'mcl-depth-color-light-4',
-  'dark-1': 'mcl-depth-color-dark-1',
-  'dark-2': 'mcl-depth-color-dark-2',
-  'dark-3': 'mcl-depth-color-dark-3',
-  'dark-4': 'mcl-depth-color-dark-4',
-  black: 'mcl-depth-color-black',
-  white: 'mcl-depth-color-white',
-  transparent: 'mcl-depth-color-transparent',
-}
-
 const slots = defineSlots<{
   default: any
 }>()
@@ -109,6 +81,9 @@ const bodyClass = computed<string>(() => {
    * @param {boolean} rounded
    * @param {boolean} enlargeOnHover
    * @param {boolean} displayShadow
+   * @param {boolean} glass
+   * @param {BodyText} glassBlur
+   * @param {glassOpacity} OpacityRange
    */
   const {
     borderColor,
@@ -120,21 +95,17 @@ const bodyClass = computed<string>(() => {
     glassBlur,
     glassOpacity,
   } = props
-  const classArray: string[] = [
+
+  return [
     generateClass('BORDER', borderColor),
     generateClass('BGCOLOR', bgColor),
+    rounded ? 'rounded-lg' : 'rounded-sm',
+    enlargeOnHover && 'hover:scale-105 transition ease-in duration-300',
+    displayShadow && 'drop-shadow-md',
+    glass && getGlassmorphismClass(bgColor, glassBlur, glassOpacity),
   ]
-  classArray.push(rounded ? 'rounded-lg' : 'rounded-sm')
-  enlargeOnHover &&
-    classArray.push('hover:scale-105 transition ease-in duration-300')
-  displayShadow && classArray.push('drop-shadow-md')
-  if (glass) {
-    classArray.push(blurClass[glassBlur])
-    classArray.push(generateClass('BGOPACITY', glassOpacity))
-    classArray.push('mcl-depth-10')
-    classArray.push(depthColorClass[bgColor])
-  }
-  return classArray.join(' ')
+    .filter(Boolean)
+    .join(' ')
 })
 const titleClass = computed<string>(() => {
   /**
@@ -143,12 +114,14 @@ const titleClass = computed<string>(() => {
    * @param {boolean} displayHighlight
    */
   const { titleSize, titleColor, displayHighlight } = props
-  const classArray: string[] = [
+
+  return [
     generateClass('H3', titleSize),
     generateClass('TEXTCOLOR', titleColor),
+    displayHighlight ? 'mb-2xs' : 'mb-xs',
   ]
-  classArray.push(displayHighlight ? 'mb-2xs' : 'mb-xs')
-  return classArray.join(' ')
+    .filter(Boolean)
+    .join(' ')
 })
 const labelClass = computed<string>(() => {
   /**
@@ -156,11 +129,13 @@ const labelClass = computed<string>(() => {
    * @param {ColorPalette} labelColor
    */
   const { labelTextColor, labelColor } = props
-  const classArray: string[] = [
+
+  return [
     generateClass('TEXTCOLOR', labelTextColor),
     generateClass('BGCOLOR', labelColor),
   ]
-  return classArray.join(' ')
+    .filter(Boolean)
+    .join(' ')
 })
 const ctaClass = computed<string>(() => {
   /**
@@ -168,12 +143,15 @@ const ctaClass = computed<string>(() => {
    * @param {boolean} rounded
    */
   const { ctaColor, rounded } = props
-  const classArray: string[] = [generateClass('BTNCOLOR', ctaColor)]
   const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
-  let textColor = lightColor.includes(ctaColor) ? 'text-black' : 'text-white'
-  classArray.push(textColor)
-  rounded && classArray.push('btn-round')
-  return classArray.join(' ')
+
+  return [
+    generateClass('BTNCOLOR', ctaColor),
+    lightColor.includes(ctaColor) ? 'text-black' : 'text-white',
+    rounded && 'btn-round',
+  ]
+    .filter(Boolean)
+    .join(' ')
 })
 const handleButtonClick = (e: Event): void => {
   const { title, ctaLink, ctaTarget, ctaAsLink } = props
@@ -198,7 +176,7 @@ const handleCardClick = (e: Event): void => {
 
 <template>
   <div
-    class="xs:w-auto w-full max-w-[450px] flex-shrink-0 flex-grow cursor-pointer overflow-hidden border sm:max-w-[350px]"
+    class="xs:w-auto flex w-full max-w-[450px] flex-shrink-0 flex-grow cursor-pointer flex-col overflow-hidden border sm:max-w-[350px]"
     :class="bodyClass"
     @click="handleCardClick"
   >
@@ -215,24 +193,22 @@ const handleCardClick = (e: Event): void => {
         v-html="labelText"
       ></span>
     </div>
-    <div class="content-height flex flex-col justify-between">
-      <div class="min-h-[100px] p-0">
-        <div class="px-xs pt-sm">
-          <span
-            v-if="!displayImage && displayLabel"
-            class="py-3xs px-2xs mb-2xs inline-block text-xs font-bold"
-            :class="labelClass"
-            v-html="labelText"
-          ></span>
-          <h3 :class="titleClass" v-html="title"></h3>
-          <div
-            v-if="displayHighlight"
-            class="mb-xs h-3xs w-md"
-            :class="generateClass('BGCOLOR', highlightColor)"
-          ></div>
-          <div class="mb-sm cursor-default" @click.stop>
-            <slot></slot>
-          </div>
+    <div class="flex h-full flex-col justify-between">
+      <div class="px-xs pt-sm flex-1">
+        <span
+          v-if="!displayImage && displayLabel"
+          class="py-3xs px-2xs mb-2xs inline-block text-xs font-bold"
+          :class="labelClass"
+          v-html="labelText"
+        ></span>
+        <h3 :class="titleClass" v-html="title"></h3>
+        <div
+          v-if="displayHighlight"
+          class="mb-xs h-3xs w-md"
+          :class="generateClass('BGCOLOR', highlightColor)"
+        ></div>
+        <div class="mb-sm cursor-default" @click.stop>
+          <slot></slot>
         </div>
       </div>
       <div class="pb-sm cursor-default border-0" v-if="displayCta" @click.stop>
@@ -250,9 +226,3 @@ const handleCardClick = (e: Event): void => {
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.content-height {
-  height: calc(100% - 200px);
-}
-</style>

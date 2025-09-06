@@ -544,6 +544,21 @@
     border-bottom-color: transparent;
     border-right-color: theme(--color-dark-3);
   }
+  .mcl-glassmorphism {
+    box-shadow:
+    /* base shadow */
+      0 8px 32px --alpha(theme(--color-dark-4) / 10%),
+      /* highlight edges */ inset 0 1px 0
+        --alpha(var(--mcl-depth-color, theme(--color-light-1)) / 50%),
+      inset 0 -1px 0
+        --alpha(var(--mcl-depth-color, theme(--color-light-1)) / 10%),
+      /* dynamic glow */ inset 0 0 calc(var(--mcl-gm-shadow) * 2px)
+        calc(var(--mcl-gm-shadow) * 1px)
+        --alpha(
+          var(--mcl-depth-color, theme(--color-light-1)) /
+            calc(var(--mcl-gm-shadow) / 10 * 100%)
+        );
+  }
 }
 
 /* set variable for color-specific button variants */
@@ -579,24 +594,12 @@
 }
 
 /* utility classes for glassmorphism depth */
-@utility mcl-depth-color-* {
+@utility mcl-glass-* {
   --mcl-depth-color: --value(--color-*);
 }
 
 @utility mcl-depth-* {
   --mcl-gm-shadow: --value(integer);
-  box-shadow:
-    /* base shadow */
-    0 8px 32px --alpha(theme(--color-dark-4) / 10%),
-    /* highlight edges */ inset 0 1px 0
-      --alpha(var(--mcl-depth-color, theme(--color-light-1)) / 50%),
-    inset 0 -1px 0 --alpha(var(--mcl-depth-color, theme(--color-light-1)) / 10%),
-    /* dynamic glow */ inset 0 0 calc(var(--mcl-gm-shadow) * 2px)
-      calc(var(--mcl-gm-shadow) * 1px)
-      --alpha(
-        var(--mcl-depth-color, theme(--color-light-1)) /
-          calc(var(--mcl-gm-shadow) / 10 * 100%)
-      );
 }
 
 /* Utility Classes - replaces addUtilities from your plugin */
