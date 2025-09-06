@@ -27,7 +27,7 @@ const props = withDefaults(
     title?: string
     titleVariant?: ColorPalette
     titleSize?: HeadingSize
-    cardClass: string | string[]
+    cardClass?: string | string[]
   }>(),
   {
     variant: 'light-1',
@@ -138,7 +138,10 @@ const footerClass = computed<string>(() => {
 </script>
 
 <template>
-  <div class="h-full w-full overflow-hidden" :class="[bodyClass, cardClass]">
+  <div
+    class="flex h-full w-full flex-col overflow-hidden"
+    :class="[bodyClass, cardClass]"
+  >
     <template v-if="header || slots.header">
       <slot name="header">
         <div :class="[headerCLass]" class="py-2xs px-xs font-bold">
@@ -154,7 +157,7 @@ const footerClass = computed<string>(() => {
       />
     </template>
     <template v-if="!noBody">
-      <div class="px-xs pt-xs pb-2xs">
+      <div class="px-xs pt-xs pb-2xs flex-1">
         <h3 :class="[titleClass]" class="mb-xs">{{ title }}</h3>
         <template v-if="slots.body">
           <slot name="body"></slot>
@@ -162,7 +165,9 @@ const footerClass = computed<string>(() => {
       </div>
     </template>
     <template v-if="noBody && slots.default">
-      <slot name="default"></slot>
+      <div class="flex-1">
+        <slot name="default"></slot>
+      </div>
     </template>
     <template v-if="footer || slots.footer">
       <slot name="footer">
