@@ -8,6 +8,8 @@ const meta: Meta<typeof Card> = {
   component: Card,
   args: {
     variant: 'light-1',
+    border: false,
+    borderVariant: 'light-4',
     rounded: false,
     shadow: false,
     glass: false,
@@ -18,8 +20,8 @@ const meta: Meta<typeof Card> = {
     imageAlt: 'Manguito is perching',
     noImage: false,
     noBody: false,
-    noHeader: false,
-    noFooter: false,
+    header: 'Header text',
+    footer: 'Footer text',
     title: 'Base Card',
     titleVariant: 'dark-4',
     titleSize: 'md',
@@ -41,6 +43,6 @@ export const BaseCardExample: Story = {
       return { args, bgImage }
     },
     template:
-      '<section :style="bgImage" class="container bg-cover bg-no-repeat bg-center px-md py-lg"><div class="grid lg:grid-cols-3 gap-4"><card v-bind="args"><template #body><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></template><template #footer><div>Pio!</div></template></card></div></section>',
+      '<section :style="bgImage" class="container bg-cover bg-no-repeat bg-center px-md py-lg"><div class="grid lg:grid-cols-3 gap-4"><card v-bind="args"><template #body><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></template></card></div></section>',
   }),
 }
