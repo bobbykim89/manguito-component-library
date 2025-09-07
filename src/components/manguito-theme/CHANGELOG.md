@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [0.28.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.27.0...@bobbykim/manguito-theme@0.28.0) (2025-09-07)
+
+### Features
+
+- **manguito-theme,mcl-cards:** add more glassmorphism config ([9d41706](https://github.com/bobbykim89/manguito-component-library/commit/9d417061b72cbe27a8a1269a49460ff46267dcc8))
+- **manguito-theme,mcl-cards:** card image update, refactor, update story page ([734f6cd](https://github.com/bobbykim89/manguito-component-library/commit/734f6cd04d739467ef000a3a745318d94ef78d68))
+- **manguito-theme,mcl-cards:** code refactor, code cleanup, add more example for mcl-card-a ([08a3508](https://github.com/bobbykim89/manguito-component-library/commit/08a3508bd73bb988ba8b475cdd9b92df938b54ad))
+- **manguito-theme,mcl-cards:** fix variable inheritance issue, add glassmorphism ([8087f4c](https://github.com/bobbykim89/manguito-component-library/commit/8087f4ccc641b3698f943c002192276c9f73fd71))
+- **manguito-theme:** add optional header and footer part for the base card component ([e774ba2](https://github.com/bobbykim89/manguito-component-library/commit/e774ba207d0dc8f40fd95655eea3d69aa80646a2))
+- **manguito-theme:** init card base component ([808e04f](https://github.com/bobbykim89/manguito-component-library/commit/808e04fda5a75f86c7f08bcaf3f8e51dc56454d2))
+- **manguito-theme:** wip on base card component ([6456bf3](https://github.com/bobbykim89/manguito-component-library/commit/6456bf3348cce5305bb4c229f8a2c053c53fb16d))
+- **stories/base/base-component/:** add base card examples ([114a7ef](https://github.com/bobbykim89/manguito-component-library/commit/114a7ef96cd7d1ef19a7bd6202a99b97dc68ee23))
+
+### BREAKING CHANGES
+
+- **manguito-theme,mcl-cards:** mcl-76
+- **manguito-theme,mcl-cards:** mcl-76
+- **manguito-theme:** mcl-76
+- **manguito-theme,mcl-cards:** mcl-76
+
 # [0.27.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.26.0...@bobbykim/manguito-theme@0.27.0) (2025-08-13)
 
 ### Bug Fixes
