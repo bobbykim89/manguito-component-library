@@ -1,31 +1,21 @@
 import {
+  bodyTextControllers,
   booleanControllers,
   colorControllers,
   headingTextControllers,
+  rangeControllers,
   targetOptionControllers,
   textControllers,
 } from '@/assets/composables'
+import GrandCanyonImage from '@/assets/images/grandcanyon-image.jpg'
 import { MclCardA } from '@/components/mcl-cards/lib'
 import type { Meta, StoryObj } from '@storybook/vue3'
+import { computed } from 'vue'
+import MclCardAExamplesVue from './MclCardAExamples.vue'
 
 const meta: Meta<typeof MclCardA> = {
   title: 'Components/Cards/MclCardA',
   component: MclCardA,
-}
-
-export default meta
-
-type Story = StoryObj<typeof MclCardA>
-
-export const MclCardAExample: Story = {
-  render: (args) => ({
-    components: { 'mcl-card-a': MclCardA },
-    setup() {
-      return { args }
-    },
-    template:
-      '<section class="container"><mcl-card-a v-bind="args"><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></mcl-card-a></section>',
-  }),
   argTypes: {
     title: textControllers({
       name: 'title',
@@ -185,6 +175,40 @@ export const MclCardAExample: Story = {
       defaultValue: 'light-1',
       category: 'Body',
     }),
+    glass: booleanControllers({
+      name: 'glass',
+      required: false,
+      description: 'displays background to have glassmorphism',
+      defaultValue: false,
+      category: 'Body',
+    }),
+    glassBlur: bodyTextControllers({
+      name: 'glass-blur',
+      required: false,
+      description: 'assigns the size of backdrop blur filter',
+      defaultValue: 'sm',
+      category: 'Body',
+    }),
+    glassOpacity: rangeControllers({
+      name: 'glass-opacity',
+      required: false,
+      description: 'assogms the refraction opacity of the glassmorphism filter',
+      defaultValue: 20,
+      category: 'Body',
+      controlOption: {
+        min: 10,
+        max: 100,
+        step: 10,
+      },
+    }),
+    fullWidth: booleanControllers({
+      name: 'full-width',
+      required: false,
+      defaultValue: false,
+      description:
+        'whether to have card component to have full width to the container',
+      category: 'Body',
+    }),
   },
   args: {
     title: 'MCL Card A',
@@ -192,6 +216,10 @@ export const MclCardAExample: Story = {
     titleColor: 'dark-3',
     borderColor: 'light-3',
     bgColor: 'light-1',
+    fullWidth: false,
+    glass: false,
+    glassBlur: 'sm',
+    glassOpacity: 20,
     displayImage: true,
     imageSource:
       'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg',
@@ -212,4 +240,40 @@ export const MclCardAExample: Story = {
     displayShadow: true,
     ctaAsLink: false,
   },
+}
+
+export default meta
+
+type Story = StoryObj<typeof MclCardA>
+
+export const MclCardAExample: Story = {
+  render: (args) => ({
+    components: { 'mcl-card-a': MclCardA },
+    setup() {
+      return { args }
+    },
+    template:
+      '<section class="container"><div class="grid grid-cols-3 justify-items-center"><mcl-card-a v-bind="args"><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></mcl-card-a></div></section>',
+  }),
+}
+
+export const MclCardAWithBgImage: Story = {
+  render: (args) => ({
+    components: { 'mcl-card-a': MclCardA },
+    setup() {
+      const bgImage = computed(() => {
+        return { 'background-image': `url('${GrandCanyonImage}')` }
+      })
+      return { args, bgImage }
+    },
+    template:
+      '<section :style="bgImage" class="container bg-cover bg-no-repeat bg-center px-md py-lg"><div class="grid grid-cols-3 justify-items-center"><mcl-card-a v-bind="args"><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></mcl-card-a></div></section>',
+  }),
+}
+
+export const MoreCardExamples = {
+  render: () => ({
+    components: { 'mcl-card-a-examples': MclCardAExamplesVue },
+    template: '<mcl-card-a-examples></mcl-card-a-examples>',
+  }),
 }

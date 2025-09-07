@@ -1,0 +1,47 @@
+import { Canvas, Controls, Meta, Story } from '@storybook/blocks'
+import * as Stories from './card/card.stories'
+
+<Meta of={Stories} />
+
+# MCL Card A
+
+Included in `@bobbykim/manguito-theme`
+
+## Installation
+
+```sh
+npm i @bobbykim/manguito-theme
+```
+
+## Usage
+
+In your code
+
+```js
+<script setup lang="ts">
+import { Card } from '@bobbykim/manguito-theme'
+</script>
+
+<template>
+  <card title="Base Card" variant="light-1" rounded>
+    <template #body>
+      <div>
+        ...
+      </div>
+    </template>
+  </card>
+</template>
+```
+
+<Canvas of={Stories.BaseCardExample} />
+
+## Controls
+
+<Controls of={Stories.BaseCardExample} />
+
+### Slot
+
+- `#header` - header slot
+- `#body` - body slot
+- `#footer` - footer slot
+- `default` - default slot: disabled at default (enabled when no-body="true")

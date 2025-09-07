@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type {
+  BodyText,
   ColorPalette,
   CtaTarget,
   HeadingSize,
+  OpacityRange,
 } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
-import type { CardClickEvent } from '../common/index.types'
+import generateClass, { getGlassmorphismClass } from '@bobbykim/manguito-theme'
 import { computed } from 'vue'
+import type { CardClickEvent } from '../common/index.types'
 
 const props = withDefaults(
   defineProps<{
@@ -15,6 +17,10 @@ const props = withDefaults(
     titleColor?: ColorPalette
     borderColor?: ColorPalette
     bgColor?: ColorPalette
+    fullWidth?: boolean
+    glass?: boolean
+    glassBlur?: BodyText
+    glassOpacity?: OpacityRange
     displayImage?: boolean
     imageSource?: string
     imageAlt?: string
@@ -39,6 +45,10 @@ const props = withDefaults(
     titleColor: 'dark-3',
     borderColor: 'light-3',
     bgColor: 'light-1',
+    fullWidth: false,
+    glass: false,
+    glassBlur: 'sm',
+    glassOpacity: 20,
     displayImage: true,
     displayCta: true,
     ctaAsLink: false,
@@ -55,7 +65,7 @@ const props = withDefaults(
     enlargeOnHover: false,
     rounded: true,
     displayShadow: true,
-  }
+  },
 )
 
 const slots = defineSlots<{
@@ -66,24 +76,40 @@ const emit = defineEmits<{
   (e: 'card-btn-click', event: Event, item: CardClickEvent): void
 }>()
 
-const borderClass = computed<string>(() => {
+const bodyClass = computed<string>(() => {
   /**
    * @param {ColorPalette} borderColor
    * @param {ColorPalette} bgColor
    * @param {boolean} rounded
    * @param {boolean} enlargeOnHover
    * @param {boolean} displayShadow
+   * @param {boolean} glass
+   * @param {BodyText} glassBlur
+   * @param {glassOpacity} OpacityRange
    */
-  const { borderColor, bgColor, rounded, enlargeOnHover, displayShadow } = props
-  const classArray: string[] = [
+  const {
+    borderColor,
+    bgColor,
+    rounded,
+    enlargeOnHover,
+    displayShadow,
+    glass,
+    glassBlur,
+    glassOpacity,
+    fullWidth,
+  } = props
+
+  return [
     generateClass('BORDER', borderColor),
     generateClass('BGCOLOR', bgColor),
+    !fullWidth && 'max-w-[450px] sm:max-w-[350px]',
+    rounded ? 'rounded-lg' : 'rounded-sm',
+    enlargeOnHover && 'hover:scale-105 transition ease-in duration-300',
+    displayShadow && 'drop-shadow-md',
+    glass && getGlassmorphismClass(bgColor, glassBlur, glassOpacity),
   ]
-  classArray.push(rounded ? 'rounded-md' : 'rounded-sm')
-  enlargeOnHover &&
-    classArray.push('hover:scale-105 transition ease-in duration-300')
-  displayShadow && classArray.push('drop-shadow-md')
-  return classArray.join(' ')
+    .filter(Boolean)
+    .join(' ')
 })
 const titleClass = computed<string>(() => {
   /**
@@ -92,12 +118,14 @@ const titleClass = computed<string>(() => {
    * @param {boolean} displayHighlight
    */
   const { titleSize, titleColor, displayHighlight } = props
-  const classArray: string[] = [
+
+  return [
     generateClass('H3', titleSize),
     generateClass('TEXTCOLOR', titleColor),
+    displayHighlight ? 'mb-2xs' : 'mb-xs',
   ]
-  classArray.push(displayHighlight ? 'mb-2xs' : 'mb-xs')
-  return classArray.join(' ')
+    .filter(Boolean)
+    .join(' ')
 })
 const labelClass = computed<string>(() => {
   /**
@@ -105,11 +133,13 @@ const labelClass = computed<string>(() => {
    * @param {ColorPalette} labelColor
    */
   const { labelTextColor, labelColor } = props
-  const classArray: string[] = [
+
+  return [
     generateClass('TEXTCOLOR', labelTextColor),
     generateClass('BGCOLOR', labelColor),
   ]
-  return classArray.join(' ')
+    .filter(Boolean)
+    .join(' ')
 })
 const ctaClass = computed<string>(() => {
   /**
@@ -117,12 +147,15 @@ const ctaClass = computed<string>(() => {
    * @param {boolean} rounded
    */
   const { ctaColor, rounded } = props
-  const classArray: string[] = [generateClass('BTNCOLOR', ctaColor)]
   const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
-  let textColor = lightColor.includes(ctaColor) ? 'text-black' : 'text-white'
-  classArray.push(textColor)
-  rounded && classArray.push('btn-round')
-  return classArray.join(' ')
+
+  return [
+    generateClass('BTNCOLOR', ctaColor),
+    lightColor.includes(ctaColor) ? 'text-black' : 'text-white',
+    rounded && 'btn-round',
+  ]
+    .filter(Boolean)
+    .join(' ')
 })
 const handleButtonClick = (e: Event): void => {
   const { title, ctaLink, ctaTarget, ctaAsLink } = props
@@ -147,45 +180,43 @@ const handleCardClick = (e: Event): void => {
 
 <template>
   <div
-    class="overflow-hidden border max-w-[450px] sm:max-w-[350px] w-full xs:w-auto flex-grow flex-shrink-0 cursor-pointer"
-    :class="borderClass"
+    class="xs:w-auto flex w-full flex-shrink-0 flex-grow cursor-pointer flex-col overflow-hidden border"
+    :class="bodyClass"
     @click="handleCardClick"
   >
     <div class="relative" v-if="displayImage">
       <img
         :src="imageSource"
         :alt="imageAlt"
-        class="object-cover object-top h-[220px] min-w-full"
+        class="aspect-video min-w-full object-cover object-top"
       />
       <span
         v-if="displayLabel"
-        class="py-3xs px-2xs ml-xs inline-block font-bold text-xs absolute bottom-0 translate-y-[50%]"
+        class="py-3xs px-2xs ml-xs absolute bottom-0 inline-block translate-y-[50%] text-xs font-bold"
         :class="labelClass"
         v-html="labelText"
       ></span>
     </div>
-    <div class="content-height flex flex-col justify-between">
-      <div class="min-h-[100px] p-0">
-        <div class="px-xs pt-sm">
-          <span
-            v-if="!displayImage && displayLabel"
-            class="py-3xs px-2xs mb-2xs inline-block font-bold text-xs"
-            :class="labelClass"
-            v-html="labelText"
-          ></span>
-          <h3 :class="titleClass" v-html="title"></h3>
-          <div
-            v-if="displayHighlight"
-            class="mb-xs h-3xs w-md"
-            :class="generateClass('BGCOLOR', highlightColor)"
-          ></div>
-          <div class="mb-sm cursor-default" @click.stop>
-            <slot></slot>
-          </div>
+    <div class="flex h-full flex-col justify-between">
+      <div class="px-xs pt-sm flex-1">
+        <span
+          v-if="!displayImage && displayLabel"
+          class="py-3xs px-2xs mb-2xs inline-block text-xs font-bold"
+          :class="labelClass"
+          v-html="labelText"
+        ></span>
+        <h3 :class="titleClass" v-html="title"></h3>
+        <div
+          v-if="displayHighlight"
+          class="mb-xs h-3xs w-md"
+          :class="generateClass('BGCOLOR', highlightColor)"
+        ></div>
+        <div class="mb-sm cursor-default" @click.stop>
+          <slot></slot>
         </div>
       </div>
-      <div class="pb-sm border-0 cursor-default" v-if="displayCta" @click.stop>
-        <div class="w-full px-xs">
+      <div class="pb-sm cursor-default border-0" v-if="displayCta" @click.stop>
+        <div class="px-xs w-full">
           <a
             :href="ctaLink"
             :target="ctaTarget"
@@ -199,9 +230,3 @@ const handleCardClick = (e: Event): void => {
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.content-height {
-  height: calc(100% - 200px);
-}
-</style>
