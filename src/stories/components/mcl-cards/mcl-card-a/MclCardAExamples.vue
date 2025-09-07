@@ -26,7 +26,7 @@ const polloAlt: string = 'Manguito is perching'
       <div>
         <h2 class="h2-lg mb-sm">More MclCardA Examples</h2>
       </div>
-      <div class="grid gap-4 lg:grid-cols-3">
+      <div class="grid justify-items-center gap-4 lg:grid-cols-3">
         <MclCardA
           title="MCL Card A"
           :image-source="polloUrl"

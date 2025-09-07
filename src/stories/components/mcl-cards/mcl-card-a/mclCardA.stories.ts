@@ -201,6 +201,14 @@ const meta: Meta<typeof MclCardA> = {
         step: 10,
       },
     }),
+    fullWidth: booleanControllers({
+      name: 'full-width',
+      required: false,
+      defaultValue: false,
+      description:
+        'whether to have card component to have full width to the container',
+      category: 'Body',
+    }),
   },
   args: {
     title: 'MCL Card A',
@@ -208,6 +216,7 @@ const meta: Meta<typeof MclCardA> = {
     titleColor: 'dark-3',
     borderColor: 'light-3',
     bgColor: 'light-1',
+    fullWidth: false,
     glass: false,
     glassBlur: 'sm',
     glassOpacity: 20,
@@ -244,7 +253,7 @@ export const MclCardAExample: Story = {
       return { args }
     },
     template:
-      '<section class="container"><mcl-card-a v-bind="args"><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></mcl-card-a></section>',
+      '<section class="container"><div class="grid grid-cols-3 justify-items-center"><mcl-card-a v-bind="args"><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></mcl-card-a></div></section>',
   }),
 }
 
@@ -258,7 +267,7 @@ export const MclCardAWithBgImage: Story = {
       return { args, bgImage }
     },
     template:
-      '<section :style="bgImage" class="container bg-cover bg-no-repeat bg-center px-md py-lg"><mcl-card-a v-bind="args"><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></mcl-card-a></section>',
+      '<section :style="bgImage" class="container bg-cover bg-no-repeat bg-center px-md py-lg"><div class="grid grid-cols-3 justify-items-center"><mcl-card-a v-bind="args"><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></mcl-card-a></div></section>',
   }),
 }
 

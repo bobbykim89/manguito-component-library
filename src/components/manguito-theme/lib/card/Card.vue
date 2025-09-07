@@ -123,7 +123,7 @@ const footerClass = computed<string>(() => {
       <img
         :src="imageSrc"
         :alt="imageAlt"
-        class="h-[200px] min-w-full object-cover object-top"
+        class="aspect-video min-w-full object-cover object-top"
       />
     </template>
     <template v-if="!noBody">
