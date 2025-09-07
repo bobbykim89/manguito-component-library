@@ -17,6 +17,7 @@ const props = withDefaults(
     titleColor?: ColorPalette
     borderColor?: ColorPalette
     bgColor?: ColorPalette
+    fullWidth?: boolean
     glass?: boolean
     glassBlur?: BodyText
     glassOpacity?: OpacityRange
@@ -44,6 +45,7 @@ const props = withDefaults(
     titleColor: 'dark-3',
     borderColor: 'light-3',
     bgColor: 'light-1',
+    fullWidth: false,
     glass: false,
     glassBlur: 'sm',
     glassOpacity: 20,
@@ -94,11 +96,13 @@ const bodyClass = computed<string>(() => {
     glass,
     glassBlur,
     glassOpacity,
+    fullWidth,
   } = props
 
   return [
     generateClass('BORDER', borderColor),
     generateClass('BGCOLOR', bgColor),
+    !fullWidth && 'max-w-[450px] sm:max-w-[350px]',
     rounded ? 'rounded-lg' : 'rounded-sm',
     enlargeOnHover && 'hover:scale-105 transition ease-in duration-300',
     displayShadow && 'drop-shadow-md',
@@ -176,7 +180,7 @@ const handleCardClick = (e: Event): void => {
 
 <template>
   <div
-    class="xs:w-auto flex w-full max-w-[450px] flex-shrink-0 flex-grow cursor-pointer flex-col overflow-hidden border sm:max-w-[350px]"
+    class="xs:w-auto flex w-full flex-shrink-0 flex-grow cursor-pointer flex-col overflow-hidden border"
     :class="bodyClass"
     @click="handleCardClick"
   >
@@ -184,7 +188,7 @@ const handleCardClick = (e: Event): void => {
       <img
         :src="imageSource"
         :alt="imageAlt"
-        class="h-[220px] min-w-full object-cover object-top"
+        class="aspect-video min-w-full object-cover object-top"
       />
       <span
         v-if="displayLabel"
