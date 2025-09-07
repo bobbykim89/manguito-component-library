@@ -19,7 +19,8 @@
     "package:install": "lerna exec -- pnpm install",
     "package:build": "lerna run build",
     "package:clear": "lerna clean",
-    "package:publish": "lerna run build && lerna publish --no-private"
+    "package:version": "pnpm lerna version --no-private",
+    "package:publish": "lerna run build && lerna publish from-git --no-private"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "3.2.2",
