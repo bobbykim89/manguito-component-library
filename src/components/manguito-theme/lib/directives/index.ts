@@ -1,10 +1,7 @@
-import type { Directive, DirectiveBinding } from 'vue'
-import { createVNode, render } from 'vue'
-import type { Direction } from '../theme/static/theme.types'
-import tooltip from '../tooltip'
-import type { TooltipElementType, TooltipValueType } from './index.types'
+import type { Directive } from 'vue'
+import { vTooltip } from './tooltip.directive'
 
-export const vClickOutside: Directive = {
+const vClickOutside: Directive = {
   mounted(el, binding) {
     el.__ClickOutsideHandler = (event: Event) => {
       if (!(el === event.target || el.contains(event.target))) {
@@ -18,7 +15,7 @@ export const vClickOutside: Directive = {
   },
 }
 
-export const vToggle: Directive = {
+const vToggle: Directive = {
   mounted(el, binding) {
     el.__ClickToggleHandler = (e: Event): void => {
       e.preventDefault()
@@ -50,7 +47,7 @@ export const vToggle: Directive = {
   },
 }
 
-export const vCollapse: Directive = {
+const vCollapse: Directive = {
   mounted(el, binding) {
     el.__HandleToggler = (event: Event): void => {
       event.preventDefault()
@@ -104,108 +101,110 @@ export const vCollapse: Directive = {
   },
 }
 
-export const vTooltip: Directive<TooltipElementType, TooltipValueType> = {
-  mounted(el, binding) {
-    el.__HandleTooltip = (
-      el: HTMLElement,
-      binding: DirectiveBinding<TooltipValueType>,
-    ) => {
-      // parent element class
-      el.classList.add('relative', 'group', 'overflow-visible')
+// export const vTooltip: Directive<TooltipElementType, TooltipValueType> = {
+//   mounted(el, binding) {
+//     el.__HandleTooltip = (
+//       el: HTMLElement,
+//       binding: DirectiveBinding<TooltipValueType>,
+//     ) => {
+//       // parent element class
+//       el.classList.add('relative', 'group', 'overflow-visible')
 
-      // handle tooltip text
-      let tooltipText: string | null | undefined
-      if (el.hasAttribute('title')) {
-        tooltipText = el.getAttribute('title')
-      }
-      if (
-        !el.hasAttribute('title') &&
-        typeof binding.value !== 'undefined' &&
-        typeof binding.value === 'string'
-      ) {
-        tooltipText = binding.value
-      }
-      if (
-        !el.hasAttribute('title') &&
-        typeof binding.value !== 'undefined' &&
-        typeof binding.value !== 'string' &&
-        typeof binding.value.title === 'string'
-      ) {
-        tooltipText = binding.value.title
-      }
-      // handle tooltip color
-      let tooltipColor: string | null | undefined
-      if (el.hasAttribute('color')) {
-        tooltipColor = el.getAttribute('color')
-      }
-      if (
-        !el.hasAttribute('color') &&
-        typeof binding.value !== 'undefined' &&
-        typeof binding.value !== 'string' &&
-        typeof binding.value.color === 'string'
-      ) {
-        tooltipColor = binding.value.color
-      }
-      // handle tooltip text color
-      let tooltipTextColor: string | null | undefined
-      if (el.hasAttribute('text-color')) {
-        tooltipTextColor = el.getAttribute('text-color')
-      }
-      if (
-        !el.hasAttribute('text-color') &&
-        typeof binding.value !== 'undefined' &&
-        typeof binding.value !== 'string' &&
-        typeof binding.value.textColor === 'string'
-      ) {
-        tooltipTextColor = binding.value.textColor
-      }
-      // handle tooltip width
-      let tooltipWidth: string | number | null | undefined
-      if (el.hasAttribute('tooltip-width')) {
-        tooltipWidth = el.getAttribute('tooltip-width')
-      }
-      if (
-        !el.hasAttribute('tooltip-width') &&
-        typeof binding.value !== 'undefined' &&
-        typeof binding.value !== 'string' &&
-        ['number', 'string'].includes(typeof binding.value.width)
-      ) {
-        tooltipWidth = binding.value.width
-      }
-      // handle custom class names
-      let tooltipClassName: string | undefined
-      if (
-        typeof binding.value !== 'undefined' &&
-        typeof binding.value !== 'string' &&
-        typeof binding.value.className === 'string'
-      ) {
-        tooltipClassName = binding.value.className
-      }
-      let tooltipDirection: Direction | undefined
-      const modifierArray: string[] = Object.keys(binding.modifiers)
-      // handle direction
-      if (modifierArray.length > 0) {
-        tooltipDirection = modifierArray[0] as Direction
-      }
-      const vnode = createVNode(tooltip, {
-        direction: tooltipDirection,
-        title: tooltipText,
-        color: tooltipColor,
-        textColor: tooltipTextColor,
-        width: tooltipWidth,
-        customClass: tooltipClassName,
-      })
-      render(vnode, el)
-    }
-    el.__UnmountTooltip = (el: Element) => {
-      render(null, el)
-    }
-    el.__HandleTooltip(el, binding)
-  },
-  updated(el, binding) {
-    el.__HandleTooltip(el, binding)
-  },
-  unmounted(el) {
-    el.__UnmountTooltip(el)
-  },
-}
+//       // handle tooltip text
+//       let tooltipText: string | null | undefined
+//       if (el.hasAttribute('title')) {
+//         tooltipText = el.getAttribute('title')
+//       }
+//       if (
+//         !el.hasAttribute('title') &&
+//         typeof binding.value !== 'undefined' &&
+//         typeof binding.value === 'string'
+//       ) {
+//         tooltipText = binding.value
+//       }
+//       if (
+//         !el.hasAttribute('title') &&
+//         typeof binding.value !== 'undefined' &&
+//         typeof binding.value !== 'string' &&
+//         typeof binding.value.title === 'string'
+//       ) {
+//         tooltipText = binding.value.title
+//       }
+//       // handle tooltip color
+//       let tooltipColor: string | null | undefined
+//       if (el.hasAttribute('color')) {
+//         tooltipColor = el.getAttribute('color')
+//       }
+//       if (
+//         !el.hasAttribute('color') &&
+//         typeof binding.value !== 'undefined' &&
+//         typeof binding.value !== 'string' &&
+//         typeof binding.value.color === 'string'
+//       ) {
+//         tooltipColor = binding.value.color
+//       }
+//       // handle tooltip text color
+//       let tooltipTextColor: string | null | undefined
+//       if (el.hasAttribute('text-color')) {
+//         tooltipTextColor = el.getAttribute('text-color')
+//       }
+//       if (
+//         !el.hasAttribute('text-color') &&
+//         typeof binding.value !== 'undefined' &&
+//         typeof binding.value !== 'string' &&
+//         typeof binding.value.textColor === 'string'
+//       ) {
+//         tooltipTextColor = binding.value.textColor
+//       }
+//       // handle tooltip width
+//       let tooltipWidth: string | number | null | undefined
+//       if (el.hasAttribute('tooltip-width')) {
+//         tooltipWidth = el.getAttribute('tooltip-width')
+//       }
+//       if (
+//         !el.hasAttribute('tooltip-width') &&
+//         typeof binding.value !== 'undefined' &&
+//         typeof binding.value !== 'string' &&
+//         ['number', 'string'].includes(typeof binding.value.width)
+//       ) {
+//         tooltipWidth = binding.value.width
+//       }
+//       // handle custom class names
+//       let tooltipClassName: string | undefined
+//       if (
+//         typeof binding.value !== 'undefined' &&
+//         typeof binding.value !== 'string' &&
+//         typeof binding.value.className === 'string'
+//       ) {
+//         tooltipClassName = binding.value.className
+//       }
+//       let tooltipDirection: Direction | undefined
+//       const modifierArray: string[] = Object.keys(binding.modifiers)
+//       // handle direction
+//       if (modifierArray.length > 0) {
+//         tooltipDirection = modifierArray[0] as Direction
+//       }
+//       const vnode = createVNode(tooltip, {
+//         direction: tooltipDirection,
+//         title: tooltipText,
+//         color: tooltipColor,
+//         textColor: tooltipTextColor,
+//         width: tooltipWidth,
+//         customClass: tooltipClassName,
+//       })
+//       render(vnode, el)
+//     }
+//     el.__UnmountTooltip = (el: Element) => {
+//       render(null, el)
+//     }
+//     el.__HandleTooltip(el, binding)
+//   },
+//   updated(el, binding) {
+//     el.__HandleTooltip(el, binding)
+//   },
+//   unmounted(el) {
+//     el.__UnmountTooltip(el)
+//   },
+// }
+
+export { vClickOutside, vCollapse, vToggle, vTooltip }
