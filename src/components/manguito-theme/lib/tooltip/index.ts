@@ -4,6 +4,7 @@ import { generateClass } from '../theme'
 import type { ColorPalette, Direction } from '../theme/static/theme.types'
 
 export default defineComponent({
+  name: 'Tooltip',
   props: {
     direction: {
       type: String as PropType<Direction>,
@@ -48,6 +49,7 @@ export default defineComponent({
     const tooltipWidth = computed(() => {
       return { width: `${props.width}px` }
     })
+
     const tooltipDirection = computed<string>(() => {
       switch (props.direction) {
         case 'left':
