@@ -11,7 +11,7 @@ const openModal = () => {
 <template>
   <section class="container">
     <div>
-      <div class="flex justify-start md:justify-center gap-xs my-md flex-wrap">
+      <div class="gap-xs my-md flex flex-wrap justify-start md:justify-center">
         <button class="btn btn-danger" v-toggle:modal-1>Modal 1</button>
         <button class="btn btn-warning" v-toggle:modal-2>Modal 2</button>
         <button class="btn btn-success" v-toggle:modal-3>
@@ -80,21 +80,23 @@ const openModal = () => {
         ultricies mauris. Donec quis luctus tortor. Cras eu pretium arcu. Cras
         ut turpis eros. Mauris venenatis eros diam.
       </p>
-      <div class="flex justify-center my-sm">
+      <div class="my-sm flex justify-center">
         <button @click="openModal" class="btn btn-danger btn-invert">
           Trigger through ref
         </button>
       </div>
       <modal id="modal-1" class-name="px-xs rounded-md" color="light-1">
         <template #header="{ close }">
-          <div class="flex justify-between py-xs bg-light-1 border-b-2">
+          <div
+            class="py-xs bg-light-1 border-b-light-4 flex justify-between border-b-2"
+          >
             <h3 class="h3-md">Modal 1</h3>
             <button @click="close">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="1em"
                 viewBox="0 0 384 512"
-                class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 transition-colors duration-300 ease-linear h-sm"
+                class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 h-sm transition-colors duration-300 ease-linear"
               >
                 <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                 <path
@@ -125,7 +127,7 @@ const openModal = () => {
         </template>
         <template #footer="{ close }">
           <div
-            class="bg-light-1 border-t-2 flex justify-between items-center py-xs"
+            class="bg-light-1 py-xs border-t-light-4 flex items-center justify-between border-t-2"
           >
             <h4 class="h4-md">Footer Text</h4>
             <button class="btn btn-round btn-warning" @click="close">
@@ -142,13 +144,13 @@ const openModal = () => {
         pleacement="top"
       >
         <template #header="{ close }">
-          <div class="flex justify-end p-xs bg-light-1">
+          <div class="p-xs bg-light-1 flex justify-end">
             <button @click="close">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="1em"
                 viewBox="0 0 384 512"
-                class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 transition-colors duration-300 ease-linear h-sm"
+                class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 h-sm transition-colors duration-300 ease-linear"
               >
                 <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                 <path
@@ -206,14 +208,16 @@ const openModal = () => {
         modal-width="medium"
       >
         <template #header="{ close }">
-          <div class="flex justify-between py-xs bg-light-1 border-b-2">
+          <div
+            class="py-xs bg-light-1 border-b-light-4 flex justify-between border-b-2"
+          >
             <h3 class="h3-md">Medium Modal</h3>
             <button @click="close">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="1em"
                 viewBox="0 0 384 512"
-                class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 transition-colors duration-300 ease-linear h-sm"
+                class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 h-sm transition-colors duration-300 ease-linear"
               >
                 <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                 <path
@@ -244,7 +248,7 @@ const openModal = () => {
         </template>
         <template #footer="{ close }">
           <div
-            class="bg-light-1 border-t-2 flex justify-between items-center py-xs"
+            class="bg-light-1 py-xs border-t-light-4 flex items-center justify-between border-t-2"
           >
             <h4 class="h4-md">Footer Text</h4>
             <button class="btn btn-round btn-warning" @click="close">
@@ -261,14 +265,16 @@ const openModal = () => {
         placement="top"
       >
         <template #header="{ close }">
-          <div class="flex justify-between py-xs bg-light-1 border-b-2">
+          <div
+            class="py-xs bg-light-1 border-b-light-4 flex justify-between border-b-2"
+          >
             <h3 class="h3-md">Large Modal</h3>
             <button @click="close">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="1em"
                 viewBox="0 0 384 512"
-                class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 transition-colors duration-300 ease-linear h-sm"
+                class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 h-sm transition-colors duration-300 ease-linear"
               >
                 <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                 <path
@@ -299,7 +305,7 @@ const openModal = () => {
         </template>
         <template #footer="{ close }">
           <div
-            class="bg-light-1 border-t-2 flex justify-between items-center py-xs"
+            class="bg-light-1 py-xs border-t-light-4 flex items-center justify-between border-t-2"
           >
             <h4 class="h4-md">Footer Text</h4>
             <button class="btn btn-round btn-warning" @click="close">
