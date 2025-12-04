@@ -9,126 +9,119 @@ import type {
 } from './index.types'
 
 /**
- * Helper to get property value from either element attributes or directive binding value.
- * Attribute names are converted from camelCase (in binding) to kebab-case (in HTML).
+ * Extracts a value from either element attributes or binding value object
  */
-
-const getPropValue = <T extends keyof Omit<TooltipValueObjectType, 'title'>>(
-  el: TooltipElementType,
-  bindingVal: TooltipValueType | undefined,
-  attrName: string, // Kebab-case attribute name
-  key: T, // CamelCase key in the binding object
-): TooltipValueObjectType[T] | null | undefined => {
-  // 1. Check the binding value object first, as this is the primary way for complex types
-  // and object values usually represent dynamic settings.
-  if (
-    typeof bindingVal === 'object' &&
-    bindingVal !== null &&
-    key in bindingVal
-  ) {
-    return bindingVal[key]
+const extractVal = <T>(
+  el: HTMLElement,
+  binding: DirectiveBinding<TooltipValueType>,
+  attrName: string,
+  objectKey: keyof TooltipValueObjectType,
+): T | undefined => {
+  // Check element attribute first
+  if (el.hasAttribute(attrName)) {
+    return el.getAttribute(attrName) as T
   }
-
-  // 2. Check if the element has the attribute (HTML attributes take precedence, based on your initial code structure)
-  const attrVal = el.getAttribute(attrName)
-  if (attrVal !== null) {
-    // special handling for width which might be expected as number
-    if (key === 'width') {
-      const numberVal = Number(attrVal)
-      // If it's a valid number, return it as a number, otherwise return the string (e.g. "10rem")
-      if (!isNaN(numberVal)) {
-        return numberVal as TooltipValueObjectType[T]
-      }
-    }
-    // For color/textColor/className, the string attribute value is fine
-    return attrVal as unknown as TooltipValueObjectType[T]
+  // check binding value obj
+  if (
+    typeof binding.value === 'object' &&
+    binding.value !== null &&
+    objectKey in binding.value
+  ) {
+    return binding.value[objectKey] as T
   }
   return undefined
 }
 
-const PROP_MAP = {
-  color: 'color',
-  textColor: 'text-color',
-  width: 'tooltip-width',
-  className: 'class-name',
+/**
+ * Extracts tooltip text from various sources
+ */
+const getTooltipText = (
+  el: HTMLElement,
+  binding: DirectiveBinding<TooltipValueType>,
+): string | undefined => {
+  // priority 1: title attr
+  if (el.hasAttribute('title')) {
+    return el.getAttribute('title') || undefined
+  }
+  // priority 2: string val
+  if (typeof binding.value === 'string') {
+    return binding.value
+  }
+  // priority 3: obj val with title
+  if (typeof binding.value === 'object' && binding.value?.title) {
+    return binding.value.title
+  }
+  return undefined
 }
 
-const handleTooltip = (
-  el: TooltipElementType,
+/**
+ * Gets the tooltip direction from directive modifiers
+ */
+const getDirection = (
   binding: DirectiveBinding<TooltipValueType>,
-) => {
-  // 1. Set base classes for the parent element
+): Direction | undefined => {
+  const modifiers = Object.keys(binding.modifiers)
+  return modifiers.length > 0 ? (modifiers[0] as Direction) : undefined
+}
+
+/**
+ * Mounts the tooltip component to the element
+ */
+const mountTooltip = (
+  el: HTMLElement,
+  binding: DirectiveBinding<TooltipValueType>,
+): void => {
+  // add required classes to parent elem
   el.classList.add('relative', 'group', 'overflow-visible')
-  el.removeAttribute('title')
+  const tooltipText = getTooltipText(el, binding)
+  const tooltipColor = extractVal<string>(el, binding, 'color', 'color')
+  const tooltipTextColor = extractVal<string>(
+    el,
+    binding,
+    'text-color',
+    'textColor',
+  )
+  const tooltipWidth = extractVal<string | undefined>(
+    el,
+    binding,
+    'tooltip-width',
+    'width',
+  )
+  const tooltipClassName =
+    typeof binding.value === 'object' ? binding.value.className : undefined
+  const tooltipDirection = getDirection(binding)
 
-  // 2. Determine direction
-  const modifierArray: string[] = Object.keys(binding.modifiers)
-  const tooltipDirection: Direction | undefined = modifierArray[0]
-    ? (modifierArray[0] as Direction)
-    : undefined
+  console.log(
+    `color: ${tooltipColor}, txt color: ${tooltipTextColor}, width: ${tooltipWidth}`,
+  )
 
-  // 3. Determine tooltip text (title logic remains the same)
-  let tooltipText: string | undefined | null
-  if (el.hasAttribute('title')) {
-    tooltipText = el.getAttribute('title')
-  }
-  if (
-    !el.hasAttribute('title') &&
-    typeof binding.value !== 'undefined' &&
-    typeof binding.value === 'string'
-  ) {
-    tooltipText = binding.value
-  }
-  if (
-    !el.hasAttribute('title') &&
-    typeof binding.value !== 'undefined' &&
-    typeof binding.value !== 'string' &&
-    typeof binding.value.title === 'string'
-  ) {
-    tooltipText = binding.value.title
-  }
-
-  // Crucially, remove the native title attribute if we found a tooltip text,
-  // to prevent the browser's default tooltip from showing.
-  // if (tooltipText) {
-  //   el.removeAttribute('title')
-  // }
-
-  if (!tooltipText) {
-    render(null, el)
-    return
-  }
-
-  // 4. Gather other props using helperfunction and the constant
-  const props: Record<string, any> = {
-    title: tooltipText,
+  const vnode = createVNode(tooltip, {
     direction: tooltipDirection,
-  }
-  console.log(props)
-  // Iterate over external PROP_MAP constant
-  for (const [key, attrName] of Object.entries(PROP_MAP)) {
-    const val = getPropValue(
-      el,
-      binding.value as TooltipValueObjectType,
-      attrName,
-      key as keyof Omit<TooltipValueObjectType, 'title'>,
-    )
-    console.log(val)
-    if (val !== undefined) {
-      props[key === 'className' ? 'customClass' : key] = val
-    }
-  }
-  console.log(tooltipText)
-  console.log(props)
-  const vnode = createVNode(tooltip, props)
+    title: tooltipText,
+    color: tooltipColor,
+    textColor: tooltipTextColor,
+    width: tooltipWidth,
+    customClass: tooltipClassName,
+  })
+
   render(vnode, el)
 }
+
+const unmountTooltip = (el: HTMLElement): void => {
+  render(null, el)
+}
+
+/**
+ * Helper to get property value from either element attributes or directive binding value.
+ * Attribute names are converted from camelCase (in binding) to kebab-case (in HTML).
+ */
 
 export const vTooltip: Directive<TooltipElementType, TooltipValueType> = {
   mounted(el, binding) {
     // attach the handler to the element for reuse
-    el.__HandleTooltip = (b) => handleTooltip(el, b)
-    el.__UnmountTooltip = () => render(null, el)
+    el.__HandleTooltip = (updatedBinding) => mountTooltip(el, updatedBinding)
+    el.__UnmountTooltip = () => unmountTooltip(el)
+    // initial mount
     el.__HandleTooltip(binding)
   },
   updated(

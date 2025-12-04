@@ -3,45 +3,186 @@ import * as Stories from './tooltip/tooltip.stories'
 
 <Meta of={Stories} />
 
-# Tooltip component
+# Tooltip Directive
 
 Included in `@bobbykim/manguito-theme`
 
-## Usage
+A flexible Vue 3 directive for adding customizable tooltips to any element.
+
+## Installation
 
 ```js
-<script lang="ts" setup>
+import { vTooltip } from '@bobbykim/manguito-theme'
+```
+
+## Basic Usage
+
+### Default Tooltip
+
+```vue
+<template>
+  <!-- Using title attribute -->
+  <button v-tooltip title="Tooltip text here">Default tooltip</button>
+
+  <!-- Using directive value -->
+  <button v-tooltip="'Tooltip text here'">
+    Alternative way to add tooltip text
+  </button>
+</template>
+```
+
+## Configuration Options
+
+### Direction
+
+Control tooltip placement with modifiers. Default is `right`.
+
+```vue
+<template>
+  <button v-tooltip:top title="Tooltip on top">Top</button>
+  <button v-tooltip:bottom title="Tooltip on bottom">Bottom</button>
+  <button v-tooltip:left title="Tooltip on left">Left</button>
+  <button v-tooltip:right title="Tooltip on right">Right</button>
+</template>
+```
+
+### Colors
+
+Customize background and text colors using attributes or object value.
+
+```vue
+<template>
+  <!-- Using attributes -->
+  <button v-tooltip title="Tooltip text" color="primary">
+    Custom background color
+  </button>
+
+  <button v-tooltip title="Tooltip text" text-color="secondary">
+    Custom text color
+  </button>
+
+  <!-- Using object value -->
+  <button
+    v-tooltip="{
+      title: 'Tooltip text',
+      color: 'primary',
+      textColor: 'secondary',
+    }"
+  >
+    Both colors custom
+  </button>
+</template>
+```
+
+### Width
+
+Adjust tooltip width (default: 80px).
+
+```vue
+<template>
+  <!-- Using attribute -->
+  <button v-tooltip title="Tooltip text" tooltip-width="140">
+    Wider tooltip
+  </button>
+
+  <!-- Using object value -->
+  <button v-tooltip="{ title: 'Tooltip text', width: 140 }">
+    Wider tooltip
+  </button>
+</template>
+```
+
+### Custom Classes
+
+Add custom CSS classes for advanced styling.
+
+```vue
+<template>
+  <button
+    v-tooltip="{
+      title: 'Tooltip text',
+      className: 'font-bold shadow-lg',
+    }"
+  >
+    Custom styled tooltip
+  </button>
+</template>
+```
+
+## Complete Example
+
+```vue
+<script setup lang="ts">
 import { vTooltip } from '@bobbykim/manguito-theme'
 </script>
 
 <template>
-  <button v-tooltip title="Tooltip text here">Default tooltip</button>
-  <button v-tooltip="'Tooltip text here'">
-    Alaternative way to add tooltip text
-  </button>
-  <button v-tooltip:top title="Tooltip text here">
-    Tooltip with direction (Default right)
-  </button>
-  <button v-tooltip title="Tooltip text here" color="primary">
-    Tooltip with color (Default dark-3)
-  </button>
-  <button v-tooltip title="Tooltip text here" text-color="primary">
-    Tooltip with text color (Default white)
-  </button>
-  <button v-tooltip title="Tooltip text here" tooltip-width="140">
-    Tooltip with width (Default 80px)
-  </button>
-  <button
-    v-tooltip="{title: 'tooltip text here', color: 'primary', textColor: 'secondary' width: 150}"
-  >
-    Set tooltip by using value
-  </button>
-  <button
-    v-tooltip="{title: 'tooltip text here', color: 'primary', textColor: 'secondary' width: 150, className: '/** custom classname here**/'}"
-  >
-    customize tooltip with custom classname
-  </button>
+  <div class="space-x-4">
+    <!-- Simple tooltip -->
+    <button v-tooltip="'Quick tooltip'">Hover me</button>
+
+    <!-- Full configuration with object -->
+    <button
+      v-tooltip:top="{
+        title: 'Fully configured tooltip',
+        color: 'primary',
+        textColor: 'white',
+        width: 150,
+        className: 'font-semibold rounded-lg',
+      }"
+    >
+      Fancy tooltip
+    </button>
+
+    <!-- Mixed approach -->
+    <button
+      v-tooltip:bottom
+      title="Mixed configuration"
+      color="secondary"
+      tooltip-width="120"
+    >
+      Mixed config
+    </button>
+  </div>
 </template>
 ```
+
+## API Reference
+
+### Directive Modifiers
+
+- `top` - Position tooltip above element
+- `bottom` - Position tooltip below element
+- `left` - Position tooltip to the left
+- `right` - Position tooltip to the right (default)
+
+### Attributes
+
+- `title` - Tooltip text content
+- `color` - Background color (ColorPalette type)
+- `text-color` - Text color (ColorPalette type)
+- `tooltip-width` - Width in pixels
+
+### Object Value Props
+
+When using object notation, all properties are optional except `title`:
+
+```typescript
+{
+  title: string          // Tooltip text (required)
+  color?: ColorPalette   // Background color
+  textColor?: ColorPalette // Text color
+  width?: number | string  // Width (number treated as pixels)
+  className?: string     // Additional CSS classes
+}
+```
+
+## Notes
+
+- The directive automatically adds `relative`, `group`, and `overflow-visible` classes to the parent element
+- Tooltips become visible on hover with opacity transition
+- HTML content is supported in the title (use with caution)
+- Priority order for text: `title` attribute → string value → object value
+- Priority order for colors/width: attributes → object value
 
 <Canvas of={Stories.tooltipExample} />
