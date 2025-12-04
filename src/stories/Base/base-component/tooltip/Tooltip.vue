@@ -115,7 +115,7 @@ import { vTooltip } from '@/components/manguito-theme/lib'
           v-tooltip.top="{
             title:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            width: 400,
+            width: 600,
             className: 'border-primary border-2 font-bold text-xl rounded-lg',
             color: 'light-3',
             textColor: 'dark-3',
