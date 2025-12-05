@@ -1,0 +1,336 @@
+import { Canvas, Meta } from '@storybook/blocks'
+import * as Stories from './directives/click-outside.stories'
+
+<Meta of={Stories} />
+
+# Click Outside Directive
+
+A Vue 3 directive that detects clicks outside an element and triggers a callback. Useful for closing dropdowns, modals, and menus when clicking outside.
+
+## Installation
+
+```js
+import { vClickOutside } from '@bobbykim/manguito-theme'
+```
+
+## Basic Usage
+
+### Simple Callback
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { vClickOutside } from '@bobbykim/manguito-theme'
+
+const isOpen = ref(false)
+
+const closeDropdown = () => {
+  isOpen.value = false
+}
+</script>
+
+<template>
+  <div v-click-outside="closeDropdown" class="dropdown">
+    <button @click="isOpen = !isOpen">Toggle Dropdown</button>
+    <div v-if="isOpen" class="dropdown-menu">Dropdown content</div>
+  </div>
+</template>
+```
+
+## Advanced Usage
+
+### With Event Parameter
+
+Access the original click event in your handler:
+
+```vue
+<script setup lang="ts">
+const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+  console.log('Clicked outside at:', event.target)
+  // Your logic here
+}
+</script>
+
+<template>
+  <div v-click-outside="handleClickOutside">Content</div>
+</template>
+```
+
+### Custom Event Types
+
+Listen to different event types (default is `click`):
+
+```vue
+<script setup lang="ts">
+const handleOutside = () => {
+  console.log('Mousedown outside detected')
+}
+</script>
+
+<template>
+  <div
+    v-click-outside="{
+      handler: handleOutside,
+      events: ['mousedown'],
+    }"
+  >
+    Content
+  </div>
+</template>
+```
+
+### Exclude Elements
+
+Prevent certain elements from triggering the click-outside handler:
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const dropdownRef = ref<HTMLElement>()
+const triggerButtonRef = ref<HTMLElement>()
+
+const closeDropdown = () => {
+  console.log('Click outside, but not on trigger button')
+}
+</script>
+
+<template>
+  <button ref="triggerButtonRef">Open Dropdown</button>
+
+  <div
+    ref="dropdownRef"
+    v-click-outside="{
+      handler: closeDropdown,
+      excludeElements: [triggerButtonRef],
+    }"
+  >
+    Dropdown content
+  </div>
+</template>
+```
+
+### Multiple Events
+
+Listen to multiple event types simultaneously:
+
+```vue
+<template>
+  <div
+    v-click-outside="{
+      handler: closeMenu,
+      events: ['click', 'touchstart'],
+    }"
+  >
+    Mobile-friendly menu
+  </div>
+</template>
+```
+
+## Common Use Cases
+
+### Dropdown Menu
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { vClickOutside } from '@bobbykim/manguito-theme'
+
+const isOpen = ref(false)
+
+const closeMenu = () => {
+  isOpen.value = false
+}
+
+const toggleMenu = () => {
+  isOpen.value = !isOpen
+}
+</script>
+
+<template>
+  <div v-click-outside="closeMenu" class="relative">
+    <button @click="toggleMenu" class="menu-trigger">Menu</button>
+
+    <div v-if="isOpen" class="menu-content absolute left-0 top-full">
+      <a href="#" @click="isOpen = false">Option 1</a>
+      <a href="#" @click="isOpen = false">Option 2</a>
+      <a href="#" @click="isOpen = false">Option 3</a>
+    </div>
+  </div>
+</template>
+```
+
+### Modal Dialog
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { vClickOutside } from '@bobbykim/manguito-theme'
+
+const showModal = ref(false)
+
+const closeModal = () => {
+  showModal.value = false
+}
+</script>
+
+<template>
+  <button @click="showModal = true">Open Modal</button>
+
+  <Teleport to="body">
+    <div v-if="showModal" class="modal-overlay">
+      <div v-click-outside="closeModal" class="modal-content">
+        <h2>Modal Title</h2>
+        <p>Modal content</p>
+        <button @click="closeModal">Close</button>
+      </div>
+    </div>
+  </Teleport>
+</template>
+```
+
+### Searchable Select
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { vClickOutside } from '@bobbykim/manguito-theme'
+
+const isOpen = ref(false)
+const searchQuery = ref('')
+const inputRef = ref<HTMLElement>()
+
+const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+  // Don't close if clicking on the input
+  if (inputRef.value && event.target === inputRef.value) {
+    return
+  }
+  isOpen.value = false
+}
+</script>
+
+<template>
+  <div v-click-outside="handleClickOutside" class="select-wrapper">
+    <input
+      ref="inputRef"
+      v-model="searchQuery"
+      @focus="isOpen = true"
+      placeholder="Search..."
+    />
+
+    <ul v-if="isOpen" class="options-list">
+      <li>Option 1</li>
+      <li>Option 2</li>
+      <li>Option 3</li>
+    </ul>
+  </div>
+</template>
+```
+
+## API Reference
+
+### Directive Value Types
+
+#### Simple Function
+
+```typescript
+(event: MouseEvent | TouchEvent) => void
+```
+
+#### Options Object
+
+```typescript
+{
+  handler: (event: MouseEvent | TouchEvent) => void  // Required callback
+  events?: ('click' | 'mousedown' | 'touchstart')[]  // Event types to listen for
+  excludeElements?: HTMLElement[]                     // Elements to exclude from detection
+}
+```
+
+### Parameters
+
+| Property          | Type       | Default     | Description                                     |
+| ----------------- | ---------- | ----------- | ----------------------------------------------- |
+| `handler`         | `Function` | -           | Callback function invoked when clicking outside |
+| `events`          | `Array`    | `['click']` | Event types to listen for                       |
+| `excludeElements` | `Array`    | `[]`        | Elements that won't trigger the handler         |
+
+## Important Notes
+
+### Event Capturing
+
+The directive uses event capturing (`addEventListener` with `true` parameter) to ensure clicks are detected before they bubble up. This prevents issues with `stopPropagation()` in child components.
+
+### Performance Considerations
+
+- The directive attaches listeners to the `document`, not individual elements
+- Listeners are properly cleaned up on unmount
+- Consider using `mousedown` instead of `click` for faster response in some scenarios
+
+### Touch Support
+
+For mobile-friendly implementations, include `touchstart` in the events array:
+
+```vue
+<div
+  v-click-outside="{
+    handler: closeMenu,
+    events: ['click', 'touchstart'],
+  }"
+>
+  Content
+</div>
+```
+
+### Exclude Elements Best Practices
+
+When excluding elements, use template refs for reliability:
+
+```vue
+<script setup lang="ts">
+const excludedRef = ref<HTMLElement>()
+</script>
+
+<template>
+  <div ref="excludedRef">Won't trigger handler</div>
+  <div
+    v-click-outside="{
+      handler: handleOutside,
+      excludeElements: [excludedRef],
+    }"
+  >
+    Main content
+  </div>
+</template>
+```
+
+## Accessibility
+
+When using this directive for interactive components:
+
+- Ensure keyboard users can close elements with `Escape` key
+- Maintain proper focus management
+- Add appropriate ARIA attributes
+
+```vue
+<script setup lang="ts">
+const handleEscape = (event: KeyboardEvent) => {
+  if (event.key === 'Escape') {
+    isOpen.value = false
+  }
+}
+</script>
+
+<template>
+  <div
+    v-click-outside="closeMenu"
+    @keydown="handleEscape"
+    role="menu"
+    :aria-expanded="isOpen"
+  >
+    Content
+  </div>
+</template>
+```
+
+<Canvas of={Stories.clickOutsideExample} />
