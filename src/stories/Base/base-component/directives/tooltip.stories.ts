@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import Tooltip from './Tooltip.vue'
 
 const meta: Meta<typeof Tooltip> = {
-  title: 'Base/Base Component/Tooltip Component',
+  title: 'Base/Base Component/Directives/Tooltip',
 }
 export default meta
 
