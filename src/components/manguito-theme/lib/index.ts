@@ -19,6 +19,8 @@ import TabContent from './tabs/TabContent.vue'
 export * from './directives'
 // utility components
 export * from './util'
+// composables
+export * from './composables'
 // types
 export * from './header/index.types'
 export * from './theme/static/theme.types'
