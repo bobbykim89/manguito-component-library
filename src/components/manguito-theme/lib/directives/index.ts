@@ -1,5 +1,6 @@
 import type { Directive } from 'vue'
 import { vClickOutside } from './click-outside.directive'
+import { vToggle } from './toggle.directive'
 import { vTooltip } from './tooltip.directive'
 
 // const vClickOutside: Directive = {
@@ -16,37 +17,37 @@ import { vTooltip } from './tooltip.directive'
 //   },
 // }
 
-const vToggle: Directive = {
-  mounted(el, binding) {
-    el.__ClickToggleHandler = (e: Event): void => {
-      e.preventDefault()
-      const eTarget = e.target as HTMLElement
-      let target: HTMLElement
-      if (eTarget.tagName === 'A') {
-        const targetId = eTarget.getAttribute('href')
-        const formattedTargetId =
-          targetId?.charAt(0) === '#' ? targetId.substring(1) : targetId
-        target = document.getElementById(formattedTargetId as string)!
-      } else {
-        target = document.getElementById(binding.arg as string)!
-      }
-      if (!target) {
-        return
-      }
-      if (target.hasAttribute('visible') === false) {
-        return
-      }
-      const targetAttr = target.getAttribute('visible')
-      const attrAfterToggle = targetAttr === 'true' ? 'false' : 'true'
-      target.setAttribute('visible', attrAfterToggle)
-      return
-    }
-    el.addEventListener('click', el.__ClickToggleHandler)
-  },
-  unmounted(el) {
-    el.removeEventListener('click', el.__ClickToggleHandler)
-  },
-}
+// const vToggle: Directive = {
+//   mounted(el, binding) {
+//     el.__ClickToggleHandler = (e: Event): void => {
+//       e.preventDefault()
+//       const eTarget = e.target as HTMLElement
+//       let target: HTMLElement
+//       if (eTarget.tagName === 'A') {
+//         const targetId = eTarget.getAttribute('href')
+//         const formattedTargetId =
+//           targetId?.charAt(0) === '#' ? targetId.substring(1) : targetId
+//         target = document.getElementById(formattedTargetId as string)!
+//       } else {
+//         target = document.getElementById(binding.arg as string)!
+//       }
+//       if (!target) {
+//         return
+//       }
+//       if (target.hasAttribute('visible') === false) {
+//         return
+//       }
+//       const targetAttr = target.getAttribute('visible')
+//       const attrAfterToggle = targetAttr === 'true' ? 'false' : 'true'
+//       target.setAttribute('visible', attrAfterToggle)
+//       return
+//     }
+//     el.addEventListener('click', el.__ClickToggleHandler)
+//   },
+//   unmounted(el) {
+//     el.removeEventListener('click', el.__ClickToggleHandler)
+//   },
+// }
 
 const vCollapse: Directive = {
   mounted(el, binding) {

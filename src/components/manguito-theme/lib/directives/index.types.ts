@@ -1,6 +1,7 @@
 import type { DirectiveBinding } from 'vue'
 import type { ColorPalette } from '..'
 
+// click outside
 /**
  * Type for the click outside handler function
  */
@@ -27,6 +28,15 @@ export interface ClickOutsideOptions {
  */
 export type ClickOutsideValue = ClickOutsideHandler | ClickOutsideOptions
 
+// toggle
+/**
+ * Extends HTMLElement to include the custom handler attached by the directive
+ */
+export interface ToggleElement extends HTMLElement {
+  __ClickToggleHandler?: (event: Event) => void
+}
+
+// tooltip
 // Defines the properties that can be passed via the directive value object
 export interface TooltipValueObjectType {
   title?: string
