@@ -36,6 +36,14 @@ export interface ToggleElement extends HTMLElement {
   __ClickToggleHandler?: (event: Event) => void
 }
 
+// collapse
+/**
+ * Extends HTMLElement to include the custom handler attached by the directive
+ */
+export interface CollapseElement extends HTMLElement {
+  __HandleToggler?: (event: Event) => void
+}
+
 // tooltip
 // Defines the properties that can be passed via the directive value object
 export interface TooltipValueObjectType {

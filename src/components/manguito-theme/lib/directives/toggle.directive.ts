@@ -1,47 +1,11 @@
 import type { Directive } from 'vue'
 import type { ToggleElement } from './index.types'
-
-/**
- * Extracts target ID from either href attribute or directive argument
- */
-const getTargetId = (
-  elem: HTMLElement,
-  directiveArg?: string,
-): string | null => {
-  // if clicked element is an anchor tag, use href
-  if (elem.tagName === 'A') {
-    const href = elem.getAttribute('href')
-    if (!href) return null
-    // remove leading # if present
-    return href.charAt(0) === '#' ? href.substring(1) : href
-  }
-  // otherwisse use directive argument
-  return directiveArg || null
-}
-
-/**
- * Gets the target element to toggle
- */
-const getTargetElem = (targetId: string | null): HTMLElement | null => {
-  if (!targetId) return null
-  return document.getElementById(targetId)
-}
-
-/**
- * Checks if element can be toggled (has visible attribute)
- */
-const canToggle = (elem: HTMLElement): boolean => {
-  return elem.hasAttribute('visible')
-}
-
-/**
- * Toggles the visible attribute between "true" and "false"
- */
-const toggleVisibility = (elem: HTMLElement): void => {
-  const currentVal = elem.getAttribute('visible')
-  const newVal = currentVal === 'true' ? 'false' : 'true'
-  elem.setAttribute('visible', newVal)
-}
+import {
+  getTargetElem,
+  getTargetId,
+  hasVisibleAttr,
+  toggleVisibility,
+} from './shared.fn'
 
 /**
  * Creates the click handler for the toggle directive
@@ -60,7 +24,7 @@ const createToggleHandler = (
       console.warn(`[v-toggle] Target element not found: ${targetId}`)
       return
     }
-    if (!canToggle(targetElem)) {
+    if (!hasVisibleAttr(targetElem)) {
       console.warn(
         `[v-toggle] Target element mission visible 'visible' attribute: ${targetId}`,
       )
