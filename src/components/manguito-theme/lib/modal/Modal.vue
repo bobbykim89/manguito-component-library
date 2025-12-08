@@ -165,7 +165,7 @@ defineExpose<{
           <div v-if="!noHeader" class="sticky top-0">
             <slot name="header" :close="closeModal" :status="toggle">
               <div
-                class="p-xs flex items-center justify-between border-b-2"
+                class="p-xs border-b-light-4 flex items-center justify-between border-b-2"
                 :class="generateClass('BGCOLOR', color)"
               >
                 <h3

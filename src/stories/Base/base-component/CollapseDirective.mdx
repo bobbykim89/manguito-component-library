@@ -1,0 +1,670 @@
+import { Canvas, Meta } from '@storybook/blocks'
+import * as Stories from './directives/collapse.stories'
+
+<Meta of={Stories} />
+
+# Collapse Directive (Internal)
+
+> **Note**: This directive is primarily used internally by Collapsible and Accordion components. It works in conjunction with the `observeVisibleAttr` composable for reactive state management.
+
+A Vue 3 directive that handles collapsible content with support for both independent collapsibles and accordion groups (where only one item can be open at a time).
+
+## How It Works
+
+The directive toggles the `visible` attribute of target elements. It has two modes:
+
+1. **Simple Mode**: Independently toggles visibility of a single element
+2. **Accordion Mode**: Ensures only one item in a group is open at a time
+
+The mode is determined by the presence of an `accordion` attribute on the target element.
+
+## Basic Usage
+
+### Simple Collapsible
+
+```vue
+<template>
+  <button v-collapse:myContent>Toggle Content</button>
+
+  <div id="myContent" visible="false">
+    This content can be collapsed and expanded
+  </div>
+</template>
+```
+
+### With Anchor Tag
+
+```vue
+<template>
+  <a href="#details" v-collapse>Show Details</a>
+
+  <div id="details" visible="false">Detailed information here</div>
+</template>
+```
+
+### Accordion Group
+
+```vue
+<template>
+  <div class="accordion">
+    <!-- Item 1 -->
+    <button v-collapse:section1>Section 1</button>
+    <div id="section1" visible="true" accordion="faq">
+      Content for section 1
+    </div>
+
+    <!-- Item 2 -->
+    <button v-collapse:section2>Section 2</button>
+    <div id="section2" visible="false" accordion="faq">
+      Content for section 2
+    </div>
+
+    <!-- Item 3 -->
+    <button v-collapse:section3>Section 3</button>
+    <div id="section3" visible="false" accordion="faq">
+      Content for section 3
+    </div>
+  </div>
+</template>
+```
+
+## Component Integration
+
+### Collapsible Component Example
+
+```vue
+<template>
+  <div class="collapsible">
+    <button
+      v-collapse:[contentId]
+      class="collapsible-trigger"
+      :aria-expanded="isVisible"
+      :aria-controls="contentId"
+    >
+      <slot name="trigger" :is-open="isVisible">
+        {{ title }}
+      </slot>
+    </button>
+
+    <div
+      ref="contentRef"
+      :id="contentId"
+      :visible="isVisible.toString()"
+      class="collapsible-content"
+      role="region"
+    >
+      <slot />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, watch } from 'vue'
+import { vCollapse, observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+const props = defineProps({
+  contentId: {
+    type: String,
+    required: true,
+  },
+  title: {
+    type: String,
+    default: 'Toggle',
+  },
+  modelValue: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const contentRef = ref<HTMLElement>()
+const isVisible = ref(props.modelValue)
+
+// Watch for external v-model changes
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    isVisible.value = newValue
+    if (contentRef.value) {
+      contentRef.value.setAttribute('visible', newValue.toString())
+    }
+  },
+)
+
+// Watch for directive-triggered changes (user clicks)
+observeVisibleAttr(contentRef, (visible) => {
+  isVisible.value = visible
+  emit('update:modelValue', visible)
+})
+</script>
+```
+
+### Accordion Component Example
+
+```vue
+<template>
+  <div class="accordion" :id="accordionId">
+    <div v-for="(item, index) in items" :key="item.id" class="accordion-item">
+      <button
+        v-collapse:[item.contentId]
+        class="accordion-trigger"
+        :aria-expanded="openIndexes.includes(index)"
+      >
+        {{ item.title }}
+      </button>
+
+      <div
+        :ref="(el) => setItemRef(el as HTMLElement, index)"
+        :id="item.contentId"
+        :visible="(index === defaultOpen).toString()"
+        :accordion="accordionId"
+        class="accordion-content"
+      >
+        <slot :name="`item-${index}`" :item="item">
+          {{ item.content }}
+        </slot>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { vCollapse, observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+interface AccordionItem {
+  id: string
+  contentId: string
+  title: string
+  content?: string
+}
+
+const props = defineProps({
+  accordionId: {
+    type: String,
+    required: true,
+  },
+  items: {
+    type: Array as () => AccordionItem[],
+    required: true,
+  },
+  defaultOpen: {
+    type: Number,
+    default: 0,
+  },
+})
+
+const emit = defineEmits(['change'])
+
+const itemRefs = ref<Map<number, HTMLElement>>(new Map())
+const openIndexes = ref<number[]>([props.defaultOpen])
+
+const setItemRef = (el: HTMLElement, index: number) => {
+  if (el) {
+    itemRefs.value.set(index, el)
+  }
+}
+
+onMounted(() => {
+  // Observe each accordion item
+  itemRefs.value.forEach((el, index) => {
+    const elementRef = ref(el)
+    observeVisibleAttr(elementRef, (isVisible) => {
+      if (isVisible) {
+        openIndexes.value = [index]
+        emit('change', index)
+      } else if (openIndexes.value.includes(index)) {
+        openIndexes.value = []
+      }
+    })
+  })
+})
+</script>
+```
+
+## Using with `observeVisibleAttr` Composable
+
+The `observeVisibleAttr` composable watches for changes to the `visible` attribute and provides a reactive callback.
+
+### How It Works
+
+```typescript
+import { ref } from 'vue'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+const elementRef = ref<HTMLElement>()
+
+// Set up observer
+const observer = observeVisibleAttr(elementRef, (isVisible) => {
+  console.log('Visibility changed:', isVisible)
+  // Update your reactive state here
+})
+
+// Stop observing when needed
+observer?.stop()
+```
+
+### Complete Integration Example
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { vCollapse, observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+const props = defineProps({
+  contentId: {
+    type: String,
+    required: true,
+  },
+  modelValue: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const emit = defineEmits(['update:modelValue'])
+
+const contentRef = ref<HTMLElement>()
+
+// Observe changes from directive clicks
+observeVisibleAttr(contentRef, (visible) => {
+  emit('update:modelValue', visible)
+})
+
+// Programmatic control
+const toggle = () => {
+  if (contentRef.value) {
+    const current = contentRef.value.getAttribute('visible') === 'true'
+    contentRef.value.setAttribute('visible', (!current).toString())
+  }
+}
+</script>
+
+<template>
+  <div>
+    <!-- User clicks this -->
+    <button v-collapse:[contentId]>Toggle via Directive</button>
+
+    <!-- Or programmatically control -->
+    <button @click="toggle">Toggle Programmatically</button>
+
+    <div ref="contentRef" :id="contentId" :visible="modelValue.toString()">
+      Content
+    </div>
+  </div>
+</template>
+```
+
+## Requirements
+
+### For All Collapsibles
+
+Target elements must have:
+
+- An `id` attribute
+- A `visible` attribute (`"true"` or `"false"`)
+
+```html
+<!-- ✅ Correct -->
+<div id="content" visible="false">Content</div>
+
+<!-- ❌ Missing id -->
+<div visible="false">Content</div>
+
+<!-- ❌ Missing visible attribute -->
+<div id="content">Content</div>
+```
+
+### For Accordion Groups
+
+All items in an accordion group must have:
+
+- Same `accordion` attribute value
+- Unique `id` attributes
+- `visible` attribute
+
+```html
+<!-- ✅ Correct accordion group -->
+<div id="item1" visible="true" accordion="myGroup">Item 1</div>
+<div id="item2" visible="false" accordion="myGroup">Item 2</div>
+<div id="item3" visible="false" accordion="myGroup">Item 3</div>
+
+<!-- ❌ Different accordion names - not grouped -->
+<div id="item1" visible="true" accordion="group1">Item 1</div>
+<div id="item2" visible="false" accordion="group2">Item 2</div>
+```
+
+## Behavior
+
+### Simple Mode (No Accordion)
+
+```
+Click → Target toggles visible="true" ⟷ visible="false"
+```
+
+### Accordion Mode
+
+```
+Click Item A (closed):
+├── Item A: visible="false" → visible="true"
+├── Item B: visible="true" → visible="false"
+└── Item C: visible="false" → visible="false"
+
+Click Item A (already open):
+└── Item A: visible="true" → visible="false"
+```
+
+## Complete Example
+
+### FAQ Accordion with State Management
+
+```vue
+<script setup lang="ts">
+import { ref, onMounted } from 'vue'
+import { vCollapse, observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+interface FAQ {
+  id: string
+  question: string
+  answer: string
+}
+
+const faqs: FAQ[] = [
+  {
+    id: 'faq1',
+    question: 'What is Vue?',
+    answer:
+      'Vue is a progressive JavaScript framework for building user interfaces.',
+  },
+  {
+    id: 'faq2',
+    question: 'What are directives?',
+    answer:
+      'Directives are special attributes with the v- prefix that apply reactive behavior to the DOM.',
+  },
+  {
+    id: 'faq3',
+    question: 'What is an accordion?',
+    answer:
+      'An accordion is a UI pattern where only one section can be expanded at a time.',
+  },
+]
+
+const faqRefs = ref<Map<string, HTMLElement>>(new Map())
+const activeIndex = ref(0)
+
+const setFaqRef = (el: HTMLElement | null, id: string) => {
+  if (el) {
+    faqRefs.value.set(id, el)
+  }
+}
+
+onMounted(() => {
+  // Set up observers for each FAQ item
+  faqs.forEach((faq, index) => {
+    const el = faqRefs.value.get(faq.id)
+    if (el) {
+      const elementRef = ref(el)
+      observeVisibleAttr(elementRef, (isVisible) => {
+        if (isVisible) {
+          activeIndex.value = index
+          console.log(`FAQ ${index + 1} opened`)
+        }
+      })
+    }
+  })
+})
+</script>
+
+<template>
+  <div class="faq-accordion">
+    <h2>Frequently Asked Questions</h2>
+
+    <div
+      v-for="(faq, index) in faqs"
+      :key="faq.id"
+      class="faq-item"
+      :class="{ 'is-active': activeIndex === index }"
+    >
+      <button
+        v-collapse:[faq.id]
+        class="faq-question"
+        :aria-expanded="activeIndex === index"
+        :aria-controls="faq.id"
+      >
+        <span>{{ faq.question }}</span>
+        <svg
+          class="chevron"
+          :class="{ 'rotate-180': activeIndex === index }"
+          width="20"
+          height="20"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+          />
+        </svg>
+      </button>
+
+      <div
+        :ref="(el) => setFaqRef(el as HTMLElement, faq.id)"
+        :id="faq.id"
+        :visible="(index === 0).toString()"
+        accordion="faq-group"
+        class="faq-answer"
+        role="region"
+        :aria-labelledby="`${faq.id}-question`"
+      >
+        <p>{{ faq.answer }}</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.faq-accordion {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.faq-question {
+  width: 100%;
+  padding: 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  text-align: left;
+  transition: background-color 0.2s;
+}
+
+.faq-question:hover {
+  background: #f9fafb;
+}
+
+.faq-question:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: -2px;
+}
+
+.chevron {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.faq-answer {
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-answer[visible='false'] {
+  max-height: 0;
+  opacity: 0;
+}
+
+.faq-answer[visible='true'] {
+  max-height: 500px;
+  opacity: 1;
+  padding: 0 1.25rem 1.25rem;
+}
+</style>
+```
+
+## Accessibility
+
+When implementing collapsibles and accordions:
+
+```vue
+<template>
+  <div role="region" aria-labelledby="accordion-heading">
+    <h3 id="accordion-heading">Accordion Title</h3>
+
+    <button v-collapse:content :aria-expanded="isOpen" aria-controls="content">
+      Toggle
+    </button>
+
+    <div
+      ref="contentRef"
+      id="content"
+      :visible="isOpen.toString()"
+      role="region"
+      :aria-hidden="!isOpen"
+    >
+      Content
+    </div>
+  </div>
+</template>
+```
+
+### Best Practices
+
+1. Use `aria-expanded` on trigger buttons
+2. Use `aria-controls` to link trigger to content
+3. Use `role="region"` for content areas
+4. Support keyboard navigation (Enter/Space to toggle)
+5. Provide clear visual indicators for open/closed states
+6. Ensure keyboard focus is visible
+
+## Styling Patterns
+
+### CSS Attribute Selectors
+
+```css
+/* Target collapsed state */
+[visible='false'] {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+/* Target expanded state */
+[visible='true'] {
+  max-height: 1000px;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+/* Accordion items */
+[accordion] {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+```
+
+### Tailwind Classes
+
+```vue
+<div
+  ref="contentRef"
+  :id="contentId"
+  :visible="isOpen.toString()"
+  :class="[
+    'overflow-hidden transition-all duration-300 ease-in-out',
+    isOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0',
+  ]"
+>
+  Content
+</div>
+```
+
+## Debugging
+
+### Common Issues
+
+**Content not toggling:**
+
+```vue
+<!-- Check: Does element have visible attribute? -->
+<div id="content" visible="false">✅</div>
+<div id="content">❌ Missing visible attribute</div>
+
+<!-- Check: Does ID match directive arg? -->
+<button v-collapse:content>✅</button>
+<button v-collapse:different>❌ ID mismatch</button>
+```
+
+**Accordion not working:**
+
+```vue
+<!-- Check: Do all items have same accordion value? -->
+<div accordion="group1">✅</div>
+<div accordion="group1">✅</div>
+<div accordion="group2">❌ Different group</div>
+
+<!-- Check: Are items div elements? (Selector is div[accordion]) -->
+<div accordion="group">✅</div>
+<section accordion="group">❌ Not a div</section>
+```
+
+**observeVisibleAttr not working:**
+
+```vue
+<script setup>
+// ✅ Correct: Using template ref
+const contentRef = ref<HTMLElement>()
+observeVisibleAttr(contentRef, callback)
+</script>
+
+<template>
+  <div ref="contentRef">Content</div>
+</template>
+
+<!-- ❌ Wrong: Missing ref -->
+<template>
+  <div>Content</div>
+</template>
+```
+
+### Enable Console Warnings
+
+The directive logs warnings when:
+
+- Target element is not found
+- Target element is missing the `visible` attribute
+
+Check your browser console for these messages.
+
+## Technical Notes
+
+- **Accordion selector**: `div[accordion="name"]` (only matches `<div>` elements)
+- **Attribute values**: Strings `"true"` and `"false"` (not booleans)
+- **Target resolution**: Directive args have priority, then anchor hrefs
+- **Event prevention**: Automatically prevents default click behavior
+- **Observer pattern**: Use `observeVisibleAttr` for reactive state management
+- **Cleanup**: Observer has `.stop()` method for manual cleanup (auto-cleanup on unmount)
+
+## Example
+
+<Canvas of={Stories.collapseExample} />

@@ -1,0 +1,639 @@
+import { Canvas, Meta } from '@storybook/blocks'
+import * as Stories from './directives/toggle.stories'
+
+<Meta of={Stories} />
+
+# Toggle Directive (Internal)
+
+> **Note**: This directive is primarily used internally by Modal and Sidebar components. It works in conjunction with the `observeVisibleAttr` composable to provide reactive visibility control.
+
+## Overview
+
+The toggle system consists of two parts:
+
+1. **`v-toggle` directive** - Toggles the `visible` attribute on target elements
+2. **`observeVisibleAttr` composable** - Observes `visible` attribute changes and syncs with reactive state
+
+Together, they create a bridge between DOM attributes and Vue's reactivity system.
+
+## Quick Start
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { vToggle, observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+const componentRef = ref<HTMLElement>()
+const isVisible = ref(false)
+
+// Sync DOM attribute changes to reactive state
+observeVisibleAttr(componentRef, (visible) => {
+  isVisible.value = visible
+})
+</script>
+
+<template>
+  <div>
+    <button v-toggle:myElement>Toggle</button>
+
+    <div id="myElement" ref="componentRef" :visible="isVisible">
+      <Transition>
+        <div v-if="isVisible">Content with transition</div>
+      </Transition>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+</style>
+```
+
+## How It Works
+
+### The Flow
+
+1. User clicks element with `v-toggle:targetId`
+2. Directive toggles `visible` attribute on target element
+3. `observeVisibleAttr` detects the attribute change
+4. Callback updates reactive `ref`
+5. Vue's reactivity triggers component re-render
+
+```
+User Click → v-toggle → DOM Attribute → MutationObserver → Callback → Reactive State → UI Update
+```
+
+### Why This Pattern?
+
+**Attribute-based state** provides:
+
+- Decoupling between trigger and target
+- Works across component boundaries
+- Simple integration with existing components
+- No need for complex event emitters
+- Easy CSS targeting with `[visible="true"]`
+
+## v-toggle Directive
+
+### Usage
+
+#### With Directive Argument
+
+```vue
+<template>
+  <button v-toggle:myModal>Open Modal</button>
+
+  <div id="myModal" visible="false">Modal content</div>
+</template>
+```
+
+#### With Anchor Tag
+
+```vue
+<template>
+  <a href="#mySidebar" v-toggle>Toggle Sidebar</a>
+
+  <aside id="mySidebar" visible="true">Sidebar content</aside>
+</template>
+```
+
+### Requirements
+
+- Target element **must** have an `id` attribute
+- Target element **must** have a `visible` attribute
+- Visible attribute values: `"true"` or `"false"` (strings)
+
+### Behavior
+
+- Prevents default click behavior (useful for anchors)
+- Toggles `visible` between `"true"` and `"false"`
+- Logs warnings for missing elements or attributes
+
+## observeVisibleAttr Composable
+
+### Function Signature
+
+```typescript
+observeVisibleAttr(
+  el: Ref<HTMLElement | undefined>,
+  callback: (visible: boolean) => void
+): { stop: () => void } | undefined
+```
+
+### Parameters
+
+- `el` - Template ref to the element to observe
+- `callback` - Function called when `visible` attribute changes
+  - Receives `boolean` (true if visible="true", false if visible="false")
+
+### Return Value
+
+Returns a cleanup object with a `stop()` method to disconnect the observer, or `undefined` if element ref is invalid.
+
+### Usage Example
+
+```vue
+<script setup lang="ts">
+import { ref, onUnmounted } from 'vue'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+const elementRef = ref<HTMLElement>()
+const isVisible = ref(false)
+
+// Start observing
+const observer = observeVisibleAttr(elementRef, (visible) => {
+  console.log('Visibility changed:', visible)
+  isVisible.value = visible
+})
+
+// Cleanup (optional - auto-cleaned on unmount)
+onUnmounted(() => {
+  observer?.stop()
+})
+</script>
+
+<template>
+  <div ref="elementRef" :visible="isVisible">Content</div>
+</template>
+```
+
+## Complete Example
+
+### Basic Toggle with Transition
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { vToggle, observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+const contentRef = ref<HTMLElement>()
+const isVisible = ref(false)
+
+observeVisibleAttr(contentRef, (visible) => {
+  isVisible.value = visible
+})
+</script>
+
+<template>
+  <div class="container">
+    <button v-toggle:toggleContent class="btn-primary">
+      {{ isVisible ? 'Hide' : 'Show' }} Content
+    </button>
+
+    <div id="toggleContent" ref="contentRef" :visible="isVisible">
+      <Transition name="fade">
+        <div v-if="isVisible" class="content-box">
+          <h3>Animated Content</h3>
+          <p>This content appears with a smooth transition.</p>
+        </div>
+      </Transition>
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
+```
+
+### Modal Component Pattern
+
+```vue
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { vToggle, observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+interface Props {
+  modalId: string
+  initialVisible?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  initialVisible: false,
+})
+
+const emit = defineEmits<{
+  'update:visible': [visible: boolean]
+  open: []
+  close: []
+}>()
+
+const modalRef = ref<HTMLElement>()
+const isVisible = ref(props.initialVisible)
+
+// Observe attribute changes from v-toggle
+observeVisibleAttr(modalRef, (visible) => {
+  isVisible.value = visible
+  emit('update:visible', visible)
+  emit(visible ? 'open' : 'close')
+})
+
+const modalClasses = computed(() => ({
+  'modal-open': isVisible.value,
+  'modal-closed': !isVisible.value,
+}))
+</script>
+
+<template>
+  <div>
+    <!-- Trigger slot -->
+    <slot name="trigger" :visible="isVisible">
+      <button v-toggle:[modalId]>Open Modal</button>
+    </slot>
+
+    <!-- Modal element -->
+    <Teleport to="body">
+      <div
+        :id="modalId"
+        ref="modalRef"
+        :visible="isVisible"
+        :class="modalClasses"
+        class="modal"
+      >
+        <Transition name="modal-fade">
+          <div v-if="isVisible" class="modal-overlay">
+            <div class="modal-content">
+              <slot :close="() => (isVisible = false)" />
+
+              <button v-toggle:[modalId] class="modal-close">×</button>
+            </div>
+          </div>
+        </Transition>
+      </div>
+    </Teleport>
+  </div>
+</template>
+
+<style scoped>
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.modal-open {
+  pointer-events: auto;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  max-width: 32rem;
+  width: 90%;
+}
+
+.modal-fade-enter-active,
+.modal-fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.modal-fade-enter-from,
+.modal-fade-leave-to {
+  opacity: 0;
+}
+</style>
+```
+
+### Sidebar Component Pattern
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { vToggle, observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+interface Props {
+  sidebarId: string
+  position?: 'left' | 'right'
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  position: 'left',
+})
+
+const sidebarRef = ref<HTMLElement>()
+const isOpen = ref(false)
+
+observeVisibleAttr(sidebarRef, (visible) => {
+  isOpen.value = visible
+
+  // Manage body scroll
+  if (visible) {
+    document.body.style.overflow = 'hidden'
+  } else {
+    document.body.style.overflow = ''
+  }
+})
+</script>
+
+<template>
+  <div>
+    <!-- Menu toggle -->
+    <button v-toggle:[sidebarId] class="menu-toggle">
+      <slot name="trigger"> ☰ Menu </slot>
+    </button>
+
+    <!-- Sidebar -->
+    <aside
+      :id="sidebarId"
+      ref="sidebarRef"
+      :visible="isOpen"
+      :class="['sidebar', `sidebar-${position}`, { 'sidebar-open': isOpen }]"
+    >
+      <Transition :name="`slide-${position}`">
+        <div v-if="isOpen" class="sidebar-content">
+          <button v-toggle:[sidebarId] class="sidebar-close">×</button>
+
+          <slot />
+        </div>
+      </Transition>
+    </aside>
+
+    <!-- Backdrop -->
+    <Transition name="fade">
+      <div v-if="isOpen" v-toggle:[sidebarId] class="sidebar-backdrop" />
+    </Transition>
+  </div>
+</template>
+
+<style scoped>
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 280px;
+  z-index: 1000;
+}
+
+.sidebar-left {
+  left: 0;
+}
+
+.sidebar-right {
+  right: 0;
+}
+
+.sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* Slide transitions */
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition: transform 0.3s ease;
+}
+
+.slide-left-enter-from {
+  transform: translateX(-100%);
+}
+
+.slide-left-leave-to {
+  transform: translateX(-100%);
+}
+
+.slide-right-enter-from {
+  transform: translateX(100%);
+}
+
+.slide-right-leave-to {
+  transform: translateX(100%);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>
+```
+
+## Advanced Usage
+
+### Multiple Toggles
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { vToggle, observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+const panel1Ref = ref<HTMLElement>()
+const panel2Ref = ref<HTMLElement>()
+const panel1Visible = ref(false)
+const panel2Visible = ref(false)
+
+observeVisibleAttr(panel1Ref, (visible) => {
+  panel1Visible.value = visible
+  if (visible) panel2Visible.value = false // Close other panel
+})
+
+observeVisibleAttr(panel2Ref, (visible) => {
+  panel2Visible.value = visible
+  if (visible) panel1Visible.value = false // Close other panel
+})
+</script>
+
+<template>
+  <div class="tabs">
+    <button v-toggle:panel1>Panel 1</button>
+    <button v-toggle:panel2>Panel 2</button>
+
+    <div id="panel1" ref="panel1Ref" :visible="panel1Visible">
+      <Transition>
+        <div v-if="panel1Visible">Panel 1 Content</div>
+      </Transition>
+    </div>
+
+    <div id="panel2" ref="panel2Ref" :visible="panel2Visible">
+      <Transition>
+        <div v-if="panel2Visible">Panel 2 Content</div>
+      </Transition>
+    </div>
+  </div>
+</template>
+```
+
+### With Custom Logic
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { vToggle, observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+const drawerRef = ref<HTMLElement>()
+const isVisible = ref(false)
+
+observeVisibleAttr(drawerRef, (visible) => {
+  isVisible.value = visible
+
+  // Custom logic on visibility change
+  if (visible) {
+    console.log('Drawer opened')
+    // Track analytics
+    // Fetch data
+    // Focus first input
+  } else {
+    console.log('Drawer closed')
+    // Clean up
+    // Save state
+  }
+})
+</script>
+```
+
+## Best Practices
+
+### 1. Always Use Template Refs
+
+```vue
+<!-- ✅ Correct -->
+<div ref="elementRef" :visible="isVisible"></div>
+```
+
+### 2. Initialize Visible Attribute
+
+```vue
+<!-- ✅ Correct - explicit initial state -->
+<div :visible="isVisible"></div>
+```
+
+### 3. Sync Reactive State
+
+```vue
+<script setup>
+// ✅ Correct - two-way sync
+const isVisible = ref(false)
+observeVisibleAttr(elementRef, (visible) => {
+  isVisible.value = visible
+})
+</script>
+
+<template>
+  <div ref="elementRef" :visible="isVisible">
+</template>
+```
+
+### 4. Use Transitions for Better UX
+
+```vue
+<Transition name="fade">
+  <div v-if="isVisible">
+    Content with smooth animation
+  </div>
+</Transition>
+```
+
+### 5. Clean Up if Needed
+
+```vue
+<script setup>
+const observer = observeVisibleAttr(elementRef, callback)
+
+// Manual cleanup (usually not needed)
+onUnmounted(() => {
+  observer?.stop()
+})
+</script>
+```
+
+## Debugging
+
+### Check Console Warnings
+
+The directive logs warnings for common issues:
+
+- Target element not found
+- Missing `visible` attribute
+
+### Verify Setup
+
+```vue
+<script setup>
+// Add logging to verify callback execution
+observeVisibleAttr(elementRef, (visible) => {
+  console.log('Visible changed:', visible)
+  isVisible.value = visible
+})
+</script>
+```
+
+### Common Issues
+
+1. **Observer not firing**
+   - Ensure element has `ref` attribute
+   - Verify `visible` attribute exists
+   - Check element is mounted before observer setup
+
+2. **State not updating**
+   - Verify callback updates reactive ref
+   - Check for typos in ref names
+   - Ensure `:visible` binding is correct
+
+3. **Transition not working**
+   - Verify `v-if` uses reactive state
+   - Check transition CSS is defined
+   - Ensure transition name matches CSS classes
+
+## Performance Considerations
+
+- MutationObserver is efficient for attribute changes
+- Observer automatically disconnects on component unmount
+- Use `stop()` for manual cleanup if needed
+- Consider debouncing callback for frequent changes
+
+## When to Use This Pattern
+
+**Good use cases:**
+
+- Modal dialogs
+- Sidebars and drawers
+- Collapsible panels
+- Dropdown menus
+- Any toggle-based UI component
+
+**Consider alternatives for:**
+
+- Simple show/hide (use `v-show` or `v-if`)
+- Programmatic control only (use reactive state)
+- Complex state machines (use composables or state management)
+
+## Example
+
+<Canvas of={Stories.toggleExample} />
