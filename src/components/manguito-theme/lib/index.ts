@@ -6,6 +6,8 @@ import Card from './card/Card.vue'
 import CarouselContainer from './carousel/CarouselContainer.vue'
 import CarouselContent from './carousel/CarouselContent.vue'
 import Collapse from './collapse/Collapse.vue'
+import type { TooltipValueObjectType } from './directives'
+import { vClickOutside, vCollapse, vToggle, vTooltip } from './directives'
 import DropdownContainer from './dropdown/DropdownContainer.vue'
 import DropdownContent from './dropdown/DropdownContent.vue'
 import HeaderHorizontal from './header/HeaderHorizontal.vue'
@@ -15,8 +17,6 @@ import Sidebar from './sidebar/Sidebar.vue'
 import TabContainer from './tabs/TabContainer.vue'
 import TabContent from './tabs/TabContent.vue'
 
-// directives
-export * from './directives'
 // utility components
 export * from './util'
 // composables
@@ -40,6 +40,12 @@ export {
   Sidebar,
   TabContainer,
   TabContent,
+  // directives
+  TooltipValueObjectType,
+  vClickOutside,
+  vCollapse,
+  vToggle,
+  vTooltip
 }
 
 export default generateClass
