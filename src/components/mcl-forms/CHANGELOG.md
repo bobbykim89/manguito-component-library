@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.8](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-forms@0.9.7...@bobbykim/mcl-forms@0.9.8) (2025-12-08)
+
+**Note:** Version bump only for package @bobbykim/mcl-forms
+
 ## [0.9.7](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-forms@0.9.6...@bobbykim/mcl-forms@0.9.7) (2025-09-07)
 
 **Note:** Version bump only for package @bobbykim/mcl-forms
