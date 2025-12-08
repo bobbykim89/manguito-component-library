@@ -9,13 +9,15 @@ manguito-theme includes basic config for MCL, including type definitions for the
 - [Installation](https://manguito-component-library.vercel.app/?path=/docs/introduction-installation--docs)
 - Base Components
   - [Alert](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-alert-component--alert)
+  - [Card](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-card-component--card)
   - [Carousel](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-carousel-component--carousel)
   - [Collapse](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-collapse-component--collapse)
   - [Dropdown](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-dropdown-component--dropdown)
   - [Modal](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-modal-component--modal)
   - [Sidebar](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-sidebar-component--sidebar)
   - [Tabs](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-tab-component--tabs)
-  - [Tooltip](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-tooltip-component--tooltip)
+  - [Tooltip](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-directives-tooltip--tooltip)
+  - [Click Outside](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-directives-click-outside--clickoutside)
   - [Header (Horizontal)](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-header-horizontal--headerhorizontal)
   - [Header (Vertical)](https://manguito-component-library.vercel.app/?path=/docs/base-base-component-header-vertical--headervertical)
 - Utility Class

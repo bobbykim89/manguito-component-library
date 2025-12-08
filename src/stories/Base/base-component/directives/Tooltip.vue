@@ -5,7 +5,7 @@ import { vTooltip } from '@/components/manguito-theme/lib'
 <template>
   <section class="container">
     <div
-      class="grid grid-cols-3 gap-6 justify-items-center content-center mb-2xs bg-white py-sm px-xs md:py-md md:px-sm"
+      class="mb-2xs py-sm px-xs md:py-md md:px-sm grid grid-cols-3 content-center justify-items-center gap-6 bg-white"
     >
       <div class="col-span-3">
         <h3>Tooltips directions</h3>
@@ -97,7 +97,7 @@ import { vTooltip } from '@/components/manguito-theme/lib'
       <div class="place-self-center">
         <button v-tooltip title="Tooltip text" class="btn">Default</button>
       </div>
-      <div class="place-self-center col-span-2">
+      <div class="col-span-2 place-self-center">
         <button
           v-tooltip.top
           title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
@@ -110,12 +110,12 @@ import { vTooltip } from '@/components/manguito-theme/lib'
       <div class="col-span-3">
         <h3>Tooltips with custom classes</h3>
       </div>
-      <div class="place-self-center col-span-3">
+      <div class="col-span-3 place-self-center">
         <button
           v-tooltip.top="{
             title:
               'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            width: 400,
+            width: 600,
             className: 'border-primary border-2 font-bold text-xl rounded-lg',
             color: 'light-3',
             textColor: 'dark-3',
@@ -128,5 +128,3 @@ import { vTooltip } from '@/components/manguito-theme/lib'
     </div>
   </section>
 </template>
-
-<style scoped></style>

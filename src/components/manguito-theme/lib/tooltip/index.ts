@@ -3,19 +3,27 @@ import { computed, defineComponent, h } from 'vue'
 import { generateClass } from '../theme'
 import type { ColorPalette, Direction } from '../theme/static/theme.types'
 
+const DIRECTION_CLASS_MAP: Record<Direction, string> = {
+  left: 'tooltip-left',
+  top: 'tooltip-top',
+  bottom: 'tooltip-bottom',
+  right: 'tooltip-right',
+}
+
 export default defineComponent({
+  name: 'Tooltip',
   props: {
     direction: {
       type: String as PropType<Direction>,
-      default: 'right',
+      default: 'right' as Direction,
     },
     color: {
       type: String as PropType<ColorPalette>,
-      default: 'dark-3',
+      default: 'dark-3' as ColorPalette,
     },
     textColor: {
       type: String as PropType<ColorPalette>,
-      default: 'white',
+      default: 'white' as ColorPalette,
     },
     width: {
       type: [Number, String],
@@ -34,40 +42,28 @@ export default defineComponent({
     const defaultClassList: string =
       'invisible opacity-0 group-hover:visible group-hover:opacity-100 z-[100] tooltip'
     const colorClass = computed<string>(() => {
-      /**
-       * @param {ColorPalette} color - props
-       * @param {ColorPalette} textolor - props
-       */
-      const { color, textColor } = props
-      const classArray: string[] = [
-        generateClass('BGCOLOR', color),
-        generateClass('TEXTCOLOR', textColor),
-      ]
-      return classArray.join(' ')
+      return [
+        generateClass('BGCOLOR', props.color),
+        generateClass('TEXTCOLOR', props.textColor),
+      ].join(' ')
     })
     const tooltipWidth = computed(() => {
       return { width: `${props.width}px` }
     })
+
     const tooltipDirection = computed<string>(() => {
-      switch (props.direction) {
-        case 'left':
-          return 'tooltip-left'
-        case 'top':
-          return 'tooltip-top'
-        case 'bottom':
-          return 'tooltip-bottom'
-        default:
-          return 'tooltip-right'
-      }
+      return DIRECTION_CLASS_MAP[props.direction] || DIRECTION_CLASS_MAP.right
     })
+
+    const classList = computed<string[]>(() => [
+      defaultClassList,
+      tooltipDirection.value,
+      colorClass.value,
+      props.customClass,
+    ])
     return () =>
       h('div', {
-        class: [
-          defaultClassList,
-          props.customClass,
-          tooltipDirection.value,
-          colorClass.value,
-        ],
+        class: classList.value,
         role: 'tooltip',
         innerHTML: props.title,
         style: [tooltipWidth.value],

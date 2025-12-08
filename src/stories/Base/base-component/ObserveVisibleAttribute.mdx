@@ -1,0 +1,523 @@
+import { Meta } from '@storybook/blocks'
+
+<Meta title="Base/Base Component/Composables/Observe Visible Attribute (Internal)" />
+
+# observeVisibleAttr Composable
+
+> **Internal composable** - Used with `v-toggle` and `v-collapse` directive to sync DOM attribute changes with Vue's reactive state.
+
+A Vue composable that watches for changes to the `visible` attribute on an element using MutationObserver, converting string values to booleans.
+
+## Installation
+
+```js
+import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+```
+
+## Basic Usage
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+const elementRef = ref<HTMLElement>()
+const isVisible = ref(false)
+
+// Observe the visible attribute
+observeVisibleAttr(elementRef, (visible) => {
+  isVisible.value = visible
+})
+</script>
+
+<template>
+  <div ref="elementRef" :visible="isVisible">
+    Content that reacts to visibility changes
+  </div>
+</template>
+```
+
+## API Reference
+
+### Function Signature
+
+```typescript
+function observeVisibleAttr(
+  el: Ref<HTMLElement | undefined>,
+  callback: (visible: boolean) => void,
+): { stop: () => void } | undefined
+```
+
+### Parameters
+
+| Parameter  | Type                            | Description                                    |
+| ---------- | ------------------------------- | ---------------------------------------------- |
+| `el`       | `Ref<HTMLElement \| undefined>` | Template ref to the element to observe         |
+| `callback` | `(visible: boolean) => void`    | Function called when visible attribute changes |
+
+### Return Value
+
+Returns an object with a `stop()` method to manually disconnect the observer, or `undefined` if the element ref is invalid.
+
+```typescript
+{
+  stop: () => void  // Disconnects the MutationObserver
+}
+```
+
+### Callback Parameter
+
+The callback receives a single boolean parameter:
+
+- `true` - When `visible` attribute is `"true"`
+- `false` - When `visible` attribute is `"false"` or any other value
+
+## How It Works
+
+1. Creates a MutationObserver on the element
+2. Watches only the `visible` attribute (ignores other attribute changes)
+3. When `visible` changes, parses the string value to boolean
+4. Calls your callback with the boolean value
+5. Automatically disconnects on component unmount
+
+## Usage Patterns
+
+### Basic State Sync
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+const contentRef = ref<HTMLElement>()
+const isVisible = ref(false)
+
+observeVisibleAttr(contentRef, (visible) => {
+  isVisible.value = visible
+})
+</script>
+
+<template>
+  <div ref="contentRef" :visible="isVisible">
+    <div v-if="isVisible">Content appears when visible is true</div>
+  </div>
+</template>
+```
+
+### With Side Effects
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+const modalRef = ref<HTMLElement>()
+const isOpen = ref(false)
+
+observeVisibleAttr(modalRef, (visible) => {
+  isOpen.value = visible
+
+  // Execute side effects
+  if (visible) {
+    // Lock body scroll
+    document.body.style.overflow = 'hidden'
+    // Track analytics
+    console.log('Modal opened')
+  } else {
+    // Unlock body scroll
+    document.body.style.overflow = ''
+    // Track analytics
+    console.log('Modal closed')
+  }
+})
+</script>
+
+<template>
+  <div ref="modalRef" :visible="isOpen" class="modal">
+    <!-- Modal content -->
+  </div>
+</template>
+```
+
+### With Emits
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+const emit = defineEmits<{
+  'update:visible': [visible: boolean]
+  open: []
+  close: []
+}>()
+
+const elementRef = ref<HTMLElement>()
+const isVisible = ref(false)
+
+observeVisibleAttr(elementRef, (visible) => {
+  isVisible.value = visible
+  emit('update:visible', visible)
+
+  // Emit specific events
+  if (visible) {
+    emit('open')
+  } else {
+    emit('close')
+  }
+})
+</script>
+
+<template>
+  <div ref="elementRef" :visible="isVisible">Content</div>
+</template>
+```
+
+### Manual Cleanup
+
+```vue
+<script setup lang="ts">
+import { ref, onUnmounted } from 'vue'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+const elementRef = ref<HTMLElement>()
+const isVisible = ref(false)
+
+const observer = observeVisibleAttr(elementRef, (visible) => {
+  isVisible.value = visible
+})
+
+// Manual cleanup (usually not needed - auto-cleaned on unmount)
+const cleanup = () => {
+  observer?.stop()
+  console.log('Observer stopped')
+}
+
+// Example: stop observing after 10 seconds
+setTimeout(cleanup, 10000)
+
+// Or cleanup on unmount
+onUnmounted(() => {
+  observer?.stop()
+})
+</script>
+
+<template>
+  <div ref="elementRef" :visible="isVisible">
+    <button @click="cleanup">Stop Observing</button>
+  </div>
+</template>
+```
+
+### With Computed Values
+
+```vue
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+const drawerRef = ref<HTMLElement>()
+const isVisible = ref(false)
+
+observeVisibleAttr(drawerRef, (visible) => {
+  isVisible.value = visible
+})
+
+// Derive other reactive values
+const drawerClasses = computed(() => ({
+  'drawer-open': isVisible.value,
+  'drawer-closed': !isVisible.value,
+}))
+
+const overlayOpacity = computed(() =>
+  isVisible.value ? 'opacity-50' : 'opacity-0',
+)
+</script>
+
+<template>
+  <div ref="drawerRef" :visible="isVisible" :class="drawerClasses">
+    Drawer content
+  </div>
+  <div :class="overlayOpacity" class="overlay" />
+</template>
+```
+
+## Integration with v-toggle
+
+The primary use case is pairing with the `v-toggle` directive:
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { vToggle, observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+const panelRef = ref<HTMLElement>()
+const isPanelOpen = ref(false)
+
+// Sync directive changes to reactive state
+observeVisibleAttr(panelRef, (visible) => {
+  isPanelOpen.value = visible
+})
+</script>
+
+<template>
+  <div>
+    <!-- Directive toggles the visible attribute -->
+    <button v-toggle:myPanel>Toggle Panel</button>
+
+    <!-- Composable observes and syncs to reactive state -->
+    <div id="myPanel" ref="panelRef" :visible="isPanelOpen">
+      <Transition>
+        <div v-if="isPanelOpen">Panel content with transition</div>
+      </Transition>
+    </div>
+  </div>
+</template>
+```
+
+## Performance Optimization
+
+### Attribute Filter
+
+The composable uses `attributeFilter: ['visible']` to only observe the `visible` attribute, ignoring all other attribute changes:
+
+```typescript
+{
+  attributes: true,
+  attributeFilter: ['visible'] // Only watch this specific attribute
+}
+```
+
+This makes it more efficient than watching all attributes.
+
+### Early Return
+
+If no `visible` attribute change is detected in the mutation list, the callback is never called:
+
+```typescript
+const visibleMutation = mutations.find(isVisibleAttributeChange)
+
+if (!visibleMutation) {
+  return // No unnecessary callback execution
+}
+```
+
+### Automatic Cleanup
+
+The MutationObserver automatically disconnects when the component unmounts, preventing memory leaks.
+
+## TypeScript Support
+
+Full TypeScript support with proper types:
+
+```typescript
+import type { Ref } from 'vue'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+
+// Type-safe callback
+const handleVisibility = (visible: boolean): void => {
+  console.log('Visible:', visible)
+}
+
+// Type-safe element ref
+const elementRef: Ref<HTMLElement | undefined> = ref()
+
+// Type-safe observer control
+const observer = observeVisibleAttr(elementRef, handleVisibility)
+
+if (observer) {
+  observer.stop() // Type-safe stop method
+}
+```
+
+## Comparison with Alternatives
+
+### vs Watch
+
+```vue
+<!-- ❌ Watch doesn't detect DOM attribute changes -->
+<script setup>
+const elementRef = ref()
+const visible = ref('false')
+
+watch(visible, (newVal) => {
+  // This won't fire when v-toggle changes the DOM
+  console.log('Changed:', newVal)
+})
+</script>
+
+<!-- ✅ observeVisibleAttr detects DOM changes -->
+<script setup>
+const elementRef = ref()
+const isVisible = ref(false)
+
+observeVisibleAttr(elementRef, (visible) => {
+  // This WILL fire when v-toggle changes the DOM
+  isVisible.value = visible
+})
+</script>
+```
+
+### vs Custom Events
+
+```vue
+<!-- ❌ More complex - requires event emitters -->
+<script setup>
+// Need to manually emit events from directive
+// Need to add event listeners
+// More boilerplate
+</script>
+
+<!-- ✅ Simpler - automatic sync -->
+<script setup>
+// Just observe the attribute
+observeVisibleAttr(elementRef, (visible) => {
+  isVisible.value = visible
+})
+</script>
+```
+
+### vs Direct State Management
+
+```vue
+<!-- ❌ Tightly coupled -->
+<script setup>
+// Directive needs access to component state
+// Hard to use across component boundaries
+</script>
+
+<!-- ✅ Decoupled -->
+<script setup>
+// Directive works independently
+// Composable bridges to reactive state
+// Works across any component boundary
+</script>
+```
+
+## Debugging
+
+### Add Console Logging
+
+```vue
+<script setup>
+observeVisibleAttr(elementRef, (visible) => {
+  console.log('Visible attribute changed:', visible)
+  console.log('Element:', elementRef.value)
+  isVisible.value = visible
+})
+</script>
+```
+
+### Check Observer Status
+
+```vue
+<script setup>
+const observer = observeVisibleAttr(elementRef, callback)
+
+if (!observer) {
+  console.warn('Observer not initialized - check element ref')
+}
+</script>
+```
+
+### Verify Element Ref
+
+```vue
+<script setup>
+import { watchEffect } from 'vue'
+
+watchEffect(() => {
+  console.log('Element ref:', elementRef.value)
+  if (elementRef.value) {
+    console.log('Visible attribute:', elementRef.value.getAttribute('visible'))
+  }
+})
+</script>
+```
+
+## Common Issues
+
+### Observer Not Firing
+
+**Problem**: Callback never executes
+
+**Solutions**:
+
+1. Ensure element has `ref` attribute
+2. Verify element is mounted before observation starts
+3. Check element has `visible` attribute
+4. Confirm attribute value is changing (check DevTools)
+
+```vue
+<script setup>
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  console.log('Element mounted:', elementRef.value)
+  console.log('Has visible attr:', elementRef.value?.hasAttribute('visible'))
+})
+</script>
+```
+
+### State Not Updating
+
+**Problem**: Callback fires but state doesn't update
+
+**Solutions**:
+
+1. Check callback is updating the correct ref
+2. Verify ref is used in template
+3. Ensure no typos in ref names
+
+```vue
+<script setup>
+// ✅ Correct
+const isVisible = ref(false)
+observeVisibleAttr(elementRef, (visible) => {
+  isVisible.value = visible // Update correct ref
+})
+
+// ❌ Wrong
+const isVisible = ref(false)
+observeVisibleAttr(elementRef, (visible) => {
+  isVisibel.value = visible // Typo creates new variable!
+})
+</script>
+```
+
+### Multiple Observations
+
+**Problem**: Need to observe multiple elements
+
+**Solution**: Create separate observers for each:
+
+```vue
+<script setup>
+const element1Ref = ref()
+const element2Ref = ref()
+const visible1 = ref(false)
+const visible2 = ref(false)
+
+observeVisibleAttr(element1Ref, (visible) => {
+  visible1.value = visible
+})
+
+observeVisibleAttr(element2Ref, (visible) => {
+  visible2.value = visible
+})
+</script>
+```
+
+## Best Practices
+
+1. ✅ Always use with template refs
+2. ✅ Initialize `visible` attribute on element
+3. ✅ Keep callback functions simple and fast
+4. ✅ Use for attribute-to-state synchronization
+5. ❌ Don't use for heavy computations in callback
+6. ❌ Don't create circular updates (callback changing the same attribute)
+
+## Related
+
+- [v-toggle directive](/docs/base-base-component-directives-toggle-internal--toggle) - Toggles visible attribute
+- [@vueuse/core useMutationObserver](https://vueuse.org/core/useMutationObserver/) - Underlying implementation
