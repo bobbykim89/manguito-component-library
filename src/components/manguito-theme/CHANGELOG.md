@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.28.1](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.28.0...@bobbykim/manguito-theme@0.28.1) (2025-12-08)
+
+### Bug Fixes
+
+- **manguito-theme:** clean up commented out lines ([e3d762b](https://github.com/bobbykim89/manguito-component-library/commit/e3d762bc5bafe8d415f32615a82b12a2b11e09a7))
+- **manguito-theme:** export refactor ([77e12dd](https://github.com/bobbykim89/manguito-component-library/commit/77e12dd68b28d9ded43632926214dbc5dabf23d2))
+- **manguito-theme:** minor color fix ([7f3ae71](https://github.com/bobbykim89/manguito-component-library/commit/7f3ae71cb4405cb387e413b1d30af28f3b52255f))
+- **manguito-theme:** refactor and documentation ([02dec4b](https://github.com/bobbykim89/manguito-component-library/commit/02dec4b081b3657eb99864ca67ff03a6af46a240))
+- **manguito-theme:** refactor tooltip ([8f32153](https://github.com/bobbykim89/manguito-component-library/commit/8f32153d007bd6efc259b0ca99f554f7732034a5))
+- **manguito-theme:** refactor v-click-outside directive ([0503bdb](https://github.com/bobbykim89/manguito-component-library/commit/0503bdb0b0ee71bba0dcd01b8d4421b597a18b7d))
+- **manguito-theme:** refactor v-collapse directive ([2d0d6ce](https://github.com/bobbykim89/manguito-component-library/commit/2d0d6ce06d9c5d1fe30d6908cb13fc1eadf8fedb))
+- **manguito-theme:** wip on vTooltip ([7b50c87](https://github.com/bobbykim89/manguito-component-library/commit/7b50c8791dd1ff988f76c62efd3d88408db360a2))
+
 # [0.28.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.27.0...@bobbykim/manguito-theme@0.28.0) (2025-09-07)
 
 ### Features

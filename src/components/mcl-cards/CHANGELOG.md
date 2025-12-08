@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.1](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-cards@0.9.0...@bobbykim/mcl-cards@0.9.1) (2025-12-08)
+
+**Note:** Version bump only for package @bobbykim/mcl-cards
+
 # [0.9.0](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-cards@0.8.5...@bobbykim/mcl-cards@0.9.0) (2025-09-07)
 
 ### Features
