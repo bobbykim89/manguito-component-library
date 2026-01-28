@@ -4,5 +4,4 @@ import type { TooltipValueObjectType } from './index.types'
 import { vToggle } from './toggle.directive'
 import { vTooltip } from './tooltip.directive'
 
-export { testExport } from './test-export'
 export { TooltipValueObjectType, vClickOutside, vCollapse, vToggle, vTooltip }
