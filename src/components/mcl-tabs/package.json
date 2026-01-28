@@ -33,7 +33,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@bobbykim/manguito-theme": "0.28.2",
+    "@bobbykim/manguito-theme": "workspace:*",
     "@vueuse/core": "^12.0.0",
     "vue": "^3.5.13"
   },
@@ -45,6 +45,5 @@
     "vite-plugin-css-injected-by-js": "^3.5.2",
     "vite-plugin-dts": "^4.3.0",
     "vue-tsc": "^2.1.10"
-  },
-  "gitHead": "f4a8008708981a92da465dcc53c52197e9909fe1"
+  }
 }
