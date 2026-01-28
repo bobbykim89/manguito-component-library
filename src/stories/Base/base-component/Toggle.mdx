@@ -3,9 +3,7 @@ import * as Stories from './directives/toggle.stories'
 
 <Meta of={Stories} />
 
-# Toggle Directive (Internal)
-
-> **Note**: This directive is primarily used internally by Modal and Sidebar components. It works in conjunction with the `observeVisibleAttr` composable to provide reactive visibility control.
+# Toggle Directive
 
 ## Overview
 
@@ -21,7 +19,8 @@ Together, they create a bridge between DOM attributes and Vue's reactivity syste
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { vToggle, observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
+import { vToggle } from '@bobbykim/manguito-theme/directives'
 
 const componentRef = ref<HTMLElement>()
 const isVisible = ref(false)
@@ -143,7 +142,7 @@ Returns a cleanup object with a `stop()` method to disconnect the observer, or `
 ```vue
 <script setup lang="ts">
 import { ref, onUnmounted } from 'vue'
-import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
 
 const elementRef = ref<HTMLElement>()
 const isVisible = ref(false)
@@ -172,7 +171,8 @@ onUnmounted(() => {
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { vToggle, observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
+import { vToggle } from '@bobbykim/manguito-theme/directives'
 
 const contentRef = ref<HTMLElement>()
 const isVisible = ref(false)
@@ -217,7 +217,8 @@ observeVisibleAttr(contentRef, (visible) => {
 ```vue
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { vToggle, observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
+import { vToggle } from '@bobbykim/manguito-theme/directives'
 
 interface Props {
   modalId: string
@@ -329,7 +330,8 @@ const modalClasses = computed(() => ({
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { vToggle, observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
+import { vToggle } from '@bobbykim/manguito-theme/directives'
 
 interface Props {
   sidebarId: string
@@ -452,7 +454,8 @@ observeVisibleAttr(sidebarRef, (visible) => {
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { vToggle, observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
+import { vToggle } from '@bobbykim/manguito-theme/directives'
 
 const panel1Ref = ref<HTMLElement>()
 const panel2Ref = ref<HTMLElement>()
@@ -495,7 +498,8 @@ observeVisibleAttr(panel2Ref, (visible) => {
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { vToggle, observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
+import { vToggle } from '@bobbykim/manguito-theme/directives'
 
 const drawerRef = ref<HTMLElement>()
 const isVisible = ref(false)

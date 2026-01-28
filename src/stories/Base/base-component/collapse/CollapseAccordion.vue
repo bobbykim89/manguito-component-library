@@ -1,6 +1,7 @@
 v
 <script setup lang="ts">
-import { Collapse, vCollapse } from '@/components/manguito-theme/lib'
+import { Collapse } from '@/components/manguito-theme/lib'
+import { vCollapse } from '@/components/manguito-theme/lib/directives'
 
 const collapseContent = [
   {
@@ -47,10 +48,10 @@ const customButtonColor = (idx: number): string => {
 
 <template>
   <section class="container">
-    <div class="text-center mb-md">
+    <div class="mb-md text-center">
       <h2 class="text-info">Accordion Example:</h2>
     </div>
-    <div class="p-2xs border-2 border-warning rounded-md bg-white">
+    <div class="p-2xs border-warning rounded-md border-2 bg-white">
       <div v-for="(item, idx) in collapseContent" class="mb-md last:mb-0">
         <a
           :href="`#${item.id}`"

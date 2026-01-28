@@ -11,7 +11,7 @@ A Vue composable that watches for changes to the `visible` attribute on an eleme
 ## Installation
 
 ```js
-import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
 ```
 
 ## Basic Usage
@@ -19,7 +19,7 @@ import { observeVisibleAttr } from '@bobbykim/manguito-theme'
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
 
 const elementRef = ref<HTMLElement>()
 const isVisible = ref(false)
@@ -87,7 +87,7 @@ The callback receives a single boolean parameter:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
 
 const contentRef = ref<HTMLElement>()
 const isVisible = ref(false)
@@ -109,7 +109,7 @@ observeVisibleAttr(contentRef, (visible) => {
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
 
 const modalRef = ref<HTMLElement>()
 const isOpen = ref(false)
@@ -144,7 +144,7 @@ observeVisibleAttr(modalRef, (visible) => {
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
 
 const emit = defineEmits<{
   'update:visible': [visible: boolean]
@@ -178,7 +178,7 @@ observeVisibleAttr(elementRef, (visible) => {
 ```vue
 <script setup lang="ts">
 import { ref, onUnmounted } from 'vue'
-import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
 
 const elementRef = ref<HTMLElement>()
 const isVisible = ref(false)
@@ -214,7 +214,7 @@ onUnmounted(() => {
 ```vue
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
 
 const drawerRef = ref<HTMLElement>()
 const isVisible = ref(false)
@@ -249,7 +249,8 @@ The primary use case is pairing with the `v-toggle` directive:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { vToggle, observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { vToggle } from '@bobbykim/manguito-theme/directives'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
 
 const panelRef = ref<HTMLElement>()
 const isPanelOpen = ref(false)
@@ -312,7 +313,7 @@ Full TypeScript support with proper types:
 
 ```typescript
 import type { Ref } from 'vue'
-import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
 
 // Type-safe callback
 const handleVisibility = (visible: boolean): void => {
