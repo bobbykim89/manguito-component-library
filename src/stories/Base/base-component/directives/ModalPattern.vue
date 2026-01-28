@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { vToggle } from '@/components/manguito-theme/lib'
 import { observeVisibleAttr } from '@/components/manguito-theme/lib/composables'
+import { vToggle } from '@/components/manguito-theme/lib/directives'
 import { computed, ref } from 'vue'
 
 interface Props {

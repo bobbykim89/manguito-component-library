@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
-import generateClass, { Collapse, vCollapse } from '@bobbykim/manguito-theme'
+import generateClass, { Collapse } from '@bobbykim/manguito-theme'
+import { vCollapse } from '@bobbykim/manguito-theme/directives'
 import { ref, watch } from 'vue'
 
 const props = withDefaults(
@@ -30,7 +31,7 @@ const props = withDefaults(
     iconColor: 'dark-3',
     bgColor: 'white',
     slotBgColor: 'light-2',
-  }
+  },
 )
 
 const toggle = ref(props.visible)
@@ -56,7 +57,7 @@ const toggleAction = (visible: boolean): void => {
 const getBorderClass = (
   bColor: ColorPalette,
   dHl: boolean,
-  hlColor: ColorPalette
+  hlColor: ColorPalette,
 ): string => {
   /**
    * @param {ColorPalette} bColor - borderColor
@@ -69,7 +70,7 @@ const getBorderClass = (
   if (dHl) {
     const borderArray: string[] = [generateClass('BORDERL', hlColor)]
     borderArray.forEach((item) => {
-      classArray.push(item), classArray.push('border-l-8')
+      ;(classArray.push(item), classArray.push('border-l-8'))
     })
   }
 
@@ -92,13 +93,13 @@ watch(
   () => props.visible,
   (newValue) => {
     toggle.value = newValue
-  }
+  },
 )
 </script>
 
 <template>
   <div
-    class="overflow-hidden w-full"
+    class="w-full overflow-hidden"
     :class="[
       rounded ? 'rounded-lg' : 'rounded-sm',
       getBorderClass(borderColor, displayHighlight, highlightColor),
@@ -114,7 +115,7 @@ watch(
       ]"
       v-collapse:[collapseId]
     >
-      <div class="flex justify-between items-center">
+      <div class="flex items-center justify-between">
         <h3 :class="getTitleClass(titleSize, titleColor)">
           {{ title }}
         </h3>
@@ -136,7 +137,7 @@ watch(
       </collapse>
     </div>
     <div
-      class="py-1.5 px-sm cursor-pointer transition-all duration-500 flex justify-center items-center border-t"
+      class="px-sm flex cursor-pointer items-center justify-center border-t py-1.5 transition-all duration-500"
       :class="[
         generateClass('BGCOLOR', bgColor),
         generateClass('BORDERT', borderColor),

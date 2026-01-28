@@ -3,7 +3,7 @@ import ModalPattern from './ModalPattern.vue'
 import Toggle from './Toggle.vue'
 
 const meta: Meta<typeof Toggle> = {
-  title: 'Base/Base Component/Directives/Toggle (Internal)',
+  title: 'Base/Base Component/Directives/Toggle',
 }
 export default meta
 

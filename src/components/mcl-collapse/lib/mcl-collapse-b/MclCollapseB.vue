@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
-import generateClass, { Collapse, vCollapse } from '@bobbykim/manguito-theme'
+import generateClass, { Collapse } from '@bobbykim/manguito-theme'
+import { vCollapse } from '@bobbykim/manguito-theme/directives'
 import { ref, watch } from 'vue'
 
 const props = withDefaults(
@@ -28,7 +29,7 @@ const props = withDefaults(
     rounded: true,
     displayShadow: true,
     visible: false,
-  }
+  },
 )
 
 const slots = defineSlots<{
@@ -54,7 +55,7 @@ const getBorderClass = (
   bColor: ColorPalette,
   bgColor: ColorPalette,
   rounded: boolean,
-  dShadow: boolean
+  dShadow: boolean,
 ): string => {
   /**
    * @param {ColorPalette} bColor - borderColor
@@ -98,25 +99,25 @@ watch(
   () => props.visible,
   (newValue) => {
     toggle.value = newValue
-  }
+  },
 )
 </script>
 
 <template>
   <div
-    class="w-full overflow-hidden p-2xs"
+    class="p-2xs w-full overflow-hidden"
     :class="getBorderClass(borderColor, bgColor, rounded, displayShadow)"
   >
     <div
       v-collapse:[collapseId]
-      class="flex justify-between items-center w-full px-4 py-2 cursor-pointer hover:bg-opacity-70 transition duration-200 ease-in"
+      class="flex w-full cursor-pointer items-center justify-between px-4 py-2 transition duration-200 ease-in hover:bg-opacity-70"
       :class="[
         rounded ? 'rounded-lg' : 'rounded-sm',
         generateClass('BGCOLOR', btnColor),
       ]"
     >
       <h3 :class="getTitleClass(titleSize, titleColor)">{{ title }}</h3>
-      <div class="flex justify-center items-center ml-xs md:ml-sm lg:ml-md">
+      <div class="ml-xs md:ml-sm lg:ml-md flex items-center justify-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 448 512"

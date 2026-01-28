@@ -23,7 +23,7 @@ withDefaults(
     bottomDirection: 'left',
     twoColumns: true,
     leftColumnWidth: 50,
-  }
+  },
 )
 const slots = defineSlots<{
   'left-column': any
@@ -32,7 +32,7 @@ const slots = defineSlots<{
 
 const generatePoints = (
   location: DirectionY,
-  direction: DirectionX
+  direction: DirectionX,
 ): string => {
   /**
    * @location - 'top'||'bottom'
@@ -45,7 +45,7 @@ const generatePoints = (
 }
 const getLeftColumnWidth = (
   dRightCol: boolean,
-  lColWidth: ColumnWidth
+  lColWidth: ColumnWidth,
 ): string => {
   /**
    * @drightCol - twoColumns
@@ -69,7 +69,7 @@ const getLeftColumnWidth = (
 }
 const getRightColumnWIdth = (
   dRightCol: boolean,
-  lColWidth: ColumnWidth
+  lColWidth: ColumnWidth,
 ): string => {
   if (!dRightCol) {
     return ''
@@ -90,9 +90,9 @@ const getRightColumnWIdth = (
 
 <template>
   <section class="py-lg lg:py-xl" :class="generateClass('BGCOLOR', sectionBg)">
-    <div class="relative min-h-[36px] md:min-h-[48px] lg:min-h-[60px]">
+    <div class="lg:min-h-15 relative min-h-9 md:min-h-12">
       <svg
-        class="block absolute left-0 inset-x-0 h-full w-full"
+        class="absolute inset-x-0 left-0 block h-full w-full"
         :class="generateClass('SVGFILL', containerBg)"
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
@@ -105,7 +105,7 @@ const getRightColumnWIdth = (
       class="py-md md:py-lg lg:py-xl px-sm md:px-md lg:px-lg"
       :class="generateClass('BGCOLOR', containerBg)"
     >
-      <div class="container grid md:grid-cols-4 gap-4">
+      <div class="container grid gap-4 md:grid-cols-4">
         <div :class="getLeftColumnWidth(twoColumns, leftColumnWidth)">
           <slot name="left-column"></slot>
         </div>
@@ -117,9 +117,9 @@ const getRightColumnWIdth = (
         </div>
       </div>
     </div>
-    <div class="relative min-h-[36px] md:min-h-[48px] lg:min-h-[60px]">
+    <div class="lg:min-h-15 relative min-h-9 md:min-h-12">
       <svg
-        class="block absolute left-0 inset-x-0 h-full w-full"
+        class="absolute inset-x-0 left-0 block h-full w-full"
         :class="generateClass('SVGFILL', containerBg)"
         viewBox="0 0 100 100"
         preserveAspectRatio="none"

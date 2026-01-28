@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3'
 import Collapse from './Collapse.vue'
 
 const meta: Meta<typeof Collapse> = {
-  title: 'Base/Base Component/Directives/Collapse (Internal)',
+  title: 'Base/Base Component/Directives/Collapse',
 }
 export default meta
 

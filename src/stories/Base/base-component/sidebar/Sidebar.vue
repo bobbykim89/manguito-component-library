@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { Sidebar, vToggle } from '@/components/manguito-theme/lib'
+import { Sidebar } from '@/components/manguito-theme/lib'
+import { vToggle } from '@/components/manguito-theme/lib/directives'
 import { ref } from 'vue'
 
 const sidebarRef = ref<InstanceType<typeof Sidebar>>()
@@ -10,7 +11,7 @@ const openSidebar = () => {
 
 <template>
   <section class="container">
-    <div class="flex justify-center gap-xs my-md">
+    <div class="gap-xs my-md flex justify-center">
       <button class="btn btn-success" v-toggle:sidebar-default>
         Sidebar Default Header
       </button>
@@ -79,7 +80,7 @@ const openSidebar = () => {
       ultricies mauris. Donec quis luctus tortor. Cras eu pretium arcu. Cras ut
       turpis eros. Mauris venenatis eros diam.
     </p>
-    <div class="flex justify-center my-sm">
+    <div class="my-sm flex justify-center">
       <button @click="openSidebar" class="btn btn-danger btn-progress">
         <span> Trigger through ref </span>
       </button>
@@ -121,13 +122,13 @@ const openSidebar = () => {
     </sidebar>
     <sidebar id="sidebar-left" class-name="bg-light-1 px-xs overflow-scroll">
       <template #header="{ close }">
-        <div class="flex justify-end pb-md pt-xs bg-light-1">
+        <div class="pb-md pt-xs bg-light-1 flex justify-end">
           <button @click="close">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="1em"
               viewBox="0 0 384 512"
-              class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 transition-colors duration-300 ease-linear h-sm"
+              class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 h-sm transition-colors duration-300 ease-linear"
             >
               <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
               <path
@@ -187,13 +188,13 @@ const openSidebar = () => {
       class-name="bg-warning p-xs"
     >
       <template #header="{ close }">
-        <div class="flex justify-start mb-md">
+        <div class="mb-md flex justify-start">
           <button @click="close">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="1em"
               viewBox="0 0 384 512"
-              class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 transition-colors duration-300 ease-linear h-sm"
+              class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 h-sm transition-colors duration-300 ease-linear"
             >
               <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
               <path

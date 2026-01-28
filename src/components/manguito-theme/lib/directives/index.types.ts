@@ -1,5 +1,5 @@
 import type { DirectiveBinding } from 'vue'
-import type { ColorPalette } from '..'
+import type { ColorPalette } from '../theme/static/theme.types'
 
 // click outside
 /**

@@ -6,7 +6,8 @@ import type {
   HeadingSize,
   OpacityRange,
 } from '@bobbykim/manguito-theme'
-import generateClass, { getGlassmorphismClass } from '@bobbykim/manguito-theme'
+import generateClass from '@bobbykim/manguito-theme'
+import { getGlassmorphismClass } from '@bobbykim/manguito-theme/util'
 import { computed } from 'vue'
 import type { CardClickEvent } from '../common/index.types'
 

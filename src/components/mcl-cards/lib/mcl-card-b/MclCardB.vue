@@ -5,8 +5,8 @@ import type {
   HeadingSize,
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
-import type { CardClickEvent } from '../common/index.types'
 import { computed } from 'vue'
+import type { CardClickEvent } from '../common/index.types'
 
 const props = withDefaults(
   defineProps<{
@@ -33,7 +33,7 @@ const props = withDefaults(
     ctaLink: '#',
     ctaTarget: '_self',
     rounded: false,
-  }
+  },
 )
 
 const slots = defineSlots<{
@@ -94,16 +94,16 @@ const handleCardClick = (e: Event): void => {
 
 <template>
   <div
-    class="relative max-w-[450px] sm:max-w-[350px] w-full xs:w-auto flex-grow flex-shrink-0 cursor-pointer overflow-hidden border"
+    class="max-w-112.5 sm:max-w-87.5 xs:w-auto relative w-full shrink-0 grow cursor-pointer overflow-hidden border"
     :class="borderClass"
   >
     <a :href="ctaLink" :target="ctaTarget" @click="handleCardClick($event)">
       <div
-        class="absolute z-[15] flex flex-col justify-end items-start inset-0 p-xs [@media(hover:hover)]:opacity-0 hover:opacity-100 peer transition-opacity duration-200"
+        class="z-15 p-xs peer absolute inset-0 flex flex-col items-start justify-end transition-opacity duration-200 hover:opacity-100 [@media(hover:hover)]:opacity-0"
       >
         <h3
           v-html="title"
-          class="inline-block px-xs py-2xs mb-2xs pointer-events-none tracking-wide"
+          class="px-xs py-2xs mb-2xs pointer-events-none inline-block tracking-wide"
           :class="titleClass"
         ></h3>
         <slot></slot>
@@ -111,7 +111,7 @@ const handleCardClick = (e: Event): void => {
       <img
         :src="imageSource"
         :alt="imageAlt"
-        class="relative h-full w-full z-10 object-cover object-center aspect-[3/4] transition-all duration-200"
+        class="aspect-3/4 relative z-10 h-full w-full object-cover object-center transition-all duration-200"
         :class="hoverEffect"
       />
     </a>

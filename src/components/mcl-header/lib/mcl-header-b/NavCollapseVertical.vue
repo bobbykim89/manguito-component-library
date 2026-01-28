@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass, { Collapse, vCollapse } from '@bobbykim/manguito-theme'
+import generateClass, { Collapse } from '@bobbykim/manguito-theme'
+import { vCollapse } from '@bobbykim/manguito-theme/directives'
 import { computed, ref } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 type NavLocationType = 'desktop' | 'mobile'
@@ -24,7 +25,7 @@ const props = withDefaults(
     dHl: true,
     hlColor: 'primary',
     asLink: true,
-  }
+  },
 )
 const toggle = ref<boolean>(false)
 const collapseRef = ref<InstanceType<typeof Collapse>>()
@@ -109,10 +110,10 @@ const childItemColorClass = computed<string>(() => {
     textSize === 'xl'
       ? 'lg'
       : textSize === 'lg'
-      ? 'md'
-      : textSize === 'md'
-      ? 'sm'
-      : 'xs'
+        ? 'md'
+        : textSize === 'md'
+          ? 'sm'
+          : 'xs'
   const classArray: string[] = [
     generateClass('TEXTCOLOR', textColor),
     generateClass('BODYTEXT', childBodyText),
@@ -158,11 +159,11 @@ defineExpose({
   <div>
     <button
       v-collapse:[getNavId]
-      class="px-xs py-2xs relative text-center block w-full before:absolute transition-colors duration-300 ease-linear"
+      class="px-xs py-2xs relative block w-full text-center transition-colors duration-300 ease-linear before:absolute"
       @click="handleCollapseLabelClick($event, menuItem.title)"
       :class="[colorClass]"
     >
-      <div class="relative flex gap-2 items-center justify-center">
+      <div class="relative flex items-center justify-center gap-2">
         <span>{{ menuItem.title }}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -197,7 +198,7 @@ defineExpose({
             :href="item.url"
             :target="item.target"
             @click="handleChildClick($event, item)"
-            class="relative before:absolute w-full px-2xs py-3xs block overflow-x-hidden transition-colors duration-300 ease-linear"
+            class="px-2xs py-3xs relative block w-full overflow-x-hidden transition-colors duration-300 ease-linear before:absolute"
             :class="[childItemColorClass]"
           >
             <span class="relative">
