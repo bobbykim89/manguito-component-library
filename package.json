@@ -20,7 +20,8 @@
     "package:build": "lerna run build",
     "package:clear": "lerna clean",
     "package:version": "pnpm lerna version --no-private",
-    "package:publish": "lerna run build && lerna publish from-git --no-private"
+    "package:publish": "lerna run build && lerna publish from-git --no-private --access public",
+    "package:publish:from-package": "lerna run build && lerna publish from-package --no-private"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "3.2.2",
