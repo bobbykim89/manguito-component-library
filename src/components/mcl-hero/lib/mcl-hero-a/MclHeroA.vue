@@ -44,7 +44,7 @@ const props = withDefaults(
     mobileImageBlur: false,
     displayFilter: true,
     filterOpacity: 30,
-  }
+  },
 )
 
 const getBgImage = (img: string) => {
@@ -71,7 +71,7 @@ const filterClass = computed<string>(() => {
 const getTitleClass = (
   level: HeadingLevel,
   size: HeadingSize,
-  color: ColorPalette
+  color: ColorPalette,
 ): string => {
   /**
    * @summary a function to set heading class for title/subtitle
@@ -95,17 +95,17 @@ const getTitleClass = (
 
 <template>
   <section
-    class="overflow-hidden w-full"
+    class="w-full overflow-hidden"
     :class="generateClass('BGCOLOR', bgColor)"
   >
     <div class="grid lg:grid-cols-2">
       <div
-        class="relative px-xs md:px-md xl:px-lg xl:pl-[18%] flex flex-col justify-end lg:justify-center min-h-[60vh] md:min-h-[420px]"
+        class="px-xs md:px-md xl:px-lg md:min-h-105 relative flex min-h-[60vh] flex-col justify-end lg:justify-center xl:pl-[18%]"
         :class="{ 'lg:order-2': imgPosition === 'left' }"
       >
         <!-- display on mobile -->
         <div
-          class="lg:hidden absolute inset-0 bg-no-repeat bg-cover bg-top"
+          class="absolute inset-0 bg-cover bg-top bg-no-repeat lg:hidden"
           :style="getBgImage(imageSource)"
           :class="{ 'blur-sm': mobileImageBlur }"
         >
@@ -116,17 +116,17 @@ const getTitleClass = (
           ></div>
         </div>
         <div
-          class="relative py-md lg:py-xl px-0"
+          class="py-md lg:py-xl relative px-0"
           :class="[imgPosition === 'right' ? 'lg:pl-md' : 'lg:pr-md']"
         >
           <div
-            class="relative mb-xs md:mb-sm lg:mb-md ml-xs md:ml-0"
+            class="mb-xs md:mb-sm lg:mb-md ml-xs relative md:ml-0"
             :class="{ 'pl-xs': displayHighlight }"
           >
             <!-- highlight -->
             <div
               v-if="displayHighlight"
-              class="absolute w-md bg-opacity-60 left-0 h-full"
+              class="w-md absolute left-0 h-full bg-opacity-60"
               :class="generateClass('BGCOLOR', highlightColor)"
             ></div>
             <!-- title block -->
@@ -158,13 +158,13 @@ const getTitleClass = (
         </div>
       </div>
       <div
-        class="hidden lg:block relative bg-no-repeat bg-cover bg-top lg:min-h-[512px] xl:min-h-[80vh]"
+        class="lg:min-h-128 relative hidden bg-cover bg-top bg-no-repeat lg:block xl:min-h-[80vh]"
         :class="{ 'lg:order-1': imgPosition === 'left' }"
         :style="getBgImage(imageSource)"
       >
         <svg
           v-if="imgPosition === 'right'"
-          class="hidden lg:block absolute left-0 inset-y-0 h-full w-3xl"
+          class="w-3xl absolute inset-y-0 left-0 hidden h-full lg:block"
           :class="generateClass('SVGFILL', bgColor)"
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
@@ -174,7 +174,7 @@ const getTitleClass = (
         </svg>
         <svg
           v-else
-          class="hidden lg:block absolute right-0 inset-y-0 h-full w-3xl"
+          class="w-3xl absolute inset-y-0 right-0 hidden h-full lg:block"
           :class="generateClass('SVGFILL', bgColor)"
           viewBox="0 0 100 100"
           preserveAspectRatio="none"

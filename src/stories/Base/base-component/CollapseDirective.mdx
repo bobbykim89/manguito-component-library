@@ -3,9 +3,7 @@ import * as Stories from './directives/collapse.stories'
 
 <Meta of={Stories} />
 
-# Collapse Directive (Internal)
-
-> **Note**: This directive is primarily used internally by Collapsible and Accordion components. It works in conjunction with the `observeVisibleAttr` composable for reactive state management.
+# Collapse Directive
 
 A Vue 3 directive that handles collapsible content with support for both independent collapsibles and accordion groups (where only one item can be open at a time).
 
@@ -100,7 +98,8 @@ The mode is determined by the presence of an `accordion` attribute on the target
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { vCollapse, observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
+import { vCollapse } from '@bobbykim/manguito-theme/directives'
 
 const props = defineProps({
   contentId: {
@@ -172,7 +171,8 @@ observeVisibleAttr(contentRef, (visible) => {
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { vCollapse, observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
+import { vCollapse } from '@bobbykim/manguito-theme/directives'
 
 interface AccordionItem {
   id: string
@@ -232,7 +232,7 @@ The `observeVisibleAttr` composable watches for changes to the `visible` attribu
 
 ```typescript
 import { ref } from 'vue'
-import { observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
 
 const elementRef = ref<HTMLElement>()
 
@@ -251,7 +251,8 @@ observer?.stop()
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { vCollapse, observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
+import { vCollapse } from '@bobbykim/manguito-theme/directives'
 
 const props = defineProps({
   contentId: {
@@ -363,7 +364,8 @@ Click Item A (already open):
 ```vue
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { vCollapse, observeVisibleAttr } from '@bobbykim/manguito-theme'
+import { observeVisibleAttr } from '@bobbykim/manguito-theme/composable'
+import { vCollapse } from '@bobbykim/manguito-theme/directives'
 
 interface FAQ {
   id: string

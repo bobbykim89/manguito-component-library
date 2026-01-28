@@ -13,7 +13,7 @@ export default defineConfig({
         return outputChunk.fileName.includes('mcl-collapse')
       },
     }),
-    dts({ rollupTypes: true }),
+    dts({ rollupTypes: true, insertTypesEntry: true }),
   ],
   build: {
     lib: {

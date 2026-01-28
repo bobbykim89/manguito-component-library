@@ -31,7 +31,22 @@
       "import": "./dist/core.js",
       "require": "./dist/core.cjs"
     },
-    "./mcl-theme-v4.css": "./dist/mcl-theme-v4.css"
+    "./mcl-theme-v4.css": "./dist/mcl-theme-v4.css",
+    "./directives": {
+      "types": "./dist/directives.d.ts",
+      "import": "./dist/directives.js",
+      "require": "./dist/directives.cjs"
+    },
+    "./util": {
+      "types": "./dist/util.d.ts",
+      "import": "./dist/util.js",
+      "require": "./dist/util.cjs"
+    },
+    "./composable": {
+      "types": "./dist/composable.d.ts",
+      "import": "./dist/composable.js",
+      "require": "./dist/composable.cjs"
+    }
   },
   "scripts": {
     "build": "vite build && cp lib/style/mcl-theme-v4.css dist/mcl-theme-v4.css"

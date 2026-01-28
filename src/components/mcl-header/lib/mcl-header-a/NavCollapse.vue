@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass, { Collapse, vCollapse } from '@bobbykim/manguito-theme'
+import generateClass, { Collapse } from '@bobbykim/manguito-theme'
+import { vCollapse } from '@bobbykim/manguito-theme/directives'
 import { computed, ref } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 
@@ -27,7 +28,7 @@ const props = withDefaults(
     displayHighlight: true,
     highlightColor: 'primary',
     asLink: true,
-  }
+  },
 )
 
 const emit = defineEmits<{
@@ -61,7 +62,7 @@ const navItemClick = (e: Event, item: MenuItemType) => {
 const getMenuItemClass = (
   size: BodyText,
   color: ColorPalette,
-  bold: boolean
+  bold: boolean,
 ): string => {
   /**
    * @param {BodyText} size - menuTextSize
@@ -80,10 +81,10 @@ const getMenuItemClass = (
 </script>
 
 <template>
-  <div class="flex flex-col w-full">
+  <div class="flex w-full flex-col">
     <div class="self-center">
       <button
-        class="tracking-wider align-middle outline-none nav__text flex items-center gap-3xs"
+        class="nav__text gap-3xs flex items-center align-middle tracking-wider outline-none"
         :class="getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)"
         v-collapse:[handleNavId]
         @click="handleCollapseLabelClick($event, navItem.title)"
@@ -108,7 +109,7 @@ const getMenuItemClass = (
       </button>
       <div
         v-if="displayHighlight"
-        class="relative -top-[2px] h-[6px] nav__decorator"
+        class="nav__decorator relative -top-0.5 h-1.5"
         :class="generateClass('BEFOREBG', highlightColor)"
       ></div>
     </div>
@@ -119,10 +120,10 @@ const getMenuItemClass = (
       @open="toggleAction"
       @close="toggleAction"
     >
-      <div class="relative pt-2xs">
+      <div class="pt-2xs relative">
         <div
           v-if="displayHighlight"
-          class="absolute w-md bg-opacity-25 -left-4 h-full"
+          class="w-md absolute -left-4 h-full bg-opacity-25"
           :class="generateClass('BGCOLOR', highlightColor)"
         ></div>
         <div class="relative flex flex-col">
@@ -130,7 +131,7 @@ const getMenuItemClass = (
             v-for="(item, idx) in navItem.children"
             :href="item.url"
             :target="item.target"
-            class="w-full pb-2xs last:pb-0"
+            class="pb-2xs w-full last:pb-0"
             :key="idx"
             :class="[
               generateClass('TEXTCOLOR', menuTextColor),

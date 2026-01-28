@@ -49,7 +49,6 @@ const createToggleHandler = (
  * <a href="#mySidebar" v-toggle>Toggle Sidebar</a>
  * <aside id="mySidebar" visible="false">Sidebar content</aside>
  *
- * @internal
  */
 export const vToggle: Directive<ToggleElement> = {
   mounted(el, binding) {

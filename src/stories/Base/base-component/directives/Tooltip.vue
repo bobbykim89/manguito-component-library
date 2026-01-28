@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { vTooltip } from '@/components/manguito-theme/lib'
+import { vTooltip } from '@/components/manguito-theme/lib/directives'
 </script>
 
 <template>

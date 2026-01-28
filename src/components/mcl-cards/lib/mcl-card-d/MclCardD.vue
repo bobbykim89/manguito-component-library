@@ -188,7 +188,7 @@ const handleCardClick = (e: Event) => {
 
 <template>
   <div
-    class="card xs:w-auto w-full max-w-[450px] flex-shrink-0 flex-grow overflow-hidden rounded-md border from-20% sm:max-w-[350px]"
+    class="card xs:w-auto max-w-112.5 sm:max-w-87.5 w-full shrink-0 grow overflow-hidden rounded-md border from-20%"
     :class="gradientClass"
     :style="borderVariable"
   >
@@ -196,7 +196,7 @@ const handleCardClick = (e: Event) => {
       <img
         v-if="displayImage"
         :src="imageSource"
-        class="max-h-[200px] min-w-full object-cover object-top"
+        class="max-h-50 min-w-full object-cover object-top"
         :alt="imageAlt"
       />
       <div class="p-xs" :class="generateClass('BGCOLOR', bgColor)">

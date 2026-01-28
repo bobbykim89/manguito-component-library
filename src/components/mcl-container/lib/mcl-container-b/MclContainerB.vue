@@ -5,8 +5,8 @@ import type {
   HeadingSize,
 } from '@bobbykim/manguito-theme'
 import generateClass from '@bobbykim/manguito-theme'
-import { computed, ref } from 'vue'
 import { useElementSize } from '@vueuse/core'
+import { computed, ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -25,7 +25,7 @@ const props = withDefaults(
     titleLevel: 'h2',
     titleSize: 'md',
     titleColor: 'dark-3',
-  }
+  },
 )
 
 const slots = defineSlots<{
@@ -63,12 +63,12 @@ const parallaxImage = computed(() => {
     <div :class="[generateClass('BGCOLOR', sectionBgColor), 'space-hts']"></div>
     <div class="relative">
       <div
-        class="absolute bg-fixed bg-cover bg-top inset-0 bg-no-repeat bg-image"
+        class="bg-image absolute inset-0 bg-cover bg-fixed bg-top bg-no-repeat"
         role="img"
         :aria-label="imageAlt"
       ></div>
       <div
-        class="container relative z-[10] -translate-y-1/2 px-xs max-w-[1140px]"
+        class="px-xs max-w-285 container relative z-10 -translate-y-1/2"
         ref="mainContentElem"
       >
         <div

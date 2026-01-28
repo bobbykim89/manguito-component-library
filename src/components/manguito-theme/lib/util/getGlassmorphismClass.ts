@@ -1,4 +1,4 @@
-import { generateClass } from '../theme/index'
+import { generateClass } from '../theme'
 import type {
   BodyText,
   ColorPalette,
