@@ -26,7 +26,7 @@ const props = withDefaults(
     displayHighlight: true,
     highlightColor: 'primary',
     asLink: true,
-  }
+  },
 )
 
 const emit = defineEmits<{
@@ -39,7 +39,7 @@ const navItemRef = ref<HTMLButtonElement[]>()
 const getMenuItemClass = (
   size: BodyText,
   color: ColorPalette,
-  bold: boolean
+  bold: boolean,
 ): string => {
   /**
    * @param {BodyText} size - menuTextSize
@@ -87,11 +87,11 @@ const navItemClick = (e: Event, item: MenuItemType) => {
       <template #toggler="{ toggle, dropdownState }">
         <div>
           <button
-            class="tracking-wider align-middle outline-none nav__text flex items-center gap-3xs"
+            class="nav__text gap-3xs flex items-center align-middle tracking-wider outline-none"
             :class="getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)"
             @click="
-              toggle($event),
-                dropdownButtonClick($event, navItem.title, dropdownState)
+              (toggle($event),
+              dropdownButtonClick($event, navItem.title, dropdownState))
             "
           >
             <span>
@@ -114,7 +114,7 @@ const navItemClick = (e: Event, item: MenuItemType) => {
           </button>
           <div
             v-if="displayHighlight"
-            class="relative -top-[2px] h-[6px] nav__decorator"
+            class="nav__decorator relative -top-0.5 h-1.5"
             :class="generateClass('BEFOREBG', highlightColor)"
           ></div>
         </div>
@@ -129,7 +129,7 @@ const navItemClick = (e: Event, item: MenuItemType) => {
           :target="item.target"
           :key="idx"
           ref="navItemRef"
-          class="px-xs py-2xs block w-full hover:bg-opacity-50 focus:bg-opacity-50 transition-all duration-200 ease-linear"
+          class="px-xs py-2xs block w-full transition-all duration-200 ease-linear hover:bg-opacity-50 focus:bg-opacity-50"
           :class="[
             generateClass('BGCOLOR', bgColor),
             generateClass('HVBGCOLOR', highlightColor),
@@ -137,7 +137,7 @@ const navItemClick = (e: Event, item: MenuItemType) => {
             generateClass('TEXTCOLOR', menuTextColor),
             generateClass('BODYTEXT', menuTextSize),
           ]"
-          @click="itemClick(), navItemClick($event, item)"
+          @click="(itemClick(), navItemClick($event, item))"
         >
           {{ item.title }}
         </a>

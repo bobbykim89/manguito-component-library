@@ -13,12 +13,19 @@ export default defineConfig({
         return outputChunk.fileName.includes('core')
       },
     }),
-    dts({ rollupTypes: true, exclude: ['**/*.css'] }),
+    dts({
+      rollupTypes: true,
+      include: ['lib/**/*'],
+      exclude: ['**/*.css'],
+    }),
   ],
   build: {
     lib: {
       entry: {
         core: resolve(__dirname, 'lib/index.ts'),
+        directives: resolve(__dirname, 'lib/directives/index.ts'),
+        util: resolve(__dirname, 'lib/util/index.ts'),
+        composable: resolve(__dirname, 'lib/composables/index.ts'),
       },
       formats: ['es', 'cjs'],
     },

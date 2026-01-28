@@ -28,7 +28,7 @@ const props = withDefaults(
     highlightOpacity: 80,
     displayTitle: false,
     cardColor: 'primary',
-  }
+  },
 )
 
 const slots = defineSlots<{
@@ -68,8 +68,8 @@ const titleClass = computed<string>(() => {
   ]
   if (displayHighlight) {
     classArray.push('px-xs py-2xs mb-2xs rounded')
-    classArray.push(generateClass('BGCOLOR', highlightColor)),
-      classArray.push(generateClass('BGOPACITY', highlightOpacity))
+    ;(classArray.push(generateClass('BGCOLOR', highlightColor)),
+      classArray.push(generateClass('BGOPACITY', highlightOpacity)))
   }
   return classArray.join(' ')
 })
@@ -84,7 +84,7 @@ const handleCardClick = (e: Event) => {
 
 <template>
   <div
-    class="relative aspect-square card transition duration-[1600ms] max-h-[400px] overflow-hidden"
+    class="card duration-1600 max-h-100 relative aspect-square overflow-hidden transition"
     :class="cardClass"
     @click="handleCardClick"
   >
@@ -93,13 +93,13 @@ const handleCardClick = (e: Event) => {
       :alt="imageAlt"
       :class="[
         cardFlipped ? 'opacity-100' : 'opacity-0',
-        'absolute w-full h-full object-cover object-center aspect-square transition-opacity delay-500 duration-[800ms]',
+        'duration-800 absolute aspect-square h-full w-full object-cover object-center transition-opacity delay-500',
       ]"
     />
     <div
       :class="[
         cardFlipped ? 'cursor-pointer opacity-100' : 'opacity-0',
-        'relative flex flex-col justify-end p-sm h-full transition delay-500 duration-[800ms]',
+        'p-sm duration-800 relative flex h-full flex-col justify-end transition delay-500',
       ]"
     >
       <h3 v-if="displayTitle" class="relative self-start" :class="titleClass">

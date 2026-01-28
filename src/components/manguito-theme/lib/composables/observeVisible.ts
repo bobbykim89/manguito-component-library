@@ -47,7 +47,6 @@ const isVisibleAttributeChange = (mutation: MutationRecord): boolean => {
  * </template>
  * ```
  *
- * @internal
  */
 
 export const observeVisibleAttr = (

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass, { vClickOutside } from '@bobbykim/manguito-theme'
+import generateClass from '@bobbykim/manguito-theme'
+import { vClickOutside } from '@bobbykim/manguito-theme/directives'
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
 import { useResizeObserver } from '@vueuse/core'
 import { type ComponentPublicInstance, computed, ref, watch } from 'vue'
@@ -38,7 +39,7 @@ const props = withDefaults(
     displayShadow: true,
     required: false,
     invalidFeedback: 'No match.',
-  }
+  },
 )
 
 const slots = defineSlots<{
@@ -48,7 +49,7 @@ const slots = defineSlots<{
     activeIndex: number
     setRef: (
       el: Element | ComponentPublicInstance | null,
-      index: number
+      index: number,
     ) => void
     hover: (index: number) => void
   }): any
@@ -69,7 +70,7 @@ const componentRef = ref<HTMLElement>()
 const inputBox = ref<HTMLInputElement>()
 const dropdownRef = ref<HTMLElement>()
 const listItemsRef = ref<Array<Element | ComponentPublicInstance | null | []>>(
-  []
+  [],
 )
 const selectedItemRef = ref<HTMLElement | null>(null)
 const optionsWidth = ref<number>()
@@ -117,7 +118,7 @@ const clearInput = (e: Event) => {
 
 const setItemRef = (
   el: Element | ComponentPublicInstance | null,
-  idx: number
+  idx: number,
 ) => {
   listItemsRef.value[idx] = el
 }
@@ -300,7 +301,7 @@ watch(activeItemIdx, () => {
     class="relative"
   >
     <div
-      class="p-2xs flex relative gap-3xs"
+      class="p-2xs gap-3xs relative flex"
       :class="[
         !displayHighlight &&
           inputFocus &&
@@ -322,7 +323,7 @@ watch(activeItemIdx, () => {
         @focus="setInputFocus"
       />
       <div
-        class="flex items-center px-3xs"
+        class="px-3xs flex items-center"
         :class="[
           selectedValue === '' ? 'hidden cursor-text' : 'block cursor-pointer',
         ]"
@@ -340,7 +341,7 @@ watch(activeItemIdx, () => {
           />
         </svg>
       </div>
-      <div class="flex items-center px-3xs" @click="handleToggle">
+      <div class="px-3xs flex items-center" @click="handleToggle">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 320 512"
@@ -360,7 +361,7 @@ watch(activeItemIdx, () => {
     </div>
     <div
       v-if="displayHighlight"
-      class="relative h-3xs overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-full before:w-0 before:transition-[width] before:duration-300 before:ease-linear -top-1"
+      class="h-3xs relative -top-1 overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-full before:w-0 before:transition-[width] before:duration-300 before:ease-linear"
       :class="[inputFocus ? 'before:w-full' : 'before:w-0', getHighlightClass]"
     ></div>
     <Transition
@@ -370,7 +371,7 @@ watch(activeItemIdx, () => {
     >
       <ul
         :class="[optionsBlockClass]"
-        class="max-h-[200px] overflow-y-auto border-2"
+        class="max-h-50 overflow-y-auto border-2"
         :style="{ ...handleOptionsWidth, ...floatingStyles }"
         role="listbox"
         ref="dropdownRef"
@@ -421,7 +422,9 @@ watch(activeItemIdx, () => {
 .options-enter-active,
 .options-leave-active {
   opacity: 1;
-  transition: opacity 0.3s linear, transform 0.3s linear;
+  transition:
+    opacity 0.3s linear,
+    transform 0.3s linear;
 }
 .options-enter-from,
 .options-leave-to {

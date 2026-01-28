@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, inject } from 'vue'
+import { computed, inject, ref } from 'vue'
 import {
   carouselInjectionKey,
   type CarouselInjectionType,
@@ -13,11 +13,11 @@ const props = withDefaults(
   }>(),
   {
     slideClass: '',
-  }
+  },
 )
 
 const { activeIdx, setSlide } = inject(
-  carouselInjectionKey
+  carouselInjectionKey,
 ) as CarouselInjectionType
 const slideRef = ref<HTMLElement | null>(null)
 

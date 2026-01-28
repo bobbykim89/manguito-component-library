@@ -97,7 +97,6 @@ const createCollapseHandler = (
  * <button v-collapse:item2>Item 2</button>
  * <div id="item2" visible="false" accordion="myAccordion">Content 2</div>
  *
- * @internal
  */
 export const vCollapse: Directive<CollapseElement> = {
   mounted(el, binding) {
