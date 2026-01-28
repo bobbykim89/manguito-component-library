@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.8](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-footer@0.9.7...@bobbykim/mcl-footer@0.9.8) (2026-01-28)
+
+**Note:** Version bump only for package @bobbykim/mcl-footer
+
 ## [0.9.7](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-footer@0.9.6...@bobbykim/mcl-footer@0.9.7) (2025-12-08)
 
 **Note:** Version bump only for package @bobbykim/mcl-footer

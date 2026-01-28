@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.28.2](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.28.1...@bobbykim/manguito-theme@0.28.2) (2026-01-28)
+
+### Bug Fixes
+
+- manguito theme restructure, fix missing declarations error ([0bda691](https://github.com/bobbykim89/manguito-component-library/commit/0bda691d5625b3086f9f9d21ee2caa705ca31ac9))
+
 ## [0.28.1](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.28.0...@bobbykim/manguito-theme@0.28.1) (2025-12-08)
 
 ### Bug Fixes
