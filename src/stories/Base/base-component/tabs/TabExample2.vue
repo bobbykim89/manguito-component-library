@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import {
+  Collapse,
   TabContainer,
   TabContent,
-  vCollapse,
-  Collapse,
 } from '@/components/manguito-theme/lib'
+import { vCollapse } from '@/components/manguito-theme/lib/directives'
 import {
   MclFormGroup,
   MclInputText,
   MclSelect,
 } from '@/components/mcl-forms/lib'
+import { ref } from 'vue'
 
 const collapseContent = [
   {
@@ -77,7 +77,7 @@ const handleFormSubmit = () => {
 </script>
 
 <template>
-  <div class="container bg-light-1 px-xs">
+  <div class="bg-light-1 px-xs container">
     <TabContainer
       :body-class="['grid md:grid-cols-5 gap-sm py-lg md:py-2xl']"
       :btn-container-class="['border-b-2 md:border-b-0 border-b-warning']"
@@ -91,13 +91,13 @@ const handleFormSubmit = () => {
       ]"
     >
       <template #tab-button="{ update, activeTab }">
-        <div class="flex md:flex-col justify-start gap-[2px]">
+        <div class="flex justify-start gap-[2px] md:flex-col">
           <button
             role="tab"
             :tabindex="activeTab === 0 ? -1 : 0"
             aria-controls="tab-0"
             :aria-selected="activeTab === 0"
-            class="px-xs py-2xs bg-light-4 hover:bg-opacity-70 transition-all duration-300 font-bold rounded-tl-md md:rounded-t-md"
+            class="px-xs py-2xs bg-light-4 rounded-tl-md font-bold transition-all duration-300 hover:bg-opacity-70 md:rounded-t-md"
             @click="update(0)"
           >
             Tab 0
@@ -107,7 +107,7 @@ const handleFormSubmit = () => {
             :tabindex="activeTab === 1 ? -1 : 0"
             aria-controls="tab-1"
             :aria-selected="activeTab === 1"
-            class="px-xs py-2xs bg-light-4 hover:bg-opacity-70 transition-all duration-300 font-bold"
+            class="px-xs py-2xs bg-light-4 font-bold transition-all duration-300 hover:bg-opacity-70"
             @click="update(1)"
           >
             Tab 1
@@ -117,7 +117,7 @@ const handleFormSubmit = () => {
             :tabindex="activeTab === 2 ? -1 : 0"
             aria-controls="tab-2"
             :aria-selected="activeTab === 2"
-            class="px-xs py-2xs bg-light-4 hover:bg-opacity-70 transition-all duration-300 font-bold"
+            class="px-xs py-2xs bg-light-4 font-bold transition-all duration-300 hover:bg-opacity-70"
             @click="update(2)"
           >
             Tab 2
@@ -127,7 +127,7 @@ const handleFormSubmit = () => {
             :tabindex="activeTab === 3 ? -1 : 0"
             aria-controls="tab-3"
             :aria-selected="activeTab === 3"
-            class="px-xs py-2xs bg-light-4 hover:bg-opacity-70 transition-all duration-300 font-bold rounded-tr-md md:rounded-tr-none md:rounded-b-md"
+            class="px-xs py-2xs bg-light-4 rounded-tr-md font-bold transition-all duration-300 hover:bg-opacity-70 md:rounded-b-md md:rounded-tr-none"
             @click="update(3)"
           >
             Tab 3
@@ -140,7 +140,7 @@ const handleFormSubmit = () => {
             <img
               src="https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg"
               alt="picture of manguito"
-              class="w-3xl mx-auto rounded-md mb-sm"
+              class="w-3xl mb-sm mx-auto rounded-md"
             />
             <p class="px-xs md:px-md">
               Lorem ipsum, dolor sit amet consectetur adipisicing elit.
@@ -155,7 +155,7 @@ const handleFormSubmit = () => {
         </TabContent>
         <TabContent :tab-number="1" id="tab-1">
           <div>
-            <div class="p-2xs border-2 border-warning rounded-md bg-white">
+            <div class="p-2xs border-warning rounded-md border-2 bg-white">
               <div
                 v-for="(item, idx) in collapseContent"
                 class="mb-sm last:mb-0"
@@ -183,7 +183,7 @@ const handleFormSubmit = () => {
         </TabContent>
         <TabContent :tab-number="2" id="tab-2">
           <div>
-            <div class="p-xs md:p-sm rounded-md bg-light-3">
+            <div class="p-xs md:p-sm bg-light-3 rounded-md">
               <h3 class="h3-md mb-sm text-center">Submit Form</h3>
               <form @submit.prevent="handleFormSubmit" class="mx-auto">
                 <MclFormGroup label-for="bird" label="Favorite Bird">
@@ -213,7 +213,7 @@ const handleFormSubmit = () => {
           </div>
         </TabContent>
         <TabContent :tab-number="3" id="tab-3">
-          <div class="bg-info text-light-3 rounded-md p-xs">
+          <div class="bg-info text-light-3 p-xs rounded-md">
             <h3 class="h3-md mb-xs">Title text</h3>
             <p
               class="mb-xs"
