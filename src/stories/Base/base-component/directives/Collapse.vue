@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { observeVisibleAttr, vCollapse } from '@/components/manguito-theme/lib'
+import { observeVisibleAttr } from '@/components/manguito-theme/lib/composables'
+import { vCollapse } from '@/components/manguito-theme/lib/directives'
 import { onMounted, ref } from 'vue'
 
 interface FAQ {

@@ -10,7 +10,7 @@ A Vue 3 directive that detects clicks outside an element and triggers a callback
 ## Installation
 
 ```js
-import { vClickOutside } from '@bobbykim/manguito-theme'
+import { vClickOutside } from '@bobbykim/manguito-theme/directives'
 ```
 
 ## Basic Usage
@@ -20,7 +20,7 @@ import { vClickOutside } from '@bobbykim/manguito-theme'
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { vClickOutside } from '@bobbykim/manguito-theme'
+import { vClickOutside } from '@bobbykim/manguito-theme/directives'
 
 const isOpen = ref(false)
 
@@ -134,7 +134,7 @@ Listen to multiple event types simultaneously:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { vClickOutside } from '@bobbykim/manguito-theme'
+import { vClickOutside } from '@bobbykim/manguito-theme/directives'
 
 const isOpen = ref(false)
 
@@ -165,7 +165,7 @@ const toggleMenu = () => {
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { vClickOutside } from '@bobbykim/manguito-theme'
+import { vClickOutside } from '@bobbykim/manguito-theme/directives'
 
 const showModal = ref(false)
 
@@ -194,7 +194,7 @@ const closeModal = () => {
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { vClickOutside } from '@bobbykim/manguito-theme'
+import { vClickOutside } from '@bobbykim/manguito-theme/directives'
 
 const isOpen = ref(false)
 const searchQuery = ref('')

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { vClickOutside } from '@/components/manguito-theme/lib'
+import { vClickOutside } from '@/components/manguito-theme/lib/directives'
 import { ref } from 'vue'
 
 const showModal = ref<boolean>(false)
