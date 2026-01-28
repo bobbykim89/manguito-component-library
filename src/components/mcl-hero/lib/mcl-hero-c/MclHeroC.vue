@@ -39,7 +39,7 @@ const props = withDefaults(
     labelTextSize: 'md',
     labelTextColor: 'light-1',
     labelBgColor: 'dark-3',
-  }
+  },
 )
 const slots = defineSlots<{
   default: any
@@ -136,15 +136,15 @@ const gradientColorClass = computed<string>(() => {
 
 <template>
   <section
-    class="flex flex-col justify-evenly items-center relative section-bg"
+    class="section-bg relative flex flex-col items-center justify-evenly"
     :style="getBgImage(imageSource)"
   >
     <div
       v-if="displayGradient"
-      class="absolute bg-gradient-to-t inset-0 top-1/3 to-transparent"
+      class="bg-linear-to-t absolute inset-0 top-1/3 to-transparent"
       :class="gradientColorClass"
     ></div>
-    <div class="relative py-md px-sm md:py-lg md:px-md">
+    <div class="py-md px-sm md:py-lg md:px-md relative">
       <div v-if="displayLabel" class="mb-2xs">
         <span
           v-html="labelText"
@@ -154,7 +154,7 @@ const gradientColorClass = computed<string>(() => {
       </div>
       <component
         :is="titleLevel"
-        class="tracking-wide mb-2xs"
+        class="mb-2xs tracking-wide"
         :class="titleClass"
         v-html="title"
       ></component>
@@ -166,7 +166,7 @@ const gradientColorClass = computed<string>(() => {
     </div>
     <div
       v-if="slots.default"
-      class="px-sm md:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[40vw] 2xl:max-w-[35vw] relative"
+      class="px-sm relative md:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[40vw] 2xl:max-w-[35vw]"
     >
       <slot></slot>
     </div>

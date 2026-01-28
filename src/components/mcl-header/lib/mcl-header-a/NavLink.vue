@@ -20,7 +20,7 @@ const props = withDefaults(
     displayHighlight: true,
     highlightColor: 'primary',
     asLink: true,
-  }
+  },
 )
 
 const emit = defineEmits<{
@@ -30,7 +30,7 @@ const emit = defineEmits<{
 const getMenuItemClass = (
   size: BodyText,
   color: ColorPalette,
-  bold: boolean
+  bold: boolean,
 ): string => {
   /**
    * @param {BodyText} size - menuTextSize
@@ -59,13 +59,13 @@ const handleNavLinkClick = (e: Event, item: MenuItemType) => {
       :href="navItem.url"
       :target="navItem.target"
       v-html="navItem.title"
-      class="tracking-wider outline-none nav__text"
+      class="nav__text tracking-wider outline-none"
       :class="getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)"
       @click="handleNavLinkClick($event, navItem)"
     ></a>
     <div
       v-if="displayHighlight"
-      class="relative -top-[2px] h-[6px] nav__decorator"
+      class="nav__decorator relative -top-0.5 h-1.5"
       :class="generateClass('BEFOREBG', highlightColor)"
     ></div>
   </div>

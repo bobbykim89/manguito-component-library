@@ -29,7 +29,7 @@ const props = withDefaults(
     fullWidth: true,
     displayGradients: true,
     gradientColor: 'dark-3',
-  }
+  },
 )
 const getBgImage = (img: string) => {
   /**
@@ -122,27 +122,27 @@ const gradientColorClass = computed<string>(() => {
 
 <template>
   <section
-    class="relative bg-image-container flex flex-col justify-end"
+    class="bg-image-container relative flex flex-col justify-end"
     :class="sectionWidthClass"
     :style="getBgImage(imageSource)"
   >
     <div
       v-if="displayGradients"
-      class="absolute bg-gradient-to-t inset-0 top-1/3 to-transparent"
+      class="bg-linear-to-t absolute inset-0 top-1/3 to-transparent"
       :class="gradientColorClass"
     ></div>
-    <div class="relative h-full px-xs">
+    <div class="px-xs relative h-full">
       <div class="container">
         <div class="py-md lg:py-lg px-0">
           <component :is="titleLevel" :class="titleClass">
             <span
-              class="box-decoration-clone py-2xs"
+              class="py-2xs box-decoration-clone"
               :class="titleHighlightClass"
               v-html="title"
             >
             </span>
           </component>
-          <div class="hidden md:block md:mt-sm w-3/4">
+          <div class="md:mt-sm hidden w-3/4 md:block">
             <slot />
           </div>
         </div>
