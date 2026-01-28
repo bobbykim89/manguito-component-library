@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/mcl-footer",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "description": "a footer components built based on Manguito theme",
   "type": "module",
   "files": [

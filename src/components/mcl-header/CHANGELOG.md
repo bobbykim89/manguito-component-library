@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.7.8](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-header@0.7.7...@bobbykim/mcl-header@0.7.8) (2026-01-28)
+
+### Bug Fixes
+
+- manguito theme restructure, fix missing declarations error ([0bda691](https://github.com/bobbykim89/manguito-component-library/commit/0bda691d5625b3086f9f9d21ee2caa705ca31ac9))
+
 ## [0.7.7](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-header@0.7.6...@bobbykim/mcl-header@0.7.7) (2025-12-08)
 
 **Note:** Version bump only for package @bobbykim/mcl-header
