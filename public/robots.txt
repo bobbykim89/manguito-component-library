@@ -3,16 +3,24 @@ User-agent: Googlebot
 User-agent: Bingbot
 Allow: /
 
-# Block known AI scrapers
+# Allow known indexing workers
+User-agent: oai-searchbot
+User-agent: vercel-favicon-bot
+User-agent: yandexbot
+Allow: /
+
+# Block AI training scrapers
 User-agent: GPTBot
 User-agent: ChatGPT-User
-User-agent: CCBot
 User-agent: anthropic-ai
 User-agent: Claude-Web
+User-agent: CCBot
+User-agent: Google-Extended
 User-agent: Omgilibot
 User-agent: FacebookBot
+User-agent: Bytespider
 Disallow: /
 
-# Block everything else
+# Allow everything else
 User-agent: *
-Disallow: /
+Allow: /
