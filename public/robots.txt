@@ -1,0 +1,18 @@
+# Allow major search engines
+User-agent: Googlebot
+User-agent: Bingbot
+Allow: /
+
+# Block known AI scrapers
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: CCBot
+User-agent: anthropic-ai
+User-agent: Claude-Web
+User-agent: Omgilibot
+User-agent: FacebookBot
+Disallow: /
+
+# Block everything else
+User-agent: *
+Disallow: /
