@@ -70,6 +70,7 @@
 @property --mcl-depth-color {
   syntax: '<color>';
   inherits: false;
+  initial-value: white;
 }
 
 /* Base Styles - replaces addBase from your plugin */
@@ -123,29 +124,29 @@
     margin-right: auto;
     margin-left: auto;
   }
-  @media (min-width: var(--breakpoint-sm)) {
+  @media (min-width: theme(--breakpoint-sm)) {
     .container {
-      max-width: var(--breakpoint-sm);
+      max-width: theme(--breakpoint-sm);
     }
   }
-  @media (min-width: var(--breakpoint-md)) {
+  @media (min-width: theme(--breakpoint-md)) {
     .container {
-      max-width: var(--breakpoint-md);
+      max-width: theme(--breakpoint-md);
     }
   }
-  @media (min-width: var(--breakpoint-lg)) {
+  @media (min-width: theme(--breakpoint-lg)) {
     .container {
-      max-width: var(--breakpoint-lg);
+      max-width: theme(--breakpoint-lg);
     }
   }
-  @media (min-width: var(--breakpoint-xl)) {
+  @media (min-width: theme(--breakpoint-xl)) {
     .container {
-      max-width: var(--breakpoint-xl);
+      max-width: theme(--breakpoint-xl);
     }
   }
-  @media (min-width: var(--breakpoint-2xl)) {
+  @media (min-width: theme(--breakpoint-2xl)) {
     .container {
-      max-width: var(--breakpoint-2xl);
+      max-width: theme(--breakpoint-2xl);
     }
   }
   /* Heading size variants */
