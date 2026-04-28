@@ -12,6 +12,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
 
+    "rootDir": ".",
     "outDir": "dist",
     "declaration": true,
 
