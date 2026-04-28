@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.11.5](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-tabs@0.11.4...@bobbykim/mcl-tabs@0.11.5) (2026-04-28)
+
+### Bug Fixes
+
+- **manguito-theme,tsconfig:** fix tsconfig notation error, fix bugs main theme css file ([68f326d](https://github.com/bobbykim89/manguito-component-library/commit/68f326d329894e885a7614249db21e98432fd6e0))
+
 ## [0.11.4](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-tabs@0.11.3...@bobbykim/mcl-tabs@0.11.4) (2026-01-28)
 
 **Note:** Version bump only for package @bobbykim/mcl-tabs
