@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.8.9](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-hero@0.8.8...@bobbykim/mcl-hero@0.8.9) (2026-04-28)
+
+### Bug Fixes
+
+- **manguito-theme,tsconfig:** fix tsconfig notation error, fix bugs main theme css file ([68f326d](https://github.com/bobbykim89/manguito-component-library/commit/68f326d329894e885a7614249db21e98432fd6e0))
+
 ## [0.8.8](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-hero@0.8.7...@bobbykim/mcl-hero@0.8.8) (2026-01-28)
 
 ### Bug Fixes

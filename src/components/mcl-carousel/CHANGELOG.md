@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.9.5](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-carousel@0.9.4...@bobbykim/mcl-carousel@0.9.5) (2026-04-28)
+
+### Bug Fixes
+
+- **manguito-theme,tsconfig:** fix tsconfig notation error, fix bugs main theme css file ([68f326d](https://github.com/bobbykim89/manguito-component-library/commit/68f326d329894e885a7614249db21e98432fd6e0))
+
 ## [0.9.4](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/mcl-carousel@0.9.3...@bobbykim/mcl-carousel@0.9.4) (2026-01-28)
 
 ### Bug Fixes

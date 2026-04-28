@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [0.28.3](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.28.2...@bobbykim/manguito-theme@0.28.3) (2026-04-28)
+
+### Bug Fixes
+
+- **manguito-theme,tsconfig:** fix tsconfig notation error, fix bugs main theme css file ([68f326d](https://github.com/bobbykim89/manguito-component-library/commit/68f326d329894e885a7614249db21e98432fd6e0))
+
 ## [0.28.2](https://github.com/bobbykim89/manguito-component-library/compare/@bobbykim/manguito-theme@0.28.1...@bobbykim/manguito-theme@0.28.2) (2026-01-28)
 
 ### Bug Fixes
