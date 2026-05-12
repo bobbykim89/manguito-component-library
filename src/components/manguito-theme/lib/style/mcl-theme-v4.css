@@ -38,14 +38,6 @@
   --text-md: var(--mcl-text-size-md, 1rem); /* 16px */
   --text-lg: var(--mcl-text-size-lg, 1.125rem); /* 18px */
   --text-xl: var(--mcl-text-size-xl, 1.25rem); /* 20px */
-
-  /* Container breakpoints */
-  --breakpoint-*: initial;
-  --breakpoint-sm: 40rem; /* 640px */
-  --breakpoint-md: 48rem; /* 768px */
-  --breakpoint-lg: 64rem; /* 1024px */
-  --breakpoint-xl: 80rem; /* 1280px */
-  --breakpoint-2xl: 96rem; /* 1536px */
 }
 
 /* property for background opacity class which has been deprecated with tailwind v4 */
@@ -118,37 +110,6 @@
 }
 
 @layer components {
-  /* container class */
-  .container {
-    width: 100%;
-    margin-right: auto;
-    margin-left: auto;
-  }
-  @media (min-width: theme(--breakpoint-sm)) {
-    .container {
-      max-width: theme(--breakpoint-sm);
-    }
-  }
-  @media (min-width: theme(--breakpoint-md)) {
-    .container {
-      max-width: theme(--breakpoint-md);
-    }
-  }
-  @media (min-width: theme(--breakpoint-lg)) {
-    .container {
-      max-width: theme(--breakpoint-lg);
-    }
-  }
-  @media (min-width: theme(--breakpoint-xl)) {
-    .container {
-      max-width: theme(--breakpoint-xl);
-    }
-  }
-  @media (min-width: theme(--breakpoint-2xl)) {
-    .container {
-      max-width: theme(--breakpoint-2xl);
-    }
-  }
   /* Heading size variants */
   .h1-sm {
     font-size: 1.5rem; /* 24px */
@@ -405,7 +366,7 @@
 
   .btn.btn-progress.btn-progress-r::before {
     left: 100%;
-    transition: all 300ms linear;
+    transition: width 300ms linear, left 300ms linear;
   }
 
   .btn.btn-progress:hover,
@@ -486,7 +447,7 @@
     border-bottom-color: transparent;
   }
 
-  .tooltip-bottom {
+  .tooltip.tooltip-bottom {
     left: 50%;
     top: 110%;
     transform: translateX(-50%);
@@ -581,7 +542,7 @@
   --mcl-bg-opacity: calc(--value(integer) * 1%);
 }
 
-@utility bg-* {
+@utility mcl-bg-* {
   background-color: --alpha(--value(--color-*) / var(--mcl-bg-opacity));
 }
 
@@ -590,7 +551,7 @@
   --mcl-outline-opacity: calc(--value(integer) * 1%);
 }
 
-@utility outline-* {
+@utility mcl-outline-* {
   outline-color: --alpha(--value(--color-*) / var(--mcl-outline-opacity));
 }
 
@@ -603,8 +564,12 @@
   --mcl-gm-shadow: --value(integer);
 }
 
+@utility container {
+  margin-inline: auto;
+}
+
 /* Utility Classes - replaces addUtilities from your plugin */
-@layer utilities {
+@layer components {
   /* Tooltip color variants */
   /* primary */
   .tooltip.bg-primary::after {
