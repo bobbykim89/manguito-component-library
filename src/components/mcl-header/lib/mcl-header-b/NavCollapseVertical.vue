@@ -98,7 +98,7 @@ const collapseHighlightClass = computed<string>(() => {
     return ''
   }
   const classNames: string =
-    'before:absolute before:w-xs before:h-full before:bg-primary before:bg-opacity-70 '
+    'before:absolute before:w-xs before:h-full before:mcl-bg-primary before:bg-opacity-70 '
   const hlLocation: string =
     navLocation === 'desktop' ? 'before:left-0 ' : 'before:right-0 '
   classArray.push(classNames + hlLocation + generateClass('BEFOREBG', hlColor))
