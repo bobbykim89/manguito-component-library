@@ -94,7 +94,7 @@ const inputClass = computed(() => {
       :rounded="rounded"
     ></input-highlight>
     <div
-      class="peer-valid/validation:hidden peer-inavlid/validation:block ml-3xs"
+      class="peer-valid/validation:hidden peer-invalid/validation:block ml-3xs"
     >
       <slot name="invalid-feedback">
         <span class="text-xs text-danger">{{ invalidFeedback }}</span>
