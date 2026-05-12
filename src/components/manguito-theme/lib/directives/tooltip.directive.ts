@@ -91,10 +91,6 @@ const mountTooltip = (
     typeof binding.value === 'object' ? binding.value.className : undefined
   const tooltipDirection = getDirection(binding)
 
-  console.log(
-    `color: ${tooltipColor}, txt color: ${tooltipTextColor}, width: ${tooltipWidth}`,
-  )
-
   const vnode = createVNode(tooltip, {
     direction: tooltipDirection,
     title: tooltipText,

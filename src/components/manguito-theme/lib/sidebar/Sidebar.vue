@@ -17,7 +17,7 @@ const props = withDefaults(
     color?: ColorPalette
     backdropColor?: ColorPalette
     placement?: DirectionX
-    width?: string | number
+    width?: number
   }>(),
   {
     titleColor: 'dark-3',

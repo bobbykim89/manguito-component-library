@@ -16,7 +16,7 @@ const { height } = useWindowSize()
 const slots = defineSlots<{
   default(props: { itemClick: () => void }): any
 }>()
-const contentRef = ref<HTMLAreaElement>()
+const contentRef = ref<HTMLDivElement>()
 const { active, buttonHeight, closeDropdown } = inject(
   dropdownInjectionKey
 ) as DropdownInjectType
