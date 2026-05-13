@@ -21,6 +21,7 @@ const props = withDefaults(
     placeholder?: string
     displayShadow?: boolean
     required?: boolean
+    invalid?: boolean
     options: SelectOptions
     selectColor?: ColorPalette
     invalidFeedback?: string
@@ -38,6 +39,7 @@ const props = withDefaults(
     placeholder: '',
     displayShadow: true,
     required: false,
+    invalid: false,
     invalidFeedback: 'No match.',
   },
 )
@@ -247,6 +249,19 @@ const handleOptionsWidth = computed(() => {
   return { width: `${optionsWidth.value}px` }
 })
 
+const isOptionSelected = (option: string | SelectOptionType): boolean => {
+  if (model.value === null || model.value === '') return false
+  return typeof option === 'string'
+    ? option === model.value
+    : option.value === model.value
+}
+
+const activeDescendant = computed(() =>
+  inputFocus.value && filteredOptions.value.length > 0
+    ? `${props.id}-option-${activeItemIdx.value}`
+    : undefined,
+)
+
 const { floatingStyles } = useFloating(componentRef, dropdownRef, {
   whileElementsMounted: autoUpdate,
   strategy: 'absolute',
@@ -320,6 +335,9 @@ watch(activeItemIdx, () => {
         :placeholder="placeholder"
         aria-autocomplete="list"
         :aria-expanded="inputFocus"
+        :aria-controls="`${id}-listbox`"
+        :aria-activedescendant="activeDescendant"
+        :aria-invalid="invalid || undefined"
         @focus="setInputFocus"
       />
       <div
@@ -370,6 +388,7 @@ watch(activeItemIdx, () => {
       @enter="handleDropdownShown"
     >
       <ul
+        :id="`${id}-listbox`"
         :class="[optionsBlockClass]"
         class="max-h-50 overflow-y-auto border-2"
         :style="{ ...handleOptionsWidth, ...floatingStyles }"
@@ -389,8 +408,10 @@ watch(activeItemIdx, () => {
             <li
               v-for="(option, idx) in filteredOptions"
               :key="idx"
+              :id="`${id}-option-${idx}`"
               class="p-2xs cursor-pointer"
               role="option"
+              :aria-selected="isOptionSelected(option)"
               :class="[
                 activeItemIdx === idx &&
                   generateClass('BGCOLOR', highlightColor),
@@ -407,6 +428,7 @@ watch(activeItemIdx, () => {
           <slot name="no-match">
             <li
               class="p-2xs cursor-pointer"
+              aria-live="polite"
               :class="[generateClass('HVBGCOLOR', selectColor)]"
             >
               <span>{{ invalidFeedback }}</span>

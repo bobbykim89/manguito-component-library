@@ -106,18 +106,26 @@ watch(
     ]"
   >
     <div
-      class="py-xs px-sm cursor-pointer transition-[border] duration-500"
+      class="py-xs px-sm transition-[border] duration-500"
       :class="[
         toggle
           ? `border-b ${generateClass('BORDERB', borderColor)} ease-in`
           : 'ease-out',
         generateClass('BGCOLOR', bgColor),
       ]"
-      v-collapse:[collapseId]
     >
       <div class="flex items-center justify-between">
         <h3 :class="getTitleClass(titleSize, titleColor)">
-          {{ title }}
+          <button
+            type="button"
+            :id="`${collapseId}-trigger`"
+            :aria-expanded="toggle"
+            :aria-controls="collapseId"
+            v-collapse:[collapseId]
+            class="w-full cursor-pointer bg-transparent text-left"
+          >
+            {{ title }}
+          </button>
         </h3>
         <div @click.stop class="cursor-default" v-if="slots['tab']">
           <slot name="tab"></slot>
@@ -129,6 +137,8 @@ watch(
         :id="collapseId"
         :visible="visible"
         class-name="py-sm px-xs"
+        role="region"
+        :aria-labelledby="`${collapseId}-trigger`"
         @open="toggleAction"
         @close="toggleAction"
         :accordion="accordion"
@@ -137,6 +147,7 @@ watch(
       </collapse>
     </div>
     <div
+      aria-hidden="true"
       class="px-sm flex cursor-pointer items-center justify-center border-t py-1.5 transition-all duration-500"
       :class="[
         generateClass('BGCOLOR', bgColor),

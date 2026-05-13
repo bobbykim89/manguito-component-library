@@ -61,4 +61,5 @@ export type TooltipValueType = TooltipValueObjectType | string
 export interface TooltipElementType extends HTMLElement {
   __HandleTooltip: (binding: DirectiveBinding<TooltipValueType>) => void
   __UnmountTooltip: () => void
+  __TooltipId?: string
 }
