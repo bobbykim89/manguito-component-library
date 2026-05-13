@@ -141,6 +141,7 @@ const handleCheckboxLayout = computed<string>(() => {
       @change="handleChange"
     />
     <span
+      aria-hidden="true"
       class="relative border inline-block p-3xs hover:bg-opacity-60 peer-checked/input:hover:bg-opacity-60 before:opacity-0 peer-checked/input:before:opacity-100 before:absolute before:top-1/2 before:-translate-y-1/2 before:left-1/2 before:-translate-x-1/2 transition-colors duration-200 ease-linear before:transition-opacity before:duration-200 before:ease-linar"
       :class="[handleCheckboxLayout, handleInputSize]"
       @click="handleCheckboxClick"

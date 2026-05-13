@@ -83,6 +83,7 @@ const handleChange = (e: Event) => {
       @change="handleChange"
     />
     <span
+      aria-hidden="true"
       class="rounded-full inline-block relative before:absolute before:rounded-full before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2"
       :class="[getRadioSize, checkedRadioSize, getColorClass]"
       @click="radioClick"

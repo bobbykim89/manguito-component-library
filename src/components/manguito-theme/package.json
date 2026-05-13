@@ -55,6 +55,9 @@
   },
   "dependencies": {
     "@vueuse/core": "^12.0.0",
+    "@vueuse/integrations": "^14.3.0",
+    "focus-trap": "^8.2.0",
+    "isomorphic-dompurify": "^3.12.0",
     "vue": "^3.5.13"
   },
   "devDependencies": {

@@ -18,6 +18,7 @@ const props = withDefaults(
     type?: InputType
     displayShadow?: boolean
     required?: boolean
+    invalid?: boolean
     invalidFeedback?: string
     minLength?: number
     maxLength?: number
@@ -35,6 +36,7 @@ const props = withDefaults(
     type: 'text',
     displayShadow: true,
     required: false,
+    invalid: false,
   }
 )
 
@@ -84,6 +86,8 @@ const inputClass = computed(() => {
       v-model="model"
       :placeholder="placeholder"
       :required="required"
+      :aria-invalid="invalid || undefined"
+      :aria-describedby="invalid ? `${id}-error` : undefined"
       :minlength="minLength"
       :maxlength="maxLength"
       :pattern="pattern"
@@ -94,6 +98,8 @@ const inputClass = computed(() => {
       :rounded="rounded"
     ></input-highlight>
     <div
+      :id="`${id}-error`"
+      role="alert"
       class="peer-valid/validation:hidden peer-invalid/validation:block ml-3xs"
     >
       <slot name="invalid-feedback">
