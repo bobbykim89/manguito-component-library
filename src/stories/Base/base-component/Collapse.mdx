@@ -3,148 +3,145 @@ import * as Stories from './collapse/collapse.stories'
 
 <Meta of={Stories} />
 
-# Collapse component
+# Collapse
 
 Included in `@bobbykim/manguito-theme`
 
-## Usage
+An animated collapsible panel with height and opacity transitions. The component owns its open/close state internally — control it through a template ref or through an `AccordionGroup` context.
 
-```js
-<script lang="ts" setup>
-  import { Collapse } from '@bobbykim/manguito-theme'
-  import { vCollapse } from '@bobbykim/manguito-theme/directives'
-</script>
-
-<template>
-  <!-- single collapse component example -->
-  <div>
-    <!-- trigger collapse toggle  -->
-    <button v-collapse:collapse-component-id>{{Tab button name}}</button>
-    <button v-collapse:[when calling collapse-id dynamically]>
-      {{Tab button name}}
-    </button>
-    <!-- trigger by 'a' tag -->
-    <a href="#collapse-component-id" v-collapse>{{Tab button name here}}</a>
-    <collapse
-      id="collapse-component-id"
-      class-name="tailwind css class"
-      @open="$event"
-      @close="$event"
-    >
-      <div>
-        <!-- collapse content -->
-      </div>
-    </collapse>
-  </div>
-  <!-- accordion example -->
-  <div>
-    <button v-collapse:collapse-component-id-1>{{Tab button name}}</button>
-    <collapse id="collapse-component-id-1" accordion="my-accordion-group">
-      <div>
-        <!-- collapse content -->
-      </div>
-    </collapse>
-    <button v-collapse:collapse-component-id-2>{{Tab button name}}</button>
-    <collapse id="collapse-component-id-2" accordion="my-accordion-group">
-      <div>
-        <!-- collapse content -->
-      </div>
-    </collapse>
-    <button v-collapse:collapse-component-id-3>{{Tab button name}}</button>
-    <collapse id="collapse-component-id-3" accordion="my-accordion-group">
-      <div>
-        <!-- collapse content -->
-      </div>
-    </collapse>
-  </div>
-</template>
+```ts
+import { AccordionGroup, Collapse } from '@bobbykim/manguito-theme'
 ```
 
-### Example
+---
 
-<Canvas of={Stories.collapseExample} />
+## Usage
 
-### Trigger collapse through ref Example
+### Standalone
 
-```js
-<script lang="ts" setup>
-import { Collapse } from '@bobbykim/manguito-theme'
+Hold a template ref and call `toggle()`, `open()`, or `close()` directly.
+
+```vue
+<script setup lang="ts">
 import { ref } from 'vue'
+import { Collapse } from '@bobbykim/manguito-theme'
 
 const collapseRef = ref<InstanceType<typeof Collapse>>()
-
-const handleCollapse = () => {
-  // toggle collapse
-  collapseRef.value.toggle()
-  // open collapse
-  collapseRef.value.open()
-  // close collapse
-  collapseRef.value.close()
-}
 </script>
 
 <template>
-  <div>
-    <button @click="handleCollapse">Button Name</button>
-    <sidebar ref="collapseRef">...</sidebar>
-  </div>
+  <button @click="collapseRef?.toggle()">Toggle</button>
+  <Collapse ref="collapseRef" id="panel-1" class-name="p-4">
+    Collapsible content here.
+  </Collapse>
 </template>
 ```
 
 <Canvas of={Stories.collapseRefExample} />
 
-### Accordion Example
+---
 
-```js
-<script lang="ts" setup>
-import { Collapse } from '@bobbykim/manguito-theme'
-import { vCollapse } from '@bobbykim/manguito-theme/directives'
+### Accordion with `AccordionGroup`
+
+Wrap panels in `AccordionGroup` — only one panel can be open at a time. Each panel's `id` prop identifies it within the group.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { AccordionGroup, Collapse } from '@bobbykim/manguito-theme'
+
+const panel1 = ref<InstanceType<typeof Collapse>>()
+const panel2 = ref<InstanceType<typeof Collapse>>()
+const panel3 = ref<InstanceType<typeof Collapse>>()
 </script>
 
 <template>
-  <!-- accordion example -->
-  <div>
-    <button v-collapse:collapse-component-id-1>{{Tab button name}}</button>
-    <collapse id="collapse-component-id-1" accordion="my-accordion-group">
-      <div>
-        <!-- collapse content -->
-      </div>
-    </collapse>
-    <button v-collapse:collapse-component-id-2>{{Tab button name}}</button>
-    <collapse id="collapse-component-id-2" accordion="my-accordion-group">
-      <div>
-        <!-- collapse content -->
-      </div>
-    </collapse>
-    <button v-collapse:collapse-component-id-3>{{Tab button name}}</button>
-    <collapse id="collapse-component-id-3" accordion="my-accordion-group">
-      <div>
-        <!-- collapse content -->
-      </div>
-    </collapse>
-  </div>
+  <AccordionGroup>
+    <div>
+      <button @click="panel1?.toggle()">Panel 1</button>
+      <Collapse ref="panel1" id="panel-1" class-name="p-4">Content 1</Collapse>
+    </div>
+    <div>
+      <button @click="panel2?.toggle()">Panel 2</button>
+      <Collapse ref="panel2" id="panel-2" class-name="p-4">Content 2</Collapse>
+    </div>
+    <div>
+      <button @click="panel3?.toggle()">Panel 3</button>
+      <Collapse ref="panel3" id="panel-3" class-name="p-4">Content 3</Collapse>
+    </div>
+  </AccordionGroup>
 </template>
 ```
 
 <Canvas of={Stories.collapseAccordionExample} />
 
+---
+
+### Accordion with `v-for`
+
+Store refs in an array when panels are generated from data.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { AccordionGroup, Collapse } from '@bobbykim/manguito-theme'
+
+const items = [
+  { id: 'panel-1', title: 'Section 1', content: 'Content for section 1.' },
+  { id: 'panel-2', title: 'Section 2', content: 'Content for section 2.' },
+  { id: 'panel-3', title: 'Section 3', content: 'Content for section 3.' },
+]
+
+const panelRefs = ref<InstanceType<typeof Collapse>[]>([])
+</script>
+
+<template>
+  <AccordionGroup>
+    <div v-for="(item, index) in items" :key="item.id">
+      <button @click="panelRefs[index]?.toggle()">{{ item.title }}</button>
+      <Collapse
+        :ref="(el) => { if (el) panelRefs[index] = el as InstanceType<typeof Collapse> }"
+        :id="item.id"
+        class-name="p-4"
+      >
+        {{ item.content }}
+      </Collapse>
+    </div>
+  </AccordionGroup>
+</template>
+```
+
+<Canvas of={Stories.collapseExample} />
+
+---
+
+## API
+
 ### Props
 
-- `accordion?` - string
-- `className?` - string | string[]
-- `visible?` - boolean
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `id` | `string` | auto-generated | Panel identifier used by `AccordionGroup` to track which panel is open. Also set as the element's HTML `id` attribute for ARIA wiring. |
+| `visible` | `boolean` | `false` | Initial open state. Reactive — changing it after mount opens or closes the panel. |
+| `class-name` | `string \| string[]` | `''` | CSS class(es) applied to the inner content wrapper. |
 
 ### Slots
 
-- `#default` - default slot
+| Slot | Description |
+|---|---|
+| `default` | Collapsible content. |
 
-### Exposes
+### Exposed Methods
 
-- `toggle` - () => void
-- `close` - () => void
-- `open` - () => void
+| Method | Signature | Description |
+|---|---|---|
+| `toggle` | `() => void` | Toggle open/closed. |
+| `open` | `() => void` | Open the panel. |
+| `close` | `() => void` | Close the panel. |
 
 ### Events
 
-- `open` - (visible: boolean) - Emitted when collapse component opens
-- `close` - (visible: boolean) - Emitted when collapse component closes
+| Event | Payload | Description |
+|---|---|---|
+| `open` | `(visible: boolean)` | Emitted when the panel opens. |
+| `close` | `(visible: boolean)` | Emitted when the panel closes. |
