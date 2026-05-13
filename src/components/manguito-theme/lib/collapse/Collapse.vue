@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { observeVisibleAttr } from '../composables'
+import { toRef, useId, watch } from 'vue'
+import { useCollapseState } from '../composables'
 import { ClientSideRender } from '../util'
 
 const props = withDefaults(
   defineProps<{
-    accordion?: string
+    id?: string
     className?: string | string[]
     visible?: boolean
   }>(),
@@ -21,24 +21,13 @@ const emit = defineEmits<{
   (e: 'open', visible: boolean): void
   (e: 'close', visible: boolean): void
 }>()
-const collapseRef = ref<HTMLElement | undefined>()
-const toggle = ref<boolean>(props.visible)
 
-const toggleCollapse = (): void => {
-  toggle.value = !toggle.value
-}
-const openCollapse = (): void => {
-  toggle.value = true
-}
-const closeCollapse = (): void => {
-  toggle.value = false
-}
-const emitOpenEvent = () => {
-  emit('open', true)
-}
-const emitCloseEvent = () => {
-  emit('close', false)
-}
+const collapseId = props.id ?? useId()
+
+const { isOpen, toggle, open, close } = useCollapseState(
+  collapseId,
+  toRef(props, 'visible'),
+)
 
 /**
  * @TransitionFunctions
@@ -64,38 +53,24 @@ const onLeave = (el: any) => {
   el.style.opacity = '0'
 }
 
-// set nutation observer watching `visible` attribute in element
-const handleVisibility = (visible: boolean = false) => {
-  toggle.value = visible
-}
-observeVisibleAttr(collapseRef, handleVisibility)
-
-watch(
-  () => props.visible,
-  (newValue) => {
-    toggle.value = newValue
-  }
-)
-watch(toggle, (newValue) => {
-  if (newValue === true) {
-    emitOpenEvent()
-  } else if (newValue === false) {
-    emitCloseEvent()
-  }
+watch(isOpen, (newValue) => {
+  if (newValue) emit('open', true)
+  else emit('close', false)
 })
+
 defineExpose<{
   toggle: () => void
-  close: () => void
   open: () => void
+  close: () => void
 }>({
-  toggle: toggleCollapse,
-  close: closeCollapse,
-  open: openCollapse,
+  toggle,
+  open,
+  close,
 })
 </script>
 
 <template>
-  <div :accordion="accordion" :visible="toggle" ref="collapseRef">
+  <div :id="collapseId">
     <ClientSideRender>
       <Transition
         name="collapse"
@@ -105,7 +80,7 @@ defineExpose<{
         @leave="onLeave"
         class="overflow-y-clip"
       >
-        <div v-show="toggle">
+        <div v-show="isOpen">
           <div :class="className">
             <slot />
           </div>
