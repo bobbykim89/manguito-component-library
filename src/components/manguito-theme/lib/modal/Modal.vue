@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { useScrollLock } from '@vueuse/core'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, useId, watch } from 'vue'
 import { observeVisibleAttr } from '../composables'
 import { vClickOutside } from '../directives'
 import { generateClass } from '../theme'
@@ -46,8 +47,16 @@ const emit = defineEmits<{
   (e: 'close', visible: boolean): void
 }>()
 const modalRef = ref<HTMLElement | undefined>()
+const dialogRef = ref<HTMLElement>()
 const toggle = ref<boolean>(props.visible)
 const toggleComplete = ref<boolean>(false)
+const titleId = useId()
+let prevFocus: HTMLElement | null = null
+
+const { activate: activateTrap, deactivate: deactivateTrap } = useFocusTrap(
+  dialogRef,
+  { immediate: false },
+)
 
 const toggleModal = (): void => {
   toggle.value = !toggle.value
@@ -87,12 +96,11 @@ const handleModalWidth = computed(() => {
   return modalWidthClassObj[modalWidth] ?? modalWidthClassObj['small']
 })
 
-/**
- * @TransitionFunctions
- * @summary Handle toggleComplete value after completion of animation
- */
 const onAfterEnter = () => {
   toggleComplete.value = true
+  if (dialogRef.value) {
+    activateTrap()
+  }
 }
 const onAfterLeave = () => {
   toggleComplete.value = false
@@ -113,9 +121,17 @@ watch(
 )
 watch(toggle, (newValue) => {
   if (newValue === true) {
+    if (typeof document !== 'undefined') {
+      prevFocus = document.activeElement as HTMLElement | null
+    }
     emitOpenEvent()
-  } else if (newValue === false && toggleComplete.value === true) {
-    emitCloseEvent()
+  } else if (newValue === false) {
+    deactivateTrap()
+    prevFocus?.focus()
+    prevFocus = null
+    if (toggleComplete.value === true) {
+      emitCloseEvent()
+    }
   }
 })
 onMounted(() => {
@@ -141,6 +157,7 @@ defineExpose<{
       <section
         v-if="toggle"
         @click="closeModal"
+        aria-hidden="true"
         class="fixed inset-0 z-[100] overflow-y-auto bg-opacity-70 backdrop-blur"
         :class="generateClass('BGCOLOR', backdropColor)"
       ></section>
@@ -158,6 +175,10 @@ defineExpose<{
         :class="handleModalWidth"
       >
         <div
+          ref="dialogRef"
+          role="dialog"
+          aria-modal="true"
+          :aria-labelledby="title ? titleId : undefined"
           v-click-outside="closeModal"
           :class="[generateClass('BGCOLOR', color), className]"
           class="relative max-h-[80vh] overflow-y-scroll overscroll-contain md:max-h-[60vh]"
@@ -170,16 +191,18 @@ defineExpose<{
               >
                 <h3
                   v-if="title"
+                  :id="titleId"
                   class="h3-md"
                   :class="generateClass('TEXTCOLOR', titleColor)"
                 >
                   {{ title }}
                 </h3>
-                <button @click="closeModal">
+                <button type="button" aria-label="Close" @click="closeModal">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     height="1em"
                     viewBox="0 0 384 512"
+                    aria-hidden="true"
                     class="h-sm transition-opacity duration-300 ease-in hover:opacity-75 focus:opacity-75"
                     :class="[generateClass('SVGFILL', titleColor)]"
                   >

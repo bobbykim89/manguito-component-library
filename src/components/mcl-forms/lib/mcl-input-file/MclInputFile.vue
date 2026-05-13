@@ -101,6 +101,8 @@ const getClearButtonClass = computed<string>(() => {
     <!-- browse button -->
     <div class="shrink-0 my-3xs ml-3xs mr-xs">
       <button
+        type="button"
+        :aria-controls="id"
         class="px-xs py-2xs hover:bg-opacity-70 transition-all duration-200 ease-linear max-w-full"
         :class="getButtonClass"
         @click="onButtonClick"
@@ -133,6 +135,7 @@ const getClearButtonClass = computed<string>(() => {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 384 512"
+          aria-hidden="true"
           class="h-xs"
           :class="generateClass('SVGFILL', buttonTextColor)"
         >
