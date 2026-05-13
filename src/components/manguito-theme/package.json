@@ -49,7 +49,9 @@
     }
   },
   "scripts": {
-    "build": "vite build && cp lib/style/mcl-theme-v4.css dist/mcl-theme-v4.css"
+    "build": "vite build && cp lib/style/mcl-theme-v4.css dist/mcl-theme-v4.css",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@vueuse/core": "^12.0.0",
