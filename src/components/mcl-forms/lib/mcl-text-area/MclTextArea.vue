@@ -17,6 +17,7 @@ const props = withDefaults(
     placeholder?: string
     displayShadow?: boolean
     required?: boolean
+    invalid?: boolean
     rows?: number
   }>(),
   {
@@ -30,6 +31,7 @@ const props = withDefaults(
     placeholder: '',
     displayShadow: true,
     required: false,
+    invalid: false,
     rows: 5,
   }
 )
@@ -79,6 +81,7 @@ const inputClass = computed(() => {
       v-model="model"
       :placeholder="placeholder"
       :required="required"
+      :aria-invalid="invalid || undefined"
       :rows="rows"
     />
     <input-highlight

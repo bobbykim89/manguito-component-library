@@ -8,6 +8,8 @@ import type {
   TooltipValueType,
 } from './index.types'
 
+let _tooltipCount = 0
+
 /**
  * Extracts a value from either element attributes or binding value object
  */
@@ -68,11 +70,17 @@ const getDirection = (
  * Mounts the tooltip component to the element
  */
 const mountTooltip = (
-  el: HTMLElement,
+  el: TooltipElementType,
   binding: DirectiveBinding<TooltipValueType>,
 ): void => {
   // add required classes to parent elem
   el.classList.add('relative', 'group', 'overflow-visible')
+
+  if (!el.__TooltipId) {
+    el.__TooltipId = `mcl-tooltip-${++_tooltipCount}`
+  }
+  const tooltipId = el.__TooltipId
+
   const tooltipText = getTooltipText(el, binding)
   const tooltipColor = extractVal<string>(el, binding, 'color', 'color')
   const tooltipTextColor = extractVal<string>(
@@ -92,6 +100,7 @@ const mountTooltip = (
   const tooltipDirection = getDirection(binding)
 
   const vnode = createVNode(tooltip, {
+    id: tooltipId,
     direction: tooltipDirection,
     title: tooltipText,
     color: tooltipColor,
@@ -101,10 +110,13 @@ const mountTooltip = (
   })
 
   render(vnode, el)
+  el.setAttribute('aria-describedby', tooltipId)
 }
 
-const unmountTooltip = (el: HTMLElement): void => {
+const unmountTooltip = (el: TooltipElementType): void => {
   render(null, el)
+  el.removeAttribute('aria-describedby')
+  delete el.__TooltipId
 }
 
 /**

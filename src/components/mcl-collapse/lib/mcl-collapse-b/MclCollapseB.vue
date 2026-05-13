@@ -108,7 +108,11 @@ watch(
     class="p-2xs w-full overflow-hidden"
     :class="getBorderClass(borderColor, bgColor, rounded, displayShadow)"
   >
-    <div
+    <button
+      type="button"
+      :id="`${collapseId}-trigger`"
+      :aria-expanded="toggle"
+      :aria-controls="collapseId"
       v-collapse:[collapseId]
       class="flex w-full cursor-pointer items-center justify-between px-4 py-2 transition duration-200 ease-in hover:bg-opacity-70"
       :class="[
@@ -116,8 +120,11 @@ watch(
         generateClass('BGCOLOR', btnColor),
       ]"
     >
-      <h3 :class="getTitleClass(titleSize, titleColor)">{{ title }}</h3>
-      <div class="ml-xs md:ml-sm lg:ml-md flex items-center justify-center">
+      <span :class="getTitleClass(titleSize, titleColor)">{{ title }}</span>
+      <div
+        aria-hidden="true"
+        class="ml-xs md:ml-sm lg:ml-md flex items-center justify-center"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 448 512"
@@ -133,12 +140,14 @@ watch(
           />
         </svg>
       </div>
-    </div>
+    </button>
     <div class="overflow-hidden">
       <collapse
         :id="collapseId"
         :visible="visible"
         class-name="px-xs pt-xs pb-2xs"
+        role="region"
+        :aria-labelledby="`${collapseId}-trigger`"
         :accordion="accordion"
         @open="toggleAction"
         @close="toggleAction"
