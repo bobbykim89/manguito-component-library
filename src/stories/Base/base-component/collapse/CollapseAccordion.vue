@@ -1,7 +1,6 @@
-v
 <script setup lang="ts">
-import { Collapse } from '@/components/manguito-theme/lib'
-import { vCollapse } from '@/components/manguito-theme/lib/directives'
+import { AccordionGroup, Collapse } from '@/components/manguito-theme/lib'
+import { ref } from 'vue'
 
 const collapseContent = [
   {
@@ -30,6 +29,8 @@ const collapseContent = [
   },
 ]
 
+const panelRefs = ref<InstanceType<typeof Collapse>[]>([])
+
 const customButtonColor = (idx: number): string => {
   switch (idx) {
     case 0:
@@ -52,35 +53,34 @@ const customButtonColor = (idx: number): string => {
       <h2 class="text-info">Accordion Example:</h2>
     </div>
     <div class="p-2xs border-warning rounded-md border-2 bg-white">
-      <div v-for="(item, idx) in collapseContent" class="mb-md last:mb-0">
-        <a
-          :href="`#${item.id}`"
-          v-collapse
-          class="btn btn-full"
-          :class="customButtonColor(idx)"
-          >{{ item.title }} Header</a
-        >
-        <collapse
-          :id="item.id"
-          class-name="bg-light-3 p-xs"
-          :visible="idx === 0 ? true : false"
-          accordion="my-accordion"
-        >
-          <div>
-            {{ item.content }}
-          </div>
-        </collapse>
-        <button
-          v-collapse:[item.id]
-          class="btn btn-invert btn-full btn-no-ring"
-          :class="customButtonColor(idx)"
-        >
-          <span> {{ item.title }} Footer </span>
-        </button>
-      </div>
+      <AccordionGroup>
+        <div v-for="(item, idx) in collapseContent" :key="item.id" class="mb-md last:mb-0">
+          <button
+            @click="panelRefs[idx]?.toggle()"
+            class="btn btn-full"
+            :class="customButtonColor(idx)"
+          >
+            {{ item.title }} Header
+          </button>
+          <Collapse
+            :ref="(el) => { if (el) panelRefs[idx] = el as InstanceType<typeof Collapse> }"
+            :id="item.id"
+            class-name="bg-light-3 p-xs"
+            :visible="idx === 0"
+          >
+            <div>{{ item.content }}</div>
+          </Collapse>
+          <button
+            @click="panelRefs[idx]?.toggle()"
+            class="btn btn-invert btn-full btn-no-ring"
+            :class="customButtonColor(idx)"
+          >
+            <span>{{ item.title }} Footer</span>
+          </button>
+        </div>
+      </AccordionGroup>
     </div>
   </section>
 </template>
 
 <style scoped></style>
-@/components/manguito-theme/lib/index
