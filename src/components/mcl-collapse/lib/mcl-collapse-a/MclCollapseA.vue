@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
-import generateClass, { Collapse } from '@bobbykim/manguito-theme'
-import { ref } from 'vue'
+import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme';
+import generateClass, { Collapse } from '@bobbykim/manguito-theme';
+import { ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -88,7 +88,7 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
     ]"
   >
     <div
-      class="py-xs px-sm transition-[border] duration-500"
+      class=" px-sm transition-[border] duration-500"
       :class="[
         isOpen
           ? `border-b ${generateClass('BORDERB', borderColor)} ease-in`
@@ -97,18 +97,16 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
       ]"
     >
       <div class="flex items-center justify-between">
-        <h3 :class="getTitleClass(titleSize, titleColor)">
-          <button
-            type="button"
-            :id="`${collapseId}-trigger`"
-            :aria-expanded="isOpen"
-            :aria-controls="collapseId"
-            @click="collapseRef?.toggle()"
-            class="w-full cursor-pointer bg-transparent text-left"
-          >
-            {{ title }}
-          </button>
-        </h3>
+        <button
+          type="button"
+          :id="`${collapseId}-trigger`"
+          :aria-expanded="isOpen"
+          :aria-controls="collapseId"
+          @click="collapseRef?.toggle()"
+          class="flex flex-1 cursor-pointer items-center bg-transparent text-left py-xs"
+        >
+          <h3 :class="getTitleClass(titleSize, titleColor)">{{ title }}</h3>
+        </button>
         <div @click.stop class="cursor-default" v-if="slots['tab']">
           <slot name="tab"></slot>
         </div>
