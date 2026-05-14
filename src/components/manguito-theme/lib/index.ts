@@ -1,6 +1,7 @@
 // generate class function
 import { generateClass } from './theme'
 // base components
+import AccordionGroup from './collapse/AccordionGroup.vue'
 import Alert from './alert/Alert.vue'
 import Card from './card/Card.vue'
 import CarouselContainer from './carousel/CarouselContainer.vue'
@@ -21,6 +22,7 @@ export * from './theme/static/theme.types'
 
 // export components
 export {
+  AccordionGroup,
   Alert,
   Card,
   CarouselContainer,

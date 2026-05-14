@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
-import generateClass, { Collapse } from '@bobbykim/manguito-theme'
-import { vCollapse } from '@bobbykim/manguito-theme/directives'
-import { ref, watch } from 'vue'
+import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme';
+import generateClass, { Collapse } from '@bobbykim/manguito-theme';
+import { ref } from 'vue';
 
 const props = withDefaults(
   defineProps<{
@@ -18,7 +17,6 @@ const props = withDefaults(
     iconColor?: ColorPalette
     bgColor?: ColorPalette
     slotBgColor?: ColorPalette
-    accordion?: string
   }>(),
   {
     borderColor: 'light-4',
@@ -34,7 +32,6 @@ const props = withDefaults(
   },
 )
 
-const toggle = ref(props.visible)
 const slots = defineSlots<{
   content: any
   tab: any
@@ -44,14 +41,16 @@ const emit = defineEmits<{
   (e: 'collapse-close', visible: boolean, title: string): void
 }>()
 
-const toggleAction = (visible: boolean): void => {
-  const { title } = props
-  toggle.value = visible
-  if (visible === true) {
-    emit('collapse-open', visible, title)
-  } else {
-    emit('collapse-close', visible, title)
-  }
+const collapseRef = ref<InstanceType<typeof Collapse>>()
+const isOpen = ref(props.visible)
+
+const handleOpen = (): void => {
+  isOpen.value = true
+  emit('collapse-open', true, props.title)
+}
+const handleClose = (): void => {
+  isOpen.value = false
+  emit('collapse-close', false, props.title)
 }
 
 const getBorderClass = (
@@ -59,12 +58,6 @@ const getBorderClass = (
   dHl: boolean,
   hlColor: ColorPalette,
 ): string => {
-  /**
-   * @param {ColorPalette} bColor - borderColor
-   * @param {boolean} dHl - displayHighlight
-   * @param {ColorPalette} hlColor - highlightColor
-   */
-
   const classArray: string[] = ['border', generateClass('BORDER', bColor)]
 
   if (dHl) {
@@ -78,23 +71,12 @@ const getBorderClass = (
 }
 
 const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
-  /**
-   * @param {HeadingSize} size - titleSize
-   * @param {ColorPalette} color - titleColor
-   */
   const classArray: string[] = [
     generateClass('H3', size),
     generateClass('TEXTCOLOR', color),
   ]
   return classArray.join(' ')
 }
-
-watch(
-  () => props.visible,
-  (newValue) => {
-    toggle.value = newValue
-  },
-)
 </script>
 
 <template>
@@ -106,45 +88,43 @@ watch(
     ]"
   >
     <div
-      class="py-xs px-sm transition-[border] duration-500"
+      class=" px-sm transition-[border] duration-500"
       :class="[
-        toggle
+        isOpen
           ? `border-b ${generateClass('BORDERB', borderColor)} ease-in`
           : 'ease-out',
         generateClass('BGCOLOR', bgColor),
       ]"
     >
       <div class="flex items-center justify-between">
-        <h3 :class="getTitleClass(titleSize, titleColor)">
-          <button
-            type="button"
-            :id="`${collapseId}-trigger`"
-            :aria-expanded="toggle"
-            :aria-controls="collapseId"
-            v-collapse:[collapseId]
-            class="w-full cursor-pointer bg-transparent text-left"
-          >
-            {{ title }}
-          </button>
-        </h3>
+        <button
+          type="button"
+          :id="`${collapseId}-trigger`"
+          :aria-expanded="isOpen"
+          :aria-controls="collapseId"
+          @click="collapseRef?.toggle()"
+          class="flex flex-1 cursor-pointer items-center bg-transparent text-left py-xs"
+        >
+          <h3 :class="getTitleClass(titleSize, titleColor)">{{ title }}</h3>
+        </button>
         <div @click.stop class="cursor-default" v-if="slots['tab']">
           <slot name="tab"></slot>
         </div>
       </div>
     </div>
     <div class="overflow-hidden" :class="generateClass('BGCOLOR', slotBgColor)">
-      <collapse
+      <Collapse
+        ref="collapseRef"
         :id="collapseId"
         :visible="visible"
         class-name="py-sm px-xs"
         role="region"
         :aria-labelledby="`${collapseId}-trigger`"
-        @open="toggleAction"
-        @close="toggleAction"
-        :accordion="accordion"
+        @open="handleOpen"
+        @close="handleClose"
       >
         <slot name="content"></slot>
-      </collapse>
+      </Collapse>
     </div>
     <div
       aria-hidden="true"
@@ -153,14 +133,14 @@ watch(
         generateClass('BGCOLOR', bgColor),
         generateClass('BORDERT', borderColor),
       ]"
-      v-collapse:[collapseId]
+      @click="collapseRef?.toggle()"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 448 512"
         class="h-xs"
         :class="[
-          !toggle ? 'rotate-0' : 'rotate-180',
+          !isOpen ? 'rotate-0' : 'rotate-180',
           'transition-transform duration-300 ease-in',
           generateClass('SVGFILL', iconColor),
         ]"

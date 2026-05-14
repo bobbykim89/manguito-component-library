@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import { useScrollLock } from '@vueuse/core'
-import { computed, onMounted, ref, useId, watch } from 'vue'
-import { observeVisibleAttr } from '../composables'
+import { computed, ref, useId, watch } from 'vue'
+import { observeVisibleAttr, useModalScrollLock } from '../composables'
 import { vClickOutside } from '../directives'
 import { generateClass } from '../theme'
 import type { ColorPalette, DirectionX } from '../theme/static/theme.types'
@@ -124,12 +123,7 @@ watch(toggle, (newValue) => {
     }
   }
 })
-onMounted(() => {
-  const scrollLock = useScrollLock(document)
-  watch(toggle, (newVal) => {
-    scrollLock.value = newVal
-  })
-})
+useModalScrollLock(toggle)
 defineExpose<{
   toggle: () => void
   open: () => void

@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
 import generateClass, { Collapse } from '@bobbykim/manguito-theme'
-import { vCollapse } from '@bobbykim/manguito-theme/directives'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -17,7 +16,6 @@ const props = withDefaults(
     rounded?: boolean
     displayShadow?: boolean
     visible?: boolean
-    accordion?: string
   }>(),
   {
     titleColor: 'light-1',
@@ -35,20 +33,21 @@ const props = withDefaults(
 const slots = defineSlots<{
   default: any
 }>()
-const toggle = ref(props.visible)
 const emit = defineEmits<{
   (e: 'collapse-open', visible: boolean, title: string): void
   (e: 'collapse-close', visible: boolean, title: string): void
 }>()
 
-const toggleAction = (visible: boolean): void => {
-  const { title } = props
-  toggle.value = visible
-  if (visible === true) {
-    emit('collapse-open', visible, title)
-  } else {
-    emit('collapse-close', visible, title)
-  }
+const collapseRef = ref<InstanceType<typeof Collapse>>()
+const isOpen = ref(props.visible)
+
+const handleOpen = (): void => {
+  isOpen.value = true
+  emit('collapse-open', true, props.title)
+}
+const handleClose = (): void => {
+  isOpen.value = false
+  emit('collapse-close', false, props.title)
 }
 
 const getBorderClass = (
@@ -57,13 +56,6 @@ const getBorderClass = (
   rounded: boolean,
   dShadow: boolean,
 ): string => {
-  /**
-   * @param {ColorPalette} bColor - borderColor
-   * @param {ColorPalette} bgColor - bgColor
-   * @param {boolean} rounded - rounded
-   * @param {boolean} dShadow - displayShadow
-   */
-
   let borderInfo: string[] = [
     'border',
     generateClass('BORDER', bColor),
@@ -83,24 +75,12 @@ const getBorderClass = (
 }
 
 const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
-  /**
-   * @param {HeadingSize} size - titleSize
-   * @param {ColorPalette} color - titleColor
-   */
-
   const classArray: string[] = [
     generateClass('H3', size),
     generateClass('TEXTCOLOR', color),
   ]
   return classArray.join(' ')
 }
-
-watch(
-  () => props.visible,
-  (newValue) => {
-    toggle.value = newValue
-  },
-)
 </script>
 
 <template>
@@ -111,9 +91,9 @@ watch(
     <button
       type="button"
       :id="`${collapseId}-trigger`"
-      :aria-expanded="toggle"
+      :aria-expanded="isOpen"
       :aria-controls="collapseId"
-      v-collapse:[collapseId]
+      @click="collapseRef?.toggle()"
       class="flex w-full cursor-pointer items-center justify-between px-4 py-2 transition duration-200 ease-in hover:bg-opacity-70"
       :class="[
         rounded ? 'rounded-lg' : 'rounded-sm',
@@ -130,7 +110,7 @@ watch(
           viewBox="0 0 448 512"
           class="h-xs transition-transform duration-300 ease-in"
           :class="[
-            !toggle ? 'rotate-0' : 'rotate-180',
+            !isOpen ? 'rotate-0' : 'rotate-180',
             generateClass('SVGFILL', iconColor),
           ]"
         >
@@ -142,18 +122,18 @@ watch(
       </div>
     </button>
     <div class="overflow-hidden">
-      <collapse
+      <Collapse
+        ref="collapseRef"
         :id="collapseId"
         :visible="visible"
         class-name="px-xs pt-xs pb-2xs"
         role="region"
         :aria-labelledby="`${collapseId}-trigger`"
-        :accordion="accordion"
-        @open="toggleAction"
-        @close="toggleAction"
+        @open="handleOpen"
+        @close="handleClose"
       >
         <slot></slot>
-      </collapse>
+      </Collapse>
     </div>
   </div>
 </template>

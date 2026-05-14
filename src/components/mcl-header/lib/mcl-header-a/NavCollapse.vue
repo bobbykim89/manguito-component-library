@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
 import generateClass, { Collapse } from '@bobbykim/manguito-theme'
-import { vCollapse } from '@bobbykim/manguito-theme/directives'
 import { computed, ref } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 
 const props = withDefaults(
   defineProps<{
     navId: string
-    navAccordionGroup: string
     navItem: MenuCollapseType
     bgColor?: ColorPalette
     hoverBgColor?: ColorPalette
@@ -42,16 +40,12 @@ const handleNavId = computed<string>(() => {
   const navKebab = navLower.replaceAll(' ', '-')
   return `nav-${navKebab}`
 })
-const handleNavAccordionGroupName = computed<string>(() => {
-  const { navAccordionGroup } = props
-  const toLowerCase = navAccordionGroup.toLocaleLowerCase()
-  const toKebabCase = toLowerCase.replaceAll(' ', '-')
-  return `accordion-${toKebabCase}`
-})
+const collapseRef = ref<InstanceType<typeof Collapse>>()
 const toggleAction = (visible: boolean): void => {
   toggle.value = visible
 }
 const handleCollapseLabelClick = (e: Event, title: string) => {
+  collapseRef.value?.toggle()
   emit('label-click', e, title, toggle.value)
 }
 const navItemClick = (e: Event, item: MenuItemType) => {
@@ -86,7 +80,6 @@ const getMenuItemClass = (
       <button
         class="nav__text gap-3xs flex items-center align-middle tracking-wider outline-none"
         :class="getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)"
-        v-collapse:[handleNavId]
         @click="handleCollapseLabelClick($event, navItem.title)"
       >
         <span>
@@ -114,9 +107,8 @@ const getMenuItemClass = (
       ></div>
     </div>
     <collapse
+      ref="collapseRef"
       :id="handleNavId"
-      :visible="false"
-      :accordion="handleNavAccordionGroupName"
       @open="toggleAction"
       @close="toggleAction"
     >

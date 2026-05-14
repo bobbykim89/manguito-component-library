@@ -77,25 +77,27 @@ const createCollapseHandler = (
 }
 
 /**
- * Vue directive for collapsible elements with accordion support
+ * Vue directive for collapsible elements with accordion support.
  *
- * Handles both simple collapse/expand behavior and accordion groups where
- * only one item can be open at a time.
+ * @deprecated `MclCollapseA` and `MclCollapseB` now manage state internally via the
+ * `useCollapseState` composable. This directive no longer has any effect on those
+ * components and will be removed in a future release.
  *
- * Works with the `observeVisibleAttr` composable for reactive state management.
- *
- * @example
- * // Simple collapsible
- * <button v-collapse:content1>Toggle</button>
- * <div id="content1" visible="false">Collapsible content</div>
+ * Migrate accordion groups to the `AccordionGroup` wrapper component:
  *
  * @example
- * // Accordion group
- * <button v-collapse:item1>Item 1</button>
- * <div id="item1" visible="false" accordion="myAccordion">Content 1</div>
+ * // Preferred: AccordionGroup wrapper
+ * import { AccordionGroup } from '@bobbykim/manguito-theme'
+ * import { MclCollapseA } from '@bobbykim/mcl-collapse'
  *
- * <button v-collapse:item2>Item 2</button>
- * <div id="item2" visible="false" accordion="myAccordion">Content 2</div>
+ * <AccordionGroup>
+ *   <MclCollapseA collapse-id="item1" title="Item 1">...</MclCollapseA>
+ *   <MclCollapseA collapse-id="item2" title="Item 2">...</MclCollapseA>
+ * </AccordionGroup>
+ *
+ * @example
+ * // Preferred: standalone collapse (no wrapper needed)
+ * <MclCollapseA collapse-id="item1" title="Item 1">...</MclCollapseA>
  *
  */
 export const vCollapse: Directive<CollapseElement> = {
