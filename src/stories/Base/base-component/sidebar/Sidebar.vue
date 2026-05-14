@@ -1,25 +1,24 @@
 <script setup lang="ts">
 import { Sidebar } from '@/components/manguito-theme/lib'
-import { vToggle } from '@/components/manguito-theme/lib/directives'
 import { ref } from 'vue'
 
-const sidebarRef = ref<InstanceType<typeof Sidebar>>()
-const openSidebar = () => {
-  sidebarRef.value!.open()
-}
+const sidebarDefaultRef = ref<InstanceType<typeof Sidebar>>()
+const sidebarLeftRef = ref<InstanceType<typeof Sidebar>>()
+const sidebarRightRef = ref<InstanceType<typeof Sidebar>>()
+const sidebarRight2Ref = ref<InstanceType<typeof Sidebar>>()
 </script>
 
 <template>
   <section class="container">
     <div class="gap-xs my-md flex justify-center">
-      <button class="btn btn-success" v-toggle:sidebar-default>
+      <button class="btn btn-success" @click="sidebarDefaultRef?.open()">
         Sidebar Default Header
       </button>
-      <button class="btn btn-danger" v-toggle:sidebar-left>Sidebar Left</button>
-      <button class="btn btn-warning" v-toggle:sidebar-right>
+      <button class="btn btn-danger" @click="sidebarLeftRef?.open()">Sidebar Left</button>
+      <button class="btn btn-warning" @click="sidebarRightRef?.open()">
         Sidebar Right
       </button>
-      <button class="btn btn-info" v-toggle:sidebar-right-2>
+      <button class="btn btn-info" @click="sidebarRight2Ref?.open()">
         Default Sidebar Right
       </button>
     </div>
@@ -80,16 +79,11 @@ const openSidebar = () => {
       ultricies mauris. Donec quis luctus tortor. Cras eu pretium arcu. Cras ut
       turpis eros. Mauris venenatis eros diam.
     </p>
-    <div class="my-sm flex justify-center">
-      <button @click="openSidebar" class="btn btn-danger btn-progress">
-        <span> Trigger through ref </span>
-      </button>
-    </div>
     <sidebar
       id="sidebar-default"
       title="Sidebar title"
       color="success"
-      ref="sidebarRef"
+      ref="sidebarDefaultRef"
     >
       <template #body>
         <div class="py-sm px-xs">
@@ -120,7 +114,7 @@ const openSidebar = () => {
         </div>
       </template>
     </sidebar>
-    <sidebar id="sidebar-left" class-name="bg-light-1 px-xs overflow-scroll">
+    <sidebar ref="sidebarLeftRef" id="sidebar-left" class-name="bg-light-1 px-xs overflow-scroll">
       <template #header="{ close }">
         <div class="pb-md pt-xs bg-light-1 flex justify-end">
           <button @click="close">
@@ -181,10 +175,11 @@ const openSidebar = () => {
       </template>
     </sidebar>
     <sidebar
+      ref="sidebarRightRef"
       id="sidebar-right"
       placement="right"
       no-backdrop
-      width="450"
+      :width="450"
       class-name="bg-warning p-xs"
     >
       <template #header="{ close }">
@@ -226,6 +221,7 @@ const openSidebar = () => {
       </template>
     </sidebar>
     <sidebar
+      ref="sidebarRight2Ref"
       id="sidebar-right-2"
       placement="right"
       title="Default Sidebar Right"

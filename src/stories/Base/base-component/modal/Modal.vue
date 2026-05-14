@@ -1,25 +1,25 @@
 <script setup lang="ts">
 import { Modal } from '@/components/manguito-theme/lib'
-import { vToggle } from '@/components/manguito-theme/lib/directives'
 import { ref } from 'vue'
 
-const modalRef = ref<InstanceType<typeof Modal>>()
-const openModal = () => {
-  modalRef.value!.open()
-}
+const modal1Ref = ref<InstanceType<typeof Modal>>()
+const modal2Ref = ref<InstanceType<typeof Modal>>()
+const modal3Ref = ref<InstanceType<typeof Modal>>()
+const modalMediumRef = ref<InstanceType<typeof Modal>>()
+const modalLargeRef = ref<InstanceType<typeof Modal>>()
 </script>
 
 <template>
   <section class="container">
     <div>
       <div class="gap-xs my-md flex flex-wrap justify-start md:justify-center">
-        <button class="btn btn-danger" v-toggle:modal-1>Modal 1</button>
-        <button class="btn btn-warning" v-toggle:modal-2>Modal 2</button>
-        <button class="btn btn-success" v-toggle:modal-3>
+        <button class="btn btn-danger" @click="modal1Ref?.open()">Modal 1</button>
+        <button class="btn btn-warning" @click="modal2Ref?.open()">Modal 2</button>
+        <button class="btn btn-success" @click="modal3Ref?.open()">
           Modal Default Header
         </button>
-        <button class="btn btn-info" v-toggle:modal-medium>Medium Modal</button>
-        <button class="btn btn-primary" v-toggle:modal-large>
+        <button class="btn btn-info" @click="modalMediumRef?.open()">Medium Modal</button>
+        <button class="btn btn-primary" @click="modalLargeRef?.open()">
           Large Modal
         </button>
       </div>
@@ -81,12 +81,7 @@ const openModal = () => {
         ultricies mauris. Donec quis luctus tortor. Cras eu pretium arcu. Cras
         ut turpis eros. Mauris venenatis eros diam.
       </p>
-      <div class="my-sm flex justify-center">
-        <button @click="openModal" class="btn btn-danger btn-invert">
-          Trigger through ref
-        </button>
-      </div>
-      <modal id="modal-1" class-name="px-xs rounded-md" color="light-1">
+      <modal ref="modal1Ref" id="modal-1" class-name="px-xs rounded-md" color="light-1">
         <template #header="{ close }">
           <div
             class="py-xs bg-light-1 border-b-light-4 flex justify-between border-b-2"
@@ -138,6 +133,7 @@ const openModal = () => {
         </template>
       </modal>
       <modal
+        ref="modal2Ref"
         id="modal-2"
         no-backdrop
         color="warning"
@@ -183,7 +179,7 @@ const openModal = () => {
         id="modal-3"
         color="success"
         title="Modal with default header"
-        ref="modalRef"
+        ref="modal3Ref"
       >
         <template #body>
           <div class="py-sm px-xs">
@@ -203,6 +199,7 @@ const openModal = () => {
         </template>
       </modal>
       <modal
+        ref="modalMediumRef"
         id="modal-medium"
         class-name="px-xs rounded-md"
         color="light-1"
@@ -259,6 +256,7 @@ const openModal = () => {
         </template>
       </modal>
       <modal
+        ref="modalLargeRef"
         id="modal-large"
         class-name="px-xs rounded-md"
         color="light-1"

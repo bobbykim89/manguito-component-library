@@ -35,19 +35,21 @@ const createToggleHandler = (
 }
 
 /**
- * Vue directive for toggling visibility of elements via the 'visible' attribute
+ * Vue directive for toggling visibility of elements via the 'visible' attribute.
  *
- * Used internally by Modal and Sidebar components to control their visibility state.
- *
- * @example
- * // With directive argument
- * <button v-toggle:myModal>Open Modal</button>
- * <div id="myModal" visible="false">Modal content</div>
+ * @deprecated Use the `defineExpose` API (`modalRef.open()`, `modalRef.toggle()`) or bind
+ * the `:visible` prop directly instead. This directive bypasses Vue's reactivity system
+ * and is not SSR-compatible. It will be removed in a future release.
  *
  * @example
- * // With anchor tag href
- * <a href="#mySidebar" v-toggle>Toggle Sidebar</a>
- * <aside id="mySidebar" visible="false">Sidebar content</aside>
+ * // Preferred: defineExpose ref
+ * const modalRef = ref()
+ * <button @click="modalRef.open()">Open Modal</button>
+ * <Modal ref="modalRef" />
+ *
+ * @example
+ * // Preferred: visible prop
+ * <Modal :visible="isOpen" />
  *
  */
 export const vToggle: Directive<ToggleElement> = {
