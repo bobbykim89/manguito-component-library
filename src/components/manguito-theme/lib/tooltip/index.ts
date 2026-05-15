@@ -48,8 +48,8 @@ export default defineComponent({
       'invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus:visible group-focus:opacity-100 z-[100] tooltip'
     const colorClass = computed<string>(() => {
       return [
-        generateClass('BGCOLOR', props.color),
-        generateClass('TEXTCOLOR', props.textColor),
+        generateClass.bgColorVariant({ color: props.color }),
+        generateClass.textColorVariant({ color: props.textColor }),
       ].join(' ')
     })
     const tooltipWidth = computed(() => {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import InputHighlight from '../common/InputHighlight.vue'
 
 const props = withDefaults(
@@ -49,18 +49,18 @@ const inputClass = computed(() => {
     textColor,
   } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', bgColor),
-    generateClass('TEXTCOLOR', textColor),
+    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.textColorVariant({ color: textColor }),
   ]
   if (showBorder) {
     classArray.push('border-2')
-    classArray.push(generateClass('BORDER', borderColor))
+    classArray.push(generateClass.borderColorVariant({ color: borderColor }))
   }
   if (!showHighlight) {
     classArray.push(
       'focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear'
     )
-    classArray.push(generateClass('FOCUSRING', borderColor))
+    classArray.push(generateClass.focusRingColorVariant({ color: borderColor }))
   }
   if (showShadow) {
     classArray.push('shadow-md')

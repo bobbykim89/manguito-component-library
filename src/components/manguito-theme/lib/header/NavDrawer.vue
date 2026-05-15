@@ -43,12 +43,12 @@ const getBorderClass = (
    */
 
   const classArray: string[] = [
-    generateClass('RINGCOLOR', bColor),
-    generateClass('OFFSETRING', nColor),
+    generateClass.ringColorVariant({ color: bColor }),
+    generateClass.ringOffsetColorVariant({ color: nColor }),
   ]
 
   if (border) {
-    classArray.push(generateClass('BORDER', bColor))
+    classArray.push(generateClass.borderColorVariant({ color: bColor }))
     classArray.push('border')
   }
   return classArray.join(' ')
@@ -59,9 +59,9 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
    * @color - color
    */
   const classArray: string[] = [
-    generateClass('BGCOLOR', color),
-    generateClass('BEFOREBG', color),
-    generateClass('AFTERBG', color),
+    generateClass.bgColorVariant({ color }),
+    generateClass.beforeBgColorVariant({ color }),
+    generateClass.afterBgColorVariant({ color }),
   ]
 
   return classArray.join(' ')

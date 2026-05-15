@@ -4,7 +4,8 @@ import type {
   ColorPalette,
   FontWeight,
 } from '@bobbykim/manguito-theme'
-import generateClass, {
+import {
+  generateClass,
   DropdownContainer,
   DropdownContent,
 } from '@bobbykim/manguito-theme'
@@ -61,14 +62,14 @@ const dropdownButtonClass = computed(() => {
    * @param {boolean} buttonInvert - whether to have button inverted
    */
   const { buttonColor, buttonRounded, buttonTextColor, buttonInvert } = props
-  const classArray: string[] = [generateClass('BTNCOLOR', buttonColor)]
+  const classArray: string[] = [generateClass.btnColorVariant({ color: buttonColor })]
   if (buttonRounded) {
     classArray.push('btn-round')
   }
   if (buttonInvert) {
     classArray.push('btn-invert')
   } else {
-    classArray.push(generateClass('TEXTCOLOR', buttonTextColor))
+    classArray.push(generateClass.textColorVariant({ color: buttonTextColor }))
   }
   return classArray.join(' ')
 })
@@ -80,7 +81,7 @@ const dropdownContentClass = computed<string>(() => {
    * @param {boolean} showShadow - whether to have drop shadow
    */
   const { dropdownColor, rounded, showBorder, showShadow } = props
-  const classArray: string[] = [generateClass('BGCOLOR', dropdownColor)]
+  const classArray: string[] = [generateClass.bgColorVariant({ color: dropdownColor })]
   if (showBorder) {
     classArray.push('border')
   }
@@ -109,11 +110,11 @@ const dropDownItemClass = computed<string>(() => {
     showSeparator,
   } = props
   const classArray: string[] = [
-    generateClass('HVBGCOLOR', hoverBgColor),
-    generateClass('FCBGCOLOR', hoverBgColor),
-    generateClass('BODYTEXT', dropdownTextSize),
-    generateClass('FONTWEIGHT', dropdownFontWeight),
-    generateClass('TEXTCOLOR', dropdownTextColor),
+    generateClass.hoverBgColorVariant({ color: hoverBgColor }),
+    generateClass.focusBgColorVariant({ color: hoverBgColor }),
+    generateClass.bodyTextVariant({ size: dropdownTextSize }),
+    generateClass.fontWeightVariant({ weight: dropdownFontWeight }),
+    generateClass.textColorVariant({ color: dropdownTextColor }),
   ]
   if (showSeparator) {
     classArray.push('border-b last:border-b-0')

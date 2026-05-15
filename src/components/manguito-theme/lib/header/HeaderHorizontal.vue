@@ -69,7 +69,7 @@ const onLeave = (el: any) => {
 
 const handleHeaderClass = computed<string>(() => {
   const { bgColor, sticky } = props
-  const classArray: string[] = [generateClass('BGCOLOR', bgColor)]
+  const classArray: string[] = [generateClass.bgColorVariant({ color: bgColor })]
   if (sticky === 'all') {
     classArray.push('sticky top-0')
     return classArray.join(' ')
@@ -139,7 +139,7 @@ defineExpose<{
         <div
           class="my-2xs mx-xs overflow-hidden rounded-md bg-opacity-80"
           v-if="navOpen"
-          :class="generateClass('BGCOLOR', mobileMenuBgColor)"
+          :class="generateClass.bgColorVariant({ color: mobileMenuBgColor })"
         >
           <div v-if="slots['mobile-content']">
             <slot name="mobile-content" :header-close="closeNav"></slot>

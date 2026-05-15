@@ -6,7 +6,7 @@ import type {
   HeadingSize,
   OpacityRange,
 } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { computed } from 'vue'
 
 const props = withDefaults(
@@ -63,8 +63,8 @@ const filterClass = computed<string>(() => {
    */
   const { bgColor, filterOpacity } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', bgColor),
-    generateClass('OPACITY', filterOpacity),
+    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.opacityVariant({ opacity: filterOpacity }),
   ]
   return classArray.join(' ')
 })
@@ -81,13 +81,13 @@ const getTitleClass = (
    */
 
   const titleClass: Record<HeadingLevel, string> = {
-    h1: generateClass('H1', size),
-    h2: generateClass('H2', size),
-    h3: generateClass('H3', size),
-    h4: generateClass('H4', size),
+    h1: generateClass.h1Variant({ size: size }),
+    h2: generateClass.h2Variant({ size: size }),
+    h3: generateClass.h3Variant({ size: size }),
+    h4: generateClass.h4Variant({ size: size }),
   }
 
-  const classArray = [titleClass[level], generateClass('TEXTCOLOR', color)]
+  const classArray = [titleClass[level], generateClass.textColorVariant({ color: color })]
 
   return classArray.join(' ')
 }
@@ -96,7 +96,7 @@ const getTitleClass = (
 <template>
   <section
     class="w-full overflow-hidden"
-    :class="generateClass('BGCOLOR', bgColor)"
+    :class="generateClass.bgColorVariant({ color: bgColor })"
   >
     <div class="grid lg:grid-cols-2">
       <div
@@ -127,7 +127,7 @@ const getTitleClass = (
             <div
               v-if="showHighlight"
               class="w-md absolute left-0 h-full bg-opacity-60"
-              :class="generateClass('BGCOLOR', highlightColor)"
+              :class="generateClass.bgColorVariant({ color: highlightColor })"
             ></div>
             <!-- title block -->
             <div class="relative">
@@ -165,7 +165,7 @@ const getTitleClass = (
         <svg
           v-if="imgPosition === 'right'"
           class="w-3xl absolute inset-y-0 left-0 hidden h-full lg:block"
-          :class="generateClass('SVGFILL', bgColor)"
+          :class="generateClass.svgFillColorVariant({ color: bgColor })"
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
           aria-hidden="true"
@@ -175,7 +175,7 @@ const getTitleClass = (
         <svg
           v-else
           class="w-3xl absolute inset-y-0 right-0 hidden h-full lg:block"
-          :class="generateClass('SVGFILL', bgColor)"
+          :class="generateClass.svgFillColorVariant({ color: bgColor })"
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
           aria-hidden="true"

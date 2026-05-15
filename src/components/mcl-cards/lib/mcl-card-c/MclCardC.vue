@@ -4,7 +4,7 @@ import type {
   HeadingSize,
   OpacityRange,
 } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 
 const props = withDefaults(
@@ -40,7 +40,7 @@ const emit = defineEmits<{
 }>()
 
 const cardClass = computed(() => {
-  const classArray: string[] = [generateClass('BGCOLOR', props.cardColor)]
+  const classArray: string[] = [generateClass.bgColorVariant({ color: props.cardColor })]
   if (cardFlipped.value) {
     classArray.push('flip-card')
   }
@@ -63,13 +63,13 @@ const titleClass = computed<string>(() => {
     highlightOpacity,
   } = props
   const classArray: string[] = [
-    generateClass('H3', titleSize),
-    generateClass('TEXTCOLOR', titleColor),
+    generateClass.h3Variant({ size: titleSize }),
+    generateClass.textColorVariant({ color: titleColor }),
   ]
   if (showHighlight) {
     classArray.push('px-xs py-2xs mb-2xs rounded')
-    ;(classArray.push(generateClass('BGCOLOR', highlightColor)),
-      classArray.push(generateClass('BGOPACITY', highlightOpacity)))
+    ;(classArray.push(generateClass.bgColorVariant({ color: highlightColor })),
+      classArray.push(generateClass.bgOpacityVariant({ opacity: highlightOpacity })))
   }
   return classArray.join(' ')
 })

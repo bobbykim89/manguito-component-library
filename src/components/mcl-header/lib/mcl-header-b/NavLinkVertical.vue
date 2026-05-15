@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { computed } from 'vue'
 import type { MenuItemType } from '../common/index.types'
 const props = withDefaults(
@@ -34,24 +34,24 @@ const handleLinkClick = (e: Event, item: MenuItemType) => {
 }
 const colorClass = computed<string>(() => {
   const { textColor, textSize, dHl, hlColor, fontBold } = props
-  const classArray: string[] = [generateClass('BODYTEXT', textSize)]
+  const classArray: string[] = [generateClass.bodyTextVariant({ size: textSize })]
   if (!dHl) {
     const nonHlTextClass: string[] = [
-      generateClass('TEXTCOLOR', textColor),
-      generateClass('HVTEXTCOLOR', hlColor),
-      generateClass('FCTEXTCOLOR', hlColor),
+      generateClass.textColorVariant({ color: textColor }),
+      generateClass.hoverTextColorVariant({ color: hlColor }),
+      generateClass.focusTextColorVariant({ color: hlColor }),
     ]
     classArray.push(nonHlTextClass.join(' '))
   }
   if (dHl) {
-    const highlightColor: string = generateClass('BEFOREBG', hlColor)
+    const highlightColor: string = generateClass.beforeBgColorVariant({ color: hlColor })
     const hlClass: string =
       'before:inset-y-0 before:left-0 before:transition-[width] before:duration-300 before:ease-linear before:w-0 hover:before:w-full focus:before:w-full '
     classArray.push(hlClass + highlightColor)
     const hlTextClass: string[] = [
-      generateClass('TEXTCOLOR', hlColor),
-      generateClass('HVTEXTCOLOR', textColor),
-      generateClass('FCTEXTCOLOR', textColor),
+      generateClass.textColorVariant({ color: hlColor }),
+      generateClass.hoverTextColorVariant({ color: textColor }),
+      generateClass.focusTextColorVariant({ color: textColor }),
     ]
     classArray.push(hlTextClass.join(' '))
   }

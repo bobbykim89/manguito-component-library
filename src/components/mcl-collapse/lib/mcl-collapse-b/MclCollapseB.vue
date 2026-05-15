@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
-import generateClass, { Collapse } from '@bobbykim/manguito-theme'
+import { generateClass, Collapse } from '@bobbykim/manguito-theme'
 import { ref } from 'vue'
 
 const props = withDefaults(
@@ -58,8 +58,8 @@ const getBorderClass = (
 ): string => {
   let borderInfo: string[] = [
     'border',
-    generateClass('BORDER', bColor),
-    generateClass('BGCOLOR', bgColor),
+    generateClass.borderColorVariant({ color: bColor }),
+    generateClass.bgColorVariant({ color: bgColor }),
   ]
 
   if (dShadow) {
@@ -76,8 +76,8 @@ const getBorderClass = (
 
 const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
   const classArray: string[] = [
-    generateClass('H3', size),
-    generateClass('TEXTCOLOR', color),
+    generateClass.h3Variant({ size: size }),
+    generateClass.textColorVariant({ color: color }),
   ]
   return classArray.join(' ')
 }
@@ -97,7 +97,7 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
       class="flex w-full cursor-pointer items-center justify-between px-4 py-2 transition duration-200 ease-in hover:bg-opacity-70"
       :class="[
         rounded ? 'rounded-lg' : 'rounded-sm',
-        generateClass('BGCOLOR', triggerBgColor),
+        generateClass.bgColorVariant({ color: triggerBgColor }),
       ]"
     >
       <span :class="getTitleClass(titleSize, titleColor)">{{ title }}</span>
@@ -111,7 +111,7 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
           class="h-xs transition-transform duration-300 ease-in"
           :class="[
             !isOpen ? 'rotate-0' : 'rotate-180',
-            generateClass('SVGFILL', iconColor),
+            generateClass.svgFillColorVariant({ color: iconColor }),
           ]"
         >
           <!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->

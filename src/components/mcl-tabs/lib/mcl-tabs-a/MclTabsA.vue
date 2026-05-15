@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
-import generateClass, {
+import {
+  generateClass,
   TabContainer,
   TabContent,
 } from '@bobbykim/manguito-theme'
@@ -84,8 +85,8 @@ const borderClass = computed<string>(() => {
    */
   const { bgColor, borderColor, rounded, showShadow } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', bgColor),
-    generateClass('BORDER', borderColor),
+    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.borderColorVariant({ color: borderColor }),
   ]
   rounded && classArray.push('rounded-xl')
   showShadow && classArray.push('shadow-xl')
@@ -97,7 +98,7 @@ const tabClass = computed<string>(() => {
    * @param {boolean} rounded
    */
   const { tabColor, rounded } = props
-  const classArray: string[] = [generateClass('BGCOLOR', tabColor)]
+  const classArray: string[] = [generateClass.bgColorVariant({ color: tabColor })]
   rounded && classArray.push('rounded-xl')
   return classArray.join(' ')
 })
@@ -109,8 +110,8 @@ const activeBtnClass = computed<string>(() => {
    */
   const { bgColor, activeTitleColor, showShadow } = props
   const classArray: string[] = [
-    generateClass('TEXTCOLOR', activeTitleColor),
-    generateClass('BGCOLOR', bgColor),
+    generateClass.textColorVariant({ color: activeTitleColor }),
+    generateClass.bgColorVariant({ color: bgColor }),
     // 'ring-4 ring-white ring-opacity-60',
     'outline-4 outline-white outline-opacity-60',
   ]
@@ -124,8 +125,8 @@ const scrollBtnClass = computed<string>(() => {
    */
   const { bgColor, activeTitleColor } = props
   const classArray: string[] = [
-    generateClass('TEXTCOLOR', activeTitleColor),
-    generateClass('BGCOLOR', bgColor),
+    generateClass.textColorVariant({ color: activeTitleColor }),
+    generateClass.bgColorVariant({ color: bgColor }),
     'opacity-60 hover:opacity-40 transition-opacity duration-300 ease-linear',
   ]
   return classArray.join(' ')
@@ -133,7 +134,7 @@ const scrollBtnClass = computed<string>(() => {
 const inactiveBtnClass = computed<string>(() => {
   const { inactiveTitleColor } = props
   const classArray: string[] = [
-    generateClass('TEXTCOLOR', inactiveTitleColor),
+    generateClass.textColorVariant({ color: inactiveTitleColor }),
     'hover:bg-white/35 focus:bg-white/35 transition-colors ease-in duration-300',
   ]
   return classArray.join(' ')
@@ -198,7 +199,7 @@ watch(width, updateScrollButtons)
           :disabled="activeTab === idx"
           @click="(hadleTabClick($event, item.title), update(idx))"
         >
-          <h3 :class="generateClass('H3', titleSize)">
+          <h3 :class="generateClass.h3Variant({ size: titleSize })">
             {{ item.title }}
           </h3>
         </button>

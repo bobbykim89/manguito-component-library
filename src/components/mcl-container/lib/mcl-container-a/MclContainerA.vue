@@ -5,7 +5,7 @@ import type {
   DirectionX,
   DirectionY,
 } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 
 withDefaults(
   defineProps<{
@@ -89,11 +89,11 @@ const getRightColumnWIdth = (
 </script>
 
 <template>
-  <section class="py-lg lg:py-xl" :class="generateClass('BGCOLOR', sectionBg)">
+  <section class="py-lg lg:py-xl" :class="generateClass.bgColorVariant({ color: sectionBg })">
     <div class="lg:min-h-15 relative min-h-9 md:min-h-12">
       <svg
         class="absolute inset-x-0 left-0 block h-full w-full"
-        :class="generateClass('SVGFILL', containerBg)"
+        :class="generateClass.svgFillColorVariant({ color: containerBg })"
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
         aria-hidden="true"
@@ -103,7 +103,7 @@ const getRightColumnWIdth = (
     </div>
     <div
       class="py-md md:py-lg lg:py-xl px-sm md:px-md lg:px-lg"
-      :class="generateClass('BGCOLOR', containerBg)"
+      :class="generateClass.bgColorVariant({ color: containerBg })"
     >
       <div class="container grid gap-4 md:grid-cols-4">
         <div :class="getLeftColumnWidth(twoColumns, leftColumnWidth)">
@@ -120,7 +120,7 @@ const getRightColumnWIdth = (
     <div class="lg:min-h-15 relative min-h-9 md:min-h-12">
       <svg
         class="absolute inset-x-0 left-0 block h-full w-full"
-        :class="generateClass('SVGFILL', containerBg)"
+        :class="generateClass.svgFillColorVariant({ color: containerBg })"
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
         aria-hidden="true"

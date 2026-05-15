@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme';
-import generateClass, { Collapse } from '@bobbykim/manguito-theme';
+import { generateClass, Collapse } from '@bobbykim/manguito-theme';
 import { ref } from 'vue';
 
 const props = withDefaults(
@@ -58,10 +58,10 @@ const getBorderClass = (
   dHl: boolean,
   hlColor: ColorPalette,
 ): string => {
-  const classArray: string[] = ['border', generateClass('BORDER', bColor)]
+  const classArray: string[] = ['border', generateClass.borderColorVariant({ color: bColor })]
 
   if (dHl) {
-    const borderArray: string[] = [generateClass('BORDERL', hlColor)]
+    const borderArray: string[] = [generateClass.borderLeftColorVariant({ color: hlColor })]
     borderArray.forEach((item) => {
       ;(classArray.push(item), classArray.push('border-l-8'))
     })
@@ -72,8 +72,8 @@ const getBorderClass = (
 
 const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
   const classArray: string[] = [
-    generateClass('H3', size),
-    generateClass('TEXTCOLOR', color),
+    generateClass.h3Variant({ size: size }),
+    generateClass.textColorVariant({ color: color }),
   ]
   return classArray.join(' ')
 }
@@ -91,9 +91,9 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
       class=" px-sm transition-[border] duration-500"
       :class="[
         isOpen
-          ? `border-b ${generateClass('BORDERB', borderColor)} ease-in`
+          ? `border-b ${generateClass.borderBottomColorVariant({ color: borderColor })} ease-in`
           : 'ease-out',
-        generateClass('BGCOLOR', bgColor),
+        generateClass.bgColorVariant({ color: bgColor }),
       ]"
     >
       <div class="flex items-center justify-between">
@@ -112,7 +112,7 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
         </div>
       </div>
     </div>
-    <div class="overflow-hidden" :class="generateClass('BGCOLOR', contentBgColor)">
+    <div class="overflow-hidden" :class="generateClass.bgColorVariant({ color: contentBgColor })">
       <Collapse
         ref="collapseRef"
         :id="collapseId"
@@ -130,8 +130,8 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
       aria-hidden="true"
       class="px-sm flex cursor-pointer items-center justify-center border-t py-1.5 transition-all duration-500"
       :class="[
-        generateClass('BGCOLOR', bgColor),
-        generateClass('BORDERT', borderColor),
+        generateClass.bgColorVariant({ color: bgColor }),
+        generateClass.borderTopColorVariant({ color: borderColor }),
       ]"
       @click="collapseRef?.toggle()"
     >
@@ -142,7 +142,7 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
         :class="[
           !isOpen ? 'rotate-0' : 'rotate-180',
           'transition-transform duration-300 ease-in',
-          generateClass('SVGFILL', iconColor),
+          generateClass.svgFillColorVariant({ color: iconColor }),
         ]"
       >
         <!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->

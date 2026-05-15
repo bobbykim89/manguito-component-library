@@ -5,7 +5,7 @@ import type {
   CtaTarget,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
-import generateClass, { AccordionGroup, HeaderHorizontal } from '@bobbykim/manguito-theme'
+import { generateClass, AccordionGroup, HeaderHorizontal } from '@bobbykim/manguito-theme'
 import { ref } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 import NavCollapse from './NavCollapse.vue'
@@ -104,8 +104,8 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
    * @param {ColorPalette} color - titleColor
    */
   const classArray: string[] = [
-    generateClass('H2', size),
-    generateClass('TEXTCOLOR', color),
+    generateClass.h2Variant({ size: size }),
+    generateClass.textColorVariant({ color: color }),
   ]
   return classArray.join(' ')
 }
