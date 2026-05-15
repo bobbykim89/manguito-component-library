@@ -6,11 +6,11 @@ import { ClientSideRender } from '../util'
 const props = withDefaults(
   defineProps<{
     id?: string
-    className?: string | string[]
+    customClass?: string | string[]
     visible?: boolean
   }>(),
   {
-    className: '',
+    customClass: '',
     visible: false,
   }
 )
@@ -81,7 +81,7 @@ defineExpose<{
         class="overflow-y-clip"
       >
         <div v-show="isOpen">
-          <div :class="className">
+          <div :class="customClass">
             <slot />
           </div>
         </div>

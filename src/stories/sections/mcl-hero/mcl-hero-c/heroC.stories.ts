@@ -40,14 +40,14 @@ const meta: Meta<typeof MclHeroC> = {
       defaultValue: 'dark-3',
       category: 'Title Block',
     }),
-    displayTitleShadow: booleanControllers({
+    showTitleShadow: booleanControllers({
       name: 'display-title-shadow',
       required: false,
       description: 'whether or not to add drop shadow on title text',
       defaultValue: true,
       category: 'Title Block',
     }),
-    displayHighlight: booleanControllers({
+    showHighlight: booleanControllers({
       name: 'display-highlight',
       required: false,
       description: 'whether or not to display highlight under title text',
@@ -61,7 +61,7 @@ const meta: Meta<typeof MclHeroC> = {
       defaultValue: 'primary',
       category: 'Highlight',
     }),
-    displayLabel: booleanControllers({
+    showLabel: booleanControllers({
       name: 'display-label',
       required: false,
       description: 'whether or not to display label above title text',
@@ -101,7 +101,7 @@ const meta: Meta<typeof MclHeroC> = {
       description: 'assigns url for background image',
       category: 'Background',
     }),
-    displayGradient: booleanControllers({
+    showGradient: booleanControllers({
       name: 'display-gradient',
       required: false,
       description: 'whether or not to add gradient on background',
@@ -121,14 +121,14 @@ const meta: Meta<typeof MclHeroC> = {
     titleLevel: 'h1',
     titleSize: 'md',
     titleColor: 'dark-3',
-    displayTitleShadow: true,
-    displayHighlight: true,
+    showTitleShadow: true,
+    showHighlight: true,
     imageSource:
       'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1650675406/ManguitoPage/hl38duquvda0ilultyqb.jpg',
-    displayGradient: true,
+    showGradient: true,
     highlightColor: 'primary',
     gradientColor: 'primary',
-    displayLabel: true,
+    showLabel: true,
     labelText: 'Lorem Ipsum',
     labelTextSize: 'md',
     labelTextColor: 'light-1',

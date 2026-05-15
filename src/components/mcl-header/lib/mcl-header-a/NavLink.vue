@@ -9,7 +9,7 @@ const props = withDefaults(
     menuTextSize?: BodyText
     menuTextColor?: ColorPalette
     menuTextBold?: boolean
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     asLink?: boolean
   }>(),
@@ -17,7 +17,7 @@ const props = withDefaults(
     menuTextSize: 'md',
     menuTextColor: 'dark-3',
     menuTextBold: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     asLink: true,
   },
@@ -64,7 +64,7 @@ const handleNavLinkClick = (e: Event, item: MenuItemType) => {
       @click="handleNavLinkClick($event, navItem)"
     ></a>
     <div
-      v-if="displayHighlight"
+      v-if="showHighlight"
       class="nav__decorator relative -top-0.5 h-1.5"
       :class="generateClass('BEFOREBG', highlightColor)"
     ></div>

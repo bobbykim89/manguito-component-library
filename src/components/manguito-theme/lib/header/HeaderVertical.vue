@@ -9,13 +9,13 @@ const props = withDefaults(
   defineProps<{
     bgColor?: ColorPalette
     drawerBtnColor?: ColorPalette
-    drawerBtnBorder?: boolean
+    showDrawerBorder?: boolean
     headerWidth?: number
   }>(),
   {
     bgColor: 'light-1',
     drawerBtnColor: 'dark-1',
-    drawerBtnBorder: true,
+    showDrawerBorder: true,
     headerWidth: 160,
   },
 )
@@ -85,11 +85,11 @@ defineExpose<{
         >
           <NavDrawer
             :color="drawerBtnColor"
-            :display-border="drawerBtnBorder"
+            :show-border="showDrawerBorder"
             class="relative block lg:hidden"
             @hbg-click="toggleNavButton"
             :toggle="navOpen"
-            :nav-color="bgColor"
+            :bg-color="bgColor"
           ></NavDrawer>
         </div>
 

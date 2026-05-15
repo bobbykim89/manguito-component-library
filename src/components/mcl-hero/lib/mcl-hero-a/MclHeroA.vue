@@ -15,34 +15,34 @@ const props = withDefaults(
     titleLevel?: HeadingLevel
     titleSize?: HeadingSize
     titleColor?: ColorPalette
-    displaySubTitle?: boolean
+    showSubTitle?: boolean
     subTitle?: string
     subTitleLevel?: HeadingLevel
     subTitleSize?: HeadingSize
     subTitleColor?: ColorPalette
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     imageSource: string
     bgColor?: ColorPalette
     mobileImageBlur?: boolean
     imgPosition?: DirectionX
-    displayFilter?: boolean
+    showFilter?: boolean
     filterOpacity?: OpacityRange
   }>(),
   {
     titleLevel: 'h1',
     titleSize: 'md',
     titleColor: 'dark-3',
-    displaySubTitle: false,
+    showSubTitle: false,
     subTitleLevel: 'h3',
     subTitleSize: 'md',
     subTitleColor: 'dark-3',
-    displayHighlight: false,
+    showHighlight: false,
     highlightColor: 'warning',
     imgPosition: 'right',
     bgColor: 'white',
     mobileImageBlur: false,
-    displayFilter: true,
+    showFilter: true,
     filterOpacity: 30,
   },
 )
@@ -110,7 +110,7 @@ const getTitleClass = (
           :class="{ 'blur-sm': mobileImageBlur }"
         >
           <div
-            v-if="displayFilter"
+            v-if="showFilter"
             class="absolute inset-0"
             :class="filterClass"
           ></div>
@@ -121,11 +121,11 @@ const getTitleClass = (
         >
           <div
             class="mb-xs md:mb-sm lg:mb-md ml-xs relative md:ml-0"
-            :class="{ 'pl-xs': displayHighlight }"
+            :class="{ 'pl-xs': showHighlight }"
           >
             <!-- highlight -->
             <div
-              v-if="displayHighlight"
+              v-if="showHighlight"
               class="w-md absolute left-0 h-full bg-opacity-60"
               :class="generateClass('BGCOLOR', highlightColor)"
             ></div>
@@ -142,7 +142,7 @@ const getTitleClass = (
               <!-- sub title -->
               <component
                 :is="subTitleLevel"
-                v-if="displaySubTitle"
+                v-if="showSubTitle"
                 class="pb-2xs"
                 :class="
                   getTitleClass(subTitleLevel, subTitleSize, subTitleColor)

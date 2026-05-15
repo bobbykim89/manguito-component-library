@@ -11,10 +11,10 @@ const props = withDefaults(
     titleSize?: HeadingSize
     borderColor?: ColorPalette
     bgColor?: ColorPalette
-    btnColor?: ColorPalette
+    triggerBgColor?: ColorPalette
     iconColor?: ColorPalette
     rounded?: boolean
-    displayShadow?: boolean
+    showShadow?: boolean
     visible?: boolean
   }>(),
   {
@@ -22,10 +22,10 @@ const props = withDefaults(
     titleSize: 'md',
     borderColor: 'light-3',
     bgColor: 'light-1',
-    btnColor: 'primary',
+    triggerBgColor: 'primary',
     iconColor: 'light-1',
     rounded: true,
-    displayShadow: true,
+    showShadow: true,
     visible: false,
   },
 )
@@ -86,7 +86,7 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
 <template>
   <div
     class="p-2xs w-full overflow-hidden"
-    :class="getBorderClass(borderColor, bgColor, rounded, displayShadow)"
+    :class="getBorderClass(borderColor, bgColor, rounded, showShadow)"
   >
     <button
       type="button"
@@ -97,7 +97,7 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
       class="flex w-full cursor-pointer items-center justify-between px-4 py-2 transition duration-200 ease-in hover:bg-opacity-70"
       :class="[
         rounded ? 'rounded-lg' : 'rounded-sm',
-        generateClass('BGCOLOR', btnColor),
+        generateClass('BGCOLOR', triggerBgColor),
       ]"
     >
       <span :class="getTitleClass(titleSize, titleColor)">{{ title }}</span>
@@ -126,7 +126,7 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
         ref="collapseRef"
         :id="collapseId"
         :visible="visible"
-        class-name="px-xs pt-xs pb-2xs"
+        custom-class="px-xs pt-xs pb-2xs"
         role="region"
         :aria-labelledby="`${collapseId}-trigger`"
         @open="handleOpen"

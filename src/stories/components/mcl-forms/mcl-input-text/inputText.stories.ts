@@ -19,7 +19,7 @@ const meta: Meta<typeof MclInputText> = {
       description: 'assigns id of the input component',
       category: 'ID',
     }),
-    displayBorder: booleanControllers({
+    showBorder: booleanControllers({
       name: 'display-border',
       required: false,
       description: 'whether or not to display border of the input component',
@@ -47,7 +47,7 @@ const meta: Meta<typeof MclInputText> = {
       defaultValue: 'light-1',
       category: 'Input Block',
     }),
-    textcolor: colorControllers({
+    textColor: colorControllers({
       name: 'text-color',
       required: false,
       description: 'assigns text color of the input component',
@@ -67,7 +67,7 @@ const meta: Meta<typeof MclInputText> = {
       defaultValue: 'text',
       category: 'Input Block',
     }),
-    displayShadow: booleanControllers({
+    showShadow: booleanControllers({
       name: 'display-shadow',
       required: false,
       description: 'whether or not to add drop shadow around component',
@@ -106,7 +106,7 @@ const meta: Meta<typeof MclInputText> = {
       description: 'assigns text being displayed when input value is not valid',
       category: 'Input Block',
     }),
-    displayHighlight: booleanControllers({
+    showHighlight: booleanControllers({
       name: 'display-highlight',
       required: false,
       description:
@@ -124,16 +124,16 @@ const meta: Meta<typeof MclInputText> = {
   },
   args: {
     id: 'mcl-input-text',
-    displayBorder: false,
+    showBorder: false,
     borderColor: 'light-4',
     rounded: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     bgColor: 'light-1',
-    textcolor: 'black',
+    textColor: 'black',
     placeholder: '',
     type: 'text',
-    displayShadow: true,
+    showShadow: true,
     required: false,
   },
 }

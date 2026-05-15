@@ -10,10 +10,10 @@ const props = withDefaults(
   defineProps<{
     title?: string
     titleColor?: ColorPalette
-    className?: string | string[]
+    customClass?: string | string[]
     visible?: boolean
-    noBackdrop?: boolean
-    noHeader?: boolean
+    showBackdrop?: boolean
+    showHeader?: boolean
     color?: ColorPalette
     backdropColor?: ColorPalette
     placement?: DirectionX
@@ -21,10 +21,10 @@ const props = withDefaults(
   }>(),
   {
     titleColor: 'dark-3',
-    className: '',
+    customClass: '',
     visible: false,
-    noBackdrop: false,
-    noHeader: false,
+    showBackdrop: true,
+    showHeader: true,
     color: 'light-1',
     backdropColor: 'dark-4',
     placement: 'left',
@@ -137,7 +137,7 @@ defineExpose<{
 
 <template>
   <div :style="handleStyleVariables" :visible="toggle" ref="sidebarRef">
-    <Transition name="fade" appear tag="div" v-if="!noBackdrop">
+    <Transition name="fade" appear tag="div" v-if="showBackdrop">
       <section
         v-if="toggle"
         @click="closeSidebar"
@@ -164,9 +164,9 @@ defineExpose<{
       >
         <div
           class="relative h-full overflow-y-scroll overscroll-contain"
-          :class="[generateClass('BGCOLOR', color), className]"
+          :class="[generateClass('BGCOLOR', color), customClass]"
         >
-          <div v-if="!noHeader" class="sticky top-0 z-10" ref="headerRef">
+          <div v-if="showHeader" class="sticky top-0 z-10" ref="headerRef">
             <slot name="header" :close="closeSidebar" :status="toggle">
               <div
                 class="p-xs flex items-center justify-between"

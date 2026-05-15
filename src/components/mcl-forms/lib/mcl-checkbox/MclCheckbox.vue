@@ -50,7 +50,7 @@ const props = withDefaults(
     checkedBgColor?: ColorPalette
     checkColor?: ColorPalette
     borderColor?: ColorPalette
-    displayShadow?: boolean
+    showShadow?: boolean
     rounded?: boolean
     value?: string | number
     checked?: boolean
@@ -61,7 +61,7 @@ const props = withDefaults(
     checkedBgColor: 'warning',
     checkColor: 'dark-3',
     borderColor: 'dark-1',
-    displayShadow: false,
+    showShadow: false,
     rounded: false,
     checked: false,
   }
@@ -107,7 +107,7 @@ const handleCheckboxLayout = computed<string>(() => {
   const {
     bgColor,
     borderColor,
-    displayShadow,
+    showShadow,
     rounded,
     checkedBgColor,
     checkColor,
@@ -118,7 +118,7 @@ const handleCheckboxLayout = computed<string>(() => {
     beforeColor[checkColor],
     peerBgColor[checkedBgColor],
   ]
-  if (displayShadow) {
+  if (showShadow) {
     classArray.push('drop-shadow-md')
   }
   if (rounded) {

@@ -13,21 +13,21 @@ const props = withDefaults(
     titleLevel?: HeadingLevel
     titleSize?: HeadingSize
     titleColor?: ColorPalette
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     fullWidth?: boolean
     imageSource: string
-    displayGradients?: boolean
+    showGradients?: boolean
     gradientColor?: ColorPalette
   }>(),
   {
     titleLevel: 'h1',
     titleSize: 'md',
     titleColor: 'white',
-    displayHighlight: false,
+    showHighlight: false,
     highlightColor: 'dark-3',
     fullWidth: true,
-    displayGradients: true,
+    showGradients: true,
     gradientColor: 'dark-3',
   },
 )
@@ -66,15 +66,15 @@ const titleClass = computed<string>(() => {
 const titleHighlightClass = computed<string>(() => {
   /**
    * @param {ColorPalette} highlightColor
-   * @param {boolean} displayHighlight
+   * @param {boolean} showHighlight
    */
-  const { highlightColor, displayHighlight } = props
+  const { highlightColor, showHighlight } = props
   const classArray: string[] = [
     generateClass('BGCOLOR', highlightColor),
     'shadow-lg',
     'px-xs',
   ]
-  return displayHighlight ? classArray.join(' ') : ''
+  return showHighlight ? classArray.join(' ') : ''
 })
 const gradientColorClass = computed<string>(() => {
   const { gradientColor } = props
@@ -127,7 +127,7 @@ const gradientColorClass = computed<string>(() => {
     :style="getBgImage(imageSource)"
   >
     <div
-      v-if="displayGradients"
+      v-if="showGradients"
       class="bg-linear-to-t absolute inset-0 top-1/3 to-transparent"
       :class="gradientColorClass"
     ></div>

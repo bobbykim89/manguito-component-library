@@ -38,7 +38,7 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    title: {
+    content: {
       type: String,
       required: true,
     },
@@ -71,7 +71,7 @@ export default defineComponent({
         id: props.id,
         class: classList.value,
         role: 'tooltip',
-        innerHTML: DOMPurify.sanitize(props.title),
+        innerHTML: DOMPurify.sanitize(props.content),
         style: [tooltipWidth.value],
       })
   },

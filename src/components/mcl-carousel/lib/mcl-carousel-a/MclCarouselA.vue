@@ -17,12 +17,12 @@ const props = withDefaults(
     titleSize?: HeadingSize
     titleColor?: ColorPalette
     bgColor?: ColorPalette
-    displayTagLine?: boolean
+    showTagLine?: boolean
     tagLineUpperCase?: boolean
     tagLine?: string
     tagLineSize?: BodyText
     tagLineColor?: ColorPalette
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     btnColor?: ColorPalette
     btnBgColor?: ColorPalette
@@ -33,11 +33,11 @@ const props = withDefaults(
     titleSize: 'md',
     titleColor: 'dark-3',
     bgColor: 'light-1',
-    displayTagLine: true,
+    showTagLine: true,
     tagLineUpperCase: true,
     tagLineSize: 'md',
     tagLineColor: 'dark-1',
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     btnColor: 'dark-3',
     btnBgColor: 'light-4',
@@ -197,13 +197,13 @@ onMounted(() => {
     <div class="px-xs sm:px-md container text-center sm:text-left">
       <div class="relative">
         <div
-          v-if="displayHighlight"
+          v-if="showHighlight"
           class="w-md absolute -left-4 hidden h-full bg-opacity-25 sm:block"
           :class="generateClass('BGCOLOR', highlightColor)"
         ></div>
         <div class="relative">
           <span
-            v-if="displayTagLine"
+            v-if="showTagLine"
             class="tracking-widest"
             :class="
               getTaglineClass(tagLineSize, tagLineColor, tagLineUpperCase)

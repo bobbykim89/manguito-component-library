@@ -20,7 +20,7 @@ const props = withDefaults(
     logoAsLink?: boolean
     logoLink: string
     logoLinkTarget?: CtaTarget
-    displaySocialIcons?: boolean
+    showSocialIcons?: boolean
     socialIconColor: ColorPalette
     socialLinks?: SocialUrl
     menuItems: MenuItemType[]
@@ -29,7 +29,7 @@ const props = withDefaults(
     menuTextSize?: BodyText
     menuTextColor?: ColorPalette
     menuTextBold?: boolean
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     bgColor?: ColorPalette
     borderTopColor?: ColorPalette
@@ -40,13 +40,13 @@ const props = withDefaults(
     titleColor: 'light-1',
     logoAsLink: false,
     logoLinkTarget: '_self',
-    displaySocialIcons: true,
+    showSocialIcons: true,
     socialIconColor: 'light-1',
     menuItemAsLink: false,
     menuTextSize: 'md',
     menuTextColor: 'light-1',
     menuTextBold: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     bgColor: 'dark-3',
     borderTopColor: 'primary',
@@ -123,7 +123,7 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
           </a>
         </div>
         <div
-          v-if="displaySocialIcons"
+          v-if="showSocialIcons"
           class="mb-xs flex items-center justify-end md:justify-center"
         >
           <!-- social icons -->
@@ -167,7 +167,7 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
               >
               </a>
               <div
-                v-if="displayHighlight"
+                v-if="showHighlight"
                 class="relative top-3xs h-3xs nav__decorator"
                 :class="generateClass('BEFOREBG', highlightColor)"
               ></div>
@@ -194,7 +194,7 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
               >
               </a>
               <div
-                v-if="displayHighlight"
+                v-if="showHighlight"
                 class="relative top-3xs h-3xs nav__decorator"
                 :class="generateClass('BEFOREBG', highlightColor)"
               ></div>
