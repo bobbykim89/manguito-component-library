@@ -13,7 +13,7 @@ const props = withDefaults(
     menuTextSize?: BodyText
     menuTextColor?: ColorPalette
     menuTextBold?: boolean
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     asLink?: boolean
   }>(),
@@ -23,7 +23,7 @@ const props = withDefaults(
     hoverBgColor: 'dark-1',
     menuTextColor: 'dark-3',
     menuTextBold: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     asLink: true,
   },
@@ -101,7 +101,7 @@ const getMenuItemClass = (
         </svg>
       </button>
       <div
-        v-if="displayHighlight"
+        v-if="showHighlight"
         class="nav__decorator relative -top-0.5 h-1.5"
         :class="generateClass('BEFOREBG', highlightColor)"
       ></div>
@@ -114,7 +114,7 @@ const getMenuItemClass = (
     >
       <div class="pt-2xs relative">
         <div
-          v-if="displayHighlight"
+          v-if="showHighlight"
           class="w-md absolute -left-4 h-full bg-opacity-25"
           :class="generateClass('BGCOLOR', highlightColor)"
         ></div>

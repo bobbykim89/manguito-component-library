@@ -27,7 +27,7 @@ const meta: Meta<typeof MclSelect> = {
       description: 'assigns id of the component',
       category: 'ID',
     }),
-    displayBorder: booleanControllers({
+    showBorder: booleanControllers({
       name: 'display-border',
       required: false,
       description: 'whether or not to disply border of the component',
@@ -48,7 +48,7 @@ const meta: Meta<typeof MclSelect> = {
       defaultValue: false,
       category: 'Component Block',
     }),
-    textcolor: colorControllers({
+    textColor: colorControllers({
       name: 'text-color',
       required: false,
       description: 'assigns text color of the component',
@@ -70,22 +70,22 @@ const meta: Meta<typeof MclSelect> = {
       defaultValue: 'dark-4',
       category: 'Component Block',
     }),
-    displayShadow: booleanControllers({
+    showShadow: booleanControllers({
       name: 'display-shadow',
       required: false,
       description: 'whether or not to add shadow on the component',
       defaultValue: true,
       category: 'Component Block',
     }),
-    selectColor: colorControllers({
-      name: 'select-color',
+    optionHoverColor: colorControllers({
+      name: 'option-hover-color',
       required: false,
       description: 'assigns options color when it is on hover.',
       defaultValue: 'primary',
       category: 'Options Block',
     }),
-    invalidFeedback: textControllers({
-      name: 'invalid-feedback',
+    noMatchText: textControllers({
+      name: 'no-match-text',
       required: false,
       description: 'assigns text when there is no matching option available',
       defaultValue: 'No match.',
@@ -111,7 +111,7 @@ const meta: Meta<typeof MclSelect> = {
       defaultValue: false,
       category: 'Input Block',
     }),
-    displayHighlight: booleanControllers({
+    showHighlight: booleanControllers({
       name: 'display-highlight',
       required: false,
       description: 'whether or not to display highlight on focus',
@@ -128,19 +128,19 @@ const meta: Meta<typeof MclSelect> = {
   },
   args: {
     id: 'mcl-select',
-    displayBorder: false,
+    showBorder: false,
     borderColor: 'light-4',
     rounded: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
-    textcolor: 'black',
+    textColor: 'black',
     bgColor: 'light-1',
     iconColor: 'dark-4',
-    selectColor: 'primary',
+    optionHoverColor: 'primary',
     placeholder: '',
-    displayShadow: true,
+    showShadow: true,
     required: false,
-    invalidFeedback: 'No match.',
+    noMatchText: 'No match.',
     options: selectOptions,
   },
 }

@@ -14,13 +14,13 @@ const props = withDefaults(
     titleLevel?: HeadingLevel
     titleSize?: HeadingSize
     titleColor?: ColorPalette
-    displayTitleShadow?: boolean
-    displayHighlight?: boolean
+    showTitleShadow?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     imageSource: string
-    displayGradient?: boolean
+    showGradient?: boolean
     gradientColor?: ColorPalette
-    displayLabel?: boolean
+    showLabel?: boolean
     labelText?: string
     labelTextSize?: BodyText
     labelTextColor?: ColorPalette
@@ -30,12 +30,12 @@ const props = withDefaults(
     titleLevel: 'h1',
     titleSize: 'md',
     titleColor: 'dark-3',
-    displayTitleShadow: true,
-    displayHighlight: true,
-    displayGradient: true,
+    showTitleShadow: true,
+    showHighlight: true,
+    showGradient: true,
     highlightColor: 'primary',
     gradientColor: 'primary',
-    displayLabel: true,
+    showLabel: true,
     labelTextSize: 'md',
     labelTextColor: 'light-1',
     labelBgColor: 'dark-3',
@@ -58,9 +58,9 @@ const titleClass = computed<string>(() => {
    * @param {HeadingLevel} titleLevel
    * @param {HeadingSize} titleSize
    * @param {ColorPalette} titleColor
-   * @param {boolean} displayTitleShadow
+   * @param {boolean} showTitleShadow
    */
-  const { titleLevel, titleSize, titleColor, displayTitleShadow } = props
+  const { titleLevel, titleSize, titleColor, showTitleShadow } = props
   const headingClass: Record<HeadingLevel, 'H1' | 'H2' | 'H3' | 'H4'> = {
     h1: 'H1',
     h2: 'H2',
@@ -71,7 +71,7 @@ const titleClass = computed<string>(() => {
     generateClass(headingClass[titleLevel], titleSize),
     generateClass('TEXTCOLOR', titleColor),
   ]
-  if (displayTitleShadow) {
+  if (showTitleShadow) {
     classArray.push('drop-shadow-lg')
   }
   return classArray.join(' ')
@@ -140,12 +140,12 @@ const gradientColorClass = computed<string>(() => {
     :style="getBgImage(imageSource)"
   >
     <div
-      v-if="displayGradient"
+      v-if="showGradient"
       class="bg-linear-to-t absolute inset-0 top-1/3 to-transparent"
       :class="gradientColorClass"
     ></div>
     <div class="py-md px-sm md:py-lg md:px-md relative">
-      <div v-if="displayLabel" class="mb-2xs">
+      <div v-if="showLabel" class="mb-2xs">
         <span
           v-html="labelText"
           class="py-3xs px-2xs"
@@ -159,7 +159,7 @@ const gradientColorClass = computed<string>(() => {
         v-html="title"
       ></component>
       <div
-        v-if="displayHighlight"
+        v-if="showHighlight"
         class="mb-xs h-3xs md:h-2xs w-md"
         :class="generateClass('BGCOLOR', highlightColor)"
       ></div>

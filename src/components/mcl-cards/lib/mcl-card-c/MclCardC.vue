@@ -14,19 +14,19 @@ const props = withDefaults(
     title?: string
     titleSize?: HeadingSize
     titleColor?: ColorPalette
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     highlightOpacity?: OpacityRange
-    displayTitle?: boolean
+    showTitle?: boolean
     cardColor?: ColorPalette
   }>(),
   {
     titleSize: 'md',
     titleColor: 'dark-3',
-    displayHighlight: false,
+    showHighlight: false,
     highlightColor: 'light-3',
     highlightOpacity: 80,
-    displayTitle: false,
+    showTitle: false,
     cardColor: 'primary',
   },
 )
@@ -51,14 +51,14 @@ const titleClass = computed<string>(() => {
   /**
    * @param {HeadingSize} titleSize
    * @param {ColorPalette} titleColor
-   * @param {boolean} displayHighlight
+   * @param {boolean} showHighlight
    * @param {ColorPalette} highlightColor
    * @param {OpacityRange} highlightOpacity
    */
   const {
     titleSize,
     titleColor,
-    displayHighlight,
+    showHighlight,
     highlightColor,
     highlightOpacity,
   } = props
@@ -66,7 +66,7 @@ const titleClass = computed<string>(() => {
     generateClass('H3', titleSize),
     generateClass('TEXTCOLOR', titleColor),
   ]
-  if (displayHighlight) {
+  if (showHighlight) {
     classArray.push('px-xs py-2xs mb-2xs rounded')
     ;(classArray.push(generateClass('BGCOLOR', highlightColor)),
       classArray.push(generateClass('BGOPACITY', highlightOpacity)))
@@ -102,7 +102,7 @@ const handleCardClick = (e: Event) => {
         'p-sm duration-800 relative flex h-full flex-col justify-end transition delay-500',
       ]"
     >
-      <h3 v-if="displayTitle" class="relative self-start" :class="titleClass">
+      <h3 v-if="showTitle" class="relative self-start" :class="titleClass">
         <span>
           {{ title }}
         </span>

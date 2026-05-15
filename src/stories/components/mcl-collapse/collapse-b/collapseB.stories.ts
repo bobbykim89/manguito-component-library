@@ -69,7 +69,7 @@ const meta: Meta<typeof MclCollapseB> = {
       defaultValue: true,
       category: 'Border',
     }),
-    displayShadow: booleanControllers({
+    showShadow: booleanControllers({
       name: 'display-shadow',
       required: false,
       description: 'adds drop shadow on border of component',
@@ -83,8 +83,8 @@ const meta: Meta<typeof MclCollapseB> = {
       defaultValue: 'light-1',
       category: 'Colors',
     }),
-    btnColor: colorControllers({
-      name: 'btn-color',
+    triggerBgColor: colorControllers({
+      name: 'trigger-bg-color',
       required: false,
       description: 'assigns background color of tab button',
       defaultValue: 'primary',
@@ -106,10 +106,10 @@ const meta: Meta<typeof MclCollapseB> = {
     titleSize: 'md',
     borderColor: 'light-3',
     bgColor: 'light-1',
-    btnColor: 'primary',
+    triggerBgColor: 'primary',
     iconColor: 'light-1',
     rounded: true,
-    displayShadow: true,
+    showShadow: true,
     visible: false,
   },
 }

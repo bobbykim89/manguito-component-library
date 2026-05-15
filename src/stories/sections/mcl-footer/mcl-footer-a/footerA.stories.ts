@@ -111,7 +111,7 @@ const meta: Meta<typeof MclFooterA> = {
       defaultValue: '_self',
       category: 'Title Block',
     }),
-    displaySocialIcons: booleanControllers({
+    showSocialIcons: booleanControllers({
       name: 'display-social-icons',
       required: false,
       description:
@@ -172,7 +172,7 @@ const meta: Meta<typeof MclFooterA> = {
       defaultValue: false,
       category: 'Menu Block',
     }),
-    displayHighlight: booleanControllers({
+    showHighlight: booleanControllers({
       name: 'display-highlight',
       required: false,
       description:
@@ -218,7 +218,7 @@ const meta: Meta<typeof MclFooterA> = {
     logoAsLink: false,
     logoLink: '/',
     logoLinkTarget: '_self',
-    displaySocialIcons: true,
+    showSocialIcons: true,
     socialIconColor: 'light-1',
     socialLinks: socialLinks,
     menuItems: navItems,
@@ -227,7 +227,7 @@ const meta: Meta<typeof MclFooterA> = {
     menuTextSize: 'md',
     menuTextColor: 'light-1',
     menuTextBold: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     bgColor: 'dark-3',
     borderTopColor: 'primary',

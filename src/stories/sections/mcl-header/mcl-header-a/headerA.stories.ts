@@ -170,7 +170,7 @@ const meta: Meta<typeof MclHeaderA> = {
       defaultValue: false,
       category: 'Menu Block',
     }),
-    displayHighlight: booleanControllers({
+    showHighlight: booleanControllers({
       name: 'display-highlight',
       required: false,
       description:
@@ -208,7 +208,7 @@ const meta: Meta<typeof MclHeaderA> = {
       defaultValue: 'dark-1',
       category: 'Colors',
     }),
-    drawerBtnBorder: booleanControllers({
+    showDrawerBorder: booleanControllers({
       name: 'hamburgerBorder',
       required: false,
       description: 'whether or not to display border for hamburger menu',
@@ -247,12 +247,12 @@ const meta: Meta<typeof MclHeaderA> = {
     menuTextSize: 'md',
     menuTextColor: 'dark-3',
     menuTextBold: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     bgColor: 'light-1',
     mobileMenuBgColor: 'light-2',
     drawerBtnColor: 'dark-1',
-    drawerBtnBorder: true,
+    showDrawerBorder: true,
     fadeInOnScroll: true,
     scrollDistance: 50,
   },

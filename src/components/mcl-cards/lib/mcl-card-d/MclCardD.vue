@@ -71,14 +71,14 @@ const toColorClasses: ColorMap = {
 
 const props = withDefaults(
   defineProps<{
-    displayImage?: boolean
+    showImage?: boolean
     imageSource?: string
     imageAlt?: string
     title: string
     titleSize?: HeadingSize
     titleColor?: ColorPalette
     bgColor?: ColorPalette
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     ctaText?: string
     ctaLink: string
@@ -94,12 +94,12 @@ const props = withDefaults(
     customColor?: ColorMap
   }>(),
   {
-    displayImage: true,
+    showImage: true,
     imageAlt: '',
     titleSize: 'md',
     titleColor: 'dark-4',
     bgColor: 'light-1',
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     ctaText: 'Read more',
     ctaLinkTarget: '_self',
@@ -194,7 +194,7 @@ const handleCardClick = (e: Event) => {
   >
     <div class="flex flex-col overflow-hidden rounded-md">
       <img
-        v-if="displayImage"
+        v-if="showImage"
         :src="imageSource"
         class="max-h-50 min-w-full object-cover object-top"
         :alt="imageAlt"
@@ -204,7 +204,7 @@ const handleCardClick = (e: Event) => {
           {{ title }}
         </h3>
         <div
-          v-if="displayHighlight"
+          v-if="showHighlight"
           class="mb-xs h-3xs w-md"
           :class="generateClass('BGCOLOR', highlightColor)"
         ></div>

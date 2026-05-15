@@ -37,7 +37,7 @@ const meta: Meta<typeof MclCardA> = {
       defaultValue: 'dark-3',
       category: 'Title Block',
     }),
-    displayImage: booleanControllers({
+    showImage: booleanControllers({
       name: 'display-image',
       required: false,
       description: 'displays image block on the card',
@@ -63,7 +63,7 @@ const meta: Meta<typeof MclCardA> = {
       defaultValue: 'light-3',
       category: 'Border',
     }),
-    displayShadow: booleanControllers({
+    showShadow: booleanControllers({
       name: 'display-shadow',
       required: false,
       description: 'adds drop shadow at the border of component',
@@ -77,7 +77,7 @@ const meta: Meta<typeof MclCardA> = {
       defaultValue: true,
       category: 'Border',
     }),
-    displayCta: booleanControllers({
+    showCta: booleanControllers({
       name: 'display-cta',
       required: false,
       description: 'displays cta button on the card component',
@@ -119,7 +119,7 @@ const meta: Meta<typeof MclCardA> = {
       defaultValue: 'primary',
       category: 'CTA',
     }),
-    displayLabel: booleanControllers({
+    showLabel: booleanControllers({
       name: 'display-label',
       required: false,
       description: 'displays label',
@@ -147,7 +147,7 @@ const meta: Meta<typeof MclCardA> = {
       defaultValue: 'dark-4',
       category: 'Label',
     }),
-    displayHighlight: booleanControllers({
+    showHighlight: booleanControllers({
       name: 'display-highlight',
       required: false,
       description: 'displays highlight under the title block',
@@ -220,24 +220,24 @@ const meta: Meta<typeof MclCardA> = {
     glass: false,
     glassBlur: 'sm',
     glassOpacity: 20,
-    displayImage: true,
+    showImage: true,
     imageSource:
       'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg',
     imageAlt: 'Manguito is perching',
-    displayCta: true,
+    showCta: true,
     ctaColor: 'primary',
     ctaLink: 'https://manguitopage.herokuapp.com/',
     ctaTarget: '_self',
     ctaText: 'cta text',
-    displayLabel: true,
+    showLabel: true,
     labelText: 'Lorem ipsum',
     labelTextColor: 'light-1',
     labelColor: 'dark-4',
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     enlargeOnHover: false,
     rounded: true,
-    displayShadow: true,
+    showShadow: true,
     ctaAsLink: false,
   },
 }

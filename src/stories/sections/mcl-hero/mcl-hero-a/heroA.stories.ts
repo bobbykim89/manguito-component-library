@@ -41,7 +41,7 @@ const meta: Meta<typeof MclHeroA> = {
       defaultValue: 'md',
       category: 'Title Block',
     }),
-    displaySubTitle: booleanControllers({
+    showSubTitle: booleanControllers({
       name: 'display-sub-title',
       required: false,
       description: 'whether or not to display subtitle block',
@@ -75,7 +75,7 @@ const meta: Meta<typeof MclHeroA> = {
       defaultValue: 'dark-3',
       category: 'Title Block',
     }),
-    displayHighlight: booleanControllers({
+    showHighlight: booleanControllers({
       name: 'display-highlight',
       required: false,
       description: 'add highlight on the title block',
@@ -116,7 +116,7 @@ const meta: Meta<typeof MclHeroA> = {
       defaultValue: 'white',
       category: 'Background',
     }),
-    displayFilter: booleanControllers({
+    showFilter: booleanControllers({
       name: 'display-filter',
       required: false,
       description:
@@ -142,19 +142,19 @@ const meta: Meta<typeof MclHeroA> = {
     titleLevel: 'h1',
     titleSize: 'md',
     titleColor: 'dark-3',
-    displaySubTitle: false,
+    showSubTitle: false,
     subTitle: 'Lorem ipsum',
     subTitleLevel: 'h3',
     subTitleSize: 'md',
     subTitleColor: 'dark-3',
-    displayHighlight: false,
+    showHighlight: false,
     highlightColor: 'warning',
     imageSource:
       'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1650675406/ManguitoPage/hl38duquvda0ilultyqb.jpg',
     imgPosition: 'right',
     bgColor: 'white',
     mobileImageBlur: false,
-    displayFilter: true,
+    showFilter: true,
     filterOpacity: 30,
   },
 }

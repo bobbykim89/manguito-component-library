@@ -109,7 +109,7 @@ const meta: Meta<typeof MclCarouselA> = {
       defaultValue: 'md',
       category: 'Title Block',
     }),
-    displayTagLine: booleanControllers({
+    showTagLine: booleanControllers({
       name: 'display-tag-line',
       required: false,
       description: 'displays tagline text above title block',
@@ -123,7 +123,7 @@ const meta: Meta<typeof MclCarouselA> = {
       defaultValue: 'dark-1',
       category: 'Title Block',
     }),
-    displayHighlight: booleanControllers({
+    showHighlight: booleanControllers({
       name: 'display-highlight',
       required: false,
       description: 'displays highlight on the left side of title block',
@@ -177,12 +177,12 @@ const meta: Meta<typeof MclCarouselA> = {
     titleSize: 'md',
     titleColor: 'dark-3',
     bgColor: 'light-1',
-    displayTagLine: true,
+    showTagLine: true,
     tagLineUpperCase: true,
     tagLine: 'Lorem ipsum',
     tagLineSize: 'md',
     tagLineColor: 'dark-1',
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     btnColor: 'dark-3',
     btnBgColor: 'light-4',

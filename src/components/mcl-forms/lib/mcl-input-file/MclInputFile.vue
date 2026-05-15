@@ -6,31 +6,31 @@ import { computed, ref } from 'vue'
 const props = withDefaults(
   defineProps<{
     id: string
-    displayBorder?: boolean
+    showBorder?: boolean
     borderColor?: ColorPalette
     rounded?: boolean
     bgColor?: ColorPalette
     buttonText?: string
     buttonTextColor?: ColorPalette
     buttonColor?: ColorPalette
-    displayShadow?: boolean
+    showShadow?: boolean
     textColor?: ColorPalette
-    displayClear?: boolean
-    isRequired?: boolean
+    showClear?: boolean
+    required?: boolean
     accept?: string
   }>(),
   {
-    displayBorder: false,
+    showBorder: false,
     borderColor: 'light-4',
     rounded: false,
     bgColor: 'light-1',
     buttonText: 'Browse File',
     buttonTextColor: 'dark-3',
     buttonColor: 'light-4',
-    displayShadow: true,
+    showShadow: true,
     textColor: 'black',
-    displayClear: false,
-    isRequired: false,
+    showClear: false,
+    required: false,
     accept: 'image/jpg,image/jpeg,image/png',
   }
 )
@@ -53,16 +53,16 @@ const onClearFile = () => {
 }
 
 const borderClass = computed<string>(() => {
-  const { rounded, displayBorder, borderColor, displayShadow, bgColor } = props
+  const { rounded, showBorder, borderColor, showShadow, bgColor } = props
   const classArray: string[] = [generateClass('BGCOLOR', bgColor)]
   if (rounded) {
     classArray.push('rounded-md')
   }
-  if (displayBorder) {
+  if (showBorder) {
     classArray.push('border-2')
     classArray.push(generateClass('BORDER', borderColor))
   }
-  if (displayShadow) {
+  if (showShadow) {
     classArray.push('shadow-md')
   }
   return classArray.join(' ')
@@ -116,14 +116,14 @@ const getClearButtonClass = computed<string>(() => {
       ref="inputRef"
       class="file:hidden w-full bg-transparent"
       :class="[inputClass]"
-      :required="isRequired"
+      :required="required"
       :accept="accept"
       :key="fileInputKey"
       @change="onChangeFile"
     />
     <!-- clear button -->
     <div
-      v-if="displayClear"
+      v-if="showClear"
       class="self-stretch my-3xs mr-3xs"
       @click="onClearFile"
     >

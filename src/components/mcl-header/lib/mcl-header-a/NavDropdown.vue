@@ -14,7 +14,7 @@ const props = withDefaults(
     menuTextSize?: BodyText
     menuTextColor?: ColorPalette
     menuTextBold?: boolean
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     asLink?: boolean
   }>(),
@@ -23,7 +23,7 @@ const props = withDefaults(
     bgColor: 'light-1',
     menuTextColor: 'dark-3',
     menuTextBold: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     asLink: true,
   },
@@ -113,7 +113,7 @@ const navItemClick = (e: Event, item: MenuItemType) => {
             </svg>
           </button>
           <div
-            v-if="displayHighlight"
+            v-if="showHighlight"
             class="nav__decorator relative -top-0.5 h-1.5"
             :class="generateClass('BEFOREBG', highlightColor)"
           ></div>
@@ -121,7 +121,7 @@ const navItemClick = (e: Event, item: MenuItemType) => {
       </template>
       <dropdown-content
         v-slot="{ itemClick }"
-        className="border drop-shadow-sm"
+        custom-class="border drop-shadow-sm"
       >
         <a
           v-for="(item, idx) in navItem.children"

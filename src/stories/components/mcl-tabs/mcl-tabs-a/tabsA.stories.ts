@@ -96,7 +96,7 @@ const meta: Meta<typeof MclTabsA> = {
       defaultValue: 'light-3',
       category: 'Borders',
     }),
-    displayShadow: booleanControllers({
+    showShadow: booleanControllers({
       name: 'display-shadow',
       required: false,
       description: 'whether or not to display drop shadow on the component',
@@ -110,7 +110,7 @@ const meta: Meta<typeof MclTabsA> = {
       defaultValue: true,
       category: 'Borders',
     }),
-    displayScrollButtons: booleanControllers({
+    showScrollButtons: booleanControllers({
       name: 'display-scroll-buttons',
       required: false,
       description: 'whether or not to display scroll buttons in mobile devices',
@@ -127,9 +127,9 @@ const meta: Meta<typeof MclTabsA> = {
     titleSize: 'md',
     activeTitleColor: 'dark-3',
     inactiveTitleColor: 'light-1',
-    displayShadow: true,
+    showShadow: true,
     rounded: true,
-    displayScrollButtons: true,
+    showScrollButtons: true,
   },
 }
 

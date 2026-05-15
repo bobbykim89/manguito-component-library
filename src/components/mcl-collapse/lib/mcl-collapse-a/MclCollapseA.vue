@@ -8,7 +8,7 @@ const props = withDefaults(
     collapseId: string
     borderColor?: ColorPalette
     rounded?: boolean
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     title: string
     titleSize?: HeadingSize
@@ -16,19 +16,19 @@ const props = withDefaults(
     visible?: boolean
     iconColor?: ColorPalette
     bgColor?: ColorPalette
-    slotBgColor?: ColorPalette
+    contentBgColor?: ColorPalette
   }>(),
   {
     borderColor: 'light-4',
     rounded: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'secondary',
     titleSize: 'sm',
     titleColor: 'dark-3',
     visible: false,
     iconColor: 'dark-3',
     bgColor: 'white',
-    slotBgColor: 'light-2',
+    contentBgColor: 'light-2',
   },
 )
 
@@ -84,7 +84,7 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
     class="w-full overflow-hidden"
     :class="[
       rounded ? 'rounded-lg' : 'rounded-sm',
-      getBorderClass(borderColor, displayHighlight, highlightColor),
+      getBorderClass(borderColor, showHighlight, highlightColor),
     ]"
   >
     <div
@@ -112,12 +112,12 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
         </div>
       </div>
     </div>
-    <div class="overflow-hidden" :class="generateClass('BGCOLOR', slotBgColor)">
+    <div class="overflow-hidden" :class="generateClass('BGCOLOR', contentBgColor)">
       <Collapse
         ref="collapseRef"
         :id="collapseId"
         :visible="visible"
-        class-name="py-sm px-xs"
+        custom-class="py-sm px-xs"
         role="region"
         :aria-labelledby="`${collapseId}-trigger`"
         @open="handleOpen"

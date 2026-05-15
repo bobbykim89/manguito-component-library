@@ -26,11 +26,11 @@ const props = withDefaults(
     menuTextSize?: BodyText
     menuTextColor?: ColorPalette
     menuTextBold?: boolean
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     bgColor?: ColorPalette
     drawerBtnColor?: ColorPalette
-    drawerBtnBorder?: boolean
+    showDrawerBorder?: boolean
     headerWidth?: number
   }>(),
   {
@@ -43,11 +43,11 @@ const props = withDefaults(
     menuTextSize: 'md',
     menuTextColor: 'dark-3',
     menuTextBold: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     bgColor: 'light-1',
     drawerBtnColor: 'dark-1',
-    drawerBtnBorder: true,
+    showDrawerBorder: true,
     headerWidth: 160,
   }
 )
@@ -120,7 +120,7 @@ defineExpose({
   <HeaderVertical
     :bg-color="bgColor"
     :drawer-btn-color="drawerBtnColor"
-    :drawer-btn-border="drawerBtnBorder"
+    :drawer-btn-border="showDrawerBorder"
     :header-width="headerWidth"
     @toggle-drawer="handleDrawerClick"
     ref="componentRef"
@@ -169,7 +169,7 @@ defineExpose({
                 :text-color="menuTextColor"
                 :text-size="menuTextSize"
                 :font-bold="menuTextBold"
-                :d-hl="displayHighlight"
+                :d-hl="showHighlight"
                 :hl-color="highlightColor"
                 @menu-click="handleMenuClick"
               />
@@ -183,7 +183,7 @@ defineExpose({
                 :text-color="menuTextColor"
                 :text-size="menuTextSize"
                 :font-bold="menuTextBold"
-                :d-hl="displayHighlight"
+                :d-hl="showHighlight"
                 :hl-color="highlightColor"
                 @child-click="handleMenuClick"
                 @label-click="handleCollapseMenuClick"
@@ -241,7 +241,7 @@ defineExpose({
                   :text-color="menuTextColor"
                   :text-size="menuTextSize"
                   :font-bold="menuTextBold"
-                  :d-hl="displayHighlight"
+                  :d-hl="showHighlight"
                   :hl-color="highlightColor"
                   @menu-click="handleMenuClick"
                 />
@@ -254,7 +254,7 @@ defineExpose({
                   :text-color="menuTextColor"
                   :text-size="menuTextSize"
                   :font-bold="menuTextBold"
-                  :d-hl="displayHighlight"
+                  :d-hl="showHighlight"
                   :hl-color="highlightColor"
                   @child-click="handleMenuClick"
                   @label-click="handleCollapseMenuClick"

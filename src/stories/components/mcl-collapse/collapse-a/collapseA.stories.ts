@@ -77,8 +77,8 @@ const meta: Meta<typeof MclCollapseA> = {
       defaultValue: 'white',
       category: 'Colors',
     }),
-    slotBgColor: colorControllers({
-      name: 'slot-bg-color',
+    contentBgColor: colorControllers({
+      name: 'content-bg-color',
       required: false,
       description: 'assigns background color of content block',
       defaultValue: 'light-2',
@@ -91,7 +91,7 @@ const meta: Meta<typeof MclCollapseA> = {
       defaultValue: 'dark-3',
       category: 'Colors',
     }),
-    displayHighlight: booleanControllers({
+    showHighlight: booleanControllers({
       name: 'display-highlight',
       required: false,
       description: 'displays highlight on the left side of component',
@@ -111,7 +111,7 @@ const meta: Meta<typeof MclCollapseA> = {
     accordion: 'my-accordion',
     borderColor: 'light-4',
     rounded: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'secondary',
     title: 'MCL Collapse A',
     titleSize: 'sm',
@@ -119,7 +119,7 @@ const meta: Meta<typeof MclCollapseA> = {
     visible: false,
     iconColor: 'dark-3',
     bgColor: 'white',
-    slotBgColor: 'light-2',
+    contentBgColor: 'light-2',
   },
 }
 

@@ -28,12 +28,12 @@ const props = withDefaults(
     menuTextSize?: BodyText
     menuTextColor?: ColorPalette
     menuTextBold?: boolean
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     bgColor?: ColorPalette
     mobileMenuBgColor?: ColorPalette
     drawerBtnColor?: ColorPalette
-    drawerBtnBorder?: boolean
+    showDrawerBorder?: boolean
     fadeInOnScroll?: boolean
     scrollDistance?: number
   }>(),
@@ -47,12 +47,12 @@ const props = withDefaults(
     menuTextSize: 'md',
     menuTextColor: 'dark-3',
     menuTextBold: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     bgColor: 'light-1',
     mobileMenuBgColor: 'light-2',
     drawerBtnColor: 'dark-1',
-    drawerBtnBorder: true,
+    showDrawerBorder: true,
     fadeInOnScroll: true,
     scrollDistance: 50,
   }
@@ -127,7 +127,7 @@ defineExpose({
   <HeaderHorizontal
     ref="componentRef"
     :bg-color="bgColor"
-    :drawer-btn-border="drawerBtnBorder"
+    :drawer-btn-border="showDrawerBorder"
     :drawer-btn-color="drawerBtnColor"
     :fade-in-on-scroll="fadeInOnScroll"
     :mobile-menu-bg-color="mobileMenuBgColor"
@@ -179,7 +179,7 @@ defineExpose({
                 :menu-text-color="menuTextColor"
                 :menu-text-size="menuTextSize"
                 :menu-text-bold="menuTextBold"
-                :display-highlight="displayHighlight"
+                :display-highlight="showHighlight"
                 :highlight-color="highlightColor"
                 :as-link="menuItemAsLink"
                 @nav-link="handleMenuItemClick"
@@ -190,7 +190,7 @@ defineExpose({
                 :menu-text-color="menuTextColor"
                 :menu-text-size="menuTextSize"
                 :menu-text-bold="menuTextBold"
-                :display-highlight="displayHighlight"
+                :display-highlight="showHighlight"
                 :highlight-color="highlightColor"
                 :bg-color="bgColor"
                 :as-link="menuItemAsLink"
@@ -222,7 +222,7 @@ defineExpose({
                 :menu-text-color="menuTextColor"
                 :menu-text-size="menuTextSize"
                 :menu-text-bold="menuTextBold"
-                :display-highlight="displayHighlight"
+                :display-highlight="showHighlight"
                 :highlight-color="highlightColor"
                 :as-link="menuItemAsLink"
                 @nav-link="handleMenuItemClick"
@@ -234,7 +234,7 @@ defineExpose({
                 :menu-text-color="menuTextColor"
                 :menu-text-size="menuTextSize"
                 :menu-text-bold="menuTextBold"
-                :display-highlight="displayHighlight"
+                :display-highlight="showHighlight"
                 :highlight-color="highlightColor"
                 :as-link="menuItemAsLink"
                 @child-click="handleMenuItemClick"

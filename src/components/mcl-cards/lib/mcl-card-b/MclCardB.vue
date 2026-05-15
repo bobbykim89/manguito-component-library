@@ -17,7 +17,7 @@ const props = withDefaults(
     borderColor?: ColorPalette
     imageSource?: string
     imageAlt?: string
-    displayGrayScale?: boolean
+    showGrayScale?: boolean
     ctaAsLink?: boolean
     ctaLink?: string
     ctaTarget?: CtaTarget
@@ -28,7 +28,7 @@ const props = withDefaults(
     titleColor: 'light-1',
     titleBlockColor: 'dark-4',
     borderColor: 'light-3',
-    displayGrayScale: true,
+    showGrayScale: true,
     ctaAsLink: false,
     ctaLink: '#',
     ctaTarget: '_self',
@@ -54,10 +54,10 @@ const borderClass = computed<string>(() => {
 })
 const hoverEffect = computed<string>(() => {
   /**
-   * @param {boolean} displayGrayScale
+   * @param {boolean} showGrayScale
    */
-  const { displayGrayScale } = props
-  return displayGrayScale
+  const { showGrayScale } = props
+  return showGrayScale
     ? '[@media(hover:hover)]:grayscale peer-hover:grayscale-0'
     : ''
 })
