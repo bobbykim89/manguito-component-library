@@ -5,7 +5,7 @@ import type {
   HeadingLevel,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { computed } from 'vue'
 
 const props = withDefaults(
@@ -61,15 +61,15 @@ const titleClass = computed<string>(() => {
    * @param {boolean} showTitleShadow
    */
   const { titleLevel, titleSize, titleColor, showTitleShadow } = props
-  const headingClass: Record<HeadingLevel, 'H1' | 'H2' | 'H3' | 'H4'> = {
-    h1: 'H1',
-    h2: 'H2',
-    h3: 'H3',
-    h4: 'H4',
+  const headingVariants = {
+    h1: generateClass.h1Variant,
+    h2: generateClass.h2Variant,
+    h3: generateClass.h3Variant,
+    h4: generateClass.h4Variant,
   }
   const classArray: string[] = [
-    generateClass(headingClass[titleLevel], titleSize),
-    generateClass('TEXTCOLOR', titleColor),
+    headingVariants[titleLevel]({ size: titleSize }),
+    generateClass.textColorVariant({ color: titleColor }),
   ]
   if (showTitleShadow) {
     classArray.push('drop-shadow-lg')
@@ -84,9 +84,9 @@ const labelClass = computed<string>(() => {
    */
   const { labelTextSize, labelTextColor, labelBgColor } = props
   const classArray: string[] = [
-    generateClass('BODYTEXT', labelTextSize),
-    generateClass('TEXTCOLOR', labelTextColor),
-    generateClass('BGCOLOR', labelBgColor),
+    generateClass.bodyTextVariant({ size: labelTextSize }),
+    generateClass.textColorVariant({ color: labelTextColor }),
+    generateClass.bgColorVariant({ color: labelBgColor }),
   ]
   return classArray.join(' ')
 })
@@ -161,7 +161,7 @@ const gradientColorClass = computed<string>(() => {
       <div
         v-if="showHighlight"
         class="mb-xs h-3xs md:h-2xs w-md"
-        :class="generateClass('BGCOLOR', highlightColor)"
+        :class="generateClass.bgColorVariant({ color: highlightColor })"
       ></div>
     </div>
     <div

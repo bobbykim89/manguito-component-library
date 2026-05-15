@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import type { ColorPalette } from '@bobbykim/manguito-theme'
 
 type OffsetType = 1 | 2.5
@@ -29,7 +29,7 @@ const getHighlightClass = computed((): string => {
    * @param {boolean} rounded - rounded
    * @param {OffsetType} offset
    */
-  const classArray: string[] = [generateClass('BEFOREBG', props.color)]
+  const classArray: string[] = [generateClass.beforeBgColorVariant({ color: props.color })]
   if (props.rounded) {
     classArray.push('rounded-b-md')
   }

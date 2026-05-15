@@ -4,7 +4,7 @@ import type {
   CtaTarget,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { computed } from 'vue'
 import type { CardClickEvent } from '../common/index.types'
 
@@ -48,7 +48,7 @@ const borderClass = computed<string>(() => {
    * @param {boolean} rounded
    */
   const { borderColor, rounded } = props
-  const classArray: string[] = [generateClass('BORDER', borderColor)]
+  const classArray: string[] = [generateClass.borderColorVariant({ color: borderColor })]
   classArray.push(rounded ? 'rounded-md' : 'rounded-sm')
   return classArray.join(' ')
 })
@@ -69,9 +69,9 @@ const titleClass = computed<string>(() => {
    */
   const { titleSize, titleColor, titleBlockColor } = props
   const classArray: string[] = [
-    generateClass('H3', titleSize),
-    generateClass('TEXTCOLOR', titleColor),
-    generateClass('BGCOLOR', titleBlockColor),
+    generateClass.h3Variant({ size: titleSize }),
+    generateClass.textColorVariant({ color: titleColor }),
+    generateClass.bgColorVariant({ color: titleBlockColor }),
   ]
   return classArray.join(' ')
 })

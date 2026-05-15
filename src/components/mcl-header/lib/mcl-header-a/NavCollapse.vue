@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass, { Collapse } from '@bobbykim/manguito-theme'
+import { generateClass, Collapse } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 
@@ -64,8 +64,8 @@ const getMenuItemClass = (
    * @param {boolean} bold - menuTextBold
    */
   const classArray: string[] = [
-    generateClass('BODYTEXT', size),
-    generateClass('TEXTCOLOR', color),
+    generateClass.bodyTextVariant({ size: size }),
+    generateClass.textColorVariant({ color: color }),
   ]
   if (bold) {
     classArray.push('font-bold')
@@ -103,7 +103,7 @@ const getMenuItemClass = (
       <div
         v-if="showHighlight"
         class="nav__decorator relative -top-0.5 h-1.5"
-        :class="generateClass('BEFOREBG', highlightColor)"
+        :class="generateClass.beforeBgColorVariant({ color: highlightColor })"
       ></div>
     </div>
     <collapse
@@ -116,7 +116,7 @@ const getMenuItemClass = (
         <div
           v-if="showHighlight"
           class="w-md absolute -left-4 h-full bg-opacity-25"
-          :class="generateClass('BGCOLOR', highlightColor)"
+          :class="generateClass.bgColorVariant({ color: highlightColor })"
         ></div>
         <div class="relative flex flex-col">
           <a
@@ -126,8 +126,8 @@ const getMenuItemClass = (
             class="pb-2xs w-full last:pb-0"
             :key="idx"
             :class="[
-              generateClass('TEXTCOLOR', menuTextColor),
-              generateClass('BODYTEXT', menuTextSize),
+              generateClass.textColorVariant({ color: menuTextColor }),
+              generateClass.bodyTextVariant({ size: menuTextSize }),
             ]"
             @click="navItemClick($event, item)"
           >

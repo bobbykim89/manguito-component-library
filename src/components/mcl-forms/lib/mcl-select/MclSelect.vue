@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { vClickOutside } from '@bobbykim/manguito-theme/directives'
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
 import { useResizeObserver } from '@vueuse/core'
@@ -156,12 +156,12 @@ const containerClass = computed(() => {
     textColor,
   } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', bgColor),
-    generateClass('TEXTCOLOR', textColor),
+    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.textColorVariant({ color: textColor }),
   ]
   if (showBorder) {
     classArray.push('border-2')
-    classArray.push(generateClass('BORDER', borderColor))
+    classArray.push(generateClass.borderColorVariant({ color: borderColor }))
   }
   if (!showHighlight) {
     classArray.push('ring-offset-2 transition-all duration-300 ease-linear')
@@ -182,7 +182,7 @@ const getHighlightClass = computed<string>(() => {
    */
 
   const { highlightColor, rounded } = props
-  const classArray: string[] = [generateClass('BEFOREBG', highlightColor)]
+  const classArray: string[] = [generateClass.beforeBgColorVariant({ color: highlightColor })]
   if (rounded) classArray.push('rounded-b-md')
   return classArray.join(' ')
 })
@@ -190,8 +190,8 @@ const getHighlightClass = computed<string>(() => {
 const optionsBlockClass = computed(() => {
   const { showHighlight, bgColor, borderColor, rounded } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', bgColor),
-    generateClass('BORDER', borderColor),
+    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.borderColorVariant({ color: borderColor }),
   ]
   if (!showHighlight) {
     classArray.push('mt-2xs')
@@ -320,7 +320,7 @@ watch(activeItemIdx, () => {
       :class="[
         !showHighlight &&
           inputFocus &&
-          generateClass('RINGCOLOR', borderColor) + ' ring-4',
+          generateClass.ringColorVariant({ color: borderColor }) + ' ring-4',
         containerClass,
       ]"
     >
@@ -351,7 +351,7 @@ watch(activeItemIdx, () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 384 512"
           class="h-xs opacity-70"
-          :class="[generateClass('SVGFILL', iconColor)]"
+          :class="[generateClass.svgFillColorVariant({ color: iconColor })]"
         >
           <!-- !Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. -->
           <path
@@ -367,7 +367,7 @@ watch(activeItemIdx, () => {
           :class="[
             !inputFocus ? 'rotate-0' : 'rotate-180',
             'transition-transform duration-300 ease-in',
-            generateClass('SVGFILL', iconColor),
+            generateClass.svgFillColorVariant({ color: iconColor }),
           ]"
         >
           <!-- Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. -->
@@ -414,7 +414,7 @@ watch(activeItemIdx, () => {
               :aria-selected="isOptionSelected(option)"
               :class="[
                 activeItemIdx === idx &&
-                  generateClass('BGCOLOR', highlightColor),
+                  generateClass.bgColorVariant({ color: highlightColor }),
               ]"
               :ref="(el) => setItemRef(el, idx)"
               @click="handleOptionClick($event, option)"
@@ -429,7 +429,7 @@ watch(activeItemIdx, () => {
             <li
               class="p-2xs cursor-pointer"
               aria-live="polite"
-              :class="[generateClass('HVBGCOLOR', optionHoverColor)]"
+              :class="[generateClass.hoverBgColorVariant({ color: optionHoverColor })]"
             >
               <span>{{ noMatchText }}</span>
             </li>

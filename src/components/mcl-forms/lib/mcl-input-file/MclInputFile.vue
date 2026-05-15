@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 
 const props = withDefaults(
@@ -54,13 +54,13 @@ const onClearFile = () => {
 
 const borderClass = computed<string>(() => {
   const { rounded, showBorder, borderColor, showShadow, bgColor } = props
-  const classArray: string[] = [generateClass('BGCOLOR', bgColor)]
+  const classArray: string[] = [generateClass.bgColorVariant({ color: bgColor })]
   if (rounded) {
     classArray.push('rounded-md')
   }
   if (showBorder) {
     classArray.push('border-2')
-    classArray.push(generateClass('BORDER', borderColor))
+    classArray.push(generateClass.borderColorVariant({ color: borderColor }))
   }
   if (showShadow) {
     classArray.push('shadow-md')
@@ -70,15 +70,15 @@ const borderClass = computed<string>(() => {
 
 const inputClass = computed<string>(() => {
   const { textColor } = props
-  const classArray: string[] = [generateClass('TEXTCOLOR', textColor)]
+  const classArray: string[] = [generateClass.textColorVariant({ color: textColor })]
   return classArray.join(' ')
 })
 
 const getButtonClass = computed(() => {
   const { buttonColor, buttonTextColor, rounded } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', buttonColor),
-    generateClass('TEXTCOLOR', buttonTextColor),
+    generateClass.bgColorVariant({ color: buttonColor }),
+    generateClass.textColorVariant({ color: buttonTextColor }),
   ]
   if (rounded) {
     classArray.push('rounded-l-md')
@@ -88,7 +88,7 @@ const getButtonClass = computed(() => {
 
 const getClearButtonClass = computed<string>(() => {
   const { buttonColor, rounded } = props
-  const classArray: string[] = [generateClass('BGCOLOR', buttonColor)]
+  const classArray: string[] = [generateClass.bgColorVariant({ color: buttonColor })]
   if (rounded) {
     classArray.push('rounded-r-md')
   }
@@ -137,7 +137,7 @@ const getClearButtonClass = computed<string>(() => {
           viewBox="0 0 384 512"
           aria-hidden="true"
           class="h-xs"
-          :class="generateClass('SVGFILL', buttonTextColor)"
+          :class="generateClass.svgFillColorVariant({ color: buttonTextColor })"
         >
           <!-- !Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. -->
           <path

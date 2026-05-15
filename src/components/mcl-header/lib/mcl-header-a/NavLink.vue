@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import type { MenuItemType } from '../common/index.types'
 
 const props = withDefaults(
@@ -38,8 +38,8 @@ const getMenuItemClass = (
    * @param {boolean} bold - menuTextBold
    */
   const classArray: string[] = [
-    generateClass('BODYTEXT', size),
-    generateClass('TEXTCOLOR', color),
+    generateClass.bodyTextVariant({ size: size }),
+    generateClass.textColorVariant({ color: color }),
   ]
   if (bold) {
     classArray.push('font-bold')
@@ -66,7 +66,7 @@ const handleNavLinkClick = (e: Event, item: MenuItemType) => {
     <div
       v-if="showHighlight"
       class="nav__decorator relative -top-0.5 h-1.5"
-      :class="generateClass('BEFOREBG', highlightColor)"
+      :class="generateClass.beforeBgColorVariant({ color: highlightColor })"
     ></div>
   </div>
 </template>

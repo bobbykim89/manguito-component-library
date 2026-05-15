@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import generateClass, { ColorPalette } from '@bobbykim/manguito-theme'
+import { generateClass, ColorPalette } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 import type { ColorMap, InputSizeType } from '../common/index.types'
 
@@ -113,8 +113,8 @@ const handleCheckboxLayout = computed<string>(() => {
     checkColor,
   } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', bgColor),
-    generateClass('BORDER', borderColor),
+    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.borderColorVariant({ color: borderColor }),
     beforeColor[checkColor],
     peerBgColor[checkedBgColor],
   ]

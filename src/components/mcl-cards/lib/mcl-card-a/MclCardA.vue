@@ -6,7 +6,7 @@ import type {
   HeadingSize,
   OpacityRange,
 } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { getGlassmorphismClass } from '@bobbykim/manguito-theme/util'
 import { computed } from 'vue'
 import type { CardClickEvent } from '../common/index.types'
@@ -101,8 +101,8 @@ const bodyClass = computed<string>(() => {
   } = props
 
   return [
-    generateClass('BORDER', borderColor),
-    generateClass('BGCOLOR', bgColor),
+    generateClass.borderColorVariant({ color: borderColor }),
+    generateClass.bgColorVariant({ color: bgColor }),
     !fullWidth && 'max-w-[450px] sm:max-w-[350px]',
     rounded ? 'rounded-lg' : 'rounded-sm',
     enlargeOnHover && 'hover:scale-105 transition ease-in duration-300',
@@ -121,8 +121,8 @@ const titleClass = computed<string>(() => {
   const { titleSize, titleColor, showHighlight } = props
 
   return [
-    generateClass('H3', titleSize),
-    generateClass('TEXTCOLOR', titleColor),
+    generateClass.h3Variant({ size: titleSize }),
+    generateClass.textColorVariant({ color: titleColor }),
     showHighlight ? 'mb-2xs' : 'mb-xs',
   ]
     .filter(Boolean)
@@ -136,8 +136,8 @@ const labelClass = computed<string>(() => {
   const { labelTextColor, labelColor } = props
 
   return [
-    generateClass('TEXTCOLOR', labelTextColor),
-    generateClass('BGCOLOR', labelColor),
+    generateClass.textColorVariant({ color: labelTextColor }),
+    generateClass.bgColorVariant({ color: labelColor }),
   ]
     .filter(Boolean)
     .join(' ')
@@ -151,7 +151,7 @@ const ctaClass = computed<string>(() => {
   const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
 
   return [
-    generateClass('BTNCOLOR', ctaColor),
+    generateClass.btnColorVariant({ color: ctaColor }),
     lightColor.includes(ctaColor) ? 'text-black' : 'text-white',
     rounded && 'btn-round',
   ]
@@ -210,7 +210,7 @@ const handleCardClick = (e: Event): void => {
         <div
           v-if="showHighlight"
           class="mb-xs h-3xs w-md"
-          :class="generateClass('BGCOLOR', highlightColor)"
+          :class="generateClass.bgColorVariant({ color: highlightColor })"
         ></div>
         <div class="mb-sm cursor-default" @click.stop>
           <slot></slot>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 import type { InputSizeType } from '../common/index.types'
 
@@ -56,8 +56,8 @@ const checkedRadioSize = computed<string>(() => {
 const getColorClass = computed(() => {
   const { bgColor, checkedColor, showShadow } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', bgColor),
-    generateClass('BEFOREBG', checkedColor),
+    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.beforeBgColorVariant({ color: checkedColor }),
   ]
   if (showShadow) {
     classArray.push('drop-shadow-md')

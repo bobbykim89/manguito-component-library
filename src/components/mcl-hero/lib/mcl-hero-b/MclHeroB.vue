@@ -4,7 +4,7 @@ import type {
   HeadingLevel,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { computed } from 'vue'
 
 const props = withDefaults(
@@ -51,15 +51,15 @@ const titleClass = computed<string>(() => {
    * @param {ColorPalette} titleColor
    */
   const { titleLevel, titleSize, titleColor } = props
-  const titleClass: Record<HeadingLevel, 'H1' | 'H2' | 'H3' | 'H4'> = {
-    h1: 'H1',
-    h2: 'H2',
-    h3: 'H3',
-    h4: 'H4',
+  const headingVariants = {
+    h1: generateClass.h1Variant,
+    h2: generateClass.h2Variant,
+    h3: generateClass.h3Variant,
+    h4: generateClass.h4Variant,
   }
   const classArray: string[] = [
-    generateClass(titleClass[titleLevel], titleSize),
-    generateClass('TEXTCOLOR', titleColor),
+    headingVariants[titleLevel]({ size: titleSize }),
+    generateClass.textColorVariant({ color: titleColor }),
   ]
   return classArray.join(' ')
 })
@@ -70,7 +70,7 @@ const titleHighlightClass = computed<string>(() => {
    */
   const { highlightColor, showHighlight } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', highlightColor),
+    generateClass.bgColorVariant({ color: highlightColor }),
     'shadow-lg',
     'px-xs',
   ]

@@ -5,7 +5,7 @@ import type {
   CtaTarget,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
-import generateClass, { AccordionGroup, HeaderVertical } from '@bobbykim/manguito-theme'
+import { generateClass, AccordionGroup, HeaderVertical } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 import NavCollapseVertical from './NavCollapseVertical.vue'
@@ -99,8 +99,8 @@ const handleCollapseMenuClick = (e: Event, title: string, visible: boolean) => {
 const titleTextClass = computed<string>(() => {
   const { titleSize, titleColor } = props
   const classArray = [
-    generateClass('H3', titleSize),
-    generateClass('TEXTCOLOR', titleColor),
+    generateClass.h3Variant({ size: titleSize }),
+    generateClass.textColorVariant({ color: titleColor }),
   ]
   return classArray.join(' ')
 })
