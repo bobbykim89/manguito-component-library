@@ -167,7 +167,7 @@ const meta: Meta<typeof MclHeaderB> = {
       category: 'Menu Block',
     }),
     showHighlight: booleanControllers({
-      name: 'display-highlight',
+      name: 'show-highlight',
       required: false,
       defaultValue: true,
       description: 'whether or not to add highlight effect for menu items',

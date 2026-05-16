@@ -18,7 +18,7 @@ const meta: Meta<typeof MclInputFile> = {
       category: 'Input Block',
     }),
     showBorder: booleanControllers({
-      name: 'display-border',
+      name: 'show-border',
       required: false,
       description: 'whether or not todisplay border of component',
       defaultValue: false,
@@ -46,7 +46,7 @@ const meta: Meta<typeof MclInputFile> = {
       category: 'Input Block',
     }),
     showShadow: booleanControllers({
-      name: 'display-shadow',
+      name: 'show-shadow',
       required: false,
       description: 'whether or not to add shadow to component',
       defaultValue: true,
@@ -95,7 +95,7 @@ const meta: Meta<typeof MclInputFile> = {
       category: 'Button Block',
     }),
     showClear: booleanControllers({
-      name: 'display-clear',
+      name: 'show-clear',
       required: false,
       description:
         'whether or not to display clear button on right side of component',

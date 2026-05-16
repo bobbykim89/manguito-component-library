@@ -97,7 +97,7 @@ const meta: Meta<typeof MclTabsA> = {
       category: 'Borders',
     }),
     showShadow: booleanControllers({
-      name: 'display-shadow',
+      name: 'show-shadow',
       required: false,
       description: 'whether or not to display drop shadow on the component',
       defaultValue: true,
@@ -111,7 +111,7 @@ const meta: Meta<typeof MclTabsA> = {
       category: 'Borders',
     }),
     showScrollButtons: booleanControllers({
-      name: 'display-scroll-buttons',
+      name: 'show-scroll-buttons',
       required: false,
       description: 'whether or not to display scroll buttons in mobile devices',
       defaultValue: true,

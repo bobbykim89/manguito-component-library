@@ -53,7 +53,7 @@ const meta: Meta<typeof MclInputRadio> = {
       category: 'Component Block',
     }),
     showShadow: booleanControllers({
-      name: 'display-shadow',
+      name: 'show-shadow',
       required: false,
       description: 'whether or not to add drop shadow on the component',
       category: 'Component Block',
