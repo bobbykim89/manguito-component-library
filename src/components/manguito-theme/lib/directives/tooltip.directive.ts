@@ -96,13 +96,13 @@ const mountTooltip = (
     'width',
   )
   const tooltipClassName =
-    typeof binding.value === 'object' ? binding.value.className : undefined
+    typeof binding.value === 'object' ? binding.value.customClass : undefined
   const tooltipDirection = getDirection(binding)
 
   const vnode = createVNode(tooltip, {
     id: tooltipId,
     direction: tooltipDirection,
-    title: tooltipText,
+    content: tooltipText,
     color: tooltipColor,
     textColor: tooltipTextColor,
     width: tooltipWidth,

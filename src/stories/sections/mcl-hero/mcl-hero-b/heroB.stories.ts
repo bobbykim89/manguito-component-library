@@ -39,8 +39,8 @@ const meta: Meta<typeof MclHeroB> = {
       defaultValue: 'white',
       category: 'Title Block',
     }),
-    displayHighlight: booleanControllers({
-      name: 'display-highlight',
+    showHighlight: booleanControllers({
+      name: 'show-highlight',
       required: false,
       description: 'whether or not to display highlight on title block',
       defaultValue: false,
@@ -59,8 +59,8 @@ const meta: Meta<typeof MclHeroB> = {
       description: 'assigns url for background image of component',
       category: 'Image Block',
     }),
-    displayGradients: booleanControllers({
-      name: 'display-gradient',
+    showGradients: booleanControllers({
+      name: 'show-gradients',
       required: false,
       description: 'whether or not to add gradient on the background image',
       defaultValue: true,
@@ -87,12 +87,12 @@ const meta: Meta<typeof MclHeroB> = {
     titleLevel: 'h1',
     titleSize: 'md',
     titleColor: 'white',
-    displayHighlight: false,
+    showHighlight: false,
     highlightColor: 'dark-3',
     fullWidth: true,
     imageSource:
       'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1650675406/ManguitoPage/hl38duquvda0ilultyqb.jpg',
-    displayGradients: true,
+    showGradients: true,
     gradientColor: 'dark-3',
   },
 }

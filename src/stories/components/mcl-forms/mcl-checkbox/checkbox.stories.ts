@@ -67,8 +67,8 @@ const meta: Meta<typeof MclCheckbox> = {
       description: 'border color of checkbox',
       category: 'Component Block',
     }),
-    displayShadow: booleanControllers({
-      name: 'display-shadow',
+    showShadow: booleanControllers({
+      name: 'show-shadow',
       required: false,
       defaultValue: false,
       description: 'whether or not to add shadow on the checkbox',
@@ -89,7 +89,7 @@ const meta: Meta<typeof MclCheckbox> = {
     checkedBgColor: 'warning',
     checkColor: 'dark-3',
     borderColor: 'dark-1',
-    displayShadow: false,
+    showShadow: false,
     rounded: false,
     value: 'checkbox-value',
     checked: false,

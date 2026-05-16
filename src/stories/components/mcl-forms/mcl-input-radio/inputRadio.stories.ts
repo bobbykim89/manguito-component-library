@@ -52,8 +52,8 @@ const meta: Meta<typeof MclInputRadio> = {
       description: 'assigns color of component when checked',
       category: 'Component Block',
     }),
-    displayShadow: booleanControllers({
-      name: 'display-shadow',
+    showShadow: booleanControllers({
+      name: 'show-shadow',
       required: false,
       description: 'whether or not to add drop shadow on the component',
       category: 'Component Block',
@@ -66,7 +66,7 @@ const meta: Meta<typeof MclInputRadio> = {
     radioSize: 'md',
     bgColor: 'success',
     checkedColor: 'light-1',
-    displayShadow: false,
+    showShadow: false,
   },
 }
 

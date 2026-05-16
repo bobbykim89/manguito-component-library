@@ -20,7 +20,7 @@ const collapseRef = ref<InstanceType<typeof Collapse>>()
       <collapse
         ref="collapseRef"
         id="my-collapse-component"
-        class-name="bg-light-3 p-xs"
+        custom-class="bg-light-3 p-xs"
       >
         <div>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga quo

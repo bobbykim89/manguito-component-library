@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { computed } from 'vue'
 import type { SocialUrl } from './index.types'
 // Import Icon files
@@ -63,8 +63,8 @@ const getIconColor = (color: ColorPalette): string => {
    * @color - iconColor
    */
   const classArray: string[] = [
-    generateClass('TEXTCOLOR', color),
-    generateClass('RINGCOLOR', color),
+    generateClass.textColorVariant({ color: color }),
+    generateClass.ringColorVariant({ color: color }),
   ]
   return classArray.join(' ')
 }

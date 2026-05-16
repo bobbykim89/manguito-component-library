@@ -5,7 +5,7 @@ import type {
   CtaTarget,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import SocialIcons from './SocialIcons.vue'
 import type { MenuItemType, SocialUrl } from './index.types'
 import { computed } from 'vue'
@@ -20,7 +20,7 @@ const props = withDefaults(
     logoAsLink?: boolean
     logoLink: string
     logoLinkTarget?: CtaTarget
-    displaySocialIcons?: boolean
+    showSocialIcons?: boolean
     socialIconColor: ColorPalette
     socialLinks?: SocialUrl
     menuItems: MenuItemType[]
@@ -29,7 +29,7 @@ const props = withDefaults(
     menuTextSize?: BodyText
     menuTextColor?: ColorPalette
     menuTextBold?: boolean
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     bgColor?: ColorPalette
     borderTopColor?: ColorPalette
@@ -40,13 +40,13 @@ const props = withDefaults(
     titleColor: 'light-1',
     logoAsLink: false,
     logoLinkTarget: '_self',
-    displaySocialIcons: true,
+    showSocialIcons: true,
     socialIconColor: 'light-1',
     menuItemAsLink: false,
     menuTextSize: 'md',
     menuTextColor: 'light-1',
     menuTextBold: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     bgColor: 'dark-3',
     borderTopColor: 'primary',
@@ -66,24 +66,24 @@ const footerClass = computed<string>(() => {
   const { bgColor, borderTopColor } = props
 
   const classArray: string[] = [
-    generateClass('BGCOLOR', bgColor),
-    generateClass('BORDER', borderTopColor),
+    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.borderColorVariant({ color: borderTopColor }),
   ]
   return classArray.join(' ')
 })
 const titleClass = computed<string>(() => {
   const { titleSize, titleColor } = props
   const classArray: string[] = [
-    generateClass('H2', titleSize),
-    generateClass('TEXTCOLOR', titleColor),
+    generateClass.h2Variant({ size: titleSize }),
+    generateClass.textColorVariant({ color: titleColor }),
   ]
   return classArray.join(' ')
 })
 const menuItemClass = computed<string>(() => {
   const { menuTextSize, menuTextColor, menuTextBold } = props
   const classArray: string[] = [
-    generateClass('BODYTEXT', menuTextSize),
-    generateClass('TEXTCOLOR', menuTextColor),
+    generateClass.bodyTextVariant({ size: menuTextSize }),
+    generateClass.textColorVariant({ color: menuTextColor }),
   ]
   if (menuTextBold) {
     classArray.join('font-bold')
@@ -109,21 +109,21 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
     <div class="container px-xs md:px-lg lg:px-xl">
       <div
         class="flex flex-col md:flex-row flex-wrap justify-between mb-xs md:mb-md px-xs md:px-md border-b-2"
-        :class="generateClass('BORDER', headlineColor)"
+        :class="generateClass.borderColorVariant({ color: headlineColor })"
       >
         <div class="h-lg md:h-xl align-middle mb-xs">
           <a
             :href="logoLink"
             :target="logoLinkTarget"
             class="h-full inline-block outline-none focus:ring-2 ring-offset-2 ring-offset-transparent rounded-md transition-all duration-300 ease-linear"
-            :class="generateClass('RINGCOLOR', titleColor)"
+            :class="generateClass.ringColorVariant({ color: titleColor })"
             @click="handleTitleClick($event)"
           >
             <img class="inline-block h-full" :src="logo" :alt="logoAlt" />
           </a>
         </div>
         <div
-          v-if="displaySocialIcons"
+          v-if="showSocialIcons"
           class="mb-xs flex items-center justify-end md:justify-center"
         >
           <!-- social icons -->
@@ -167,9 +167,9 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
               >
               </a>
               <div
-                v-if="displayHighlight"
+                v-if="showHighlight"
                 class="relative top-3xs h-3xs nav__decorator"
-                :class="generateClass('BEFOREBG', highlightColor)"
+                :class="generateClass.beforeBgColorVariant({ color: highlightColor })"
               ></div>
             </li>
           </ul>
@@ -194,9 +194,9 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
               >
               </a>
               <div
-                v-if="displayHighlight"
+                v-if="showHighlight"
                 class="relative top-3xs h-3xs nav__decorator"
-                :class="generateClass('BEFOREBG', highlightColor)"
+                :class="generateClass.beforeBgColorVariant({ color: highlightColor })"
               ></div>
             </li>
           </ul>

@@ -51,7 +51,7 @@ export interface TooltipValueObjectType {
   color?: ColorPalette
   textColor?: ColorPalette
   width?: number | string
-  className?: string
+  customClass?: string
 }
 
 // Defines the valid types for the directive value

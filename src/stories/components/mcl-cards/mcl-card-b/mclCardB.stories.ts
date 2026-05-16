@@ -65,8 +65,8 @@ const meta: Meta<typeof MclCardB> = {
       description: 'alt text for card image',
       category: 'Image Block',
     }),
-    displayGrayScale: booleanControllers({
-      name: 'display-grayscale',
+    showGrayScale: booleanControllers({
+      name: 'show-gray-scale',
       required: false,
       description: 'add grayscale on card image',
       defaultValue: true,
@@ -100,7 +100,7 @@ const meta: Meta<typeof MclCardB> = {
     titleColor: 'light-1',
     titleBlockColor: 'dark-4',
     borderColor: 'light-3',
-    displayGrayScale: true,
+    showGrayScale: true,
     imageSource:
       'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg',
     imageAlt: 'Manguito is perching',

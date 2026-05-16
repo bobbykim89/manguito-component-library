@@ -81,7 +81,7 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
         ultricies mauris. Donec quis luctus tortor. Cras eu pretium arcu. Cras
         ut turpis eros. Mauris venenatis eros diam.
       </p>
-      <modal ref="modal1Ref" id="modal-1" class-name="px-xs rounded-md" color="light-1">
+      <modal ref="modal1Ref" id="modal-1" custom-class="px-xs rounded-md" color="light-1">
         <template #header="{ close }">
           <div
             class="py-xs bg-light-1 border-b-light-4 flex justify-between border-b-2"
@@ -135,9 +135,9 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
       <modal
         ref="modal2Ref"
         id="modal-2"
-        no-backdrop
+        :show-backdrop="false"
         color="warning"
-        class-name="border shadow-xl"
+        custom-class="border shadow-xl"
         pleacement="top"
       >
         <template #header="{ close }">
@@ -201,9 +201,9 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
       <modal
         ref="modalMediumRef"
         id="modal-medium"
-        class-name="px-xs rounded-md"
+        custom-class="px-xs rounded-md"
         color="light-1"
-        modal-width="medium"
+        width="medium"
       >
         <template #header="{ close }">
           <div
@@ -258,9 +258,9 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
       <modal
         ref="modalLargeRef"
         id="modal-large"
-        class-name="px-xs rounded-md"
+        custom-class="px-xs rounded-md"
         color="light-1"
-        modal-width="large"
+        width="large"
         placement="top"
       >
         <template #header="{ close }">

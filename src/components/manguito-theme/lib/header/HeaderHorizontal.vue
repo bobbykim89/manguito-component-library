@@ -11,7 +11,7 @@ const props = withDefaults(
     bgColor?: ColorPalette
     mobileMenuBgColor?: ColorPalette
     drawerBtnColor?: ColorPalette
-    drawerBtnBorder?: boolean
+    showDrawerBorder?: boolean
     fadeInOnScroll?: boolean
     scrollDistance?: number
     sticky?: HeaderStickyOptionType
@@ -20,7 +20,7 @@ const props = withDefaults(
     bgColor: 'light-1',
     mobileMenuBgColor: 'light-2',
     drawerBtnColor: 'dark-1',
-    drawerBtnBorder: true,
+    showDrawerBorder: true,
     fadeInOnScroll: true,
     scrollDistance: 50,
     sticky: 'all',
@@ -69,7 +69,7 @@ const onLeave = (el: any) => {
 
 const handleHeaderClass = computed<string>(() => {
   const { bgColor, sticky } = props
-  const classArray: string[] = [generateClass('BGCOLOR', bgColor)]
+  const classArray: string[] = [generateClass.bgColorVariant({ color: bgColor })]
   if (sticky === 'all') {
     classArray.push('sticky top-0')
     return classArray.join(' ')
@@ -116,11 +116,11 @@ defineExpose<{
       <div class="ml-auto">
         <NavDrawer
           :color="drawerBtnColor"
-          :display-border="drawerBtnBorder"
+          :show-border="showDrawerBorder"
           class="block lg:hidden"
           @hbg-click="toggleNavButton"
           :toggle="navOpen"
-          :nav-color="bgColor"
+          :bg-color="bgColor"
         ></NavDrawer>
         <div v-if="slots['content-right']" class="hidden lg:block">
           <slot name="content-right"></slot>
@@ -139,7 +139,7 @@ defineExpose<{
         <div
           class="my-2xs mx-xs overflow-hidden rounded-md bg-opacity-80"
           v-if="navOpen"
-          :class="generateClass('BGCOLOR', mobileMenuBgColor)"
+          :class="generateClass.bgColorVariant({ color: mobileMenuBgColor })"
         >
           <div v-if="slots['mobile-content']">
             <slot name="mobile-content" :header-close="closeNav"></slot>

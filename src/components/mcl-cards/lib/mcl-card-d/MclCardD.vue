@@ -5,7 +5,7 @@ import type {
   HeadingSize,
   Range,
 } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { computed } from 'vue'
 import type { CardClickEvent } from '../common/index.types'
 import type { ColorMap } from './index.types'
@@ -71,14 +71,14 @@ const toColorClasses: ColorMap = {
 
 const props = withDefaults(
   defineProps<{
-    displayImage?: boolean
+    showImage?: boolean
     imageSource?: string
     imageAlt?: string
     title: string
     titleSize?: HeadingSize
     titleColor?: ColorPalette
     bgColor?: ColorPalette
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     ctaText?: string
     ctaLink: string
@@ -94,12 +94,12 @@ const props = withDefaults(
     customColor?: ColorMap
   }>(),
   {
-    displayImage: true,
+    showImage: true,
     imageAlt: '',
     titleSize: 'md',
     titleColor: 'dark-4',
     bgColor: 'light-1',
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     ctaText: 'Read more',
     ctaLinkTarget: '_self',
@@ -128,8 +128,8 @@ const titleClass = computed<string>(() => {
    */
   const { titleSize, titleColor } = props
   const classArray: string[] = [
-    generateClass('H2', titleSize),
-    generateClass('TEXTCOLOR', titleColor),
+    generateClass.h2Variant({ size: titleSize }),
+    generateClass.textColorVariant({ color: titleColor }),
   ]
   return classArray.join(' ')
 })
@@ -138,7 +138,7 @@ const btnClass = computed<string>(() => {
   const classArray: string[] = []
   const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
   ctaButton
-    ? classArray.push('btn', generateClass('BTNCOLOR', ctaButtonColor))
+    ? classArray.push('btn', generateClass.btnColorVariant({ color: ctaButtonColor }))
     : classArray.push('mcl-link')
   if (ctaButton && ctaButtonBlock) {
     classArray.push('btn-full')
@@ -160,7 +160,7 @@ const gradientClass = computed<string>(() => {
   const gradient1Color: string = viaColorClasses[props.gradient1]
   const gradient2Color: string = toColorClasses[props.gradient2]
   let classArray: string[] = [
-    generateClass('BORDER', props.borderColor),
+    generateClass.borderColorVariant({ color: props.borderColor }),
     gradientBorerColor,
     gradient1Color,
     gradient2Color,
@@ -194,19 +194,19 @@ const handleCardClick = (e: Event) => {
   >
     <div class="flex flex-col overflow-hidden rounded-md">
       <img
-        v-if="displayImage"
+        v-if="showImage"
         :src="imageSource"
         class="max-h-50 min-w-full object-cover object-top"
         :alt="imageAlt"
       />
-      <div class="p-xs" :class="generateClass('BGCOLOR', bgColor)">
+      <div class="p-xs" :class="generateClass.bgColorVariant({ color: bgColor })">
         <h3 class="mb-xs" :class="titleClass">
           {{ title }}
         </h3>
         <div
-          v-if="displayHighlight"
+          v-if="showHighlight"
           class="mb-xs h-3xs w-md"
-          :class="generateClass('BGCOLOR', highlightColor)"
+          :class="generateClass.bgColorVariant({ color: highlightColor })"
         ></div>
         <div>
           <slot></slot>

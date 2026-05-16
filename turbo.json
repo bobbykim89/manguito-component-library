@@ -1,0 +1,25 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "remoteCache": {},
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"],
+      "inputs": [
+        "lib/**",
+        "vite.config.*",
+        "tsconfig*",
+        "package.json"
+      ]
+    },
+    "test": {
+      "dependsOn": ["^build"],
+      "outputs": [],
+      "inputs": ["lib/**", "vitest.config.*"]
+    },
+    "lint": {
+      "outputs": [],
+      "inputs": ["lib/**", "**/*.vue", "**/*.ts"]
+    }
+  }
+}

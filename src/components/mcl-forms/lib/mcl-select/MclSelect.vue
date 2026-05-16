@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { vClickOutside } from '@bobbykim/manguito-theme/directives'
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
 import { useResizeObserver } from '@vueuse/core'
@@ -10,37 +10,37 @@ import type { SelectOptionType, SelectOptions } from './index.types'
 const props = withDefaults(
   defineProps<{
     id: string
-    displayBorder?: boolean
+    showBorder?: boolean
     borderColor?: ColorPalette
     rounded?: boolean
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
-    textcolor?: ColorPalette
+    textColor?: ColorPalette
     bgColor?: ColorPalette
     iconColor?: ColorPalette
     placeholder?: string
-    displayShadow?: boolean
+    showShadow?: boolean
     required?: boolean
     invalid?: boolean
     options: SelectOptions
-    selectColor?: ColorPalette
-    invalidFeedback?: string
+    optionHoverColor?: ColorPalette
+    noMatchText?: string
   }>(),
   {
-    displayBorder: false,
+    showBorder: false,
     borderColor: 'light-4',
     rounded: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
-    textcolor: 'black',
+    textColor: 'black',
     bgColor: 'light-1',
     iconColor: 'dark-4',
-    selectColor: 'primary',
+    optionHoverColor: 'primary',
     placeholder: '',
-    displayShadow: true,
+    showShadow: true,
     required: false,
     invalid: false,
-    invalidFeedback: 'No match.',
+    noMatchText: 'No match.',
   },
 )
 
@@ -148,25 +148,25 @@ const handleOptionClick = (e: Event, option: string | SelectOptionType) => {
 const containerClass = computed(() => {
   const {
     bgColor,
-    displayBorder,
+    showBorder,
     borderColor,
-    displayHighlight,
-    displayShadow,
+    showHighlight,
+    showShadow,
     rounded,
-    textcolor,
+    textColor,
   } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', bgColor),
-    generateClass('TEXTCOLOR', textcolor),
+    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.textColorVariant({ color: textColor }),
   ]
-  if (displayBorder) {
+  if (showBorder) {
     classArray.push('border-2')
-    classArray.push(generateClass('BORDER', borderColor))
+    classArray.push(generateClass.borderColorVariant({ color: borderColor }))
   }
-  if (!displayHighlight) {
+  if (!showHighlight) {
     classArray.push('ring-offset-2 transition-all duration-300 ease-linear')
   }
-  if (displayShadow) {
+  if (showShadow) {
     classArray.push('shadow-md')
   }
   if (rounded) {
@@ -182,18 +182,18 @@ const getHighlightClass = computed<string>(() => {
    */
 
   const { highlightColor, rounded } = props
-  const classArray: string[] = [generateClass('BEFOREBG', highlightColor)]
+  const classArray: string[] = [generateClass.beforeBgColorVariant({ color: highlightColor })]
   if (rounded) classArray.push('rounded-b-md')
   return classArray.join(' ')
 })
 
 const optionsBlockClass = computed(() => {
-  const { displayHighlight, bgColor, borderColor, rounded } = props
+  const { showHighlight, bgColor, borderColor, rounded } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', bgColor),
-    generateClass('BORDER', borderColor),
+    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.borderColorVariant({ color: borderColor }),
   ]
-  if (!displayHighlight) {
+  if (!showHighlight) {
     classArray.push('mt-2xs')
   }
   if (rounded) {
@@ -318,9 +318,9 @@ watch(activeItemIdx, () => {
     <div
       class="p-2xs gap-3xs relative flex"
       :class="[
-        !displayHighlight &&
+        !showHighlight &&
           inputFocus &&
-          generateClass('RINGCOLOR', borderColor) + ' ring-4',
+          generateClass.ringColorVariant({ color: borderColor }) + ' ring-4',
         containerClass,
       ]"
     >
@@ -351,7 +351,7 @@ watch(activeItemIdx, () => {
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 384 512"
           class="h-xs opacity-70"
-          :class="[generateClass('SVGFILL', iconColor)]"
+          :class="[generateClass.svgFillColorVariant({ color: iconColor })]"
         >
           <!-- !Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. -->
           <path
@@ -367,7 +367,7 @@ watch(activeItemIdx, () => {
           :class="[
             !inputFocus ? 'rotate-0' : 'rotate-180',
             'transition-transform duration-300 ease-in',
-            generateClass('SVGFILL', iconColor),
+            generateClass.svgFillColorVariant({ color: iconColor }),
           ]"
         >
           <!-- Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. -->
@@ -378,7 +378,7 @@ watch(activeItemIdx, () => {
       </div>
     </div>
     <div
-      v-if="displayHighlight"
+      v-if="showHighlight"
       class="h-3xs relative -top-1 overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-full before:w-0 before:transition-[width] before:duration-300 before:ease-linear"
       :class="[inputFocus ? 'before:w-full' : 'before:w-0', getHighlightClass]"
     ></div>
@@ -414,7 +414,7 @@ watch(activeItemIdx, () => {
               :aria-selected="isOptionSelected(option)"
               :class="[
                 activeItemIdx === idx &&
-                  generateClass('BGCOLOR', highlightColor),
+                  generateClass.bgColorVariant({ color: highlightColor }),
               ]"
               :ref="(el) => setItemRef(el, idx)"
               @click="handleOptionClick($event, option)"
@@ -429,9 +429,9 @@ watch(activeItemIdx, () => {
             <li
               class="p-2xs cursor-pointer"
               aria-live="polite"
-              :class="[generateClass('HVBGCOLOR', selectColor)]"
+              :class="[generateClass.hoverBgColorVariant({ color: optionHoverColor })]"
             >
-              <span>{{ invalidFeedback }}</span>
+              <span>{{ noMatchText }}</span>
             </li>
           </slot>
         </template>

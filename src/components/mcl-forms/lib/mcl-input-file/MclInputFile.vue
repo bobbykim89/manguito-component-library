@@ -1,36 +1,36 @@
 <script setup lang="ts">
 import type { ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
     id: string
-    displayBorder?: boolean
+    showBorder?: boolean
     borderColor?: ColorPalette
     rounded?: boolean
     bgColor?: ColorPalette
     buttonText?: string
     buttonTextColor?: ColorPalette
     buttonColor?: ColorPalette
-    displayShadow?: boolean
+    showShadow?: boolean
     textColor?: ColorPalette
-    displayClear?: boolean
-    isRequired?: boolean
+    showClear?: boolean
+    required?: boolean
     accept?: string
   }>(),
   {
-    displayBorder: false,
+    showBorder: false,
     borderColor: 'light-4',
     rounded: false,
     bgColor: 'light-1',
     buttonText: 'Browse File',
     buttonTextColor: 'dark-3',
     buttonColor: 'light-4',
-    displayShadow: true,
+    showShadow: true,
     textColor: 'black',
-    displayClear: false,
-    isRequired: false,
+    showClear: false,
+    required: false,
     accept: 'image/jpg,image/jpeg,image/png',
   }
 )
@@ -53,16 +53,16 @@ const onClearFile = () => {
 }
 
 const borderClass = computed<string>(() => {
-  const { rounded, displayBorder, borderColor, displayShadow, bgColor } = props
-  const classArray: string[] = [generateClass('BGCOLOR', bgColor)]
+  const { rounded, showBorder, borderColor, showShadow, bgColor } = props
+  const classArray: string[] = [generateClass.bgColorVariant({ color: bgColor })]
   if (rounded) {
     classArray.push('rounded-md')
   }
-  if (displayBorder) {
+  if (showBorder) {
     classArray.push('border-2')
-    classArray.push(generateClass('BORDER', borderColor))
+    classArray.push(generateClass.borderColorVariant({ color: borderColor }))
   }
-  if (displayShadow) {
+  if (showShadow) {
     classArray.push('shadow-md')
   }
   return classArray.join(' ')
@@ -70,15 +70,15 @@ const borderClass = computed<string>(() => {
 
 const inputClass = computed<string>(() => {
   const { textColor } = props
-  const classArray: string[] = [generateClass('TEXTCOLOR', textColor)]
+  const classArray: string[] = [generateClass.textColorVariant({ color: textColor })]
   return classArray.join(' ')
 })
 
 const getButtonClass = computed(() => {
   const { buttonColor, buttonTextColor, rounded } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', buttonColor),
-    generateClass('TEXTCOLOR', buttonTextColor),
+    generateClass.bgColorVariant({ color: buttonColor }),
+    generateClass.textColorVariant({ color: buttonTextColor }),
   ]
   if (rounded) {
     classArray.push('rounded-l-md')
@@ -88,7 +88,7 @@ const getButtonClass = computed(() => {
 
 const getClearButtonClass = computed<string>(() => {
   const { buttonColor, rounded } = props
-  const classArray: string[] = [generateClass('BGCOLOR', buttonColor)]
+  const classArray: string[] = [generateClass.bgColorVariant({ color: buttonColor })]
   if (rounded) {
     classArray.push('rounded-r-md')
   }
@@ -116,14 +116,14 @@ const getClearButtonClass = computed<string>(() => {
       ref="inputRef"
       class="file:hidden w-full bg-transparent"
       :class="[inputClass]"
-      :required="isRequired"
+      :required="required"
       :accept="accept"
       :key="fileInputKey"
       @change="onChangeFile"
     />
     <!-- clear button -->
     <div
-      v-if="displayClear"
+      v-if="showClear"
       class="self-stretch my-3xs mr-3xs"
       @click="onClearFile"
     >
@@ -137,7 +137,7 @@ const getClearButtonClass = computed<string>(() => {
           viewBox="0 0 384 512"
           aria-hidden="true"
           class="h-xs"
-          :class="generateClass('SVGFILL', buttonTextColor)"
+          :class="generateClass.svgFillColorVariant({ color: buttonTextColor })"
         >
           <!-- !Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. -->
           <path

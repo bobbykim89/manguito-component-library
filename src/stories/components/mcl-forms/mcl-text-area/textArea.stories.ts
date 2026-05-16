@@ -18,8 +18,8 @@ const meta: Meta<typeof MclTextArea> = {
       description: 'assigns id of the input component',
       category: 'ID',
     }),
-    displayBorder: booleanControllers({
-      name: 'display-border',
+    showBorder: booleanControllers({
+      name: 'show-border',
       required: false,
       description: 'whether or not to display border of the input component',
       defaultValue: false,
@@ -46,7 +46,7 @@ const meta: Meta<typeof MclTextArea> = {
       defaultValue: 'light-1',
       category: 'Input Block',
     }),
-    textcolor: colorControllers({
+    textColor: colorControllers({
       name: 'text-color',
       required: false,
       description: 'assigns text color of the input component',
@@ -59,8 +59,8 @@ const meta: Meta<typeof MclTextArea> = {
       description: 'assigns placeholder text for the input',
       category: 'Input Block',
     }),
-    displayShadow: booleanControllers({
-      name: 'display-shadow',
+    showShadow: booleanControllers({
+      name: 'show-shadow',
       required: false,
       description: 'whether or not to add drop shadow around component',
       defaultValue: true,
@@ -81,8 +81,8 @@ const meta: Meta<typeof MclTextArea> = {
       defaultValue: 5,
       category: 'Input Block',
     }),
-    displayHighlight: booleanControllers({
-      name: 'display-highlight',
+    showHighlight: booleanControllers({
+      name: 'show-highlight',
       required: false,
       description:
         'whether or not to add highlight at the bottom of input component',
@@ -99,15 +99,15 @@ const meta: Meta<typeof MclTextArea> = {
   },
   args: {
     id: 'mcl-text-area',
-    displayBorder: false,
+    showBorder: false,
     borderColor: 'light-4',
     rounded: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     bgColor: 'light-1',
-    textcolor: 'black',
+    textColor: 'black',
     placeholder: '',
-    displayShadow: true,
+    showShadow: true,
     required: false,
     rows: 5,
   },

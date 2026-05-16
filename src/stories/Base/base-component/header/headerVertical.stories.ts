@@ -24,8 +24,8 @@ const meta: Meta<typeof HeaderVertical> = {
       description: 'assigns color of drawer button',
       category: 'Colors',
     }),
-    drawerBtnBorder: booleanControllers({
-      name: 'drawer-btn-border',
+    showDrawerBorder: booleanControllers({
+      name: 'show-drawer-border',
       required: false,
       defaultValue: false,
       description: 'whether or not to display border of drawer button',
@@ -47,7 +47,7 @@ const meta: Meta<typeof HeaderVertical> = {
   args: {
     bgColor: 'light-1',
     drawerBtnColor: 'dark-1',
-    drawerBtnBorder: true,
+    showDrawerBorder: true,
     headerWidth: 160,
   },
 }
