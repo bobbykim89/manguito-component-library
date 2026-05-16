@@ -17,8 +17,8 @@ const meta: Meta<typeof MclInputFile> = {
       description: 'assigns id of component',
       category: 'Input Block',
     }),
-    displayBorder: booleanControllers({
-      name: 'display-border',
+    showBorder: booleanControllers({
+      name: 'show-border',
       required: false,
       description: 'whether or not todisplay border of component',
       defaultValue: false,
@@ -45,8 +45,8 @@ const meta: Meta<typeof MclInputFile> = {
       defaultValue: false,
       category: 'Input Block',
     }),
-    displayShadow: booleanControllers({
-      name: 'display-shadow',
+    showShadow: booleanControllers({
+      name: 'show-shadow',
       required: false,
       description: 'whether or not to add shadow to component',
       defaultValue: true,
@@ -59,8 +59,8 @@ const meta: Meta<typeof MclInputFile> = {
       defaultValue: 'black',
       category: 'Input Block',
     }),
-    isRequired: booleanControllers({
-      name: 'is-required',
+    required: booleanControllers({
+      name: 'required',
       required: false,
       description: 'whether or not to make input value required',
       defaultValue: false,
@@ -94,8 +94,8 @@ const meta: Meta<typeof MclInputFile> = {
       defaultValue: 'light-4',
       category: 'Button Block',
     }),
-    displayClear: booleanControllers({
-      name: 'display-clear',
+    showClear: booleanControllers({
+      name: 'show-clear',
       required: false,
       description:
         'whether or not to display clear button on right side of component',
@@ -105,18 +105,18 @@ const meta: Meta<typeof MclInputFile> = {
   },
   args: {
     id: 'mcl-input-file',
-    displayBorder: false,
+    showBorder: false,
     borderColor: 'light-4',
     bgColor: 'light-1',
     rounded: false,
-    displayShadow: true,
+    showShadow: true,
     textColor: 'black',
-    isRequired: false,
+    required: false,
     accept: 'image/jpg,image/jpeg,image/png',
     buttonText: 'Browse File',
     buttonTextColor: 'dark-3',
     buttonColor: 'light-4',
-    displayClear: false,
+    showClear: false,
   },
 }
 

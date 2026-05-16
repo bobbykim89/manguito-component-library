@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass, {
+import {
+  generateClass,
   DropdownContainer,
   DropdownContent,
 } from '@bobbykim/manguito-theme'
@@ -14,7 +15,7 @@ const props = withDefaults(
     menuTextSize?: BodyText
     menuTextColor?: ColorPalette
     menuTextBold?: boolean
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     asLink?: boolean
   }>(),
@@ -23,7 +24,7 @@ const props = withDefaults(
     bgColor: 'light-1',
     menuTextColor: 'dark-3',
     menuTextBold: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     asLink: true,
   },
@@ -47,8 +48,8 @@ const getMenuItemClass = (
    * @param {boolean} bold - menuTextBold
    */
   const classArray: string[] = [
-    generateClass('BODYTEXT', size),
-    generateClass('TEXTCOLOR', color),
+    generateClass.bodyTextVariant({ size: size }),
+    generateClass.textColorVariant({ color: color }),
   ]
   if (bold) {
     classArray.push('font-bold')
@@ -113,15 +114,15 @@ const navItemClick = (e: Event, item: MenuItemType) => {
             </svg>
           </button>
           <div
-            v-if="displayHighlight"
+            v-if="showHighlight"
             class="nav__decorator relative -top-0.5 h-1.5"
-            :class="generateClass('BEFOREBG', highlightColor)"
+            :class="generateClass.beforeBgColorVariant({ color: highlightColor })"
           ></div>
         </div>
       </template>
       <dropdown-content
         v-slot="{ itemClick }"
-        className="border drop-shadow-sm"
+        custom-class="border drop-shadow-sm"
       >
         <a
           v-for="(item, idx) in navItem.children"
@@ -131,11 +132,11 @@ const navItemClick = (e: Event, item: MenuItemType) => {
           ref="navItemRef"
           class="px-xs py-2xs block w-full transition-all duration-200 ease-linear hover:bg-opacity-50 focus:bg-opacity-50"
           :class="[
-            generateClass('BGCOLOR', bgColor),
-            generateClass('HVBGCOLOR', highlightColor),
-            generateClass('FCBGCOLOR', highlightColor),
-            generateClass('TEXTCOLOR', menuTextColor),
-            generateClass('BODYTEXT', menuTextSize),
+            generateClass.bgColorVariant({ color: bgColor }),
+            generateClass.hoverBgColorVariant({ color: highlightColor }),
+            generateClass.focusBgColorVariant({ color: highlightColor }),
+            generateClass.textColorVariant({ color: menuTextColor }),
+            generateClass.bodyTextVariant({ size: menuTextSize }),
           ]"
           @click="(itemClick(), navItemClick($event, item))"
         >

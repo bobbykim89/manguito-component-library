@@ -10,10 +10,10 @@ const props = withDefaults(
   defineProps<{
     title?: string
     titleColor?: ColorPalette
-    className?: string | string[]
+    customClass?: string | string[]
     visible?: boolean
-    noBackdrop?: boolean
-    noHeader?: boolean
+    showBackdrop?: boolean
+    showHeader?: boolean
     color?: ColorPalette
     backdropColor?: ColorPalette
     placement?: DirectionX
@@ -21,10 +21,10 @@ const props = withDefaults(
   }>(),
   {
     titleColor: 'dark-3',
-    className: '',
+    customClass: '',
     visible: false,
-    noBackdrop: false,
-    noHeader: false,
+    showBackdrop: true,
+    showHeader: true,
     color: 'light-1',
     backdropColor: 'dark-4',
     placement: 'left',
@@ -137,13 +137,13 @@ defineExpose<{
 
 <template>
   <div :style="handleStyleVariables" :visible="toggle" ref="sidebarRef">
-    <Transition name="fade" appear tag="div" v-if="!noBackdrop">
+    <Transition name="fade" appear tag="div" v-if="showBackdrop">
       <section
         v-if="toggle"
         @click="closeSidebar"
         aria-hidden="true"
         class="fixed inset-0 z-[100] overflow-y-auto bg-opacity-70 backdrop-blur"
-        :class="generateClass('BGCOLOR', backdropColor)"
+        :class="generateClass.bgColorVariant({ color: backdropColor })"
       ></section>
     </Transition>
     <Transition
@@ -164,13 +164,13 @@ defineExpose<{
       >
         <div
           class="relative h-full overflow-y-scroll overscroll-contain"
-          :class="[generateClass('BGCOLOR', color), className]"
+          :class="[generateClass.bgColorVariant({ color }), customClass]"
         >
-          <div v-if="!noHeader" class="sticky top-0 z-10" ref="headerRef">
+          <div v-if="showHeader" class="sticky top-0 z-10" ref="headerRef">
             <slot name="header" :close="closeSidebar" :status="toggle">
               <div
                 class="p-xs flex items-center justify-between"
-                :class="generateClass('BGCOLOR', color)"
+                :class="generateClass.bgColorVariant({ color })"
               >
                 <button
                   type="button"
@@ -184,7 +184,7 @@ defineExpose<{
                     viewBox="0 0 384 512"
                     aria-hidden="true"
                     class="h-sm transition-opacity duration-300 ease-in hover:opacity-75 focus:opacity-75"
-                    :class="[generateClass('SVGFILL', titleColor)]"
+                    :class="[generateClass.svgFillColorVariant({ color: titleColor })]"
                   >
                     <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                     <path
@@ -196,7 +196,7 @@ defineExpose<{
                   v-if="title"
                   :id="titleId"
                   class="h3-md"
-                  :class="generateClass('TEXTCOLOR', titleColor)"
+                  :class="generateClass.textColorVariant({ color: titleColor })"
                 >
                   {{ title }}
                 </h3>
@@ -212,7 +212,7 @@ defineExpose<{
                     viewBox="0 0 384 512"
                     aria-hidden="true"
                     class="h-sm transition-opacity duration-300 ease-in hover:opacity-75 focus:opacity-75"
-                    :class="[generateClass('SVGFILL', titleColor)]"
+                    :class="[generateClass.svgFillColorVariant({ color: titleColor })]"
                   >
                     <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                     <path

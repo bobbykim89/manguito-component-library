@@ -9,13 +9,13 @@ const props = withDefaults(
   defineProps<{
     bgColor?: ColorPalette
     drawerBtnColor?: ColorPalette
-    drawerBtnBorder?: boolean
+    showDrawerBorder?: boolean
     headerWidth?: number
   }>(),
   {
     bgColor: 'light-1',
     drawerBtnColor: 'dark-1',
-    drawerBtnBorder: true,
+    showDrawerBorder: true,
     headerWidth: 160,
   },
 )
@@ -63,7 +63,7 @@ defineExpose<{
   <header class="relative" :style="componentWidth">
     <nav
       class="py-sm header-desktop hidden overflow-y-scroll overscroll-contain lg:sticky lg:left-0 lg:top-0 lg:block lg:h-[100vh]"
-      :class="[generateClass('BGCOLOR', bgColor)]"
+      :class="[generateClass.bgColorVariant({ color: bgColor })]"
     >
       <div class="flex h-full flex-col justify-between">
         <div>
@@ -85,11 +85,11 @@ defineExpose<{
         >
           <NavDrawer
             :color="drawerBtnColor"
-            :display-border="drawerBtnBorder"
+            :show-border="showDrawerBorder"
             class="relative block lg:hidden"
             @hbg-click="toggleNavButton"
             :toggle="navOpen"
-            :nav-color="bgColor"
+            :bg-color="bgColor"
           ></NavDrawer>
         </div>
 
@@ -97,7 +97,7 @@ defineExpose<{
           <nav
             class="py-lg px-sm fixed inset-0 overflow-y-scroll overscroll-contain"
             v-if="navOpen"
-            :class="generateClass('BGCOLOR', bgColor)"
+            :class="generateClass.bgColorVariant({ color: bgColor })"
           >
             <div v-if="slots['mobile-content']" class="h-full">
               <slot name="mobile-content" :header-close="closeNav" />

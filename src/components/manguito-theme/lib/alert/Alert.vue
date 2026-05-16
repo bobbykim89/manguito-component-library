@@ -30,7 +30,7 @@ const emit = defineEmits<{
 const showAlert = ref<boolean>(props.show)
 const componentClass = computed<string>(() => {
   const { color, rounded, shadow } = props
-  const classArray: string[] = [generateClass('BGCOLOR', color)]
+  const classArray: string[] = [generateClass.bgColorVariant({ color })]
   if (rounded) {
     classArray.push('rounded-md')
   }

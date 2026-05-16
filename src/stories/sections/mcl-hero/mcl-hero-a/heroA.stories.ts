@@ -41,8 +41,8 @@ const meta: Meta<typeof MclHeroA> = {
       defaultValue: 'md',
       category: 'Title Block',
     }),
-    displaySubTitle: booleanControllers({
-      name: 'display-sub-title',
+    showSubTitle: booleanControllers({
+      name: 'show-sub-title',
       required: false,
       description: 'whether or not to display subtitle block',
       defaultValue: false,
@@ -75,8 +75,8 @@ const meta: Meta<typeof MclHeroA> = {
       defaultValue: 'dark-3',
       category: 'Title Block',
     }),
-    displayHighlight: booleanControllers({
-      name: 'display-highlight',
+    showHighlight: booleanControllers({
+      name: 'show-highlight',
       required: false,
       description: 'add highlight on the title block',
       defaultValue: false,
@@ -116,8 +116,8 @@ const meta: Meta<typeof MclHeroA> = {
       defaultValue: 'white',
       category: 'Background',
     }),
-    displayFilter: booleanControllers({
-      name: 'display-filter',
+    showFilter: booleanControllers({
+      name: 'show-filter',
       required: false,
       description:
         'wheter or not to display background filter on mobile screen, filter color is equivalent to bg-color value',
@@ -142,19 +142,19 @@ const meta: Meta<typeof MclHeroA> = {
     titleLevel: 'h1',
     titleSize: 'md',
     titleColor: 'dark-3',
-    displaySubTitle: false,
+    showSubTitle: false,
     subTitle: 'Lorem ipsum',
     subTitleLevel: 'h3',
     subTitleSize: 'md',
     subTitleColor: 'dark-3',
-    displayHighlight: false,
+    showHighlight: false,
     highlightColor: 'warning',
     imageSource:
       'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1650675406/ManguitoPage/hl38duquvda0ilultyqb.jpg',
     imgPosition: 'right',
     bgColor: 'white',
     mobileImageBlur: false,
-    displayFilter: true,
+    showFilter: true,
     filterOpacity: 30,
   },
 }

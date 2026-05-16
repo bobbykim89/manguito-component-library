@@ -114,7 +114,7 @@ const sidebarRight2Ref = ref<InstanceType<typeof Sidebar>>()
         </div>
       </template>
     </sidebar>
-    <sidebar ref="sidebarLeftRef" id="sidebar-left" class-name="bg-light-1 px-xs overflow-scroll">
+    <sidebar ref="sidebarLeftRef" id="sidebar-left" custom-class="bg-light-1 px-xs overflow-scroll">
       <template #header="{ close }">
         <div class="pb-md pt-xs bg-light-1 flex justify-end">
           <button @click="close">
@@ -178,9 +178,9 @@ const sidebarRight2Ref = ref<InstanceType<typeof Sidebar>>()
       ref="sidebarRightRef"
       id="sidebar-right"
       placement="right"
-      no-backdrop
+      :show-backdrop="false"
       :width="450"
-      class-name="bg-warning p-xs"
+      custom-class="bg-warning p-xs"
     >
       <template #header="{ close }">
         <div class="mb-md flex justify-start">

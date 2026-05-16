@@ -38,7 +38,7 @@ export default defineComponent({
       type: String,
       default: '',
     },
-    title: {
+    content: {
       type: String,
       required: true,
     },
@@ -48,8 +48,8 @@ export default defineComponent({
       'invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus:visible group-focus:opacity-100 z-[100] tooltip'
     const colorClass = computed<string>(() => {
       return [
-        generateClass('BGCOLOR', props.color),
-        generateClass('TEXTCOLOR', props.textColor),
+        generateClass.bgColorVariant({ color: props.color }),
+        generateClass.textColorVariant({ color: props.textColor }),
       ].join(' ')
     })
     const tooltipWidth = computed(() => {
@@ -71,7 +71,7 @@ export default defineComponent({
         id: props.id,
         class: classList.value,
         role: 'tooltip',
-        innerHTML: DOMPurify.sanitize(props.title),
+        innerHTML: DOMPurify.sanitize(props.content),
         style: [tooltipWidth.value],
       })
   },

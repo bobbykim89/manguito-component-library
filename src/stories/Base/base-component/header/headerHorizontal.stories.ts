@@ -32,8 +32,8 @@ const meta: Meta<typeof HeaderHorizontal> = {
       defaultValue: 'dark-1',
       category: 'Colors',
     }),
-    drawerBtnBorder: booleanControllers({
-      name: 'drawer-btn-border',
+    showDrawerBorder: booleanControllers({
+      name: 'show-drawer-border',
       required: false,
       description: 'whether or not to display border for drawer button',
       defaultValue: true,
@@ -70,7 +70,7 @@ const meta: Meta<typeof HeaderHorizontal> = {
     bgColor: 'light-1',
     mobileMenuBgColor: 'light-2',
     drawerBtnColor: 'dark-1',
-    drawerBtnBorder: true,
+    showDrawerBorder: true,
     fadeInOnScroll: true,
     scrollDistance: 50,
     sticky: 'all',

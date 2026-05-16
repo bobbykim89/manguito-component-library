@@ -65,7 +65,7 @@ const customButtonColor = (idx: number): string => {
           <Collapse
             :ref="(el) => { if (el) panelRefs[idx] = el as InstanceType<typeof Collapse> }"
             :id="item.id"
-            class-name="bg-light-3 p-xs"
+            custom-class="bg-light-3 p-xs"
             :visible="idx === 0"
           >
             <div>{{ item.content }}</div>
