@@ -66,7 +66,7 @@ const meta: Meta<typeof MclCardB> = {
       category: 'Image Block',
     }),
     showGrayScale: booleanControllers({
-      name: 'display-grayscale',
+      name: 'show-gray-scale',
       required: false,
       description: 'add grayscale on card image',
       defaultValue: true,

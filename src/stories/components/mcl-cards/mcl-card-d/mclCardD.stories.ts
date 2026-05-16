@@ -135,7 +135,7 @@ const meta: Meta<typeof MclCardD> = {
       category: 'CTA',
     }),
     showHighlight: booleanControllers({
-      name: 'display-highlight',
+      name: 'show-highlight',
       required: false,
       description: 'displays highlight under the title block',
       defaultValue: true,

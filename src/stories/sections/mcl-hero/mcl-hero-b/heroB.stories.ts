@@ -40,7 +40,7 @@ const meta: Meta<typeof MclHeroB> = {
       category: 'Title Block',
     }),
     showHighlight: booleanControllers({
-      name: 'display-highlight',
+      name: 'show-highlight',
       required: false,
       description: 'whether or not to display highlight on title block',
       defaultValue: false,
@@ -60,7 +60,7 @@ const meta: Meta<typeof MclHeroB> = {
       category: 'Image Block',
     }),
     showGradients: booleanControllers({
-      name: 'display-gradient',
+      name: 'show-gradients',
       required: false,
       description: 'whether or not to add gradient on the background image',
       defaultValue: true,

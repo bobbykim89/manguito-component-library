@@ -70,7 +70,7 @@ const meta: Meta<typeof MclCollapseB> = {
       category: 'Border',
     }),
     showShadow: booleanControllers({
-      name: 'display-shadow',
+      name: 'show-shadow',
       required: false,
       description: 'adds drop shadow on border of component',
       defaultValue: true,

@@ -110,7 +110,7 @@ const meta: Meta<typeof MclCarouselA> = {
       category: 'Title Block',
     }),
     showTagLine: booleanControllers({
-      name: 'display-tag-line',
+      name: 'show-tag-line',
       required: false,
       description: 'displays tagline text above title block',
       defaultValue: true,
@@ -124,7 +124,7 @@ const meta: Meta<typeof MclCarouselA> = {
       category: 'Title Block',
     }),
     showHighlight: booleanControllers({
-      name: 'display-highlight',
+      name: 'show-highlight',
       required: false,
       description: 'displays highlight on the left side of title block',
       defaultValue: true,

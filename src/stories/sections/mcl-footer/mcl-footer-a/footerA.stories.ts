@@ -112,7 +112,7 @@ const meta: Meta<typeof MclFooterA> = {
       category: 'Title Block',
     }),
     showSocialIcons: booleanControllers({
-      name: 'display-social-icons',
+      name: 'show-social-icons',
       required: false,
       description:
         'whether or not to display social icons on the footer component',
@@ -173,7 +173,7 @@ const meta: Meta<typeof MclFooterA> = {
       category: 'Menu Block',
     }),
     showHighlight: booleanControllers({
-      name: 'display-highlight',
+      name: 'show-highlight',
       required: false,
       description:
         'whether or not to add highlight on hover/focus on menu items',

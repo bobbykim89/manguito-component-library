@@ -92,7 +92,7 @@ const meta: Meta<typeof MclCollapseA> = {
       category: 'Colors',
     }),
     showHighlight: booleanControllers({
-      name: 'display-highlight',
+      name: 'show-highlight',
       required: false,
       description: 'displays highlight on the left side of component',
       defaultValue: true,

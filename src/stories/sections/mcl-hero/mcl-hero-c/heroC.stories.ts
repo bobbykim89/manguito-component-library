@@ -41,14 +41,14 @@ const meta: Meta<typeof MclHeroC> = {
       category: 'Title Block',
     }),
     showTitleShadow: booleanControllers({
-      name: 'display-title-shadow',
+      name: 'show-title-shadow',
       required: false,
       description: 'whether or not to add drop shadow on title text',
       defaultValue: true,
       category: 'Title Block',
     }),
     showHighlight: booleanControllers({
-      name: 'display-highlight',
+      name: 'show-highlight',
       required: false,
       description: 'whether or not to display highlight under title text',
       defaultValue: true,
@@ -62,7 +62,7 @@ const meta: Meta<typeof MclHeroC> = {
       category: 'Highlight',
     }),
     showLabel: booleanControllers({
-      name: 'display-label',
+      name: 'show-label',
       required: false,
       description: 'whether or not to display label above title text',
       defaultValue: true,
@@ -102,7 +102,7 @@ const meta: Meta<typeof MclHeroC> = {
       category: 'Background',
     }),
     showGradient: booleanControllers({
-      name: 'display-gradient',
+      name: 'show-gradient',
       required: false,
       description: 'whether or not to add gradient on background',
       defaultValue: true,

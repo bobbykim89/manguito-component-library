@@ -28,7 +28,7 @@ const meta: Meta<typeof MclSelect> = {
       category: 'ID',
     }),
     showBorder: booleanControllers({
-      name: 'display-border',
+      name: 'show-border',
       required: false,
       description: 'whether or not to disply border of the component',
       defaultValue: false,
@@ -71,7 +71,7 @@ const meta: Meta<typeof MclSelect> = {
       category: 'Component Block',
     }),
     showShadow: booleanControllers({
-      name: 'display-shadow',
+      name: 'show-shadow',
       required: false,
       description: 'whether or not to add shadow on the component',
       defaultValue: true,
@@ -112,7 +112,7 @@ const meta: Meta<typeof MclSelect> = {
       category: 'Input Block',
     }),
     showHighlight: booleanControllers({
-      name: 'display-highlight',
+      name: 'show-highlight',
       required: false,
       description: 'whether or not to display highlight on focus',
       defaultValue: true,

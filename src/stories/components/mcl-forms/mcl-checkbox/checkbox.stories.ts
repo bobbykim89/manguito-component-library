@@ -68,7 +68,7 @@ const meta: Meta<typeof MclCheckbox> = {
       category: 'Component Block',
     }),
     showShadow: booleanControllers({
-      name: 'display-shadow',
+      name: 'show-shadow',
       required: false,
       defaultValue: false,
       description: 'whether or not to add shadow on the checkbox',

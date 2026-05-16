@@ -33,7 +33,7 @@ const meta: Meta<typeof MclCardC> = {
       category: 'Title Block',
     }),
     showTitle: booleanControllers({
-      name: 'display-title',
+      name: 'show-title',
       required: false,
       description: 'whether to display title block',
       defaultValue: false,
@@ -59,7 +59,7 @@ const meta: Meta<typeof MclCardC> = {
       category: 'Card Body',
     }),
     showHighlight: booleanControllers({
-      name: 'display-highlight',
+      name: 'show-highlight',
       required: false,
       description: 'displays highlight under the title block',
       defaultValue: false,

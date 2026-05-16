@@ -42,7 +42,7 @@ const meta: Meta<typeof MclHeroA> = {
       category: 'Title Block',
     }),
     showSubTitle: booleanControllers({
-      name: 'display-sub-title',
+      name: 'show-sub-title',
       required: false,
       description: 'whether or not to display subtitle block',
       defaultValue: false,
@@ -76,7 +76,7 @@ const meta: Meta<typeof MclHeroA> = {
       category: 'Title Block',
     }),
     showHighlight: booleanControllers({
-      name: 'display-highlight',
+      name: 'show-highlight',
       required: false,
       description: 'add highlight on the title block',
       defaultValue: false,
@@ -117,7 +117,7 @@ const meta: Meta<typeof MclHeroA> = {
       category: 'Background',
     }),
     showFilter: booleanControllers({
-      name: 'display-filter',
+      name: 'show-filter',
       required: false,
       description:
         'wheter or not to display background filter on mobile screen, filter color is equivalent to bg-color value',

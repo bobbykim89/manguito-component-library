@@ -38,7 +38,7 @@ const meta: Meta<typeof MclCardA> = {
       category: 'Title Block',
     }),
     showImage: booleanControllers({
-      name: 'display-image',
+      name: 'show-image',
       required: false,
       description: 'displays image block on the card',
       defaultValue: true,
@@ -64,7 +64,7 @@ const meta: Meta<typeof MclCardA> = {
       category: 'Border',
     }),
     showShadow: booleanControllers({
-      name: 'display-shadow',
+      name: 'show-shadow',
       required: false,
       description: 'adds drop shadow at the border of component',
       defaultValue: true,
@@ -78,7 +78,7 @@ const meta: Meta<typeof MclCardA> = {
       category: 'Border',
     }),
     showCta: booleanControllers({
-      name: 'display-cta',
+      name: 'show-cta',
       required: false,
       description: 'displays cta button on the card component',
       defaultValue: true,
@@ -120,7 +120,7 @@ const meta: Meta<typeof MclCardA> = {
       category: 'CTA',
     }),
     showLabel: booleanControllers({
-      name: 'display-label',
+      name: 'show-label',
       required: false,
       description: 'displays label',
       defaultValue: true,
@@ -148,7 +148,7 @@ const meta: Meta<typeof MclCardA> = {
       category: 'Label',
     }),
     showHighlight: booleanControllers({
-      name: 'display-highlight',
+      name: 'show-highlight',
       required: false,
       description: 'displays highlight under the title block',
       defaultValue: true,

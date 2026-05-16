@@ -19,7 +19,7 @@ const meta: Meta<typeof MclTextArea> = {
       category: 'ID',
     }),
     showBorder: booleanControllers({
-      name: 'display-border',
+      name: 'show-border',
       required: false,
       description: 'whether or not to display border of the input component',
       defaultValue: false,
@@ -60,7 +60,7 @@ const meta: Meta<typeof MclTextArea> = {
       category: 'Input Block',
     }),
     showShadow: booleanControllers({
-      name: 'display-shadow',
+      name: 'show-shadow',
       required: false,
       description: 'whether or not to add drop shadow around component',
       defaultValue: true,
@@ -82,7 +82,7 @@ const meta: Meta<typeof MclTextArea> = {
       category: 'Input Block',
     }),
     showHighlight: booleanControllers({
-      name: 'display-highlight',
+      name: 'show-highlight',
       required: false,
       description:
         'whether or not to add highlight at the bottom of input component',
