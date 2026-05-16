@@ -20,14 +20,6 @@ const meta: Meta<typeof MclCollapseA> = {
       defaultValue: undefined,
       category: 'ID',
     }),
-    accordion: textControllers({
-      name: 'accordion',
-      required: false,
-      description:
-        'assigns accordion group id in case of using accordion feature',
-      defaultValue: undefined,
-      category: 'ID',
-    }),
     visible: booleanControllers({
       name: 'visible',
       required: false,
@@ -108,7 +100,6 @@ const meta: Meta<typeof MclCollapseA> = {
   },
   args: {
     collapseId: 'my-collapse-component',
-    accordion: 'my-accordion',
     borderColor: 'light-4',
     rounded: false,
     showHighlight: true,

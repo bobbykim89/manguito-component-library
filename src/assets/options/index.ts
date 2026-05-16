@@ -1,16 +1,14 @@
 import type {
+  BodyText,
+  ColorPalette,
   CrossOrigin,
   CtaTarget,
   DirectionX,
+  FontWeight,
+  HeadingSize,
   InputType,
+  SpacingLevel,
 } from '@/components/manguito-theme/lib'
-import type {
-  BodyTextClass,
-  ColorClass,
-  FontWeightClass,
-  HeaderSizeClass,
-  Spacing,
-} from '@/components/manguito-theme/lib/theme/theme'
 
 type HeadingLevel = 'h1' | 'h2' | 'h3' | 'h4'
 type ColWidth = '25' | '50' | '75' | '100'
@@ -37,7 +35,7 @@ type SwitchSizeClass = {
   [key in SwitChSize]: string
 }
 
-export const colors: ColorClass = {
+export const colors: Record<ColorPalette, ColorPalette> = {
   primary: 'primary',
   secondary: 'secondary',
   success: 'success',
@@ -57,7 +55,7 @@ export const colors: ColorClass = {
   transparent: 'transparent',
 }
 
-export const spacingOptions: Spacing = {
+export const spacingOptions: Record<SpacingLevel, SpacingLevel> = {
   '0': '0',
   '3xs': '3xs',
   '2xs': '2xs',
@@ -70,14 +68,14 @@ export const spacingOptions: Spacing = {
   '3xl': '3xl',
 }
 
-export const bodyTextSize: BodyTextClass = {
+export const bodyTextSize: Record<BodyText, BodyText> = {
   xs: 'xs',
   sm: 'sm',
   md: 'md',
   lg: 'lg',
   xl: 'xl',
 }
-export const headingTextSize: HeaderSizeClass = {
+export const headingTextSize: Record<HeadingSize, HeadingSize> = {
   sm: 'sm',
   md: 'md',
   lg: 'lg',
@@ -120,7 +118,7 @@ export const switchSizeOptions: SwitchSizeClass = {
   md: 'md',
   lg: 'lg',
 }
-export const fontWeightOptions: FontWeightClass = {
+export const fontWeightOptions: Record<FontWeight, FontWeight> = {
   light: 'light',
   normal: 'normal',
   bold: 'bold',

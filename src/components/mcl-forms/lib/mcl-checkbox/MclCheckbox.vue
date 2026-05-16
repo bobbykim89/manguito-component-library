@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { generateClass, ColorPalette } from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
+import type { ColorPalette } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 import type { ColorMap, InputSizeType } from '../common/index.types'
 
