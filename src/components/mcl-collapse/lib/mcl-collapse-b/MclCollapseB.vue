@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
-import generateClass, { Collapse } from '@bobbykim/manguito-theme'
-import { vCollapse } from '@bobbykim/manguito-theme/directives'
-import { ref, watch } from 'vue'
+import { generateClass, Collapse } from '@bobbykim/manguito-theme'
+import { ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -12,22 +11,21 @@ const props = withDefaults(
     titleSize?: HeadingSize
     borderColor?: ColorPalette
     bgColor?: ColorPalette
-    btnColor?: ColorPalette
+    triggerBgColor?: ColorPalette
     iconColor?: ColorPalette
     rounded?: boolean
-    displayShadow?: boolean
+    showShadow?: boolean
     visible?: boolean
-    accordion?: string
   }>(),
   {
     titleColor: 'light-1',
     titleSize: 'md',
     borderColor: 'light-3',
     bgColor: 'light-1',
-    btnColor: 'primary',
+    triggerBgColor: 'primary',
     iconColor: 'light-1',
     rounded: true,
-    displayShadow: true,
+    showShadow: true,
     visible: false,
   },
 )
@@ -35,20 +33,21 @@ const props = withDefaults(
 const slots = defineSlots<{
   default: any
 }>()
-const toggle = ref(props.visible)
 const emit = defineEmits<{
   (e: 'collapse-open', visible: boolean, title: string): void
   (e: 'collapse-close', visible: boolean, title: string): void
 }>()
 
-const toggleAction = (visible: boolean): void => {
-  const { title } = props
-  toggle.value = visible
-  if (visible === true) {
-    emit('collapse-open', visible, title)
-  } else {
-    emit('collapse-close', visible, title)
-  }
+const collapseRef = ref<InstanceType<typeof Collapse>>()
+const isOpen = ref(props.visible)
+
+const handleOpen = (): void => {
+  isOpen.value = true
+  emit('collapse-open', true, props.title)
+}
+const handleClose = (): void => {
+  isOpen.value = false
+  emit('collapse-close', false, props.title)
 }
 
 const getBorderClass = (
@@ -57,17 +56,10 @@ const getBorderClass = (
   rounded: boolean,
   dShadow: boolean,
 ): string => {
-  /**
-   * @param {ColorPalette} bColor - borderColor
-   * @param {ColorPalette} bgColor - bgColor
-   * @param {boolean} rounded - rounded
-   * @param {boolean} dShadow - displayShadow
-   */
-
   let borderInfo: string[] = [
     'border',
-    generateClass('BORDER', bColor),
-    generateClass('BGCOLOR', bgColor),
+    generateClass.borderColorVariant({ color: bColor }),
+    generateClass.bgColorVariant({ color: bgColor }),
   ]
 
   if (dShadow) {
@@ -83,48 +75,43 @@ const getBorderClass = (
 }
 
 const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
-  /**
-   * @param {HeadingSize} size - titleSize
-   * @param {ColorPalette} color - titleColor
-   */
-
   const classArray: string[] = [
-    generateClass('H3', size),
-    generateClass('TEXTCOLOR', color),
+    generateClass.h3Variant({ size: size }),
+    generateClass.textColorVariant({ color: color }),
   ]
   return classArray.join(' ')
 }
-
-watch(
-  () => props.visible,
-  (newValue) => {
-    toggle.value = newValue
-  },
-)
 </script>
 
 <template>
   <div
     class="p-2xs w-full overflow-hidden"
-    :class="getBorderClass(borderColor, bgColor, rounded, displayShadow)"
+    :class="getBorderClass(borderColor, bgColor, rounded, showShadow)"
   >
-    <div
-      v-collapse:[collapseId]
+    <button
+      type="button"
+      :id="`${collapseId}-trigger`"
+      :aria-expanded="isOpen"
+      :aria-controls="collapseId"
+      @click="collapseRef?.toggle()"
       class="flex w-full cursor-pointer items-center justify-between px-4 py-2 transition duration-200 ease-in hover:bg-opacity-70"
       :class="[
         rounded ? 'rounded-lg' : 'rounded-sm',
-        generateClass('BGCOLOR', btnColor),
+        generateClass.bgColorVariant({ color: triggerBgColor }),
       ]"
     >
-      <h3 :class="getTitleClass(titleSize, titleColor)">{{ title }}</h3>
-      <div class="ml-xs md:ml-sm lg:ml-md flex items-center justify-center">
+      <span :class="getTitleClass(titleSize, titleColor)">{{ title }}</span>
+      <div
+        aria-hidden="true"
+        class="ml-xs md:ml-sm lg:ml-md flex items-center justify-center"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 448 512"
           class="h-xs transition-transform duration-300 ease-in"
           :class="[
-            !toggle ? 'rotate-0' : 'rotate-180',
-            generateClass('SVGFILL', iconColor),
+            !isOpen ? 'rotate-0' : 'rotate-180',
+            generateClass.svgFillColorVariant({ color: iconColor }),
           ]"
         >
           <!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
@@ -133,18 +120,20 @@ watch(
           />
         </svg>
       </div>
-    </div>
+    </button>
     <div class="overflow-hidden">
-      <collapse
+      <Collapse
+        ref="collapseRef"
         :id="collapseId"
         :visible="visible"
-        class-name="px-xs pt-xs pb-2xs"
-        :accordion="accordion"
-        @open="toggleAction"
-        @close="toggleAction"
+        custom-class="px-xs pt-xs pb-2xs"
+        role="region"
+        :aria-labelledby="`${collapseId}-trigger`"
+        @open="handleOpen"
+        @close="handleClose"
       >
         <slot></slot>
-      </collapse>
+      </Collapse>
     </div>
   </div>
 </template>

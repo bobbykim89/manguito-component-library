@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 import type { ColorMap } from '../common/index.types'
 import type { InputSizeType } from '../common/index.types'
@@ -89,8 +89,8 @@ const switchClass = computed<string>(() => {
    */
   const { sliderColor, onColor, offColor, rounded } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', offColor),
-    generateClass('BEFOREBG', sliderColor),
+    generateClass.bgColorVariant({ color: offColor }),
+    generateClass.beforeBgColorVariant({ color: sliderColor }),
     peerBgColor[onColor],
   ]
   if (rounded) {
@@ -104,12 +104,15 @@ const switchClass = computed<string>(() => {
   <div class="switch relative" :style="switchSize" @click="onSwitchClick">
     <input
       :id="id"
-      class="hidden peer/input"
+      class="sr-only peer/input"
       v-model="model"
       ref="inputRef"
       type="checkbox"
+      role="switch"
+      :aria-checked="!!model"
     />
     <span
+      aria-hidden="true"
       class="slider absolute inset-0 cursor-pointer transition-all duration-300 before:absolute before:transition-all before:duration-300"
       :class="switchClass"
     ></span>

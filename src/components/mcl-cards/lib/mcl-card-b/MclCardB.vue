@@ -4,7 +4,7 @@ import type {
   CtaTarget,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { computed } from 'vue'
 import type { CardClickEvent } from '../common/index.types'
 
@@ -17,7 +17,7 @@ const props = withDefaults(
     borderColor?: ColorPalette
     imageSource?: string
     imageAlt?: string
-    displayGrayScale?: boolean
+    showGrayScale?: boolean
     ctaAsLink?: boolean
     ctaLink?: string
     ctaTarget?: CtaTarget
@@ -28,7 +28,7 @@ const props = withDefaults(
     titleColor: 'light-1',
     titleBlockColor: 'dark-4',
     borderColor: 'light-3',
-    displayGrayScale: true,
+    showGrayScale: true,
     ctaAsLink: false,
     ctaLink: '#',
     ctaTarget: '_self',
@@ -48,16 +48,16 @@ const borderClass = computed<string>(() => {
    * @param {boolean} rounded
    */
   const { borderColor, rounded } = props
-  const classArray: string[] = [generateClass('BORDER', borderColor)]
+  const classArray: string[] = [generateClass.borderColorVariant({ color: borderColor })]
   classArray.push(rounded ? 'rounded-md' : 'rounded-sm')
   return classArray.join(' ')
 })
 const hoverEffect = computed<string>(() => {
   /**
-   * @param {boolean} displayGrayScale
+   * @param {boolean} showGrayScale
    */
-  const { displayGrayScale } = props
-  return displayGrayScale
+  const { showGrayScale } = props
+  return showGrayScale
     ? '[@media(hover:hover)]:grayscale peer-hover:grayscale-0'
     : ''
 })
@@ -69,9 +69,9 @@ const titleClass = computed<string>(() => {
    */
   const { titleSize, titleColor, titleBlockColor } = props
   const classArray: string[] = [
-    generateClass('H3', titleSize),
-    generateClass('TEXTCOLOR', titleColor),
-    generateClass('BGCOLOR', titleBlockColor),
+    generateClass.h3Variant({ size: titleSize }),
+    generateClass.textColorVariant({ color: titleColor }),
+    generateClass.bgColorVariant({ color: titleBlockColor }),
   ]
   return classArray.join(' ')
 })

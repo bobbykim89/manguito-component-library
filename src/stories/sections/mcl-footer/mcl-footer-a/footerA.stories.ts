@@ -111,8 +111,8 @@ const meta: Meta<typeof MclFooterA> = {
       defaultValue: '_self',
       category: 'Title Block',
     }),
-    displaySocialIcons: booleanControllers({
-      name: 'display-social-icons',
+    showSocialIcons: booleanControllers({
+      name: 'show-social-icons',
       required: false,
       description:
         'whether or not to display social icons on the footer component',
@@ -172,8 +172,8 @@ const meta: Meta<typeof MclFooterA> = {
       defaultValue: false,
       category: 'Menu Block',
     }),
-    displayHighlight: booleanControllers({
-      name: 'display-highlight',
+    showHighlight: booleanControllers({
+      name: 'show-highlight',
       required: false,
       description:
         'whether or not to add highlight on hover/focus on menu items',
@@ -218,7 +218,7 @@ const meta: Meta<typeof MclFooterA> = {
     logoAsLink: false,
     logoLink: '/',
     logoLinkTarget: '_self',
-    displaySocialIcons: true,
+    showSocialIcons: true,
     socialIconColor: 'light-1',
     socialLinks: socialLinks,
     menuItems: navItems,
@@ -227,7 +227,7 @@ const meta: Meta<typeof MclFooterA> = {
     menuTextSize: 'md',
     menuTextColor: 'light-1',
     menuTextBold: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     bgColor: 'dark-3',
     borderTopColor: 'primary',

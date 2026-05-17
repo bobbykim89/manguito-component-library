@@ -45,8 +45,8 @@ const meta: Meta<typeof MclCardD> = {
       description: 'alt text for card image',
       category: 'Image Block',
     }),
-    displayImage: booleanControllers({
-      name: 'displayImage',
+    showImage: booleanControllers({
+      name: 'showImage',
       required: false,
       description: 'whether or not to display card image',
       defaultValue: true,
@@ -134,8 +134,8 @@ const meta: Meta<typeof MclCardD> = {
       defaultValue: false,
       category: 'CTA',
     }),
-    displayHighlight: booleanControllers({
-      name: 'display-highlight',
+    showHighlight: booleanControllers({
+      name: 'show-highlight',
       required: false,
       description: 'displays highlight under the title block',
       defaultValue: true,
@@ -150,7 +150,7 @@ const meta: Meta<typeof MclCardD> = {
     }),
   },
   args: {
-    displayImage: true,
+    showImage: true,
     imageSource:
       'https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg',
     imageAlt: 'picture of a bird',
@@ -158,7 +158,7 @@ const meta: Meta<typeof MclCardD> = {
     titleSize: 'md',
     titleColor: 'dark-4',
     bgColor: 'light-1',
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     ctaText: 'Read more',
     ctaLink: '/',

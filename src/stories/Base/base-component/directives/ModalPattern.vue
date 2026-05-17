@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { observeVisibleAttr } from '@/components/manguito-theme/lib/composables'
-import { vToggle } from '@/components/manguito-theme/lib/directives'
-import { computed, ref } from 'vue'
+import { Modal } from '@/components/manguito-theme/lib'
+import { ref } from 'vue'
 
 interface Props {
   modalId: string
@@ -18,104 +17,52 @@ const emit = defineEmits<{
   close: []
 }>()
 
-const modalRef = ref<HTMLElement>()
-const isVisible = ref(props.initialVisible)
+const modalRef = ref<InstanceType<typeof Modal>>()
 
-// Observe attribute changes from v-toggle
-observeVisibleAttr(modalRef, (visible) => {
-  isVisible.value = visible
-  emit('update:visible', visible)
-  visible ? emit('open') : emit('close')
-})
-
-const modalClasses = computed(() => ({
-  'modal-open': isVisible.value,
-  'modal-closed': !isVisible.value,
-}))
+const openModal = () => {
+  modalRef.value?.open()
+  emit('open')
+}
+const closeModal = () => {
+  modalRef.value?.close()
+  emit('close')
+}
 </script>
 
 <template>
   <div>
     <!-- Trigger slot -->
-    <slot name="trigger" :visible="isVisible">
-      <button class="btn btn-primary" v-toggle:[modalId]>Open Modal</button>
+    <slot name="trigger" :open="openModal">
+      <button class="btn btn-primary" @click="openModal">Open Modal</button>
     </slot>
 
-    <!-- Modal element -->
-    <Teleport to="body">
-      <div
-        :id="modalId"
-        ref="modalRef"
-        :visible="isVisible"
-        :class="modalClasses"
-        class="modal"
-      >
-        <Transition name="modal-fade">
-          <div v-if="isVisible" class="modal-overlay">
-            <div class="bg-light-1 p-sm width-[90%] max-w-[32rem] rounded-lg">
-              <slot :close="() => (isVisible = false)" />
-
-              <div class="flex justify-end">
-                <button v-toggle:[modalId] class="modal-close font-bold">
-                  ×
-                </button>
-              </div>
-              <div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Possimus dicta aspernatur animi eligendi ea repudiandae
-                cupiditate exercitationem itaque labore dignissimos modi
-                deleniti quae, perferendis architecto aliquam qui quidem,
-                sapiente maiores, doloremque ullam neque quia! Placeat
-                perspiciatis quia consectetur culpa neque dignissimos, deleniti
-                dolorem ex est fugit hic mollitia tempore laboriosam?
-              </div>
-            </div>
+    <Modal
+      :id="modalId"
+      ref="modalRef"
+      :visible="initialVisible"
+      @close="emit('update:visible', false); emit('close')"
+      @open="emit('update:visible', true); emit('open')"
+    >
+      <template #header="{ close }">
+        <div class="py-xs bg-light-1 border-b-light-4 flex justify-between border-b-2">
+          <h3 class="h3-md">Modal</h3>
+          <button @click="close" aria-label="Close">×</button>
+        </div>
+      </template>
+      <template #body>
+        <slot :close="closeModal">
+          <div class="p-sm">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Possimus dicta aspernatur animi eligendi ea repudiandae
+            cupiditate exercitationem itaque labore dignissimos.
           </div>
-        </Transition>
-      </div>
-    </Teleport>
+        </slot>
+      </template>
+      <template #footer="{ close }">
+        <div class="py-xs flex justify-end">
+          <button class="btn btn-warning btn-round" @click="close">Close</button>
+        </div>
+      </template>
+    </Modal>
   </div>
 </template>
-
-<style scoped>
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-  pointer-events: none;
-}
-
-.modal-open {
-  pointer-events: auto;
-}
-
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 0.5rem;
-  max-width: 32rem;
-  width: 90%;
-}
-
-.modal-fade-enter-active,
-.modal-fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.modal-fade-enter-from,
-.modal-fade-leave-to {
-  opacity: 0;
-}
-</style>

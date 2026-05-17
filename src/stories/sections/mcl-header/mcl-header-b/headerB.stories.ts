@@ -166,8 +166,8 @@ const meta: Meta<typeof MclHeaderB> = {
       description: 'whether or not to have menu item text bolded',
       category: 'Menu Block',
     }),
-    displayHighlight: booleanControllers({
-      name: 'display-highlight',
+    showHighlight: booleanControllers({
+      name: 'show-highlight',
       required: false,
       defaultValue: true,
       description: 'whether or not to add highlight effect for menu items',
@@ -194,8 +194,8 @@ const meta: Meta<typeof MclHeaderB> = {
       description: 'assigns color of drawer button (hamburger menu button)',
       category: 'Layout Block',
     }),
-    drawerBtnBorder: booleanControllers({
-      name: 'drawer-btn-border',
+    showDrawerBorder: booleanControllers({
+      name: 'show-drawer-border',
       required: false,
       defaultValue: true,
       description:
@@ -229,11 +229,11 @@ const meta: Meta<typeof MclHeaderB> = {
     menuTextSize: 'md',
     menuTextColor: 'dark-3',
     menuTextBold: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     bgColor: 'light-1',
     drawerBtnColor: 'dark-1',
-    drawerBtnBorder: true,
+    showDrawerBorder: true,
     headerWidth: 160,
   },
 }

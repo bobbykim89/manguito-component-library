@@ -1,40 +1,42 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { ColorPalette, InputType } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import InputHighlight from '../common/InputHighlight.vue'
 
 const props = withDefaults(
   defineProps<{
     id: string
-    displayBorder?: boolean
+    showBorder?: boolean
     borderColor?: ColorPalette
     rounded?: boolean
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
-    textcolor?: ColorPalette
+    textColor?: ColorPalette
     bgColor?: ColorPalette
     placeholder?: string
     type?: InputType
-    displayShadow?: boolean
+    showShadow?: boolean
     required?: boolean
+    invalid?: boolean
     invalidFeedback?: string
     minLength?: number
     maxLength?: number
     pattern?: string
   }>(),
   {
-    displayBorder: false,
+    showBorder: false,
     borderColor: 'light-4',
     rounded: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
-    textcolor: 'black',
+    textColor: 'black',
     bgColor: 'light-1',
     placeholder: '',
     type: 'text',
-    displayShadow: true,
+    showShadow: true,
     required: false,
+    invalid: false,
   }
 )
 
@@ -43,28 +45,28 @@ const model = defineModel<string>()
 const inputClass = computed(() => {
   const {
     bgColor,
-    displayBorder,
+    showBorder,
     borderColor,
-    displayHighlight,
-    displayShadow,
+    showHighlight,
+    showShadow,
     rounded,
-    textcolor,
+    textColor,
   } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', bgColor),
-    generateClass('TEXTCOLOR', textcolor),
+    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.textColorVariant({ color: textColor }),
   ]
-  if (displayBorder) {
+  if (showBorder) {
     classArray.push('border-2')
-    classArray.push(generateClass('BORDER', borderColor))
+    classArray.push(generateClass.borderColorVariant({ color: borderColor }))
   }
-  if (!displayHighlight) {
+  if (!showHighlight) {
     classArray.push(
       'focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear'
     )
-    classArray.push(generateClass('FOCUSRING', borderColor))
+    classArray.push(generateClass.focusRingColorVariant({ color: borderColor }))
   }
-  if (displayShadow) {
+  if (showShadow) {
     classArray.push('shadow-md')
   }
   if (rounded) {
@@ -84,17 +86,21 @@ const inputClass = computed(() => {
       v-model="model"
       :placeholder="placeholder"
       :required="required"
+      :aria-invalid="invalid || undefined"
+      :aria-describedby="invalid ? `${id}-error` : undefined"
       :minlength="minLength"
       :maxlength="maxLength"
       :pattern="pattern"
     />
     <input-highlight
-      v-if="displayHighlight"
+      v-if="showHighlight"
       :color="highlightColor"
       :rounded="rounded"
     ></input-highlight>
     <div
-      class="peer-valid/validation:hidden peer-inavlid/validation:block ml-3xs"
+      :id="`${id}-error`"
+      role="alert"
+      class="peer-valid/validation:hidden peer-invalid/validation:block ml-3xs"
     >
       <slot name="invalid-feedback">
         <span class="text-xs text-danger">{{ invalidFeedback }}</span>

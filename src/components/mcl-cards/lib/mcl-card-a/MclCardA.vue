@@ -6,7 +6,7 @@ import type {
   HeadingSize,
   OpacityRange,
 } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { getGlassmorphismClass } from '@bobbykim/manguito-theme/util'
 import { computed } from 'vue'
 import type { CardClickEvent } from '../common/index.types'
@@ -22,24 +22,24 @@ const props = withDefaults(
     glass?: boolean
     glassBlur?: BodyText
     glassOpacity?: OpacityRange
-    displayImage?: boolean
+    showImage?: boolean
     imageSource?: string
     imageAlt?: string
-    displayCta?: boolean
+    showCta?: boolean
     ctaAsLink?: boolean
     ctaText?: string
     ctaColor?: ColorPalette
     ctaLink?: string
     ctaTarget?: CtaTarget
-    displayLabel?: boolean
+    showLabel?: boolean
     labelText?: string
     labelTextColor?: ColorPalette
     labelColor?: ColorPalette
     enlargeOnHover?: boolean
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     rounded?: boolean
-    displayShadow?: boolean
+    showShadow?: boolean
   }>(),
   {
     titleSize: 'md',
@@ -50,22 +50,22 @@ const props = withDefaults(
     glass: false,
     glassBlur: 'sm',
     glassOpacity: 20,
-    displayImage: true,
-    displayCta: true,
+    showImage: true,
+    showCta: true,
     ctaAsLink: false,
     ctaColor: 'primary',
     ctaLink: '#',
     ctaTarget: '_self',
     ctaText: 'cta text',
-    displayLabel: true,
+    showLabel: true,
     labelText: 'Lorem ipsum',
     labelTextColor: 'light-1',
     labelColor: 'dark-4',
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     enlargeOnHover: false,
     rounded: true,
-    displayShadow: true,
+    showShadow: true,
   },
 )
 
@@ -83,7 +83,7 @@ const bodyClass = computed<string>(() => {
    * @param {ColorPalette} bgColor
    * @param {boolean} rounded
    * @param {boolean} enlargeOnHover
-   * @param {boolean} displayShadow
+   * @param {boolean} showShadow
    * @param {boolean} glass
    * @param {BodyText} glassBlur
    * @param {glassOpacity} OpacityRange
@@ -93,7 +93,7 @@ const bodyClass = computed<string>(() => {
     bgColor,
     rounded,
     enlargeOnHover,
-    displayShadow,
+    showShadow,
     glass,
     glassBlur,
     glassOpacity,
@@ -101,12 +101,12 @@ const bodyClass = computed<string>(() => {
   } = props
 
   return [
-    generateClass('BORDER', borderColor),
-    generateClass('BGCOLOR', bgColor),
+    generateClass.borderColorVariant({ color: borderColor }),
+    generateClass.bgColorVariant({ color: bgColor }),
     !fullWidth && 'max-w-[450px] sm:max-w-[350px]',
     rounded ? 'rounded-lg' : 'rounded-sm',
     enlargeOnHover && 'hover:scale-105 transition ease-in duration-300',
-    displayShadow && 'drop-shadow-md',
+    showShadow && 'drop-shadow-md',
     glass && getGlassmorphismClass(bgColor, glassBlur, glassOpacity),
   ]
     .filter(Boolean)
@@ -116,14 +116,14 @@ const titleClass = computed<string>(() => {
   /**
    * @param {HeadingSize} titleSize
    * @param {ColorPalette} titleColor
-   * @param {boolean} displayHighlight
+   * @param {boolean} showHighlight
    */
-  const { titleSize, titleColor, displayHighlight } = props
+  const { titleSize, titleColor, showHighlight } = props
 
   return [
-    generateClass('H3', titleSize),
-    generateClass('TEXTCOLOR', titleColor),
-    displayHighlight ? 'mb-2xs' : 'mb-xs',
+    generateClass.h3Variant({ size: titleSize }),
+    generateClass.textColorVariant({ color: titleColor }),
+    showHighlight ? 'mb-2xs' : 'mb-xs',
   ]
     .filter(Boolean)
     .join(' ')
@@ -136,8 +136,8 @@ const labelClass = computed<string>(() => {
   const { labelTextColor, labelColor } = props
 
   return [
-    generateClass('TEXTCOLOR', labelTextColor),
-    generateClass('BGCOLOR', labelColor),
+    generateClass.textColorVariant({ color: labelTextColor }),
+    generateClass.bgColorVariant({ color: labelColor }),
   ]
     .filter(Boolean)
     .join(' ')
@@ -151,7 +151,7 @@ const ctaClass = computed<string>(() => {
   const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
 
   return [
-    generateClass('BTNCOLOR', ctaColor),
+    generateClass.btnColorVariant({ color: ctaColor }),
     lightColor.includes(ctaColor) ? 'text-black' : 'text-white',
     rounded && 'btn-round',
   ]
@@ -185,14 +185,14 @@ const handleCardClick = (e: Event): void => {
     :class="bodyClass"
     @click="handleCardClick"
   >
-    <div class="relative" v-if="displayImage">
+    <div class="relative" v-if="showImage">
       <img
         :src="imageSource"
         :alt="imageAlt"
         class="aspect-video min-w-full object-cover object-top"
       />
       <span
-        v-if="displayLabel"
+        v-if="showLabel"
         class="py-3xs px-2xs ml-xs absolute bottom-0 inline-block translate-y-[50%] text-xs font-bold"
         :class="labelClass"
         v-html="labelText"
@@ -201,22 +201,22 @@ const handleCardClick = (e: Event): void => {
     <div class="flex h-full flex-col justify-between">
       <div class="px-xs pt-sm flex-1">
         <span
-          v-if="!displayImage && displayLabel"
+          v-if="!showImage && showLabel"
           class="py-3xs px-2xs mb-2xs inline-block text-xs font-bold"
           :class="labelClass"
           v-html="labelText"
         ></span>
         <h3 :class="titleClass" v-html="title"></h3>
         <div
-          v-if="displayHighlight"
+          v-if="showHighlight"
           class="mb-xs h-3xs w-md"
-          :class="generateClass('BGCOLOR', highlightColor)"
+          :class="generateClass.bgColorVariant({ color: highlightColor })"
         ></div>
         <div class="mb-sm cursor-default" @click.stop>
           <slot></slot>
         </div>
       </div>
-      <div class="pb-sm cursor-default border-0" v-if="displayCta" @click.stop>
+      <div class="pb-sm cursor-default border-0" v-if="showCta" @click.stop>
         <div class="px-xs w-full">
           <a
             :href="ctaLink"

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 import type { InputSizeType } from '../common/index.types'
 
@@ -10,7 +10,7 @@ const props = withDefaults(
     radioSize?: InputSizeType
     bgColor?: ColorPalette
     checkedColor?: ColorPalette
-    displayShadow?: boolean
+    showShadow?: boolean
     value?: string | number
     checked?: boolean
   }>(),
@@ -18,7 +18,7 @@ const props = withDefaults(
     radioSize: 'md',
     bgColor: 'success',
     checkedColor: 'light-1',
-    displayShadow: false,
+    showShadow: false,
     value: '',
     checked: false,
   }
@@ -54,12 +54,12 @@ const checkedRadioSize = computed<string>(() => {
   return 'peer-checked:before:h-[12px] peer-checked:before:w-[12px]'
 })
 const getColorClass = computed(() => {
-  const { bgColor, checkedColor, displayShadow } = props
+  const { bgColor, checkedColor, showShadow } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', bgColor),
-    generateClass('BEFOREBG', checkedColor),
+    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.beforeBgColorVariant({ color: checkedColor }),
   ]
-  if (displayShadow) {
+  if (showShadow) {
     classArray.push('drop-shadow-md')
   }
   return classArray.join(' ')
@@ -83,6 +83,7 @@ const handleChange = (e: Event) => {
       @change="handleChange"
     />
     <span
+      aria-hidden="true"
       class="rounded-full inline-block relative before:absolute before:rounded-full before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2"
       :class="[getRadioSize, checkedRadioSize, getColorClass]"
       @click="radioClick"

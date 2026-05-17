@@ -21,7 +21,7 @@ const handleCollapse = () => {
       >
         Trigger toggle
       </button>
-      <collapse ref="collapseRef" class-name="bg-light-3 p-xs">
+      <collapse ref="collapseRef" custom-class="bg-light-3 p-xs">
         <div>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga quo
           incidunt a blanditiis mollitia ea est? Fugit voluptate expedita magni

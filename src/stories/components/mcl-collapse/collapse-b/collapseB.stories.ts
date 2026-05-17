@@ -19,14 +19,6 @@ const meta: Meta<typeof MclCollapseB> = {
       defaultValue: undefined,
       category: 'ID',
     }),
-    accordion: textControllers({
-      name: 'accordion',
-      required: false,
-      description:
-        'assigns accordion group id in case of using accordion feature',
-      defaultValue: undefined,
-      category: 'ID',
-    }),
     visible: booleanControllers({
       name: 'visible',
       required: false,
@@ -69,8 +61,8 @@ const meta: Meta<typeof MclCollapseB> = {
       defaultValue: true,
       category: 'Border',
     }),
-    displayShadow: booleanControllers({
-      name: 'display-shadow',
+    showShadow: booleanControllers({
+      name: 'show-shadow',
       required: false,
       description: 'adds drop shadow on border of component',
       defaultValue: true,
@@ -83,8 +75,8 @@ const meta: Meta<typeof MclCollapseB> = {
       defaultValue: 'light-1',
       category: 'Colors',
     }),
-    btnColor: colorControllers({
-      name: 'btn-color',
+    triggerBgColor: colorControllers({
+      name: 'trigger-bg-color',
       required: false,
       description: 'assigns background color of tab button',
       defaultValue: 'primary',
@@ -100,16 +92,15 @@ const meta: Meta<typeof MclCollapseB> = {
   },
   args: {
     collapseId: 'my-collapse-b',
-    accordion: 'my-accordion-group-b',
     title: 'Collapse B',
     titleColor: 'light-1',
     titleSize: 'md',
     borderColor: 'light-3',
     bgColor: 'light-1',
-    btnColor: 'primary',
+    triggerBgColor: 'primary',
     iconColor: 'light-1',
     rounded: true,
-    displayShadow: true,
+    showShadow: true,
     visible: false,
   },
 }

@@ -4,7 +4,8 @@ import type {
   ColorPalette,
   FontWeight,
 } from '@bobbykim/manguito-theme'
-import generateClass, {
+import {
+  generateClass,
   DropdownContainer,
   DropdownContent,
 } from '@bobbykim/manguito-theme'
@@ -20,14 +21,14 @@ const props = withDefaults(
     buttonInvert?: boolean
     dropdownItems: DropdownItem[]
     dropdownColor?: ColorPalette
-    displayBorder?: boolean
+    showBorder?: boolean
     rounded?: boolean
-    displayShadow?: boolean
+    showShadow?: boolean
     hoverBgColor?: ColorPalette
     dropdownTextSize?: BodyText
     dropdownFontWeight?: FontWeight
     dropdownTextColor?: ColorPalette
-    displaySeparator?: boolean
+    showSeparator?: boolean
   }>(),
   {
     buttonColor: 'warning',
@@ -35,14 +36,14 @@ const props = withDefaults(
     buttonTextColor: 'black',
     buttonInvert: false,
     dropdownColor: 'white',
-    displayBorder: true,
+    showBorder: true,
     rounded: true,
-    displayShadow: true,
+    showShadow: true,
     hoverBgColor: 'light-4',
     dropdownTextSize: 'md',
     dropdownFontWeight: 'normal',
     dropdownTextColor: 'dark-3',
-    displaySeparator: false,
+    showSeparator: false,
   }
 )
 
@@ -61,33 +62,33 @@ const dropdownButtonClass = computed(() => {
    * @param {boolean} buttonInvert - whether to have button inverted
    */
   const { buttonColor, buttonRounded, buttonTextColor, buttonInvert } = props
-  const classArray: string[] = [generateClass('BTNCOLOR', buttonColor)]
+  const classArray: string[] = [generateClass.btnColorVariant({ color: buttonColor })]
   if (buttonRounded) {
     classArray.push('btn-round')
   }
   if (buttonInvert) {
     classArray.push('btn-invert')
   } else {
-    classArray.push(generateClass('TEXTCOLOR', buttonTextColor))
+    classArray.push(generateClass.textColorVariant({ color: buttonTextColor }))
   }
   return classArray.join(' ')
 })
 const dropdownContentClass = computed<string>(() => {
   /**
    * @param {ColorPalette} dropdownColor - Background color of dropdown
-   * @param {boolean} displayBorder - whether to display border
+   * @param {boolean} showBorder - whether to display border
    * @param {boolean} rounded - whether to have rounded border
-   * @param {boolean} displayShadow - whether to have drop shadow
+   * @param {boolean} showShadow - whether to have drop shadow
    */
-  const { dropdownColor, rounded, displayBorder, displayShadow } = props
-  const classArray: string[] = [generateClass('BGCOLOR', dropdownColor)]
-  if (displayBorder) {
+  const { dropdownColor, rounded, showBorder, showShadow } = props
+  const classArray: string[] = [generateClass.bgColorVariant({ color: dropdownColor })]
+  if (showBorder) {
     classArray.push('border')
   }
   if (rounded) {
     classArray.push('rounded-md')
   }
-  if (displayShadow) {
+  if (showShadow) {
     classArray.push('drop-shadow-lg')
   }
   return classArray.join(' ')
@@ -99,23 +100,23 @@ const dropDownItemClass = computed<string>(() => {
    * @param {BodyText} dropdownTextSize - font size of dropdown text
    * @param {FontWeight} dropdownFontWeight - font weight of dropdown text
    * @param {ColorPalette} dropdownTextColor - font color of dropdown text
-   * @param {boolean} displaySeparator - whether to display separator between dropdown items
+   * @param {boolean} showSeparator - whether to display separator between dropdown items
    */
   const {
     hoverBgColor,
     dropdownTextSize,
     dropdownFontWeight,
     dropdownTextColor,
-    displaySeparator,
+    showSeparator,
   } = props
   const classArray: string[] = [
-    generateClass('HVBGCOLOR', hoverBgColor),
-    generateClass('FCBGCOLOR', hoverBgColor),
-    generateClass('BODYTEXT', dropdownTextSize),
-    generateClass('FONTWEIGHT', dropdownFontWeight),
-    generateClass('TEXTCOLOR', dropdownTextColor),
+    generateClass.hoverBgColorVariant({ color: hoverBgColor }),
+    generateClass.focusBgColorVariant({ color: hoverBgColor }),
+    generateClass.bodyTextVariant({ size: dropdownTextSize }),
+    generateClass.fontWeightVariant({ weight: dropdownFontWeight }),
+    generateClass.textColorVariant({ color: dropdownTextColor }),
   ]
-  if (displaySeparator) {
+  if (showSeparator) {
     classArray.push('border-b last:border-b-0')
   }
   return classArray.join(' ')
@@ -177,7 +178,7 @@ const dropdownItemKeyUp = (direction: KeyDirection): void => {
       </template>
       <dropdown-content
         v-slot="{ itemClick }"
-        :class-name="dropdownContentClass"
+        :custom-class="dropdownContentClass"
       >
         <button
           v-for="(item, idx) in dropdownItems"

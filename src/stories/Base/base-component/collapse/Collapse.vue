@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { Collapse } from '@/components/manguito-theme/lib'
-import { vCollapse } from '@/components/manguito-theme/lib/directives'
+import { ref } from 'vue'
+
+const collapseRef = ref<InstanceType<typeof Collapse>>()
 </script>
 
 <template>
@@ -9,13 +11,17 @@ import { vCollapse } from '@/components/manguito-theme/lib/directives'
       <h2 class="text-warning">Custom Collapse Component Example:</h2>
     </div>
     <div class="p-2xs border-success mb-lg rounded-md border-2 bg-white">
-      <a
-        href="#my-collapse-component"
-        v-collapse
+      <button
+        @click="collapseRef?.toggle()"
         class="btn btn-full btn-warning btn-no-ring"
-        >Tab Button</a
       >
-      <collapse id="my-collapse-component" class-name="bg-light-3 p-xs">
+        Tab Button
+      </button>
+      <collapse
+        ref="collapseRef"
+        id="my-collapse-component"
+        custom-class="bg-light-3 p-xs"
+      >
         <div>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga quo
           incidunt a blanditiis mollitia ea est? Fugit voluptate expedita magni
@@ -30,4 +36,3 @@ import { vCollapse } from '@/components/manguito-theme/lib/directives'
 </template>
 
 <style scoped></style>
-@/components/manguito-theme/lib/index

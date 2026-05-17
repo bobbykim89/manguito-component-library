@@ -4,7 +4,7 @@ import type {
   HeadingLevel,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { useElementSize } from '@vueuse/core'
 import { computed, ref } from 'vue'
 
@@ -38,13 +38,13 @@ const titleClass = computed<string>(() => {
   const { titleLevel, titleSize, titleColor } = props
 
   const headingOptions: Record<HeadingLevel, string> = {
-    h1: generateClass('H1', titleSize),
-    h2: generateClass('H2', titleSize),
-    h3: generateClass('H3', titleSize),
-    h4: generateClass('H4', titleSize),
+    h1: generateClass.h1Variant({ size: titleSize }),
+    h2: generateClass.h2Variant({ size: titleSize }),
+    h3: generateClass.h3Variant({ size: titleSize }),
+    h4: generateClass.h4Variant({ size: titleSize }),
   }
   const classArray: string[] = [
-    generateClass('TEXTCOLOR', titleColor),
+    generateClass.textColorVariant({ color: titleColor }),
     headingOptions[titleLevel],
   ]
   return classArray.join(' ')
@@ -60,7 +60,7 @@ const parallaxImage = computed(() => {
 
 <template>
   <section class="relative" :style="parallaxImage">
-    <div :class="[generateClass('BGCOLOR', sectionBgColor), 'space-hts']"></div>
+    <div :class="[generateClass.bgColorVariant({ color: sectionBgColor }), 'space-hts']"></div>
     <div class="relative">
       <div
         class="bg-image absolute inset-0 bg-cover bg-fixed bg-top bg-no-repeat"
@@ -72,7 +72,7 @@ const parallaxImage = computed(() => {
         ref="mainContentElem"
       >
         <div
-          :class="generateClass('BGCOLOR', containerBgColor)"
+          :class="generateClass.bgColorVariant({ color: containerBgColor })"
           class="py-md md:py-lg px-xs md:px-md lg:p-xl"
         >
           <div class="w-full">

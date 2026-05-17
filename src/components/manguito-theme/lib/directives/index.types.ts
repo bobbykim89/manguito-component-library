@@ -51,7 +51,7 @@ export interface TooltipValueObjectType {
   color?: ColorPalette
   textColor?: ColorPalette
   width?: number | string
-  className?: string
+  customClass?: string
 }
 
 // Defines the valid types for the directive value
@@ -61,4 +61,5 @@ export type TooltipValueType = TooltipValueObjectType | string
 export interface TooltipElementType extends HTMLElement {
   __HandleTooltip: (binding: DirectiveBinding<TooltipValueType>) => void
   __UnmountTooltip: () => void
+  __TooltipId?: string
 }

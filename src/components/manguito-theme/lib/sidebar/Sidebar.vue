@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useScrollLock } from '@vueuse/core'
-import { computed, onMounted, ref, watch } from 'vue'
-import { observeVisibleAttr } from '../composables'
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
+import { computed, ref, useId, watch } from 'vue'
+import { observeVisibleAttr, useModalScrollLock } from '../composables'
 import { vClickOutside } from '../directives'
 import { generateClass } from '../theme'
 import type { ColorPalette, DirectionX } from '../theme/static/theme.types'
@@ -10,21 +10,21 @@ const props = withDefaults(
   defineProps<{
     title?: string
     titleColor?: ColorPalette
-    className?: string | string[]
+    customClass?: string | string[]
     visible?: boolean
-    noBackdrop?: boolean
-    noHeader?: boolean
+    showBackdrop?: boolean
+    showHeader?: boolean
     color?: ColorPalette
     backdropColor?: ColorPalette
     placement?: DirectionX
-    width?: string | number
+    width?: number
   }>(),
   {
     titleColor: 'dark-3',
-    className: '',
+    customClass: '',
     visible: false,
-    noBackdrop: false,
-    noHeader: false,
+    showBackdrop: true,
+    showHeader: true,
     color: 'light-1',
     backdropColor: 'dark-4',
     placement: 'left',
@@ -44,8 +44,16 @@ const emit = defineEmits<{
 const toggle = ref<boolean>(props.visible)
 const toggleComplete = ref<boolean>(false)
 const sidebarRef = ref<HTMLElement | undefined>()
+const dialogRef = ref<HTMLElement>()
 const headerRef = ref<HTMLElement>()
 const footerRef = ref<HTMLElement>()
+const titleId = useId()
+let prevFocus: HTMLElement | null = null
+
+const { activate: activateTrap, deactivate: deactivateTrap } = useFocusTrap(
+  dialogRef,
+  { immediate: false },
+)
 
 const toggleSidebar = (): void => {
   toggle.value = !toggle.value
@@ -77,18 +85,17 @@ const sidebarClass = computed(() => {
   return props.placement === 'left' ? 'sidebar-left' : 'sidebar-right'
 })
 
-/**
- * @TransitionFunctions
- * Handle toggleComplete value after completion of animation
- */
 const onAfterEnter = () => {
   toggleComplete.value = true
+  if (dialogRef.value) {
+    activateTrap()
+  }
 }
 const onAfterLeave = () => {
   toggleComplete.value = false
 }
 
-// set nutation observer watching `visible` attribute in element
+// set mutation observer watching `visible` attribute in element
 const handleVisibility = (visible: boolean = false) => {
   toggle.value = visible
 }
@@ -103,17 +110,20 @@ watch(
 )
 watch(toggle, (newValue) => {
   if (newValue === true) {
+    if (typeof document !== 'undefined') {
+      prevFocus = document.activeElement as HTMLElement | null
+    }
     emitOpenEvent()
-  } else if (newValue === false && toggleComplete.value === true) {
-    emitCloseEvent()
+  } else if (newValue === false) {
+    deactivateTrap()
+    prevFocus?.focus()
+    prevFocus = null
+    if (toggleComplete.value === true) {
+      emitCloseEvent()
+    }
   }
 })
-onMounted(() => {
-  const scrollLock = useScrollLock(document)
-  watch(toggle, (newVal) => {
-    scrollLock.value = newVal
-  })
-})
+useModalScrollLock(toggle)
 defineExpose<{
   toggle: () => void
   open: () => void
@@ -127,12 +137,13 @@ defineExpose<{
 
 <template>
   <div :style="handleStyleVariables" :visible="toggle" ref="sidebarRef">
-    <Transition name="fade" appear tag="div" v-if="!noBackdrop">
+    <Transition name="fade" appear tag="div" v-if="showBackdrop">
       <section
         v-if="toggle"
         @click="closeSidebar"
+        aria-hidden="true"
         class="fixed inset-0 z-[100] overflow-y-auto bg-opacity-70 backdrop-blur"
-        :class="generateClass('BGCOLOR', backdropColor)"
+        :class="generateClass.bgColorVariant({ color: backdropColor })"
       ></section>
     </Transition>
     <Transition
@@ -143,27 +154,37 @@ defineExpose<{
     >
       <div
         v-if="toggle"
+        ref="dialogRef"
+        role="dialog"
+        aria-modal="true"
+        :aria-labelledby="title ? titleId : undefined"
         v-click-outside="closeSidebar"
         class="sidebar-body fixed inset-y-0 z-[110] h-full overflow-hidden shadow"
         :class="[placement === 'left' ? 'left-0' : 'right-0']"
       >
         <div
           class="relative h-full overflow-y-scroll overscroll-contain"
-          :class="[generateClass('BGCOLOR', color), className]"
+          :class="[generateClass.bgColorVariant({ color }), customClass]"
         >
-          <div v-if="!noHeader" class="sticky top-0 z-10" ref="headerRef">
+          <div v-if="showHeader" class="sticky top-0 z-10" ref="headerRef">
             <slot name="header" :close="closeSidebar" :status="toggle">
               <div
                 class="p-xs flex items-center justify-between"
-                :class="generateClass('BGCOLOR', color)"
+                :class="generateClass.bgColorVariant({ color })"
               >
-                <button @click="closeSidebar" v-if="placement === 'right'">
+                <button
+                  type="button"
+                  aria-label="Close"
+                  @click="closeSidebar"
+                  v-if="placement === 'right'"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     height="1em"
                     viewBox="0 0 384 512"
+                    aria-hidden="true"
                     class="h-sm transition-opacity duration-300 ease-in hover:opacity-75 focus:opacity-75"
-                    :class="[generateClass('SVGFILL', titleColor)]"
+                    :class="[generateClass.svgFillColorVariant({ color: titleColor })]"
                   >
                     <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                     <path
@@ -173,18 +194,25 @@ defineExpose<{
                 </button>
                 <h3
                   v-if="title"
+                  :id="titleId"
                   class="h3-md"
-                  :class="generateClass('TEXTCOLOR', titleColor)"
+                  :class="generateClass.textColorVariant({ color: titleColor })"
                 >
                   {{ title }}
                 </h3>
-                <button @click="closeSidebar" v-if="placement === 'left'">
+                <button
+                  type="button"
+                  aria-label="Close"
+                  @click="closeSidebar"
+                  v-if="placement === 'left'"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     height="1em"
                     viewBox="0 0 384 512"
+                    aria-hidden="true"
                     class="h-sm transition-opacity duration-300 ease-in hover:opacity-75 focus:opacity-75"
-                    :class="[generateClass('SVGFILL', titleColor)]"
+                    :class="[generateClass.svgFillColorVariant({ color: titleColor })]"
                   >
                     <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                     <path

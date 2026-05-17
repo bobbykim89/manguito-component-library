@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { observeVisibleAttr } from '@/components/manguito-theme/lib/composables'
-import { vCollapse } from '@/components/manguito-theme/lib/directives'
-import { onMounted, ref } from 'vue'
+import { AccordionGroup, Collapse } from '@/components/manguito-theme/lib'
+import { ref } from 'vue'
 
 interface FAQ {
   id: string
@@ -30,75 +29,61 @@ const faqs: FAQ[] = [
   },
 ]
 
-const faqRefs = ref<Map<string, HTMLElement>>(new Map())
-const activeIndex = ref(0)
+const panelRefs = ref<InstanceType<typeof Collapse>[]>([])
+const openIndex = ref<number | null>(null)
 
-const setFaqRef = (el: HTMLElement | null, id: string) => {
-  if (el) {
-    faqRefs.value.set(id, el)
-  }
+const handleOpen = (index: number) => {
+  openIndex.value = index
 }
-
-onMounted(() => {
-  // Set up observers for each FAQ item
-  faqs.forEach((faq, index) => {
-    const el = faqRefs.value.get(faq.id)
-    if (el) {
-      const elementRef = ref(el)
-      observeVisibleAttr(elementRef, (isVisible) => {
-        if (isVisible) {
-          activeIndex.value = index
-          console.log(`FAQ ${index + 1} opened`)
-        }
-      })
-    }
-  })
-})
+const handleClose = (index: number) => {
+  if (openIndex.value === index) openIndex.value = null
+}
 </script>
 
 <template>
   <div class="faq-accordion bg-light-1 p-sm rounded-md drop-shadow-2xl">
     <h2>Frequently Asked Questions</h2>
 
-    <div
-      v-for="(faq, index) in faqs"
-      :key="faq.id"
-      class="faq-item"
-      :class="{ 'is-active': activeIndex === index }"
-    >
-      <button
-        v-collapse:[faq.id]
-        class="faq-question"
-        :aria-expanded="activeIndex === index"
-        :aria-controls="faq.id"
-      >
-        <span>{{ faq.question }}</span>
-        <svg
-          class="chevron"
-          :class="{ 'rotate-180': activeIndex === index }"
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-        >
-          <path
-            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-          />
-        </svg>
-      </button>
-
+    <AccordionGroup>
       <div
-        :ref="(el) => setFaqRef(el as HTMLElement, faq.id)"
-        :id="faq.id"
-        :visible="(index === 0).toString()"
-        accordion="faq-group"
-        class="faq-answer"
-        role="region"
-        :aria-labelledby="`${faq.id}-question`"
+        v-for="(faq, index) in faqs"
+        :key="faq.id"
+        class="faq-item"
+        :class="{ 'is-active': openIndex === index }"
       >
-        <p>{{ faq.answer }}</p>
+        <button
+          @click="panelRefs[index]?.toggle()"
+          class="faq-question"
+          :aria-expanded="openIndex === index"
+          :aria-controls="faq.id"
+        >
+          <span>{{ faq.question }}</span>
+          <svg
+            class="chevron"
+            :class="{ 'rotate-180': openIndex === index }"
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+            />
+          </svg>
+        </button>
+
+        <Collapse
+          :ref="(el) => { if (el) panelRefs[index] = el as InstanceType<typeof Collapse> }"
+          :id="faq.id"
+          role="region"
+          :aria-labelledby="`${faq.id}-question`"
+          @open="handleOpen(index)"
+          @close="handleClose(index)"
+        >
+          <p class="faq-answer-content">{{ faq.answer }}</p>
+        </Collapse>
       </div>
-    </div>
+    </AccordionGroup>
   </div>
 </template>
 
@@ -140,19 +125,7 @@ onMounted(() => {
   transition: transform 0.3s ease;
 }
 
-.faq-answer {
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.faq-answer[visible='false'] {
-  max-height: 0;
-  opacity: 0;
-}
-
-.faq-answer[visible='true'] {
-  max-height: 500px;
-  opacity: 1;
+.faq-answer-content {
   padding: 0 1.25rem 1.25rem;
 }
 </style>

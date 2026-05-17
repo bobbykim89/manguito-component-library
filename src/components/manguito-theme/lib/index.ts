@@ -1,6 +1,8 @@
-// generate class function
-import { generateClass } from './theme'
+// generate class — named export (new API) and deprecated default
+export { generateClass } from './theme'
+import { generateClassLegacy } from './theme/legacy'
 // base components
+import AccordionGroup from './collapse/AccordionGroup.vue'
 import Alert from './alert/Alert.vue'
 import Card from './card/Card.vue'
 import CarouselContainer from './carousel/CarouselContainer.vue'
@@ -21,6 +23,7 @@ export * from './theme/static/theme.types'
 
 // export components
 export {
+  AccordionGroup,
   Alert,
   Card,
   CarouselContainer,
@@ -36,4 +39,4 @@ export {
   TabContent,
 }
 
-export default generateClass
+export default generateClassLegacy

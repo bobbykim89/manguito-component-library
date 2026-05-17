@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { computed } from 'vue'
 const props = withDefaults(
   defineProps<{
@@ -28,8 +28,8 @@ const handleLabelText = computed((): string => {
    */
   const { textColor, textSize, textBold } = props
   const classArray = [
-    generateClass('TEXTCOLOR', textColor),
-    generateClass('BODYTEXT', textSize),
+    generateClass.textColorVariant({ color: textColor }),
+    generateClass.bodyTextVariant({ size: textSize }),
   ]
   if (textBold) {
     classArray.push('font-bold')

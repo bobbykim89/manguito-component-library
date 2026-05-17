@@ -11,7 +11,7 @@ const props = withDefaults(
     bgColor?: ColorPalette
     mobileMenuBgColor?: ColorPalette
     drawerBtnColor?: ColorPalette
-    drawerBtnBorder?: boolean
+    showDrawerBorder?: boolean
     fadeInOnScroll?: boolean
     scrollDistance?: number
     sticky?: HeaderStickyOptionType
@@ -20,7 +20,7 @@ const props = withDefaults(
     bgColor: 'light-1',
     mobileMenuBgColor: 'light-2',
     drawerBtnColor: 'dark-1',
-    drawerBtnBorder: true,
+    showDrawerBorder: true,
     fadeInOnScroll: true,
     scrollDistance: 50,
     sticky: 'all',

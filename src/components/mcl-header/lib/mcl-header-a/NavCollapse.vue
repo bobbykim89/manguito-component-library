@@ -1,21 +1,19 @@
 <script setup lang="ts">
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass, { Collapse } from '@bobbykim/manguito-theme'
-import { vCollapse } from '@bobbykim/manguito-theme/directives'
+import { generateClass, Collapse } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 
 const props = withDefaults(
   defineProps<{
     navId: string
-    navAccordionGroup: string
     navItem: MenuCollapseType
     bgColor?: ColorPalette
     hoverBgColor?: ColorPalette
     menuTextSize?: BodyText
     menuTextColor?: ColorPalette
     menuTextBold?: boolean
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     asLink?: boolean
   }>(),
@@ -25,7 +23,7 @@ const props = withDefaults(
     hoverBgColor: 'dark-1',
     menuTextColor: 'dark-3',
     menuTextBold: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     asLink: true,
   },
@@ -42,16 +40,12 @@ const handleNavId = computed<string>(() => {
   const navKebab = navLower.replaceAll(' ', '-')
   return `nav-${navKebab}`
 })
-const handleNavAccordionGroupName = computed<string>(() => {
-  const { navAccordionGroup } = props
-  const toLowerCase = navAccordionGroup.toLocaleLowerCase()
-  const toKebabCase = toLowerCase.replaceAll(' ', '-')
-  return `accordion-${toKebabCase}`
-})
+const collapseRef = ref<InstanceType<typeof Collapse>>()
 const toggleAction = (visible: boolean): void => {
   toggle.value = visible
 }
 const handleCollapseLabelClick = (e: Event, title: string) => {
+  collapseRef.value?.toggle()
   emit('label-click', e, title, toggle.value)
 }
 const navItemClick = (e: Event, item: MenuItemType) => {
@@ -70,8 +64,8 @@ const getMenuItemClass = (
    * @param {boolean} bold - menuTextBold
    */
   const classArray: string[] = [
-    generateClass('BODYTEXT', size),
-    generateClass('TEXTCOLOR', color),
+    generateClass.bodyTextVariant({ size: size }),
+    generateClass.textColorVariant({ color: color }),
   ]
   if (bold) {
     classArray.push('font-bold')
@@ -86,7 +80,6 @@ const getMenuItemClass = (
       <button
         class="nav__text gap-3xs flex items-center align-middle tracking-wider outline-none"
         :class="getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)"
-        v-collapse:[handleNavId]
         @click="handleCollapseLabelClick($event, navItem.title)"
       >
         <span>
@@ -108,23 +101,22 @@ const getMenuItemClass = (
         </svg>
       </button>
       <div
-        v-if="displayHighlight"
+        v-if="showHighlight"
         class="nav__decorator relative -top-0.5 h-1.5"
-        :class="generateClass('BEFOREBG', highlightColor)"
+        :class="generateClass.beforeBgColorVariant({ color: highlightColor })"
       ></div>
     </div>
     <collapse
+      ref="collapseRef"
       :id="handleNavId"
-      :visible="false"
-      :accordion="handleNavAccordionGroupName"
       @open="toggleAction"
       @close="toggleAction"
     >
       <div class="pt-2xs relative">
         <div
-          v-if="displayHighlight"
+          v-if="showHighlight"
           class="w-md absolute -left-4 h-full bg-opacity-25"
-          :class="generateClass('BGCOLOR', highlightColor)"
+          :class="generateClass.bgColorVariant({ color: highlightColor })"
         ></div>
         <div class="relative flex flex-col">
           <a
@@ -134,8 +126,8 @@ const getMenuItemClass = (
             class="pb-2xs w-full last:pb-0"
             :key="idx"
             :class="[
-              generateClass('TEXTCOLOR', menuTextColor),
-              generateClass('BODYTEXT', menuTextSize),
+              generateClass.textColorVariant({ color: menuTextColor }),
+              generateClass.bodyTextVariant({ size: menuTextSize }),
             ]"
             @click="navItemClick($event, item)"
           >
