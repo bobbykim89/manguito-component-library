@@ -66,11 +66,11 @@ const bodyClass = computed<string>(() => {
     glassOpacity,
   } = props
   return [
-    generateClass('BGCOLOR', variant),
+    generateClass.bgColorVariant({ color: variant }),
     rounded ? 'rounded-lg' : 'rounded-sm',
     shadow && 'drop-shadow-md',
     border && 'border',
-    border && generateClass('BORDER', borderVariant),
+    border && generateClass.borderColorVariant({ color: borderVariant }),
     glass && getGlassmorphismClass(variant, glassBlur, glassOpacity),
   ]
     .filter(Boolean)
@@ -80,17 +80,17 @@ const bodyClass = computed<string>(() => {
 const titleClass = computed<string>(() => {
   const { titleVariant, titleSize } = props
   return [
-    generateClass('TEXTCOLOR', titleVariant),
-    generateClass('H3', titleSize),
+    generateClass.textColorVariant({ color: titleVariant }),
+    generateClass.h3Variant({ size: titleSize }),
   ].join(' ')
 })
 
 const headerCLass = computed<string>(() => {
   const { border, borderVariant, titleVariant } = props
   return [
-    generateClass('TEXTCOLOR', titleVariant),
+    generateClass.textColorVariant({ color: titleVariant }),
     border && 'border-b',
-    generateClass('BORDER', borderVariant),
+    generateClass.borderColorVariant({ color: borderVariant }),
   ]
     .filter(Boolean)
     .join(' ')
@@ -100,7 +100,7 @@ const footerClass = computed<string>(() => {
   const { border, borderVariant } = props
   return [
     border && 'border-t',
-    border && generateClass('BORDER', borderVariant),
+    border && generateClass.borderColorVariant({ color: borderVariant }),
   ]
     .filter(Boolean)
     .join(' ')

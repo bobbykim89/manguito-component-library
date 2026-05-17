@@ -8,13 +8,13 @@ withDefaults(
     radioSize?: InputSizeType
     bgColor?: ColorPalette
     checkedColor?: ColorPalette
-    displayShadow?: boolean
+    showShadow?: boolean
   }>(),
   {
     radioSize: 'md',
     bgColor: 'success',
     checkedColor: 'light-1',
-    displayShadow: false,
+    showShadow: false,
   }
 )
 
@@ -56,7 +56,7 @@ const setValue = (e: Event, value: string | number) => {
           :radio-size="radioSize"
           :bg-color="bgColor"
           :checked-color="checkedColor"
-          :display-shadow="displayShadow"
+          :display-shadow="showShadow"
           :value="item.value"
           :checked="valueRef === item.value"
           @change="setValue"

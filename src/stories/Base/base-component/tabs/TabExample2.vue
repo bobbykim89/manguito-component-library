@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {
+  AccordionGroup,
   Collapse,
   TabContainer,
   TabContent,
 } from '@/components/manguito-theme/lib'
-import { vCollapse } from '@/components/manguito-theme/lib/directives'
 import {
   MclFormGroup,
   MclInputText,
@@ -53,6 +53,8 @@ const customButtonColor = (idx: number): string => {
       return ' '
   }
 }
+
+const panelRefs = ref<InstanceType<typeof Collapse>[]>([])
 
 const textRef = ref<string>('')
 const options = [
@@ -156,28 +158,29 @@ const handleFormSubmit = () => {
         <TabContent :tab-number="1" id="tab-1">
           <div>
             <div class="p-2xs border-warning rounded-md border-2 bg-white">
-              <div
-                v-for="(item, idx) in collapseContent"
-                class="mb-sm last:mb-0"
-              >
-                <a
-                  :href="`#${item.id}`"
-                  v-collapse
-                  class="btn btn-full btn-no-ring"
-                  :class="customButtonColor(idx)"
-                  >{{ item.title }} Header</a
+              <AccordionGroup>
+                <div
+                  v-for="(item, idx) in collapseContent"
+                  :key="item.id"
+                  class="mb-sm last:mb-0"
                 >
-                <collapse
-                  :id="item.id"
-                  class-name="bg-light-3 p-xs"
-                  :visible="idx === 0 ? true : false"
-                  accordion="my-accordion"
-                >
-                  <div>
-                    {{ item.content }}
-                  </div>
-                </collapse>
-              </div>
+                  <button
+                    @click="panelRefs[idx]?.toggle()"
+                    class="btn btn-full btn-no-ring"
+                    :class="customButtonColor(idx)"
+                  >
+                    {{ item.title }} Header
+                  </button>
+                  <Collapse
+                    :ref="(el) => { if (el) panelRefs[idx] = el as InstanceType<typeof Collapse> }"
+                    :id="item.id"
+                    custom-class="bg-light-3 p-xs"
+                    :visible="idx === 0"
+                  >
+                    <div>{{ item.content }}</div>
+                  </Collapse>
+                </div>
+              </AccordionGroup>
             </div>
           </div>
         </TabContent>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
-import generateClass, {
+import {
+  generateClass,
   TabContainer,
   TabContent,
 } from '@bobbykim/manguito-theme'
@@ -18,9 +19,9 @@ const props = withDefaults(
     titleSize?: HeadingSize
     activeTitleColor?: ColorPalette
     inactiveTitleColor?: ColorPalette
-    displayShadow?: boolean
+    showShadow?: boolean
     rounded?: boolean
-    displayScrollButtons?: boolean
+    showScrollButtons?: boolean
   }>(),
   {
     borderColor: 'light-3',
@@ -29,9 +30,9 @@ const props = withDefaults(
     titleSize: 'md',
     activeTitleColor: 'dark-3',
     inactiveTitleColor: 'light-1',
-    displayShadow: true,
+    showShadow: true,
     rounded: true,
-    displayScrollButtons: true,
+    showScrollButtons: true,
   },
 )
 
@@ -80,15 +81,15 @@ const borderClass = computed<string>(() => {
    * @param {ColorPalette} bgColor
    * @param {ColorPalette} borderColor
    * @param {boolean} rounded
-   * @param {boolean} displayShadow
+   * @param {boolean} showShadow
    */
-  const { bgColor, borderColor, rounded, displayShadow } = props
+  const { bgColor, borderColor, rounded, showShadow } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', bgColor),
-    generateClass('BORDER', borderColor),
+    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.borderColorVariant({ color: borderColor }),
   ]
   rounded && classArray.push('rounded-xl')
-  displayShadow && classArray.push('shadow-xl')
+  showShadow && classArray.push('shadow-xl')
   return classArray.join(' ')
 })
 const tabClass = computed<string>(() => {
@@ -97,7 +98,7 @@ const tabClass = computed<string>(() => {
    * @param {boolean} rounded
    */
   const { tabColor, rounded } = props
-  const classArray: string[] = [generateClass('BGCOLOR', tabColor)]
+  const classArray: string[] = [generateClass.bgColorVariant({ color: tabColor })]
   rounded && classArray.push('rounded-xl')
   return classArray.join(' ')
 })
@@ -105,16 +106,16 @@ const activeBtnClass = computed<string>(() => {
   /**
    * @param {ColorPalette} bgColor
    * @param {ColorPalette} activeTitleColor
-   * @param {boolean} displayShadow
+   * @param {boolean} showShadow
    */
-  const { bgColor, activeTitleColor, displayShadow } = props
+  const { bgColor, activeTitleColor, showShadow } = props
   const classArray: string[] = [
-    generateClass('TEXTCOLOR', activeTitleColor),
-    generateClass('BGCOLOR', bgColor),
+    generateClass.textColorVariant({ color: activeTitleColor }),
+    generateClass.bgColorVariant({ color: bgColor }),
     // 'ring-4 ring-white ring-opacity-60',
     'outline-4 outline-white outline-opacity-60',
   ]
-  displayShadow && classArray.push('drop-shadow')
+  showShadow && classArray.push('drop-shadow')
   return classArray.join(' ')
 })
 const scrollBtnClass = computed<string>(() => {
@@ -124,8 +125,8 @@ const scrollBtnClass = computed<string>(() => {
    */
   const { bgColor, activeTitleColor } = props
   const classArray: string[] = [
-    generateClass('TEXTCOLOR', activeTitleColor),
-    generateClass('BGCOLOR', bgColor),
+    generateClass.textColorVariant({ color: activeTitleColor }),
+    generateClass.bgColorVariant({ color: bgColor }),
     'opacity-60 hover:opacity-40 transition-opacity duration-300 ease-linear',
   ]
   return classArray.join(' ')
@@ -133,7 +134,7 @@ const scrollBtnClass = computed<string>(() => {
 const inactiveBtnClass = computed<string>(() => {
   const { inactiveTitleColor } = props
   const classArray: string[] = [
-    generateClass('TEXTCOLOR', inactiveTitleColor),
+    generateClass.textColorVariant({ color: inactiveTitleColor }),
     'hover:bg-white/35 focus:bg-white/35 transition-colors ease-in duration-300',
   ]
   return classArray.join(' ')
@@ -161,7 +162,7 @@ watch(width, updateScrollButtons)
   >
     <template #tab-button="{ update, activeTab }">
       <button
-        v-if="displayScrollButtons && canScrollLeft"
+        v-if="showScrollButtons && canScrollLeft"
         class="px-3xs absolute left-0 top-1/2 z-10 h-full -translate-y-1/2 transform lg:hidden"
         :class="[rounded && 'rounded-l-lg', scrollBtnClass]"
         aria-label="scroll left"
@@ -198,13 +199,13 @@ watch(width, updateScrollButtons)
           :disabled="activeTab === idx"
           @click="(hadleTabClick($event, item.title), update(idx))"
         >
-          <h3 :class="generateClass('H3', titleSize)">
+          <h3 :class="generateClass.h3Variant({ size: titleSize })">
             {{ item.title }}
           </h3>
         </button>
       </div>
       <button
-        v-if="displayScrollButtons && canScrollRight"
+        v-if="showScrollButtons && canScrollRight"
         class="px-3xs absolute right-0 top-1/2 z-10 h-full -translate-y-1/2 transform lg:hidden"
         :class="[rounded && 'rounded-r-lg', scrollBtnClass]"
         aria-label="scroll right"

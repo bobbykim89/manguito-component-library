@@ -5,7 +5,7 @@ import type {
   HeadingSize,
   SpacingLevel,
 } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { useEventListener, useIntersectionObserver } from '@vueuse/core'
 import { onMounted, ref, type ComponentPublicInstance } from 'vue'
 
@@ -17,12 +17,12 @@ const props = withDefaults(
     titleSize?: HeadingSize
     titleColor?: ColorPalette
     bgColor?: ColorPalette
-    displayTagLine?: boolean
+    showTagLine?: boolean
     tagLineUpperCase?: boolean
     tagLine?: string
     tagLineSize?: BodyText
     tagLineColor?: ColorPalette
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     btnColor?: ColorPalette
     btnBgColor?: ColorPalette
@@ -33,11 +33,11 @@ const props = withDefaults(
     titleSize: 'md',
     titleColor: 'dark-3',
     bgColor: 'light-1',
-    displayTagLine: true,
+    showTagLine: true,
     tagLineUpperCase: true,
     tagLineSize: 'md',
     tagLineColor: 'dark-1',
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     btnColor: 'dark-3',
     btnBgColor: 'light-4',
@@ -109,8 +109,8 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
    */
 
   const classArray = [
-    generateClass('H2', size),
-    generateClass('TEXTCOLOR', color),
+    generateClass.h2Variant({ size: size }),
+    generateClass.textColorVariant({ color: color }),
   ]
 
   return classArray.join(' ')
@@ -128,8 +128,8 @@ const getTaglineClass = (
    */
 
   const classArray = [
-    generateClass('BODYTEXT', size),
-    generateClass('TEXTCOLOR', color),
+    generateClass.bodyTextVariant({ size: size }),
+    generateClass.textColorVariant({ color: color }),
   ]
 
   if (upper) {
@@ -146,9 +146,9 @@ const getButtonClass = (color: ColorPalette, bgColor: ColorPalette): string => {
    */
 
   const classArray = [
-    generateClass('TEXTCOLOR', color),
-    generateClass('BGCOLOR', bgColor),
-    generateClass('RINGCOLOR', bgColor),
+    generateClass.textColorVariant({ color: color }),
+    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.ringColorVariant({ color: bgColor }),
   ]
 
   return classArray.join(' ')
@@ -192,18 +192,18 @@ onMounted(() => {
 <template>
   <section
     class="py-lg lg:py-xl overflow-hidden"
-    :class="generateClass('BGCOLOR', bgColor)"
+    :class="generateClass.bgColorVariant({ color: bgColor })"
   >
     <div class="px-xs sm:px-md container text-center sm:text-left">
       <div class="relative">
         <div
-          v-if="displayHighlight"
+          v-if="showHighlight"
           class="w-md absolute -left-4 hidden h-full bg-opacity-25 sm:block"
-          :class="generateClass('BGCOLOR', highlightColor)"
+          :class="generateClass.bgColorVariant({ color: highlightColor })"
         ></div>
         <div class="relative">
           <span
-            v-if="displayTagLine"
+            v-if="showTagLine"
             class="tracking-widest"
             :class="
               getTaglineClass(tagLineSize, tagLineColor, tagLineUpperCase)
@@ -268,7 +268,7 @@ onMounted(() => {
     <div class="mt-md sm:mt-lg lg:mt-xl container">
       <div
         class="px-xs gap-xs flex transition-transform duration-500"
-        :class="generateClass('GAP', cardsGap)"
+        :class="generateClass.gapVariant({ spacing: cardsGap })"
         ref="slideContainer"
       >
         <slot name="carousel" :cards="content" :set-ref="setCarouselRef"></slot>

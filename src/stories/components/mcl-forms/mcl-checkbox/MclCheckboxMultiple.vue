@@ -9,7 +9,7 @@ const props = defineProps<{
   checkedBgColor?: ColorPalette
   checkColor?: ColorPalette
   borderColor?: ColorPalette
-  displayShadow?: boolean
+  showShadow?: boolean
   rounded?: boolean
 }>()
 
@@ -65,7 +65,7 @@ const handleCheckboxClick = (
           :checked-bg-color="checkedBgColor"
           :check-color="checkColor"
           :border-color="borderColor"
-          :display-shadow="displayShadow"
+          :display-shadow="showShadow"
           :rounded="rounded"
           @checkbox-click="
             ($event, checked, value) =>

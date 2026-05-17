@@ -56,7 +56,7 @@ export const getGlassmorphismClass = (
     'mcl-glassmorphism',
     glassColorClass[color],
     blurClass[blur],
-    generateClass('BGOPACITY', opacity),
+    generateClass.bgOpacityVariant({ opacity }),
     glassDepthClass[depth],
   ]
     .filter(Boolean)

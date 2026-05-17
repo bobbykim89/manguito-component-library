@@ -3,111 +3,149 @@ import * as Stories from './sidebar/sidebar.stories'
 
 <Meta of={Stories} />
 
-# Sidebar component
+# Sidebar
 
 Included in `@bobbykim/manguito-theme`
 
+A slide-in panel that can be anchored to the left or right edge of the viewport. Includes focus trap, scroll lock, backdrop, and animated open/close transition. ARIA attributes (`role="dialog"`, `aria-modal`, `aria-labelledby`) are applied automatically.
+
+```ts
+import { Sidebar } from '@bobbykim/manguito-theme'
+```
+
+---
+
 ## Usage
 
-```js
-<script lang="ts" setup>
+### Open via component ref
+
+The recommended way to trigger a sidebar is to hold a template ref and call `open()`.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
 import { Sidebar } from '@bobbykim/manguito-theme'
-import { vToggle } from '@bobbykim/manguito-theme/directives'
+
+const sidebarRef = ref<InstanceType<typeof Sidebar>>()
 </script>
 
 <template>
-  <div>
-    <!-- trigger collapse toggle  -->
-    <button v-toggle:sidebar-component-id>{{Tab button name}}</button>
-    <button v-toggle:[when calling sidebar-id dynamically]>
-      {{Tab button name}}
-    </button>
-    <!-- trigger by 'a' tag -->
-    <a href="#sidebar-component-id" v-toggle>{{Tab button name here}}</a>
-    <sidebar
-      id="sidebar-component-id"
-      placement="'left'|'right'"
-      class-name="taildind css class"
-      backdrop-color="dark-1"
-      color="light-1"
-      width="300"
-      @open="$event"
-      @close="$event"
-    >
-      <!-- add custom close button to close sidebar -->
-      <template #header="{ close }">
-        <button @click="close">Button</button>
-      </template>
-      <template #body> ...body content </template>
-      <template #footer> ...footer content </template>
-    </sidebar>
-    <!-- sidebar with default header -->
-    <sidebar id="sidebar-component-id" title="sidebar title"></sidebar>
-    <!-- sidebar with no header -->
-    <sidebar id="sidebar-component-id" no-header></sidebar>
-    <!-- sidebar with no backdrop -->
-    <sidebar id="sidebar-component-id" no-backdrop></sidebar>
-    <!-- load page with open sidebar -->
-    <sidebar id="sidebar-component-id" visible></sidebar>
-  </div>
+  <button @click="sidebarRef?.open()">Open Sidebar</button>
+
+  <Sidebar ref="sidebarRef" id="my-sidebar" title="Navigation">
+    <template #body>
+      <nav>...</nav>
+    </template>
+  </Sidebar>
 </template>
+```
+
+### Open via `:visible` prop
+
+Bind a reactive ref to `:visible` for state-driven control.
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { Sidebar } from '@bobbykim/manguito-theme'
+
+const isOpen = ref(false)
+</script>
+
+<template>
+  <button @click="isOpen = true">Open Sidebar</button>
+
+  <Sidebar :visible="isOpen" @close="isOpen = false" id="my-sidebar">
+    <template #body="{ close }">
+      <p>Sidebar content.</p>
+      <button @click="close">Close</button>
+    </template>
+  </Sidebar>
+</template>
+```
+
+### Custom header, body, and footer
+
+Use named slots to fully customise the sidebar layout.
+
+```vue
+<template>
+  <Sidebar
+    ref="sidebarRef"
+    id="my-sidebar"
+    placement="right"
+    class-name="bg-light-1 p-sm"
+    :width="360"
+  >
+    <template #header="{ close }">
+      <div class="flex justify-end mb-4">
+        <button @click="close" aria-label="Close">✕</button>
+      </div>
+    </template>
+    <template #body="{ status }">
+      <p>Open: {{ status }}</p>
+      <nav>...</nav>
+    </template>
+    <template #footer>
+      <div class="border-t pt-4">Footer content</div>
+    </template>
+  </Sidebar>
+</template>
+```
+
+### Default header
+
+Pass `title` to use the built-in header instead of the `#header` slot.
+
+```vue
+<Sidebar ref="sidebarRef" id="my-sidebar" title="Menu" color="primary">
+  <template #body>...</template>
+</Sidebar>
 ```
 
 <Canvas of={Stories.sidebarExample} />
 
-### Trigger sidebar through ref
+---
 
-```js
-<script lang="ts" setup>
-import { Sidebar } from '@bobbykim/manguito-theme'
-import { ref } from 'vue'
+## API
 
-const sidebarRef = ref<InstanceType<typeof Sidebar>>()
+### Props
 
-const handleSidebar = () => {
-  // toggle sidebar
-  sidebarRef.value.toggle()
-  // open sidebar
-  sidebarRef.value.open()
-  // close sidebar
-  sidebarRef.value.close()
-}
-</script>
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `id` | `string` | — | HTML `id` on the sidebar root. Used for ARIA `aria-labelledby` wiring. |
+| `title` | `string` | — | Text for the built-in default header. Omit when using `#header` slot. |
+| `titleColor` | `ColorPalette` | `'dark-3'` | Color of the default header title text. |
+| `visible` | `boolean` | `false` | Initial open state. Reactive — changing it opens or closes the sidebar. |
+| `color` | `ColorPalette` | `'light-1'` | Background color of the sidebar panel. |
+| `class-name` | `string \| string[]` | `''` | Additional CSS class(es) on the sidebar panel. |
+| `placement` | `'left' \| 'right'` | `'left'` | Which edge of the viewport the sidebar slides in from. |
+| `width` | `number` | `300` | Width of the sidebar panel in pixels. |
+| `no-backdrop` | `boolean` | `false` | When `true`, renders without the semi-transparent backdrop. |
+| `no-header` | `boolean` | `false` | When `true`, suppresses the header area entirely. |
+| `backdrop-color` | `ColorPalette` | `'dark-3'` | Color of the backdrop overlay. |
 
-<template>
-  <div>
-    <button @click="handleSidebar">Button Name</button>
-    <sidebar ref="sidebarRef">...</sidebar>
-  </div>
-</template>
-```
+### Slots
 
-## Props
+All three slots receive `{ close: () => void, status: boolean }` as slot props.
 
-- `title?` - string
-- `titleColor?` - ColorPalette
-- `className?` - string | string[]
-- `visible?` - boolean
-- `noBackdrop?` - boolean
-- `noHeader?` - boolean
-- `color?` - ColorPalette
-- `backdropColor?` - ColorPalette
-- `placement?` - DirectionX
-- `width?` - string | number
+| Slot | Slot props | Description |
+|---|---|---|
+| `#header` | `{ close, status }` | Custom header. Omit to use the default header (requires `title` prop) or `no-header`. |
+| `#body` | `{ close, status }` | Main content area. |
+| `#footer` | `{ close, status }` | Footer area below the body. |
 
-## Slot
+### Exposed Methods
 
-- `#header(props: { close: () => void; status: boolean })`: custom header slot
-- `#body(props: { close: () => void; status: boolean })`: main content slot
-- `#footer(props: { close: () => void; status: boolean })`: custom footer slot
-
-## Exposes
-
-- `toggle` - () => void
-- `open` - () => void
-- `close` - () => void
+| Method | Signature | Description |
+|---|---|---|
+| `toggle` | `() => void` | Toggle open/closed. |
+| `open` | `() => void` | Open the sidebar. |
+| `close` | `() => void` | Close the sidebar. |
 
 ### Events
 
-- `open` - (visible: boolean) - Emitted when modal component opens
-- `close` - (visible: boolean) - Emitted when modal component closes
+| Event | Payload | Description |
+|---|---|---|
+| `open` | `(visible: boolean)` | Emitted when the sidebar opens. |
+| `close` | `(visible: boolean)` | Emitted when the sidebar closes. |

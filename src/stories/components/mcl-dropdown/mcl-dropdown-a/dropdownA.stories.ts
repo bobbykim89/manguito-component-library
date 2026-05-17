@@ -80,8 +80,8 @@ const meta: Meta<typeof MclDropdownA> = {
       defaultValue: 'white',
       category: 'Dropdown',
     }),
-    displayBorder: booleanControllers({
-      name: 'display-border',
+    showBorder: booleanControllers({
+      name: 'show-border',
       required: false,
       description: 'whether or not to display border of dropdown list',
       defaultValue: true,
@@ -94,8 +94,8 @@ const meta: Meta<typeof MclDropdownA> = {
       defaultValue: true,
       category: 'Dropdown',
     }),
-    displayShadow: booleanControllers({
-      name: 'display-shadow',
+    showShadow: booleanControllers({
+      name: 'show-shadow',
       required: false,
       description: 'whether or not to add drop shadow on dropdown list',
       defaultValue: true,
@@ -129,8 +129,8 @@ const meta: Meta<typeof MclDropdownA> = {
       defaultValue: 'dark-3',
       category: 'Dropdown',
     }),
-    displaySeparator: booleanControllers({
-      name: 'display-separator',
+    showSeparator: booleanControllers({
+      name: 'show-separator',
       required: false,
       description:
         'whether or not to add separating line between dropdown items',
@@ -146,14 +146,14 @@ const meta: Meta<typeof MclDropdownA> = {
     buttonInvert: false,
     dropdownItems,
     dropdownColor: 'white',
-    displayBorder: true,
+    showBorder: true,
     rounded: true,
-    displayShadow: true,
+    showShadow: true,
     hoverBgColor: 'light-4',
     dropdownTextSize: 'md',
     dropdownFontWeight: 'normal',
     dropdownTextColor: 'dark-3',
-    displaySeparator: false,
+    showSeparator: false,
   },
 }
 

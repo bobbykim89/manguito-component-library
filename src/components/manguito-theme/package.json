@@ -49,16 +49,22 @@
     }
   },
   "scripts": {
-    "build": "vite build && cp lib/style/mcl-theme-v4.css dist/mcl-theme-v4.css"
+    "build": "vite build && cp lib/style/mcl-theme-v4.css dist/mcl-theme-v4.css",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@vueuse/core": "^12.0.0",
+    "@vueuse/integrations": "^14.3.0",
+    "class-variance-authority": "^0.7.1",
+    "focus-trap": "^8.2.0",
+    "isomorphic-dompurify": "^3.12.0",
     "vue": "^3.5.13"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
     "sass": "^1.82.0",
-    "tailwindcss": "^3.4.16",
+    "tailwindcss": "^4.1.18",
     "typescript": "^5.7.2",
     "vite": "^6.0.3",
     "vite-plugin-css-injected-by-js": "^3.5.2",

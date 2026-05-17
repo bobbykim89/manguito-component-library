@@ -1,35 +1,37 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
 import InputHighlight from '../common/InputHighlight.vue'
 
 const props = withDefaults(
   defineProps<{
     id: string
-    displayBorder?: boolean
+    showBorder?: boolean
     borderColor?: ColorPalette
     rounded?: boolean
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     bgColor?: ColorPalette
-    textcolor?: ColorPalette
+    textColor?: ColorPalette
     placeholder?: string
-    displayShadow?: boolean
+    showShadow?: boolean
     required?: boolean
+    invalid?: boolean
     rows?: number
   }>(),
   {
-    displayBorder: false,
+    showBorder: false,
     borderColor: 'light-4',
     rounded: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     bgColor: 'light-1',
-    textcolor: 'black',
+    textColor: 'black',
     placeholder: '',
-    displayShadow: true,
+    showShadow: true,
     required: false,
+    invalid: false,
     rows: 5,
   }
 )
@@ -39,28 +41,28 @@ const model = defineModel<string>()
 const inputClass = computed(() => {
   const {
     bgColor,
-    displayBorder,
+    showBorder,
     borderColor,
-    displayHighlight,
-    displayShadow,
+    showHighlight,
+    showShadow,
     rounded,
-    textcolor,
+    textColor,
   } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', bgColor),
-    generateClass('TEXTCOLOR', textcolor),
+    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.textColorVariant({ color: textColor }),
   ]
-  if (displayBorder) {
+  if (showBorder) {
     classArray.push('border-2')
-    classArray.push(generateClass('BORDER', borderColor))
+    classArray.push(generateClass.borderColorVariant({ color: borderColor }))
   }
-  if (!displayHighlight) {
+  if (!showHighlight) {
     classArray.push(
       'focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear'
     )
-    classArray.push(generateClass('FOCUSRING', borderColor))
+    classArray.push(generateClass.focusRingColorVariant({ color: borderColor }))
   }
-  if (displayShadow) {
+  if (showShadow) {
     classArray.push('shadow-md')
   }
   if (rounded) {
@@ -79,10 +81,11 @@ const inputClass = computed(() => {
       v-model="model"
       :placeholder="placeholder"
       :required="required"
+      :aria-invalid="invalid || undefined"
       :rows="rows"
     />
     <input-highlight
-      v-if="displayHighlight"
+      v-if="showHighlight"
       :color="highlightColor"
       :rounded="rounded"
       :offset="2.5"

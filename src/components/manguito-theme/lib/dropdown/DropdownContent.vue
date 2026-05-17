@@ -6,17 +6,17 @@ import type { DropdownInjectType } from './index.types'
 
 withDefaults(
   defineProps<{
-    className?: string | string[]
+    customClass?: string | string[]
   }>(),
   {
-    className: '',
+    customClass: '',
   }
 )
 const { height } = useWindowSize()
 const slots = defineSlots<{
   default(props: { itemClick: () => void }): any
 }>()
-const contentRef = ref<HTMLAreaElement>()
+const contentRef = ref<HTMLDivElement>()
 const { active, buttonHeight, closeDropdown } = inject(
   dropdownInjectionKey
 ) as DropdownInjectType
@@ -39,7 +39,7 @@ const dropdownDirection = computed<string | undefined>(() => {
       v-if="active"
       ref="contentRef"
       class="absolute my-2xs max-w-[14rem] w-max overflow-hidden"
-      :class="[dropdownDirection, className]"
+      :class="[dropdownDirection, customClass]"
       :style="btnHeight"
     >
       <slot :item-click="closeDropdown" />

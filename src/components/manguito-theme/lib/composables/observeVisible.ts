@@ -1,6 +1,6 @@
 import { useMutationObserver } from '@vueuse/core'
 import type { Ref } from 'vue'
-import { ObserverControl, VisibilityCallback } from './index.types'
+import type { ObserverControl, VisibilityCallback } from './index.types'
 
 /**
  * Parses the visible attribute value to boolean

@@ -32,8 +32,8 @@ const meta: Meta<typeof MclCardC> = {
       defaultValue: 'dark-3',
       category: 'Title Block',
     }),
-    displayTitle: booleanControllers({
-      name: 'display-title',
+    showTitle: booleanControllers({
+      name: 'show-title',
       required: false,
       description: 'whether to display title block',
       defaultValue: false,
@@ -58,8 +58,8 @@ const meta: Meta<typeof MclCardC> = {
       defaultValue: 'primary',
       category: 'Card Body',
     }),
-    displayHighlight: booleanControllers({
-      name: 'display-highlight',
+    showHighlight: booleanControllers({
+      name: 'show-highlight',
       required: false,
       description: 'displays highlight under the title block',
       defaultValue: false,
@@ -92,10 +92,10 @@ const meta: Meta<typeof MclCardC> = {
     title: 'MCL Card C',
     titleSize: 'md',
     titleColor: 'dark-3',
-    displayHighlight: false,
+    showHighlight: false,
     highlightColor: 'light-3',
     highlightOpacity: 80,
-    displayTitle: false,
+    showTitle: false,
     cardColor: 'primary',
   },
 }

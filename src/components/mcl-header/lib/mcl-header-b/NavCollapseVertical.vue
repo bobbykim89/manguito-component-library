@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
-import generateClass, { Collapse } from '@bobbykim/manguito-theme'
-import { vCollapse } from '@bobbykim/manguito-theme/directives'
+import { generateClass, Collapse } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 type NavLocationType = 'desktop' | 'mobile'
 const props = withDefaults(
   defineProps<{
     navId: string
-    navAccordionGroup: string
     navLocation: NavLocationType
     menuItem: MenuCollapseType
     textColor?: ColorPalette
@@ -40,6 +38,7 @@ const closeCollapse = () => {
   collapseRef.value?.close()
 }
 const handleCollapseLabelClick = (e: Event, title: string) => {
+  collapseRef.value?.toggle()
   emit('label-click', e, title, toggle.value)
 }
 const handleChildClick = (e: Event, item: MenuItemType) => {
@@ -57,32 +56,27 @@ const getNavId = computed<string>(() => {
   const navIdKebab = navIdLower.replaceAll(' ', '-')
   return `nav-${navLocation}-${navIdKebab}`
 })
-const getAccordionGroup = computed<string>(() => {
-  const { navAccordionGroup, navLocation } = props
-  const agKebab = navAccordionGroup.toLowerCase().replaceAll(' ', '-')
-  return `nav-accordion-group-${navLocation}-${agKebab}`
-})
 
 const colorClass = computed<string>(() => {
   const { textColor, textSize, dHl, hlColor, fontBold } = props
-  const classArray: string[] = [generateClass('BODYTEXT', textSize)]
+  const classArray: string[] = [generateClass.bodyTextVariant({ size: textSize })]
   if (!dHl) {
     const nonHlTextClass: string[] = [
-      generateClass('TEXTCOLOR', textColor),
-      generateClass('HVTEXTCOLOR', hlColor),
-      generateClass('FCTEXTCOLOR', hlColor),
+      generateClass.textColorVariant({ color: textColor }),
+      generateClass.hoverTextColorVariant({ color: hlColor }),
+      generateClass.focusTextColorVariant({ color: hlColor }),
     ]
     classArray.push(nonHlTextClass.join(' '))
   }
   if (dHl) {
-    const highlightColor: string = generateClass('BEFOREBG', hlColor)
+    const highlightColor: string = generateClass.beforeBgColorVariant({ color: hlColor })
     const hlClass: string =
       'before:inset-y-0 before:left-0 before:transition-[width] before:duration-300 before:ease-linear before:w-0 hover:before:w-full focus:before:w-full '
     classArray.push(hlClass + highlightColor)
     const hlTextClass: string[] = [
-      generateClass('TEXTCOLOR', hlColor),
-      generateClass('HVTEXTCOLOR', textColor),
-      generateClass('FCTEXTCOLOR', textColor),
+      generateClass.textColorVariant({ color: hlColor }),
+      generateClass.hoverTextColorVariant({ color: textColor }),
+      generateClass.focusTextColorVariant({ color: textColor }),
     ]
     classArray.push(hlTextClass.join(' '))
   }
@@ -98,10 +92,10 @@ const collapseHighlightClass = computed<string>(() => {
     return ''
   }
   const classNames: string =
-    'before:absolute before:w-xs before:h-full before:bg-primary before:bg-opacity-70 '
+    'before:absolute before:w-xs before:h-full before:mcl-bg-primary before:bg-opacity-70 '
   const hlLocation: string =
     navLocation === 'desktop' ? 'before:left-0 ' : 'before:right-0 '
-  classArray.push(classNames + hlLocation + generateClass('BEFOREBG', hlColor))
+  classArray.push(classNames + hlLocation + generateClass.beforeBgColorVariant({ color: hlColor }))
   return classArray.join(' ')
 })
 const childItemColorClass = computed<string>(() => {
@@ -115,22 +109,22 @@ const childItemColorClass = computed<string>(() => {
           ? 'sm'
           : 'xs'
   const classArray: string[] = [
-    generateClass('TEXTCOLOR', textColor),
-    generateClass('BODYTEXT', childBodyText),
+    generateClass.textColorVariant({ color: textColor }),
+    generateClass.bodyTextVariant({ size: childBodyText }),
   ]
   if (navLocation === 'mobile') {
     classArray.push('text-end')
   }
   if (!dHl) {
     const nonHlTextClass: string[] = [
-      generateClass('TEXTCOLOR', textColor),
-      generateClass('HVTEXTCOLOR', hlColor),
-      generateClass('FCTEXTCOLOR', hlColor),
+      generateClass.textColorVariant({ color: textColor }),
+      generateClass.hoverTextColorVariant({ color: hlColor }),
+      generateClass.focusTextColorVariant({ color: hlColor }),
     ]
     classArray.push(nonHlTextClass.join(' '))
   }
   if (dHl) {
-    const highlightColor: string = generateClass('BEFOREBG', hlColor)
+    const highlightColor: string = generateClass.beforeBgColorVariant({ color: hlColor })
     const hlClass: string =
       'before:inset-y-0 before:duration-300 before:ease-linear before:w-0 hover:before:w-full focus:before:w-full before:bg-opacity-70 '
     const hlLocation: string =
@@ -139,9 +133,9 @@ const childItemColorClass = computed<string>(() => {
         : 'before:left-full hover:before:left-0 focus:before:left-0 before:transition-[all] '
     classArray.push(hlClass + hlLocation + highlightColor)
     const hlTextClass: string[] = [
-      generateClass('TEXTCOLOR', hlColor),
-      generateClass('HVTEXTCOLOR', textColor),
-      generateClass('FCTEXTCOLOR', textColor),
+      generateClass.textColorVariant({ color: hlColor }),
+      generateClass.hoverTextColorVariant({ color: textColor }),
+      generateClass.focusTextColorVariant({ color: textColor }),
     ]
     classArray.push(hlTextClass.join(' '))
   }
@@ -158,7 +152,6 @@ defineExpose({
 <template>
   <div>
     <button
-      v-collapse:[getNavId]
       class="px-xs py-2xs relative block w-full text-center transition-colors duration-300 ease-linear before:absolute"
       @click="handleCollapseLabelClick($event, menuItem.title)"
       :class="[colorClass]"
@@ -184,7 +177,6 @@ defineExpose({
     <Collapse
       ref="collapseRef"
       :id="getNavId"
-      :accordion="getAccordionGroup"
       @open="toggleCollapse"
       @close="toggleCollapse"
     >

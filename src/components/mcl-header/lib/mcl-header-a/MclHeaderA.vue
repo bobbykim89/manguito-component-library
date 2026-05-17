@@ -5,7 +5,7 @@ import type {
   CtaTarget,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
-import generateClass, { HeaderHorizontal } from '@bobbykim/manguito-theme'
+import { generateClass, AccordionGroup, HeaderHorizontal } from '@bobbykim/manguito-theme'
 import { ref } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 import NavCollapse from './NavCollapse.vue'
@@ -28,12 +28,12 @@ const props = withDefaults(
     menuTextSize?: BodyText
     menuTextColor?: ColorPalette
     menuTextBold?: boolean
-    displayHighlight?: boolean
+    showHighlight?: boolean
     highlightColor?: ColorPalette
     bgColor?: ColorPalette
     mobileMenuBgColor?: ColorPalette
     drawerBtnColor?: ColorPalette
-    drawerBtnBorder?: boolean
+    showDrawerBorder?: boolean
     fadeInOnScroll?: boolean
     scrollDistance?: number
   }>(),
@@ -47,12 +47,12 @@ const props = withDefaults(
     menuTextSize: 'md',
     menuTextColor: 'dark-3',
     menuTextBold: false,
-    displayHighlight: true,
+    showHighlight: true,
     highlightColor: 'primary',
     bgColor: 'light-1',
     mobileMenuBgColor: 'light-2',
     drawerBtnColor: 'dark-1',
-    drawerBtnBorder: true,
+    showDrawerBorder: true,
     fadeInOnScroll: true,
     scrollDistance: 50,
   }
@@ -104,8 +104,8 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
    * @param {ColorPalette} color - titleColor
    */
   const classArray: string[] = [
-    generateClass('H2', size),
-    generateClass('TEXTCOLOR', color),
+    generateClass.h2Variant({ size: size }),
+    generateClass.textColorVariant({ color: color }),
   ]
   return classArray.join(' ')
 }
@@ -127,7 +127,7 @@ defineExpose({
   <HeaderHorizontal
     ref="componentRef"
     :bg-color="bgColor"
-    :drawer-btn-border="drawerBtnBorder"
+    :drawer-btn-border="showDrawerBorder"
     :drawer-btn-color="drawerBtnColor"
     :fade-in-on-scroll="fadeInOnScroll"
     :mobile-menu-bg-color="mobileMenuBgColor"
@@ -179,7 +179,7 @@ defineExpose({
                 :menu-text-color="menuTextColor"
                 :menu-text-size="menuTextSize"
                 :menu-text-bold="menuTextBold"
-                :display-highlight="displayHighlight"
+                :display-highlight="showHighlight"
                 :highlight-color="highlightColor"
                 :as-link="menuItemAsLink"
                 @nav-link="handleMenuItemClick"
@@ -190,7 +190,7 @@ defineExpose({
                 :menu-text-color="menuTextColor"
                 :menu-text-size="menuTextSize"
                 :menu-text-bold="menuTextBold"
-                :display-highlight="displayHighlight"
+                :display-highlight="showHighlight"
                 :highlight-color="highlightColor"
                 :bg-color="bgColor"
                 :as-link="menuItemAsLink"
@@ -209,39 +209,40 @@ defineExpose({
     </template>
     <template #mobile-content>
       <div>
-        <ul class="flex flex-col items-center justify-center p-xs">
-          <li
-            class="mb-2xs last:mb-0"
-            v-for="(item, index) in menuItems"
-            :key="`mobile-${index}`"
-          >
-            <nav-link
-              v-if="!hasChildren(item)"
-              :nav-item="(item as MenuItemType)"
-              :menu-text-color="menuTextColor"
-              :menu-text-size="menuTextSize"
-              :menu-text-bold="menuTextBold"
-              :display-highlight="displayHighlight"
-              :highlight-color="highlightColor"
-              :as-link="menuItemAsLink"
-              @nav-link="handleMenuItemClick"
-            ></nav-link>
-            <nav-collapse
-              v-else
-              :nav-id="item.title"
-              :nav-item="(item as MenuCollapseType)"
-              :menu-text-color="menuTextColor"
-              :menu-text-size="menuTextSize"
-              :menu-text-bold="menuTextBold"
-              :display-highlight="displayHighlight"
-              :highlight-color="highlightColor"
-              :nav-accordion-group="title"
-              :as-link="menuItemAsLink"
-              @child-click="handleMenuItemClick"
-              @label-click="handleCollapsableMenuClick"
-            ></nav-collapse>
-          </li>
-        </ul>
+        <AccordionGroup>
+          <ul class="flex flex-col items-center justify-center p-xs">
+            <li
+              class="mb-2xs last:mb-0"
+              v-for="(item, index) in menuItems"
+              :key="`mobile-${index}`"
+            >
+              <nav-link
+                v-if="!hasChildren(item)"
+                :nav-item="(item as MenuItemType)"
+                :menu-text-color="menuTextColor"
+                :menu-text-size="menuTextSize"
+                :menu-text-bold="menuTextBold"
+                :display-highlight="showHighlight"
+                :highlight-color="highlightColor"
+                :as-link="menuItemAsLink"
+                @nav-link="handleMenuItemClick"
+              ></nav-link>
+              <nav-collapse
+                v-else
+                :nav-id="item.title"
+                :nav-item="(item as MenuCollapseType)"
+                :menu-text-color="menuTextColor"
+                :menu-text-size="menuTextSize"
+                :menu-text-bold="menuTextBold"
+                :display-highlight="showHighlight"
+                :highlight-color="highlightColor"
+                :as-link="menuItemAsLink"
+                @child-click="handleMenuItemClick"
+                @label-click="handleCollapsableMenuClick"
+              ></nav-collapse>
+            </li>
+          </ul>
+        </AccordionGroup>
         <div v-if="slots['mobile-bottom']">
           <slot name="mobile-bottom" :header-close="closeNav"></slot>
         </div>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import generateClass, { ColorPalette } from '@bobbykim/manguito-theme'
+import { generateClass } from '@bobbykim/manguito-theme'
+import type { ColorPalette } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 import type { ColorMap, InputSizeType } from '../common/index.types'
 
@@ -50,7 +51,7 @@ const props = withDefaults(
     checkedBgColor?: ColorPalette
     checkColor?: ColorPalette
     borderColor?: ColorPalette
-    displayShadow?: boolean
+    showShadow?: boolean
     rounded?: boolean
     value?: string | number
     checked?: boolean
@@ -61,7 +62,7 @@ const props = withDefaults(
     checkedBgColor: 'warning',
     checkColor: 'dark-3',
     borderColor: 'dark-1',
-    displayShadow: false,
+    showShadow: false,
     rounded: false,
     checked: false,
   }
@@ -107,18 +108,18 @@ const handleCheckboxLayout = computed<string>(() => {
   const {
     bgColor,
     borderColor,
-    displayShadow,
+    showShadow,
     rounded,
     checkedBgColor,
     checkColor,
   } = props
   const classArray: string[] = [
-    generateClass('BGCOLOR', bgColor),
-    generateClass('BORDER', borderColor),
+    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.borderColorVariant({ color: borderColor }),
     beforeColor[checkColor],
     peerBgColor[checkedBgColor],
   ]
-  if (displayShadow) {
+  if (showShadow) {
     classArray.push('drop-shadow-md')
   }
   if (rounded) {
@@ -141,6 +142,7 @@ const handleCheckboxLayout = computed<string>(() => {
       @change="handleChange"
     />
     <span
+      aria-hidden="true"
       class="relative border inline-block p-3xs hover:bg-opacity-60 peer-checked/input:hover:bg-opacity-60 before:opacity-0 peer-checked/input:before:opacity-100 before:absolute before:top-1/2 before:-translate-y-1/2 before:left-1/2 before:-translate-x-1/2 transition-colors duration-200 ease-linear before:transition-opacity before:duration-200 before:ease-linar"
       :class="[handleCheckboxLayout, handleInputSize]"
       @click="handleCheckboxClick"
