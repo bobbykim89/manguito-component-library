@@ -1,4 +1,4 @@
-import { Canvas, Meta } from '@storybook/blocks'
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
 import * as Stories from './collapse/collapse.stories'
 
 <Meta of={Stories} />
@@ -119,29 +119,29 @@ const panelRefs = ref<InstanceType<typeof Collapse>[]>([])
 
 ### Props
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `id` | `string` | auto-generated | Panel identifier used by `AccordionGroup` to track which panel is open. Also set as the element's HTML `id` attribute for ARIA wiring. |
-| `visible` | `boolean` | `false` | Initial open state. Reactive — changing it after mount opens or closes the panel. |
-| `class-name` | `string \| string[]` | `''` | CSS class(es) applied to the inner content wrapper. |
+| Prop         | Type                 | Default        | Description                                                                                                                            |
+| ------------ | -------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`         | `string`             | auto-generated | Panel identifier used by `AccordionGroup` to track which panel is open. Also set as the element's HTML `id` attribute for ARIA wiring. |
+| `visible`    | `boolean`            | `false`        | Initial open state. Reactive — changing it after mount opens or closes the panel.                                                      |
+| `class-name` | `string \| string[]` | `''`           | CSS class(es) applied to the inner content wrapper.                                                                                    |
 
 ### Slots
 
-| Slot | Description |
-|---|---|
+| Slot      | Description          |
+| --------- | -------------------- |
 | `default` | Collapsible content. |
 
 ### Exposed Methods
 
-| Method | Signature | Description |
-|---|---|---|
+| Method   | Signature    | Description         |
+| -------- | ------------ | ------------------- |
 | `toggle` | `() => void` | Toggle open/closed. |
-| `open` | `() => void` | Open the panel. |
-| `close` | `() => void` | Close the panel. |
+| `open`   | `() => void` | Open the panel.     |
+| `close`  | `() => void` | Close the panel.    |
 
 ### Events
 
-| Event | Payload | Description |
-|---|---|---|
-| `open` | `(visible: boolean)` | Emitted when the panel opens. |
+| Event   | Payload              | Description                    |
+| ------- | -------------------- | ------------------------------ |
+| `open`  | `(visible: boolean)` | Emitted when the panel opens.  |
 | `close` | `(visible: boolean)` | Emitted when the panel closes. |

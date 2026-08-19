@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import CarouselExample from './CarouselExample.vue'
 import CarouselExampleIndicator from './CarouselExampleIndicator.vue'
 import CarouselExampleIndicatorTop from './CarouselExampleIndicatorTop.vue'

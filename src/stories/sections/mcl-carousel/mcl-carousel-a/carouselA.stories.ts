@@ -9,7 +9,7 @@ import {
 } from '@/assets/composables'
 import { MclCardA } from '@/components/mcl-cards/lib'
 import { MclCarouselA } from '@/components/mcl-carousel/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import MclCarouselACardB from './MclCarouselACardB.vue'
 import MclCarouselCardD from './MclCarouselCardD.vue'
 

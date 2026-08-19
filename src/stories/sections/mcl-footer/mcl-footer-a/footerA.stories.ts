@@ -10,7 +10,7 @@ import {
 } from '@/assets/composables'
 import type { MenuItemType, SocialUrl } from '@/components/mcl-footer/lib'
 import { MclFooterA } from '@/components/mcl-footer/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 const navItems: MenuItemType[] = [
   {

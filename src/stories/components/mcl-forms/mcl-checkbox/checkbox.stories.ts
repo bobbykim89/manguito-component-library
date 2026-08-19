@@ -5,7 +5,7 @@ import {
   textControllers,
 } from '@/assets/composables'
 import { MclCheckbox } from '@/components/mcl-forms/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 import MclCheckboxMultiple from './MclCheckboxMultiple.vue'
 

@@ -8,7 +8,7 @@ import {
   xDirControllers,
 } from '@/assets/composables'
 import { MclHeroA } from '@/components/mcl-hero/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 const meta: Meta<typeof MclHeroA> = {
   title: 'Sections/Hero/MclHeroA',
