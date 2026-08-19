@@ -28,10 +28,10 @@ const dropdownSelectEvent = (item: string): void => {
 
 <template>
   <section class="container">
-    <div class="text-center mb-md">
+    <div class="mb-md text-center">
       <h2 class="text-warning">Dropdown Component Example:</h2>
     </div>
-    <div class="p-sm border-2 border-success rounded-md bg-white">
+    <div class="rounded-md border-2 border-success bg-white p-sm">
       <dropdown-container>
         <template #toggler="{ toggle, dropdownState }">
           <button @click="toggle" class="btn btn-progress btn-danger">
@@ -41,8 +41,8 @@ const dropdownSelectEvent = (item: string): void => {
         <dropdown-content v-slot="{ itemClick }">
           <button
             v-for="(item, idx) in dropdownItems"
-            @click="itemClick(), dropdownSelectEvent(item.title)"
-            class="px-xs py-2xs block bg-light-2 hover:bg-light-4 focus:bg-light-4 w-full"
+            @click="(itemClick(), dropdownSelectEvent(item.title))"
+            class="block w-full bg-light-2 px-xs py-2xs hover:bg-light-4 focus:bg-light-4"
           >
             {{ item.title }}
           </button>

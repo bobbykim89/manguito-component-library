@@ -10,7 +10,7 @@ const handleHeadSlotClick = (): void => {
 
 <template>
   <section class="container">
-    <div class="text-center mb-md">
+    <div class="mb-md text-center">
       <h2 class="text-warning">MCL Collapse A Tab slot example</h2>
     </div>
     <div class="mb-lg">
@@ -20,7 +20,7 @@ const handleHeadSlotClick = (): void => {
       >
         <template #tab>
           <div
-            class="cursor-pointer transition-all ease-in duration-150 hover:opacity-80"
+            class="cursor-pointer transition-all duration-150 ease-in hover:opacity-80"
             :class="[headSlotToggle ? 'text-success' : 'text-danger']"
             @click="handleHeadSlotClick"
           >

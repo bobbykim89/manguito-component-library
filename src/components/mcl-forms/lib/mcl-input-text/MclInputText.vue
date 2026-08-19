@@ -37,7 +37,7 @@ const props = withDefaults(
     showShadow: true,
     required: false,
     invalid: false,
-  }
+  },
 )
 
 const model = defineModel<string>()
@@ -62,7 +62,7 @@ const inputClass = computed(() => {
   }
   if (!showHighlight) {
     classArray.push(
-      'focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear'
+      'focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear',
     )
     classArray.push(generateClass.focusRingColorVariant({ color: borderColor }))
   }
@@ -81,7 +81,7 @@ const inputClass = computed(() => {
     <input
       :id="id"
       :type="type"
-      class="w-full p-2xs outline-none peer peer/validation"
+      class="peer peer/validation w-full p-2xs outline-none"
       :class="inputClass"
       v-model="model"
       :placeholder="placeholder"
@@ -100,7 +100,7 @@ const inputClass = computed(() => {
     <div
       :id="`${id}-error`"
       role="alert"
-      class="peer-valid/validation:hidden peer-invalid/validation:block ml-3xs"
+      class="ml-3xs peer-valid/validation:hidden peer-invalid/validation:block"
     >
       <slot name="invalid-feedback">
         <span class="text-xs text-danger">{{ invalidFeedback }}</span>

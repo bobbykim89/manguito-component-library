@@ -88,7 +88,7 @@ const navItemClick = (e: Event, item: MenuItemType) => {
       <template #toggler="{ toggle, dropdownState }">
         <div>
           <button
-            class="nav__text gap-3xs flex items-center align-middle tracking-wider outline-none"
+            class="nav__text flex items-center gap-3xs align-middle tracking-wider outline-none"
             :class="getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)"
             @click="
               (toggle($event),
@@ -116,7 +116,9 @@ const navItemClick = (e: Event, item: MenuItemType) => {
           <div
             v-if="showHighlight"
             class="nav__decorator relative -top-0.5 h-1.5"
-            :class="generateClass.beforeBgColorVariant({ color: highlightColor })"
+            :class="
+              generateClass.beforeBgColorVariant({ color: highlightColor })
+            "
           ></div>
         </div>
       </template>
@@ -130,7 +132,7 @@ const navItemClick = (e: Event, item: MenuItemType) => {
           :target="item.target"
           :key="idx"
           ref="navItemRef"
-          class="px-xs py-2xs block w-full transition-all duration-200 ease-linear hover:bg-opacity-50 focus:bg-opacity-50"
+          class="block w-full px-xs py-2xs transition-all duration-200 ease-linear hover:bg-opacity-50 focus:bg-opacity-50"
           :class="[
             generateClass.bgColorVariant({ color: bgColor }),
             generateClass.hoverBgColorVariant({ color: highlightColor }),

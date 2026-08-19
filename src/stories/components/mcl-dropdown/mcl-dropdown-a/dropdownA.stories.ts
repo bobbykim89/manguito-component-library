@@ -8,7 +8,7 @@ import {
 } from '@/assets/composables'
 import type { DropdownItem } from '@/components/mcl-dropdown/lib'
 import { MclDropdownA } from '@/components/mcl-dropdown/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 const dropdownItems: DropdownItem[] = [
   {

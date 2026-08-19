@@ -37,7 +37,7 @@ const contentData = [
       <template #controller-top="{ prev }">
         <button
           @click="prev"
-          class="pl-3xs md:pl-2xs text-dark-1 hover:opacity-60 transition-opacity duration-300"
+          class="pl-3xs text-dark-1 transition-opacity duration-300 hover:opacity-60 md:pl-2xs"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -67,7 +67,7 @@ const contentData = [
       <template #controller-bottom="{ next }">
         <button
           @click="next"
-          class="pr-3xs md:pr-2xs text-dark-1 hover:opacity-60 transition-opacity duration-300"
+          class="pr-3xs text-dark-1 transition-opacity duration-300 hover:opacity-60 md:pr-2xs"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

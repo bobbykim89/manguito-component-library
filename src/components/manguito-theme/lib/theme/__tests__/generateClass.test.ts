@@ -20,26 +20,40 @@ import {
 describe('generateClass namespace — color variants', () => {
   it('bgColorVariant: primary returns mcl-bg-primary', () => {
     expect(bgColorVariant({ color: 'primary' })).toBe('mcl-bg-primary')
-    expect(generateClass.bgColorVariant({ color: 'primary' })).toBe('mcl-bg-primary')
+    expect(generateClass.bgColorVariant({ color: 'primary' })).toBe(
+      'mcl-bg-primary',
+    )
   })
   it('bgColorVariant: unknown color returns empty string', () => {
     expect(bgColorVariant({ color: 'neon-green' as any })).toBe('')
   })
   it('hoverBgColorVariant: secondary returns hover:bg-secondary', () => {
-    expect(hoverBgColorVariant({ color: 'secondary' })).toBe('hover:bg-secondary')
-    expect(generateClass.hoverBgColorVariant({ color: 'secondary' })).toBe('hover:bg-secondary')
+    expect(hoverBgColorVariant({ color: 'secondary' })).toBe(
+      'hover:bg-secondary',
+    )
+    expect(generateClass.hoverBgColorVariant({ color: 'secondary' })).toBe(
+      'hover:bg-secondary',
+    )
   })
   it('textColorVariant: success returns text-success', () => {
     expect(textColorVariant({ color: 'success' })).toBe('text-success')
-    expect(generateClass.textColorVariant({ color: 'success' })).toBe('text-success')
+    expect(generateClass.textColorVariant({ color: 'success' })).toBe(
+      'text-success',
+    )
   })
   it('outlineColorVariant: danger returns mcl-outline-danger', () => {
     expect(outlineColorVariant({ color: 'danger' })).toBe('mcl-outline-danger')
-    expect(generateClass.outlineColorVariant({ color: 'danger' })).toBe('mcl-outline-danger')
+    expect(generateClass.outlineColorVariant({ color: 'danger' })).toBe(
+      'mcl-outline-danger',
+    )
   })
   it('focusOutlineColorVariant: primary returns focus:mcl-outline-primary', () => {
-    expect(focusOutlineColorVariant({ color: 'primary' })).toBe('focus:mcl-outline-primary')
-    expect(generateClass.focusOutlineColorVariant({ color: 'primary' })).toBe('focus:mcl-outline-primary')
+    expect(focusOutlineColorVariant({ color: 'primary' })).toBe(
+      'focus:mcl-outline-primary',
+    )
+    expect(generateClass.focusOutlineColorVariant({ color: 'primary' })).toBe(
+      'focus:mcl-outline-primary',
+    )
   })
 })
 
@@ -64,10 +78,14 @@ describe('generateClass namespace — text variants', () => {
   })
   it('fontWeightVariant: bold returns font-bold', () => {
     expect(fontWeightVariant({ weight: 'bold' })).toBe('font-bold')
-    expect(generateClass.fontWeightVariant({ weight: 'bold' })).toBe('font-bold')
+    expect(generateClass.fontWeightVariant({ weight: 'bold' })).toBe(
+      'font-bold',
+    )
   })
   it('textAlignVariant: center returns text-center', () => {
-    expect(generateClass.textAlignVariant({ align: 'center' })).toBe('text-center')
+    expect(generateClass.textAlignVariant({ align: 'center' })).toBe(
+      'text-center',
+    )
   })
 })
 

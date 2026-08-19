@@ -13,7 +13,7 @@ import type {
   MenuItemType,
 } from '@/components/mcl-header/lib'
 import { MclHeaderA } from '@/components/mcl-header/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 const navItems: Array<MenuItemType | MenuCollapseType> = [
   {

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import Collapse from './Collapse.vue'
 import CollapseAccordion from './CollapseAccordion.vue'
 import CollapseRef from './CollapseRef.vue'

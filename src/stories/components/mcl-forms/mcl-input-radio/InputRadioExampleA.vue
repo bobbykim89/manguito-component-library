@@ -15,7 +15,7 @@ withDefaults(
     bgColor: 'success',
     checkedColor: 'light-1',
     showShadow: false,
-  }
+  },
 )
 
 const valueRef = ref<string | number>('')
@@ -43,13 +43,13 @@ const setValue = (e: Event, value: string | number) => {
 </script>
 
 <template>
-  <section class="container py-lg px-sm border rounded-md">
+  <section class="container rounded-md border px-sm py-lg">
     <h3 class="h3-md mb-md">MCL Input Radio Example A:</h3>
-    <div class="border rounded-md bg-light-2 p-sm mb-sm">
+    <div class="mb-sm rounded-md border bg-light-2 p-sm">
       <div
         v-for="(item, idx) in sampleData"
         :key="idx"
-        class="flex gap-2xs mb-2xs last:mb-0 items-center"
+        class="mb-2xs flex items-center gap-2xs last:mb-0"
       >
         <mcl-input-radio
           :id="item.id"

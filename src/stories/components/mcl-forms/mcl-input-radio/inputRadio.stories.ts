@@ -5,7 +5,7 @@ import {
   textControllers,
 } from '@/assets/composables'
 import { MclFormGroup, MclInputRadio } from '@/components/mcl-forms/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import InputRadioExampleA from './InputRadioExampleA.vue'
 
 const meta: Meta<typeof MclInputRadio> = {

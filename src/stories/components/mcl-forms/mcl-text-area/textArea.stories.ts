@@ -5,7 +5,7 @@ import {
   textControllers,
 } from '@/assets/composables'
 import { MclTextArea } from '@/components/mcl-forms/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import MclTextAreaWithLabel from './MclTextAreaWithLabel.vue'
 
 const meta: Meta<typeof MclTextArea> = {

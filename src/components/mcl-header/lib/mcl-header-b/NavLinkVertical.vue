@@ -20,7 +20,7 @@ const props = withDefaults(
     dHl: true,
     hlColor: 'primary',
     asLink: true,
-  }
+  },
 )
 const emit = defineEmits<{
   (e: 'menu-click', event: Event, item: MenuItemType): void
@@ -34,7 +34,9 @@ const handleLinkClick = (e: Event, item: MenuItemType) => {
 }
 const colorClass = computed<string>(() => {
   const { textColor, textSize, dHl, hlColor, fontBold } = props
-  const classArray: string[] = [generateClass.bodyTextVariant({ size: textSize })]
+  const classArray: string[] = [
+    generateClass.bodyTextVariant({ size: textSize }),
+  ]
   if (!dHl) {
     const nonHlTextClass: string[] = [
       generateClass.textColorVariant({ color: textColor }),
@@ -44,7 +46,9 @@ const colorClass = computed<string>(() => {
     classArray.push(nonHlTextClass.join(' '))
   }
   if (dHl) {
-    const highlightColor: string = generateClass.beforeBgColorVariant({ color: hlColor })
+    const highlightColor: string = generateClass.beforeBgColorVariant({
+      color: hlColor,
+    })
     const hlClass: string =
       'before:inset-y-0 before:left-0 before:transition-[width] before:duration-300 before:ease-linear before:w-0 hover:before:w-full focus:before:w-full '
     classArray.push(hlClass + highlightColor)
@@ -65,7 +69,7 @@ const colorClass = computed<string>(() => {
 <template>
   <a
     :class="[colorClass]"
-    class="px-xs py-2xs relative text-center block w-full before:absolute transition-colors duration-300 ease-linear"
+    class="relative block w-full px-xs py-2xs text-center transition-colors duration-300 ease-linear before:absolute"
     :href="menuItem.url"
     :target="menuItem.target ? menuItem.target : '_self'"
     @click="handleLinkClick($event, menuItem)"

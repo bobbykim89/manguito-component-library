@@ -1,4 +1,4 @@
-import type { Preview } from '@storybook/vue3'
+import type { Preview } from '@storybook/vue3-vite'
 import '../src/assets/style.css'
 
 const customViewports = {
@@ -35,14 +35,11 @@ const customViewports = {
 const preview: Preview = {
   parameters: {
     controls: {
+      expanded: true,
       matchers: {
-        expanded: true,
         color: /(background|color)$/i,
         date: /Date$/i,
       },
-    },
-    backgrounds: {
-      default: 'dark',
     },
     options: {
       storySort: {
@@ -50,7 +47,12 @@ const preview: Preview = {
       },
     },
     viewport: {
-      viewports: customViewports,
+      options: customViewports,
+    },
+  },
+  initialGlobals: {
+    backgrounds: {
+      value: 'dark',
     },
   },
 }

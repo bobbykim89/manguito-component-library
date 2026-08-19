@@ -7,17 +7,8 @@ const config: StorybookConfig = {
   ],
   addons: [
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-actions',
-    '@storybook/addon-interactions',
     '@storybook/addon-a11y',
-    '@storybook/addon-backgrounds',
-    '@storybook/addon-controls',
     '@storybook/addon-docs',
-    '@storybook/addon-outline',
-    '@storybook/addon-toolbars',
-    '@storybook/addon-viewport',
-    '@storybook/addon-mdx-gfm',
   ],
   framework: {
     name: '@storybook/vue3-vite',

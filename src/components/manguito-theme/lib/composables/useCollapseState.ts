@@ -1,4 +1,13 @@
-import { computed, inject, isRef, provide, ref, watch, type ComputedRef, type Ref } from 'vue'
+import {
+  computed,
+  inject,
+  isRef,
+  provide,
+  ref,
+  watch,
+  type ComputedRef,
+  type Ref,
+} from 'vue'
 
 const ACCORDION_KEY = Symbol('accordion')
 
@@ -13,7 +22,7 @@ export const provideAccordion = (): void => {
 
 export const useCollapseState = (
   id: string,
-  initialOpen: Ref<boolean> | boolean = false
+  initialOpen: Ref<boolean> | boolean = false,
 ): {
   isOpen: ComputedRef<boolean>
   toggle: () => void
@@ -24,19 +33,33 @@ export const useCollapseState = (
 
   if (ctx) {
     const isOpen = computed(() => ctx.openId.value === id)
-    const toggle = () => { ctx.openId.value = isOpen.value ? null : id }
-    const open = () => { ctx.openId.value = id }
-    const close = () => { if (isOpen.value) ctx.openId.value = null }
+    const toggle = () => {
+      ctx.openId.value = isOpen.value ? null : id
+    }
+    const open = () => {
+      ctx.openId.value = id
+    }
+    const close = () => {
+      if (isOpen.value) ctx.openId.value = null
+    }
     return { isOpen, toggle, open, close }
   } else {
     const _isOpen = ref(isRef(initialOpen) ? initialOpen.value : initialOpen)
     if (isRef(initialOpen)) {
-      watch(initialOpen, (v) => { _isOpen.value = v })
+      watch(initialOpen, (v) => {
+        _isOpen.value = v
+      })
     }
     const isOpen = computed(() => _isOpen.value)
-    const toggle = () => { _isOpen.value = !_isOpen.value }
-    const open = () => { _isOpen.value = true }
-    const close = () => { _isOpen.value = false }
+    const toggle = () => {
+      _isOpen.value = !_isOpen.value
+    }
+    const open = () => {
+      _isOpen.value = true
+    }
+    const close = () => {
+      _isOpen.value = false
+    }
     return { isOpen, toggle, open, close }
   }
 }

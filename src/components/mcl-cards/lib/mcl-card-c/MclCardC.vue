@@ -40,7 +40,9 @@ const emit = defineEmits<{
 }>()
 
 const cardClass = computed(() => {
-  const classArray: string[] = [generateClass.bgColorVariant({ color: props.cardColor })]
+  const classArray: string[] = [
+    generateClass.bgColorVariant({ color: props.cardColor }),
+  ]
   if (cardFlipped.value) {
     classArray.push('flip-card')
   }
@@ -69,7 +71,9 @@ const titleClass = computed<string>(() => {
   if (showHighlight) {
     classArray.push('px-xs py-2xs mb-2xs rounded')
     ;(classArray.push(generateClass.bgColorVariant({ color: highlightColor })),
-      classArray.push(generateClass.bgOpacityVariant({ opacity: highlightOpacity })))
+      classArray.push(
+        generateClass.bgOpacityVariant({ opacity: highlightOpacity }),
+      ))
   }
   return classArray.join(' ')
 })
@@ -84,7 +88,7 @@ const handleCardClick = (e: Event) => {
 
 <template>
   <div
-    class="card duration-1600 max-h-100 relative aspect-square overflow-hidden transition"
+    class="card relative aspect-square max-h-100 overflow-hidden transition duration-1600"
     :class="cardClass"
     @click="handleCardClick"
   >
@@ -93,13 +97,13 @@ const handleCardClick = (e: Event) => {
       :alt="imageAlt"
       :class="[
         cardFlipped ? 'opacity-100' : 'opacity-0',
-        'duration-800 absolute aspect-square h-full w-full object-cover object-center transition-opacity delay-500',
+        'absolute aspect-square h-full w-full object-cover object-center transition-opacity delay-500 duration-800',
       ]"
     />
     <div
       :class="[
         cardFlipped ? 'cursor-pointer opacity-100' : 'opacity-0',
-        'p-sm duration-800 relative flex h-full flex-col justify-end transition delay-500',
+        'relative flex h-full flex-col justify-end p-sm transition delay-500 duration-800',
       ]"
     >
       <h3 v-if="showTitle" class="relative self-start" :class="titleClass">

@@ -1,7 +1,7 @@
 <template>
   <section class="container">
     <div
-      class="grid grid-cols-3 gap-6 justify-items-center content-center mb-2xs bg-white py-sm px-xs md:py-md md:px-sm"
+      class="mb-2xs grid grid-cols-3 content-center justify-items-center gap-6 bg-white px-xs py-sm md:px-sm md:py-md"
     >
       <div class="col-span-3">
         <h3>Button colors</h3>
@@ -19,7 +19,7 @@
         <h3>Button Size</h3>
       </div>
       <div class="place-self-center">
-        <button class="btn btn-info text-white">Default</button>
+        <button class="btn text-white btn-info">Default</button>
       </div>
       <div class="place-self-center">
         <button class="btn btn-sm btn-light-4">Small</button>
@@ -42,7 +42,7 @@
       <div class="place-self-center">
         <button class="btn">Default</button>
       </div>
-      <div class="col-span-2 justify-self-stretch place-self-center">
+      <div class="col-span-2 place-self-center justify-self-stretch">
         <button class="btn btn-full btn-warning">Full width</button>
       </div>
       <div class="col-span-3">
@@ -55,15 +55,15 @@
         <button class="btn btn-invert btn-secondary">Secondary</button>
       </div>
       <div class="place-self-center">
-        <button class="btn btn-invert btn-success btn-round">Rounded</button>
+        <button class="btn btn-invert btn-round btn-success">Rounded</button>
       </div>
       <div class="place-self-center">
-        <button class="btn btn-invert btn-warning btn-sm">Small</button>
+        <button class="btn btn-invert btn-sm btn-warning">Small</button>
       </div>
       <div class="place-self-center">
-        <button class="btn btn-invert btn-success btn-lg">Large</button>
+        <button class="btn btn-invert btn-lg btn-success">Large</button>
       </div>
-      <div class="col-span-3 justify-self-stretch place-self-center">
+      <div class="col-span-3 place-self-center justify-self-stretch">
         <button class="btn btn-full btn-invert btn-dark-2">Full width</button>
       </div>
       <div class="col-span-3">
@@ -80,7 +80,7 @@
       <div class="col-span-3">
         <h3>Button group span</h3>
       </div>
-      <div class="col-span-3 justify-self-stretch place-self-center">
+      <div class="col-span-3 place-self-center justify-self-stretch">
         <div class="btn-group btn-group-span">
           <button class="btn btn-danger">Button 1</button>
           <button class="btn btn-warning">Button 2</button>
@@ -102,22 +102,22 @@
         </button>
       </div>
       <div class="place-self-center">
-        <button class="btn btn-full btn-progress btn-info btn-round">
+        <button class="btn btn-full btn-progress btn-round btn-info">
           <span>Rounded</span>
         </button>
       </div>
       <div class="place-self-center">
-        <button class="btn btn-full btn-progress btn-success btn-progress-r">
+        <button class="btn btn-full btn-progress btn-progress-r btn-success">
           <span>Reverse</span>
         </button>
       </div>
-      <div class="col-span-2 justify-self-stretch place-self-center">
-        <button class="btn btn-progress btn-warning btn-full">
+      <div class="col-span-2 place-self-center justify-self-stretch">
+        <button class="btn btn-progress btn-full btn-warning">
           <span>Full width</span>
         </button>
       </div>
-      <div class="col-span-3 justify-self-stretch place-self-center">
-        <button class="btn btn-progress btn-danger btn-round btn-full">
+      <div class="col-span-3 place-self-center justify-self-stretch">
+        <button class="btn btn-progress btn-round btn-full btn-danger">
           <span>Full width rounded</span>
         </button>
       </div>
@@ -130,7 +130,7 @@
         </button>
       </div>
       <div class="place-self-center">
-        <button class="btn btn-info btn-round btn-no-ring">
+        <button class="btn btn-round btn-no-ring btn-info">
           <span>Rounded</span>
         </button>
       </div>
@@ -144,8 +144,8 @@
           <span>Progress</span>
         </button>
       </div>
-      <div class="col-span-2 justify-self-stretch place-self-center">
-        <button class="btn btn-no-ring btn-warning btn-full">
+      <div class="col-span-2 place-self-center justify-self-stretch">
+        <button class="btn btn-no-ring btn-full btn-warning">
           <span>Full width</span>
         </button>
       </div>

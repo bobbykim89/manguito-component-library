@@ -5,7 +5,7 @@ import {
   textControllers,
 } from '@/assets/composables'
 import { MclCollapseA } from '@/components/mcl-collapse/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import CollapseAAccordion from './CollapseAAccordion.vue'
 import CollapseATabSlotExample from './CollapseATabSlotExample.vue'
 

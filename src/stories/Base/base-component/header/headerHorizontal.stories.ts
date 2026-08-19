@@ -4,7 +4,7 @@ import {
   numberControllers,
 } from '@/assets/composables'
 import { HeaderHorizontal } from '@/components/manguito-theme/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import HeaderHorizontalExample from './HeaderHorizontalExample.vue'
 
 const meta: Meta<typeof HeaderHorizontal> = {

@@ -193,16 +193,16 @@ const handleCardClick = (e: Event): void => {
       />
       <span
         v-if="showLabel"
-        class="py-3xs px-2xs ml-xs absolute bottom-0 inline-block translate-y-[50%] text-xs font-bold"
+        class="absolute bottom-0 ml-xs inline-block translate-y-[50%] px-2xs py-3xs text-xs font-bold"
         :class="labelClass"
         v-html="labelText"
       ></span>
     </div>
     <div class="flex h-full flex-col justify-between">
-      <div class="px-xs pt-sm flex-1">
+      <div class="flex-1 px-xs pt-sm">
         <span
           v-if="!showImage && showLabel"
-          class="py-3xs px-2xs mb-2xs inline-block text-xs font-bold"
+          class="mb-2xs inline-block px-2xs py-3xs text-xs font-bold"
           :class="labelClass"
           v-html="labelText"
         ></span>
@@ -216,8 +216,8 @@ const handleCardClick = (e: Event): void => {
           <slot></slot>
         </div>
       </div>
-      <div class="pb-sm cursor-default border-0" v-if="showCta" @click.stop>
-        <div class="px-xs w-full">
+      <div class="cursor-default border-0 pb-sm" v-if="showCta" @click.stop>
+        <div class="w-full px-xs">
           <a
             :href="ctaLink"
             :target="ctaTarget"

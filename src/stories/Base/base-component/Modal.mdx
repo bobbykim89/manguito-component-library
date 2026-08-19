@@ -1,4 +1,4 @@
-import { Canvas, Meta } from '@storybook/blocks'
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
 import * as Stories from './modal/modal.stories'
 
 <Meta of={Stories} />
@@ -108,41 +108,41 @@ Pass `title` to use the built-in header instead of `#header` slot.
 
 ### Props
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `id` | `string` | — | HTML `id` on the dialog root. Used for ARIA `aria-labelledby` wiring. |
-| `title` | `string` | — | Text for the built-in default header. Omit when using `#header` slot. |
-| `titleColor` | `ColorPalette` | `'dark-3'` | Color of the default header title text. |
-| `visible` | `boolean` | `false` | Initial open state. Reactive — changing it opens or closes the modal. |
-| `color` | `ColorPalette` | `'light-1'` | Background color of the modal panel. |
-| `class-name` | `string \| string[]` | `''` | Additional CSS class(es) on the modal panel. |
-| `placement` | `'top' \| 'center' \| 'bottom'` | `'center'` | Vertical alignment of the modal on screen. |
-| `modal-width` | `'small' \| 'medium' \| 'large'` | `'small'` | Width preset for the modal panel. |
-| `no-backdrop` | `boolean` | `false` | When `true`, renders without the semi-transparent backdrop. |
-| `no-header` | `boolean` | `false` | When `true`, suppresses the header area entirely. |
-| `backdrop-color` | `ColorPalette` | `'dark-3'` | Color of the backdrop overlay. |
+| Prop             | Type                             | Default     | Description                                                           |
+| ---------------- | -------------------------------- | ----------- | --------------------------------------------------------------------- |
+| `id`             | `string`                         | —           | HTML `id` on the dialog root. Used for ARIA `aria-labelledby` wiring. |
+| `title`          | `string`                         | —           | Text for the built-in default header. Omit when using `#header` slot. |
+| `titleColor`     | `ColorPalette`                   | `'dark-3'`  | Color of the default header title text.                               |
+| `visible`        | `boolean`                        | `false`     | Initial open state. Reactive — changing it opens or closes the modal. |
+| `color`          | `ColorPalette`                   | `'light-1'` | Background color of the modal panel.                                  |
+| `class-name`     | `string \| string[]`             | `''`        | Additional CSS class(es) on the modal panel.                          |
+| `placement`      | `'top' \| 'center' \| 'bottom'`  | `'center'`  | Vertical alignment of the modal on screen.                            |
+| `modal-width`    | `'small' \| 'medium' \| 'large'` | `'small'`   | Width preset for the modal panel.                                     |
+| `no-backdrop`    | `boolean`                        | `false`     | When `true`, renders without the semi-transparent backdrop.           |
+| `no-header`      | `boolean`                        | `false`     | When `true`, suppresses the header area entirely.                     |
+| `backdrop-color` | `ColorPalette`                   | `'dark-3'`  | Color of the backdrop overlay.                                        |
 
 ### Slots
 
 All three slots receive `{ close: () => void, status: boolean }` as slot props.
 
-| Slot | Slot props | Description |
-|---|---|---|
+| Slot      | Slot props          | Description                                                                           |
+| --------- | ------------------- | ------------------------------------------------------------------------------------- |
 | `#header` | `{ close, status }` | Custom header. Omit to use the default header (requires `title` prop) or `no-header`. |
-| `#body` | `{ close, status }` | Main content area. |
-| `#footer` | `{ close, status }` | Footer area below the body. |
+| `#body`   | `{ close, status }` | Main content area.                                                                    |
+| `#footer` | `{ close, status }` | Footer area below the body.                                                           |
 
 ### Exposed Methods
 
-| Method | Signature | Description |
-|---|---|---|
+| Method   | Signature    | Description         |
+| -------- | ------------ | ------------------- |
 | `toggle` | `() => void` | Toggle open/closed. |
-| `open` | `() => void` | Open the modal. |
-| `close` | `() => void` | Close the modal. |
+| `open`   | `() => void` | Open the modal.     |
+| `close`  | `() => void` | Close the modal.    |
 
 ### Events
 
-| Event | Payload | Description |
-|---|---|---|
-| `open` | `(visible: boolean)` | Emitted when the modal opens. |
+| Event   | Payload              | Description                    |
+| ------- | -------------------- | ------------------------------ |
+| `open`  | `(visible: boolean)` | Emitted when the modal opens.  |
 | `close` | `(visible: boolean)` | Emitted when the modal closes. |

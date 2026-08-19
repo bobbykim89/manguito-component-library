@@ -6,7 +6,7 @@ import {
   textControllers,
 } from '@/assets/composables'
 import { MclHeroB } from '@/components/mcl-hero/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 const meta: Meta<typeof MclHeroB> = {
   title: 'Sections/Hero/MclHeroB',

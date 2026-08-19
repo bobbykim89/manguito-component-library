@@ -62,7 +62,7 @@ defineExpose<{
 <template>
   <header class="relative" :style="componentWidth">
     <nav
-      class="py-sm header-desktop hidden overflow-y-scroll overscroll-contain lg:sticky lg:left-0 lg:top-0 lg:block lg:h-[100vh]"
+      class="header-desktop hidden overflow-y-scroll overscroll-contain py-sm lg:sticky lg:top-0 lg:left-0 lg:block lg:h-[100vh]"
       :class="[generateClass.bgColorVariant({ color: bgColor })]"
     >
       <div class="flex h-full flex-col justify-between">
@@ -81,7 +81,7 @@ defineExpose<{
         <!-- nav drawer button -->
         <div
           v-if="slots['mobile-content']"
-          class="mr-xs mt-xs fixed right-0 top-0 z-50 block lg:hidden"
+          class="fixed top-0 right-0 z-50 mt-xs mr-xs block lg:hidden"
         >
           <NavDrawer
             :color="drawerBtnColor"
@@ -95,7 +95,7 @@ defineExpose<{
 
         <Transition name="slide-down" appear>
           <nav
-            class="py-lg px-sm fixed inset-0 overflow-y-scroll overscroll-contain"
+            class="fixed inset-0 overflow-y-scroll overscroll-contain px-sm py-lg"
             v-if="navOpen"
             :class="generateClass.bgColorVariant({ color: bgColor })"
           >

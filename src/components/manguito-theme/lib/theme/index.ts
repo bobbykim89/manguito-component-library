@@ -1216,4 +1216,3 @@ export const generateClass = {
   paddingRightVariant,
   gapVariant,
 }
-

@@ -31,7 +31,7 @@ const accordionContent = [
 
 <template>
   <section class="container">
-    <div class="text-center mb-md">
+    <div class="mb-md text-center">
       <h2 class="text-danger">MCL Collapse B accordion example</h2>
     </div>
     <div>

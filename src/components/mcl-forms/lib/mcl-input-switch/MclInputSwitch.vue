@@ -20,7 +20,7 @@ const props = withDefaults(
     offColor: 'dark-1',
     switchSize: 'md',
     rounded: true,
-  }
+  },
 )
 
 const model = defineModel<boolean>()
@@ -104,7 +104,7 @@ const switchClass = computed<string>(() => {
   <div class="switch relative" :style="switchSize" @click="onSwitchClick">
     <input
       :id="id"
-      class="sr-only peer/input"
+      class="peer/input sr-only"
       v-model="model"
       ref="inputRef"
       type="checkbox"

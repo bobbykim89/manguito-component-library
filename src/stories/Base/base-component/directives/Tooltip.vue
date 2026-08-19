@@ -5,7 +5,7 @@ import { vTooltip } from '@/components/manguito-theme/lib/directives'
 <template>
   <section class="container">
     <div
-      class="mb-2xs py-sm px-xs md:py-md md:px-sm grid grid-cols-3 content-center justify-items-center gap-6 bg-white"
+      class="mb-2xs grid grid-cols-3 content-center justify-items-center gap-6 bg-white px-xs py-sm md:px-sm md:py-md"
     >
       <div class="col-span-3">
         <h3>Tooltips directions</h3>
@@ -101,7 +101,7 @@ import { vTooltip } from '@/components/manguito-theme/lib/directives'
         <button
           v-tooltip.top
           title="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-          class="btn btn-danger btn-fullwidth"
+          class="btn btn-fullwidth btn-danger"
           tooltip-width="400"
         >
           Width 400px
@@ -120,7 +120,7 @@ import { vTooltip } from '@/components/manguito-theme/lib/directives'
             color: 'light-3',
             textColor: 'dark-3',
           }"
-          class="btn btn-danger btn-fullwidth"
+          class="btn btn-fullwidth btn-danger"
         >
           Adding custom classes
         </button>

@@ -59,7 +59,9 @@ const getNavId = computed<string>(() => {
 
 const colorClass = computed<string>(() => {
   const { textColor, textSize, dHl, hlColor, fontBold } = props
-  const classArray: string[] = [generateClass.bodyTextVariant({ size: textSize })]
+  const classArray: string[] = [
+    generateClass.bodyTextVariant({ size: textSize }),
+  ]
   if (!dHl) {
     const nonHlTextClass: string[] = [
       generateClass.textColorVariant({ color: textColor }),
@@ -69,7 +71,9 @@ const colorClass = computed<string>(() => {
     classArray.push(nonHlTextClass.join(' '))
   }
   if (dHl) {
-    const highlightColor: string = generateClass.beforeBgColorVariant({ color: hlColor })
+    const highlightColor: string = generateClass.beforeBgColorVariant({
+      color: hlColor,
+    })
     const hlClass: string =
       'before:inset-y-0 before:left-0 before:transition-[width] before:duration-300 before:ease-linear before:w-0 hover:before:w-full focus:before:w-full '
     classArray.push(hlClass + highlightColor)
@@ -95,7 +99,11 @@ const collapseHighlightClass = computed<string>(() => {
     'before:absolute before:w-xs before:h-full before:mcl-bg-primary before:bg-opacity-70 '
   const hlLocation: string =
     navLocation === 'desktop' ? 'before:left-0 ' : 'before:right-0 '
-  classArray.push(classNames + hlLocation + generateClass.beforeBgColorVariant({ color: hlColor }))
+  classArray.push(
+    classNames +
+      hlLocation +
+      generateClass.beforeBgColorVariant({ color: hlColor }),
+  )
   return classArray.join(' ')
 })
 const childItemColorClass = computed<string>(() => {
@@ -124,7 +132,9 @@ const childItemColorClass = computed<string>(() => {
     classArray.push(nonHlTextClass.join(' '))
   }
   if (dHl) {
-    const highlightColor: string = generateClass.beforeBgColorVariant({ color: hlColor })
+    const highlightColor: string = generateClass.beforeBgColorVariant({
+      color: hlColor,
+    })
     const hlClass: string =
       'before:inset-y-0 before:duration-300 before:ease-linear before:w-0 hover:before:w-full focus:before:w-full before:bg-opacity-70 '
     const hlLocation: string =
@@ -152,7 +162,7 @@ defineExpose({
 <template>
   <div>
     <button
-      class="px-xs py-2xs relative block w-full text-center transition-colors duration-300 ease-linear before:absolute"
+      class="relative block w-full px-xs py-2xs text-center transition-colors duration-300 ease-linear before:absolute"
       @click="handleCollapseLabelClick($event, menuItem.title)"
       :class="[colorClass]"
     >
@@ -190,7 +200,7 @@ defineExpose({
             :href="item.url"
             :target="item.target"
             @click="handleChildClick($event, item)"
-            class="px-2xs py-3xs relative block w-full overflow-x-hidden transition-colors duration-300 ease-linear before:absolute"
+            class="relative block w-full overflow-x-hidden px-2xs py-3xs transition-colors duration-300 ease-linear before:absolute"
             :class="[childItemColorClass]"
           >
             <span class="relative">

@@ -1,6 +1,6 @@
 import { booleanControllers, colorControllers } from '@/assets/composables'
 import { Alert } from '@/components/manguito-theme/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 const meta: Meta<typeof Alert> = {
   title: 'Base/Base Component/Alert Component',

@@ -5,7 +5,7 @@ import {
   textControllers,
 } from '@/assets/composables'
 import { MclFormGroup, MclSelect } from '@/components/mcl-forms/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import MclSelectExampleVue from './MclSelectExample.vue'
 import MclSelectCustomSlot from './MclSelectCustomSlot.vue'
 

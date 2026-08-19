@@ -15,7 +15,7 @@ const props = withDefaults(
     color: 'primary',
     rounded: false,
     offset: 1,
-  }
+  },
 )
 
 const offsetOptions = {
@@ -29,7 +29,9 @@ const getHighlightClass = computed((): string => {
    * @param {boolean} rounded - rounded
    * @param {OffsetType} offset
    */
-  const classArray: string[] = [generateClass.beforeBgColorVariant({ color: props.color })]
+  const classArray: string[] = [
+    generateClass.beforeBgColorVariant({ color: props.color }),
+  ]
   if (props.rounded) {
     classArray.push('rounded-b-md')
   }
@@ -40,7 +42,7 @@ const getHighlightClass = computed((): string => {
 
 <template>
   <div
-    class="relative h-3xs overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-full before:w-0 peer-focus:before:w-full before:transition-[width] before:duration-300 before:ease-linear"
+    class="relative h-3xs overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-full before:w-0 before:transition-[width] before:duration-300 before:ease-linear peer-focus:before:w-full"
     :class="getHighlightClass"
   ></div>
 </template>

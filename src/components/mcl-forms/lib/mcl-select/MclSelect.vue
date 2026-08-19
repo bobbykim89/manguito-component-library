@@ -182,7 +182,9 @@ const getHighlightClass = computed<string>(() => {
    */
 
   const { highlightColor, rounded } = props
-  const classArray: string[] = [generateClass.beforeBgColorVariant({ color: highlightColor })]
+  const classArray: string[] = [
+    generateClass.beforeBgColorVariant({ color: highlightColor }),
+  ]
   if (rounded) classArray.push('rounded-b-md')
   return classArray.join(' ')
 })
@@ -316,7 +318,7 @@ watch(activeItemIdx, () => {
     class="relative"
   >
     <div
-      class="p-2xs gap-3xs relative flex"
+      class="relative flex gap-3xs p-2xs"
       :class="[
         !showHighlight &&
           inputFocus &&
@@ -341,7 +343,7 @@ watch(activeItemIdx, () => {
         @focus="setInputFocus"
       />
       <div
-        class="px-3xs flex items-center"
+        class="flex items-center px-3xs"
         :class="[
           selectedValue === '' ? 'hidden cursor-text' : 'block cursor-pointer',
         ]"
@@ -359,7 +361,7 @@ watch(activeItemIdx, () => {
           />
         </svg>
       </div>
-      <div class="px-3xs flex items-center" @click="handleToggle">
+      <div class="flex items-center px-3xs" @click="handleToggle">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 320 512"
@@ -379,7 +381,7 @@ watch(activeItemIdx, () => {
     </div>
     <div
       v-if="showHighlight"
-      class="h-3xs relative -top-1 overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-full before:w-0 before:transition-[width] before:duration-300 before:ease-linear"
+      class="relative -top-1 h-3xs overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-full before:w-0 before:transition-[width] before:duration-300 before:ease-linear"
       :class="[inputFocus ? 'before:w-full' : 'before:w-0', getHighlightClass]"
     ></div>
     <Transition
@@ -409,7 +411,7 @@ watch(activeItemIdx, () => {
               v-for="(option, idx) in filteredOptions"
               :key="idx"
               :id="`${id}-option-${idx}`"
-              class="p-2xs cursor-pointer"
+              class="cursor-pointer p-2xs"
               role="option"
               :aria-selected="isOptionSelected(option)"
               :class="[
@@ -427,9 +429,11 @@ watch(activeItemIdx, () => {
         <template v-else>
           <slot name="no-match">
             <li
-              class="p-2xs cursor-pointer"
+              class="cursor-pointer p-2xs"
               aria-live="polite"
-              :class="[generateClass.hoverBgColorVariant({ color: optionHoverColor })]"
+              :class="[
+                generateClass.hoverBgColorVariant({ color: optionHoverColor }),
+              ]"
             >
               <span>{{ noMatchText }}</span>
             </li>

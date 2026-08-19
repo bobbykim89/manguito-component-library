@@ -27,6 +27,15 @@ const closeModal = () => {
   modalRef.value?.close()
   emit('close')
 }
+
+const onModalOpen = () => {
+  emit('update:visible', true)
+  emit('open')
+}
+const onModalClose = () => {
+  emit('update:visible', false)
+  emit('close')
+}
 </script>
 
 <template>
@@ -40,11 +49,13 @@ const closeModal = () => {
       :id="modalId"
       ref="modalRef"
       :visible="initialVisible"
-      @close="emit('update:visible', false); emit('close')"
-      @open="emit('update:visible', true); emit('open')"
+      @close="onModalClose"
+      @open="onModalOpen"
     >
       <template #header="{ close }">
-        <div class="py-xs bg-light-1 border-b-light-4 flex justify-between border-b-2">
+        <div
+          class="flex justify-between border-b-2 border-b-light-4 bg-light-1 py-xs"
+        >
           <h3 class="h3-md">Modal</h3>
           <button @click="close" aria-label="Close">×</button>
         </div>
@@ -52,15 +63,17 @@ const closeModal = () => {
       <template #body>
         <slot :close="closeModal">
           <div class="p-sm">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Possimus dicta aspernatur animi eligendi ea repudiandae
-            cupiditate exercitationem itaque labore dignissimos.
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus
+            dicta aspernatur animi eligendi ea repudiandae cupiditate
+            exercitationem itaque labore dignissimos.
           </div>
         </slot>
       </template>
       <template #footer="{ close }">
-        <div class="py-xs flex justify-end">
-          <button class="btn btn-warning btn-round" @click="close">Close</button>
+        <div class="flex justify-end py-xs">
+          <button class="btn btn-round btn-warning" @click="close">
+            Close
+          </button>
         </div>
       </template>
     </Modal>

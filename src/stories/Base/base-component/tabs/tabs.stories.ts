@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 // import {TabContainer, TabContent} from '@/components/manguito-theme/lib'
 import TabExample from './TabExample.vue'
 import TabExample2 from './TabExample2.vue'

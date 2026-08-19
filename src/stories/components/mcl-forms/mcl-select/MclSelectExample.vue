@@ -18,7 +18,7 @@ const selectedVal = ref<string>('')
 </script>
 
 <template>
-  <div class="py-md min-h-[40vh] rounded">
+  <div class="min-h-[40vh] rounded py-md">
     <mcl-form-group
       label-for="mcl-select-example"
       label="MCL Select with String Options"
@@ -31,7 +31,7 @@ const selectedVal = ref<string>('')
         v-model="selectedVal"
       ></mcl-select>
     </mcl-form-group>
-    <div class="text-center mt-sm">
+    <div class="mt-sm text-center">
       <p>Selected Value is: {{ selectedVal }}</p>
     </div>
   </div>
