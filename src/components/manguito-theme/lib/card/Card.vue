@@ -114,7 +114,7 @@ const footerClass = computed<string>(() => {
   >
     <template v-if="header || slots.header">
       <slot name="header">
-        <div :class="[headerCLass]" class="py-2xs px-xs font-bold">
+        <div :class="[headerCLass]" class="px-xs py-2xs font-bold">
           <p>{{ header }}</p>
         </div>
       </slot>
@@ -127,7 +127,7 @@ const footerClass = computed<string>(() => {
       />
     </template>
     <template v-if="!noBody">
-      <div class="px-xs pt-xs pb-2xs flex-1">
+      <div class="flex-1 px-xs pt-xs pb-2xs">
         <h3 :class="[titleClass]" class="mb-xs">{{ title }}</h3>
         <template v-if="slots.body">
           <slot name="body"></slot>
@@ -141,7 +141,7 @@ const footerClass = computed<string>(() => {
     </template>
     <template v-if="footer || slots.footer">
       <slot name="footer">
-        <div class="py-2xs px-xs" :class="[footerClass]">
+        <div class="px-xs py-2xs" :class="[footerClass]">
           <p>{{ footer }}</p>
         </div>
       </slot>

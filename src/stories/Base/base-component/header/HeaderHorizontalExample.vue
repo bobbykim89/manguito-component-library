@@ -24,7 +24,7 @@ const props = withDefaults(
     fadeInOnScroll: true,
     scrollDistance: 50,
     sticky: 'all',
-  }
+  },
 )
 const headerRef = ref<InstanceType<typeof HeaderHorizontal>>()
 
@@ -40,18 +40,18 @@ const handleMenuClick = (e: Event) => {
     <HeaderHorizontal ref="headerRef" v-bind="props">
       <template #content>
         <div class="flex flex-shrink-0 items-center self-center">
-          <div class="h-md md:h-lg lg:h-xl mr-2xs md:mr-sm align-middle">
+          <div class="mr-2xs h-md align-middle md:mr-sm md:h-lg lg:h-xl">
             <a href="#" target="_self" @click="handleMenuClick">
               <img
                 src="https://res.cloudinary.com/dwgni1x3t/image/upload/v1670275930/MCL/mcl-logo-square_jvgyxx.png"
                 alt="MCL Logo"
-                class="h-full inline-block"
+                class="inline-block h-full"
               />
             </a>
           </div>
-          <div class="flex flex-col justify-center ml-2">
+          <div class="ml-2 flex flex-col justify-center">
             <a href="#" target="_self" @click="handleMenuClick">
-              <h2 class="inline-block align-middle tracking-wider h2-md">
+              <h2 class="h2-md inline-block align-middle tracking-wider">
                 Header Horizontal
               </h2>
             </a>
@@ -66,12 +66,12 @@ const handleMenuClick = (e: Event) => {
       </template>
       <template #mobile-content="{ headerClose }">
         <div>
-          <div class="flex flex-col justify-center items-center gap-xs py-md">
+          <div class="flex flex-col items-center justify-center gap-xs py-md">
             <a href="#" @click="handleMenuClick($event)">Mobile Menu 1</a>
             <a href="#" @click="handleMenuClick($event)">Mobile Menu 2</a>
             <a href="#" @click="handleMenuClick($event)">Mobile Menu 3</a>
           </div>
-          <div class="flex justify-center items-center gap-xs">
+          <div class="flex items-center justify-center gap-xs">
             <button class="btn btn-primary" @click="headerClose">
               Button A
             </button>

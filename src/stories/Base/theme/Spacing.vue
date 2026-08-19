@@ -55,16 +55,16 @@ const generateRandomBg = (size: string): string => {
 
 <template>
   <section class="container">
-    <div class="text-center mb-lg">
+    <div class="mb-lg text-center">
       <h2 class="text-info">Spacing Example</h2>
     </div>
     <div
-      class="grid md:grid-cols-2 gap-6 content-center mb-md last:mb-0"
+      class="mb-md grid content-center gap-6 last:mb-0 md:grid-cols-2"
       v-for="(unit, index) in spacings"
       :key="index"
     >
       <div class="flex items-center justify-center">
-        <h3 class="drop-shadow-md text-warning">
+        <h3 class="text-warning drop-shadow-md">
           {{ index }}: {{ unit.size }}
         </h3>
       </div>

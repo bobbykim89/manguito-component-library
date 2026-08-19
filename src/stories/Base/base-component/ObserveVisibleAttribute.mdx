@@ -1,4 +1,4 @@
-import { Meta } from '@storybook/blocks'
+import { Meta } from '@storybook/addon-docs/blocks'
 
 <Meta title="Base/Base Component/Composables/Observe Visible Attribute (Internal)" />
 
@@ -27,10 +27,10 @@ observeVisibleAttr(
 ): { stop: () => void } | undefined
 ```
 
-| Parameter | Type | Description |
-|---|---|---|
-| `el` | `Ref<HTMLElement \| undefined>` | Template ref of the element to observe. |
-| `callback` | `(visible: boolean) => void` | Called when the `visible` attribute changes. Receives `true` if `visible="true"`, `false` otherwise. |
+| Parameter  | Type                            | Description                                                                                          |
+| ---------- | ------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `el`       | `Ref<HTMLElement \| undefined>` | Template ref of the element to observe.                                                              |
+| `callback` | `(visible: boolean) => void`    | Called when the `visible` attribute changes. Receives `true` if `visible="true"`, `false` otherwise. |
 
 Returns `{ stop: () => void }` to disconnect the observer manually, or `undefined` if the element ref is not yet populated. The observer disconnects automatically on component unmount.
 

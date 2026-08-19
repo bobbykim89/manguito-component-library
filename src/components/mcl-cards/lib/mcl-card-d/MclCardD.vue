@@ -138,7 +138,10 @@ const btnClass = computed<string>(() => {
   const classArray: string[] = []
   const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
   ctaButton
-    ? classArray.push('btn', generateClass.btnColorVariant({ color: ctaButtonColor }))
+    ? classArray.push(
+        'btn',
+        generateClass.btnColorVariant({ color: ctaButtonColor }),
+      )
     : classArray.push('mcl-link')
   if (ctaButton && ctaButtonBlock) {
     classArray.push('btn-full')
@@ -188,7 +191,7 @@ const handleCardClick = (e: Event) => {
 
 <template>
   <div
-    class="card xs:w-auto max-w-112.5 sm:max-w-87.5 w-full shrink-0 grow overflow-hidden rounded-md border from-20%"
+    class="card xs:w-auto w-full max-w-112.5 shrink-0 grow overflow-hidden rounded-md border from-20% sm:max-w-87.5"
     :class="gradientClass"
     :style="borderVariable"
   >
@@ -199,7 +202,10 @@ const handleCardClick = (e: Event) => {
         class="max-h-50 min-w-full object-cover object-top"
         :alt="imageAlt"
       />
-      <div class="p-xs" :class="generateClass.bgColorVariant({ color: bgColor })">
+      <div
+        class="p-xs"
+        :class="generateClass.bgColorVariant({ color: bgColor })"
+      >
         <h3 class="mb-xs" :class="titleClass">
           {{ title }}
         </h3>

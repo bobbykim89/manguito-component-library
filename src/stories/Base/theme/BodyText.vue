@@ -23,16 +23,16 @@ const bodyTextSize: BodyTextClass = {
 
 <template>
   <section class="container">
-    <div class="text-center mb-lg">
+    <div class="mb-lg text-center">
       <h2 class="text-success">Breakpoint</h2>
     </div>
     <div
-      class="grid grid-cols-2 gap-6 content-center mb-2xs"
+      class="mb-2xs grid grid-cols-2 content-center gap-6"
       v-for="(unit, index) in bodyTextSize"
       :key="index"
     >
       <div class="flex items-center justify-center">
-        <h3 class="drop-shadow-md text-warning">
+        <h3 class="text-warning drop-shadow-md">
           {{ index }}: {{ unit.size }}
         </h3>
       </div>

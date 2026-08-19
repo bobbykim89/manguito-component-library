@@ -33,7 +33,7 @@ const props = withDefaults(
     required: false,
     invalid: false,
     rows: 5,
-  }
+  },
 )
 
 const model = defineModel<string>()
@@ -58,7 +58,7 @@ const inputClass = computed(() => {
   }
   if (!showHighlight) {
     classArray.push(
-      'focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear'
+      'focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear',
     )
     classArray.push(generateClass.focusRingColorVariant({ color: borderColor }))
   }
@@ -76,7 +76,7 @@ const inputClass = computed(() => {
   <div>
     <textarea
       :id="id"
-      class="w-full p-2xs outline-none input__text peer"
+      class="input__text peer w-full p-2xs outline-none"
       :class="inputClass"
       v-model="model"
       :placeholder="placeholder"

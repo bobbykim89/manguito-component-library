@@ -1,6 +1,6 @@
 <template>
   <section class="container">
-    <div class="mb-2xs bg-white py-sm px-xs md:py-md md:px-sm">
+    <div class="mb-2xs bg-white px-xs py-sm md:px-sm md:py-md">
       <div class="mb-sm">
         <div>Default</div>
         <ul class="mcl-list">

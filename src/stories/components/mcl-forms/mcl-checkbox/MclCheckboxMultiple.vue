@@ -31,7 +31,7 @@ const handleCheckboxClick = (
   e: Event,
   checked: boolean,
   value: string | number,
-  item: CheckboxInfo
+  item: CheckboxInfo,
 ) => {
   e.preventDefault()
   if (checked) {
@@ -47,7 +47,7 @@ const handleCheckboxClick = (
 </script>
 
 <template>
-  <div class="px-md py-sm bg-light-1 rounded-md">
+  <div class="rounded-md bg-light-1 px-md py-sm">
     <div class="mb-sm">
       <h3 class="h3-md">Multiple Checkbox Example:</h3>
     </div>
@@ -55,7 +55,7 @@ const handleCheckboxClick = (
       <div
         v-for="(item, idx) in checkboxInfo"
         :key="idx"
-        class="flex gap-2 mb-2xs last:mb-sm"
+        class="mb-2xs flex gap-2 last:mb-sm"
       >
         <MclCheckbox
           :id="`checkbox-${idx}`"
@@ -75,7 +75,7 @@ const handleCheckboxClick = (
         ><label :for="`checkbox-${idx}`">{{ item.text }}</label>
       </div>
     </div>
-    <div class="px-sm py-xs bg-warning rounded-md">
+    <div class="rounded-md bg-warning px-sm py-xs">
       <div>Checked items:</div>
       <div v-for="(item, idx) in selectedItems" :key="idx">
         <span>{{ item }}</span>

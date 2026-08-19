@@ -6,7 +6,7 @@ const props = withDefaults(
   defineProps<{
     color: ColorPalette
   }>(),
-  {}
+  {},
 )
 
 const fillColor = computed<string>(() => {
@@ -22,7 +22,7 @@ const fillColor = computed<string>(() => {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 448 512"
         fill="currentColor"
-        class="h-md w-md hover:opacity-70 transition-opacity duration-300 ease-linear"
+        class="h-md w-md transition-opacity duration-300 ease-linear hover:opacity-70"
         :class="fillColor"
         role="img"
       >
@@ -37,7 +37,7 @@ const fillColor = computed<string>(() => {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 448 512"
         fill="currentColor"
-        class="h-md w-md hover:opacity-70 transition-opacity duration-300 ease-linear"
+        class="h-md w-md transition-opacity duration-300 ease-linear hover:opacity-70"
         :class="fillColor"
         role="img"
       >
@@ -52,7 +52,7 @@ const fillColor = computed<string>(() => {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 448 512"
         fill="currentColor"
-        class="h-md w-md hover:opacity-70 transition-opacity duration-300 ease-linear"
+        class="h-md w-md transition-opacity duration-300 ease-linear hover:opacity-70"
         :class="fillColor"
         role="img"
       >

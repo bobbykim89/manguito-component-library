@@ -92,14 +92,14 @@ inquirer.prompt(questions).then((answers) => {
     path.resolve(`${TEMPLATE_PATH}/_tsconfig.md`),
     {
       encoding: 'utf8',
-    }
+    },
   )
   console.log('Created tsconfig.json file')
   const tsconfigNodeTemplate = fs.readFileSync(
     path.resolve(TEMPLATE_PATH, '_tsconfig.node.md'),
     {
       encoding: 'utf8',
-    }
+    },
   )
   console.log('Created tsconfig.node.json file')
 
@@ -124,7 +124,7 @@ inquirer.prompt(questions).then((answers) => {
     path.resolve(`${TEMPLATE_PATH}/_story.mdx.md`),
     {
       encoding: 'utf8',
-    }
+    },
   )
   console.log('created mdx template')
 
@@ -150,7 +150,7 @@ inquirer.prompt(questions).then((answers) => {
     path.resolve(TEMPLATE_PATH, '_vite-env.d.md'),
     {
       encoding: 'utf8',
-    }
+    },
   )
   console.log('Created vite-env.d.ts file')
 
@@ -182,60 +182,60 @@ inquirer.prompt(questions).then((answers) => {
                 `${STORIES_PATH}/${answers[
                   'component_type'
                 ].toLowerCase()}/${directoryName}/${componentName}.stories.ts`,
-                storyTemplate
+                storyTemplate,
               )
               // create story mdx file
               fs.writeFileSync(
                 `${STORIES_PATH}/${answers[
                   'component_type'
                 ].toLowerCase()}/${directoryName}/${componentName}.mdx`,
-                storyMdxTemplate
+                storyMdxTemplate,
               )
             }
-          }
+          },
         )
       }
       // create index file
       fs.writeFileSync(
         `${COMPONENTS_PATH}/${directoryName}/lib/index.ts`,
-        indexTemplate
+        indexTemplate,
       )
 
       // create LICENSE.md file
       fs.writeFileSync(
         `${COMPONENTS_PATH}/${directoryName}/LICENSE.md`,
-        licenseTemplate
+        licenseTemplate,
       )
 
       // create package.json file
       fs.writeFileSync(
         `${COMPONENTS_PATH}/${directoryName}/package.json`,
-        JSON.parse(JSON.stringify(packageTemplate))
+        JSON.parse(JSON.stringify(packageTemplate)),
       )
 
       // create README.md file
       fs.writeFileSync(
         `${COMPONENTS_PATH}/${directoryName}/README.md`,
-        readmeTemplate
+        readmeTemplate,
       )
       // create tsconfig files
       fs.writeFileSync(
         `${COMPONENTS_PATH}/${directoryName}/tsconfig.json`,
-        tsConfigTemplate
+        tsConfigTemplate,
       )
       fs.writeFileSync(
         `${COMPONENTS_PATH}/${directoryName}/tsconfig.node.json`,
-        tsconfigNodeTemplate
+        tsconfigNodeTemplate,
       )
       // create vite.config file
       fs.writeFileSync(
         `${COMPONENTS_PATH}/${directoryName}/vite.config.ts`,
-        viteConfigTemplate
+        viteConfigTemplate,
       )
       // create vite-env file
       fs.writeFileSync(
         `${COMPONENTS_PATH}/${directoryName}/lib/vite-env.d.ts`,
-        viteEnvTemplate
+        viteEnvTemplate,
       )
     }
   })

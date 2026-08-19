@@ -8,7 +8,7 @@ import {
 } from '@/assets/composables'
 import GrandCanyonImage from '@/assets/images/grandcanyon-image.jpg'
 import { Card } from '@/components/manguito-theme/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { computed } from 'vue'
 import CardExamplesVue from './CardExamples.vue'
 

@@ -41,7 +41,7 @@ const handleClose = (index: number) => {
 </script>
 
 <template>
-  <div class="faq-accordion bg-light-1 p-sm rounded-md drop-shadow-2xl">
+  <div class="faq-accordion rounded-md bg-light-1 p-sm drop-shadow-2xl">
     <h2>Frequently Asked Questions</h2>
 
     <AccordionGroup>
@@ -73,7 +73,11 @@ const handleClose = (index: number) => {
         </button>
 
         <Collapse
-          :ref="(el) => { if (el) panelRefs[index] = el as InstanceType<typeof Collapse> }"
+          :ref="
+            (el) => {
+              if (el) panelRefs[index] = el as InstanceType<typeof Collapse>
+            }
+          "
           :id="faq.id"
           role="region"
           :aria-labelledby="`${faq.id}-question`"

@@ -11,11 +11,11 @@ const props = withDefaults(
   }>(),
   {
     tabClass: '',
-  }
+  },
 )
 
 const { activeTabIdx, updateHeight } = inject(
-  tabInjectionKey
+  tabInjectionKey,
 ) as TabInjectionType
 const slotRef = ref<HTMLElement | null>(null)
 

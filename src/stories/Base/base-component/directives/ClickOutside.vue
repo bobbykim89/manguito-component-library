@@ -20,7 +20,7 @@ const closeModal = () => {
       <div v-if="showModal" class="flex justify-center">
         <div
           v-click-outside="closeModal"
-          class="bg-light-4 border-dark-1 p-sm mx-auto max-w-[28rem] rounded-md drop-shadow-md md:max-w-[36rem]"
+          class="mx-auto max-w-[28rem] rounded-md border-dark-1 bg-light-4 p-sm drop-shadow-md md:max-w-[36rem]"
           ref="modalRef"
         >
           <h2>Simple Modal</h2>

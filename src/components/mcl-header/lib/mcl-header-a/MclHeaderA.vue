@@ -5,7 +5,11 @@ import type {
   CtaTarget,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
-import { generateClass, AccordionGroup, HeaderHorizontal } from '@bobbykim/manguito-theme'
+import {
+  generateClass,
+  AccordionGroup,
+  HeaderHorizontal,
+} from '@bobbykim/manguito-theme'
 import { ref } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 import NavCollapse from './NavCollapse.vue'
@@ -55,7 +59,7 @@ const props = withDefaults(
     showDrawerBorder: true,
     fadeInOnScroll: true,
     scrollDistance: 50,
-  }
+  },
 )
 
 const componentRef = ref<InstanceType<typeof HeaderHorizontal>>()
@@ -93,7 +97,7 @@ const handleMenuItemClick = (e: Event, item: MenuItemType): void => {
 const handleCollapsableMenuClick = (
   e: Event,
   title: string,
-  visible: boolean
+  visible: boolean,
 ) => {
   emit('collapse-click', e, title, visible)
 }
@@ -134,7 +138,7 @@ defineExpose({
   >
     <template #content>
       <div class="flex flex-shrink-0 items-center self-center">
-        <div class="h-md md:h-lg lg:h-xl mr-2xs md:mr-sm align-middle">
+        <div class="mr-2xs h-md align-middle md:mr-sm md:h-lg lg:h-xl">
           <a
             :href="titleBlockLink"
             :target="titleBlockLinkTarget"
@@ -150,11 +154,11 @@ defineExpose({
               v-if="logoSmall"
               :src="logoSmall"
               :alt="logoAlt"
-              class="inline-block lg:hidden h-full"
+              class="inline-block h-full lg:hidden"
             />
           </a>
         </div>
-        <div class="flex flex-col justify-center ml-2">
+        <div class="ml-2 flex flex-col justify-center">
           <a
             :href="titleBlockLink"
             :target="titleBlockLinkTarget"
@@ -167,7 +171,7 @@ defineExpose({
             ></h2>
           </a>
           <!-- desktop nav menu -->
-          <ul class="hidden lg:flex flex-wrap">
+          <ul class="hidden flex-wrap lg:flex">
             <li
               class="mr-xs last:mr-0"
               v-for="(item, index) in menuItems"
@@ -175,7 +179,7 @@ defineExpose({
             >
               <nav-link
                 v-if="!hasChildren(item)"
-                :nav-item="(item as MenuItemType)"
+                :nav-item="item as MenuItemType"
                 :menu-text-color="menuTextColor"
                 :menu-text-size="menuTextSize"
                 :menu-text-bold="menuTextBold"
@@ -186,7 +190,7 @@ defineExpose({
               ></nav-link>
               <nav-dropdown
                 v-else
-                :nav-item="(item as MenuCollapseType)"
+                :nav-item="item as MenuCollapseType"
                 :menu-text-color="menuTextColor"
                 :menu-text-size="menuTextSize"
                 :menu-text-bold="menuTextBold"
@@ -218,7 +222,7 @@ defineExpose({
             >
               <nav-link
                 v-if="!hasChildren(item)"
-                :nav-item="(item as MenuItemType)"
+                :nav-item="item as MenuItemType"
                 :menu-text-color="menuTextColor"
                 :menu-text-size="menuTextSize"
                 :menu-text-bold="menuTextBold"
@@ -230,7 +234,7 @@ defineExpose({
               <nav-collapse
                 v-else
                 :nav-id="item.title"
-                :nav-item="(item as MenuCollapseType)"
+                :nav-item="item as MenuCollapseType"
                 :menu-text-color="menuTextColor"
                 :menu-text-size="menuTextSize"
                 :menu-text-bold="menuTextBold"

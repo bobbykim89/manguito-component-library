@@ -42,6 +42,7 @@ pnpm changeset
 ```
 
 The CLI will ask you:
+
 1. Which packages were affected (use space to select, enter to confirm)
 2. Whether the change is `major`, `minor`, or `patch` for each affected package
 3. A one-line summary of the change
@@ -50,27 +51,25 @@ This creates a new file under `.changeset/`. Commit it alongside your code chang
 
 **When to use each bump type:**
 
-| Type | When |
-|---|---|
-| `patch` | Bug fixes, internal refactors with no API change |
-| `minor` | New features, new props/slots with backwards-compatible defaults |
+| Type    | When                                                                |
+| ------- | ------------------------------------------------------------------- |
+| `patch` | Bug fixes, internal refactors with no API change                    |
+| `minor` | New features, new props/slots with backwards-compatible defaults    |
 | `major` | Breaking changes — removed props, renamed exports, changed defaults |
 
 ## Releasing
 
-Releases are handled by the maintainer. The workflow is:
+Releases are handled by the maintainer, from a clean `master`, in two commands:
 
 ```bash
-# 1. Consume all pending changesets, bump versions, generate CHANGELOGs
-pnpm run package:version
-
-# 2. Build all packages and publish to npm
-pnpm run package:publish
+pnpm run package:version    # consume changesets, bump versions, write CHANGELOGs
+pnpm run package:publish    # build all packages, publish anything new to npm
 ```
 
-`package:version` reads the `.changeset/*.md` files, bumps each affected package's version in its `package.json`, writes or updates `CHANGELOG.md` per package, and deletes the consumed changeset files. Commit the result as the release commit.
-
-`package:publish` runs `turbo run build` (topological order, with cache) then `changeset publish`, which publishes every package whose version does not yet exist on npm.
+Those two commands are the happy path only. See **[RELEASING.md](./RELEASING.md)**
+for the full runbook: pre-flight checks, verifying that every merged change has a
+changeset, npm 2FA, pushing tags, post-publish verification, and how to recover
+from a publish that fails partway.
 
 ## Build caching (Turborepo)
 

@@ -16,7 +16,7 @@ const props = withDefaults(
   }>(),
   {
     iconColor: 'light-1',
-  }
+  },
 )
 
 interface IconList {
@@ -76,7 +76,7 @@ const getIconColor = (color: ColorPalette): string => {
       <a
         :href="item.url"
         target="_blank"
-        class="inline-block outline-none focus:ring-2 hover:ring-2 hover:opacity-70 ring-offset-2 ring-offset-transparent rounded-md transition-all duration-300 ease-linear"
+        class="inline-block rounded-md ring-offset-2 ring-offset-transparent transition-all duration-300 ease-linear outline-none hover:opacity-70 hover:ring-2 focus:ring-2"
         :class="getIconColor(iconColor)"
         :aria-label="item.label"
         role="button"

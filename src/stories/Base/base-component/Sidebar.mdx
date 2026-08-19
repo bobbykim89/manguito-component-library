@@ -1,4 +1,4 @@
-import { Canvas, Meta } from '@storybook/blocks'
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
 import * as Stories from './sidebar/sidebar.stories'
 
 <Meta of={Stories} />
@@ -78,7 +78,7 @@ Use named slots to fully customise the sidebar layout.
     :width="360"
   >
     <template #header="{ close }">
-      <div class="flex justify-end mb-4">
+      <div class="mb-4 flex justify-end">
         <button @click="close" aria-label="Close">✕</button>
       </div>
     </template>
@@ -111,41 +111,41 @@ Pass `title` to use the built-in header instead of the `#header` slot.
 
 ### Props
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `id` | `string` | — | HTML `id` on the sidebar root. Used for ARIA `aria-labelledby` wiring. |
-| `title` | `string` | — | Text for the built-in default header. Omit when using `#header` slot. |
-| `titleColor` | `ColorPalette` | `'dark-3'` | Color of the default header title text. |
-| `visible` | `boolean` | `false` | Initial open state. Reactive — changing it opens or closes the sidebar. |
-| `color` | `ColorPalette` | `'light-1'` | Background color of the sidebar panel. |
-| `class-name` | `string \| string[]` | `''` | Additional CSS class(es) on the sidebar panel. |
-| `placement` | `'left' \| 'right'` | `'left'` | Which edge of the viewport the sidebar slides in from. |
-| `width` | `number` | `300` | Width of the sidebar panel in pixels. |
-| `no-backdrop` | `boolean` | `false` | When `true`, renders without the semi-transparent backdrop. |
-| `no-header` | `boolean` | `false` | When `true`, suppresses the header area entirely. |
-| `backdrop-color` | `ColorPalette` | `'dark-3'` | Color of the backdrop overlay. |
+| Prop             | Type                 | Default     | Description                                                             |
+| ---------------- | -------------------- | ----------- | ----------------------------------------------------------------------- |
+| `id`             | `string`             | —           | HTML `id` on the sidebar root. Used for ARIA `aria-labelledby` wiring.  |
+| `title`          | `string`             | —           | Text for the built-in default header. Omit when using `#header` slot.   |
+| `titleColor`     | `ColorPalette`       | `'dark-3'`  | Color of the default header title text.                                 |
+| `visible`        | `boolean`            | `false`     | Initial open state. Reactive — changing it opens or closes the sidebar. |
+| `color`          | `ColorPalette`       | `'light-1'` | Background color of the sidebar panel.                                  |
+| `class-name`     | `string \| string[]` | `''`        | Additional CSS class(es) on the sidebar panel.                          |
+| `placement`      | `'left' \| 'right'`  | `'left'`    | Which edge of the viewport the sidebar slides in from.                  |
+| `width`          | `number`             | `300`       | Width of the sidebar panel in pixels.                                   |
+| `no-backdrop`    | `boolean`            | `false`     | When `true`, renders without the semi-transparent backdrop.             |
+| `no-header`      | `boolean`            | `false`     | When `true`, suppresses the header area entirely.                       |
+| `backdrop-color` | `ColorPalette`       | `'dark-3'`  | Color of the backdrop overlay.                                          |
 
 ### Slots
 
 All three slots receive `{ close: () => void, status: boolean }` as slot props.
 
-| Slot | Slot props | Description |
-|---|---|---|
+| Slot      | Slot props          | Description                                                                           |
+| --------- | ------------------- | ------------------------------------------------------------------------------------- |
 | `#header` | `{ close, status }` | Custom header. Omit to use the default header (requires `title` prop) or `no-header`. |
-| `#body` | `{ close, status }` | Main content area. |
-| `#footer` | `{ close, status }` | Footer area below the body. |
+| `#body`   | `{ close, status }` | Main content area.                                                                    |
+| `#footer` | `{ close, status }` | Footer area below the body.                                                           |
 
 ### Exposed Methods
 
-| Method | Signature | Description |
-|---|---|---|
+| Method   | Signature    | Description         |
+| -------- | ------------ | ------------------- |
 | `toggle` | `() => void` | Toggle open/closed. |
-| `open` | `() => void` | Open the sidebar. |
-| `close` | `() => void` | Close the sidebar. |
+| `open`   | `() => void` | Open the sidebar.   |
+| `close`  | `() => void` | Close the sidebar.  |
 
 ### Events
 
-| Event | Payload | Description |
-|---|---|---|
-| `open` | `(visible: boolean)` | Emitted when the sidebar opens. |
+| Event   | Payload              | Description                      |
+| ------- | -------------------- | -------------------------------- |
+| `open`  | `(visible: boolean)` | Emitted when the sidebar opens.  |
 | `close` | `(visible: boolean)` | Emitted when the sidebar closes. |

@@ -141,14 +141,14 @@ const gradientColorClass = computed<string>(() => {
   >
     <div
       v-if="showGradient"
-      class="bg-linear-to-t absolute inset-0 top-1/3 to-transparent"
+      class="absolute inset-0 top-1/3 bg-linear-to-t to-transparent"
       :class="gradientColorClass"
     ></div>
-    <div class="py-md px-sm md:py-lg md:px-md relative">
+    <div class="relative px-sm py-md md:px-md md:py-lg">
       <div v-if="showLabel" class="mb-2xs">
         <span
           v-html="labelText"
-          class="py-3xs px-2xs"
+          class="px-2xs py-3xs"
           :class="labelClass"
         ></span>
       </div>
@@ -160,13 +160,13 @@ const gradientColorClass = computed<string>(() => {
       ></component>
       <div
         v-if="showHighlight"
-        class="mb-xs h-3xs md:h-2xs w-md"
+        class="mb-xs h-3xs w-md md:h-2xs"
         :class="generateClass.bgColorVariant({ color: highlightColor })"
       ></div>
     </div>
     <div
       v-if="slots.default"
-      class="px-sm relative md:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[40vw] 2xl:max-w-[35vw]"
+      class="relative px-sm md:max-w-[60vw] lg:max-w-[50vw] xl:max-w-[40vw] 2xl:max-w-[35vw]"
     >
       <slot></slot>
     </div>

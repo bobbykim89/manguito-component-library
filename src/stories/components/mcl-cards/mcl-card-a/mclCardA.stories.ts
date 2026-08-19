@@ -9,7 +9,7 @@ import {
 } from '@/assets/composables'
 import GrandCanyonImage from '@/assets/images/grandcanyon-image.jpg'
 import { MclCardA } from '@/components/mcl-cards/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { computed } from 'vue'
 import MclCardAExamplesVue from './MclCardAExamples.vue'
 

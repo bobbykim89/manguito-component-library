@@ -5,7 +5,11 @@ import type {
   CtaTarget,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
-import { generateClass, AccordionGroup, HeaderVertical } from '@bobbykim/manguito-theme'
+import {
+  generateClass,
+  AccordionGroup,
+  HeaderVertical,
+} from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 import NavCollapseVertical from './NavCollapseVertical.vue'
@@ -49,7 +53,7 @@ const props = withDefaults(
     drawerBtnColor: 'dark-1',
     showDrawerBorder: true,
     headerWidth: 160,
-  }
+  },
 )
 const slots = defineSlots<{
   default: any
@@ -140,7 +144,7 @@ defineExpose({
             <img
               :src="logo"
               :alt="logoAlt"
-              class="h-full inline-block max-h-xl"
+              class="inline-block h-full max-h-xl"
             />
           </a>
         </div>
@@ -153,7 +157,7 @@ defineExpose({
           >
             <h3
               :class="titleTextClass"
-              class="text-center mb-md"
+              class="mb-md text-center"
               v-html="title"
             ></h3>
           </a>
@@ -164,7 +168,7 @@ defineExpose({
             <li v-for="(item, index) in menuItems" :key="`menu-${index}`">
               <NavLinkVertical
                 v-if="!hasChildren(item)"
-                :menu-item="(item as MenuItemType)"
+                :menu-item="item as MenuItemType"
                 :as-link="menuItemAsLink"
                 :text-color="menuTextColor"
                 :text-size="menuTextSize"
@@ -178,7 +182,7 @@ defineExpose({
                 ref="collapseRef"
                 :nav-id="item.title"
                 nav-location="desktop"
-                :menu-item="(item as MenuCollapseType)"
+                :menu-item="item as MenuCollapseType"
                 :as-link="menuItemAsLink"
                 :text-color="menuTextColor"
                 :text-size="menuTextSize"
@@ -200,7 +204,7 @@ defineExpose({
     </template>
     <template #mobile-content="{ headerClose }">
       <!-- mobile content -->
-      <div class="flex flex-col justify-between h-full">
+      <div class="flex h-full flex-col justify-between">
         <div>
           <!-- logo block -->
           <div class="p-md text-center">
@@ -212,7 +216,7 @@ defineExpose({
               <img
                 :src="logo"
                 :alt="logoAlt"
-                class="h-full inline-block max-h-xl"
+                class="inline-block h-full max-h-xl"
               />
             </a>
           </div>
@@ -225,7 +229,7 @@ defineExpose({
             >
               <h3
                 :class="titleTextClass"
-                class="text-center mb-md"
+                class="mb-md text-center"
                 v-html="title"
               ></h3>
             </a>
@@ -236,7 +240,7 @@ defineExpose({
               <li v-for="(item, index) in menuItems" :key="`menu-${index}`">
                 <NavLinkVertical
                   v-if="!hasChildren(item)"
-                  :menu-item="(item as MenuItemType)"
+                  :menu-item="item as MenuItemType"
                   :as-link="menuItemAsLink"
                   :text-color="menuTextColor"
                   :text-size="menuTextSize"
@@ -249,7 +253,7 @@ defineExpose({
                   v-else
                   :nav-id="item.title"
                   nav-location="mobile"
-                  :menu-item="(item as MenuCollapseType)"
+                  :menu-item="item as MenuCollapseType"
                   :as-link="menuItemAsLink"
                   :text-color="menuTextColor"
                   :text-size="menuTextSize"

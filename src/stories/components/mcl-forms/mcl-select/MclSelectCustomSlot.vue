@@ -20,7 +20,7 @@ const imageUrl =
 </script>
 
 <template>
-  <div class="bg-light-2 rounded-md py-md px-sm min-h-[40vh]">
+  <div class="min-h-[40vh] rounded-md bg-light-2 px-sm py-md">
     <mcl-form-group
       label-for="mcl-select-example"
       label="MCL Select with Custom Slot"
@@ -38,7 +38,7 @@ const imageUrl =
           <li
             v-for="(item, idx) in options"
             @click="optionClick($event, item)"
-            class="cursor-pointer flex gap-4 py-3xs px-2xs items-center transition-colors duration-300 ease-linear"
+            class="flex cursor-pointer items-center gap-4 px-2xs py-3xs transition-colors duration-300 ease-linear"
             :class="[activeIndex === idx && 'bg-warning']"
             :ref="(el) => setRef(el, idx)"
             @mouseover="hover(idx)"
@@ -46,7 +46,7 @@ const imageUrl =
             <img
               :src="imageUrl"
               alt="picture of manguito"
-              class="aspect-square rounded-full object-cover w-lg"
+              class="aspect-square w-lg rounded-full object-cover"
             />
             <span class="font-bold tracking-wider">
               {{ item }}
@@ -55,19 +55,19 @@ const imageUrl =
         </template>
         <template #no-match>
           <li
-            class="cursor-pointer flex gap-4 py-3xs px-2xs items-center hover:bg-warning transition-colors duration-300 ease-linear"
+            class="flex cursor-pointer items-center gap-4 px-2xs py-3xs transition-colors duration-300 ease-linear hover:bg-warning"
           >
             <img
               :src="imageUrl"
               alt="picture of manguito"
-              class="aspect-square rounded-full object-cover w-lg"
+              class="aspect-square w-lg rounded-full object-cover"
             />
             <span class="font-bold tracking-wider"> No results! </span>
           </li>
         </template>
       </mcl-select>
     </mcl-form-group>
-    <div class="text-center mt-sm">
+    <div class="mt-sm text-center">
       <p>Selected Value is: {{ selectedVal }}</p>
     </div>
   </div>

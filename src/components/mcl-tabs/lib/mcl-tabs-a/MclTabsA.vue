@@ -98,7 +98,9 @@ const tabClass = computed<string>(() => {
    * @param {boolean} rounded
    */
   const { tabColor, rounded } = props
-  const classArray: string[] = [generateClass.bgColorVariant({ color: tabColor })]
+  const classArray: string[] = [
+    generateClass.bgColorVariant({ color: tabColor }),
+  ]
   rounded && classArray.push('rounded-xl')
   return classArray.join(' ')
 })
@@ -163,7 +165,7 @@ watch(width, updateScrollButtons)
     <template #tab-button="{ update, activeTab }">
       <button
         v-if="showScrollButtons && canScrollLeft"
-        class="px-3xs absolute left-0 top-1/2 z-10 h-full -translate-y-1/2 transform lg:hidden"
+        class="absolute top-1/2 left-0 z-10 h-full -translate-y-1/2 transform px-3xs lg:hidden"
         :class="[rounded && 'rounded-l-lg', scrollBtnClass]"
         aria-label="scroll left"
         @click="scrollLeft"
@@ -182,7 +184,7 @@ watch(width, updateScrollButtons)
       </button>
       <div
         ref="buttonContainerRef"
-        :class="['p-3xs flex flex-nowrap space-x-1 overflow-x-auto', tabClass]"
+        :class="['flex flex-nowrap space-x-1 overflow-x-auto p-3xs', tabClass]"
         @scroll="updateScrollButtons"
       >
         <button
@@ -206,7 +208,7 @@ watch(width, updateScrollButtons)
       </div>
       <button
         v-if="showScrollButtons && canScrollRight"
-        class="px-3xs absolute right-0 top-1/2 z-10 h-full -translate-y-1/2 transform lg:hidden"
+        class="absolute top-1/2 right-0 z-10 h-full -translate-y-1/2 transform px-3xs lg:hidden"
         :class="[rounded && 'rounded-r-lg', scrollBtnClass]"
         aria-label="scroll right"
         @click="scrollRight"

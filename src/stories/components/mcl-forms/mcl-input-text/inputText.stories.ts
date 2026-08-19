@@ -6,7 +6,7 @@ import {
   textControllers,
 } from '@/assets/composables'
 import { MclInputText } from '@/components/mcl-forms/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import MclInputTextWithLabel from './MclInputTextWithLabel.vue'
 
 const meta: Meta<typeof MclInputText> = {

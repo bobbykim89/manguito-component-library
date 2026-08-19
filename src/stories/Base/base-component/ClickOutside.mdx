@@ -1,4 +1,4 @@
-import { Canvas, Meta } from '@storybook/blocks'
+import { Canvas, Meta } from '@storybook/addon-docs/blocks'
 import * as Stories from './directives/click-outside.stories'
 
 <Meta of={Stories} />
@@ -151,7 +151,7 @@ const toggleMenu = () => {
   <div v-click-outside="closeMenu" class="relative">
     <button @click="toggleMenu" class="menu-trigger">Menu</button>
 
-    <div v-if="isOpen" class="menu-content absolute left-0 top-full">
+    <div v-if="isOpen" class="menu-content absolute top-full left-0">
       <a href="#" @click="isOpen = false">Option 1</a>
       <a href="#" @click="isOpen = false">Option 2</a>
       <a href="#" @click="isOpen = false">Option 3</a>

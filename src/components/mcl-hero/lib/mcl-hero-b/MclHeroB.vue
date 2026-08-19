@@ -128,21 +128,21 @@ const gradientColorClass = computed<string>(() => {
   >
     <div
       v-if="showGradients"
-      class="bg-linear-to-t absolute inset-0 top-1/3 to-transparent"
+      class="absolute inset-0 top-1/3 bg-linear-to-t to-transparent"
       :class="gradientColorClass"
     ></div>
-    <div class="px-xs relative h-full">
+    <div class="relative h-full px-xs">
       <div class="container">
-        <div class="py-md lg:py-lg px-0">
+        <div class="px-0 py-md lg:py-lg">
           <component :is="titleLevel" :class="titleClass">
             <span
-              class="py-2xs box-decoration-clone"
+              class="box-decoration-clone py-2xs"
               :class="titleHighlightClass"
               v-html="title"
             >
             </span>
           </component>
-          <div class="md:mt-sm hidden w-3/4 md:block">
+          <div class="hidden w-3/4 md:mt-sm md:block">
             <slot />
           </div>
         </div>

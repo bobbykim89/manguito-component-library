@@ -4,7 +4,7 @@ import {
   rangeControllers,
 } from '@/assets/composables'
 import { HeaderVertical } from '@/components/manguito-theme/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 const meta: Meta<typeof HeaderVertical> = {
   title: 'Base/Base Component/Header (Vertical)',
