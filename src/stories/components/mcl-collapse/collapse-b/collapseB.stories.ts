@@ -5,7 +5,7 @@ import {
   textControllers,
 } from '@/assets/composables'
 import { MclCollapseB } from '@/components/mcl-collapse/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import CollapseBAccordion from './CollapseBAccordion.vue'
 
 const meta: Meta<typeof MclCollapseB> = {

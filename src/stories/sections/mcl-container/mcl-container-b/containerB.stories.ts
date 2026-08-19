@@ -6,7 +6,7 @@ import {
   textControllers,
 } from '@/assets/composables'
 import { MclContainerB } from '@/components/mcl-container/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 const meta: Meta<typeof MclContainerB> = {
   title: 'Sections/Container/MclContainerB',

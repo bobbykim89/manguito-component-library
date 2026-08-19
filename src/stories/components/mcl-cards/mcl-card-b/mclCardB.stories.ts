@@ -6,7 +6,7 @@ import {
   textControllers,
 } from '@/assets/composables'
 import { MclCardB } from '@/components/mcl-cards/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 const meta: Meta<typeof MclCardB> = {
   title: 'Components/Cards/MclCardB',

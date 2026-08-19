@@ -7,7 +7,7 @@ import {
 } from '@/assets/composables'
 import type { ContentType } from '@/components/mcl-tabs/lib'
 import { MclTabsA } from '@/components/mcl-tabs/lib'
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 const contentInfo: ContentType[] = [
   {

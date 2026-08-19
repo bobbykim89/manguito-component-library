@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import ModalPattern from './ModalPattern.vue'
 import Toggle from './Toggle.vue'
 
