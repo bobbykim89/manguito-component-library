@@ -1,5 +1,17 @@
 # Change Log
 
+## 1.0.1
+
+### Patch Changes
+
+- f82364e: Formatting-only release: Prettier was reapplied across the repo after a
+  misconfigured `tailwindStylesheet` was fixed, which sorted Tailwind class
+  attributes and normalized wrapping in every package's source.
+
+  No public API, prop, or behavior changes. Class order within a `class`
+  attribute does not affect CSS resolution, so rendered output is identical —
+  only the shipped bundle text differs.
+
 ## 1.0.0
 
 ### Major Changes
