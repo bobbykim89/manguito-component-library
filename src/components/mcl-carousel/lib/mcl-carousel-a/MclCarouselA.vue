@@ -191,14 +191,14 @@ onMounted(() => {
 
 <template>
   <section
-    class="py-lg lg:py-xl overflow-hidden"
+    class="overflow-hidden py-lg lg:py-xl"
     :class="generateClass.bgColorVariant({ color: bgColor })"
   >
-    <div class="px-xs sm:px-md container text-center sm:text-left">
+    <div class="container px-xs text-center sm:px-md sm:text-left">
       <div class="relative">
         <div
           v-if="showHighlight"
-          class="w-md absolute -left-4 hidden h-full bg-opacity-25 sm:block"
+          class="absolute -left-4 hidden h-full w-md bg-opacity-25 sm:block"
           :class="generateClass.bgColorVariant({ color: highlightColor })"
         ></div>
         <div class="relative">
@@ -217,21 +217,21 @@ onMounted(() => {
           ></h2>
         </div>
         <div
-          class="relative flex flex-wrap items-center justify-center space-x-4 space-y-4 sm:flex-nowrap sm:justify-start"
+          class="relative flex flex-wrap items-center justify-center space-y-4 space-x-4 sm:flex-nowrap sm:justify-start"
         >
           <div class="max-w-144">
             <slot name="description"></slot>
           </div>
           <div class="flex space-x-4">
             <button
-              class="p-xs grid place-items-center rounded-full ring-offset-2 ring-offset-inherit transition-all duration-200 hover:bg-opacity-80 focus:outline-none focus:ring-4 disabled:opacity-50"
+              class="grid place-items-center rounded-full p-xs ring-offset-2 ring-offset-inherit transition-all duration-200 hover:bg-opacity-80 focus:ring-4 focus:outline-none disabled:opacity-50"
               :class="getButtonClass(btnColor, btnBgColor)"
               :disabled="currentIndex === 0"
               @click="handleSlideBtnClick($event, 'prev')"
               aria-label="previous"
             >
               <svg
-                class="w-xs h-xs"
+                class="h-xs w-xs"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 384 512"
                 fill="currentColor"
@@ -243,14 +243,14 @@ onMounted(() => {
               </svg>
             </button>
             <button
-              class="p-xs grid place-items-center rounded-full ring-offset-2 ring-offset-inherit transition-all duration-200 hover:bg-opacity-80 focus:outline-none focus:ring-4 disabled:opacity-50"
+              class="grid place-items-center rounded-full p-xs ring-offset-2 ring-offset-inherit transition-all duration-200 hover:bg-opacity-80 focus:ring-4 focus:outline-none disabled:opacity-50"
               :class="getButtonClass(btnColor, btnBgColor)"
               :disabled="isNextBtnDisabled"
               @click="handleSlideBtnClick($event, 'next')"
               aria-label="next"
             >
               <svg
-                class="w-xs h-xs"
+                class="h-xs w-xs"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 384 512"
                 fill="currentColor"
@@ -265,9 +265,9 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div class="mt-md sm:mt-lg lg:mt-xl container">
+    <div class="container mt-md sm:mt-lg lg:mt-xl">
       <div
-        class="px-xs gap-xs flex transition-transform duration-500"
+        class="flex gap-xs px-xs transition-transform duration-500"
         :class="generateClass.gapVariant({ spacing: cardsGap })"
         ref="slideContainer"
       >

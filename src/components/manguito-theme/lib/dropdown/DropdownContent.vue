@@ -10,7 +10,7 @@ withDefaults(
   }>(),
   {
     customClass: '',
-  }
+  },
 )
 const { height } = useWindowSize()
 const slots = defineSlots<{
@@ -18,7 +18,7 @@ const slots = defineSlots<{
 }>()
 const contentRef = ref<HTMLDivElement>()
 const { active, buttonHeight, closeDropdown } = inject(
-  dropdownInjectionKey
+  dropdownInjectionKey,
 ) as DropdownInjectType
 const btnHeight = computed(() => {
   return { '--button-height': `${buttonHeight}px` }
@@ -38,7 +38,7 @@ const dropdownDirection = computed<string | undefined>(() => {
     <div
       v-if="active"
       ref="contentRef"
-      class="absolute my-2xs max-w-[14rem] w-max overflow-hidden"
+      class="absolute my-2xs w-max max-w-[14rem] overflow-hidden"
       :class="[dropdownDirection, customClass]"
       :style="btnHeight"
     >

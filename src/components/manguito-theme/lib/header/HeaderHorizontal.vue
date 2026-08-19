@@ -69,7 +69,9 @@ const onLeave = (el: any) => {
 
 const handleHeaderClass = computed<string>(() => {
   const { bgColor, sticky } = props
-  const classArray: string[] = [generateClass.bgColorVariant({ color: bgColor })]
+  const classArray: string[] = [
+    generateClass.bgColorVariant({ color: bgColor }),
+  ]
   if (sticky === 'all') {
     classArray.push('sticky top-0')
     return classArray.join(' ')
@@ -108,7 +110,7 @@ defineExpose<{
     :class="[handleFadeInOnScroll, handleHeaderClass]"
   >
     <nav
-      class="py-xs md:py-2xs mx-xs md:mx-sm flex flex-wrap items-center justify-between align-middle sm:max-w-[640px] md:max-w-[768px] lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px]"
+      class="mx-xs flex flex-wrap items-center justify-between py-xs align-middle sm:max-w-[640px] md:mx-sm md:max-w-[768px] md:py-2xs lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px]"
     >
       <div class="min-h-[24px]">
         <slot name="content"></slot>
@@ -137,7 +139,7 @@ defineExpose<{
         @leave="onLeave"
       >
         <div
-          class="my-2xs mx-xs overflow-hidden rounded-md bg-opacity-80"
+          class="mx-xs my-2xs overflow-hidden rounded-md bg-opacity-80"
           v-if="navOpen"
           :class="generateClass.bgColorVariant({ color: mobileMenuBgColor })"
         >

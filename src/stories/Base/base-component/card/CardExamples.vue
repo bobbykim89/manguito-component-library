@@ -21,7 +21,7 @@ const polloAlt: string = 'Manguito is perching'
   <div>
     <section
       :style="bgImage"
-      class="px-md py-lg container bg-cover bg-center bg-no-repeat"
+      class="container bg-cover bg-center bg-no-repeat px-md py-lg"
     >
       <div>
         <h2 class="h2-lg mb-sm">More Card Base Component Examples</h2>
@@ -64,7 +64,7 @@ const polloAlt: string = 'Manguito is perching'
       </div>
     </section>
     <section
-      class="px-md py-lg container bg-cover bg-center bg-no-repeat"
+      class="container bg-cover bg-center bg-no-repeat px-md py-lg"
       :style="[barcelonaBgImage]"
     >
       <div class="grid grid-cols-3 gap-4">
@@ -95,12 +95,12 @@ const polloAlt: string = 'Manguito is perching'
         <Card title="Custom Header & Footer" no-image variant="info">
           <template #header>
             <div
-              class="py-2xs px-xs border-success flex items-center justify-between gap-2 border-b"
+              class="flex items-center justify-between gap-2 border-b border-success px-xs py-2xs"
             >
               <img
                 :src="polloUrl"
                 :alt="polloAlt"
-                class="h-lg aspect-square rounded-full object-cover object-center"
+                class="aspect-square h-lg rounded-full object-cover object-center"
               />
               <p class="font-bold">Custom header text</p>
             </div>
@@ -113,13 +113,13 @@ const polloAlt: string = 'Manguito is perching'
             </div>
           </template>
           <template #footer>
-            <div class="px-xs py-2xs border-primary border-t">
+            <div class="border-t border-primary px-xs py-2xs">
               <div class="flex items-center justify-between gap-2">
                 <p class="font-bold">Custom Footer text</p>
                 <img
                   :src="polloUrl"
                   :alt="polloAlt"
-                  class="h-lg aspect-square rounded-full object-cover object-center"
+                  class="aspect-square h-lg rounded-full object-cover object-center"
                 />
               </div>
               <p>
@@ -146,7 +146,7 @@ const polloAlt: string = 'Manguito is perching'
                 :alt="polloAlt"
                 class="aspect-square h-full object-cover object-top"
               />
-              <div class="px-sm py-xs col-span-2">
+              <div class="col-span-2 px-sm py-xs">
                 <h3 class="h3-md mb-sm">Custom Horizontal Card</h3>
                 <div>
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.

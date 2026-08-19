@@ -65,7 +65,7 @@ const props = withDefaults(
     showShadow: false,
     rounded: false,
     checked: false,
-  }
+  },
 )
 
 const model = defineModel<boolean>()
@@ -76,7 +76,7 @@ const emit = defineEmits<{
     e: 'checkbox-click',
     event: Event,
     checked: boolean,
-    value: string | number
+    value: string | number,
   ): void
 }>()
 
@@ -90,7 +90,7 @@ const handleChange = (e: Event) => {
     'checkbox-click',
     e,
     checkboxRef.value!.checked,
-    checkboxRef.value?.checked ? value : ''
+    checkboxRef.value?.checked ? value : '',
   )
 }
 
@@ -138,12 +138,12 @@ const handleCheckboxLayout = computed<string>(() => {
       :value="value"
       :checked="checked"
       v-model="model"
-      class="appearance-none peer/input"
+      class="peer/input appearance-none"
       @change="handleChange"
     />
     <span
       aria-hidden="true"
-      class="relative border inline-block p-3xs hover:bg-opacity-60 peer-checked/input:hover:bg-opacity-60 before:opacity-0 peer-checked/input:before:opacity-100 before:absolute before:top-1/2 before:-translate-y-1/2 before:left-1/2 before:-translate-x-1/2 transition-colors duration-200 ease-linear before:transition-opacity before:duration-200 before:ease-linar"
+      class="before:ease-linar relative inline-block border p-3xs transition-colors duration-200 ease-linear before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:opacity-0 before:transition-opacity before:duration-200 peer-checked/input:before:opacity-100 hover:bg-opacity-60 peer-checked/input:hover:bg-opacity-60"
       :class="[handleCheckboxLayout, handleInputSize]"
       @click="handleCheckboxClick"
     >

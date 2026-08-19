@@ -14,7 +14,7 @@ const props = withDefaults(
     textColor: 'dark-3',
     textSize: 'md',
     textBold: false,
-  }
+  },
 )
 const slots = defineSlots<{
   default: any

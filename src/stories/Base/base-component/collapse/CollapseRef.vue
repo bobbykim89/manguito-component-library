@@ -11,13 +11,13 @@ const handleCollapse = () => {
 
 <template>
   <section class="container">
-    <div class="text-center mb-md">
+    <div class="mb-md text-center">
       <h2 class="text-danger">Trigger collapse through ref:</h2>
     </div>
-    <div class="p-2xs border-2 border-success rounded-md mb-lg bg-white">
+    <div class="mb-lg rounded-md border-2 border-success bg-white p-2xs">
       <button
         @click="handleCollapse"
-        class="btn btn-full btn-danger btn-no-ring"
+        class="btn btn-full btn-no-ring btn-danger"
       >
         Trigger toggle
       </button>

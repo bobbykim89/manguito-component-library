@@ -12,7 +12,7 @@ withDefaults(
     bodyClass: '',
     btnContainerClass: '',
     contentContainerClass: '',
-  }
+  },
 )
 
 const slots = defineSlots<{
@@ -67,7 +67,7 @@ watch(
     } else {
       slideDirection.value = 'slide-prev'
     }
-  }
+  },
 )
 </script>
 
@@ -82,12 +82,12 @@ watch(
     </div>
     <div :class="contentContainerClass">
       <div
-        class="container-hts transition-[max-height] duration-300 grid grid-cols-1 grid-rows-1"
+        class="container-hts grid grid-cols-1 grid-rows-1 transition-[max-height] duration-300"
       >
         <Transition :name="slideDirection">
           <div
             :key="activeTabIdx"
-            class="col-start-1 col-end-1 row-start-1 row-end-1 relative"
+            class="relative col-start-1 col-end-1 row-start-1 row-end-1"
           >
             <slot name="tab-content"></slot>
           </div>

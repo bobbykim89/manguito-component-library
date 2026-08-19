@@ -85,7 +85,7 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
 
 <template>
   <div
-    class="p-2xs w-full overflow-hidden"
+    class="w-full overflow-hidden p-2xs"
     :class="getBorderClass(borderColor, bgColor, rounded, showShadow)"
   >
     <button
@@ -103,7 +103,7 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
       <span :class="getTitleClass(titleSize, titleColor)">{{ title }}</span>
       <div
         aria-hidden="true"
-        class="ml-xs md:ml-sm lg:ml-md flex items-center justify-center"
+        class="ml-xs flex items-center justify-center md:ml-sm lg:ml-md"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

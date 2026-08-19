@@ -32,7 +32,7 @@ const props = withDefaults(
     showClear: false,
     required: false,
     accept: 'image/jpg,image/jpeg,image/png',
-  }
+  },
 )
 
 const model = defineModel<File | null>()
@@ -54,7 +54,9 @@ const onClearFile = () => {
 
 const borderClass = computed<string>(() => {
   const { rounded, showBorder, borderColor, showShadow, bgColor } = props
-  const classArray: string[] = [generateClass.bgColorVariant({ color: bgColor })]
+  const classArray: string[] = [
+    generateClass.bgColorVariant({ color: bgColor }),
+  ]
   if (rounded) {
     classArray.push('rounded-md')
   }
@@ -70,7 +72,9 @@ const borderClass = computed<string>(() => {
 
 const inputClass = computed<string>(() => {
   const { textColor } = props
-  const classArray: string[] = [generateClass.textColorVariant({ color: textColor })]
+  const classArray: string[] = [
+    generateClass.textColorVariant({ color: textColor }),
+  ]
   return classArray.join(' ')
 })
 
@@ -88,7 +92,9 @@ const getButtonClass = computed(() => {
 
 const getClearButtonClass = computed<string>(() => {
   const { buttonColor, rounded } = props
-  const classArray: string[] = [generateClass.bgColorVariant({ color: buttonColor })]
+  const classArray: string[] = [
+    generateClass.bgColorVariant({ color: buttonColor }),
+  ]
   if (rounded) {
     classArray.push('rounded-r-md')
   }
@@ -99,11 +105,11 @@ const getClearButtonClass = computed<string>(() => {
 <template>
   <div class="flex items-center overflow-hidden" :class="borderClass">
     <!-- browse button -->
-    <div class="shrink-0 my-3xs ml-3xs mr-xs">
+    <div class="my-3xs mr-xs ml-3xs shrink-0">
       <button
         type="button"
         :aria-controls="id"
-        class="px-xs py-2xs hover:bg-opacity-70 transition-all duration-200 ease-linear max-w-full"
+        class="max-w-full px-xs py-2xs transition-all duration-200 ease-linear hover:bg-opacity-70"
         :class="getButtonClass"
         @click="onButtonClick"
       >
@@ -114,7 +120,7 @@ const getClearButtonClass = computed<string>(() => {
       type="file"
       :id="id"
       ref="inputRef"
-      class="file:hidden w-full bg-transparent"
+      class="w-full bg-transparent file:hidden"
       :class="[inputClass]"
       :required="required"
       :accept="accept"
@@ -124,11 +130,11 @@ const getClearButtonClass = computed<string>(() => {
     <!-- clear button -->
     <div
       v-if="showClear"
-      class="self-stretch my-3xs mr-3xs"
+      class="my-3xs mr-3xs self-stretch"
       @click="onClearFile"
     >
       <button
-        class="px-xs py-2xs h-full flex items-center hover:bg-opacity-70 transition-all duration-200 ease-linear"
+        class="flex h-full items-center px-xs py-2xs transition-all duration-200 ease-linear hover:bg-opacity-70"
         aria-label="clear"
         :class="[getClearButtonClass]"
       >

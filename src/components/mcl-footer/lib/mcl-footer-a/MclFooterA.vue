@@ -51,7 +51,7 @@ const props = withDefaults(
     bgColor: 'dark-3',
     borderTopColor: 'primary',
     headlineColor: 'light-1',
-  }
+  },
 )
 
 const slots = defineSlots<{
@@ -108,14 +108,14 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
   <footer class="border-t-2 py-6 sm:py-8 md:py-12" :class="footerClass">
     <div class="container px-xs md:px-lg lg:px-xl">
       <div
-        class="flex flex-col md:flex-row flex-wrap justify-between mb-xs md:mb-md px-xs md:px-md border-b-2"
+        class="mb-xs flex flex-col flex-wrap justify-between border-b-2 px-xs md:mb-md md:flex-row md:px-md"
         :class="generateClass.borderColorVariant({ color: headlineColor })"
       >
-        <div class="h-lg md:h-xl align-middle mb-xs">
+        <div class="mb-xs h-lg align-middle md:h-xl">
           <a
             :href="logoLink"
             :target="logoLinkTarget"
-            class="h-full inline-block outline-none focus:ring-2 ring-offset-2 ring-offset-transparent rounded-md transition-all duration-300 ease-linear"
+            class="inline-block h-full rounded-md ring-offset-2 ring-offset-transparent transition-all duration-300 ease-linear outline-none focus:ring-2"
             :class="generateClass.ringColorVariant({ color: titleColor })"
             @click="handleTitleClick($event)"
           >
@@ -134,9 +134,9 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
         </div>
       </div>
       <div
-        class="flex flex-wrap md:justify-between items-center md:items-start gap-6 md:gap-8"
+        class="flex flex-wrap items-center gap-6 md:items-start md:justify-between md:gap-8"
       >
-        <div class="grid gap-2 justify-items-center basis-full md:basis-1/3">
+        <div class="grid basis-full justify-items-center gap-2 md:basis-1/3">
           <h2
             class="inline-block align-middle tracking-wider"
             :class="titleClass"
@@ -147,10 +147,10 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
           </div>
         </div>
         <nav
-          class="text-sm flex flex-col md:flex-row items-center sm:items-start sm:flex-row text-center sm:text-left gap-xs justify-between md:justify-around grow md:basis-1/2"
+          class="flex grow flex-col items-center justify-between gap-xs text-center text-sm sm:flex-row sm:items-start sm:text-left md:basis-1/2 md:flex-row md:justify-around"
         >
           <ul
-            class="flex flex-wrap md:flex-col justify-center items-center gap-2xs"
+            class="flex flex-wrap items-center justify-center gap-2xs md:flex-col"
           >
             <li
               v-for="(item, i) in menuItems"
@@ -160,7 +160,7 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
               <a
                 :href="item.url"
                 :target="item.target ? item.target : '_self'"
-                class="tracking-wide outline-none nav__text"
+                class="nav__text tracking-wide outline-none"
                 :class="menuItemClass"
                 @click="handleMenuItemClick($event, item)"
                 v-html="item.title"
@@ -168,8 +168,10 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
               </a>
               <div
                 v-if="showHighlight"
-                class="relative top-3xs h-3xs nav__decorator"
-                :class="generateClass.beforeBgColorVariant({ color: highlightColor })"
+                class="nav__decorator relative top-3xs h-3xs"
+                :class="
+                  generateClass.beforeBgColorVariant({ color: highlightColor })
+                "
               ></div>
             </li>
           </ul>
@@ -177,7 +179,7 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
           <!-- secondary menu -->
           <ul
             v-if="secondaryMenuItems"
-            class="flex flex-wrap md:flex-col justify-center items-center gap-2xs"
+            class="flex flex-wrap items-center justify-center gap-2xs md:flex-col"
           >
             <li
               v-for="(item, i) in secondaryMenuItems"
@@ -187,7 +189,7 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
               <a
                 :href="item.url"
                 :target="item.target ? item.target : '_self'"
-                class="tracking-wide outline-none nav__text"
+                class="nav__text tracking-wide outline-none"
                 :class="menuItemClass"
                 @click="handleMenuItemClick($event, item)"
                 v-html="item.title"
@@ -195,8 +197,10 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
               </a>
               <div
                 v-if="showHighlight"
-                class="relative top-3xs h-3xs nav__decorator"
-                :class="generateClass.beforeBgColorVariant({ color: highlightColor })"
+                class="nav__decorator relative top-3xs h-3xs"
+                :class="
+                  generateClass.beforeBgColorVariant({ color: highlightColor })
+                "
               ></div>
             </li>
           </ul>

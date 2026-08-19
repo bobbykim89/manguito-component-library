@@ -21,7 +21,7 @@ const props = withDefaults(
     showShadow: false,
     value: '',
     checked: false,
-  }
+  },
 )
 
 const radioRef = ref<HTMLInputElement>()
@@ -76,7 +76,7 @@ const handleChange = (e: Event) => {
     <input
       :id="id"
       type="radio"
-      class="appearance-none peer"
+      class="peer appearance-none"
       ref="radioRef"
       :value="value"
       :checked="checked"
@@ -84,7 +84,7 @@ const handleChange = (e: Event) => {
     />
     <span
       aria-hidden="true"
-      class="rounded-full inline-block relative before:absolute before:rounded-full before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2"
+      class="relative inline-block rounded-full before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-full"
       :class="[getRadioSize, checkedRadioSize, getColorClass]"
       @click="radioClick"
     ></span>

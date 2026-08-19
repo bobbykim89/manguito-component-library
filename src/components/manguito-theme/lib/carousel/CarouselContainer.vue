@@ -16,7 +16,7 @@ const props = withDefaults(
     controllerTopClass: '',
     controllerBottomClass: '',
     loop: false,
-  }
+  },
 )
 
 const slots = defineSlots<{
@@ -100,7 +100,7 @@ watch(
     } else {
       slideDirection.value = 'slide-prev'
     }
-  }
+  },
 )
 
 defineExpose({

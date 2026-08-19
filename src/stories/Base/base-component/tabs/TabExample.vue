@@ -79,7 +79,7 @@ const handleFormSubmit = () => {
 </script>
 
 <template>
-  <div class="bg-light-1 px-xs container">
+  <div class="container bg-light-1 px-xs">
     <TabContainer
       :body-class="['flex flex-col gap-sm py-lg md:py-2xl']"
       :btn-container-class="['border-b-2 border-b-warning']"
@@ -98,7 +98,7 @@ const handleFormSubmit = () => {
             :tabindex="activeTab === 0 ? -1 : 0"
             aria-controls="tab-0"
             :aria-selected="activeTab === 0"
-            class="px-xs py-2xs bg-light-4 rounded-tl-md font-bold transition-all duration-300 hover:bg-opacity-70"
+            class="rounded-tl-md bg-light-4 px-xs py-2xs font-bold transition-all duration-300 hover:bg-opacity-70"
             @click="update(0)"
           >
             Tab 0
@@ -108,7 +108,7 @@ const handleFormSubmit = () => {
             :tabindex="activeTab === 1 ? -1 : 0"
             aria-controls="tab-1"
             :aria-selected="activeTab === 1"
-            class="px-xs py-2xs bg-light-4 font-bold transition-all duration-300 hover:bg-opacity-70"
+            class="bg-light-4 px-xs py-2xs font-bold transition-all duration-300 hover:bg-opacity-70"
             @click="update(1)"
           >
             Tab 1
@@ -118,7 +118,7 @@ const handleFormSubmit = () => {
             :tabindex="activeTab === 2 ? -1 : 0"
             aria-controls="tab-2"
             :aria-selected="activeTab === 2"
-            class="px-xs py-2xs bg-light-4 font-bold transition-all duration-300 hover:bg-opacity-70"
+            class="bg-light-4 px-xs py-2xs font-bold transition-all duration-300 hover:bg-opacity-70"
             @click="update(2)"
           >
             Tab 2
@@ -128,7 +128,7 @@ const handleFormSubmit = () => {
             :tabindex="activeTab === 3 ? -1 : 0"
             aria-controls="tab-3"
             :aria-selected="activeTab === 3"
-            class="px-xs py-2xs bg-light-4 rounded-tr-md font-bold transition-all duration-300 hover:bg-opacity-70"
+            class="rounded-tr-md bg-light-4 px-xs py-2xs font-bold transition-all duration-300 hover:bg-opacity-70"
             @click="update(3)"
           >
             Tab 3
@@ -141,7 +141,7 @@ const handleFormSubmit = () => {
             <img
               src="https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1666385529/ManguitoPage/jvbzjwf6vprjcm1mqjpd.jpg"
               alt="picture of manguito"
-              class="w-3xl mb-sm mx-auto rounded-md"
+              class="mx-auto mb-sm w-3xl rounded-md"
             />
             <p class="px-xs md:px-md">
               Lorem ipsum, dolor sit amet consectetur adipisicing elit.
@@ -156,7 +156,7 @@ const handleFormSubmit = () => {
         </TabContent>
         <TabContent :tab-number="1" id="tab-1">
           <div>
-            <div class="p-2xs border-warning rounded-md border-2 bg-white">
+            <div class="rounded-md border-2 border-warning bg-white p-2xs">
               <AccordionGroup>
                 <div
                   v-for="(item, idx) in collapseContent"
@@ -171,7 +171,12 @@ const handleFormSubmit = () => {
                     {{ item.title }} Header
                   </button>
                   <Collapse
-                    :ref="(el) => { if (el) panelRefs[idx] = el as InstanceType<typeof Collapse> }"
+                    :ref="
+                      (el) => {
+                        if (el)
+                          panelRefs[idx] = el as InstanceType<typeof Collapse>
+                      }
+                    "
                     :id="item.id"
                     custom-class="bg-light-3 p-xs"
                     :visible="idx === 0"
@@ -185,7 +190,7 @@ const handleFormSubmit = () => {
         </TabContent>
         <TabContent :tab-number="2" id="tab-2">
           <div>
-            <div class="p-xs md:p-sm bg-light-3 rounded-md">
+            <div class="rounded-md bg-light-3 p-xs md:p-sm">
               <h3 class="h3-md mb-sm text-center">Submit Form</h3>
               <form @submit.prevent="handleFormSubmit" class="mx-auto">
                 <MclFormGroup label-for="bird" label="Favorite Bird">
@@ -215,7 +220,7 @@ const handleFormSubmit = () => {
           </div>
         </TabContent>
         <TabContent :tab-number="3" id="tab-3">
-          <div class="bg-info text-light-3 p-xs rounded-md">
+          <div class="rounded-md bg-info p-xs text-light-3">
             <h3 class="h3-md mb-xs">Title text</h3>
             <p class="mb-xs">
               Lorem ipsum, dolor sit amet consectetur adipisicing elit.

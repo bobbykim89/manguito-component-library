@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme';
-import { generateClass, Collapse } from '@bobbykim/manguito-theme';
-import { ref } from 'vue';
+import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
+import { generateClass, Collapse } from '@bobbykim/manguito-theme'
+import { ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -58,10 +58,15 @@ const getBorderClass = (
   dHl: boolean,
   hlColor: ColorPalette,
 ): string => {
-  const classArray: string[] = ['border', generateClass.borderColorVariant({ color: bColor })]
+  const classArray: string[] = [
+    'border',
+    generateClass.borderColorVariant({ color: bColor }),
+  ]
 
   if (dHl) {
-    const borderArray: string[] = [generateClass.borderLeftColorVariant({ color: hlColor })]
+    const borderArray: string[] = [
+      generateClass.borderLeftColorVariant({ color: hlColor }),
+    ]
     borderArray.forEach((item) => {
       ;(classArray.push(item), classArray.push('border-l-8'))
     })
@@ -88,7 +93,7 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
     ]"
   >
     <div
-      class=" px-sm transition-[border] duration-500"
+      class="px-sm transition-[border] duration-500"
       :class="[
         isOpen
           ? `border-b ${generateClass.borderBottomColorVariant({ color: borderColor })} ease-in`
@@ -103,7 +108,7 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
           :aria-expanded="isOpen"
           :aria-controls="collapseId"
           @click="collapseRef?.toggle()"
-          class="flex flex-1 cursor-pointer items-center bg-transparent text-left py-xs"
+          class="flex flex-1 cursor-pointer items-center bg-transparent py-xs text-left"
         >
           <h3 :class="getTitleClass(titleSize, titleColor)">{{ title }}</h3>
         </button>
@@ -112,7 +117,10 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
         </div>
       </div>
     </div>
-    <div class="overflow-hidden" :class="generateClass.bgColorVariant({ color: contentBgColor })">
+    <div
+      class="overflow-hidden"
+      :class="generateClass.bgColorVariant({ color: contentBgColor })"
+    >
       <Collapse
         ref="collapseRef"
         :id="collapseId"
@@ -128,7 +136,7 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
     </div>
     <div
       aria-hidden="true"
-      class="px-sm flex cursor-pointer items-center justify-center border-t py-1.5 transition-all duration-500"
+      class="flex cursor-pointer items-center justify-center border-t px-sm py-1.5 transition-all duration-500"
       :class="[
         generateClass.bgColorVariant({ color: bgColor }),
         generateClass.borderTopColorVariant({ color: borderColor }),

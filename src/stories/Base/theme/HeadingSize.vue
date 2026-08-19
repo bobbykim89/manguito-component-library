@@ -123,10 +123,10 @@ const headingTextSize: HeadingSizeClass = {
 
 <template>
   <section class="container">
-    <div class="text-center mb-lg">
+    <div class="mb-lg text-center">
       <h2 class="text-secondary">Heading Size</h2>
     </div>
-    <div class="grid grid-cols-5 gap-1 content-center">
+    <div class="grid grid-cols-5 content-center gap-1">
       <div class="flex items-center justify-center bg-danger text-white">
         <h4 class="h4-sm py-3xs">Level</h4>
       </div>
@@ -144,90 +144,90 @@ const headingTextSize: HeadingSizeClass = {
       </div>
       <!-- h1 -->
       <div class="row-span-4 flex items-center justify-center bg-light-1">
-        <p class="text-sm py-3xs">H1</p>
+        <p class="py-3xs text-sm">H1</p>
       </div>
       <div
-        class="col-span-4 grid grid-cols-4 gap-1 content-center"
+        class="col-span-4 grid grid-cols-4 content-center gap-1"
         v-for="(item, i) in headingTextSize.h1"
         :key="i"
       >
         <div class="flex items-center justify-center bg-light-2">
-          <p class="text-sm py-3xs" v-html="item.class"></p>
+          <p class="py-3xs text-sm" v-html="item.class"></p>
         </div>
         <div class="flex items-center justify-center bg-light-2">
-          <p class="text-sm py-3xs" v-html="item.mobile"></p>
+          <p class="py-3xs text-sm" v-html="item.mobile"></p>
         </div>
         <div class="flex items-center justify-center bg-light-2">
-          <p class="text-sm py-3xs" v-html="item.md"></p>
+          <p class="py-3xs text-sm" v-html="item.md"></p>
         </div>
         <div class="flex items-center justify-center bg-light-2">
-          <p class="text-sm py-3xs" v-html="item.lg"></p>
+          <p class="py-3xs text-sm" v-html="item.lg"></p>
         </div>
       </div>
       <!-- h2 -->
       <div class="row-span-4 flex items-center justify-center bg-warning">
-        <p class="text-sm py-3xs">H2</p>
+        <p class="py-3xs text-sm">H2</p>
       </div>
       <div
-        class="col-span-4 grid grid-cols-4 gap-1 content-center"
+        class="col-span-4 grid grid-cols-4 content-center gap-1"
         v-for="(item, i) in headingTextSize.h2"
         :key="i"
       >
         <div class="flex items-center justify-center bg-warning">
-          <p class="text-sm py-3xs" v-html="item.class"></p>
+          <p class="py-3xs text-sm" v-html="item.class"></p>
         </div>
         <div class="flex items-center justify-center bg-warning">
-          <p class="text-sm py-3xs" v-html="item.mobile"></p>
+          <p class="py-3xs text-sm" v-html="item.mobile"></p>
         </div>
         <div class="flex items-center justify-center bg-warning">
-          <p class="text-sm py-3xs" v-html="item.md"></p>
+          <p class="py-3xs text-sm" v-html="item.md"></p>
         </div>
         <div class="flex items-center justify-center bg-warning">
-          <p class="text-sm py-3xs" v-html="item.lg"></p>
+          <p class="py-3xs text-sm" v-html="item.lg"></p>
         </div>
       </div>
       <!-- h3 -->
       <div class="row-span-4 flex items-center justify-center bg-light-1">
-        <p class="text-sm py-3xs">H3</p>
+        <p class="py-3xs text-sm">H3</p>
       </div>
       <div
-        class="col-span-4 grid grid-cols-4 gap-1 content-center"
+        class="col-span-4 grid grid-cols-4 content-center gap-1"
         v-for="(item, i) in headingTextSize.h3"
         :key="i"
       >
         <div class="flex items-center justify-center bg-light-2">
-          <p class="text-sm py-3xs" v-html="item.class"></p>
+          <p class="py-3xs text-sm" v-html="item.class"></p>
         </div>
         <div class="flex items-center justify-center bg-light-2">
-          <p class="text-sm py-3xs" v-html="item.mobile"></p>
+          <p class="py-3xs text-sm" v-html="item.mobile"></p>
         </div>
         <div class="flex items-center justify-center bg-light-2">
-          <p class="text-sm py-3xs" v-html="item.md"></p>
+          <p class="py-3xs text-sm" v-html="item.md"></p>
         </div>
         <div class="flex items-center justify-center bg-light-2">
-          <p class="text-sm py-3xs" v-html="item.lg"></p>
+          <p class="py-3xs text-sm" v-html="item.lg"></p>
         </div>
       </div>
       <!-- h4 -->
       <div class="row-span-4 flex items-center justify-center bg-warning">
-        <p class="text-sm py-3xs">H4</p>
+        <p class="py-3xs text-sm">H4</p>
       </div>
       <div
-        class="col-span-4 grid grid-cols-4 gap-1 content-center"
+        class="col-span-4 grid grid-cols-4 content-center gap-1"
         v-for="(item, i) in headingTextSize.h4"
         :key="i"
       >
         <div class="flex items-center justify-center bg-warning">
-          <p class="text-sm py-3xs" v-html="item.class"></p>
+          <p class="py-3xs text-sm" v-html="item.class"></p>
         </div>
         <div class="flex items-center justify-center bg-warning">
-          <p class="text-sm py-3xs" v-html="item.mobile"></p>
+          <p class="py-3xs text-sm" v-html="item.mobile"></p>
         </div>
         <div class="flex items-center justify-center bg-warning">
-          <p class="text-sm py-3xs" v-html="item.md"></p>
+          <p class="py-3xs text-sm" v-html="item.md"></p>
         </div>
         <div class="flex items-center justify-center bg-warning">
-          <p class="text-sm py-3xs" v-html="item.lg"></p>
+          <p class="py-3xs text-sm" v-html="item.lg"></p>
         </div>
       </div>
     </div>

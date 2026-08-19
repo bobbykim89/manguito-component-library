@@ -152,7 +152,7 @@ defineExpose<{
         v-if="toggle"
         @click="closeModal"
         aria-hidden="true"
-        class="fixed inset-0 z-[100] overflow-y-auto bg-opacity-70 backdrop-blur"
+        class="fixed inset-0 z-[100] overflow-y-auto backdrop-blur bg-opacity-70"
         :class="generateClass.bgColorVariant({ color: backdropColor })"
       ></section>
     </Transition>
@@ -165,7 +165,7 @@ defineExpose<{
     >
       <div
         v-if="toggle"
-        class="vertical-placement px-xs fixed z-[110] w-full"
+        class="vertical-placement fixed z-[110] w-full px-xs"
         :class="handleModalWidth"
       >
         <div
@@ -180,7 +180,7 @@ defineExpose<{
           <div v-if="showHeader" class="sticky top-0">
             <slot name="header" :close="closeModal" :status="toggle">
               <div
-                class="p-xs border-b-light-4 flex items-center justify-between border-b-2"
+                class="flex items-center justify-between border-b-2 border-b-light-4 p-xs"
                 :class="generateClass.bgColorVariant({ color })"
               >
                 <h3
@@ -198,7 +198,9 @@ defineExpose<{
                     viewBox="0 0 384 512"
                     aria-hidden="true"
                     class="h-sm transition-opacity duration-300 ease-in hover:opacity-75 focus:opacity-75"
-                    :class="[generateClass.svgFillColorVariant({ color: titleColor })]"
+                    :class="[
+                      generateClass.svgFillColorVariant({ color: titleColor }),
+                    ]"
                   >
                     <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                     <path

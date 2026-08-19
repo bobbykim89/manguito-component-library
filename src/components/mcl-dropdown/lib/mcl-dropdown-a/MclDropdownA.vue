@@ -44,7 +44,7 @@ const props = withDefaults(
     dropdownFontWeight: 'normal',
     dropdownTextColor: 'dark-3',
     showSeparator: false,
-  }
+  },
 )
 
 const emit = defineEmits<{
@@ -62,7 +62,9 @@ const dropdownButtonClass = computed(() => {
    * @param {boolean} buttonInvert - whether to have button inverted
    */
   const { buttonColor, buttonRounded, buttonTextColor, buttonInvert } = props
-  const classArray: string[] = [generateClass.btnColorVariant({ color: buttonColor })]
+  const classArray: string[] = [
+    generateClass.btnColorVariant({ color: buttonColor }),
+  ]
   if (buttonRounded) {
     classArray.push('btn-round')
   }
@@ -81,7 +83,9 @@ const dropdownContentClass = computed<string>(() => {
    * @param {boolean} showShadow - whether to have drop shadow
    */
   const { dropdownColor, rounded, showBorder, showShadow } = props
-  const classArray: string[] = [generateClass.bgColorVariant({ color: dropdownColor })]
+  const classArray: string[] = [
+    generateClass.bgColorVariant({ color: dropdownColor }),
+  ]
   if (showBorder) {
     classArray.push('border')
   }
@@ -153,8 +157,8 @@ const dropdownItemKeyUp = (direction: KeyDirection): void => {
     <dropdown-container>
       <template #toggler="{ toggle, dropdownState }">
         <button
-          @click="toggle($event), dropdownButtonClick($event)"
-          class="btn flex justify-between items-center gap-2xs"
+          @click="(toggle($event), dropdownButtonClick($event))"
+          class="btn flex items-center justify-between gap-2xs"
           :class="dropdownButtonClass"
         >
           <span>
@@ -183,9 +187,9 @@ const dropdownItemKeyUp = (direction: KeyDirection): void => {
         <button
           v-for="(item, idx) in dropdownItems"
           :key="idx"
-          class="block px-xs py-2xs first:pt-xs last:pb-xs w-full text-left"
+          class="block w-full px-xs py-2xs text-left first:pt-xs last:pb-xs"
           :class="dropDownItemClass"
-          @click="itemClick(), dropdownItemClick($event, item)"
+          @click="(itemClick(), dropdownItemClick($event, item))"
           ref="contentItemRef"
         >
           {{ item.title }}
