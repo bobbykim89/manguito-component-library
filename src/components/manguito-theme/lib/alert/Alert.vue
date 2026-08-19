@@ -68,7 +68,7 @@ defineExpose<{
     class="relative px-[1.25rem] py-[0.75rem]"
     :class="[componentClass]"
   >
-    <div class="gap-2xs flex w-full justify-between">
+    <div class="flex w-full justify-between gap-2xs">
       <div class="w-full">
         <slot></slot>
       </div>

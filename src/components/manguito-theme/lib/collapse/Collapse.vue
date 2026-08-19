@@ -12,7 +12,7 @@ const props = withDefaults(
   {
     customClass: '',
     visible: false,
-  }
+  },
 )
 const slots = defineSlots<{
   default: any

@@ -52,9 +52,13 @@ const customButtonColor = (idx: number): string => {
     <div class="mb-md text-center">
       <h2 class="text-info">Accordion Example:</h2>
     </div>
-    <div class="p-2xs border-warning rounded-md border-2 bg-white">
+    <div class="rounded-md border-2 border-warning bg-white p-2xs">
       <AccordionGroup>
-        <div v-for="(item, idx) in collapseContent" :key="item.id" class="mb-md last:mb-0">
+        <div
+          v-for="(item, idx) in collapseContent"
+          :key="item.id"
+          class="mb-md last:mb-0"
+        >
           <button
             @click="panelRefs[idx]?.toggle()"
             class="btn btn-full"
@@ -63,7 +67,11 @@ const customButtonColor = (idx: number): string => {
             {{ item.title }} Header
           </button>
           <Collapse
-            :ref="(el) => { if (el) panelRefs[idx] = el as InstanceType<typeof Collapse> }"
+            :ref="
+              (el) => {
+                if (el) panelRefs[idx] = el as InstanceType<typeof Collapse>
+              }
+            "
             :id="item.id"
             custom-class="bg-light-3 p-xs"
             :visible="idx === 0"

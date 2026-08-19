@@ -87,7 +87,10 @@ const getTitleClass = (
     h4: generateClass.h4Variant({ size: size }),
   }
 
-  const classArray = [titleClass[level], generateClass.textColorVariant({ color: color })]
+  const classArray = [
+    titleClass[level],
+    generateClass.textColorVariant({ color: color }),
+  ]
 
   return classArray.join(' ')
 }
@@ -100,7 +103,7 @@ const getTitleClass = (
   >
     <div class="grid lg:grid-cols-2">
       <div
-        class="px-xs md:px-md xl:px-lg md:min-h-105 relative flex min-h-[60vh] flex-col justify-end lg:justify-center xl:pl-[18%]"
+        class="relative flex min-h-[60vh] flex-col justify-end px-xs md:min-h-105 md:px-md lg:justify-center xl:px-lg xl:pl-[18%]"
         :class="{ 'lg:order-2': imgPosition === 'left' }"
       >
         <!-- display on mobile -->
@@ -116,17 +119,17 @@ const getTitleClass = (
           ></div>
         </div>
         <div
-          class="py-md lg:py-xl relative px-0"
+          class="relative px-0 py-md lg:py-xl"
           :class="[imgPosition === 'right' ? 'lg:pl-md' : 'lg:pr-md']"
         >
           <div
-            class="mb-xs md:mb-sm lg:mb-md ml-xs relative md:ml-0"
+            class="relative mb-xs ml-xs md:mb-sm md:ml-0 lg:mb-md"
             :class="{ 'pl-xs': showHighlight }"
           >
             <!-- highlight -->
             <div
               v-if="showHighlight"
-              class="w-md absolute left-0 h-full bg-opacity-60"
+              class="absolute left-0 h-full w-md bg-opacity-60"
               :class="generateClass.bgColorVariant({ color: highlightColor })"
             ></div>
             <!-- title block -->
@@ -158,13 +161,13 @@ const getTitleClass = (
         </div>
       </div>
       <div
-        class="lg:min-h-128 relative hidden bg-cover bg-top bg-no-repeat lg:block xl:min-h-[80vh]"
+        class="relative hidden bg-cover bg-top bg-no-repeat lg:block lg:min-h-128 xl:min-h-[80vh]"
         :class="{ 'lg:order-1': imgPosition === 'left' }"
         :style="getBgImage(imageSource)"
       >
         <svg
           v-if="imgPosition === 'right'"
-          class="w-3xl absolute inset-y-0 left-0 hidden h-full lg:block"
+          class="absolute inset-y-0 left-0 hidden h-full w-3xl lg:block"
           :class="generateClass.svgFillColorVariant({ color: bgColor })"
           viewBox="0 0 100 100"
           preserveAspectRatio="none"
@@ -174,7 +177,7 @@ const getTitleClass = (
         </svg>
         <svg
           v-else
-          class="w-3xl absolute inset-y-0 right-0 hidden h-full lg:block"
+          class="absolute inset-y-0 right-0 hidden h-full w-3xl lg:block"
           :class="generateClass.svgFillColorVariant({ color: bgColor })"
           viewBox="0 0 100 100"
           preserveAspectRatio="none"

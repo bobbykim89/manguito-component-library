@@ -70,7 +70,7 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
 
 <template>
   <button
-    class="p-3xs hamburger__button aspect-square rounded-md outline-none ring-offset-2 transition-all duration-300 ease-linear hover:opacity-70 focus:opacity-70 focus:ring-4"
+    class="hamburger__button aspect-square rounded-md p-3xs ring-offset-2 transition-all duration-300 ease-linear outline-none hover:opacity-70 focus:opacity-70 focus:ring-4"
     :class="getBorderClass(color, showBorder, bgColor)"
     @click="handleButtonToggle"
     :aria-label="toggle ? 'Close' : 'Open'"
@@ -82,7 +82,7 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
       class="hamburger__checkbox hidden"
     />
     <div
-      class="w-sm hamburger__icon before:w-sm after:w-sm relative h-[3px] transition-all duration-300 ease-linear before:h-[3px] after:h-[3px]"
+      class="hamburger__icon relative h-[3px] w-sm transition-all duration-300 ease-linear before:h-[3px] before:w-sm after:h-[3px] after:w-sm"
       :class="getHamburgerButtonClass(color)"
     ></div>
   </button>

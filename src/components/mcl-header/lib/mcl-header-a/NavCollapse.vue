@@ -78,7 +78,7 @@ const getMenuItemClass = (
   <div class="flex w-full flex-col">
     <div class="self-center">
       <button
-        class="nav__text gap-3xs flex items-center align-middle tracking-wider outline-none"
+        class="nav__text flex items-center gap-3xs align-middle tracking-wider outline-none"
         :class="getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)"
         @click="handleCollapseLabelClick($event, navItem.title)"
       >
@@ -112,10 +112,10 @@ const getMenuItemClass = (
       @open="toggleAction"
       @close="toggleAction"
     >
-      <div class="pt-2xs relative">
+      <div class="relative pt-2xs">
         <div
           v-if="showHighlight"
-          class="w-md absolute -left-4 h-full bg-opacity-25"
+          class="absolute -left-4 h-full w-md bg-opacity-25"
           :class="generateClass.bgColorVariant({ color: highlightColor })"
         ></div>
         <div class="relative flex flex-col">
@@ -123,7 +123,7 @@ const getMenuItemClass = (
             v-for="(item, idx) in navItem.children"
             :href="item.url"
             :target="item.target"
-            class="pb-2xs w-full last:pb-0"
+            class="w-full pb-2xs last:pb-0"
             :key="idx"
             :class="[
               generateClass.textColorVariant({ color: menuTextColor }),

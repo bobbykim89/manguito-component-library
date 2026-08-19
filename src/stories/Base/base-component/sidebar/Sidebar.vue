@@ -10,11 +10,13 @@ const sidebarRight2Ref = ref<InstanceType<typeof Sidebar>>()
 
 <template>
   <section class="container">
-    <div class="gap-xs my-md flex justify-center">
+    <div class="my-md flex justify-center gap-xs">
       <button class="btn btn-success" @click="sidebarDefaultRef?.open()">
         Sidebar Default Header
       </button>
-      <button class="btn btn-danger" @click="sidebarLeftRef?.open()">Sidebar Left</button>
+      <button class="btn btn-danger" @click="sidebarLeftRef?.open()">
+        Sidebar Left
+      </button>
       <button class="btn btn-warning" @click="sidebarRightRef?.open()">
         Sidebar Right
       </button>
@@ -86,7 +88,7 @@ const sidebarRight2Ref = ref<InstanceType<typeof Sidebar>>()
       ref="sidebarDefaultRef"
     >
       <template #body>
-        <div class="py-sm px-xs">
+        <div class="px-xs py-sm">
           <img
             src="https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1685840063/ManguitoPage/xl0fo7vevr5nhxpnnztq.jpg"
             class="mb-sm"
@@ -109,20 +111,24 @@ const sidebarRight2Ref = ref<InstanceType<typeof Sidebar>>()
         </div>
       </template>
       <template #footer>
-        <div class="p-xs bg-success">
+        <div class="bg-success p-xs">
           <h3 class="h3-sm">Footer text</h3>
         </div>
       </template>
     </sidebar>
-    <sidebar ref="sidebarLeftRef" id="sidebar-left" custom-class="bg-light-1 px-xs overflow-scroll">
+    <sidebar
+      ref="sidebarLeftRef"
+      id="sidebar-left"
+      custom-class="bg-light-1 px-xs overflow-scroll"
+    >
       <template #header="{ close }">
-        <div class="pb-md pt-xs bg-light-1 flex justify-end">
+        <div class="flex justify-end bg-light-1 pt-xs pb-md">
           <button @click="close">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="1em"
               viewBox="0 0 384 512"
-              class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 h-sm transition-colors duration-300 ease-linear"
+              class="h-sm fill-dark-2 transition-colors duration-300 ease-linear hover:fill-dark-1 focus:fill-dark-1"
             >
               <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
               <path
@@ -169,7 +175,7 @@ const sidebarRight2Ref = ref<InstanceType<typeof Sidebar>>()
         </div>
       </template>
       <template #footer>
-        <div class="py-xs bg-light-1">
+        <div class="bg-light-1 py-xs">
           <h4 class="h4-md">This is Footer content</h4>
         </div>
       </template>
@@ -189,7 +195,7 @@ const sidebarRight2Ref = ref<InstanceType<typeof Sidebar>>()
               xmlns="http://www.w3.org/2000/svg"
               height="1em"
               viewBox="0 0 384 512"
-              class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 h-sm transition-colors duration-300 ease-linear"
+              class="h-sm fill-dark-2 transition-colors duration-300 ease-linear hover:fill-dark-1 focus:fill-dark-1"
             >
               <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
               <path
@@ -263,7 +269,7 @@ const sidebarRight2Ref = ref<InstanceType<typeof Sidebar>>()
         </div>
       </template>
       <template #footer>
-        <div class="p-xs bg-info">
+        <div class="bg-info p-xs">
           <h3 class="h3-sm">Footer text</h3>
         </div>
       </template>

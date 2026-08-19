@@ -21,7 +21,7 @@ const polloAlt: string = 'Manguito is perching'
   <div>
     <section
       :style="bgImage"
-      class="px-md py-lg container bg-cover bg-center bg-no-repeat"
+      class="container bg-cover bg-center bg-no-repeat px-md py-lg"
     >
       <div>
         <h2 class="h2-lg mb-sm">More MclCardA Examples</h2>
@@ -70,12 +70,12 @@ const polloAlt: string = 'Manguito is perching'
               aliquam dicta?
             </p>
             <div
-              class="py-2xs px-xs bg-light-1/50 flex items-center gap-4 rounded-md drop-shadow-lg"
+              class="flex items-center gap-4 rounded-md bg-light-1/50 px-xs py-2xs drop-shadow-lg"
             >
               <img
                 :src="polloUrl"
                 :alt="polloAlt"
-                class="h-lg aspect-square rounded-full object-cover object-center"
+                class="aspect-square h-lg rounded-full object-cover object-center"
               />
               <p class="text-sm">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit.

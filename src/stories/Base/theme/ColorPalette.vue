@@ -36,11 +36,11 @@ const generateFontColor = (input: ColorPalette): string => {
 
 <template>
   <section class="container">
-    <div class="text-center mb-lg">
+    <div class="mb-lg text-center">
       <h2 class="text-primary">Default Color Palette</h2>
     </div>
     <div
-      class="grid grid-cols-2 gap-6 content-center mb-2xs"
+      class="mb-2xs grid grid-cols-2 content-center gap-6"
       v-for="(color, index) in colorList"
       :key="`color-${index}`"
     >
@@ -50,10 +50,10 @@ const generateFontColor = (input: ColorPalette): string => {
         </h3>
       </div>
       <div
-        class="h-lg flex justify-center items-center font-bold drop-shadow-md"
+        class="flex h-lg items-center justify-center font-bold drop-shadow-md"
         :class="color[0]"
       >
-        <span class="tracking-wide bg-light-1 rounded-md px-xs">{{
+        <span class="rounded-md bg-light-1 px-xs tracking-wide">{{
           color[1]
         }}</span>
       </div>

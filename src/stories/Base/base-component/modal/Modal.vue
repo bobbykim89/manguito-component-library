@@ -12,13 +12,19 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
 <template>
   <section class="container">
     <div>
-      <div class="gap-xs my-md flex flex-wrap justify-start md:justify-center">
-        <button class="btn btn-danger" @click="modal1Ref?.open()">Modal 1</button>
-        <button class="btn btn-warning" @click="modal2Ref?.open()">Modal 2</button>
+      <div class="my-md flex flex-wrap justify-start gap-xs md:justify-center">
+        <button class="btn btn-danger" @click="modal1Ref?.open()">
+          Modal 1
+        </button>
+        <button class="btn btn-warning" @click="modal2Ref?.open()">
+          Modal 2
+        </button>
         <button class="btn btn-success" @click="modal3Ref?.open()">
           Modal Default Header
         </button>
-        <button class="btn btn-info" @click="modalMediumRef?.open()">Medium Modal</button>
+        <button class="btn btn-info" @click="modalMediumRef?.open()">
+          Medium Modal
+        </button>
         <button class="btn btn-primary" @click="modalLargeRef?.open()">
           Large Modal
         </button>
@@ -81,10 +87,15 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
         ultricies mauris. Donec quis luctus tortor. Cras eu pretium arcu. Cras
         ut turpis eros. Mauris venenatis eros diam.
       </p>
-      <modal ref="modal1Ref" id="modal-1" custom-class="px-xs rounded-md" color="light-1">
+      <modal
+        ref="modal1Ref"
+        id="modal-1"
+        custom-class="px-xs rounded-md"
+        color="light-1"
+      >
         <template #header="{ close }">
           <div
-            class="py-xs bg-light-1 border-b-light-4 flex justify-between border-b-2"
+            class="flex justify-between border-b-2 border-b-light-4 bg-light-1 py-xs"
           >
             <h3 class="h3-md">Modal 1</h3>
             <button @click="close">
@@ -92,7 +103,7 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
                 xmlns="http://www.w3.org/2000/svg"
                 height="1em"
                 viewBox="0 0 384 512"
-                class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 h-sm transition-colors duration-300 ease-linear"
+                class="h-sm fill-dark-2 transition-colors duration-300 ease-linear hover:fill-dark-1 focus:fill-dark-1"
               >
                 <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                 <path
@@ -123,7 +134,7 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
         </template>
         <template #footer="{ close }">
           <div
-            class="bg-light-1 py-xs border-t-light-4 flex items-center justify-between border-t-2"
+            class="flex items-center justify-between border-t-2 border-t-light-4 bg-light-1 py-xs"
           >
             <h4 class="h4-md">Footer Text</h4>
             <button class="btn btn-round btn-warning" @click="close">
@@ -141,13 +152,13 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
         pleacement="top"
       >
         <template #header="{ close }">
-          <div class="p-xs bg-light-1 flex justify-end">
+          <div class="flex justify-end bg-light-1 p-xs">
             <button @click="close">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="1em"
                 viewBox="0 0 384 512"
-                class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 h-sm transition-colors duration-300 ease-linear"
+                class="h-sm fill-dark-2 transition-colors duration-300 ease-linear hover:fill-dark-1 focus:fill-dark-1"
               >
                 <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                 <path
@@ -182,7 +193,7 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
         ref="modal3Ref"
       >
         <template #body>
-          <div class="py-sm px-xs">
+          <div class="px-xs py-sm">
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
               fermentum commodo dolor eget aliquet. Donec malesuada lorem
@@ -207,7 +218,7 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
       >
         <template #header="{ close }">
           <div
-            class="py-xs bg-light-1 border-b-light-4 flex justify-between border-b-2"
+            class="flex justify-between border-b-2 border-b-light-4 bg-light-1 py-xs"
           >
             <h3 class="h3-md">Medium Modal</h3>
             <button @click="close">
@@ -215,7 +226,7 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
                 xmlns="http://www.w3.org/2000/svg"
                 height="1em"
                 viewBox="0 0 384 512"
-                class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 h-sm transition-colors duration-300 ease-linear"
+                class="h-sm fill-dark-2 transition-colors duration-300 ease-linear hover:fill-dark-1 focus:fill-dark-1"
               >
                 <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                 <path
@@ -246,7 +257,7 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
         </template>
         <template #footer="{ close }">
           <div
-            class="bg-light-1 py-xs border-t-light-4 flex items-center justify-between border-t-2"
+            class="flex items-center justify-between border-t-2 border-t-light-4 bg-light-1 py-xs"
           >
             <h4 class="h4-md">Footer Text</h4>
             <button class="btn btn-round btn-warning" @click="close">
@@ -265,7 +276,7 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
       >
         <template #header="{ close }">
           <div
-            class="py-xs bg-light-1 border-b-light-4 flex justify-between border-b-2"
+            class="flex justify-between border-b-2 border-b-light-4 bg-light-1 py-xs"
           >
             <h3 class="h3-md">Large Modal</h3>
             <button @click="close">
@@ -273,7 +284,7 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
                 xmlns="http://www.w3.org/2000/svg"
                 height="1em"
                 viewBox="0 0 384 512"
-                class="fill-dark-2 hover:fill-dark-1 focus:fill-dark-1 h-sm transition-colors duration-300 ease-linear"
+                class="h-sm fill-dark-2 transition-colors duration-300 ease-linear hover:fill-dark-1 focus:fill-dark-1"
               >
                 <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
                 <path
@@ -304,7 +315,7 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
         </template>
         <template #footer="{ close }">
           <div
-            class="bg-light-1 py-xs border-t-light-4 flex items-center justify-between border-t-2"
+            class="flex items-center justify-between border-t-2 border-t-light-4 bg-light-1 py-xs"
           >
             <h4 class="h4-md">Footer Text</h4>
             <button class="btn btn-round btn-warning" @click="close">

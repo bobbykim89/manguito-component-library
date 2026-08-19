@@ -60,7 +60,12 @@ const parallaxImage = computed(() => {
 
 <template>
   <section class="relative" :style="parallaxImage">
-    <div :class="[generateClass.bgColorVariant({ color: sectionBgColor }), 'space-hts']"></div>
+    <div
+      :class="[
+        generateClass.bgColorVariant({ color: sectionBgColor }),
+        'space-hts',
+      ]"
+    ></div>
     <div class="relative">
       <div
         class="bg-image absolute inset-0 bg-cover bg-fixed bg-top bg-no-repeat"
@@ -68,12 +73,12 @@ const parallaxImage = computed(() => {
         :aria-label="imageAlt"
       ></div>
       <div
-        class="px-xs max-w-285 container relative z-10 -translate-y-1/2"
+        class="relative z-10 container max-w-285 -translate-y-1/2 px-xs"
         ref="mainContentElem"
       >
         <div
           :class="generateClass.bgColorVariant({ color: containerBgColor })"
-          class="py-md md:py-lg px-xs md:px-md lg:p-xl"
+          class="px-xs py-md md:px-md md:py-lg lg:p-xl"
         >
           <div class="w-full">
             <component :is="titleLevel">

@@ -100,7 +100,11 @@ const panelRefs = ref<InstanceType<typeof Collapse>[]>([])
     <div v-for="(item, index) in items" :key="item.id">
       <button @click="panelRefs[index]?.toggle()">{{ item.title }}</button>
       <Collapse
-        :ref="(el) => { if (el) panelRefs[index] = el as InstanceType<typeof Collapse> }"
+        :ref="
+          (el) => {
+            if (el) panelRefs[index] = el as InstanceType<typeof Collapse>
+          }
+        "
         :id="item.id"
         class-name="p-4"
       >

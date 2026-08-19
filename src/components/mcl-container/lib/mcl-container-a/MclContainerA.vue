@@ -89,8 +89,11 @@ const getRightColumnWIdth = (
 </script>
 
 <template>
-  <section class="py-lg lg:py-xl" :class="generateClass.bgColorVariant({ color: sectionBg })">
-    <div class="lg:min-h-15 relative min-h-9 md:min-h-12">
+  <section
+    class="py-lg lg:py-xl"
+    :class="generateClass.bgColorVariant({ color: sectionBg })"
+  >
+    <div class="relative min-h-9 md:min-h-12 lg:min-h-15">
       <svg
         class="absolute inset-x-0 left-0 block h-full w-full"
         :class="generateClass.svgFillColorVariant({ color: containerBg })"
@@ -102,7 +105,7 @@ const getRightColumnWIdth = (
       </svg>
     </div>
     <div
-      class="py-md md:py-lg lg:py-xl px-sm md:px-md lg:px-lg"
+      class="px-sm py-md md:px-md md:py-lg lg:px-lg lg:py-xl"
       :class="generateClass.bgColorVariant({ color: containerBg })"
     >
       <div class="container grid gap-4 md:grid-cols-4">
@@ -117,7 +120,7 @@ const getRightColumnWIdth = (
         </div>
       </div>
     </div>
-    <div class="lg:min-h-15 relative min-h-9 md:min-h-12">
+    <div class="relative min-h-9 md:min-h-12 lg:min-h-15">
       <svg
         class="absolute inset-x-0 left-0 block h-full w-full"
         :class="generateClass.svgFillColorVariant({ color: containerBg })"

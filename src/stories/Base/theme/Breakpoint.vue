@@ -1,36 +1,36 @@
 <script lang="ts" setup>
 interface SizeItem {
-  size: string;
-  class: string;
+  size: string
+  class: string
 }
 
 interface SpacingClass {
-  "3xs": SizeItem;
-  "2xs": SizeItem;
-  xs: SizeItem;
-  sm: SizeItem;
-  md: SizeItem;
-  lg: SizeItem;
-  xl: SizeItem;
-  "2xl": SizeItem;
-  "3xl": SizeItem;
+  '3xs': SizeItem
+  '2xs': SizeItem
+  xs: SizeItem
+  sm: SizeItem
+  md: SizeItem
+  lg: SizeItem
+  xl: SizeItem
+  '2xl': SizeItem
+  '3xl': SizeItem
 }
 
 interface BreakpointClass {
-  sm: string;
-  md: string;
-  lg: string;
-  xl: string;
-  "2xl": string;
+  sm: string
+  md: string
+  lg: string
+  xl: string
+  '2xl': string
 }
 
 const breakPoint: BreakpointClass = {
-  sm: "640px",
-  md: "768px",
-  lg: "1024px",
-  xl: "1280px",
-  "2xl": "1536px",
-};
+  sm: '640px',
+  md: '768px',
+  lg: '1024px',
+  xl: '1280px',
+  '2xl': '1536px',
+}
 </script>
 
 <template>
@@ -46,7 +46,7 @@ const breakPoint: BreakpointClass = {
       <div class="flex items-center justify-center">
         <h3 class="h3-md text-warning drop-shadow-md" v-html="index"></h3>
       </div>
-      <div class="p-xs flex items-center justify-center bg-white">
+      <div class="flex items-center justify-center bg-white p-xs">
         <h3 class="h3-md" v-html="size"></h3>
       </div>
     </div>

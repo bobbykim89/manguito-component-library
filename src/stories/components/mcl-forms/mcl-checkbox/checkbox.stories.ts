@@ -108,7 +108,7 @@ export const MclCheckboxEventExample: Story = {
       const handleCheckboxClick = (
         e: Event,
         checked: boolean,
-        value: string | number
+        value: string | number,
       ) => {
         e.preventDefault()
         checkboxVal.value = value

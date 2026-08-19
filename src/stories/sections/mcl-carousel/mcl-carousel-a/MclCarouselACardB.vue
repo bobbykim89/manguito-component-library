@@ -83,7 +83,7 @@ const cardInfo: any[] = [
         cta-target="_blank"
         class="h-full"
       >
-        <div class="py-2xs px-xs bg-light-2/50" v-html="card.description"></div>
+        <div class="bg-light-2/50 px-xs py-2xs" v-html="card.description"></div>
       </mcl-card-b>
     </template>
   </mcl-carousel-a>

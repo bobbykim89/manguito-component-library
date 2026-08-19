@@ -159,7 +159,7 @@ export const headingTextControllers = (arg: ControllerHeadingTextType): any => {
 }
 
 export const headingLevelControllers = (
-  arg: ControllerHeadingLevelType
+  arg: ControllerHeadingLevelType,
 ): any => {
   const { name, required, description, defaultValue, category } = arg
   return {
@@ -193,7 +193,7 @@ export const xDirControllers = (arg: ControllerXDirType): any => {
 }
 
 export const targetOptionControllers = (
-  arg: ControllerTargetOptionType
+  arg: ControllerTargetOptionType,
 ): any => {
   const { name, required, description, defaultValue, category } = arg
   return {

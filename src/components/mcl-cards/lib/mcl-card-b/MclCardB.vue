@@ -48,7 +48,9 @@ const borderClass = computed<string>(() => {
    * @param {boolean} rounded
    */
   const { borderColor, rounded } = props
-  const classArray: string[] = [generateClass.borderColorVariant({ color: borderColor })]
+  const classArray: string[] = [
+    generateClass.borderColorVariant({ color: borderColor }),
+  ]
   classArray.push(rounded ? 'rounded-md' : 'rounded-sm')
   return classArray.join(' ')
 })
@@ -94,16 +96,16 @@ const handleCardClick = (e: Event): void => {
 
 <template>
   <div
-    class="max-w-112.5 sm:max-w-87.5 xs:w-auto relative w-full shrink-0 grow cursor-pointer overflow-hidden border"
+    class="xs:w-auto relative w-full max-w-112.5 shrink-0 grow cursor-pointer overflow-hidden border sm:max-w-87.5"
     :class="borderClass"
   >
     <a :href="ctaLink" :target="ctaTarget" @click="handleCardClick($event)">
       <div
-        class="z-15 p-xs peer absolute inset-0 flex flex-col items-start justify-end transition-opacity duration-200 hover:opacity-100 [@media(hover:hover)]:opacity-0"
+        class="peer absolute inset-0 z-15 flex flex-col items-start justify-end p-xs transition-opacity duration-200 hover:opacity-100 [@media(hover:hover)]:opacity-0"
       >
         <h3
           v-html="title"
-          class="px-xs py-2xs mb-2xs pointer-events-none inline-block tracking-wide"
+          class="pointer-events-none mb-2xs inline-block px-xs py-2xs tracking-wide"
           :class="titleClass"
         ></h3>
         <slot></slot>
@@ -111,7 +113,7 @@ const handleCardClick = (e: Event): void => {
       <img
         :src="imageSource"
         :alt="imageAlt"
-        class="aspect-3/4 relative z-10 h-full w-full object-cover object-center transition-all duration-200"
+        class="relative z-10 aspect-3/4 h-full w-full object-cover object-center transition-all duration-200"
         :class="hoverEffect"
       />
     </a>
