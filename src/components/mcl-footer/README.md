@@ -2,9 +2,9 @@
 
 ## Demo
 
-[MCL Storybook Page](https://manguito-component-library.vercel.app/)
+[MCL Storybook Page](https://manguito-component-library.bobbykim.dev/)
 
-- [MCL Footer A](https://manguito-component-library.vercel.app/?path=/docs/sections-footer-mclfootera--mclfootera)
+- [MCL Footer A](https://manguito-component-library.bobbykim.dev/?path=/docs/sections-footer-mclfootera--mclfootera)
 
 ## Install
 

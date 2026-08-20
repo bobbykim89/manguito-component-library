@@ -2,7 +2,7 @@
 
 ## Demo
 
-[MCL Storybook Page](https://manguito-component-library.vercel.app/)
+[MCL Storybook Page](https://manguito-component-library.bobbykim.dev/)
 
 ## Install
 

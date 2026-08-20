@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://manguito-component-library.vercel.app" target="_blank">
+  <a href="https://manguito-component-library.bobbykim.dev" target="_blank">
     <img width="180" src="public/mcl-logo-square.png" alt="MCL Logo" />
   </a>
 </p>
