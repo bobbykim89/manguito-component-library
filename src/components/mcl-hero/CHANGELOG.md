@@ -1,5 +1,17 @@
 # Change Log
 
+## 0.9.2
+
+### Patch Changes
+
+- de8957f: Update the documentation site URL to https://manguito-component-library.bobbykim.dev
+
+  The `homepage` field and all README links now point at the new custom domain
+  instead of the previous `manguito-component-library.vercel.app` address.
+
+- Updated dependencies [de8957f]
+  - @bobbykim/manguito-theme@1.0.2
+
 ## 0.9.1
 
 ### Patch Changes
