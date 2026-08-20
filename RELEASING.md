@@ -177,7 +177,7 @@ node -e "console.log(Object.keys(require('@bobbykim/mcl-cards')))"
 
 ## Step 5 — Docs site
 
-The Storybook site at <https://manguito-component-library.vercel.app/> is served
+The Storybook site at <https://manguito-component-library.bobbykim.dev/> is served
 from this repo through Vercel. If the Vercel project is linked to GitHub, the
 push in Step 3 triggers a redeploy — confirm the site reflects the release
 rather than assuming it. To reproduce the deployed build locally:

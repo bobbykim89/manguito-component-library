@@ -2,10 +2,10 @@
 
 ## Demo
 
-[MCL Storybook Page](https://manguito-component-library.vercel.app/)
+[MCL Storybook Page](https://manguito-component-library.bobbykim.dev/)
 
-- [MCL Collapse A](https://manguito-component-library.vercel.app/?path=/docs/components-collapse-mclcollapsea--mclcollapsea)
-- [MCL Collapse B](https://manguito-component-library.vercel.app/?path=/docs/components-collapse-mclcollapseb--mclcollapseb)
+- [MCL Collapse A](https://manguito-component-library.bobbykim.dev/?path=/docs/components-collapse-mclcollapsea--mclcollapsea)
+- [MCL Collapse B](https://manguito-component-library.bobbykim.dev/?path=/docs/components-collapse-mclcollapseb--mclcollapseb)
 
 ## Install
 
