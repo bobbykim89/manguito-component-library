@@ -6,10 +6,9 @@ import type {
   SpacingLevel,
 } from '@bobbykim/manguito-theme'
 import { generateClass } from '@bobbykim/manguito-theme'
-import { useEventListener, useIntersectionObserver } from '@vueuse/core'
-import { onMounted, ref, type ComponentPublicInstance } from 'vue'
-
-type BtnNav = 'prev' | 'next'
+import { computed, ref } from 'vue'
+import type { BtnNav, MclCarouselASlotProps } from './index.types'
+import { useCarouselSlide } from './useCarouselSlide'
 
 const props = withDefaults(
   defineProps<{
@@ -26,6 +25,7 @@ const props = withDefaults(
     highlightColor?: ColorPalette
     btnColor?: ColorPalette
     btnBgColor?: ColorPalette
+    /** Passed straight through to the `carousel` slot; shape is the consumer's. */
     content: any[]
     cardsGap?: SpacingLevel
   }>(),
@@ -44,177 +44,98 @@ const props = withDefaults(
     cardsGap: 'xs',
   },
 )
-const slideContainer = ref<HTMLElement | null>(null)
-const carouselCards = ref<ComponentPublicInstance[]>([])
-const lastCarouselElement = ref<ComponentPublicInstance>()
+
 const emit = defineEmits<{
   (e: 'btn-prev', event: Event): void
   (e: 'btn-next', event: Event): void
 }>()
 
-const currentIndex = ref(0)
-const isNextBtnDisabled = ref(false)
-let isMoving: boolean = false
-const cardsSpace = (gap: SpacingLevel): number => {
-  switch (gap) {
-    case '0':
-      return 0
-    case '3xs':
-      return 4
-    case '2xs':
-      return 8
-    case 'xs':
-      return 16
-    case 'sm':
-      return 24
-    case 'md':
-      return 32
-    case 'lg':
-      return 48
-    case 'xl':
-      return 64
-    case '2xl':
-      return 96
-    case '3xl':
-      return 128
-  }
-}
+defineSlots<{
+  description?: any
+  carousel?: (props: MclCarouselASlotProps) => any
+}>()
 
-// assign ref as
-const setCarouselRef = (el: ComponentPublicInstance | Element | null): void => {
-  carouselCards.value!.push(el as ComponentPublicInstance)
-}
+// --- slide mechanics ---
 
-// navigation btn control function
+/** The translated flex row. Its children are the cards. */
+const slideContainer = ref<HTMLElement | null>(null)
+const { isPrevDisabled, isNextDisabled, goTo } =
+  useCarouselSlide(slideContainer)
+
 const handleSlideBtnClick = (e: Event, btn: BtnNav): void => {
-  if (isMoving) {
-    return
-  }
-  isMoving = true
-  if (btn === 'prev') {
-    currentIndex.value--
-    emit('btn-prev', e)
-  }
-  if (btn === 'next') {
-    currentIndex.value++
-    emit('btn-next', e)
-  }
-  slideContainer.value?.dispatchEvent(new Event('sliderMove'))
+  // Emit only once the move is accepted, preserving the previous behaviour
+  // where a click landing mid-transition was ignored outright.
+  if (!goTo(btn)) return
+  if (btn === 'prev') emit('btn-prev', e)
+  else emit('btn-next', e)
 }
 
-const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
-  /**
-   * @size - titleSize
-   * @color - titleColor
-   */
+/**
+ * @deprecated No-op, kept so existing `:ref="(el) => setRef(el)"` bindings in
+ * the `carousel` slot keep working. Cards are now read from the DOM, so
+ * nothing needs registering. Scheduled for removal in the next major version.
+ */
+const setCarouselRef = (): void => {}
 
-  const classArray = [
-    generateClass.h2Variant({ size: size }),
-    generateClass.textColorVariant({ color: color }),
-  ]
+// --- derived classes ---
+// Previously functions taking (size, color) arguments, but every call site
+// passed the matching props, so they are plain derived values.
 
-  return classArray.join(' ')
-}
-
-const getTaglineClass = (
-  size: BodyText,
-  color: ColorPalette,
-  upper: boolean,
-): string => {
-  /**
-   * @size - tagLineSize
-   * @color - tagLineColor
-   * @upper - tagLineUpperCase
-   */
-
-  const classArray = [
-    generateClass.bodyTextVariant({ size: size }),
-    generateClass.textColorVariant({ color: color }),
-  ]
-
-  if (upper) {
-    classArray.push('uppercase')
-  }
-
-  return classArray.join(' ')
-}
-
-const getButtonClass = (color: ColorPalette, bgColor: ColorPalette): string => {
-  /**
-   * @color - btnColor
-   * @bgColor - btnBgColor
-   */
-
-  const classArray = [
-    generateClass.textColorVariant({ color: color }),
-    generateClass.bgColorVariant({ color: bgColor }),
-    generateClass.ringColorVariant({ color: bgColor }),
-  ]
-
-  return classArray.join(' ')
-}
-
-const handleSlide = (): void => {
-  slideContainer.value!.style.transform = `translateX(-${
-    currentIndex.value *
-    (carouselCards.value![0].$el.clientWidth + cardsSpace(props.cardsGap) + 2)
-  }px)`
-
-  isNextBtnDisabled.value = false
-}
-
-const handleTransitionEnd = (): void => {
-  isMoving = false
-}
-
-// handle slide movement
-useEventListener(slideContainer, 'sliderMove', handleSlide)
-// handle transition end event
-useEventListener(slideContainer, 'transitionend', handleTransitionEnd)
-// set intersection observer
-useIntersectionObserver(
-  lastCarouselElement,
-  (slide) => {
-    if (slide[0].isIntersecting) {
-      isNextBtnDisabled.value = true
-    }
-  },
-  { threshold: 0.75 },
+const sectionBgClass = computed(() =>
+  generateClass.bgColorVariant({ color: props.bgColor }),
 )
 
-onMounted(() => {
-  // set last element value on mount
-  lastCarouselElement.value =
-    carouselCards.value[carouselCards.value!.length - 1].$el
+const highlightBgClass = computed(() =>
+  generateClass.bgColorVariant({ color: props.highlightColor }),
+)
+
+const titleClass = computed(() =>
+  [
+    generateClass.h2Variant({ size: props.titleSize }),
+    generateClass.textColorVariant({ color: props.titleColor }),
+  ].join(' '),
+)
+
+const tagLineClass = computed(() => {
+  const classes = [
+    generateClass.bodyTextVariant({ size: props.tagLineSize }),
+    generateClass.textColorVariant({ color: props.tagLineColor }),
+  ]
+  if (props.tagLineUpperCase) classes.push('uppercase')
+  return classes.join(' ')
 })
+
+/** Shared by both navigation buttons; the ring matches the button background. */
+const navBtnClass = computed(() =>
+  [
+    generateClass.textColorVariant({ color: props.btnColor }),
+    generateClass.bgColorVariant({ color: props.btnBgColor }),
+    generateClass.ringColorVariant({ color: props.btnBgColor }),
+  ].join(' '),
+)
+
+const cardsGapClass = computed(() =>
+  generateClass.gapVariant({ spacing: props.cardsGap }),
+)
 </script>
 
 <template>
-  <section
-    class="overflow-hidden py-lg lg:py-xl"
-    :class="generateClass.bgColorVariant({ color: bgColor })"
-  >
+  <section class="overflow-hidden py-lg lg:py-xl" :class="sectionBgClass">
     <div class="container px-xs text-center sm:px-md sm:text-left">
       <div class="relative">
         <div
           v-if="showHighlight"
           class="absolute -left-4 hidden h-full w-md bg-opacity-25 sm:block"
-          :class="generateClass.bgColorVariant({ color: highlightColor })"
+          :class="highlightBgClass"
         ></div>
         <div class="relative">
           <span
             v-if="showTagLine"
             class="tracking-widest"
-            :class="
-              getTaglineClass(tagLineSize, tagLineColor, tagLineUpperCase)
-            "
+            :class="tagLineClass"
             v-html="tagLine"
           ></span>
-          <h2
-            class="tracking-wide"
-            :class="getTitleClass(titleSize, titleColor)"
-            v-html="title"
-          ></h2>
+          <h2 class="tracking-wide" :class="titleClass" v-html="title"></h2>
         </div>
         <div
           class="relative flex flex-wrap items-center justify-center space-y-4 space-x-4 sm:flex-nowrap sm:justify-start"
@@ -225,8 +146,8 @@ onMounted(() => {
           <div class="flex space-x-4">
             <button
               class="grid place-items-center rounded-full p-xs ring-offset-2 ring-offset-inherit transition-all duration-200 hover:bg-opacity-80 focus:ring-4 focus:outline-none disabled:opacity-50"
-              :class="getButtonClass(btnColor, btnBgColor)"
-              :disabled="currentIndex === 0"
+              :class="navBtnClass"
+              :disabled="isPrevDisabled"
               @click="handleSlideBtnClick($event, 'prev')"
               aria-label="previous"
             >
@@ -244,8 +165,8 @@ onMounted(() => {
             </button>
             <button
               class="grid place-items-center rounded-full p-xs ring-offset-2 ring-offset-inherit transition-all duration-200 hover:bg-opacity-80 focus:ring-4 focus:outline-none disabled:opacity-50"
-              :class="getButtonClass(btnColor, btnBgColor)"
-              :disabled="isNextBtnDisabled"
+              :class="navBtnClass"
+              :disabled="isNextDisabled"
               @click="handleSlideBtnClick($event, 'next')"
               aria-label="next"
             >
@@ -268,7 +189,7 @@ onMounted(() => {
     <div class="container mt-md sm:mt-lg lg:mt-xl">
       <div
         class="flex gap-xs px-xs transition-transform duration-500"
-        :class="generateClass.gapVariant({ spacing: cardsGap })"
+        :class="cardsGapClass"
         ref="slideContainer"
       >
         <slot name="carousel" :cards="content" :set-ref="setCarouselRef"></slot>
