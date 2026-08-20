@@ -2,9 +2,9 @@
 
 ## Demo
 
-[MCL Storybook Page](https://manguito-component-library.vercel.app/)
+[MCL Storybook Page](https://manguito-component-library.bobbykim.dev/)
 
-- [MCL Carousel A](https://manguito-component-library.vercel.app/?path=/docs/sections-carousel-mclcarousela--mclcarousela)
+- [MCL Carousel A](https://manguito-component-library.bobbykim.dev/?path=/docs/sections-carousel-mclcarousela--mclcarousela)
 
 ## Install
 

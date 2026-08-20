@@ -23,7 +23,7 @@
 "name": "{%authorName%}",
 "url": "https://www.devbobbykim.com/"
 },
-"homepage": "https://manguito-component-library.vercel.app/",
+"homepage": "https://manguito-component-library.bobbykim.dev/",
 "repository": {
 "type": "git",
 "url": "https://github.com/bobbykim89/manguito-component-library.git"
