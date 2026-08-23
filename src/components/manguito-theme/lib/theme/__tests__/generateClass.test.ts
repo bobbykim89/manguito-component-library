@@ -19,6 +19,7 @@ import {
   peerFocusVisibleRingColorVariant,
   focusVisibleRingColorVariant,
 } from '../index'
+import type { ColorPalette } from '../static/theme.types'
 
 describe('generateClass namespace — color variants', () => {
   it('bgColorVariant: primary returns mcl-bg-primary', () => {
@@ -168,19 +169,40 @@ describe('generateClass namespace — peer and focus-visible variants', () => {
     )
   })
   it('all three cover every ColorPalette member', () => {
-    const colors = [
-      'primary', 'secondary', 'success', 'danger', 'info', 'warning',
-      'light-1', 'light-2', 'light-3', 'light-4',
-      'dark-1', 'dark-2', 'dark-3', 'dark-4',
-      'black', 'white', 'transparent',
-    ] as const
+    // Keyed by ColorPalette rather than written as a literal list: adding a
+    // member to the palette without a variant entry then fails to compile here
+    // instead of silently dropping out of the sweep.
+    const expectedSuffix: Record<ColorPalette, string> = {
+      primary: 'primary',
+      secondary: 'secondary',
+      success: 'success',
+      danger: 'danger',
+      info: 'info',
+      warning: 'warning',
+      'light-1': 'light-1',
+      'light-2': 'light-2',
+      'light-3': 'light-3',
+      'light-4': 'light-4',
+      'dark-1': 'dark-1',
+      'dark-2': 'dark-2',
+      'dark-3': 'dark-3',
+      'dark-4': 'dark-4',
+      black: 'black',
+      white: 'white',
+      transparent: 'transparent',
+    }
+    const colors = Object.keys(expectedSuffix) as ColorPalette[]
+    expect(colors).toHaveLength(17)
     for (const color of colors) {
-      expect(peerCheckedBgColorVariant({ color })).toBe(`peer-checked:bg-${color}`)
+      const suffix = expectedSuffix[color]
+      expect(peerCheckedBgColorVariant({ color })).toBe(
+        `peer-checked:bg-${suffix}`,
+      )
       expect(peerFocusVisibleRingColorVariant({ color })).toBe(
-        `peer-focus-visible:ring-${color}`,
+        `peer-focus-visible:ring-${suffix}`,
       )
       expect(focusVisibleRingColorVariant({ color })).toBe(
-        `focus-visible:ring-${color}`,
+        `focus-visible:ring-${suffix}`,
       )
     }
   })
