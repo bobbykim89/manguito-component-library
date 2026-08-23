@@ -96,6 +96,11 @@ describe('useFieldContext — standalone (no provider)', () => {
     expect(ctx.id).toBeTruthy()
     expect(ctx.errorId).not.toBe('-error')
   })
+
+  it('reports isGroupLabel as false when standalone', () => {
+    const ctx = ctxOf(mount(Child, { props: { id: 'email' } }))
+    expect(ctx.isGroupLabel).toBe(false)
+  })
 })
 
 describe('useFieldContext — standalone name (Ruling D)', () => {
@@ -213,6 +218,26 @@ describe('useFieldContext — explicit props beat the provider', () => {
     expect(ctx.feedbackOwnedByGroup).toBe(true)
   })
 
+  it('a group can render help text while leaving the error region to the control (Ruling B, flags are independent)', () => {
+    // hasHelpText and ownsFeedback govern independent regions: a group can
+    // render help text without also owning the error region. The control
+    // still points at the group's descriptionId (that region provably
+    // exists), but derives its own errorId from its own id, since the group
+    // does not render an error region here. Neither id dangles.
+    const ctx = ctxOf(
+      mount(
+        ParentWithChildProps(
+          { fieldId: 'group', hasHelpText: true, ownsFeedback: false, invalid: true },
+          { id: 'mine' },
+        ),
+      ),
+    )
+    expect(ctx.descriptionId).toBe('group-description')
+    expect(ctx.errorId).toBe('mine-error')
+    expect(ctx.describedBy.value).toBe('group-description mine-error')
+    expect(ctx.feedbackOwnedByGroup).toBe(false)
+  })
+
   it('an explicit disabled=false overrides an inherited disabled=true', () => {
     // This is why invalid/required/disabled must be `boolean | undefined`:
     // with a `false` default there is no way to tell "not passed" from "passed false".
@@ -328,6 +353,22 @@ describe('useFieldContext — fieldset mode (isGroupLabel: true, Ruling C)', () 
     expect(second.errorId).toBe('colour-error')
     expect(first.name.value).toBe('colour-set')
     expect(second.name.value).toBe('colour-set')
+  })
+
+  it('reports isGroupLabel truthfully, so a control can tell it is part of a set', () => {
+    const GroupWithOneChild = defineComponent({
+      setup() {
+        provideFieldContext({
+          fieldId: 'colour',
+          hasHelpText: false,
+          ownsFeedback: true,
+          isGroupLabel: true,
+        })
+        return () => h(Child)
+      },
+    })
+    const ctx = ctxOf(mount(GroupWithOneChild))
+    expect(ctx.isGroupLabel).toBe(true)
   })
 })
 

@@ -169,8 +169,11 @@ export const useFieldContext = (own: FieldOwnProps): FieldContext => {
     ),
     describedBy: buildDescribedBy(descriptionId, errorId, invalid),
     feedbackOwnedByGroup: group?.feedbackOwnedByGroup ?? false,
-    // A leaf control never itself governs a fieldset/label choice — only a
-    // group's own provideFieldContext() call sets this meaningfully.
-    isGroupLabel: false,
+    // Reported truthfully, not hardcoded: this value is inert for
+    // provide/inject (a leaf never re-provides it), but the control's own
+    // template reads its own returned context, and a control inside a
+    // fieldset needs to know it — e.g. MclInputRadio renders differently as
+    // part of a set than alone. `false` here would be a lie it could act on.
+    isGroupLabel: group?.isGroupLabel ?? false,
   }
 }
