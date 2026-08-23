@@ -1,5 +1,16 @@
 # Change Log
 
+## 0.11.0
+
+### Minor Changes
+
+- 35124e4: Add shared field-context, input-surface and toggle-control composables, a FieldFeedback error region, and reusable icon components. Internal foundation; components are unchanged in this release.
+
+### Patch Changes
+
+- Updated dependencies [dfe8f35]
+  - @bobbykim/manguito-theme@1.1.0
+
 ## 0.10.2
 
 ### Patch Changes

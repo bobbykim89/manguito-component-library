@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/mcl-dropdown",
-  "version": "0.13.2",
+  "version": "0.13.3",
   "description": "a dropdown component built on top of manguito-theme's dropdown component",
   "type": "module",
   "files": [
