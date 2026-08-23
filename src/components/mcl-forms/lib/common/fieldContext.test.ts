@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import { defineComponent, h, type ComputedRef } from 'vue'
+import { defineComponent, h, reactive, type ComputedRef } from 'vue'
 import {
   provideFieldContext,
   useFieldContext,
@@ -33,6 +33,7 @@ const Parent = (options: Record<string, unknown> = {}) =>
       provideFieldContext({
         hasHelpText: false,
         ownsFeedback: false,
+        isGroupLabel: false,
         ...options,
       } as FieldProviderOptions)
       return () => h(Child)
@@ -89,6 +90,26 @@ describe('useFieldContext — standalone (no provider)', () => {
       false,
     )
   })
+
+  it('treats an empty-string id as not supplied', () => {
+    const ctx = ctxOf(mount(Child, { props: { id: '' } }))
+    expect(ctx.id).toBeTruthy()
+    expect(ctx.errorId).not.toBe('-error')
+  })
+})
+
+describe('useFieldContext — standalone name (Ruling D)', () => {
+  it('uses its own name when given one', () => {
+    const ctx = ctxOf(
+      mount(Child, { props: { id: 'email', name: 'email-name' } }),
+    )
+    expect(ctx.name.value).toBe('email-name')
+  })
+
+  it('falls back to its own id when no name is given', () => {
+    const ctx = ctxOf(mount(Child, { props: { id: 'email' } }))
+    expect(ctx.name.value).toBe('email')
+  })
 })
 
 describe('useFieldContext — inheriting from a provider', () => {
@@ -106,12 +127,12 @@ describe('useFieldContext — inheriting from a provider', () => {
 
   it('inherits name, which is what makes radio groups work', () => {
     const ctx = ctxOf(mount(Parent({ fieldId: 'colour', name: 'colour-set' })))
-    expect(ctx.name).toBe('colour-set')
+    expect(ctx.name.value).toBe('colour-set')
   })
 
   it('defaults name to the field id when the provider gives none', () => {
     const ctx = ctxOf(mount(Parent({ fieldId: 'colour' })))
-    expect(ctx.name).toBe('colour')
+    expect(ctx.name.value).toBe('colour')
   })
 
   it('inherits invalid, required and disabled', () => {
@@ -137,6 +158,11 @@ describe('useFieldContext — inheriting from a provider', () => {
     expect(ctx.describedBy.value).toBe('x-description x-error')
   })
 
+  it('describedBy is the description id alone when valid', () => {
+    const ctx = ctxOf(mount(Parent({ fieldId: 'x', hasHelpText: true })))
+    expect(ctx.describedBy.value).toBe('x-description')
+  })
+
   it('reports group feedback ownership when the provider owns it', () => {
     expect(ctxOf(mount(Parent({ fieldId: 'x', ownsFeedback: true }))).feedbackOwnedByGroup).toBe(
       true,
@@ -154,6 +180,7 @@ describe('useFieldContext — explicit props beat the provider', () => {
         provideFieldContext({
           hasHelpText: false,
           ownsFeedback: false,
+          isGroupLabel: false,
           ...provided,
         } as FieldProviderOptions)
         return () => h(Child, childProps)
@@ -168,6 +195,24 @@ describe('useFieldContext — explicit props beat the provider', () => {
     expect(ctx.errorId).toBe('mine-error')
   })
 
+  it('an own id inside a feedback-owning group still points at the shared regions (Ruling B)', () => {
+    // Region ids follow who RENDERS the region, not who owns the element id:
+    // the group's help-text/error regions provably exist (hasHelpText,
+    // ownsFeedback), so pointing at them never dangles even though this
+    // control supplied its own element id.
+    const ctx = ctxOf(
+      mount(
+        ParentWithChildProps(
+          { fieldId: 'group', hasHelpText: true, ownsFeedback: true, invalid: true },
+          { id: 'mine' },
+        ),
+      ),
+    )
+    expect(ctx.id).toBe('mine')
+    expect(ctx.describedBy.value).toBe('group-description group-error')
+    expect(ctx.feedbackOwnedByGroup).toBe(true)
+  })
+
   it('an explicit disabled=false overrides an inherited disabled=true', () => {
     // This is why invalid/required/disabled must be `boolean | undefined`:
     // with a `false` default there is no way to tell "not passed" from "passed false".
@@ -175,6 +220,20 @@ describe('useFieldContext — explicit props beat the provider', () => {
       mount(ParentWithChildProps({ disabled: true }, { disabled: false })),
     )
     expect(ctx.disabled.value).toBe(false)
+  })
+
+  it('an explicit invalid=false overrides an inherited invalid=true', () => {
+    const ctx = ctxOf(
+      mount(ParentWithChildProps({ invalid: true }, { invalid: false })),
+    )
+    expect(ctx.invalid.value).toBe(false)
+  })
+
+  it('an explicit required=false overrides an inherited required=true', () => {
+    const ctx = ctxOf(
+      mount(ParentWithChildProps({ required: true }, { required: false })),
+    )
+    expect(ctx.required.value).toBe(false)
   })
 
   it('an omitted prop still inherits', () => {
@@ -186,7 +245,7 @@ describe('useFieldContext — explicit props beat the provider', () => {
     const ctx = ctxOf(
       mount(ParentWithChildProps({ name: 'group-name' }, { name: 'own-name' })),
     )
-    expect(ctx.name).toBe('own-name')
+    expect(ctx.name.value).toBe('own-name')
   })
 })
 
@@ -198,6 +257,7 @@ describe('provideFieldContext — the returned context', () => {
           fieldId: 'x',
           hasHelpText: true,
           ownsFeedback: true,
+          isGroupLabel: false,
           invalid: true,
         })
         return { ctx }
@@ -211,5 +271,87 @@ describe('provideFieldContext — the returned context', () => {
     expect(ctx.feedbackOwnedByGroup).toBe(true)
     const describedBy: ComputedRef<string | undefined> = ctx.describedBy
     expect(describedBy.value).toBe('x-description x-error')
+  })
+})
+
+describe('provideFieldContext — reactivity through an object literal (Ruling A)', () => {
+  it('recomputes invalid and describedBy when the reactive source changes', () => {
+    // A plain object literal is exactly what MclFormGroup must pass, because
+    // hasHelpText/ownsFeedback are derived from slot/prop *presence* rather
+    // than being props themselves — it cannot forward its whole `props`
+    // proxy. The getter is what keeps `invalid` live; a literal
+    // `invalid: state.invalid` would snapshot the value read at setup and
+    // never update, which is exactly the defect the review measured.
+    const state = reactive({ invalid: false })
+    const Group = defineComponent({
+      setup() {
+        const ctx = provideFieldContext({
+          fieldId: 'x',
+          hasHelpText: true,
+          ownsFeedback: true,
+          isGroupLabel: false,
+          invalid: () => state.invalid,
+        })
+        return { ctx }
+      },
+      render: () => h('div'),
+    })
+    const ctx = mount(Group).vm.ctx as FieldContext
+    expect(ctx.invalid.value).toBe(false)
+    expect(ctx.describedBy.value).toBe('x-description')
+    state.invalid = true
+    expect(ctx.invalid.value).toBe(true)
+    expect(ctx.describedBy.value).toBe('x-description x-error')
+  })
+})
+
+describe('useFieldContext — fieldset mode (isGroupLabel: true, Ruling C)', () => {
+  it('gives sibling controls distinct element ids while sharing the group error id and name', () => {
+    const GroupWithTwoChildren = defineComponent({
+      setup() {
+        provideFieldContext({
+          fieldId: 'colour',
+          name: 'colour-set',
+          hasHelpText: false,
+          ownsFeedback: true,
+          isGroupLabel: true,
+        })
+        return () => h('div', [h(Child), h(Child)])
+      },
+    })
+    const wrapper = mount(GroupWithTwoChildren)
+    const [first, second] = wrapper
+      .findAllComponents(Child)
+      .map((c) => c.vm.ctx as FieldContext)
+    expect(first.id).not.toBe(second.id)
+    expect(first.errorId).toBe('colour-error')
+    expect(second.errorId).toBe('colour-error')
+    expect(first.name.value).toBe('colour-set')
+    expect(second.name.value).toBe('colour-set')
+  })
+})
+
+describe('useFieldContext — single-control mode (isGroupLabel: false, Ruling C)', () => {
+  it('gives the control the group id so <label for> can bind to it', () => {
+    const GroupWithTwoChildren = defineComponent({
+      setup() {
+        provideFieldContext({
+          fieldId: 'email',
+          hasHelpText: false,
+          ownsFeedback: false,
+          isGroupLabel: false,
+        })
+        return () => h('div', [h(Child), h(Child)])
+      },
+    })
+    const wrapper = mount(GroupWithTwoChildren)
+    const [first, second] = wrapper
+      .findAllComponents(Child)
+      .map((c) => c.vm.ctx as FieldContext)
+    // Single-control mode assumes the group renders exactly one control; both
+    // ending up with the group's id here is why isGroupLabel:true exists for
+    // genuinely multi-control groups (see the fieldset-mode suite above).
+    expect(first.id).toBe('email')
+    expect(second.id).toBe('email')
   })
 })
