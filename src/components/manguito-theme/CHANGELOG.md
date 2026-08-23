@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.1.0
+
+### Minor Changes
+
+- dfe8f35: Add peerCheckedBgColorVariant, peerFocusVisibleRingColorVariant and focusVisibleRingColorVariant; widen InputType with tel, url, search and number.
+
 ## 1.0.2
 
 ### Patch Changes
