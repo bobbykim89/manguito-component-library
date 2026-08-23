@@ -18,8 +18,20 @@ export interface FieldOwnProps {
 
 /** The resolved field state a control renders from. */
 export interface FieldContext {
+  /**
+   * Resolved once at setup (explicit prop -> shared group id in
+   * single-control mode -> a freshly generated id). Changing the source
+   * prop after mount has no effect — this is a stable DOM id, not a
+   * reactive value.
+   */
   id: string
-  name: string | undefined
+  /**
+   * Reactive because a group's own `name` prop can change after setup, and
+   * an object literal built from it (as MclFormGroup must build, since
+   * `hasHelpText`/`ownsFeedback` are derived from slot/prop presence rather
+   * than being props themselves) would otherwise snapshot the value.
+   */
+  name: ComputedRef<string | undefined>
   errorId: string
   descriptionId: string | undefined
   invalid: ComputedRef<boolean>
@@ -33,4 +45,11 @@ export interface FieldContext {
    * from the *presence* of the group's error prop or slot, not from its value.
    */
   feedbackOwnedByGroup: boolean
+  /**
+   * True when the group renders a `<fieldset>`/`<legend>` around multiple
+   * controls (radio/checkbox groups), so descendants must not all claim the
+   * group's element id. False when the group renders a single `<label for>`
+   * bound to one control, which must reuse the group's id verbatim.
+   */
+  isGroupLabel: boolean
 }
