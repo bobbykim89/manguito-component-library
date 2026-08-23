@@ -15,7 +15,11 @@ import {
   gapVariant,
   textColorVariant,
   hoverBgColorVariant,
+  peerCheckedBgColorVariant,
+  peerFocusVisibleRingColorVariant,
+  focusVisibleRingColorVariant,
 } from '../index'
+import type { ColorPalette } from '../static/theme.types'
 
 describe('generateClass namespace — color variants', () => {
   it('bgColorVariant: primary returns mcl-bg-primary', () => {
@@ -127,5 +131,79 @@ describe('generateClass namespace — spacing variants', () => {
   it('gapVariant: 0 returns gap-0', () => {
     expect(gapVariant({ spacing: '0' })).toBe('gap-0')
     expect(generateClass.gapVariant({ spacing: '0' })).toBe('gap-0')
+  })
+})
+
+describe('generateClass namespace — peer and focus-visible variants', () => {
+  it('peerCheckedBgColorVariant: warning returns peer-checked:bg-warning', () => {
+    expect(peerCheckedBgColorVariant({ color: 'warning' })).toBe(
+      'peer-checked:bg-warning',
+    )
+    expect(generateClass.peerCheckedBgColorVariant({ color: 'warning' })).toBe(
+      'peer-checked:bg-warning',
+    )
+  })
+  it('peerCheckedBgColorVariant: dark-4 returns peer-checked:bg-dark-4, not dark-1', () => {
+    // The hand-written maps this variant replaces both mapped dark-4 to bg-dark-1.
+    expect(peerCheckedBgColorVariant({ color: 'dark-4' })).toBe(
+      'peer-checked:bg-dark-4',
+    )
+  })
+  it('peerCheckedBgColorVariant: unknown color returns empty string', () => {
+    expect(peerCheckedBgColorVariant({ color: 'neon-green' as any })).toBe('')
+  })
+  it('peerFocusVisibleRingColorVariant: primary returns peer-focus-visible:ring-primary', () => {
+    expect(peerFocusVisibleRingColorVariant({ color: 'primary' })).toBe(
+      'peer-focus-visible:ring-primary',
+    )
+    expect(
+      generateClass.peerFocusVisibleRingColorVariant({ color: 'primary' }),
+    ).toBe('peer-focus-visible:ring-primary')
+  })
+  it('focusVisibleRingColorVariant: light-4 returns focus-visible:ring-light-4', () => {
+    expect(focusVisibleRingColorVariant({ color: 'light-4' })).toBe(
+      'focus-visible:ring-light-4',
+    )
+    expect(generateClass.focusVisibleRingColorVariant({ color: 'light-4' })).toBe(
+      'focus-visible:ring-light-4',
+    )
+  })
+  it('all three cover every ColorPalette member', () => {
+    // Keyed by ColorPalette rather than written as a literal list: adding a
+    // member to the palette without a variant entry then fails to compile here
+    // instead of silently dropping out of the sweep.
+    const expectedSuffix: Record<ColorPalette, string> = {
+      primary: 'primary',
+      secondary: 'secondary',
+      success: 'success',
+      danger: 'danger',
+      info: 'info',
+      warning: 'warning',
+      'light-1': 'light-1',
+      'light-2': 'light-2',
+      'light-3': 'light-3',
+      'light-4': 'light-4',
+      'dark-1': 'dark-1',
+      'dark-2': 'dark-2',
+      'dark-3': 'dark-3',
+      'dark-4': 'dark-4',
+      black: 'black',
+      white: 'white',
+      transparent: 'transparent',
+    }
+    const colors = Object.keys(expectedSuffix) as ColorPalette[]
+    expect(colors).toHaveLength(17)
+    for (const color of colors) {
+      const suffix = expectedSuffix[color]
+      expect(peerCheckedBgColorVariant({ color })).toBe(
+        `peer-checked:bg-${suffix}`,
+      )
+      expect(peerFocusVisibleRingColorVariant({ color })).toBe(
+        `peer-focus-visible:ring-${suffix}`,
+      )
+      expect(focusVisibleRingColorVariant({ color })).toBe(
+        `focus-visible:ring-${suffix}`,
+      )
+    }
   })
 })
