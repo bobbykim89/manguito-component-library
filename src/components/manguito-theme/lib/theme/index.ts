@@ -339,6 +339,78 @@ export const activeRingColorVariant = cva('', {
   },
 })
 
+export const peerCheckedBgColorVariant = cva('', {
+  variants: {
+    color: {
+      primary: 'peer-checked:bg-primary',
+      secondary: 'peer-checked:bg-secondary',
+      success: 'peer-checked:bg-success',
+      danger: 'peer-checked:bg-danger',
+      info: 'peer-checked:bg-info',
+      warning: 'peer-checked:bg-warning',
+      'light-1': 'peer-checked:bg-light-1',
+      'light-2': 'peer-checked:bg-light-2',
+      'light-3': 'peer-checked:bg-light-3',
+      'light-4': 'peer-checked:bg-light-4',
+      'dark-1': 'peer-checked:bg-dark-1',
+      'dark-2': 'peer-checked:bg-dark-2',
+      'dark-3': 'peer-checked:bg-dark-3',
+      'dark-4': 'peer-checked:bg-dark-4',
+      black: 'peer-checked:bg-black',
+      white: 'peer-checked:bg-white',
+      transparent: 'peer-checked:bg-transparent',
+    },
+  },
+})
+
+export const peerFocusVisibleRingColorVariant = cva('', {
+  variants: {
+    color: {
+      primary: 'peer-focus-visible:ring-primary',
+      secondary: 'peer-focus-visible:ring-secondary',
+      success: 'peer-focus-visible:ring-success',
+      danger: 'peer-focus-visible:ring-danger',
+      info: 'peer-focus-visible:ring-info',
+      warning: 'peer-focus-visible:ring-warning',
+      'light-1': 'peer-focus-visible:ring-light-1',
+      'light-2': 'peer-focus-visible:ring-light-2',
+      'light-3': 'peer-focus-visible:ring-light-3',
+      'light-4': 'peer-focus-visible:ring-light-4',
+      'dark-1': 'peer-focus-visible:ring-dark-1',
+      'dark-2': 'peer-focus-visible:ring-dark-2',
+      'dark-3': 'peer-focus-visible:ring-dark-3',
+      'dark-4': 'peer-focus-visible:ring-dark-4',
+      black: 'peer-focus-visible:ring-black',
+      white: 'peer-focus-visible:ring-white',
+      transparent: 'peer-focus-visible:ring-transparent',
+    },
+  },
+})
+
+export const focusVisibleRingColorVariant = cva('', {
+  variants: {
+    color: {
+      primary: 'focus-visible:ring-primary',
+      secondary: 'focus-visible:ring-secondary',
+      success: 'focus-visible:ring-success',
+      danger: 'focus-visible:ring-danger',
+      info: 'focus-visible:ring-info',
+      warning: 'focus-visible:ring-warning',
+      'light-1': 'focus-visible:ring-light-1',
+      'light-2': 'focus-visible:ring-light-2',
+      'light-3': 'focus-visible:ring-light-3',
+      'light-4': 'focus-visible:ring-light-4',
+      'dark-1': 'focus-visible:ring-dark-1',
+      'dark-2': 'focus-visible:ring-dark-2',
+      'dark-3': 'focus-visible:ring-dark-3',
+      'dark-4': 'focus-visible:ring-dark-4',
+      black: 'focus-visible:ring-black',
+      white: 'focus-visible:ring-white',
+      transparent: 'focus-visible:ring-transparent',
+    },
+  },
+})
+
 export const ringOffsetColorVariant = cva('', {
   variants: {
     color: {
@@ -1166,6 +1238,9 @@ export const generateClass = {
   ringColorVariant,
   focusRingColorVariant,
   activeRingColorVariant,
+  peerCheckedBgColorVariant,
+  peerFocusVisibleRingColorVariant,
+  focusVisibleRingColorVariant,
   ringOffsetColorVariant,
   outlineColorVariant,
   focusOutlineColorVariant,
