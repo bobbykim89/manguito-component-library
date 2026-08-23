@@ -52,11 +52,22 @@ describe('FieldFeedback', () => {
     expect(wrapper.text()).not.toContain('Required')
   })
 
-  it('renders an empty alert region when invalid with no text or slot', () => {
+  it('renders nothing when invalid with no text and no slot', () => {
+    // An empty region would be an aria-describedby target with nothing to
+    // announce, so having no message to show is treated as having no region.
     const wrapper = mount(FieldFeedback, {
       props: { id: 'email-error', invalid: true },
     })
-    expect(wrapper.find('[role="alert"]').exists()).toBe(true)
+    expect(wrapper.find('[role="alert"]').exists()).toBe(false)
     expect(wrapper.text()).toBe('')
+  })
+
+  it('renders when invalid with a slot but no text prop', () => {
+    const wrapper = mount(FieldFeedback, {
+      props: { id: 'email-error', invalid: true },
+      slots: { default: '<strong>Custom message</strong>' },
+    })
+    expect(wrapper.find('[role="alert"]').exists()).toBe(true)
+    expect(wrapper.find('strong').text()).toBe('Custom message')
   })
 })
