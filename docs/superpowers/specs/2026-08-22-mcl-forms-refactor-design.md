@@ -125,36 +125,70 @@ mcl-select/
 ```ts
 // common/index.types.ts
 export interface FieldContext {
-  id: string                              // resolved field id
-  name: string | undefined                // radio group name
-  errorId: string                         // `${id}-error`
-  descriptionId: string | undefined       // `${id}-description`, only when help text exists
+  id: string                              // resolved element id
+  name: ComputedRef<string | undefined>   // radio group name
+  errorId: string                         // id of the error region this control points at
+  descriptionId: string | undefined       // id of the help-text region, when one exists
   invalid: ComputedRef<boolean>
   required: ComputedRef<boolean>
   disabled: ComputedRef<boolean>
   describedBy: ComputedRef<string | undefined>  // description + error ids, in reading order
   feedbackOwnedByGroup: boolean
+  isGroupLabel: boolean
 }
 ```
 
-**Provider.** `MclFormGroup` calls `provideFieldContext(props)` (named to match `provideAccordion` in `manguito-theme`'s `useCollapseState.ts`). Its `labelFor`
+**Provider.** `MclFormGroup` calls `provideFieldContext(options)` (named to match
+`provideAccordion` in `manguito-theme`'s `useCollapseState.ts`). Its `labelFor`
 prop is renamed **`fieldId`** — it now drives both the label's `for` and the
 child's `id`, so `labelFor` no longer describes what it does — and becomes
 **optional**, falling back to Vue 3.5's `useId()`.
 
+`name`, `invalid`, `required` and `disabled` are declared `MaybeRefOrGetter` and
+read through `toValue()`. This is load-bearing, not stylistic: `hasHelpText` and
+`ownsFeedback` derive from *slot presence*, not from props, so the group cannot
+hand its `props` proxy straight through — it must build an object literal, and a
+literal snapshots plain values at setup. Passing plain values was measured to
+leave the group's `invalid` permanently stuck at its mount-time value, so no
+control in the group ever received `aria-describedby`. `fieldId`, `hasHelpText`,
+`ownsFeedback` and `isGroupLabel` stay plain, being fixed at setup by
+construction.
+
 **Consumer.** Each input calls `useFieldContext(props)`, resolving each value as
 *explicit prop -> injected context -> default*. With no provider it falls back
 to local props plus `useId()`, so every component still works standalone.
+Controls pass their reactive `props` proxy directly — unlike the group, they
+have no structural reason to build a literal.
 
 **Consequence:** `invalid`, `required` and `disabled` lose their `withDefaults`
 defaults and become `boolean | undefined`. With a default of `false` there is no
 way to distinguish "not passed" from "explicitly false", and inheritance would
 silently never fire. `undefined` means inherit.
 
+**Region ids follow whoever renders the region** — not whoever owns the element
+id. A control points at the group's `errorId` when the group renders the error
+region (`ownsFeedback`), and derives `${id}-error` from its own id otherwise; it
+points at the group's `descriptionId` whenever the group has one. `hasHelpText`
+and `ownsFeedback` govern independent regions, so a group may render help text
+while leaving the error region to the control. This principle is what keeps
+`aria-describedby` from ever naming an element nobody renders — the earlier
+design, which tied region ids to id ownership, was measured producing exactly
+that dangling reference.
+
 **Grouped controls.** A `groupLabel` prop switches the wrapper from `<label>` to
-`<fieldset><legend>`, the correct structure for radio and checkbox sets. The
-group also provides `name`, defaulting to the field id — this is what makes
-native radio grouping and arrow-key navigation work.
+`<fieldset><legend>`, the correct structure for radio and checkbox sets, and is
+published on the context as `isGroupLabel`. The group also provides `name`,
+defaulting to the field id — this is what makes native radio grouping and
+arrow-key navigation work.
+
+**Element ids in group mode.** In fieldset mode every control generates its own
+unique element id, because no `label[for]` exists to match and duplicate ids are
+invalid HTML; in single-label mode the control takes the group's id so `for` and
+`id` agree. This is independent of the region-id rule above: a fieldset control
+gets a unique element id *and* still points at the group's shared error and
+description regions, which is correct ARIA for a radio group. The earlier design
+gave every sibling the group's id verbatim — measured as three radios all
+rendering `id="colour"`, with `label[for]` binding only the first.
 
 `feedbackOwnedByGroup` is a plain boolean rather than a `ComputedRef` because it
 is decided at setup from the *presence* of the group's error prop or slot, not
