@@ -99,3 +99,42 @@ describe('useToggleControl — switchVars', () => {
     expect(switchVars.value['--slider-size']).toBe('26px')
   })
 })
+
+describe('useToggleControl — optional rounded', () => {
+  // MclInputRadio deliberately has no `rounded` prop (a radio stays circular),
+  // so it must be able to pass its props proxy directly rather than a spread
+  // literal, which would snapshot every value at setup.
+  const withoutRounded = (): ToggleControlOptions => ({
+    size: 'md',
+    bgColor: 'light-1',
+    checkedBgColor: 'warning',
+    indicatorColor: 'dark-3',
+    borderColor: 'dark-1',
+    showShadow: false,
+  })
+
+  it('defaults to false, emitting no rounding classes', () => {
+    const { boxClass } = useToggleControl(withoutRounded())
+    expect(boxClass.value).not.toContain('rounded-md')
+    expect(boxClass.value).not.toContain('before:rounded-[3px]')
+  })
+
+  it('stays reactive when the property is absent from the source object', () => {
+    const props = reactive(withoutRounded())
+    const { boxClass } = useToggleControl(props)
+    expect(boxClass.value).toContain('peer-checked:bg-warning')
+    props.checkedBgColor = 'success'
+    expect(boxClass.value).toContain('peer-checked:bg-success')
+    expect(boxClass.value).not.toContain('rounded-md')
+  })
+})
+
+describe('useToggleControl — switchVars isolation', () => {
+  it('returns a copy, so a caller cannot mutate the shared size table', () => {
+    const first = useToggleControl(base()).switchVars.value
+    first['--switch-width'] = 'tampered'
+    expect(useToggleControl(base()).switchVars.value['--switch-width']).toBe(
+      '45px',
+    )
+  })
+})
