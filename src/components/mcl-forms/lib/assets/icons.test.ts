@@ -28,7 +28,15 @@ describe.each(icons)('%s', (_name, Icon) => {
     expect(svg.classes()).not.toContain('fill-dark-4')
   })
 
-  it('appends className so callers can size and transform it', () => {
+  it('carries no default size, so className is the only sizing source', () => {
+    // Appending className would not override a built-in `h-md w-md`: Tailwind
+    // utilities of the same property resolve by stylesheet order, not by
+    // class-attribute order. Having no default is what makes the icon reusable.
+    const classes = mount(Icon).find('svg').classes()
+    expect(classes.some((c) => /^h-|^w-|^size-/.test(c))).toBe(false)
+  })
+
+  it('takes its size and transforms from className', () => {
     const svg = mount(Icon, {
       props: { className: 'h-xs rotate-180' },
     }).find('svg')

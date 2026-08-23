@@ -13,7 +13,11 @@ const props = withDefaults(
   },
 )
 
-// className last so callers can override sizing and add transforms.
+// There is no default size: Tailwind utilities of the same property resolve by
+// stylesheet order, not class-attribute order, so appending className could not
+// override a built-in `h-md w-md`. Dropping that default is what makes the icon
+// reusable — callers must supply sizing (and any transform) via className, or
+// the SVG renders at its intrinsic width.
 const iconClass = computed<string>(() =>
   [generateClass.svgFillColorVariant({ color: props.color }), props.className]
     .filter(Boolean)
