@@ -606,7 +606,7 @@ const labelTextClass = computed<string>(() => {
 - [ ] **Step 4: Run the test to verify it passes**
 
 Run: `cd src/components/mcl-forms && pnpm test MclFormGroup`
-Expected: PASS, 16 tests.
+Expected: PASS, 17 tests.
 
 - [ ] **Step 5: Verify the reactivity test genuinely catches a frozen provider**
 
@@ -920,7 +920,7 @@ const onChange = (event: Event): void => {
 - [ ] **Step 4: Run the test to verify it passes**
 
 Run: `cd src/components/mcl-forms && pnpm test MclCheckbox`
-Expected: PASS, 18 tests.
+Expected: PASS, 19 tests.
 
 - [ ] **Step 5: Commit**
 
@@ -1496,7 +1496,7 @@ input:checked + .slider:before {
 - [ ] **Step 4: Run the test to verify it passes**
 
 Run: `cd src/components/mcl-forms && pnpm test MclInputSwitch`
-Expected: PASS, 14 tests.
+Expected: PASS, 15 tests.
 
 - [ ] **Step 5: Commit**
 
@@ -1831,7 +1831,7 @@ const surfaceClass = useInputSurface(props)
 - [ ] **Step 4: Run the test to verify it passes**
 
 Run: `cd src/components/mcl-forms && pnpm test MclInputText`
-Expected: PASS, 17 tests.
+Expected: PASS, 18 tests.
 
 - [ ] **Step 5: Commit**
 
@@ -2436,7 +2436,7 @@ const clearButtonClass = computed<string>(() => {
 - [ ] **Step 4: Run the test to verify it passes**
 
 Run: `cd src/components/mcl-forms && pnpm test MclInputFile`
-Expected: PASS, 13 tests.
+Expected: PASS, 12 tests.
 
 - [ ] **Step 5: Commit**
 
@@ -2979,7 +2979,7 @@ export const useSelectKeyboard = (
 - [ ] **Step 6: Run both tests to verify they pass**
 
 Run: `cd src/components/mcl-forms && pnpm test useSelect`
-Expected: PASS — 15 filter tests, 19 keyboard tests.
+Expected: PASS — 12 filter tests, 18 keyboard tests.
 
 - [ ] **Step 7: Commit**
 
@@ -3642,7 +3642,7 @@ watch(model, (value) => {
 - [ ] **Step 4: Run the test to verify it passes**
 
 Run: `cd src/components/mcl-forms && pnpm test MclSelect`
-Expected: PASS, 22 tests.
+Expected: PASS, 23 tests.
 
 - [ ] **Step 5: Confirm the line reduction**
 
