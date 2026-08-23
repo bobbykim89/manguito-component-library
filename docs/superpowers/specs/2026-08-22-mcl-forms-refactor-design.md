@@ -2,7 +2,7 @@
 
 **Date:** 2026-08-22
 **Status:** Approved design, pending implementation plan
-**Scope:** `@bobbykim/mcl-forms` (all 8 components) + 2 additive variants in `@bobbykim/manguito-theme`
+**Scope:** `@bobbykim/mcl-forms` (all 8 components) + 3 additive variants in `@bobbykim/manguito-theme`
 
 ---
 
@@ -65,14 +65,21 @@ the ask (YAGNI).
 
 ## 3. Module structure
 
-### `manguito-theme` — two additive cva variants
+### `manguito-theme` — three additive cva variants
 
 Added to `lib/theme/index.ts` and to the `generateClass` object:
 
 | Variant | Emits | Replaces |
 |---|---|---|
 | `peerCheckedBgColorVariant` | `peer-checked:bg-*` | the duplicated `peerBgColor` maps |
-| `peerFocusVisibleRingColorVariant` | `peer-focus-visible:ring-*` | nothing — this is the missing focus indicator |
+| `peerFocusVisibleRingColorVariant` | `peer-focus-visible:ring-*` | nothing — the missing focus indicator for the three toggles |
+| `focusVisibleRingColorVariant` | `focus-visible:ring-*` | `focusRingColorVariant` (`focus:ring-*`) on text/textarea/select |
+
+The third variant is required by section 6's move from `focus:` to
+`focus-visible:`. The theme has no `focus-visible` variant of any kind today, and
+the peer form does not serve text inputs, where the focused element *is* the
+styled element rather than a peer. `focusRingColorVariant` is left in place —
+other packages use it and it stays part of the public surface.
 
 Both follow the existing raw-utility convention used by `beforeBgColorVariant`
 (not the `mcl-` prefixed form used by `bgColorVariant`). They emit the
@@ -287,7 +294,9 @@ bindings go.
 - New `src/components/mcl-forms/vitest.config.ts` mirroring `manguito-theme`'s:
   happy-dom, `include: ['lib/**/*.test.ts']`, alias to theme source.
 - `'./src/components/mcl-forms'` added to the root `vitest.config.ts` `projects` array.
-- `vitest`, `@vue/test-utils`, `happy-dom` added to `mcl-forms` devDependencies.
+- No new dependencies: `vitest`, `@vue/test-utils` and `happy-dom` are already
+  root devDependencies and hoisted. `mcl-forms` only gains `test` / `test:watch`
+  scripts, matching `manguito-theme`.
 - Tests colocated as `lib/**/*.test.ts` per CLAUDE.md.
 
 ### Coverage, in priority order
@@ -308,7 +317,7 @@ bindings go.
 5. **`MclSelect` keyboard** — Down/Up/Home/End move `aria-activedescendant`; Esc
    closes and keeps the value; a second Esc clears; Tab closes.
 
-Plus cases in the theme's existing `generateClass.test.ts` for the two new variants.
+Plus cases in the theme's existing `generateClass.test.ts` for the three new variants.
 
 Estimated 55-70 cases across 12 files.
 
@@ -322,7 +331,7 @@ the geometry is correct. Visual verification stays with Storybook.
 
 ## 9. Deliverables
 
-1. Two additive cva variants + widened `InputType` in `manguito-theme`, with test cases.
+1. Three additive cva variants + widened `InputType` in `manguito-theme`, with test cases.
 2. Refactored `mcl-forms`: 8 components, 4 composables, 2 internal components, 2 icon assets.
 3. Unit tests for all 8 components and all 4 composables; `mcl-forms` wired into the root vitest projects.
 4. Updated Storybook stories and `.mdx` docs for all 8 components — non-optional,
@@ -341,7 +350,7 @@ the geometry is correct. Visual verification stays with Storybook.
 
 - `multiple` file selection on `MclInputFile` — changes the model type from
   `File | null` to an array and deserves its own change.
-- Any component outside `mcl-forms`, beyond the two additive theme variants.
+- Any component outside `mcl-forms`, beyond the three additive theme variants.
 - The broader named-vs-numeric Tailwind scale inconsistency across other
   packages; only `MclSelect`'s `max-h-50` is corrected here.
 
