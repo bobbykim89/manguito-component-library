@@ -30,6 +30,12 @@ export interface FieldContext {
    * an object literal built from it (as MclFormGroup must build, since
    * `hasHelpText`/`ownsFeedback` are derived from slot/prop presence rather
    * than being props themselves) would otherwise snapshot the value.
+   *
+   * `undefined` on a control that has neither its own `name` nor a group to
+   * inherit one from. There is deliberately no id fallback: emitting a
+   * generated `name` into a native form submission is not something a
+   * consumer could opt out of. A control that genuinely needs a fallback
+   * (MclInputRadio, where `name` is what groups the set) supplies it itself.
    */
   name: ComputedRef<string | undefined>
   errorId: string

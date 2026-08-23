@@ -103,7 +103,12 @@ describe('useFieldContext — standalone (no provider)', () => {
   })
 })
 
-describe('useFieldContext — standalone name (Ruling D)', () => {
+// Spec section 4, "Grouped controls": the group provides `name`, defaulting to
+// the field id, and that is what makes native radio grouping work. A control
+// with no group and no own `name` resolves to undefined — there is no id
+// fallback, because a generated `name` would be submitted with the form and no
+// consumer could opt out of it.
+describe('useFieldContext — standalone name', () => {
   it('uses its own name when given one', () => {
     const ctx = ctxOf(
       mount(Child, { props: { id: 'email', name: 'email-name' } }),
@@ -111,9 +116,9 @@ describe('useFieldContext — standalone name (Ruling D)', () => {
     expect(ctx.name.value).toBe('email-name')
   })
 
-  it('falls back to its own id when no name is given', () => {
+  it('is undefined when neither a name nor a group supplies one', () => {
     const ctx = ctxOf(mount(Child, { props: { id: 'email' } }))
-    expect(ctx.name.value).toBe('email')
+    expect(ctx.name.value).toBeUndefined()
   })
 })
 
@@ -200,8 +205,8 @@ describe('useFieldContext — explicit props beat the provider', () => {
     expect(ctx.errorId).toBe('mine-error')
   })
 
-  it('an own id inside a feedback-owning group still points at the shared regions (Ruling B)', () => {
-    // Region ids follow who RENDERS the region, not who owns the element id:
+  it('an own id inside a feedback-owning group still points at the shared regions', () => {
+    // Spec section 4, "Region ids follow whoever renders the region":
     // the group's help-text/error regions provably exist (hasHelpText,
     // ownsFeedback), so pointing at them never dangles even though this
     // control supplied its own element id.
@@ -218,8 +223,8 @@ describe('useFieldContext — explicit props beat the provider', () => {
     expect(ctx.feedbackOwnedByGroup).toBe(true)
   })
 
-  it('a group can render help text while leaving the error region to the control (Ruling B, flags are independent)', () => {
-    // hasHelpText and ownsFeedback govern independent regions: a group can
+  it('a group can render help text while leaving the error region to the control', () => {
+    // Spec section 4: hasHelpText and ownsFeedback govern independent regions: a group can
     // render help text without also owning the error region. The control
     // still points at the group's descriptionId (that region provably
     // exists), but derives its own errorId from its own id, since the group
@@ -299,8 +304,10 @@ describe('provideFieldContext — the returned context', () => {
   })
 })
 
-describe('provideFieldContext — reactivity through an object literal (Ruling A)', () => {
+describe('provideFieldContext — reactivity through an object literal', () => {
   it('recomputes invalid and describedBy when the reactive source changes', () => {
+    // Spec section 4: name/invalid/required/disabled are MaybeRefOrGetter and
+    // read through toValue(), and that is load-bearing rather than stylistic.
     // A plain object literal is exactly what MclFormGroup must pass, because
     // hasHelpText/ownsFeedback are derived from slot/prop *presence* rather
     // than being props themselves — it cannot forward its whole `props`
@@ -330,7 +337,11 @@ describe('provideFieldContext — reactivity through an object literal (Ruling A
   })
 })
 
-describe('useFieldContext — fieldset mode (isGroupLabel: true, Ruling C)', () => {
+// Spec section 4, "Element ids in group mode": in fieldset mode every control
+// generates its own element id (no label[for] to match, and duplicate ids are
+// invalid HTML) while still pointing at the group's shared error and
+// description regions.
+describe('useFieldContext — fieldset mode (isGroupLabel: true)', () => {
   it('gives sibling controls distinct element ids while sharing the group error id and name', () => {
     const GroupWithTwoChildren = defineComponent({
       setup() {
@@ -372,7 +383,9 @@ describe('useFieldContext — fieldset mode (isGroupLabel: true, Ruling C)', () 
   })
 })
 
-describe('useFieldContext — single-control mode (isGroupLabel: false, Ruling C)', () => {
+// Spec section 4: in single-label mode the control takes the group's id so
+// `for` and `id` agree.
+describe('useFieldContext — single-control mode (isGroupLabel: false)', () => {
   it('gives the control the group id so <label for> can bind to it', () => {
     const GroupWithTwoChildren = defineComponent({
       setup() {
@@ -394,5 +407,193 @@ describe('useFieldContext — single-control mode (isGroupLabel: false, Ruling C
     // genuinely multi-control groups (see the fieldset-mode suite above).
     expect(first.id).toBe('email')
     expect(second.id).toBe('email')
+  })
+})
+
+/**
+ * Stands in for the three toggle controls, which render no FieldFeedback of
+ * their own and therefore declare `rendersOwnFeedback: false`.
+ */
+const ToggleChild = defineComponent({
+  props: {
+    id: { type: String, default: undefined },
+    name: { type: String, default: undefined },
+    invalid: { type: Boolean, default: undefined },
+    required: { type: Boolean, default: undefined },
+    disabled: { type: Boolean, default: undefined },
+  },
+  setup(props) {
+    const ctx = useFieldContext(props as FieldOwnProps, {
+      rendersOwnFeedback: false,
+    })
+    return { ctx }
+  },
+  render: () => h('div'),
+})
+
+const toggleCtxOf = (wrapper: any): FieldContext =>
+  wrapper.findComponent(ToggleChild).vm.ctx as FieldContext
+
+describe('useFieldContext — rendersOwnFeedback', () => {
+  const GroupAround = (
+    Inner: typeof Child | typeof ToggleChild,
+    provided: Record<string, unknown>,
+  ) =>
+    defineComponent({
+      setup() {
+        provideFieldContext({
+          hasHelpText: false,
+          ownsFeedback: false,
+          isGroupLabel: false,
+          ...provided,
+        } as FieldProviderOptions)
+        return () => h(Inner)
+      },
+    })
+
+  it('omits the error id when nobody renders an error region', () => {
+    // A group carrying invalid with no invalidFeedback, wrapping radios: the
+    // group renders no region (ownsFeedback false) and neither does the
+    // toggle, so naming an error id would point at nothing.
+    const ctx = toggleCtxOf(
+      mount(GroupAround(ToggleChild, { fieldId: 'colour', invalid: true })),
+    )
+    expect(ctx.invalid.value).toBe(true)
+    expect(ctx.describedBy.value).toBeUndefined()
+  })
+
+  it('still names the group error id when the group owns the region', () => {
+    const ctx = toggleCtxOf(
+      mount(
+        GroupAround(ToggleChild, {
+          fieldId: 'colour',
+          invalid: true,
+          ownsFeedback: true,
+        }),
+      ),
+    )
+    expect(ctx.describedBy.value).toBe('colour-error')
+  })
+
+  it('still names the description id, which the group does render', () => {
+    const ctx = toggleCtxOf(
+      mount(
+        GroupAround(ToggleChild, {
+          fieldId: 'colour',
+          invalid: true,
+          hasHelpText: true,
+        }),
+      ),
+    )
+    expect(ctx.describedBy.value).toBe('colour-description')
+  })
+
+  it('names its own error id when standalone, since it has no group to defer to', () => {
+    // Standalone toggles are still covered: with no group there is nothing to
+    // inherit invalid from, so describedBy stays undefined unless the caller
+    // renders a region — which a toggle never does.
+    const ctx = toggleCtxOf(
+      mount(ToggleChild, { props: { id: 'agree', invalid: true } }),
+    )
+    expect(ctx.describedBy.value).toBeUndefined()
+  })
+
+  it('defaults to true, so text-like controls keep their own error id', () => {
+    const ctx = ctxOf(
+      mount(GroupAround(Child, { fieldId: 'email', invalid: true })),
+    )
+    expect(ctx.describedBy.value).toBe('email-error')
+  })
+
+  it('a feedback-owning group that is not itself invalid renders no region anywhere', () => {
+    // Documented contract, see FieldProviderOptions.ownsFeedback: the group's
+    // FieldFeedback renders off the group's OWN invalid, so a group that owns
+    // the region must carry the invalid state itself. Here it does not, and
+    // the control has skipped its own region because the group claims it —
+    // this test pins the consequence so plan 2 wires the group correctly.
+    const ctx = ctxOf(
+      mount(
+        GroupAround(Child, {
+          fieldId: 'email',
+          invalid: false,
+          ownsFeedback: true,
+        }),
+      ),
+    )
+    const invalidChild = ctxOf(
+      mount(
+        defineComponent({
+          setup() {
+            provideFieldContext({
+              fieldId: 'email',
+              hasHelpText: false,
+              ownsFeedback: true,
+              isGroupLabel: false,
+              invalid: false,
+            })
+            return () => h(Child, { invalid: true })
+          },
+        }),
+      ),
+    )
+    expect(ctx.describedBy.value).toBeUndefined()
+    expect(invalidChild.feedbackOwnedByGroup).toBe(true)
+    expect(invalidChild.describedBy.value).toBe('email-error')
+  })
+})
+
+describe('useFieldContext — control-side reactivity', () => {
+  // Every other inheritance suite above passes a props proxy but never mutates
+  // it, so a snapshot taken at setup would satisfy them all. These two mutate.
+  const ForwardingGroup = defineComponent({
+    props: {
+      invalid: { type: Boolean, default: undefined },
+      required: { type: Boolean, default: undefined },
+      disabled: { type: Boolean, default: undefined },
+    },
+    setup(props) {
+      provideFieldContext({
+        fieldId: 'email',
+        hasHelpText: false,
+        ownsFeedback: false,
+        isGroupLabel: false,
+      })
+      return () => h(Child, props)
+    },
+  })
+
+  it('recomputes invalid and describedBy when the control prop changes', async () => {
+    const wrapper = mount(ForwardingGroup)
+    const ctx = ctxOf(wrapper)
+    expect(ctx.invalid.value).toBe(false)
+    expect(ctx.describedBy.value).toBeUndefined()
+    await wrapper.setProps({ invalid: true })
+    expect(ctx.invalid.value).toBe(true)
+    expect(ctx.describedBy.value).toBe('email-error')
+  })
+
+  it('recomputes required and disabled when the control props change', async () => {
+    const wrapper = mount(ForwardingGroup)
+    const ctx = ctxOf(wrapper)
+    expect(ctx.required.value).toBe(false)
+    expect(ctx.disabled.value).toBe(false)
+    await wrapper.setProps({ required: true, disabled: true })
+    expect(ctx.required.value).toBe(true)
+    expect(ctx.disabled.value).toBe(true)
+  })
+})
+
+describe('provideFieldContext — id resolution', () => {
+  it('treats an empty fieldId as not supplied, so no region id can dangle', () => {
+    const ctx = ctxOf(mount(Parent({ fieldId: '' })))
+    expect(ctx.id).toBeTruthy()
+    expect(ctx.errorId).not.toBe('-error')
+    expect(ctx.errorId).toBe(`${ctx.id}-error`)
+  })
+
+  it('an empty fieldId cannot propagate an empty id to a descendant', () => {
+    const ctx = ctxOf(mount(Parent({ fieldId: '', hasHelpText: true })))
+    expect(ctx.descriptionId).toBeTruthy()
+    expect(ctx.descriptionId).not.toBe('-description')
   })
 })

@@ -35,7 +35,18 @@ export interface FieldProviderOptions {
   disabled?: MaybeRefOrGetter<boolean | undefined>
   /** Whether the group renders help text, which decides if descriptionId exists. */
   hasHelpText: boolean
-  /** Whether the group renders the error region itself. */
+  /**
+   * Whether the group renders the error region itself. When true, descendant
+   * controls skip their own and point `aria-describedby` at the group's
+   * `errorId`.
+   *
+   * A group that owns the feedback region **must carry the `invalid` state
+   * itself**: its `FieldFeedback` renders under the group's own `invalid`, so a
+   * group with `ownsFeedback: true` and `invalid: false` around a control that
+   * is itself invalid renders no error region anywhere — the control has
+   * skipped its own — while the control still names the group's `errorId`.
+   * Set the group's `invalid` whenever any control in it is invalid.
+   */
   ownsFeedback: boolean
   /**
    * True when the group renders a `<fieldset>`/`<legend>` around multiple
@@ -47,18 +58,55 @@ export interface FieldProviderOptions {
   isGroupLabel: boolean
 }
 
-/** Joins the description and error ids in reading order. */
+let fallbackIdCount = 0
+
+/**
+ * Normalises an absent or empty id to `undefined`. Both are reachable — a
+ * consumer can pass `id=""` and `useId()` returns `undefined` outside a setup
+ * context — and either one reaching an id slot yields a dangling
+ * `aria-describedby="-error"`. Every id source goes through this.
+ */
+const usableId = (candidate: string | undefined): string | undefined =>
+  candidate !== undefined && candidate !== '' ? candidate : undefined
+
+/**
+ * Resolves a guaranteed non-empty element id: the caller's, else Vue's
+ * `useId()`, else a generated last resort. Must be called during setup.
+ */
+const resolveFieldId = (candidate: string | undefined): string =>
+  usableId(candidate) ?? usableId(useId()) ?? `mcl-field-${++fallbackIdCount}`
+
+/**
+ * Joins the description and error ids in reading order.
+ *
+ * @param errorId - `undefined` when no error region is rendered anywhere, so
+ *   the id is omitted even while invalid rather than naming a missing element.
+ */
 const buildDescribedBy = (
   descriptionId: string | undefined,
-  errorId: string,
+  errorId: string | undefined,
   invalid: ComputedRef<boolean>,
 ): ComputedRef<string | undefined> =>
   computed<string | undefined>(() => {
     const ids: string[] = []
     if (descriptionId) ids.push(descriptionId)
-    if (invalid.value) ids.push(errorId)
+    if (invalid.value && errorId !== undefined) ids.push(errorId)
     return ids.length > 0 ? ids.join(' ') : undefined
   })
+
+/** Options passed to `useFieldContext` by the control. */
+export interface FieldConsumerOptions {
+  /**
+   * Whether this control renders its own `FieldFeedback` region when the group
+   * does not own one. Defaults to `true`.
+   *
+   * The three toggle controls (MclCheckbox, MclInputRadio, MclInputSwitch)
+   * render no feedback region at all and must pass `false`. Otherwise a group
+   * carrying `invalid` with no `invalidFeedback` gives each of them an
+   * `aria-describedby` naming an element nobody renders.
+   */
+  rendersOwnFeedback?: boolean
+}
 
 /**
  * Called by MclFormGroup. Publishes the resolved field state to descendant
@@ -73,7 +121,7 @@ const buildDescribedBy = (
 export const provideFieldContext = (
   options: FieldProviderOptions,
 ): FieldContext => {
-  const id = options.fieldId ?? useId() ?? ''
+  const id = resolveFieldId(options.fieldId)
   const invalid = computed<boolean>(() => toValue(options.invalid) ?? false)
   const errorId = `${id}-error`
   const descriptionId = options.hasHelpText ? `${id}-description` : undefined
@@ -110,38 +158,46 @@ export const provideFieldContext = (
  *   existence is decided once at the group's setup, so pointing at them
  *   never dangles even when this control supplies its own element id.
  *
- * @param own - the control's own reactive props.
+ * `describedBy` omits the error id entirely when no error region is rendered
+ * anywhere — the control declares `rendersOwnFeedback: false` and the group
+ * does not own one either. A group that *does* own the region must carry the
+ * `invalid` state itself; see `FieldProviderOptions.ownsFeedback`.
+ *
+ * @param own - the control's own reactive props. Pass your `props` proxy
+ *   directly; a spread literal (`{ ...props }`) snapshots every value at setup
+ *   and freezes the resolved state at its mount-time values.
+ * @param options - control-side declarations that are not props. See
+ *   `FieldConsumerOptions`; `rendersOwnFeedback` defaults to `true`.
  * @returns the resolved field context.
  */
-export const useFieldContext = (own: FieldOwnProps): FieldContext => {
+export const useFieldContext = (
+  own: FieldOwnProps,
+  options?: FieldConsumerOptions,
+): FieldContext => {
   const group = inject<FieldContext | null>(FIELD_KEY, null)
-  const fallbackId = useId() ?? ''
+  const rendersOwnFeedback = options?.rendersOwnFeedback ?? true
+  const fallbackId = resolveFieldId(undefined)
 
   // Resolved once rather than in a computed, because the error and
   // description ids derive from it and must stay stable for
-  // aria-describedby to keep pointing at them. An empty string is treated as
-  // "not supplied" so it can never produce a dangling
-  // `aria-describedby="-error"`.
-  let id: string
-  if (own.id !== undefined && own.id !== '') {
-    id = own.id
-  } else if (group !== null && !group.isGroupLabel) {
-    // Single-control mode: the group renders one <label for>, so this
-    // control must reuse the group's id verbatim for the label to bind.
-    id = group.id
-  } else {
-    // Fieldset mode (or standalone): no single `for` to match, so each
-    // control gets its own generated id.
-    id = fallbackId
-  }
+  // aria-describedby to keep pointing at them. Every candidate goes through
+  // `usableId`, so no source can contribute an empty string.
+  const ownId = usableId(own.id)
+  // Single-control mode: the group renders one <label for>, so this control
+  // must reuse the group's id verbatim for the label to bind. Fieldset mode
+  // (or standalone) has no single `for` to match, so each control generates
+  // its own.
+  const sharedGroupId =
+    group !== null && !group.isGroupLabel ? usableId(group.id) : undefined
+  const id = ownId ?? sharedGroupId ?? fallbackId
 
   // The error region id follows who renders it, not who owns `id`.
-  let errorId: string
-  if (group !== null && group.feedbackOwnedByGroup) {
-    errorId = group.errorId
-  } else {
-    errorId = `${id}-error`
-  }
+  const groupOwnsFeedback = group?.feedbackOwnedByGroup ?? false
+  const errorId = groupOwnsFeedback ? group!.errorId : `${id}-error`
+  // Whether an error region is rendered *at all*. Without this,
+  // `aria-describedby` names a missing element for any control that renders no
+  // feedback region of its own inside a group that does not own one either.
+  const errorRegionExists = groupOwnsFeedback || rendersOwnFeedback
   // The description id is inherited whenever the group has one; there is no
   // own-description-region case because controls never render their own.
   const descriptionId = group?.descriptionId
@@ -152,12 +208,13 @@ export const useFieldContext = (own: FieldOwnProps): FieldContext => {
 
   return {
     id,
-    // Mirrors the grouped default: a standalone control still groups with
-    // siblings that share the same explicit name, and falls back to its own
-    // id — the same rule the provider applies for itself.
-    name: computed<string | undefined>(
-      () => own.name ?? toValue(group?.name) ?? id,
-    ),
+    // No id fallback here on purpose: it would apply to all eight controls,
+    // making text/textarea/select/file emit a generated `name` into native
+    // form submissions where they previously emitted none, with no way to opt
+    // out. Grouped controls still inherit a usable name because the provider
+    // defaults its own `name` to the field id; a standalone radio supplies its
+    // own fallback in MclInputRadio, where it is actually needed.
+    name: computed<string | undefined>(() => own.name ?? toValue(group?.name)),
     errorId,
     descriptionId,
     invalid,
@@ -167,8 +224,12 @@ export const useFieldContext = (own: FieldOwnProps): FieldContext => {
     disabled: computed<boolean>(
       () => own.disabled ?? group?.disabled.value ?? false,
     ),
-    describedBy: buildDescribedBy(descriptionId, errorId, invalid),
-    feedbackOwnedByGroup: group?.feedbackOwnedByGroup ?? false,
+    describedBy: buildDescribedBy(
+      descriptionId,
+      errorRegionExists ? errorId : undefined,
+      invalid,
+    ),
+    feedbackOwnedByGroup: groupOwnsFeedback,
     // Reported truthfully, not hardcoded: this value is inert for
     // provide/inject (a leaf never re-provides it), but the control's own
     // template reads its own returned context, and a control inside a
