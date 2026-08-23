@@ -271,6 +271,23 @@ search and number. All additive."
 ---
 
 ### Task 2: `mcl-forms` test harness + `useInputSurface`
+> **SUPERSEDED IN PART — read the shipped files, not the code blocks below.**
+> The final fix wave (`c8a38d8`) changed this task's contract after review found
+> that a caller which lacks one of the required fields can only call these
+> composables with a spread literal — which snapshots every value at setup and
+> freezes the classes at mount. The shipped contract differs from the blocks
+> below in three ways:
+> - `InputSurfaceOptions.showHighlight` is **optional**, read as
+>   `options.showHighlight ?? false` (`MclInputFile` has no such prop).
+> - `ToggleControlOptions.rounded` is **optional**, read as
+>   `options.rounded ?? false` (the spec gives `MclInputRadio` no `rounded` prop).
+> - `switchVars` returns a **copy**, not the shared `SWITCH_VARS[size]` object.
+>
+> Pass your component's `props` proxy directly to both composables. Never a
+> spread literal. Source of truth:
+> `src/components/mcl-forms/lib/common/useInputSurface.ts` and
+> `useToggleControl.ts`.
+
 
 The vitest wiring is folded into this task because `useInputSurface` is the first deliverable that needs it — a test harness with nothing to test is not independently reviewable.
 
@@ -539,6 +556,23 @@ focus: to focus-visible: so mouse users do not get rings."
 ---
 
 ### Task 3: `useToggleControl`
+> **SUPERSEDED IN PART — read the shipped files, not the code blocks below.**
+> The final fix wave (`c8a38d8`) changed this task's contract after review found
+> that a caller which lacks one of the required fields can only call these
+> composables with a spread literal — which snapshots every value at setup and
+> freezes the classes at mount. The shipped contract differs from the blocks
+> below in three ways:
+> - `InputSurfaceOptions.showHighlight` is **optional**, read as
+>   `options.showHighlight ?? false` (`MclInputFile` has no such prop).
+> - `ToggleControlOptions.rounded` is **optional**, read as
+>   `options.rounded ?? false` (the spec gives `MclInputRadio` no `rounded` prop).
+> - `switchVars` returns a **copy**, not the shared `SWITCH_VARS[size]` object.
+>
+> Pass your component's `props` proxy directly to both composables. Never a
+> spread literal. Source of truth:
+> `src/components/mcl-forms/lib/common/useInputSurface.ts` and
+> `useToggleControl.ts`.
+
 
 **Files:**
 - Create: `src/components/mcl-forms/lib/common/useToggleControl.ts`
