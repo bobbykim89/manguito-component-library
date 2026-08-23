@@ -126,7 +126,7 @@ mcl-select/
 // common/index.types.ts
 export interface FieldContext {
   id: string                              // resolved element id
-  name: ComputedRef<string | undefined>   // radio group name
+  name: ComputedRef<string | undefined>   // radio group name; undefined when neither the control nor a group supplies one
   errorId: string                         // id of the error region this control points at
   descriptionId: string | undefined       // id of the help-text region, when one exists
   invalid: ComputedRef<boolean>
@@ -158,7 +158,23 @@ construction.
 *explicit prop -> injected context -> default*. With no provider it falls back
 to local props plus `useId()`, so every component still works standalone.
 Controls pass their reactive `props` proxy directly — unlike the group, they
-have no structural reason to build a literal.
+have no structural reason to build a literal, and a spread literal would
+snapshot every value at setup.
+
+A second, optional parameter carries what is not a prop:
+`useFieldContext(props, { rendersOwnFeedback })`, defaulting to `true`. The
+three toggle controls render no `FieldFeedback` at all and pass `false`; the
+error id is then omitted from `describedBy` unless the group owns the region,
+because a group carrying `invalid` with no `invalidFeedback` would otherwise
+give every radio in it an `aria-describedby` naming an element nobody renders.
+
+The `name` resolution is *own prop -> group name*, with no id fallback on the
+control side. An id fallback would apply to all eight controls, making
+text/textarea/select/file emit a generated `name` into native form submissions
+where they previously emitted none — and being never falsy, it could not be
+opted out of. Grouped controls still inherit a usable name because the provider
+defaults its own `name` to the field id; `MclInputRadio`, the one control where
+a missing `name` actually breaks behaviour, supplies its own fallback.
 
 **Consequence:** `invalid`, `required` and `disabled` lose their `withDefaults`
 defaults and become `boolean | undefined`. With a default of `false` there is no
@@ -193,6 +209,15 @@ rendering `id="colour"`, with `label[for]` binding only the first.
 `feedbackOwnedByGroup` is a plain boolean rather than a `ComputedRef` because it
 is decided at setup from the *presence* of the group's error prop or slot, not
 from its value — presence does not change over the component's life.
+
+**A group that owns the feedback region must carry the `invalid` state itself.**
+The group's `FieldFeedback` renders under the group's own `invalid`, and its
+children have already skipped their own regions because the group claims
+ownership. A group with `ownsFeedback` and `invalid: false` wrapping a control
+that is itself invalid therefore renders no error region anywhere while the
+control still names the group's `errorId`. `MclFormGroup` sets `invalid`
+whenever any control in it is invalid; this is a contract on the group, not
+something the context can enforce.
 
 **Single error region.** If `MclFormGroup` has an error prop or slot it renders
 the one `FieldFeedback` and sets `feedbackOwnedByGroup: true`; children then skip

@@ -96,19 +96,27 @@ describe('generateClass namespace — peer and focus-visible variants', () => {
     )
   })
   it('all three cover every ColorPalette member', () => {
-    const colors = [
-      'primary', 'secondary', 'success', 'danger', 'info', 'warning',
-      'light-1', 'light-2', 'light-3', 'light-4',
-      'dark-1', 'dark-2', 'dark-3', 'dark-4',
-      'black', 'white', 'transparent',
-    ] as const
+    // Keyed by ColorPalette rather than written as a literal list: adding a
+    // member to the palette without a variant entry then fails to compile
+    // here instead of silently dropping out of the sweep. The shipped test is
+    // the reference; `import type { ColorPalette } from '../static/theme.types'`.
+    const expectedSuffix: Record<ColorPalette, string> = {
+      primary: 'primary',
+      /* ...one entry per palette member, suffix === member... */
+      transparent: 'transparent',
+    }
+    const colors = Object.keys(expectedSuffix) as ColorPalette[]
+    expect(colors).toHaveLength(17)
     for (const color of colors) {
-      expect(peerCheckedBgColorVariant({ color })).toBe(`peer-checked:bg-${color}`)
+      const suffix = expectedSuffix[color]
+      expect(peerCheckedBgColorVariant({ color })).toBe(
+        `peer-checked:bg-${suffix}`,
+      )
       expect(peerFocusVisibleRingColorVariant({ color })).toBe(
-        `peer-focus-visible:ring-${color}`,
+        `peer-focus-visible:ring-${suffix}`,
       )
       expect(focusVisibleRingColorVariant({ color })).toBe(
-        `focus-visible:ring-${color}`,
+        `focus-visible:ring-${suffix}`,
       )
     }
   })
@@ -506,7 +514,7 @@ export const useInputSurface = (
 - [ ] **Step 7: Run the test to verify it passes**
 
 Run: `cd src/components/mcl-forms && pnpm test`
-Expected: PASS, 7 tests.
+Expected: PASS, 9 tests.
 
 - [ ] **Step 8: Verify both projects run from the root**
 
@@ -783,7 +791,7 @@ export const useToggleControl = (
 - [ ] **Step 4: Run the test to verify it passes**
 
 Run: `cd src/components/mcl-forms && pnpm test useToggleControl`
-Expected: PASS, 12 tests.
+Expected: PASS, 15 tests.
 
 - [ ] **Step 5: Commit**
 
@@ -810,20 +818,9 @@ This is the interface every component in plan 2 leans on, so it gets the most th
 
 **Interfaces:**
 - Consumes: nothing from earlier tasks.
-- Produces:
+- Produces (the shipped contract; the authority is spec section 4, "The `MclFormGroup` context contract"):
   ```ts
   // index.types.ts
-  export interface FieldContext {
-    id: string
-    name: string | undefined
-    errorId: string
-    descriptionId: string | undefined
-    invalid: ComputedRef<boolean>
-    required: ComputedRef<boolean>
-    disabled: ComputedRef<boolean>
-    describedBy: ComputedRef<string | undefined>
-    feedbackOwnedByGroup: boolean
-  }
   export interface FieldOwnProps {
     id?: string
     name?: string
@@ -831,245 +828,64 @@ This is the interface every component in plan 2 leans on, so it gets the most th
     required?: boolean
     disabled?: boolean
   }
+  export interface FieldContext {
+    id: string
+    name: ComputedRef<string | undefined>
+    errorId: string
+    descriptionId: string | undefined
+    invalid: ComputedRef<boolean>
+    required: ComputedRef<boolean>
+    disabled: ComputedRef<boolean>
+    describedBy: ComputedRef<string | undefined>
+    feedbackOwnedByGroup: boolean
+    isGroupLabel: boolean
+  }
 
   // fieldContext.ts
   export const provideFieldContext: (options: FieldProviderOptions) => FieldContext
-  export const useFieldContext: (own: FieldOwnProps) => FieldContext
+  export const useFieldContext: (
+    own: FieldOwnProps,
+    options?: FieldConsumerOptions,
+  ) => FieldContext
   export interface FieldProviderOptions {
     fieldId?: string
-    name?: string
-    invalid?: boolean
-    required?: boolean
-    disabled?: boolean
+    name?: MaybeRefOrGetter<string | undefined>
+    invalid?: MaybeRefOrGetter<boolean | undefined>
+    required?: MaybeRefOrGetter<boolean | undefined>
+    disabled?: MaybeRefOrGetter<boolean | undefined>
     hasHelpText: boolean
     ownsFeedback: boolean
+    isGroupLabel: boolean
+  }
+  export interface FieldConsumerOptions {
+    rendersOwnFeedback?: boolean
   }
   ```
-  Naming: `provideFieldContext` matches `provideAccordion` in `manguito-theme`'s `useCollapseState.ts` — one convention for providers across the repo, and `provide*` states plainly that it writes rather than reads. The spec was updated to match.
+  Naming: `provideFieldContext` matches `provideAccordion` in `manguito-theme`'s `useCollapseState.ts` — one convention for providers across the repo, and `provide*` states plainly that it writes rather than reads.
+
+  Five things in that contract are load-bearing, and each was measured rather than guessed:
+  - **`name`/`invalid`/`required`/`disabled` on the provider are `MaybeRefOrGetter`, read through `toValue()`.** `MclFormGroup` cannot forward its `props` proxy, because `hasHelpText`/`ownsFeedback` derive from slot *presence* rather than from props — so it must build an object literal, and a literal snapshots plain values at setup. Passing plain values was measured leaving the group's `invalid` stuck at its mount-time value, so no control in the group ever received `aria-describedby`. Pass `() => props.invalid`.
+  - **`isGroupLabel`** switches the group's wrapper between `<label for>` and `<fieldset>/<legend>`, and decides element ids: in fieldset mode every control generates its own (duplicate ids are invalid HTML and there is no `for` to match), in single-label mode it takes the group's id verbatim. The earlier design gave every sibling the group's id — measured as three radios all rendering `id="colour"`, with `label[for]` binding only the first.
+  - **Region ids follow whoever *renders* the region**, not whoever owns the element id. `errorId` is the group's when `ownsFeedback`, else `${id}-error`; `descriptionId` is the group's whenever it has one. The two flags are independent, so a group may render help text while leaving the error region to the control.
+  - **`FieldConsumerOptions.rendersOwnFeedback`** (default `true`) is how the three toggles declare that they render no `FieldFeedback` at all. The error id is then dropped from `describedBy` unless the group owns the region — otherwise a group carrying `invalid` with no `invalidFeedback` gives every radio in it an `aria-describedby` naming an element nobody renders.
+  - **`name` is a `ComputedRef`, and the control side has no id fallback.** Own prop, else the group's name, else `undefined`. An id fallback would apply to all eight controls and put a generated `name` into native form submissions with no way to opt out.
 
 **`ColorMap` deletion:** `index.types.ts` currently exports `ColorMap`, consumed only by `MclCheckbox` and `MclInputSwitch` for their hand-written maps. Task 3 replaced both. It is not re-exported from `lib/index.ts`, so it is not public API and can be deleted outright. The two components still import it until plan 2 rewrites them — that is why this task does not run a build.
 
 - [ ] **Step 1: Write the failing test**
 
-Create `src/components/mcl-forms/lib/common/fieldContext.test.ts`:
+Create `src/components/mcl-forms/lib/common/fieldContext.test.ts`. The shipped suite is the reference — read that file rather than a copy pasted here, since a stale copy in this plan is exactly what drifted from the code once already. Coverage:
 
-```ts
-import { mount } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
-import { defineComponent, h, type ComputedRef } from 'vue'
-import {
-  provideFieldContext,
-  useFieldContext,
-  type FieldProviderOptions,
-} from './fieldContext'
-import type { FieldContext, FieldOwnProps } from './index.types'
+- standalone: own id wins; generated fallback when none; `errorId` derived from the resolved id; an empty-string id treated as not supplied; `invalid`/`required`/`disabled` defaulting to `false`; `describedBy` undefined when valid.
+- inheriting from a provider: id, name, `invalid`/`required`/`disabled`; `descriptionId` only when the group has help text; `describedBy` ordered description-then-error.
+- explicit props beating the provider, including `disabled: false` over an inherited `true` — which is why those props must be `boolean | undefined`.
+- provider reactivity through a getter, and **control-side** reactivity via `setProps` on the control's own `invalid`/`required`/`disabled`.
+- `rendersOwnFeedback: false`: no error id when nobody renders a region; the group's error id when it owns one.
+- fieldset mode giving siblings distinct element ids while sharing the group's error id and name, vs single-label mode taking the group's id.
 
-/** Renders nothing; exposes the injected context for assertions. */
-// `default: undefined` on the booleans is load-bearing, not incidental: without
-// it Vue's boolean casting turns an omitted prop into `false` and every
-// inheritance test below would pass for the wrong reason. See Global Constraints.
-const Child = defineComponent({
-  props: {
-    id: { type: String, default: undefined },
-    name: { type: String, default: undefined },
-    invalid: { type: Boolean, default: undefined },
-    required: { type: Boolean, default: undefined },
-    disabled: { type: Boolean, default: undefined },
-  },
-  setup(props) {
-    const ctx = useFieldContext(props as FieldOwnProps)
-    return { ctx }
-  },
-  render: () => h('div'),
-})
-
-const Parent = (options: Record<string, unknown> = {}) =>
-  defineComponent({
-    setup() {
-      provideFieldContext({
-        hasHelpText: false,
-        ownsFeedback: false,
-        ...options,
-      } as FieldProviderOptions)
-      return () => h(Child)
-    },
-  })
-
-// `any` deliberately: mount() is generic, so a single concrete wrapper type
-// cannot accept every mount call below.
-const ctxOf = (wrapper: any): FieldContext =>
-  wrapper.findComponent(Child).vm.ctx as FieldContext
-
-describe('useFieldContext — standalone (no provider)', () => {
-  it('uses its own id when given one', () => {
-    const wrapper = mount(Child, { props: { id: 'email' } })
-    expect(ctxOf(wrapper).id).toBe('email')
-  })
-
-  it('falls back to a generated id when none is given', () => {
-    const wrapper = mount(Child)
-    const { id } = ctxOf(wrapper)
-    expect(id).toBeTruthy()
-    expect(typeof id).toBe('string')
-  })
-
-  it('derives errorId from the resolved id', () => {
-    const wrapper = mount(Child, { props: { id: 'email' } })
-    expect(ctxOf(wrapper).errorId).toBe('email-error')
-  })
-
-  it('has no descriptionId when standalone', () => {
-    const wrapper = mount(Child, { props: { id: 'email' } })
-    expect(ctxOf(wrapper).descriptionId).toBeUndefined()
-  })
-
-  it('defaults invalid, required and disabled to false', () => {
-    const ctx = ctxOf(mount(Child, { props: { id: 'email' } }))
-    expect(ctx.invalid.value).toBe(false)
-    expect(ctx.required.value).toBe(false)
-    expect(ctx.disabled.value).toBe(false)
-  })
-
-  it('describedBy is undefined when valid', () => {
-    const ctx = ctxOf(mount(Child, { props: { id: 'email' } }))
-    expect(ctx.describedBy.value).toBeUndefined()
-  })
-
-  it('describedBy is the error id when invalid', () => {
-    const ctx = ctxOf(mount(Child, { props: { id: 'email', invalid: true } }))
-    expect(ctx.describedBy.value).toBe('email-error')
-  })
-
-  it('does not claim group feedback ownership', () => {
-    expect(ctxOf(mount(Child, { props: { id: 'email' } })).feedbackOwnedByGroup).toBe(
-      false,
-    )
-  })
-})
-
-describe('useFieldContext — inheriting from a provider', () => {
-  it('takes the id from the provider', () => {
-    const ctx = ctxOf(mount(Parent({ fieldId: 'from-group' })))
-    expect(ctx.id).toBe('from-group')
-    expect(ctx.errorId).toBe('from-group-error')
-  })
-
-  it('generates an id in the provider when none is given', () => {
-    const ctx = ctxOf(mount(Parent()))
-    expect(ctx.id).toBeTruthy()
-    expect(ctx.errorId).toBe(`${ctx.id}-error`)
-  })
-
-  it('inherits name, which is what makes radio groups work', () => {
-    const ctx = ctxOf(mount(Parent({ fieldId: 'colour', name: 'colour-set' })))
-    expect(ctx.name).toBe('colour-set')
-  })
-
-  it('defaults name to the field id when the provider gives none', () => {
-    const ctx = ctxOf(mount(Parent({ fieldId: 'colour' })))
-    expect(ctx.name).toBe('colour')
-  })
-
-  it('inherits invalid, required and disabled', () => {
-    const ctx = ctxOf(
-      mount(Parent({ fieldId: 'x', invalid: true, required: true, disabled: true })),
-    )
-    expect(ctx.invalid.value).toBe(true)
-    expect(ctx.required.value).toBe(true)
-    expect(ctx.disabled.value).toBe(true)
-  })
-
-  it('exposes descriptionId only when the provider has help text', () => {
-    expect(ctxOf(mount(Parent({ fieldId: 'x' }))).descriptionId).toBeUndefined()
-    expect(
-      ctxOf(mount(Parent({ fieldId: 'x', hasHelpText: true }))).descriptionId,
-    ).toBe('x-description')
-  })
-
-  it('orders describedBy as description then error', () => {
-    const ctx = ctxOf(
-      mount(Parent({ fieldId: 'x', hasHelpText: true, invalid: true })),
-    )
-    expect(ctx.describedBy.value).toBe('x-description x-error')
-  })
-
-  it('reports group feedback ownership when the provider owns it', () => {
-    expect(ctxOf(mount(Parent({ fieldId: 'x', ownsFeedback: true }))).feedbackOwnedByGroup).toBe(
-      true,
-    )
-  })
-})
-
-describe('useFieldContext — explicit props beat the provider', () => {
-  const ParentWithChildProps = (
-    provided: Record<string, unknown>,
-    childProps: Record<string, unknown>,
-  ) =>
-    defineComponent({
-      setup() {
-        provideFieldContext({
-          hasHelpText: false,
-          ownsFeedback: false,
-          ...provided,
-        } as FieldProviderOptions)
-        return () => h(Child, childProps)
-      },
-    })
-
-  it('an explicit id wins over the provider id', () => {
-    const ctx = ctxOf(
-      mount(ParentWithChildProps({ fieldId: 'group' }, { id: 'mine' })),
-    )
-    expect(ctx.id).toBe('mine')
-    expect(ctx.errorId).toBe('mine-error')
-  })
-
-  it('an explicit disabled=false overrides an inherited disabled=true', () => {
-    // This is why invalid/required/disabled must be `boolean | undefined`:
-    // with a `false` default there is no way to tell "not passed" from "passed false".
-    const ctx = ctxOf(
-      mount(ParentWithChildProps({ disabled: true }, { disabled: false })),
-    )
-    expect(ctx.disabled.value).toBe(false)
-  })
-
-  it('an omitted prop still inherits', () => {
-    const ctx = ctxOf(mount(ParentWithChildProps({ disabled: true }, {})))
-    expect(ctx.disabled.value).toBe(true)
-  })
-
-  it('an explicit name wins over the provider name', () => {
-    const ctx = ctxOf(
-      mount(ParentWithChildProps({ name: 'group-name' }, { name: 'own-name' })),
-    )
-    expect(ctx.name).toBe('own-name')
-  })
-})
-
-describe('provideFieldContext — the returned context', () => {
-  it('returns the same shape the child injects, for the group to render with', () => {
-    const Group = defineComponent({
-      setup() {
-        const ctx: FieldContext = provideFieldContext({
-          fieldId: 'x',
-          hasHelpText: true,
-          ownsFeedback: true,
-          invalid: true,
-        })
-        return { ctx }
-      },
-      render: () => h('div'),
-    })
-    const ctx = mount(Group).vm.ctx as FieldContext
-    expect(ctx.id).toBe('x')
-    expect(ctx.errorId).toBe('x-error')
-    expect(ctx.descriptionId).toBe('x-description')
-    expect(ctx.feedbackOwnedByGroup).toBe(true)
-    const describedBy: ComputedRef<string | undefined> = ctx.describedBy
-    expect(describedBy.value).toBe('x-description x-error')
-  })
-})
-```
+Two things about the harness are load-bearing:
+- the stand-in child declares `invalid`/`required`/`disabled` as `{ type: Boolean, default: undefined }`. Without it Vue's boolean casting turns an omitted prop into `false` and every inheritance test passes for the wrong reason.
+- the inheritance tests must *mutate* the child's props (`await wrapper.setProps(...)`), not only read them at mount. A suite that only reads is satisfied by an implementation that snapshots `own.invalid` at setup — measured passing 71 of 71 against exactly that defect.
 
 - [ ] **Step 2: Run the test to verify it fails**
 
@@ -1078,168 +894,34 @@ Expected: FAIL — `Failed to resolve import "./fieldContext"`.
 
 - [ ] **Step 3: Add the types**
 
-Replace the contents of `src/components/mcl-forms/lib/common/index.types.ts`. `ColorMap` is dropped; `InputSizeType` is kept because it is re-exported from `lib/index.ts` and is therefore public API.
+Replace the contents of `src/components/mcl-forms/lib/common/index.types.ts` with `InputSizeType`, `FieldOwnProps` and `FieldContext` exactly as declared in the Interfaces block above; the shipped file is the reference. `ColorMap` is dropped; `InputSizeType` is kept because it is re-exported from `lib/index.ts` and is therefore public API.
 
-```ts
-import type { ComputedRef } from 'vue'
-
-export type InputSizeType = 'sm' | 'md' | 'lg'
-
-/**
- * Props every field control accepts on its own, independent of any
- * MclFormGroup around it. `invalid`, `required` and `disabled` are
- * deliberately `boolean | undefined`: `undefined` means "inherit from the
- * group", which a `false` default would make indistinguishable.
- */
-export interface FieldOwnProps {
-  id?: string
-  name?: string
-  invalid?: boolean
-  required?: boolean
-  disabled?: boolean
-}
-
-/** The resolved field state a control renders from. */
-export interface FieldContext {
-  id: string
-  name: string | undefined
-  errorId: string
-  descriptionId: string | undefined
-  invalid: ComputedRef<boolean>
-  required: ComputedRef<boolean>
-  disabled: ComputedRef<boolean>
-  /** description and error ids in reading order, or undefined if neither applies. */
-  describedBy: ComputedRef<string | undefined>
-  /**
-   * True when the surrounding MclFormGroup renders the error region itself, so
-   * the control must not render its own. Not reactive: it is decided at setup
-   * from the *presence* of the group's error prop or slot, not from its value.
-   */
-  feedbackOwnedByGroup: boolean
-}
-```
+`invalid`, `required` and `disabled` on `FieldOwnProps` are `boolean | undefined` on purpose: `undefined` means "inherit from the group", which a `false` default would make indistinguishable from an explicit `false`.
 
 - [ ] **Step 4: Implement the provider and consumer**
 
-Create `src/components/mcl-forms/lib/common/fieldContext.ts`. It mirrors `manguito-theme`'s `useCollapseState.ts`: a module-private `Symbol` key, a `provide*` function, and a consumer that injects with a null default and falls back to standalone behaviour.
+Create `src/components/mcl-forms/lib/common/fieldContext.ts`. It mirrors `manguito-theme`'s `useCollapseState.ts`: a module-private `Symbol` key, a `provide*` function, and a consumer that injects with a null default and falls back to standalone behaviour. Spec section 4 is the authoritative description and the shipped file is the reference implementation — the code that used to be pasted into this step is what drifted, so the rules it has to satisfy are listed instead:
 
-```ts
-import { computed, inject, provide, useId, type ComputedRef } from 'vue'
-import type { FieldContext, FieldOwnProps } from './index.types'
-
-const FIELD_KEY = Symbol('mcl-field')
-
-export interface FieldProviderOptions {
-  fieldId?: string
-  name?: string
-  invalid?: boolean
-  required?: boolean
-  disabled?: boolean
-  /** Whether the group renders help text, which decides if descriptionId exists. */
-  hasHelpText: boolean
-  /** Whether the group renders the error region itself. */
-  ownsFeedback: boolean
-}
-
-/** Joins the description and error ids in reading order. */
-const buildDescribedBy = (
-  descriptionId: string | undefined,
-  errorId: string,
-  invalid: ComputedRef<boolean>,
-): ComputedRef<string | undefined> =>
-  computed<string | undefined>(() => {
-    const ids: string[] = []
-    if (descriptionId) ids.push(descriptionId)
-    if (invalid.value) ids.push(errorId)
-    return ids.length > 0 ? ids.join(' ') : undefined
-  })
-
-/**
- * Called by MclFormGroup. Publishes the resolved field state to descendant
- * controls and returns the same context so the group can render its own
- * label, help text and error region from it.
- *
- * @param options - the group's own prop values plus what it renders.
- * @returns the field context, also provided to descendants.
- */
-export const provideFieldContext = (
-  options: FieldProviderOptions,
-): FieldContext => {
-  const id = options.fieldId ?? useId() ?? ''
-  const invalid = computed<boolean>(() => options.invalid ?? false)
-  const errorId = `${id}-error`
-  const descriptionId = options.hasHelpText ? `${id}-description` : undefined
-  const context: FieldContext = {
-    id,
-    // Defaulting name to the field id is what lets a radio group work without
-    // the consumer having to invent one.
-    name: options.name ?? id,
-    errorId,
-    descriptionId,
-    invalid,
-    required: computed<boolean>(() => options.required ?? false),
-    disabled: computed<boolean>(() => options.disabled ?? false),
-    describedBy: buildDescribedBy(descriptionId, errorId, invalid),
-    feedbackOwnedByGroup: options.ownsFeedback,
-  }
-  provide(FIELD_KEY, context)
-  return context
-}
-
-/**
- * Called by every field control. Resolves each value as
- * explicit prop -> injected group context -> default, so a control works
- * identically inside an MclFormGroup and on its own.
- *
- * @param own - the control's own reactive props.
- * @returns the resolved field context.
- */
-export const useFieldContext = (own: FieldOwnProps): FieldContext => {
-  const group = inject<FieldContext | null>(FIELD_KEY, null)
-  const fallbackId = useId() ?? ''
-
-  // An explicit id wins, then the group's, then a generated one. Resolved once
-  // rather than in a computed, because the error and description ids derive
-  // from it and must stay stable for aria-describedby to keep pointing at them.
-  const id = own.id ?? group?.id ?? fallbackId
-  const ownsId = own.id !== undefined || group === null
-
-  const invalid = computed<boolean>(
-    () => own.invalid ?? group?.invalid.value ?? false,
-  )
-  const errorId = ownsId ? `${id}-error` : group!.errorId
-  const descriptionId = ownsId ? undefined : group!.descriptionId
-
-  return {
-    id,
-    name: own.name ?? group?.name,
-    errorId,
-    descriptionId,
-    invalid,
-    required: computed<boolean>(
-      () => own.required ?? group?.required.value ?? false,
-    ),
-    disabled: computed<boolean>(
-      () => own.disabled ?? group?.disabled.value ?? false,
-    ),
-    describedBy: buildDescribedBy(descriptionId, errorId, invalid),
-    feedbackOwnedByGroup: group?.feedbackOwnedByGroup ?? false,
-  }
-}
-```
+1. The provider reads `name`/`invalid`/`required`/`disabled` through `toValue()` *inside* computeds, never destructuring them at setup.
+2. Element ids resolve as `own.id` -> the group's id when `!isGroupLabel` -> a generated fallback. One shared helper normalises every candidate, so neither an empty `own.id`, an empty `fieldId` nor a `useId()` returning `undefined` can reach an id slot and produce `aria-describedby="-error"`.
+3. Region ids: `errorId` is the group's when `feedbackOwnedByGroup`, else `${id}-error`; `descriptionId` is the group's whenever it has one.
+4. `describedBy` joins description then error, and omits the error id when no error region is rendered anywhere — `rendersOwnFeedback: false` and the group does not own one either.
+5. `name` resolves as own prop -> group name, with **no** id fallback on the control side. The provider keeps its own `name ?? id` default, which is what makes native radio grouping work for grouped controls.
+6. `invalid`/`required`/`disabled` are computeds reading `own.*` at call time, so a control's own prop changing after mount propagates.
 
 - [ ] **Step 5: Run the test to verify it passes**
 
 Run: `cd src/components/mcl-forms && pnpm test fieldContext`
-Expected: PASS, 20 tests.
+Expected: PASS, 44 tests.
 
-Note that a control overriding the id with its own no longer shares the group's error region — `errorId` and `descriptionId` are re-derived from its own id. That is intentional: a control pointing `aria-describedby` at a region keyed to a different id would dangle.
+Note that region ids follow whoever *renders* the region, not whoever owns the element id: a control with its own `id` inside a group that owns the feedback still points at the group's `errorId`, because that region provably exists. What would dangle is pointing at a region nobody renders, and rules 3 and 4 above are what prevent that.
 
 - [ ] **Step 6: Run the whole suite**
 
 Run: `pnpm test`
-Expected: PASS. `MclCheckbox` and `MclInputSwitch` still import the now-deleted `ColorMap`, but nothing type-checks or builds them in this task, so the suite stays green. Plan 2 rewrites both.
+Expected: PASS. `MclCheckbox` and `MclInputSwitch` still import the now-deleted `ColorMap`, but Vitest never loads them, so the suite stays green.
 
+They are **not** invisible to the rest of the tooling, and the earlier claim that "nothing type-checks or builds them" was wrong. Measured: `src/components/mcl-forms/vite.config.ts` runs `dts({ rollupTypes: true })`, which does type-check both SFCs and prints two `TS2305: Module '"../common/index.types"' has no exported member 'ColorMap'` diagnostics; and `pnpm run story:build` runs `turbo run build` first, so it surfaces them too. The saving grace is that those diagnostics are non-fatal — `vite build` exits 0, `dist/` is emitted, and the emitted prop types are intact. So expect to see them, do not read them as something a later change introduced, and do not add a compatibility shim: plan 2's first task rewrites both components.
 - [ ] **Step 7: Commit**
 
 ```bash
@@ -1327,12 +1009,23 @@ describe('FieldFeedback', () => {
     expect(wrapper.text()).not.toContain('Required')
   })
 
-  it('renders an empty alert region when invalid with no text or slot', () => {
+  it('renders nothing when invalid with no text and no slot', () => {
+    // An empty region would be an aria-describedby target with nothing to
+    // announce, so having no message to show is treated as having no region.
     const wrapper = mount(FieldFeedback, {
       props: { id: 'email-error', invalid: true },
     })
-    expect(wrapper.find('[role="alert"]').exists()).toBe(true)
+    expect(wrapper.find('[role="alert"]').exists()).toBe(false)
     expect(wrapper.text()).toBe('')
+  })
+
+  it('renders when invalid with a slot but no text prop', () => {
+    const wrapper = mount(FieldFeedback, {
+      props: { id: 'email-error', invalid: true },
+      slots: { default: '<strong>Custom message</strong>' },
+    })
+    expect(wrapper.find('[role="alert"]').exists()).toBe(true)
+    expect(wrapper.find('strong').text()).toBe('Custom message')
   })
 })
 ```
@@ -1362,7 +1055,7 @@ withDefaults(
 )
 
 defineSlots<{
-  default: () => unknown
+  default?: () => unknown
 }>()
 </script>
 
@@ -1370,8 +1063,15 @@ defineSlots<{
   <!--
     Conditional rather than CSS-hidden on purpose: role="alert" announces on
     insertion into the DOM, so an always-rendered container never fires.
+    Content is part of the condition: an empty alert region is an
+    aria-describedby target with nothing to read out.
   -->
-  <div v-if="invalid" :id="id" role="alert" class="ml-3xs">
+  <div
+    v-if="invalid && (text || $slots.default)"
+    :id="id"
+    role="alert"
+    class="ml-3xs"
+  >
     <slot>
       <span class="text-xs text-danger">{{ text }}</span>
     </slot>
@@ -1382,7 +1082,7 @@ defineSlots<{
 - [ ] **Step 4: Run the test to verify it passes**
 
 Run: `cd src/components/mcl-forms && pnpm test FieldFeedback`
-Expected: PASS, 6 tests.
+Expected: PASS, 7 tests.
 
 - [ ] **Step 5: Commit**
 
@@ -1409,7 +1109,7 @@ always in the DOM and CSS-hidden, so its alert never fires."
 
 **Interfaces:**
 - Consumes: `generateClass` and `ColorPalette` from `@bobbykim/manguito-theme`.
-- Produces: both components take `{ color?: ColorPalette; className?: string }`. `color` defaults to `'dark-4'`. Each renders `aria-hidden="true"` with `focusable="false"`, the themed fill class, and `className` appended last so callers can add sizing and transforms.
+- Produces: both components take `{ color?: ColorPalette; className?: string }`. `color` defaults to `'dark-4'`. Each renders `aria-hidden="true"` with `focusable="false"`, the themed fill class, and `className`. There is **no default size**: Tailwind utilities of the same property resolve by stylesheet order, not class-attribute order, so appending `className` could not override a built-in `h-md w-md`. Dropping that default is what makes the icon reusable — callers must supply sizing (and any transform) via `className`, or the SVG renders at its intrinsic width.
 
 `className` is the repo's documented convention for custom class injection (see CLAUDE.md, "Prop naming conventions").
 
@@ -1448,7 +1148,15 @@ describe.each(icons)('%s', (_name, Icon) => {
     expect(svg.classes()).not.toContain('fill-dark-4')
   })
 
-  it('appends className so callers can size and transform it', () => {
+  it('carries no default size, so className is the only sizing source', () => {
+    // Appending className would not override a built-in `h-md w-md`: Tailwind
+    // utilities of the same property resolve by stylesheet order, not by
+    // class-attribute order. Having no default is what makes the icon reusable.
+    const classes = mount(Icon).find('svg').classes()
+    expect(classes.some((c) => /^h-|^w-|^size-/.test(c))).toBe(false)
+  })
+
+  it('takes its size and transforms from className', () => {
     const svg = mount(Icon, {
       props: { className: 'h-xs rotate-180' },
     }).find('svg')
@@ -1497,7 +1205,9 @@ const props = withDefaults(
   },
 )
 
-// className last so callers can override sizing and add transforms.
+// No default size: appending className could not override one, since Tailwind
+// utilities of the same property resolve by stylesheet order rather than
+// class-attribute order. Callers must supply sizing via className.
 const iconClass = computed<string>(() =>
   [generateClass.svgFillColorVariant({ color: props.color }), props.className]
     .filter(Boolean)
@@ -1541,7 +1251,9 @@ const props = withDefaults(
   },
 )
 
-// className last so callers can override sizing and add transforms.
+// No default size: appending className could not override one, since Tailwind
+// utilities of the same property resolve by stylesheet order rather than
+// class-attribute order. Callers must supply sizing via className.
 const iconClass = computed<string>(() =>
   [generateClass.svgFillColorVariant({ color: props.color }), props.className]
     .filter(Boolean)
@@ -1568,7 +1280,7 @@ const iconClass = computed<string>(() =>
 - [ ] **Step 5: Run the test to verify it passes**
 
 Run: `cd src/components/mcl-forms && pnpm test icons`
-Expected: PASS, 12 tests.
+Expected: PASS, 14 tests.
 
 - [ ] **Step 6: Run the whole suite and add a changeset**
 
@@ -1600,7 +1312,9 @@ than role=img. Adds XMark, currently inlined in two components."
 - [ ] `src/components/mcl-forms/lib/common/` contains `index.types.ts`, `fieldContext.ts`, `useInputSurface.ts`, `useToggleControl.ts`, `InputHighlight.vue`, `FieldFeedback.vue`.
 - [ ] No component file under `lib/mcl-*/` has been modified — that is plan 2.
 
-**Deliberately still broken at the end of this plan:** `MclCheckbox.vue` and `MclInputSwitch.vue` import `ColorMap`, which Task 4 deleted. Nothing type-checks or bundles them here (`pnpm run build` for `mcl-forms` is not in the done list, and the package's `build` script runs `vite build` with no `vue-tsc` step), so the suite stays green. Plan 2's first task rewrites both. Do not add a compatibility shim to paper over this.
+**Deliberately still broken at the end of this plan:** `MclCheckbox.vue` and `MclInputSwitch.vue` import `ColorMap`, which Task 4 deleted. Vitest never loads either file, so `pnpm test` stays green.
+
+They are, however, type-checked — an earlier draft of this plan claimed nothing type-checks or bundles them, and that was measured wrong. `src/components/mcl-forms/vite.config.ts` runs `dts({ rollupTypes: true })`, so `vite build` does check both SFCs and prints two `TS2305: Module '"../common/index.types"' has no exported member 'ColorMap'` diagnostics; `pnpm run story:build` runs `turbo run build` first and surfaces the same two. Both diagnostics are non-fatal: `vite build` exits 0, `dist/mcl-forms.js`, `dist/mcl-forms.umd.cjs` and `dist/index.d.ts` are all emitted, and the emitted prop types for both components are intact. Plan 2's first task rewrites both; until then, expect exactly those two errors and do not read them as a regression. Do not add a compatibility shim to paper over this.
 
 ## Hand-off to plan 2
 
@@ -1613,15 +1327,40 @@ Plan 2 consumes, with these exact names:
 | `@bobbykim/manguito-theme` | `generateClass.focusVisibleRingColorVariant` | `({ color }) => string` |
 | `common/index.types` | `FieldContext`, `FieldOwnProps`, `InputSizeType` | types |
 | `common/fieldContext` | `provideFieldContext(options)` | for `MclFormGroup` |
-| `common/fieldContext` | `useFieldContext(own)` | for all eight controls |
+| `common/fieldContext` | `useFieldContext(own, options?)` | for all eight controls; `{ rendersOwnFeedback: false }` on the three toggles |
 | `common/useInputSurface` | `useInputSurface(props)` | text, textarea, select, file |
 | `common/useToggleControl` | `useToggleControl(props)` | checkbox, radio, switch |
 | `common/FieldFeedback.vue` | props `{ id, invalid, text }` + default slot | text, textarea, select, file, group |
 | `assets/CaretDown.vue`, `assets/XMark.vue` | props `{ color, className }` | select, file |
 
-**Carry this into plan 2:** every control's `invalid`, `required` and `disabled`
-prop must be declared with `default: undefined` (see Global Constraints). This is
-the single easiest way to break the inheritance contract built in Task 4, and it
-fails silently — the props read `false` and the group is simply never consulted.
+**Carry this into plan 2** — three ways to break the foundation silently, all of
+them measured during this plan:
+
+1. **Every control's `invalid`, `required` and `disabled` prop must be declared
+   with `default: undefined`** (see Global Constraints). This is the single
+   easiest way to break the inheritance contract built in Task 4, and it fails
+   silently — the props read `false` and the group is simply never consulted.
+2. **`MclFormGroup` must pass *getters*, not plain values,** for `name`,
+   `invalid`, `required` and `disabled`: `provideFieldContext({ invalid: () =>
+   props.invalid, ... })`. It cannot forward its `props` proxy (`hasHelpText`
+   and `ownsFeedback` come from slot presence), and the object literal it must
+   build instead snapshots any plain value at setup. Measured: the group's
+   `invalid` stuck at its mount-time value, so no control ever received
+   `aria-describedby`. `fieldId`, `hasHelpText`, `ownsFeedback` and
+   `isGroupLabel` stay plain — they are fixed at setup by construction.
+3. **`useInputSurface`, `useToggleControl` and `useFieldContext` take your
+   `props` proxy directly — never a spread literal.** `useInputSurface({
+   ...props, showHighlight: false })` freezes every class at mount. Both
+   composables make the fields their callers lack optional
+   (`showHighlight` for `MclInputFile`, `rounded` for `MclInputRadio`) precisely
+   so `props` can be handed over as-is, and `useFieldContext` takes its
+   non-prop declarations in a second argument for the same reason.
+
+Also from Task 4: the three toggle controls must call
+`useFieldContext(props, { rendersOwnFeedback: false })`, since they render no
+`FieldFeedback`; and `MclFormGroup` must carry `invalid` itself whenever it owns
+the feedback region, because its `FieldFeedback` renders off the group's own
+`invalid`. `MclInputRadio` owns its standalone `name` fallback — the context
+does not provide one.
 
 Not built here, and still owed by plan 2: `useSelectFilter.ts`, `useSelectKeyboard.ts`, the eight component rewrites, the Storybook stories and `.mdx` docs, the migration guide, and the `README.md` refresh.
