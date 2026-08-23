@@ -113,22 +113,14 @@ describe('generateClass namespace — peer and focus-visible variants', () => {
     }
   })
 })
-
-describe('InputType', () => {
-  it('accepts the widened set of input types', () => {
-    const types: InputType[] = [
-      'text', 'email', 'password', 'tel', 'url', 'search', 'number',
-    ]
-    expect(types).toHaveLength(7)
-  })
-})
 ```
 
-The `InputType` describe block needs a type-only import added to the top of the test file:
-
-```ts
-import type { InputType } from '../static/theme.types'
-```
+**No runtime test for the `InputType` widening.** Vitest transpiles with esbuild
+and never type-checks, so `const t: InputType[] = ['tel']` cannot fail at
+runtime — a test asserting the length of a literal you just wrote asserts
+nothing. The type change is verified by Step 7's build instead, where
+`vue-tsc` and `vite-plugin-dts` do check it, and by plan 2 consuming it in
+`MclInputText`'s `type` prop.
 
 - [ ] **Step 2: Run tests to verify they fail**
 
@@ -639,7 +631,11 @@ describe('useToggleControl — sizeClass', () => {
   })
   it('returns medium dimensions for md', () => {
     const { sizeClass } = useToggleControl({ ...base(), size: 'md' })
-    expect(sizeClass.value).toBe('h-sm w-sm before:h-3xs before:w-3xs')
+    // 12px is an arbitrary value on purpose: the indicator is half the box at
+    // every size (sm 16->8, md 24->12, lg 32->16) and the token scale jumps
+    // 2xs=8px -> xs=16px, so md's half has no token. Do not "fix" this to 3xs,
+    // which is 4px and would shrink the indicator to a third of its size.
+    expect(sizeClass.value).toBe('h-sm w-sm before:h-[12px] before:w-[12px]')
   })
   it('returns large dimensions for lg', () => {
     const { sizeClass } = useToggleControl({ ...base(), size: 'lg' })
@@ -677,7 +673,7 @@ Expected: FAIL — `Failed to resolve import "./useToggleControl"`.
 
 - [ ] **Step 3: Implement the composable**
 
-Create `src/components/mcl-forms/lib/common/useToggleControl.ts`. Note the `md` indicator size becomes `before:h-3xs before:w-3xs` (the `--spacing-3xs` token, 4px) rather than the current hardcoded `before:w-[12px] before:h-[12px]` — this replaces an arbitrary value with the theme's token scale, which is the convention everywhere else in the library.
+Create `src/components/mcl-forms/lib/common/useToggleControl.ts`. The size values are carried over from `MclCheckbox` unchanged, `md`'s arbitrary `[12px]` included — see the comment in `SIZE_CLASSES` for why that one cannot use a token.
 
 ```ts
 import { generateClass, type ColorPalette } from '@bobbykim/manguito-theme'
@@ -700,10 +696,13 @@ export interface ToggleControl {
   switchVars: ComputedRef<Record<string, string>>
 }
 
-// Box and indicator dimensions per size, on the theme's --spacing-* token scale.
+// Box and indicator dimensions per size. The indicator is half the box at every
+// size: sm 16px->8px, md 24px->12px, lg 32px->16px. The token scale jumps from
+// 2xs (8px) straight to xs (16px), so md's 12px has no token and stays an
+// arbitrary value. 3xs is 4px, not 12px.
 const SIZE_CLASSES: Record<InputSizeType, string> = {
   sm: 'h-xs w-xs before:h-2xs before:w-2xs',
-  md: 'h-sm w-sm before:h-3xs before:w-3xs',
+  md: 'h-sm w-sm before:h-[12px] before:w-[12px]',
   lg: 'h-md w-md before:h-xs before:w-xs',
 }
 
