@@ -2,9 +2,9 @@
 import { generateClass } from '@bobbykim/manguito-theme'
 import type { ColorPalette } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
-import type { ColorMap, InputSizeType } from '../common/index.types'
+import type { InputSizeType } from '../common/index.types'
 
-const peerBgColor: ColorMap = {
+const peerBgColor: Record<ColorPalette, string> = {
   primary: 'peer-checked/input:bg-primary',
   secondary: 'peer-checked/input:bg-secondary',
   success: 'peer-checked/input:bg-success',
@@ -23,7 +23,7 @@ const peerBgColor: ColorMap = {
   black: 'peer-checked/input:bg-black',
   white: 'peer-checked/input:bg-white',
 }
-const beforeColor: ColorMap = {
+const beforeColor: Record<ColorPalette, string> = {
   primary: 'before:bg-primary',
   secondary: 'before:bg-secondary',
   success: 'before:bg-success',

@@ -2,7 +2,6 @@
 import type { ColorPalette } from '@bobbykim/manguito-theme'
 import { generateClass } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
-import type { ColorMap } from '../common/index.types'
 import type { InputSizeType } from '../common/index.types'
 
 const props = withDefaults(
@@ -27,7 +26,7 @@ const model = defineModel<boolean>()
 
 const inputRef = ref<HTMLInputElement>()
 
-const peerBgColor: ColorMap = {
+const peerBgColor: Record<ColorPalette, string> = {
   primary: 'peer-checked/input:bg-primary',
   secondary: 'peer-checked/input:bg-secondary',
   success: 'peer-checked/input:bg-success',
