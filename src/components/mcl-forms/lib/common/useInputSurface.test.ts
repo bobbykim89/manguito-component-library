@@ -66,3 +66,33 @@ describe('useInputSurface', () => {
     expect(surface.value).not.toContain('mcl-bg-light-1')
   })
 })
+
+describe('useInputSurface — optional showHighlight', () => {
+  // MclInputFile has no highlight bar and therefore no `showHighlight` prop, so
+  // it must be able to pass its props proxy directly. A spread literal to fill
+  // the field in would snapshot every value at setup — the same silent freeze
+  // the provider side already had to fix.
+  const withoutHighlight = (): InputSurfaceOptions => ({
+    bgColor: 'light-1',
+    textColor: 'black',
+    borderColor: 'light-4',
+    showBorder: false,
+    showShadow: false,
+    rounded: false,
+  })
+
+  it('defaults to false, emitting the focus-visible ring', () => {
+    const surface = useInputSurface(withoutHighlight())
+    expect(surface.value).toContain('focus-visible:ring-4')
+    expect(surface.value).toContain('focus-visible:ring-light-4')
+  })
+
+  it('stays reactive when the property is absent from the source object', () => {
+    const props = reactive(withoutHighlight())
+    const surface = useInputSurface(props)
+    expect(surface.value).toContain('mcl-bg-light-1')
+    props.bgColor = 'dark-3'
+    expect(surface.value).toContain('mcl-bg-dark-3')
+    expect(surface.value).toContain('focus-visible:ring-4')
+  })
+})

@@ -9,7 +9,12 @@ export interface ToggleControlOptions {
   indicatorColor: ColorPalette
   borderColor: ColorPalette
   showShadow: boolean
-  rounded: boolean
+  /**
+   * Optional because MclInputRadio deliberately has no `rounded` prop — shape
+   * is how users tell a radio from a checkbox, so it stays circular. Absent
+   * means `false`.
+   */
+  rounded?: boolean
 }
 
 export interface ToggleControl {
@@ -57,7 +62,9 @@ const SWITCH_VARS: Record<InputSizeType, Record<string, string>> = {
  * overlaid at opacity-0 and whose visible box is an aria-hidden span
  * styled entirely through peer-* variants.
  *
- * @param options - the component's reactive `props` object.
+ * @param options - the component's reactive `props` object. Pass your `props`
+ *   proxy directly; a spread literal (`{ ...props }`) snapshots every value at
+ *   setup and freezes the classes at their mount-time values.
  * @returns `boxClass` for the visual span, `sizeClass` for its dimensions,
  *   and `switchVars` for MclInputSwitch's CSS custom properties.
  */
@@ -65,14 +72,11 @@ export const useToggleControl = (
   options: ToggleControlOptions,
 ): ToggleControl => {
   const boxClass = computed<string>(() => {
-    const {
-      bgColor,
-      borderColor,
-      indicatorColor,
-      checkedBgColor,
-      showShadow,
-      rounded,
-    } = options
+    const { bgColor, borderColor, indicatorColor, checkedBgColor, showShadow } =
+      options
+    // Defaults live here rather than in the type so callers without the prop
+    // (MclInputRadio has no `rounded`) can pass their props proxy as-is.
+    const rounded = options.rounded ?? false
     const classArray: string[] = [
       generateClass.bgColorVariant({ color: bgColor }),
       generateClass.borderColorVariant({ color: borderColor }),
@@ -94,9 +98,12 @@ export const useToggleControl = (
 
   const sizeClass = computed<string>(() => SIZE_CLASSES[options.size])
 
-  const switchVars = computed<Record<string, string>>(
-    () => SWITCH_VARS[options.size],
-  )
+  // Copied, not returned by reference: SWITCH_VARS is module-level shared
+  // state, and handing it out lets one component's style binding mutate the
+  // table every other component reads from.
+  const switchVars = computed<Record<string, string>>(() => ({
+    ...SWITCH_VARS[options.size],
+  }))
 
   return { boxClass, sizeClass, switchVars }
 }
