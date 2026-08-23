@@ -96,7 +96,7 @@ each has only one peer and the group name is one more thing to keep in sync.
 ```
 common/
   index.types.ts        # InputSizeType (kept, public), FieldContext; ColorMap deleted
-  fieldContext.ts       # inject key + useFieldProvider() / useFieldContext()
+  fieldContext.ts       # inject key + provideFieldContext() / useFieldContext()
   useInputSurface.ts    # border/shadow/rounded/highlight/bg/text classes
   useToggleControl.ts   # size tokens + checked/focus/disabled classes
   InputHighlight.vue    # unchanged
@@ -137,7 +137,7 @@ export interface FieldContext {
 }
 ```
 
-**Provider.** `MclFormGroup` calls `useFieldProvider(props)`. Its `labelFor`
+**Provider.** `MclFormGroup` calls `provideFieldContext(props)` (named to match `provideAccordion` in `manguito-theme`'s `useCollapseState.ts`). Its `labelFor`
 prop is renamed **`fieldId`** — it now drives both the label's `for` and the
 child's `id`, so `labelFor` no longer describes what it does — and becomes
 **optional**, falling back to Vue 3.5's `useId()`.
