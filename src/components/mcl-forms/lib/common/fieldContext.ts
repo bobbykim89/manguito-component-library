@@ -62,7 +62,7 @@ let fallbackIdCount = 0
 
 /**
  * Normalises an absent or empty id to `undefined`. Both are reachable — a
- * consumer can pass `id=""` and `useId()` returns `undefined` outside a setup
+ * consumer can pass `id=""` and `useId()` returns `''` outside a setup
  * context — and either one reaching an id slot yields a dangling
  * `aria-describedby="-error"`. Every id source goes through this.
  */
