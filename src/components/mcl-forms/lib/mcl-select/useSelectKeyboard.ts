@@ -41,6 +41,12 @@ export const useSelectKeyboard = (
 
   const move = (next: number): void => {
     const count = toValue(options.optionCount)
+    // Nothing to highlight: leave the sentinel alone rather than clamping to 0,
+    // which would point at an option that does not exist and let Enter commit it.
+    if (count <= 0) {
+      activeIndex.value = -1
+      return
+    }
     const clamped = Math.max(0, Math.min(next, count - 1))
     activeIndex.value = clamped
     onActiveChange?.(clamped)
@@ -70,7 +76,12 @@ export const useSelectKeyboard = (
           isOpen.value = true
           return
         }
-        move(activeIndex.value - 1)
+        // APG: with nothing highlighted, ArrowUp enters the list from the end.
+        move(
+          activeIndex.value < 0
+            ? toValue(options.optionCount) - 1
+            : activeIndex.value - 1,
+        )
         return
 
       case 'Home':
