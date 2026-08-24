@@ -210,8 +210,92 @@ describe('MclFormGroup — label styling', () => {
       props: { label: 'Email', textColor: 'primary', textSize: 'lg', textBold: true },
       slots: { default: () => h(Probe) },
     })
-    const text = wrapper.find('label p')
+    const text = wrapper.find('label span')
     expect(text.classes()).toContain('text-primary')
     expect(text.classes()).toContain('font-bold')
+  })
+})
+
+describe('MclFormGroup — fieldset mode with help text and an error region together', () => {
+  it('renders both regions inside the fieldset and wires a control to both', () => {
+    const wrapper = mount(MclFormGroup, {
+      props: {
+        groupLabel: true,
+        fieldId: 'colour',
+        label: 'Colour',
+        invalid: true,
+        helpText: 'Pick one.',
+        invalidFeedback: 'Required',
+      },
+      slots: { default: () => h(Probe) },
+    })
+    const help = wrapper.find('#colour-description')
+    expect(help.exists()).toBe(true)
+    expect(help.text()).toBe('Pick one.')
+    const alert = wrapper.find('[role="alert"]')
+    expect(alert.exists()).toBe(true)
+    expect(alert.attributes('id')).toBe('colour-error')
+    expect(wrapper.find('input').attributes('aria-describedby')).toBe(
+      'colour-description colour-error',
+    )
+  })
+})
+
+describe('MclFormGroup — slot-over-prop precedence', () => {
+  it('prefers the invalid-feedback slot over the invalidFeedback prop', () => {
+    const wrapper = mount(MclFormGroup, {
+      props: { fieldId: 'email', label: 'Email', invalid: true, invalidFeedback: 'Prop' },
+      slots: { 'invalid-feedback': '<b>Slotted</b>', default: () => h(Probe) },
+    })
+    const alert = wrapper.find('[role="alert"]')
+    expect(alert.text()).toBe('Slotted')
+    expect(alert.text()).not.toContain('Prop')
+  })
+
+  it('prefers the help slot over the helpText prop', () => {
+    const wrapper = mount(MclFormGroup, {
+      props: { fieldId: 'email', label: 'Email', helpText: 'Prop text' },
+      slots: { help: '<em>Slotted help</em>', default: () => h(Probe) },
+    })
+    const help = wrapper.find('#email-description')
+    expect(help.text()).toBe('Slotted help')
+    expect(help.text()).not.toContain('Prop text')
+  })
+})
+
+describe('MclFormGroup — presence, not truthiness', () => {
+  it('owns the region from invalidFeedback presence even when its value is an empty string', () => {
+    // A group bound to `ref('')` (the idiomatic "no error yet" binding) must
+    // still claim ownership at setup, or a later non-empty value never finds
+    // an error region to render into.
+    const wrapper = mount(MclFormGroup, {
+      props: { fieldId: 'email', label: 'Email', invalidFeedback: '' },
+      slots: { default: () => h(Probe) },
+    })
+    expect(ctxOf(wrapper).feedbackOwnedByGroup).toBe(true)
+  })
+})
+
+describe('MclFormGroup — groupLabel is frozen consistently with the context', () => {
+  it('keeps the rendered branch and the published isGroupLabel in agreement after a later groupLabel flip', async () => {
+    // isGroupLabel is documented as decided once, at setup, not reactive.
+    // The bug this guards against is the branch and the context disagreeing:
+    // a later groupLabel flip rendering <fieldset> while the context still
+    // reports isGroupLabel: false (or vice versa) is what let every control
+    // in the set claim the group's element id verbatim, producing duplicate
+    // ids among the fieldset's own children.
+    const wrapper = mount(MclFormGroup, {
+      props: { groupLabel: false, fieldId: 'g', label: 'Group' },
+      slots: { default: () => [h(Probe), h(Probe)] },
+    })
+    await wrapper.setProps({ groupLabel: true })
+
+    const isFieldset = wrapper.find('fieldset').exists()
+    expect(isFieldset).toBe(ctxOf(wrapper).isGroupLabel)
+
+    if (isFieldset) {
+      const ids = wrapper.findAll('input').map((i) => i.attributes('id'))
+      expect(new Set(ids).size).toBe(ids.length)
+    }
   })
 })
