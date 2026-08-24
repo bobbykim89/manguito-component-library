@@ -72,6 +72,7 @@ defineSlots<{
     optionClick: (option: string | SelectOptionType) => void
     setRef: (el: Element | ComponentPublicInstance | null, index: number) => void
     hover: (index: number) => void
+    optionId: (index: number) => string
   }): unknown
   'no-match'?: () => unknown
   'invalid-feedback'?: () => unknown
@@ -124,13 +125,29 @@ const scrollActiveIntoView = (index: number): void => {
   el?.scrollIntoView?.({ block: 'nearest' })
 }
 
+// Every entry point routes through these two rather than repeating the state
+// writes inline: focus, the caret, click-outside, Escape and Tab all opened or
+// closed the list longhand, and only some of them knew `isFiltering` existed.
+const openList = (): void => {
+  isOpen.value = true
+  isFiltering.value = false
+  activeIndex.value = -1
+}
+
+const closeList = (): void => {
+  isOpen.value = false
+  activeIndex.value = -1
+}
+
 const commit = (option: string | SelectOptionType): void => {
   query.value = optionLabel(option)
   const value = optionValue(option)
   model.value = value
+  // Cleared before closing so the falling-edge watcher's label restore is a
+  // no-op here: `query` already holds the committed option's label.
+  isFiltering.value = false
   isOpen.value = false
   activeIndex.value = -1
-  isFiltering.value = false
   emit('select', value)
 }
 
@@ -147,18 +164,24 @@ const { onKeydown, activeDescendantId } = useSelectKeyboard({
   activeIndex,
   optionCount: () => filteredOptions.value.length,
   idPrefix: () => field.id,
-  onSelect: (index) => commit(filteredOptions.value[index]),
+  onSelect: (index) => {
+    // `activeIndex` can outlive the option it pointed at, because the
+    // candidate set shrinks whenever the query narrows or the parent swaps
+    // `options`. Committing an out-of-range index reads `undefined`.
+    const option = filteredOptions.value[index]
+    if (option !== undefined) commit(option)
+  },
   onClear: clear,
   onActiveChange: scrollActiveIntoView,
 })
 
 const toggle = (): void => {
-  isOpen.value = !isOpen.value
-  activeIndex.value = -1
   if (isOpen.value) {
-    isFiltering.value = false
-    inputRef.value?.focus()
+    closeList()
+    return
   }
+  openList()
+  inputRef.value?.focus()
 }
 
 const highlightClass = computed<string>(() => {
@@ -195,13 +218,36 @@ useResizeObserver(rootRef, () => {
   if (rootRef.value) dropdownWidth.value = rootRef.value.clientWidth
 })
 
+// A candidate set that changes under a live highlight leaves `activeIndex`
+// pointing at an option that no longer exists: Enter would commit `undefined`
+// and `aria-activedescendant` would name a missing element.
+watch(filteredOptions, () => {
+  activeIndex.value = -1
+})
+
+// The falling edge is the one place a filter session ends, so every close path
+// — caret, click-outside, Escape, Tab — restores the display label and drops
+// the filter without each site having to remember to.
 watch(isOpen, (open) => {
   if (open) {
     emit('open')
-  } else {
-    emit('close')
+    return
   }
+  if (isFiltering.value) {
+    query.value = labelForValue(model.value)
+    isFiltering.value = false
+  }
+  emit('close')
 })
+
+// A form that disables itself on submit must not leave an open listbox behind
+// that still commits on click.
+watch(
+  () => field.disabled.value,
+  (isDisabled) => {
+    if (isDisabled) closeList()
+  },
+)
 
 // Keeps the box in sync with the model when it is set from outside. `commit`
 // has already written the same label, so this is a no-op in that path.
@@ -213,16 +259,7 @@ watch(model, (value) => {
 </script>
 
 <template>
-  <div
-    ref="rootRef"
-    v-click-outside="
-      () => {
-        isOpen = false
-        activeIndex = -1
-      }
-    "
-    class="relative"
-  >
+  <div ref="rootRef" v-click-outside="closeList" class="relative">
     <div
       class="relative flex gap-3xs p-2xs"
       :class="[
@@ -250,12 +287,7 @@ watch(model, (value) => {
         :aria-required="field.required.value || undefined"
         :aria-invalid="field.invalid.value || undefined"
         :aria-describedby="field.describedBy.value"
-        @focus="
-          () => {
-            isOpen = true
-            isFiltering = false
-          }
-        "
+        @focus="openList"
         @input="isFiltering = true"
         @keydown="onKeydown"
       />
@@ -314,6 +346,7 @@ watch(model, (value) => {
           :option-click="commit"
           :set-ref="setItemRef"
           :hover="(index: number) => (activeIndex = index)"
+          :option-id="(index: number) => `${field.id}-option-${index}`"
         >
           <li
             v-for="(option, index) in filteredOptions"
@@ -339,12 +372,19 @@ watch(model, (value) => {
     <!--
       Outside the listbox, deliberately. An <li aria-live> inside
       role="listbox" is announced to screen readers as a selectable option.
+      It takes over the listbox id and the popup's own border, width and
+      floating position: it is the element `aria-controls` names while it is the
+      one on screen, and it is mutually exclusive with the <ul>, so neither the
+      id nor the shared `dropdownRef` can ever be claimed twice.
     -->
     <div
       v-if="isOpen && filteredOptions.length === 0"
+      :id="`${field.id}-listbox`"
+      ref="dropdownRef"
       role="status"
-      class="p-2xs"
+      class="border-2 p-2xs"
       :class="listboxClass"
+      :style="{ width: `${dropdownWidth}px`, ...floatingStyles }"
     >
       <slot name="no-match">
         <span>{{ noMatchText }}</span>
