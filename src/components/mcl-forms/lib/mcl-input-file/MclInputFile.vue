@@ -2,100 +2,95 @@
 import type { ColorPalette } from '@bobbykim/manguito-theme'
 import { generateClass } from '@bobbykim/manguito-theme'
 import { computed, ref } from 'vue'
+import XMark from '../assets/XMark.vue'
+import FieldFeedback from '../common/FieldFeedback.vue'
+import { useFieldContext } from '../common/fieldContext'
+import { useInputSurface } from '../common/useInputSurface'
 
 const props = withDefaults(
   defineProps<{
-    id: string
+    id?: string
+    name?: string
+    accept?: string
+    buttonText?: string
+    buttonTextColor?: ColorPalette
+    buttonColor?: ColorPalette
     showBorder?: boolean
     borderColor?: ColorPalette
     rounded?: boolean
     bgColor?: ColorPalette
-    buttonText?: string
-    buttonTextColor?: ColorPalette
-    buttonColor?: ColorPalette
-    showShadow?: boolean
     textColor?: ColorPalette
+    showShadow?: boolean
     showClear?: boolean
+    invalidFeedback?: string
+    invalid?: boolean
     required?: boolean
-    accept?: string
+    disabled?: boolean
   }>(),
   {
+    accept: 'image/jpg,image/jpeg,image/png',
+    buttonText: 'Browse File',
+    buttonTextColor: 'dark-3',
+    buttonColor: 'light-4',
     showBorder: false,
     borderColor: 'light-4',
     rounded: false,
     bgColor: 'light-1',
-    buttonText: 'Browse File',
-    buttonTextColor: 'dark-3',
-    buttonColor: 'light-4',
-    showShadow: true,
     textColor: 'black',
+    showShadow: true,
     showClear: false,
-    required: false,
-    accept: 'image/jpg,image/jpeg,image/png',
+    invalid: undefined,
+    required: undefined,
+    disabled: undefined,
   },
 )
 
 const model = defineModel<File | null>()
 
-const inputRef = ref()
+defineSlots<{
+  'invalid-feedback'?: () => unknown
+}>()
+
+const field = useFieldContext(props)
+// This component has no showHighlight prop, which is why the option is
+// optional on InputSurfaceOptions. Pass the proxy, never a spread literal.
+const surfaceClass = useInputSurface(props)
+
+const inputRef = ref<HTMLInputElement>()
+// Bumping the key remounts the input, which is the only reliable way to clear
+// a file input's value across browsers.
 const fileInputKey = ref<number>(0)
-const onButtonClick = () => {
-  inputRef.value.click()
-}
-const onChangeFile = (e: Event) => {
-  const file = (e.target as HTMLInputElement).files![0]
-  model.value = file
+
+const onBrowseClick = (): void => {
+  inputRef.value?.click()
 }
 
-const onClearFile = () => {
+const onChangeFile = (event: Event): void => {
+  const files = (event.target as HTMLInputElement).files
+  model.value = files && files.length > 0 ? files[0] : null
+}
+
+const onClearFile = (): void => {
   model.value = null
   fileInputKey.value++
 }
 
-const borderClass = computed<string>(() => {
-  const { rounded, showBorder, borderColor, showShadow, bgColor } = props
+const buttonClass = computed<string>(() => {
   const classArray: string[] = [
-    generateClass.bgColorVariant({ color: bgColor }),
+    generateClass.bgColorVariant({ color: props.buttonColor }),
+    generateClass.textColorVariant({ color: props.buttonTextColor }),
   ]
-  if (rounded) {
-    classArray.push('rounded-md')
-  }
-  if (showBorder) {
-    classArray.push('border-2')
-    classArray.push(generateClass.borderColorVariant({ color: borderColor }))
-  }
-  if (showShadow) {
-    classArray.push('shadow-md')
-  }
-  return classArray.join(' ')
-})
-
-const inputClass = computed<string>(() => {
-  const { textColor } = props
-  const classArray: string[] = [
-    generateClass.textColorVariant({ color: textColor }),
-  ]
-  return classArray.join(' ')
-})
-
-const getButtonClass = computed(() => {
-  const { buttonColor, buttonTextColor, rounded } = props
-  const classArray: string[] = [
-    generateClass.bgColorVariant({ color: buttonColor }),
-    generateClass.textColorVariant({ color: buttonTextColor }),
-  ]
-  if (rounded) {
+  if (props.rounded) {
     classArray.push('rounded-l-md')
   }
   return classArray.join(' ')
 })
 
-const getClearButtonClass = computed<string>(() => {
-  const { buttonColor, rounded } = props
+const clearButtonClass = computed<string>(() => {
   const classArray: string[] = [
-    generateClass.bgColorVariant({ color: buttonColor }),
+    generateClass.bgColorVariant({ color: props.buttonColor }),
   ]
-  if (rounded) {
+  if (props.rounded) {
     classArray.push('rounded-r-md')
   }
   return classArray.join(' ')
@@ -103,54 +98,59 @@ const getClearButtonClass = computed<string>(() => {
 </script>
 
 <template>
-  <div class="flex items-center overflow-hidden" :class="borderClass">
-    <!-- browse button -->
-    <div class="my-3xs mr-xs ml-3xs shrink-0">
-      <button
-        type="button"
-        :aria-controls="id"
-        class="max-w-full px-xs py-2xs transition-all duration-200 ease-linear hover:bg-opacity-70"
-        :class="getButtonClass"
-        @click="onButtonClick"
-      >
-        {{ buttonText }}
-      </button>
-    </div>
-    <input
-      type="file"
-      :id="id"
-      ref="inputRef"
-      class="w-full bg-transparent file:hidden"
-      :class="[inputClass]"
-      :required="required"
-      :accept="accept"
-      :key="fileInputKey"
-      @change="onChangeFile"
-    />
-    <!-- clear button -->
-    <div
-      v-if="showClear"
-      class="my-3xs mr-3xs self-stretch"
-      @click="onClearFile"
-    >
-      <button
-        class="flex h-full items-center px-xs py-2xs transition-all duration-200 ease-linear hover:bg-opacity-70"
-        aria-label="clear"
-        :class="[getClearButtonClass]"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 384 512"
-          aria-hidden="true"
-          class="h-xs"
-          :class="generateClass.svgFillColorVariant({ color: buttonTextColor })"
+  <div>
+    <div class="flex items-center overflow-hidden" :class="surfaceClass">
+      <div class="my-3xs mr-xs ml-3xs shrink-0">
+        <button
+          type="button"
+          :aria-controls="field.id"
+          :disabled="field.disabled.value"
+          class="max-w-full px-xs py-2xs transition-all duration-200 ease-linear hover:bg-opacity-70 disabled:cursor-not-allowed disabled:opacity-50"
+          :class="buttonClass"
+          @click="onBrowseClick"
         >
-          <!-- !Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. -->
-          <path
-            d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
-          />
-        </svg>
-      </button>
+          {{ buttonText }}
+        </button>
+      </div>
+      <input
+        :id="field.id"
+        ref="inputRef"
+        :key="fileInputKey"
+        type="file"
+        class="w-full bg-transparent file:hidden"
+        :name="field.name.value"
+        :accept="accept"
+        :required="field.required.value"
+        :disabled="field.disabled.value"
+        :aria-invalid="field.invalid.value || undefined"
+        :aria-describedby="field.describedBy.value"
+        @change="onChangeFile"
+      />
+      <!--
+        The handler lives on the button alone. It used to sit on this wrapper
+        too, so one click fired it twice. And without type="button" the button
+        submitted any surrounding form.
+      -->
+      <div v-if="showClear" class="my-3xs mr-3xs self-stretch">
+        <button
+          type="button"
+          aria-label="Clear selected file"
+          :disabled="field.disabled.value"
+          class="flex h-full items-center px-xs py-2xs transition-all duration-200 ease-linear hover:bg-opacity-70 disabled:cursor-not-allowed disabled:opacity-50"
+          :class="clearButtonClass"
+          @click="onClearFile"
+        >
+          <x-mark :color="buttonTextColor" class-name="h-xs"></x-mark>
+        </button>
+      </div>
     </div>
+    <field-feedback
+      v-if="!field.feedbackOwnedByGroup"
+      :id="field.errorId"
+      :invalid="field.invalid.value"
+      :text="invalidFeedback"
+    >
+      <slot v-if="$slots['invalid-feedback']" name="invalid-feedback" />
+    </field-feedback>
   </div>
 </template>
