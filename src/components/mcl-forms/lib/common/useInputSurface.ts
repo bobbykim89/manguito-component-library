@@ -10,7 +10,15 @@ export interface InputSurfaceOptions {
   /**
    * Optional because MclInputFile has no highlight bar and therefore no such
    * prop. Absent means `false` — no highlight bar, so the focus-visible ring
-   * is emitted instead, which is the only focus affordance those callers get.
+   * is emitted instead.
+   *
+   * That ring is only a real focus affordance when the caller puts the surface
+   * class on the focusable element itself, as MclInputText and MclTextArea do.
+   * MclInputFile applies it to a wrapper `<div>` — the right place for the
+   * surface of a composite control, whose file input sits between two buttons —
+   * so the ring classes are inert there and its input and buttons keep their
+   * native UA focus outlines. MclSelect also wraps, and supplies its own
+   * open-state ring on that wrapper instead.
    */
   showHighlight?: boolean
   rounded: boolean
@@ -47,7 +55,8 @@ export const useInputSurface = (
       )
     }
     // The animated highlight bar is the focus affordance when enabled; the ring
-    // is only the fallback for when it is switched off.
+    // is only the fallback for when it is switched off — and only for callers
+    // that put this class on the focusable element. See `showHighlight`.
     if (!showHighlight) {
       classArray.push(
         'focus-visible:ring-4 ring-offset-2 transition-all duration-300 ease-linear',
