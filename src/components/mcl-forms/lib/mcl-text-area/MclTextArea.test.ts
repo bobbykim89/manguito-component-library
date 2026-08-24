@@ -14,7 +14,9 @@ describe('MclTextArea — basics', () => {
 
   it('honours an explicit rows value', () => {
     expect(
-      mount(MclTextArea, { props: { rows: 12 } }).find('textarea').attributes('rows'),
+      mount(MclTextArea, { props: { rows: 12 } })
+        .find('textarea')
+        .attributes('rows'),
     ).toBe('12')
   })
 
@@ -35,12 +37,20 @@ describe('MclTextArea — basics', () => {
 
   it('carries no dead input__text class', () => {
     // Defined nowhere in the repo; a leftover from before Tailwind v4.
-    expect(mount(MclTextArea, { props: { id: 'bio' } }).html()).not.toContain('input__text')
+    expect(mount(MclTextArea, { props: { id: 'bio' } }).html()).not.toContain(
+      'input__text',
+    )
   })
 
   it('binds name, placeholder, required and disabled', () => {
     const ta = mount(MclTextArea, {
-      props: { id: 'bio', name: 'bio', placeholder: 'About you', required: true, disabled: true },
+      props: {
+        id: 'bio',
+        name: 'bio',
+        placeholder: 'About you',
+        required: true,
+        disabled: true,
+      },
     }).find('textarea')
     expect(ta.attributes('name')).toBe('bio')
     expect(ta.attributes('placeholder')).toBe('About you')
@@ -92,7 +102,12 @@ describe('MclTextArea — validation (new in this release)', () => {
 describe('MclTextArea — inside a group', () => {
   it('takes the group id and defers to the group error region', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { fieldId: 'bio', label: 'Bio', invalid: true, invalidFeedback: 'Group' },
+      props: {
+        fieldId: 'bio',
+        label: 'Bio',
+        invalid: true,
+        invalidFeedback: 'Group',
+      },
       slots: { default: () => h(MclTextArea, { invalidFeedback: 'Mine' }) },
     })
     expect(wrapper.find('textarea').attributes('id')).toBe('bio')
@@ -114,6 +129,8 @@ describe('MclTextArea — inside a group', () => {
       props: { fieldId: 'bio', label: 'Bio', helpText: 'Keep it short.' },
       slots: { default: () => h(MclTextArea) },
     })
-    expect(wrapper.find('textarea').attributes('aria-describedby')).toBe('bio-description')
+    expect(wrapper.find('textarea').attributes('aria-describedby')).toBe(
+      'bio-description',
+    )
   })
 })

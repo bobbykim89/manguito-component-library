@@ -20,14 +20,19 @@ describe('useInputSurface', () => {
 
   it('adds border-2 and the border colour when showBorder is true', () => {
     const surface = useInputSurface({ ...base(), showBorder: true })
-    expect(surface.value).toBe('mcl-bg-light-1 text-black border-2 border-light-4')
+    expect(surface.value).toBe(
+      'mcl-bg-light-1 text-black border-2 border-light-4',
+    )
   })
 
   it('adds the focus-visible ring only when showHighlight is false', () => {
     const withHighlight = useInputSurface({ ...base(), showHighlight: true })
     expect(withHighlight.value).not.toContain('focus-visible:ring-light-4')
 
-    const withoutHighlight = useInputSurface({ ...base(), showHighlight: false })
+    const withoutHighlight = useInputSurface({
+      ...base(),
+      showHighlight: false,
+    })
     expect(withoutHighlight.value).toContain('focus-visible:ring-4')
     expect(withoutHighlight.value).toContain('focus-visible:ring-light-4')
   })

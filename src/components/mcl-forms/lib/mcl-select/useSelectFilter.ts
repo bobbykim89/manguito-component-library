@@ -25,8 +25,9 @@ export const optionLabel = (option: string | SelectOptionType): string =>
  * @param option - a plain string option or a `{ text, value }` option.
  * @returns the value to emit.
  */
-export const optionValue = (option: string | SelectOptionType): string | number =>
-  typeof option === 'string' ? option : option.value
+export const optionValue = (
+  option: string | SelectOptionType,
+): string | number => (typeof option === 'string' ? option : option.value)
 
 /**
  * Filters options by a query, matching case-insensitively on the option's

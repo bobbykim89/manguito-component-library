@@ -100,7 +100,11 @@ describe('MclFormGroup — group (fieldset) mode', () => {
 describe('MclFormGroup — help text', () => {
   it('renders help text with the description id and points controls at it', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { fieldId: 'email', label: 'Email', helpText: 'We never share it.' },
+      props: {
+        fieldId: 'email',
+        label: 'Email',
+        helpText: 'We never share it.',
+      },
       slots: { default: () => h(Probe) },
     })
     const help = wrapper.find('#email-description')
@@ -188,7 +192,9 @@ describe('MclFormGroup — reactivity through the provider', () => {
 
     await wrapper.setProps({ invalid: true })
     expect(ctxOf(wrapper).invalid.value).toBe(true)
-    expect(wrapper.find('input').attributes('aria-describedby')).toBe('email-error')
+    expect(wrapper.find('input').attributes('aria-describedby')).toBe(
+      'email-error',
+    )
     expect(wrapper.find('[role="alert"]').exists()).toBe(true)
   })
 
@@ -207,7 +213,12 @@ describe('MclFormGroup — reactivity through the provider', () => {
 describe('MclFormGroup — label styling', () => {
   it('applies colour and size classes to the label text', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { label: 'Email', textColor: 'primary', textSize: 'lg', textBold: true },
+      props: {
+        label: 'Email',
+        textColor: 'primary',
+        textSize: 'lg',
+        textBold: true,
+      },
       slots: { default: () => h(Probe) },
     })
     const text = wrapper.find('label span')
@@ -244,7 +255,12 @@ describe('MclFormGroup — fieldset mode with help text and an error region toge
 describe('MclFormGroup — slot-over-prop precedence', () => {
   it('prefers the invalid-feedback slot over the invalidFeedback prop', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { fieldId: 'email', label: 'Email', invalid: true, invalidFeedback: 'Prop' },
+      props: {
+        fieldId: 'email',
+        label: 'Email',
+        invalid: true,
+        invalidFeedback: 'Prop',
+      },
       slots: { 'invalid-feedback': '<b>Slotted</b>', default: () => h(Probe) },
     })
     const alert = wrapper.find('[role="alert"]')

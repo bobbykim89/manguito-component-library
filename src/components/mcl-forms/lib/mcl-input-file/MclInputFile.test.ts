@@ -43,7 +43,9 @@ describe('MclInputFile — structure', () => {
   it('renders no clear button unless showClear is set', () => {
     const without = mount(MclInputFile, { props: { id: 'avatar' } })
     expect(without.findAll('button')).toHaveLength(1)
-    const with_ = mount(MclInputFile, { props: { id: 'avatar', showClear: true } })
+    const with_ = mount(MclInputFile, {
+      props: { id: 'avatar', showClear: true },
+    })
     expect(with_.findAll('button')).toHaveLength(2)
   })
 })
@@ -53,12 +55,16 @@ describe('MclInputFile — the clear button', () => {
 
   it('is type="button" so it cannot submit a surrounding form', () => {
     // Live bug before this rewrite: no type attribute meant type="submit".
-    const wrapper = mount(MclInputFile, { props: { id: 'avatar', showClear: true } })
+    const wrapper = mount(MclInputFile, {
+      props: { id: 'avatar', showClear: true },
+    })
     expect(clearButton(wrapper).attributes('type')).toBe('button')
   })
 
   it('has an accessible name', () => {
-    const wrapper = mount(MclInputFile, { props: { id: 'avatar', showClear: true } })
+    const wrapper = mount(MclInputFile, {
+      props: { id: 'avatar', showClear: true },
+    })
     expect(clearButton(wrapper).attributes('aria-label')).toBeTruthy()
   })
 
@@ -118,7 +124,12 @@ describe('MclInputFile — inside a group', () => {
 
   it('defers to the group error region', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { fieldId: 'avatar', label: 'Avatar', invalid: true, invalidFeedback: 'Group' },
+      props: {
+        fieldId: 'avatar',
+        label: 'Avatar',
+        invalid: true,
+        invalidFeedback: 'Group',
+      },
       slots: { default: () => h(MclInputFile, { invalidFeedback: 'Mine' }) },
     })
     const alerts = wrapper.findAll('[role="alert"]')
