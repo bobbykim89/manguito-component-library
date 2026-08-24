@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { h, nextTick } from 'vue'
 import MclFormGroup from '../mcl-form-group/MclFormGroup.vue'
+import type { SelectOptions } from './index.types'
 import MclSelect from './MclSelect.vue'
 
 const OPTIONS = ['Red', 'Green', 'Blue']
@@ -129,6 +130,21 @@ describe('MclSelect — controls are buttons', () => {
     await wrapper.find('button[data-mcl="clear"]').trigger('click')
     expect(wrapper.emitted('clear')).toBeTruthy()
     expect(wrapper.emitted('update:modelValue')!.at(-1)).toEqual([null])
+  })
+
+  it('returns focus to the combobox after clearing', async () => {
+    // The clear button's own `v-if` destroys it as a direct result of
+    // activating it, which drops focus to <body>.
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS, modelValue: 'Red' },
+      attachTo: document.body,
+    })
+    const input = wrapper.find('input[role="combobox"]').element
+    await wrapper.find('button[data-mcl="clear"]').trigger('click')
+    await nextTick()
+    expect(wrapper.find('button[data-mcl="clear"]').exists()).toBe(false)
+    expect(document.activeElement).toBe(input)
+    wrapper.unmount()
   })
 })
 
@@ -531,5 +547,51 @@ describe('MclSelect — the submitted name', () => {
     const hidden = wrapper.find('input[type="hidden"]')
     expect(hidden.attributes('name')).toBe('colour')
     expect((hidden.element as HTMLInputElement).value).toBe('2')
+  })
+})
+
+describe('MclSelect — options arriving after the model', () => {
+  it('resolves the label once the options load', async () => {
+    // The ordinary edit-form sequence: a preselected id, options fetched after
+    // mount. The box showed the raw value indefinitely before this.
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: [] as SelectOptions, modelValue: 2 },
+    })
+    const input = wrapper.find('input[role="combobox"]')
+    expect((input.element as HTMLInputElement).value).toBe('2')
+    await wrapper.setProps({
+      options: [
+        { text: 'Red', value: 1 },
+        { text: 'Green', value: 2 },
+      ],
+    })
+    expect((input.element as HTMLInputElement).value).toBe('Green')
+  })
+
+  it('leaves a live filter query alone when the options change', async () => {
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
+    await open(wrapper)
+    const input = wrapper.find('input[role="combobox"]')
+    await input.setValue('gre')
+    await wrapper.setProps({ options: [...OPTIONS, 'Grey'] })
+    expect((input.element as HTMLInputElement).value).toBe('gre')
+  })
+})
+
+describe('MclSelect — re-focusing an open listbox', () => {
+  it('keeps the highlight when the input is focused again', async () => {
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
+    await open(wrapper)
+    const input = wrapper.find('input[role="combobox"]')
+    await input.trigger('keydown', { key: 'ArrowDown' })
+    expect(input.attributes('aria-activedescendant')).toBe('colour-option-0')
+    await input.trigger('focus')
+    await nextTick()
+    expect(input.attributes('aria-activedescendant')).toBe('colour-option-0')
+    expect(wrapper.find('[role="listbox"]').exists()).toBe(true)
   })
 })

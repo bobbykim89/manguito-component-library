@@ -132,6 +132,10 @@ const scrollActiveIntoView = (index: number): void => {
 // writes inline: focus, the caret, click-outside, Escape and Tab all opened or
 // closed the list longhand, and only some of them knew `isFiltering` existed.
 const openList = (): void => {
+  // Idempotent: `@focus` fires again whenever the input is re-focused while the
+  // list is already open, and running the body would wipe the highlight (and so
+  // `aria-activedescendant`) out from under the user.
+  if (isOpen.value) return
   isOpen.value = true
   isFiltering.value = false
   activeIndex.value = -1
@@ -160,6 +164,10 @@ const clear = (): void => {
   model.value = null
   isFiltering.value = false
   emit('clear')
+  // The clear button's `v-if` removes it the moment the query empties, which
+  // destroys the element the user just activated and drops focus to <body>.
+  // Focus belongs on the control they are still working in.
+  inputRef.value?.focus()
 }
 
 const { onKeydown, activeDescendantId } = useSelectKeyboard({
@@ -251,6 +259,17 @@ watch(
   () => field.disabled.value,
   (isDisabled) => {
     if (isDisabled) closeList()
+  },
+)
+
+// The label for a value cannot be resolved before the options exist. An edit
+// form that mounts with a preselected id and fetches its options afterwards
+// would otherwise leave the raw value in the box for good. Skipped mid-filter,
+// where `query` is the user's typing and not a display label.
+watch(
+  () => props.options,
+  () => {
+    if (!isFiltering.value) query.value = labelForValue(model.value)
   },
 )
 
