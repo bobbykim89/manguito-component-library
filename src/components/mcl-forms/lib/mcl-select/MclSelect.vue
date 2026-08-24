@@ -373,9 +373,14 @@ watch(model, (value) => {
       Outside the listbox, deliberately. An <li aria-live> inside
       role="listbox" is announced to screen readers as a selectable option.
       It takes over the listbox id and the popup's own border, width and
-      floating position: it is the element `aria-controls` names while it is the
-      one on screen, and it is mutually exclusive with the <ul>, so neither the
-      id nor the shared `dropdownRef` can ever be claimed twice.
+      floating position: it is the element `aria-controls` names while it is
+      the one on screen. It is mutually exclusive with the <ul> in state, but
+      the two overlap for the duration of the <transition> leave, so the
+      listbox id is briefly duplicated. The shared `dropdownRef` still
+      resolves to this region: Vue nulls a string ref synchronously on
+      unmount, while this region's ref assignment is queued as a post-render
+      job in the same flush, so it runs after the <ul>'s unmount clears the
+      ref.
     -->
     <div
       v-if="isOpen && filteredOptions.length === 0"
