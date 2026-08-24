@@ -6,7 +6,9 @@ import MclInputSwitch from './MclInputSwitch.vue'
 
 describe('MclInputSwitch — structure and ARIA', () => {
   it('renders a checkbox with role="switch"', () => {
-    const input = mount(MclInputSwitch, { props: { id: 'notify' } }).find('input')
+    const input = mount(MclInputSwitch, { props: { id: 'notify' } }).find(
+      'input',
+    )
     expect(input.attributes('type')).toBe('checkbox')
     expect(input.attributes('role')).toBe('switch')
   })
@@ -14,7 +16,9 @@ describe('MclInputSwitch — structure and ARIA', () => {
   it('does not hand-bind aria-checked', () => {
     // HTML-AAM maps a checkbox's native checked state already; a bound copy
     // is redundant and can only desync.
-    const wrapper = mount(MclInputSwitch, { props: { id: 'notify', modelValue: true } })
+    const wrapper = mount(MclInputSwitch, {
+      props: { id: 'notify', modelValue: true },
+    })
     expect(wrapper.find('input').attributes('aria-checked')).toBeUndefined()
   })
 

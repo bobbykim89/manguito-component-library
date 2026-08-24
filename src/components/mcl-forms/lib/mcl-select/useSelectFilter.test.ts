@@ -50,7 +50,9 @@ describe('useSelectFilter', () => {
   })
 
   it('filters object options on their text', () => {
-    expect(useSelectFilter(objects, 'blu').value).toEqual([{ text: 'Blue', value: 3 }])
+    expect(useSelectFilter(objects, 'blu').value).toEqual([
+      { text: 'Blue', value: 3 },
+    ])
   })
 
   it('returns an empty array when nothing matches', () => {

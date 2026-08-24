@@ -31,7 +31,9 @@ describe('MclSelect — combobox wiring', () => {
   })
 
   it('opens on focus and reports expanded', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     expect(wrapper.find('input').attributes('aria-expanded')).toBe('true')
     const listbox = wrapper.find('[role="listbox"]')
@@ -63,9 +65,13 @@ describe('MclSelect — combobox wiring', () => {
   })
 
   it('sets no aria-activedescendant until the user moves', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
-    expect(wrapper.find('input').attributes('aria-activedescendant')).toBeUndefined()
+    expect(
+      wrapper.find('input').attributes('aria-activedescendant'),
+    ).toBeUndefined()
     await wrapper.find('input').trigger('keydown', { key: 'ArrowDown' })
     expect(wrapper.find('input').attributes('aria-activedescendant')).toBe(
       'colour-option-0',
@@ -73,7 +79,9 @@ describe('MclSelect — combobox wiring', () => {
   })
 
   it('emits open and close', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     expect(wrapper.emitted('open')).toBeTruthy()
     await wrapper.find('input').trigger('keydown', { key: 'Escape' })
@@ -85,7 +93,9 @@ describe('MclSelect — controls are buttons', () => {
   it('renders the caret as a button outside the tab order', async () => {
     // Previously a <div @click>: not focusable, no accessible name. It stays
     // out of the tab order because the input already owns aria-expanded.
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     const caret = wrapper.find('button[data-mcl="caret"]')
     expect(caret.exists()).toBe(true)
     expect(caret.attributes('type')).toBe('button')
@@ -94,7 +104,9 @@ describe('MclSelect — controls are buttons', () => {
   })
 
   it('toggles the listbox from the caret', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await wrapper.find('button[data-mcl="caret"]').trigger('click')
     expect(wrapper.find('[role="listbox"]').exists()).toBe(true)
   })
@@ -122,7 +134,9 @@ describe('MclSelect — controls are buttons', () => {
 
 describe('MclSelect — selection', () => {
   it('selects on click and emits select and changed', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     await wrapper.findAll('[role="option"]')[1].trigger('click')
     expect(wrapper.emitted('select')![0]).toEqual(['Green'])
@@ -145,7 +159,9 @@ describe('MclSelect — selection', () => {
   })
 
   it('selects the active option on Enter', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     await wrapper.find('input').trigger('keydown', { key: 'ArrowDown' })
     await wrapper.find('input').trigger('keydown', { key: 'Enter' })
@@ -153,7 +169,9 @@ describe('MclSelect — selection', () => {
   })
 
   it('closes the listbox after selecting', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     await wrapper.findAll('[role="option"]')[0].trigger('click')
     await nextTick()
@@ -186,14 +204,18 @@ describe('MclSelect — Escape semantics', () => {
 
 describe('MclSelect — filtering and no-match', () => {
   it('filters as the query is typed', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     await wrapper.find('input').setValue('re')
     expect(wrapper.findAll('[role="option"]')).toHaveLength(2)
   })
 
   it('does not throw on a regex metacharacter', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     await expect(wrapper.find('input').setValue('(')).resolves.not.toThrow()
   })
@@ -214,33 +236,57 @@ describe('MclSelect — filtering and no-match', () => {
   it('gives the no-match region the id aria-controls names', async () => {
     // aria-expanded stays true with nothing matching, so the element
     // aria-controls names has to be the one that is actually on screen.
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     await wrapper.find('input').setValue('zzz')
-    expect(wrapper.find('input').attributes('aria-controls')).toBe('colour-listbox')
-    expect(wrapper.find('[role="status"]').attributes('id')).toBe('colour-listbox')
+    expect(wrapper.find('input').attributes('aria-controls')).toBe(
+      'colour-listbox',
+    )
+    expect(wrapper.find('[role="status"]').attributes('id')).toBe(
+      'colour-listbox',
+    )
   })
 })
 
 describe('MclSelect — field context and validation', () => {
   it('generates an id when none is given', () => {
-    expect(mount(MclSelect, { props: { options: OPTIONS } }).find('input').attributes('id'))
-      .toBeTruthy()
+    expect(
+      mount(MclSelect, { props: { options: OPTIONS } })
+        .find('input')
+        .attributes('id'),
+    ).toBeTruthy()
   })
 
   it('renders its own error region and points at it', () => {
     const wrapper = mount(MclSelect, {
-      props: { id: 'colour', options: OPTIONS, invalid: true, invalidFeedback: 'Pick one' },
+      props: {
+        id: 'colour',
+        options: OPTIONS,
+        invalid: true,
+        invalidFeedback: 'Pick one',
+      },
     })
     expect(wrapper.find('input').attributes('aria-invalid')).toBe('true')
-    expect(wrapper.find('input').attributes('aria-describedby')).toBe('colour-error')
+    expect(wrapper.find('input').attributes('aria-describedby')).toBe(
+      'colour-error',
+    )
     expect(wrapper.find('[role="alert"]').text()).toBe('Pick one')
   })
 
   it('defers to the group error region', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { fieldId: 'colour', label: 'Colour', invalid: true, invalidFeedback: 'Group' },
-      slots: { default: () => h(MclSelect, { options: OPTIONS, invalidFeedback: 'Mine' }) },
+      props: {
+        fieldId: 'colour',
+        label: 'Colour',
+        invalid: true,
+        invalidFeedback: 'Group',
+      },
+      slots: {
+        default: () =>
+          h(MclSelect, { options: OPTIONS, invalidFeedback: 'Mine' }),
+      },
     })
     const alerts = wrapper.findAll('[role="alert"]')
     expect(alerts).toHaveLength(1)
@@ -253,13 +299,17 @@ describe('MclSelect — field context and validation', () => {
       slots: { default: () => h(MclSelect, { options: OPTIONS }) },
     })
     expect(wrapper.find('input').attributes('disabled')).toBeDefined()
-    expect(wrapper.find('button[data-mcl="caret"]').attributes('disabled')).toBeDefined()
+    expect(
+      wrapper.find('button[data-mcl="caret"]').attributes('disabled'),
+    ).toBeDefined()
   })
 })
 
 describe('MclSelect — a stale active index', () => {
   it('does not commit when the query narrows below the active option', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     const input = wrapper.find('input')
     await input.setValue('re')
@@ -273,14 +323,18 @@ describe('MclSelect — a stale active index', () => {
   })
 
   it('does not commit, or name an option, when nothing matches', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     const input = wrapper.find('input')
     await input.setValue('re')
     await input.trigger('keydown', { key: 'ArrowDown' })
     await input.setValue('rezzz')
     expect(wrapper.findAll('[role="option"]')).toHaveLength(0)
-    expect(wrapper.find('input').attributes('aria-activedescendant')).toBeUndefined()
+    expect(
+      wrapper.find('input').attributes('aria-activedescendant'),
+    ).toBeUndefined()
     await input.trigger('keydown', { key: 'Enter' })
     expect(wrapper.emitted('select')).toBeFalsy()
   })
@@ -288,7 +342,9 @@ describe('MclSelect — a stale active index', () => {
   it('does not commit when the parent replaces the options mid-navigation', async () => {
     // The dependent-select pattern: options arrive or change while the list is
     // open and the user has already moved the highlight.
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     const input = wrapper.find('input')
     await input.trigger('keydown', { key: 'ArrowDown' })
@@ -341,7 +397,9 @@ describe('MclSelect — closing without selecting', () => {
   })
 
   it('drops the filter when the list is reopened', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     await wrapper.find('input').setValue('re')
     expect(wrapper.findAll('[role="option"]')).toHaveLength(2)
@@ -357,7 +415,9 @@ describe('MclSelect — closing without selecting', () => {
 describe('MclSelect — disabled while open', () => {
   it('closes the listbox when the field becomes disabled', async () => {
     // A form disabling itself on submit must not leave a committable list open.
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     expect(wrapper.find('[role="listbox"]').exists()).toBe(true)
     await wrapper.setProps({ disabled: true })
@@ -376,6 +436,8 @@ describe('MclSelect — dropdown slot', () => {
       },
     })
     await open(wrapper)
-    expect(wrapper.find('[role="option"]').attributes('id')).toBe('colour-option-1')
+    expect(wrapper.find('[role="option"]').attributes('id')).toBe(
+      'colour-option-1',
+    )
   })
 })

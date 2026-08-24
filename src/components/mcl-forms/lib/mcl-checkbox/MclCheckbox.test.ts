@@ -60,7 +60,9 @@ describe('MclCheckbox — v-model and change', () => {
     const wrapper = mount(MclCheckbox, {
       props: { id: 'agree', modelValue: true },
     })
-    expect((wrapper.find('input').element as HTMLInputElement).checked).toBe(true)
+    expect((wrapper.find('input').element as HTMLInputElement).checked).toBe(
+      true,
+    )
   })
 
   it('emits change with the native event', async () => {
@@ -94,7 +96,9 @@ describe('MclCheckbox — colours and size', () => {
   })
 
   it('applies the size classes', () => {
-    const span = mount(MclCheckbox, { props: { id: 'agree', size: 'lg' } }).find('span')
+    const span = mount(MclCheckbox, {
+      props: { id: 'agree', size: 'lg' },
+    }).find('span')
     expect(span.classes()).toContain('h-md')
     expect(span.classes()).toContain('w-md')
   })
@@ -109,7 +113,12 @@ describe('MclCheckbox — field context', () => {
 
   it('inherits disabled and required from the group', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { fieldId: 'agree', label: 'Agree', disabled: true, required: true },
+      props: {
+        fieldId: 'agree',
+        label: 'Agree',
+        disabled: true,
+        required: true,
+      },
       slots: { default: () => h(MclCheckbox) },
     })
     const input = wrapper.find('input')
@@ -145,7 +154,9 @@ describe('MclCheckbox — field context', () => {
       },
       slots: { default: () => h(MclCheckbox) },
     })
-    expect(wrapper.find('input').attributes('aria-describedby')).toBe('agree-error')
+    expect(wrapper.find('input').attributes('aria-describedby')).toBe(
+      'agree-error',
+    )
     expect(wrapper.find('#agree-error').exists()).toBe(true)
   })
 

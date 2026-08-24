@@ -46,14 +46,18 @@ describe('MclInputRadio — v-model', () => {
     const wrapper = mount(MclInputRadio, {
       props: { id: 'red', value: 'red', modelValue: 'red' },
     })
-    expect((wrapper.find('input').element as HTMLInputElement).checked).toBe(true)
+    expect((wrapper.find('input').element as HTMLInputElement).checked).toBe(
+      true,
+    )
   })
 
   it('is unchecked when the model is a different value', () => {
     const wrapper = mount(MclInputRadio, {
       props: { id: 'red', value: 'red', modelValue: 'blue' },
     })
-    expect((wrapper.find('input').element as HTMLInputElement).checked).toBe(false)
+    expect((wrapper.find('input').element as HTMLInputElement).checked).toBe(
+      false,
+    )
   })
 
   it('emits change with the native event', async () => {
@@ -67,7 +71,9 @@ describe('MclInputRadio — grouping by name', () => {
   it('falls back to its own id when no name is given or inherited', () => {
     // This control is the sole exception to the context's no-id-fallback rule,
     // because name is what makes a radio set behave as one.
-    const input = mount(MclInputRadio, { props: { id: 'red', value: 'red' } }).find('input')
+    const input = mount(MclInputRadio, {
+      props: { id: 'red', value: 'red' },
+    }).find('input')
     expect(input.attributes('name')).toBe('red')
   })
 
@@ -111,13 +117,20 @@ describe('MclInputRadio — colours, size, context', () => {
   })
 
   it('applies the size classes', () => {
-    const span = mount(MclInputRadio, { props: { id: 'red', size: 'sm' } }).find('span')
+    const span = mount(MclInputRadio, {
+      props: { id: 'red', size: 'sm' },
+    }).find('span')
     expect(span.classes()).toContain('h-xs')
   })
 
   it('inherits disabled from the group', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { groupLabel: true, fieldId: 'colour', label: 'Colour', disabled: true },
+      props: {
+        groupLabel: true,
+        fieldId: 'colour',
+        label: 'Colour',
+        disabled: true,
+      },
       slots: { default: () => h(MclInputRadio, { value: 'red' }) },
     })
     expect(wrapper.find('input').attributes('disabled')).toBeDefined()
@@ -125,7 +138,12 @@ describe('MclInputRadio — colours, size, context', () => {
 
   it('does not claim an error region it never renders', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { groupLabel: true, fieldId: 'colour', label: 'Colour', invalid: true },
+      props: {
+        groupLabel: true,
+        fieldId: 'colour',
+        label: 'Colour',
+        invalid: true,
+      },
       slots: { default: () => h(MclInputRadio, { value: 'red' }) },
     })
     expect(wrapper.find('input').attributes('aria-describedby')).toBeUndefined()

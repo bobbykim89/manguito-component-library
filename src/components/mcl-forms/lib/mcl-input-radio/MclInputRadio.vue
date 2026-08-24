@@ -76,7 +76,7 @@ const onChange = (event: Event): void => {
     />
     <span
       aria-hidden="true"
-      class="relative inline-block rounded-full border transition-colors duration-200 ease-linear before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-full before:opacity-0 before:transition-opacity before:duration-200 peer-checked:before:opacity-100 peer-disabled:opacity-50"
+      class="relative inline-block rounded-full border transition-colors duration-200 ease-linear peer-disabled:opacity-50 before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-full before:opacity-0 before:transition-opacity before:duration-200 peer-checked:before:opacity-100"
       :class="[boxClass, sizeClass]"
     ></span>
   </div>

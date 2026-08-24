@@ -179,7 +179,9 @@ describe('useSelectKeyboard — activeDescendantId', () => {
 
 describe('useSelectKeyboard — boundary conditions with empty lists', () => {
   it('ArrowDown with empty list keeps activeIndex at -1 and does not call onActiveChange', () => {
-    const { isOpen, activeIndex, onActiveChange, kb } = setup({ optionCount: 0 })
+    const { isOpen, activeIndex, onActiveChange, kb } = setup({
+      optionCount: 0,
+    })
     isOpen.value = true
     kb.onKeydown(key('ArrowDown'))
     expect(activeIndex.value).toBe(-1)

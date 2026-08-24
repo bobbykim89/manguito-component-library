@@ -70,7 +70,10 @@ defineSlots<{
     options: (string | SelectOptionType)[]
     activeIndex: number
     optionClick: (option: string | SelectOptionType) => void
-    setRef: (el: Element | ComponentPublicInstance | null, index: number) => void
+    setRef: (
+      el: Element | ComponentPublicInstance | null,
+      index: number,
+    ) => void
     hover: (index: number) => void
     optionId: (index: number) => string
   }): unknown
@@ -203,7 +206,9 @@ const listboxClass = computed<string>(() => {
 })
 
 const isSelected = (option: string | SelectOptionType): boolean =>
-  model.value !== null && model.value !== '' && optionValue(option) === model.value
+  model.value !== null &&
+  model.value !== '' &&
+  optionValue(option) === model.value
 
 const { floatingStyles } = useFloating(rootRef, dropdownRef, {
   whileElementsMounted: autoUpdate,

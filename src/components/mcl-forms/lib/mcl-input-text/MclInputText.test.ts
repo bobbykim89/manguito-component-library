@@ -12,7 +12,9 @@ describe('MclInputText — basics', () => {
   })
 
   it('accepts the widened input types', () => {
-    const input = mount(MclInputText, { props: { type: 'search' } }).find('input')
+    const input = mount(MclInputText, { props: { type: 'search' } }).find(
+      'input',
+    )
     expect(input.attributes('type')).toBe('search')
   })
 
@@ -37,14 +39,21 @@ describe('MclInputText — basics', () => {
   })
 
   it('updates the model on input', async () => {
-    const wrapper = mount(MclInputText, { props: { id: 'email', modelValue: '' } })
+    const wrapper = mount(MclInputText, {
+      props: { id: 'email', modelValue: '' },
+    })
     await wrapper.find('input').setValue('hello')
     expect(wrapper.emitted('update:modelValue')![0]).toEqual(['hello'])
   })
 
   it('applies the surface classes', () => {
     const input = mount(MclInputText, {
-      props: { id: 'email', bgColor: 'light-1', textColor: 'black', showShadow: true },
+      props: {
+        id: 'email',
+        bgColor: 'light-1',
+        textColor: 'black',
+        showShadow: true,
+      },
     }).find('input')
     expect(input.classes()).toContain('mcl-bg-light-1')
     expect(input.classes()).toContain('text-black')
@@ -52,15 +61,23 @@ describe('MclInputText — basics', () => {
   })
 
   it('carries the peer class so the highlight bar reacts to focus', () => {
-    expect(mount(MclInputText, { props: { id: 'email' } }).find('input').classes()).toContain(
-      'peer',
-    )
+    expect(
+      mount(MclInputText, { props: { id: 'email' } })
+        .find('input')
+        .classes(),
+    ).toContain('peer')
   })
 
   it('renders the highlight bar only when showHighlight is true', () => {
-    const withBar = mount(MclInputText, { props: { id: 'email', showHighlight: true } })
-    const withoutBar = mount(MclInputText, { props: { id: 'email', showHighlight: false } })
-    expect(withBar.findAll('div').length).toBeGreaterThan(withoutBar.findAll('div').length)
+    const withBar = mount(MclInputText, {
+      props: { id: 'email', showHighlight: true },
+    })
+    const withoutBar = mount(MclInputText, {
+      props: { id: 'email', showHighlight: false },
+    })
+    expect(withBar.findAll('div').length).toBeGreaterThan(
+      withoutBar.findAll('div').length,
+    )
   })
 
   it('uses a focus-visible ring when the highlight bar is off', () => {
@@ -118,9 +135,9 @@ describe('MclInputText — validation', () => {
   it('uses no peer-invalid CSS to drive visibility', () => {
     // Removed on purpose: CSS-driven visibility disagreed with the
     // prop-driven aria wiring, so an error could show with no announcement.
-    expect(mount(MclInputText, { props: { id: 'email' } }).html()).not.toContain(
-      'peer-invalid',
-    )
+    expect(
+      mount(MclInputText, { props: { id: 'email' } }).html(),
+    ).not.toContain('peer-invalid')
   })
 })
 
@@ -147,7 +164,9 @@ describe('MclInputText — inside a group', () => {
     const alerts = wrapper.findAll('[role="alert"]')
     expect(alerts).toHaveLength(1)
     expect(alerts[0].text()).toBe('From the group')
-    expect(wrapper.find('input').attributes('aria-describedby')).toBe('email-error')
+    expect(wrapper.find('input').attributes('aria-describedby')).toBe(
+      'email-error',
+    )
   })
 
   it('points describedby at description then error, in that order', () => {
@@ -168,7 +187,12 @@ describe('MclInputText — inside a group', () => {
 
   it('inherits disabled and required', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { fieldId: 'email', label: 'Email', disabled: true, required: true },
+      props: {
+        fieldId: 'email',
+        label: 'Email',
+        disabled: true,
+        required: true,
+      },
       slots: { default: () => h(MclInputText) },
     })
     const input = wrapper.find('input')
