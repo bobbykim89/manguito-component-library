@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import { h } from 'vue'
+import { h, nextTick, ref } from 'vue'
 import MclFormGroup from '../mcl-form-group/MclFormGroup.vue'
 import MclInputRadio from './MclInputRadio.vue'
 
@@ -22,9 +22,15 @@ describe('MclInputRadio — structure', () => {
   })
 
   it('stays circular and accepts no rounded prop', () => {
-    // Shape is how users tell a radio from a checkbox.
+    // Shape is how users tell a radio from a checkbox: the circle is static in
+    // the template, and there is no `rounded` prop for the composable's
+    // rounding branch to reach, so the checkbox radii must never appear here.
     const wrapper = mount(MclInputRadio, { props: { id: 'red' } })
-    expect(wrapper.find('span').classes()).toContain('rounded-full')
+    const classes = wrapper.find('span').classes()
+    expect(classes).toContain('rounded-full')
+    expect(classes).toContain('before:rounded-full')
+    expect(classes).not.toContain('rounded-md')
+    expect(classes).not.toContain('before:rounded-[3px]')
     expect(Object.keys(MclInputRadio.props ?? {})).not.toContain('rounded')
   })
 
@@ -104,6 +110,56 @@ describe('MclInputRadio — grouping by name', () => {
     ])
     const ids = inputs.map((i) => i.attributes('id'))
     expect(new Set(ids).size).toBe(3)
+  })
+
+  it('holds exactly one selection across a group sharing one v-model', async () => {
+    const selected = ref<string | number | null>(null)
+    const wrapper = mount({
+      setup() {
+        return () =>
+          h(
+            MclFormGroup,
+            { groupLabel: true, fieldId: 'colour', label: 'Colour' },
+            {
+              default: () =>
+                ['red', 'green', 'blue'].map((value) =>
+                  h(MclInputRadio, {
+                    key: value,
+                    value,
+                    modelValue: selected.value,
+                    'onUpdate:modelValue': (next: string | number | null) => {
+                      selected.value = next
+                    },
+                  }),
+                ),
+            },
+          )
+      },
+    })
+
+    const inputs = wrapper.findAll('input')
+    expect(inputs).toHaveLength(3)
+    expect(inputs.map((i) => i.attributes('name'))).toEqual([
+      'colour',
+      'colour',
+      'colour',
+    ])
+    expect(new Set(inputs.map((i) => i.attributes('id'))).size).toBe(3)
+
+    await inputs[0].setValue(true)
+    await nextTick()
+    expect(selected.value).toBe('red')
+    expect((inputs[0].element as HTMLInputElement).checked).toBe(true)
+    expect((inputs[1].element as HTMLInputElement).checked).toBe(false)
+
+    // Selecting a second one has to deselect the first: one shared model, one
+    // selection. Nothing tested more than a single radio before this.
+    await inputs[1].setValue(true)
+    await nextTick()
+    expect(selected.value).toBe('green')
+    expect((inputs[0].element as HTMLInputElement).checked).toBe(false)
+    expect((inputs[1].element as HTMLInputElement).checked).toBe(true)
+    expect((inputs[2].element as HTMLInputElement).checked).toBe(false)
   })
 })
 

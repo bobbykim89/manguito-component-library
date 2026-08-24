@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import { h } from 'vue'
+import { h, nextTick } from 'vue'
 import MclFormGroup from '../mcl-form-group/MclFormGroup.vue'
 import MclCheckbox from './MclCheckbox.vue'
 
@@ -39,10 +39,43 @@ describe('MclCheckbox — structure', () => {
     expect(span.classes().join(' ')).toContain('peer-focus-visible:ring')
   })
 
-  it('exposes no click handler on the visual box', () => {
-    // The old implementation forwarded clicks with checkboxRef.click().
-    const wrapper = mount(MclCheckbox, { props: { id: 'agree' } })
-    expect(wrapper.find('span').attributes('onclick')).toBeUndefined()
+  it('leaves the visual box inert — clicking it toggles nothing', async () => {
+    // The old implementation forwarded clicks with checkboxRef.click(); the
+    // span is aria-hidden and inert now, and the native input overlaid on top
+    // of it is the only click target. This drives the mechanism rather than
+    // asserting on an `onclick` attribute, which can never fail: Vue compiles
+    // @click to a prop and never to an attribute.
+    const wrapper = mount(MclCheckbox, {
+      props: { id: 'agree', modelValue: false },
+      attachTo: document.body,
+    })
+    const span = wrapper.find('span')
+    expect(span.attributes('aria-hidden')).toBe('true')
+    ;(span.element as HTMLElement).click()
+    await nextTick()
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+    expect(wrapper.emitted('change')).toBeUndefined()
+    wrapper.unmount()
+  })
+
+  it('rounds with the checkbox vocabulary, never the switch pill', () => {
+    const classes = mount(MclCheckbox, {
+      props: { id: 'agree', rounded: true },
+    })
+      .find('span')
+      .classes()
+    expect(classes).toContain('rounded-md')
+    expect(classes).toContain('before:rounded-[3px]')
+    expect(classes).not.toContain('rounded-full')
+    expect(classes).not.toContain('before:rounded-full')
+  })
+
+  it('emits no rounding at all by default', () => {
+    const classes = mount(MclCheckbox, { props: { id: 'agree' } })
+      .find('span')
+      .classes()
+    expect(classes).not.toContain('rounded-md')
+    expect(classes).not.toContain('before:rounded-[3px]')
   })
 })
 
