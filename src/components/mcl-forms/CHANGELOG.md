@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.11.1
+
+### Patch Changes
+
+- d20c2b9: Fix a TS2305 build error in MclCheckbox and MclInputSwitch, which still imported the ColorMap type after it was removed. Both now annotate their local maps with the equivalent Record<ColorPalette, string>. No behaviour or API change.
+
 ## 0.11.0
 
 ### Minor Changes
