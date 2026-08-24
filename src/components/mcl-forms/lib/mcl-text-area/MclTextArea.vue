@@ -1,88 +1,70 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { ColorPalette } from '@bobbykim/manguito-theme'
-import { generateClass } from '@bobbykim/manguito-theme'
+import FieldFeedback from '../common/FieldFeedback.vue'
 import InputHighlight from '../common/InputHighlight.vue'
+import { useFieldContext } from '../common/fieldContext'
+import { useInputSurface } from '../common/useInputSurface'
 
 const props = withDefaults(
   defineProps<{
-    id: string
+    id?: string
+    name?: string
+    placeholder?: string
+    rows?: number
     showBorder?: boolean
     borderColor?: ColorPalette
     rounded?: boolean
     showHighlight?: boolean
     highlightColor?: ColorPalette
-    bgColor?: ColorPalette
     textColor?: ColorPalette
-    placeholder?: string
+    bgColor?: ColorPalette
     showShadow?: boolean
-    required?: boolean
+    invalidFeedback?: string
     invalid?: boolean
-    rows?: number
+    required?: boolean
+    disabled?: boolean
   }>(),
   {
+    placeholder: '',
+    rows: 5,
     showBorder: false,
     borderColor: 'light-4',
     rounded: false,
     showHighlight: true,
     highlightColor: 'primary',
-    bgColor: 'light-1',
     textColor: 'black',
-    placeholder: '',
+    bgColor: 'light-1',
     showShadow: true,
-    required: false,
-    invalid: false,
-    rows: 5,
+    invalid: undefined,
+    required: undefined,
+    disabled: undefined,
   },
 )
 
 const model = defineModel<string>()
 
-const inputClass = computed(() => {
-  const {
-    bgColor,
-    showBorder,
-    borderColor,
-    showHighlight,
-    showShadow,
-    rounded,
-    textColor,
-  } = props
-  const classArray: string[] = [
-    generateClass.bgColorVariant({ color: bgColor }),
-    generateClass.textColorVariant({ color: textColor }),
-  ]
-  if (showBorder) {
-    classArray.push('border-2')
-    classArray.push(generateClass.borderColorVariant({ color: borderColor }))
-  }
-  if (!showHighlight) {
-    classArray.push(
-      'focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear',
-    )
-    classArray.push(generateClass.focusRingColorVariant({ color: borderColor }))
-  }
-  if (showShadow) {
-    classArray.push('shadow-md')
-  }
-  if (rounded) {
-    classArray.push('rounded-md')
-  }
-  return classArray.join(' ')
-})
+defineSlots<{
+  'invalid-feedback'?: () => unknown
+}>()
+
+const field = useFieldContext(props)
+const surfaceClass = useInputSurface(props)
 </script>
 
 <template>
   <div>
     <textarea
-      :id="id"
-      class="input__text peer w-full p-2xs outline-none"
-      :class="inputClass"
+      :id="field.id"
       v-model="model"
-      :placeholder="placeholder"
-      :required="required"
-      :aria-invalid="invalid || undefined"
+      class="peer w-full p-2xs outline-none disabled:cursor-not-allowed disabled:opacity-50"
+      :class="surfaceClass"
+      :name="field.name.value"
       :rows="rows"
+      :placeholder="placeholder"
+      :required="field.required.value"
+      :disabled="field.disabled.value"
+      :aria-invalid="field.invalid.value || undefined"
+      :aria-describedby="field.describedBy.value"
     />
     <input-highlight
       v-if="showHighlight"
@@ -90,5 +72,13 @@ const inputClass = computed(() => {
       :rounded="rounded"
       :offset="2.5"
     ></input-highlight>
+    <field-feedback
+      v-if="!field.feedbackOwnedByGroup"
+      :id="field.errorId"
+      :invalid="field.invalid.value"
+      :text="invalidFeedback"
+    >
+      <slot v-if="$slots['invalid-feedback']" name="invalid-feedback" />
+    </field-feedback>
   </div>
 </template>
