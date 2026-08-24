@@ -282,7 +282,6 @@ watch(model, (value) => {
         role="combobox"
         autocomplete="off"
         class="w-full bg-transparent outline-none disabled:cursor-not-allowed"
-        :name="field.name.value"
         :placeholder="placeholder"
         :disabled="field.disabled.value"
         aria-autocomplete="list"
@@ -400,6 +399,19 @@ watch(model, (value) => {
         <span>{{ noMatchText }}</span>
       </slot>
     </div>
+
+    <!--
+      The submitted value lives here, not on the combobox. That input's value is
+      the display label — `optionLabel(option)` — so a `name` on it would post
+      "Green" where the server expects `2`. Rendered only when a name exists, so
+      a nameless select contributes nothing to a form.
+    -->
+    <input
+      v-if="field.name.value"
+      type="hidden"
+      :name="field.name.value"
+      :value="model ?? ''"
+    />
 
     <field-feedback
       v-if="!field.feedbackOwnedByGroup"

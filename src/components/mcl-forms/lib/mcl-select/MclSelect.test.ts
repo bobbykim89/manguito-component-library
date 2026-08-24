@@ -441,3 +441,95 @@ describe('MclSelect — dropdown slot', () => {
     )
   })
 })
+
+describe('MclSelect — the submitted name', () => {
+  const OBJECT_OPTIONS = [
+    { text: 'Red', value: 1 },
+    { text: 'Green', value: 2 },
+  ]
+
+  it('keeps name off the combobox, whose value is a display label', () => {
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', name: 'colour', options: OBJECT_OPTIONS },
+    })
+    expect(
+      wrapper.find('input[role="combobox"]').attributes('name'),
+    ).toBeUndefined()
+  })
+
+  it('submits the model value rather than the visible label', () => {
+    const wrapper = mount(MclSelect, {
+      props: {
+        id: 'colour',
+        name: 'colour',
+        options: OBJECT_OPTIONS,
+        modelValue: 2,
+      },
+    })
+    // What the user sees.
+    expect(
+      (wrapper.find('input[role="combobox"]').element as HTMLInputElement)
+        .value,
+    ).toBe('Green')
+    // What the server gets.
+    const hidden = wrapper.find('input[type="hidden"]')
+    expect(hidden.attributes('name')).toBe('colour')
+    expect((hidden.element as HTMLInputElement).value).toBe('2')
+  })
+
+  it('submits the string itself for string options', () => {
+    const hidden = mount(MclSelect, {
+      props: {
+        id: 'colour',
+        name: 'colour',
+        options: OPTIONS,
+        modelValue: 'Green',
+      },
+    }).find('input[type="hidden"]')
+    expect((hidden.element as HTMLInputElement).value).toBe('Green')
+  })
+
+  it('submits an empty value while nothing is selected', () => {
+    const hidden = mount(MclSelect, {
+      props: { id: 'colour', name: 'colour', options: OBJECT_OPTIONS },
+    }).find('input[type="hidden"]')
+    expect((hidden.element as HTMLInputElement).value).toBe('')
+  })
+
+  it('tracks a selection made through the listbox', async () => {
+    // No `modelValue` prop, so defineModel keeps the value locally and the
+    // hidden input has to follow the commit on its own.
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', name: 'colour', options: OBJECT_OPTIONS },
+    })
+    await open(wrapper)
+    await wrapper.findAll('[role="option"]')[1].trigger('click')
+    await nextTick()
+    expect(
+      (wrapper.find('input[type="hidden"]').element as HTMLInputElement).value,
+    ).toBe('2')
+    expect(
+      (wrapper.find('input[role="combobox"]').element as HTMLInputElement)
+        .value,
+    ).toBe('Green')
+  })
+
+  it('renders no hidden input at all without a name', () => {
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OBJECT_OPTIONS, modelValue: 2 },
+    })
+    expect(wrapper.find('input[type="hidden"]').exists()).toBe(false)
+  })
+
+  it('uses the name inherited from the group, which defaults to its fieldId', () => {
+    const wrapper = mount(MclFormGroup, {
+      props: { fieldId: 'colour', label: 'Colour' },
+      slots: {
+        default: () => h(MclSelect, { options: OBJECT_OPTIONS, modelValue: 2 }),
+      },
+    })
+    const hidden = wrapper.find('input[type="hidden"]')
+    expect(hidden.attributes('name')).toBe('colour')
+    expect((hidden.element as HTMLInputElement).value).toBe('2')
+  })
+})
