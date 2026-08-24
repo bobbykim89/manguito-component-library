@@ -2,7 +2,17 @@
 import type { ColorPalette } from '@bobbykim/manguito-theme'
 import { useFieldContext } from '../common/fieldContext'
 import type { InputSizeType } from '../common/index.types'
-import { useToggleControl } from '../common/useToggleControl'
+import {
+  useToggleControl,
+  type ToggleControlOptions,
+} from '../common/useToggleControl'
+
+// A switch's rounded form is a full pill with a round knob, not the checkbox's
+// soft rectangle. There is no prop to forward, so the vocabulary is fixed here
+// and handed to useToggleControl, which owns the shape for all three toggles —
+// appending it in the template would leave two competing radii in the class
+// list, resolved by stylesheet order.
+const SWITCH_ROUNDED_CLASS = 'rounded-full before:rounded-full'
 
 const props = withDefaults(
   defineProps<{
@@ -43,7 +53,35 @@ const emit = defineEmits<{
 }>()
 
 const field = useFieldContext(props, { rendersOwnFeedback: false })
-const { boxClass, switchVars } = useToggleControl(props)
+
+// Getters rather than a spread: `{ ...props, roundedClass }` would snapshot
+// every value at setup and freeze the classes at their mount-time values, so
+// each field is read through the props proxy on every recompute instead.
+const toggleOptions: ToggleControlOptions = {
+  get size() {
+    return props.size
+  },
+  get bgColor() {
+    return props.bgColor
+  },
+  get checkedBgColor() {
+    return props.checkedBgColor
+  },
+  get indicatorColor() {
+    return props.indicatorColor
+  },
+  get borderColor() {
+    return props.borderColor
+  },
+  get showShadow() {
+    return props.showShadow
+  },
+  get rounded() {
+    return props.rounded
+  },
+  roundedClass: SWITCH_ROUNDED_CLASS,
+}
+const { boxClass, switchVars } = useToggleControl(toggleOptions)
 
 const onChange = (event: Event): void => {
   emit('change', event)

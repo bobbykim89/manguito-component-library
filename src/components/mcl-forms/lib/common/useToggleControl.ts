@@ -15,6 +15,14 @@ export interface ToggleControlOptions {
    * means `false`.
    */
   rounded?: boolean
+  /**
+   * The class pair applied when `rounded` is true. Defaults to the checkbox and
+   * radio vocabulary; MclInputSwitch passes the pill vocabulary, because a
+   * switch's rounded form is a full pill with a round knob, not a soft
+   * rectangle. Kept here rather than appended by the caller so only one shape
+   * ever reaches the class list.
+   */
+  roundedClass?: string
 }
 
 export interface ToggleControl {
@@ -56,6 +64,10 @@ const SWITCH_VARS: Record<InputSizeType, Record<string, string>> = {
   },
 }
 
+// The checkbox and radio shape vocabulary: a soft rectangle with a
+// 3px-radius indicator. MclInputSwitch overrides it with the pill pair.
+const DEFAULT_ROUNDED_CLASS = 'rounded-md before:rounded-[3px]'
+
 /**
  * Builds the shared visual classes for the three toggle controls
  * (MclCheckbox, MclInputRadio, MclInputSwitch), whose native input is
@@ -64,7 +76,10 @@ const SWITCH_VARS: Record<InputSizeType, Record<string, string>> = {
  *
  * @param options - the component's reactive `props` object. Pass your `props`
  *   proxy directly; a spread literal (`{ ...props }`) snapshots every value at
- *   setup and freezes the classes at their mount-time values.
+ *   setup and freezes the classes at their mount-time values. A caller that has
+ *   to add a non-prop field (MclInputSwitch's `roundedClass`) must wrap `props`
+ *   in an object whose prop-backed fields are getters, so each read still goes
+ *   through the proxy.
  * @returns `boxClass` for the visual span, `sizeClass` for its dimensions,
  *   and `switchVars` for MclInputSwitch's CSS custom properties.
  */
@@ -91,7 +106,7 @@ export const useToggleControl = (
       classArray.push('drop-shadow-md')
     }
     if (rounded) {
-      classArray.push('rounded-md before:rounded-[3px]')
+      classArray.push(options.roundedClass ?? DEFAULT_ROUNDED_CLASS)
     }
     return classArray.join(' ')
   })
