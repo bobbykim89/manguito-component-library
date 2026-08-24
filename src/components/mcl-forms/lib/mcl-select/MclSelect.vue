@@ -196,7 +196,11 @@ useResizeObserver(rootRef, () => {
 })
 
 watch(isOpen, (open) => {
-  emit(open ? 'open' : 'close')
+  if (open) {
+    emit('open')
+  } else {
+    emit('close')
+  }
 })
 
 // Keeps the box in sync with the model when it is set from outside. `commit`
