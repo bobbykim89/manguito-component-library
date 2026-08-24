@@ -176,3 +176,56 @@ describe('useSelectKeyboard — activeDescendantId', () => {
     expect(kb.activeDescendantId.value).toBe('colour-option-1')
   })
 })
+
+describe('useSelectKeyboard — boundary conditions with empty lists', () => {
+  it('ArrowDown with empty list keeps activeIndex at -1 and does not call onActiveChange', () => {
+    const { isOpen, activeIndex, onActiveChange, kb } = setup({ optionCount: 0 })
+    isOpen.value = true
+    kb.onKeydown(key('ArrowDown'))
+    expect(activeIndex.value).toBe(-1)
+    expect(onActiveChange).not.toHaveBeenCalled()
+  })
+
+  it('Home with empty list keeps activeIndex at -1', () => {
+    const { isOpen, activeIndex, kb } = setup({ optionCount: 0 })
+    isOpen.value = true
+    kb.onKeydown(key('Home'))
+    expect(activeIndex.value).toBe(-1)
+  })
+
+  it('End with empty list keeps activeIndex at -1', () => {
+    const { isOpen, activeIndex, kb } = setup({ optionCount: 0 })
+    isOpen.value = true
+    kb.onKeydown(key('End'))
+    expect(activeIndex.value).toBe(-1)
+  })
+
+  it('Enter after ArrowDown on empty list does not call onSelect', () => {
+    const { isOpen, onSelect, kb } = setup({ optionCount: 0 })
+    isOpen.value = true
+    kb.onKeydown(key('ArrowDown'))
+    kb.onKeydown(key('Enter'))
+    expect(onSelect).not.toHaveBeenCalled()
+  })
+
+  it('activeDescendantId stays undefined even after navigation on empty list', () => {
+    const { isOpen, kb } = setup({ optionCount: 0 })
+    isOpen.value = true
+    kb.onKeydown(key('ArrowDown'))
+    expect(kb.activeDescendantId.value).toBeUndefined()
+  })
+
+  it('ArrowUp from nothing goes to the last option', () => {
+    const { isOpen, activeIndex, kb } = setup()
+    isOpen.value = true
+    kb.onKeydown(key('ArrowUp'))
+    expect(activeIndex.value).toBe(2)
+  })
+
+  it('ArrowDown from nothing still goes to the first option', () => {
+    const { isOpen, activeIndex, kb } = setup()
+    isOpen.value = true
+    kb.onKeydown(key('ArrowDown'))
+    expect(activeIndex.value).toBe(0)
+  })
+})
