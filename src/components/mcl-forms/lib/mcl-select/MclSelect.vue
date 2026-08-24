@@ -4,12 +4,22 @@ import { generateClass } from '@bobbykim/manguito-theme'
 import { vClickOutside } from '@bobbykim/manguito-theme/directives'
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
 import { useResizeObserver } from '@vueuse/core'
-import { type ComponentPublicInstance, computed, ref, watch } from 'vue'
+import { computed, ref, watch, type ComponentPublicInstance } from 'vue'
+import CaretDown from '../assets/CaretDown.vue'
+import XMark from '../assets/XMark.vue'
+import FieldFeedback from '../common/FieldFeedback.vue'
+import { useFieldContext } from '../common/fieldContext'
+import { useInputSurface } from '../common/useInputSurface'
 import type { SelectOptionType, SelectOptions } from './index.types'
+import { optionLabel, optionValue, useSelectFilter } from './useSelectFilter'
+import { useSelectKeyboard } from './useSelectKeyboard'
 
 const props = withDefaults(
   defineProps<{
-    id: string
+    options: SelectOptions
+    id?: string
+    name?: string
+    placeholder?: string
     showBorder?: boolean
     borderColor?: ColorPalette
     rounded?: boolean
@@ -18,15 +28,16 @@ const props = withDefaults(
     textColor?: ColorPalette
     bgColor?: ColorPalette
     iconColor?: ColorPalette
-    placeholder?: string
-    showShadow?: boolean
-    required?: boolean
-    invalid?: boolean
-    options: SelectOptions
     optionHoverColor?: ColorPalette
+    showShadow?: boolean
     noMatchText?: string
+    invalidFeedback?: string
+    invalid?: boolean
+    required?: boolean
+    disabled?: boolean
   }>(),
   {
+    placeholder: '',
     showBorder: false,
     borderColor: 'light-4',
     rounded: false,
@@ -36,27 +47,15 @@ const props = withDefaults(
     bgColor: 'light-1',
     iconColor: 'dark-4',
     optionHoverColor: 'primary',
-    placeholder: '',
     showShadow: true,
-    required: false,
-    invalid: false,
     noMatchText: 'No match.',
+    invalid: undefined,
+    required: undefined,
+    disabled: undefined,
   },
 )
 
-const slots = defineSlots<{
-  'dropdown'(props: {
-    optionClick: (e: Event, option: string | SelectOptionType) => void
-    options: (string | SelectOptionType)[]
-    activeIndex: number
-    setRef: (
-      el: Element | ComponentPublicInstance | null,
-      index: number,
-    ) => void
-    hover: (index: number) => void
-  }): any
-  'no-match': any
-}>()
+const model = defineModel<string | number | null>({ default: null })
 
 const emit = defineEmits<{
   (e: 'open'): void
@@ -66,381 +65,296 @@ const emit = defineEmits<{
   (e: 'select', value: string | number): void
 }>()
 
-const model = defineModel<string | number | null>({ default: null })
+defineSlots<{
+  dropdown?(props: {
+    options: (string | SelectOptionType)[]
+    activeIndex: number
+    optionClick: (option: string | SelectOptionType) => void
+    setRef: (el: Element | ComponentPublicInstance | null, index: number) => void
+    hover: (index: number) => void
+  }): unknown
+  'no-match'?: () => unknown
+  'invalid-feedback'?: () => unknown
+}>()
 
-const componentRef = ref<HTMLElement>()
-const inputBox = ref<HTMLInputElement>()
+const field = useFieldContext(props)
+const surfaceClass = useInputSurface(props)
+
+const rootRef = ref<HTMLElement>()
+const inputRef = ref<HTMLInputElement>()
 const dropdownRef = ref<HTMLElement>()
-const listItemsRef = ref<Array<Element | ComponentPublicInstance | null | []>>(
-  [],
+const itemRefs = ref<Array<Element | ComponentPublicInstance | null>>([])
+const dropdownWidth = ref<number>()
+
+const isOpen = ref<boolean>(false)
+const activeIndex = ref<number>(-1)
+
+/** The label to show for a model value, so the box is not blank on mount. */
+const labelForValue = (value: string | number | null): string => {
+  if (value === null || value === '') return ''
+  const match = (props.options as (string | SelectOptionType)[]).find(
+    (option) => optionValue(option) === value,
+  )
+  return match ? optionLabel(match) : String(value)
+}
+
+// Seeded from the model: a select mounted with a value must render it, and the
+// clear button only appears once there is text to clear.
+const query = ref<string>(labelForValue(model.value))
+// A query seeded from the model is a display label, not a filter. The APG
+// list-autocomplete pattern opens showing every option with the selection
+// marked, and narrows only once the user types — so filtering is gated on real
+// input rather than on `query` being non-empty.
+const isFiltering = ref<boolean>(false)
+
+const filteredOptions = useSelectFilter(
+  () => props.options,
+  () => (isFiltering.value ? query.value : ''),
 )
-const selectedItemRef = ref<HTMLElement | null>(null)
-const optionsWidth = ref<number>()
-const inputFocus = ref<boolean>(false)
-const selectedValue = ref<string | SelectOptionType>('')
-const activeItemIdx = ref<number>(0)
-
-const setInputFocus = () => {
-  inputFocus.value = true
-}
-
-const handleEscapeKeyUp = () => {
-  /**
-   * @summary handles esc key up interaction to clear selected value and close dropdown.
-   */
-  selectedValue.value = ''
-  inputFocus.value = false
-  selectedItemRef.value = null
-  inputBox.value?.blur()
-  model.value = ''
-}
-
-const handleClickOutside = () => {
-  inputFocus.value = false
-  activeItemIdx.value = 0
-}
-
-const handleToggle = () => {
-  inputFocus.value = !inputFocus.value
-  activeItemIdx.value = 0
-  if (inputFocus.value === true) {
-    inputBox.value?.focus()
-  }
-}
-
-const clearInput = (e: Event) => {
-  e.preventDefault()
-  if (selectedValue.value !== '') {
-    selectedValue.value = ''
-  }
-  activeItemIdx.value = 0
-  model.value = ''
-  emit('clear')
-}
 
 const setItemRef = (
   el: Element | ComponentPublicInstance | null,
-  idx: number,
-) => {
-  listItemsRef.value[idx] = el
+  index: number,
+): void => {
+  itemRefs.value[index] = el
 }
 
-const handleDropdownHide = (el: Element) => {
-  ;(el as HTMLElement).style.pointerEvents = 'none'
-}
-const handleDropdownShown = (el: Element) => {
-  ;(el as HTMLElement).style.pointerEvents = 'auto'
+const scrollActiveIntoView = (index: number): void => {
+  const el = itemRefs.value[index] as HTMLElement | undefined
+  el?.scrollIntoView?.({ block: 'nearest' })
 }
 
-const handleDropDownItemMouseOver = (idx: number) => {
-  activeItemIdx.value = idx
+const commit = (option: string | SelectOptionType): void => {
+  query.value = optionLabel(option)
+  const value = optionValue(option)
+  model.value = value
+  isOpen.value = false
+  activeIndex.value = -1
+  isFiltering.value = false
+  emit('select', value)
 }
 
-const handleOptionClick = (e: Event, option: string | SelectOptionType) => {
-  e.preventDefault()
-  selectedValue.value = typeof option === 'string' ? option : option.text
-  const outputVal = typeof option === 'string' ? option : option.value
-  model.value = outputVal
-  inputFocus.value = false
-  emit('select', outputVal)
+const clear = (): void => {
+  query.value = ''
+  activeIndex.value = -1
+  model.value = null
+  isFiltering.value = false
+  emit('clear')
 }
 
-const containerClass = computed(() => {
-  const {
-    bgColor,
-    showBorder,
-    borderColor,
-    showHighlight,
-    showShadow,
-    rounded,
-    textColor,
-  } = props
+const { onKeydown, activeDescendantId } = useSelectKeyboard({
+  isOpen,
+  activeIndex,
+  optionCount: () => filteredOptions.value.length,
+  idPrefix: () => field.id,
+  onSelect: (index) => commit(filteredOptions.value[index]),
+  onClear: clear,
+  onActiveChange: scrollActiveIntoView,
+})
+
+const toggle = (): void => {
+  isOpen.value = !isOpen.value
+  activeIndex.value = -1
+  if (isOpen.value) {
+    isFiltering.value = false
+    inputRef.value?.focus()
+  }
+}
+
+const highlightClass = computed<string>(() => {
   const classArray: string[] = [
-    generateClass.bgColorVariant({ color: bgColor }),
-    generateClass.textColorVariant({ color: textColor }),
+    generateClass.beforeBgColorVariant({ color: props.highlightColor }),
   ]
-  if (showBorder) {
-    classArray.push('border-2')
-    classArray.push(generateClass.borderColorVariant({ color: borderColor }))
-  }
-  if (!showHighlight) {
-    classArray.push('ring-offset-2 transition-all duration-300 ease-linear')
-  }
-  if (showShadow) {
-    classArray.push('shadow-md')
-  }
-  if (rounded) {
-    classArray.push('rounded-md')
-  }
+  if (props.rounded) classArray.push('rounded-b-md')
   return classArray.join(' ')
 })
 
-const getHighlightClass = computed<string>(() => {
-  /**
-   * @param {ColorPalette} highlightColor
-   * @param {boolean} rounded
-   */
-
-  const { highlightColor, rounded } = props
+const listboxClass = computed<string>(() => {
   const classArray: string[] = [
-    generateClass.beforeBgColorVariant({ color: highlightColor }),
+    generateClass.bgColorVariant({ color: props.bgColor }),
+    generateClass.borderColorVariant({ color: props.borderColor }),
   ]
-  if (rounded) classArray.push('rounded-b-md')
+  if (!props.showHighlight) classArray.push('mt-2xs')
+  if (props.rounded) classArray.push('rounded-md')
   return classArray.join(' ')
 })
 
-const optionsBlockClass = computed(() => {
-  const { showHighlight, bgColor, borderColor, rounded } = props
-  const classArray: string[] = [
-    generateClass.bgColorVariant({ color: bgColor }),
-    generateClass.borderColorVariant({ color: borderColor }),
-  ]
-  if (!showHighlight) {
-    classArray.push('mt-2xs')
-  }
-  if (rounded) {
-    classArray.push('rounded-md')
-  }
-  return classArray.join(' ')
-})
+const isSelected = (option: string | SelectOptionType): boolean =>
+  model.value !== null && model.value !== '' && optionValue(option) === model.value
 
-const filteredOptions = computed(() => {
-  if (selectedValue.value === '') {
-    return props.options
-  } else {
-    const filteredData = props.options.filter((data) => {
-      const textVal = new RegExp(`${selectedValue.value}`, 'gi')
-      return typeof data === 'string'
-        ? data.match(textVal)
-        : data.text.match(textVal)
-    })
-    return filteredData
-  }
-})
-
-const handleArrowButtonKeyUp = (key: 'up' | 'down') => {
-  /**
-   * @summary handles keyboard up/down arrow interactions.
-   */
-  if (!inputFocus.value) return
-  if (key === 'up' && activeItemIdx.value > 0) activeItemIdx.value--
-  if (key === 'down' && activeItemIdx.value < filteredOptions.value.length - 1)
-    activeItemIdx.value++
-}
-const handleEnterKeyUp = () => {
-  /**
-   * @summary handles keyboard enter key up to select focused dropdown item as as selected item.
-   */
-  if (!inputFocus.value) return
-  const currentPointer: string | SelectOptionType =
-    filteredOptions.value[activeItemIdx.value]
-  let outputVal: string | number
-  if (typeof currentPointer === 'string') {
-    selectedValue.value = currentPointer
-    outputVal = currentPointer
-  } else {
-    selectedValue.value = currentPointer.text
-    outputVal = currentPointer.value
-  }
-  model.value = outputVal
-  inputFocus.value = false
-  emit('select', outputVal)
-}
-
-const handleOptionsWidth = computed(() => {
-  return { width: `${optionsWidth.value}px` }
-})
-
-const isOptionSelected = (option: string | SelectOptionType): boolean => {
-  if (model.value === null || model.value === '') return false
-  return typeof option === 'string'
-    ? option === model.value
-    : option.value === model.value
-}
-
-const activeDescendant = computed(() =>
-  inputFocus.value && filteredOptions.value.length > 0
-    ? `${props.id}-option-${activeItemIdx.value}`
-    : undefined,
-)
-
-const { floatingStyles } = useFloating(componentRef, dropdownRef, {
+const { floatingStyles } = useFloating(rootRef, dropdownRef, {
   whileElementsMounted: autoUpdate,
   strategy: 'absolute',
-  open: inputFocus,
+  open: isOpen,
   transform: false,
   placement: 'bottom',
   middleware: [flip(), offset(-2.2), shift()],
 })
 
-useResizeObserver(componentRef, () => {
-  if (componentRef.value) {
-    optionsWidth.value = componentRef.value.clientWidth
-  }
+useResizeObserver(rootRef, () => {
+  if (rootRef.value) dropdownWidth.value = rootRef.value.clientWidth
 })
 
-watch(inputFocus, (newVal) => {
-  if (newVal === true) {
-    emit('open')
-  } else {
-    emit('close')
-  }
+watch(isOpen, (open) => {
+  emit(open ? 'open' : 'close')
 })
 
-watch(model, (newVal) => {
-  if (newVal === null) {
-    inputFocus.value = false
-    selectedItemRef.value = null
-    return
-  }
-  emit('changed', newVal)
-})
-
-watch(activeItemIdx, () => {
-  /**
-   * @summary a watcher to ensure focused dropdown item is visible on keyboard interaction.
-   */
-  selectedItemRef.value = listItemsRef.value[activeItemIdx.value] as HTMLElement
-  if (selectedItemRef.value && selectedItemRef.value.scrollIntoView) {
-    selectedItemRef.value.scrollIntoView({ block: 'nearest' })
-  }
+// Keeps the box in sync with the model when it is set from outside. `commit`
+// has already written the same label, so this is a no-op in that path.
+watch(model, (value) => {
+  query.value = labelForValue(value)
+  isFiltering.value = false
+  if (value !== null) emit('changed', value)
 })
 </script>
 
 <template>
   <div
-    @keyup.esc="handleEscapeKeyUp"
-    @keyup.down="handleArrowButtonKeyUp('down')"
-    @keyup.up="handleArrowButtonKeyUp('up')"
-    @keyup.enter="handleEnterKeyUp"
-    v-click-outside="handleClickOutside"
-    ref="componentRef"
+    ref="rootRef"
+    v-click-outside="
+      () => {
+        isOpen = false
+        activeIndex = -1
+      }
+    "
     class="relative"
   >
     <div
       class="relative flex gap-3xs p-2xs"
       :class="[
+        surfaceClass,
         !showHighlight &&
-          inputFocus &&
+          isOpen &&
           generateClass.ringColorVariant({ color: borderColor }) + ' ring-4',
-        containerClass,
       ]"
     >
       <input
-        :id="id"
+        :id="field.id"
+        ref="inputRef"
+        v-model="query"
         type="text"
-        class="w-full bg-transparent outline-none"
-        v-model="selectedValue"
-        ref="inputBox"
         role="combobox"
         autocomplete="off"
+        class="w-full bg-transparent outline-none disabled:cursor-not-allowed"
+        :name="field.name.value"
         :placeholder="placeholder"
+        :disabled="field.disabled.value"
         aria-autocomplete="list"
-        :aria-expanded="inputFocus"
-        :aria-controls="`${id}-listbox`"
-        :aria-activedescendant="activeDescendant"
-        :aria-invalid="invalid || undefined"
-        @focus="setInputFocus"
+        :aria-expanded="isOpen"
+        :aria-controls="`${field.id}-listbox`"
+        :aria-activedescendant="activeDescendantId"
+        :aria-required="field.required.value || undefined"
+        :aria-invalid="field.invalid.value || undefined"
+        :aria-describedby="field.describedBy.value"
+        @focus="
+          () => {
+            isOpen = true
+            isFiltering = false
+          }
+        "
+        @input="isFiltering = true"
+        @keydown="onKeydown"
       />
-      <div
+      <!-- A real button now: the old <div @click> was neither focusable nor named. -->
+      <button
+        v-if="query !== ''"
+        data-mcl="clear"
+        type="button"
+        aria-label="Clear selection"
         class="flex items-center px-3xs"
-        :class="[
-          selectedValue === '' ? 'hidden cursor-text' : 'block cursor-pointer',
-        ]"
-        @click="clearInput"
+        :disabled="field.disabled.value"
+        @click="clear"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 384 512"
-          class="h-xs opacity-70"
-          :class="[generateClass.svgFillColorVariant({ color: iconColor })]"
-        >
-          <!-- !Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. -->
-          <path
-            d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
-          />
-        </svg>
-      </div>
-      <div class="flex items-center px-3xs" @click="handleToggle">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 320 512"
-          class="h-xs"
-          :class="[
-            !inputFocus ? 'rotate-0' : 'rotate-180',
-            'transition-transform duration-300 ease-in',
-            generateClass.svgFillColorVariant({ color: iconColor }),
-          ]"
-        >
-          <!-- Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. -->
-          <path
-            d="M137.4 374.6c12.5 12.5 32.8 12.5 45.3 0l128-128c9.2-9.2 11.9-22.9 6.9-34.9s-16.6-19.8-29.6-19.8L32 192c-12.9 0-24.6 7.8-29.6 19.8s-2.2 25.7 6.9 34.9l128 128z"
-          />
-        </svg>
-      </div>
+        <x-mark :color="iconColor" class-name="h-xs opacity-70"></x-mark>
+      </button>
+      <!--
+        tabindex="-1" on purpose: the input already carries aria-expanded, so a
+        second tab stop for the same action is noise for keyboard users.
+      -->
+      <button
+        data-mcl="caret"
+        type="button"
+        tabindex="-1"
+        aria-label="Toggle options"
+        class="flex items-center px-3xs"
+        :disabled="field.disabled.value"
+        @click="toggle"
+      >
+        <caret-down
+          :color="iconColor"
+          :class-name="`h-xs transition-transform duration-300 ease-in ${isOpen ? 'rotate-180' : 'rotate-0'}`"
+        ></caret-down>
+      </button>
     </div>
+
     <div
       v-if="showHighlight"
-      class="relative -top-1 h-3xs overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-full before:w-0 before:transition-[width] before:duration-300 before:ease-linear"
-      :class="[inputFocus ? 'before:w-full' : 'before:w-0', getHighlightClass]"
+      class="relative -top-1 h-3xs overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-full before:transition-[width] before:duration-300 before:ease-linear"
+      :class="[isOpen ? 'before:w-full' : 'before:w-0', highlightClass]"
     ></div>
-    <Transition
-      name="options"
-      @before-leave="handleDropdownHide"
-      @enter="handleDropdownShown"
-    >
+
+    <transition name="options">
       <ul
-        :id="`${id}-listbox`"
-        :class="[optionsBlockClass]"
-        class="max-h-50 overflow-y-auto border-2"
-        :style="{ ...handleOptionsWidth, ...floatingStyles }"
-        role="listbox"
+        v-if="isOpen && filteredOptions.length > 0"
+        :id="`${field.id}-listbox`"
         ref="dropdownRef"
-        v-if="inputFocus"
+        role="listbox"
+        class="max-h-[12.5rem] overflow-y-auto border-2"
+        :class="listboxClass"
+        :style="{ width: `${dropdownWidth}px`, ...floatingStyles }"
       >
-        <template v-if="filteredOptions.length > 0">
-          <slot
-            name="dropdown"
-            :option-click="handleOptionClick"
-            :options="filteredOptions"
-            :active-index="activeItemIdx"
-            :set-ref="setItemRef"
-            :hover="handleDropDownItemMouseOver"
+        <slot
+          name="dropdown"
+          :options="filteredOptions"
+          :active-index="activeIndex"
+          :option-click="commit"
+          :set-ref="setItemRef"
+          :hover="(index: number) => (activeIndex = index)"
+        >
+          <li
+            v-for="(option, index) in filteredOptions"
+            :id="`${field.id}-option-${index}`"
+            :key="index"
+            :ref="(el) => setItemRef(el, index)"
+            role="option"
+            class="cursor-pointer p-2xs"
+            :aria-selected="isSelected(option)"
+            :class="[
+              activeIndex === index &&
+                generateClass.bgColorVariant({ color: optionHoverColor }),
+            ]"
+            @click="commit(option)"
+            @mouseenter="activeIndex = index"
           >
-            <li
-              v-for="(option, idx) in filteredOptions"
-              :key="idx"
-              :id="`${id}-option-${idx}`"
-              class="cursor-pointer p-2xs"
-              role="option"
-              :aria-selected="isOptionSelected(option)"
-              :class="[
-                activeItemIdx === idx &&
-                  generateClass.bgColorVariant({ color: highlightColor }),
-              ]"
-              :ref="(el) => setItemRef(el, idx)"
-              @click="handleOptionClick($event, option)"
-              @mouseenter="handleDropDownItemMouseOver(idx)"
-            >
-              {{ typeof option === 'string' ? option : option.text }}
-            </li>
-          </slot>
-        </template>
-        <template v-else>
-          <slot name="no-match">
-            <li
-              class="cursor-pointer p-2xs"
-              aria-live="polite"
-              :class="[
-                generateClass.hoverBgColorVariant({ color: optionHoverColor }),
-              ]"
-            >
-              <span>{{ noMatchText }}</span>
-            </li>
-          </slot>
-        </template>
+            {{ optionLabel(option) }}
+          </li>
+        </slot>
       </ul>
-    </Transition>
+    </transition>
+
+    <!--
+      Outside the listbox, deliberately. An <li aria-live> inside
+      role="listbox" is announced to screen readers as a selectable option.
+    -->
+    <div
+      v-if="isOpen && filteredOptions.length === 0"
+      role="status"
+      class="p-2xs"
+      :class="listboxClass"
+    >
+      <slot name="no-match">
+        <span>{{ noMatchText }}</span>
+      </slot>
+    </div>
+
+    <field-feedback
+      v-if="!field.feedbackOwnedByGroup"
+      :id="field.errorId"
+      :invalid="field.invalid.value"
+      :text="invalidFeedback"
+    >
+      <slot v-if="$slots['invalid-feedback']" name="invalid-feedback" />
+    </field-feedback>
   </div>
 </template>
 
@@ -456,5 +370,9 @@ watch(activeItemIdx, () => {
 .options-leave-to {
   opacity: 0;
   transform: translateY(-10px);
+}
+/* Replaces the two transition hooks that set style.pointerEvents by hand. */
+.options-leave-active {
+  pointer-events: none;
 }
 </style>
