@@ -1,152 +1,83 @@
 <script setup lang="ts">
-import { generateClass } from '@bobbykim/manguito-theme'
 import type { ColorPalette } from '@bobbykim/manguito-theme'
-import { computed, ref } from 'vue'
+import { useFieldContext } from '../common/fieldContext'
 import type { InputSizeType } from '../common/index.types'
-
-const peerBgColor: Record<ColorPalette, string> = {
-  primary: 'peer-checked/input:bg-primary',
-  secondary: 'peer-checked/input:bg-secondary',
-  success: 'peer-checked/input:bg-success',
-  info: 'peer-checked/input:bg-info',
-  warning: 'peer-checked/input:bg-warning',
-  danger: 'peer-checked/input:bg-danger',
-  'light-1': 'peer-checked/input:bg-light-1',
-  'light-2': 'peer-checked/input:bg-light-2',
-  'light-3': 'peer-checked/input:bg-light-3',
-  'light-4': 'peer-checked/input:bg-light-4',
-  'dark-1': 'peer-checked/input:bg-dark-1',
-  'dark-2': 'peer-checked/input:bg-dark-2',
-  'dark-3': 'peer-checked/input:bg-dark-3',
-  'dark-4': 'peer-checked/input:bg-dark-1',
-  transparent: 'peer-checked/input:bg-transparent',
-  black: 'peer-checked/input:bg-black',
-  white: 'peer-checked/input:bg-white',
-}
-const beforeColor: Record<ColorPalette, string> = {
-  primary: 'before:bg-primary',
-  secondary: 'before:bg-secondary',
-  success: 'before:bg-success',
-  info: 'before:bg-info',
-  warning: 'before:bg-warning',
-  danger: 'before:bg-danger',
-  'light-1': 'before:bg-light-1',
-  'light-2': 'before:bg-light-2',
-  'light-3': 'before:bg-light-3',
-  'light-4': 'before:bg-light-4',
-  'dark-1': 'before:bg-dark-1',
-  'dark-2': 'before:bg-dark-2',
-  'dark-3': 'before:bg-dark-3',
-  'dark-4': 'before:bg-dark-1',
-  transparent: 'before:bg-transparent',
-  black: 'before:bg-black',
-  white: 'before:bg-white',
-}
+import { useToggleControl } from '../common/useToggleControl'
 
 const props = withDefaults(
   defineProps<{
-    id: string
-    inputSize?: InputSizeType
+    id?: string
+    name?: string
+    size?: InputSizeType
     bgColor?: ColorPalette
     checkedBgColor?: ColorPalette
-    checkColor?: ColorPalette
+    indicatorColor?: ColorPalette
     borderColor?: ColorPalette
     showShadow?: boolean
     rounded?: boolean
+    /** Submitted value when checked; native form behaviour only. */
     value?: string | number
-    checked?: boolean
+    invalid?: boolean
+    required?: boolean
+    disabled?: boolean
   }>(),
   {
-    inputSize: 'md',
+    size: 'md',
     bgColor: 'light-1',
     checkedBgColor: 'warning',
-    checkColor: 'dark-3',
+    indicatorColor: 'dark-3',
     borderColor: 'dark-1',
     showShadow: false,
     rounded: false,
-    checked: false,
+    // Explicit `undefined` so omission stays distinguishable from `false`;
+    // `undefined` is what lets the surrounding group's value through.
+    invalid: undefined,
+    required: undefined,
+    disabled: undefined,
   },
 )
 
 const model = defineModel<boolean>()
 
-const checkboxRef = ref<HTMLInputElement>()
 const emit = defineEmits<{
-  (
-    e: 'checkbox-click',
-    event: Event,
-    checked: boolean,
-    value: string | number,
-  ): void
+  (e: 'change', event: Event): void
 }>()
 
-const handleCheckboxClick = () => {
-  checkboxRef.value?.click()
-}
+// rendersOwnFeedback: false — this control renders no error region, so
+// aria-describedby must not name one unless the group provides it.
+const field = useFieldContext(props, { rendersOwnFeedback: false })
+// props proxy passed directly: a spread literal would snapshot and freeze.
+const { boxClass, sizeClass } = useToggleControl(props)
 
-const handleChange = (e: Event) => {
-  const value = (e.target as HTMLInputElement).value
-  emit(
-    'checkbox-click',
-    e,
-    checkboxRef.value!.checked,
-    checkboxRef.value?.checked ? value : '',
-  )
+const onChange = (event: Event): void => {
+  emit('change', event)
 }
-
-const handleInputSize = computed<string>(() => {
-  const { inputSize } = props
-  if (inputSize === 'sm') {
-    return 'h-xs w-xs before:h-2xs before:w-2xs'
-  }
-  if (inputSize === 'lg') {
-    return 'h-md w-md before:h-xs before:w-xs'
-  }
-  return 'h-sm w-sm before:w-[12px] before:h-[12px]'
-})
-const handleCheckboxLayout = computed<string>(() => {
-  const {
-    bgColor,
-    borderColor,
-    showShadow,
-    rounded,
-    checkedBgColor,
-    checkColor,
-  } = props
-  const classArray: string[] = [
-    generateClass.bgColorVariant({ color: bgColor }),
-    generateClass.borderColorVariant({ color: borderColor }),
-    beforeColor[checkColor],
-    peerBgColor[checkedBgColor],
-  ]
-  if (showShadow) {
-    classArray.push('drop-shadow-md')
-  }
-  if (rounded) {
-    classArray.push('rounded-md before:rounded-[3px]')
-  }
-  return classArray.join(' ')
-})
 </script>
 
 <template>
-  <div class="relative">
+  <div class="relative inline-flex">
+    <!--
+      The native input is the click and focus target, overlaid transparently
+      on the visual box. No JS click forwarding, and keyboard operation comes
+      free. It must precede the span: peer-* compiles to a sibling selector.
+    -->
     <input
-      :id="id"
-      ref="checkboxRef"
-      type="checkbox"
-      :value="value"
-      :checked="checked"
+      :id="field.id"
       v-model="model"
-      class="peer/input appearance-none"
-      @change="handleChange"
+      type="checkbox"
+      class="peer absolute inset-0 z-10 h-full w-full cursor-pointer appearance-none opacity-0 disabled:cursor-not-allowed"
+      :name="field.name.value"
+      :value="value"
+      :required="field.required.value"
+      :disabled="field.disabled.value"
+      :aria-invalid="field.invalid.value || undefined"
+      :aria-describedby="field.describedBy.value"
+      @change="onChange"
     />
     <span
       aria-hidden="true"
-      class="before:ease-linar relative inline-block border p-3xs transition-colors duration-200 ease-linear before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:opacity-0 before:transition-opacity before:duration-200 peer-checked/input:before:opacity-100 hover:bg-opacity-60 peer-checked/input:hover:bg-opacity-60"
-      :class="[handleCheckboxLayout, handleInputSize]"
-      @click="handleCheckboxClick"
-    >
-    </span>
+      class="relative inline-block border p-3xs transition-colors duration-200 ease-linear peer-disabled:opacity-50 before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:opacity-0 before:transition-opacity before:duration-200 peer-checked:before:opacity-100"
+      :class="[boxClass, sizeClass]"
+    ></span>
   </div>
 </template>

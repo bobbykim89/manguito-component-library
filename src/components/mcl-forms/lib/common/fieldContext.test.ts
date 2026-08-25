@@ -86,9 +86,9 @@ describe('useFieldContext — standalone (no provider)', () => {
   })
 
   it('does not claim group feedback ownership', () => {
-    expect(ctxOf(mount(Child, { props: { id: 'email' } })).feedbackOwnedByGroup).toBe(
-      false,
-    )
+    expect(
+      ctxOf(mount(Child, { props: { id: 'email' } })).feedbackOwnedByGroup,
+    ).toBe(false)
   })
 
   it('treats an empty-string id as not supplied', () => {
@@ -147,7 +147,9 @@ describe('useFieldContext — inheriting from a provider', () => {
 
   it('inherits invalid, required and disabled', () => {
     const ctx = ctxOf(
-      mount(Parent({ fieldId: 'x', invalid: true, required: true, disabled: true })),
+      mount(
+        Parent({ fieldId: 'x', invalid: true, required: true, disabled: true }),
+      ),
     )
     expect(ctx.invalid.value).toBe(true)
     expect(ctx.required.value).toBe(true)
@@ -174,9 +176,10 @@ describe('useFieldContext — inheriting from a provider', () => {
   })
 
   it('reports group feedback ownership when the provider owns it', () => {
-    expect(ctxOf(mount(Parent({ fieldId: 'x', ownsFeedback: true }))).feedbackOwnedByGroup).toBe(
-      true,
-    )
+    expect(
+      ctxOf(mount(Parent({ fieldId: 'x', ownsFeedback: true })))
+        .feedbackOwnedByGroup,
+    ).toBe(true)
   })
 })
 
@@ -213,7 +216,12 @@ describe('useFieldContext — explicit props beat the provider', () => {
     const ctx = ctxOf(
       mount(
         ParentWithChildProps(
-          { fieldId: 'group', hasHelpText: true, ownsFeedback: true, invalid: true },
+          {
+            fieldId: 'group',
+            hasHelpText: true,
+            ownsFeedback: true,
+            invalid: true,
+          },
           { id: 'mine' },
         ),
       ),
@@ -232,7 +240,12 @@ describe('useFieldContext — explicit props beat the provider', () => {
     const ctx = ctxOf(
       mount(
         ParentWithChildProps(
-          { fieldId: 'group', hasHelpText: true, ownsFeedback: false, invalid: true },
+          {
+            fieldId: 'group',
+            hasHelpText: true,
+            ownsFeedback: false,
+            invalid: true,
+          },
           { id: 'mine' },
         ),
       ),

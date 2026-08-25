@@ -50,6 +50,34 @@ describe('useToggleControl — boxClass', () => {
     expect(boxClass.value).toContain('before:rounded-[3px]')
   })
 
+  it('defaults roundedClass to the checkbox and radio vocabulary', () => {
+    const { boxClass } = useToggleControl({ ...base(), rounded: true })
+    expect(boxClass.value).toContain('rounded-md before:rounded-[3px]')
+    expect(boxClass.value).not.toContain('rounded-full')
+  })
+
+  it('emits the caller-supplied roundedClass instead of the default', () => {
+    // MclInputSwitch's pill vocabulary. It must replace the default rather
+    // than join it: two radii in one class list resolve by stylesheet order.
+    const { boxClass } = useToggleControl({
+      ...base(),
+      rounded: true,
+      roundedClass: 'rounded-full before:rounded-full',
+    })
+    expect(boxClass.value).toContain('rounded-full before:rounded-full')
+    expect(boxClass.value).not.toContain('rounded-md')
+    expect(boxClass.value).not.toContain('before:rounded-[3px]')
+  })
+
+  it('ignores roundedClass when rounded is false', () => {
+    const { boxClass } = useToggleControl({
+      ...base(),
+      rounded: false,
+      roundedClass: 'rounded-full before:rounded-full',
+    })
+    expect(boxClass.value).not.toContain('rounded-full')
+  })
+
   it('recomputes when the reactive source changes', () => {
     const props = reactive(base())
     const { boxClass } = useToggleControl(props)

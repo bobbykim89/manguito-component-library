@@ -7,7 +7,11 @@ import MclSelect from './mcl-select/MclSelect.vue'
 import MclTextArea from './mcl-text-area/MclTextArea.vue'
 import MclCheckbox from './mcl-checkbox/MclCheckbox.vue'
 export * from './mcl-select/index.types'
-export type { InputSizeType } from './common/index.types'
+export type {
+  FieldContext,
+  FieldOwnProps,
+  InputSizeType,
+} from './common/index.types'
 export {
   MclFormGroup,
   MclInputFile,

@@ -52,13 +52,15 @@ describe('FieldFeedback', () => {
     expect(wrapper.text()).not.toContain('Required')
   })
 
-  it('renders nothing when invalid with no text and no slot', () => {
-    // An empty region would be an aria-describedby target with nothing to
-    // announce, so having no message to show is treated as having no region.
+  it('renders the region when invalid even with no text or slot', () => {
+    // The region must exist whenever it is an aria-describedby target.
+    // useFieldContext decides errorRegionExists from a static flag at setup and
+    // cannot know whether content is present, so a content-conditional region
+    // produces a dangling IDREF. An empty alert region is inert by comparison.
     const wrapper = mount(FieldFeedback, {
       props: { id: 'email-error', invalid: true },
     })
-    expect(wrapper.find('[role="alert"]').exists()).toBe(false)
+    expect(wrapper.find('[role="alert"]').exists()).toBe(true)
     expect(wrapper.text()).toBe('')
   })
 

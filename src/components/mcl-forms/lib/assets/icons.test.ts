@@ -52,7 +52,9 @@ describe.each(icons)('%s', (_name, Icon) => {
 
 describe('icon viewBoxes', () => {
   it('CaretDown uses the Font Awesome caret-down box', () => {
-    expect(mount(CaretDown).find('svg').attributes('viewBox')).toBe('0 0 320 512')
+    expect(mount(CaretDown).find('svg').attributes('viewBox')).toBe(
+      '0 0 320 512',
+    )
   })
   it('XMark uses the Font Awesome xmark box', () => {
     expect(mount(XMark).find('svg').attributes('viewBox')).toBe('0 0 384 512')
