@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import type { ColorPalette, InputType } from '@bobbykim/manguito-theme'
-import { generateClass } from '@bobbykim/manguito-theme'
+import FieldFeedback from '../common/FieldFeedback.vue'
 import InputHighlight from '../common/InputHighlight.vue'
+import { useFieldContext } from '../common/fieldContext'
+import { useInputSurface } from '../common/useInputSurface'
 
 const props = withDefaults(
   defineProps<{
-    id: string
+    id?: string
+    name?: string
+    type?: InputType
+    placeholder?: string
+    autocomplete?: string
     showBorder?: boolean
     borderColor?: ColorPalette
     rounded?: boolean
@@ -14,17 +19,18 @@ const props = withDefaults(
     highlightColor?: ColorPalette
     textColor?: ColorPalette
     bgColor?: ColorPalette
-    placeholder?: string
-    type?: InputType
     showShadow?: boolean
-    required?: boolean
-    invalid?: boolean
     invalidFeedback?: string
     minLength?: number
     maxLength?: number
     pattern?: string
+    invalid?: boolean
+    required?: boolean
+    disabled?: boolean
   }>(),
   {
+    type: 'text',
+    placeholder: '',
     showBorder: false,
     borderColor: 'light-4',
     rounded: false,
@@ -32,79 +38,59 @@ const props = withDefaults(
     highlightColor: 'primary',
     textColor: 'black',
     bgColor: 'light-1',
-    placeholder: '',
-    type: 'text',
     showShadow: true,
-    required: false,
-    invalid: false,
+    invalid: undefined,
+    required: undefined,
+    disabled: undefined,
   },
 )
 
 const model = defineModel<string>()
 
-const inputClass = computed(() => {
-  const {
-    bgColor,
-    showBorder,
-    borderColor,
-    showHighlight,
-    showShadow,
-    rounded,
-    textColor,
-  } = props
-  const classArray: string[] = [
-    generateClass.bgColorVariant({ color: bgColor }),
-    generateClass.textColorVariant({ color: textColor }),
-  ]
-  if (showBorder) {
-    classArray.push('border-2')
-    classArray.push(generateClass.borderColorVariant({ color: borderColor }))
-  }
-  if (!showHighlight) {
-    classArray.push(
-      'focus:ring-4 ring-offset-2 transition-all duration-300 ease-linear',
-    )
-    classArray.push(generateClass.focusRingColorVariant({ color: borderColor }))
-  }
-  if (showShadow) {
-    classArray.push('shadow-md')
-  }
-  if (rounded) {
-    classArray.push('rounded-md')
-  }
-  return classArray.join(' ')
-})
+defineSlots<{
+  'invalid-feedback'?: () => unknown
+}>()
+
+const field = useFieldContext(props)
+// props proxy passed directly: a spread literal would snapshot and freeze.
+const surfaceClass = useInputSurface(props)
 </script>
 
 <template>
   <div>
     <input
-      :id="id"
-      :type="type"
-      class="peer peer/validation w-full p-2xs outline-none"
-      :class="inputClass"
+      :id="field.id"
       v-model="model"
+      class="peer w-full p-2xs outline-none disabled:cursor-not-allowed disabled:opacity-50"
+      :class="surfaceClass"
+      :type="type"
+      :name="field.name.value"
       :placeholder="placeholder"
-      :required="required"
-      :aria-invalid="invalid || undefined"
-      :aria-describedby="invalid ? `${id}-error` : undefined"
+      :autocomplete="autocomplete"
       :minlength="minLength"
       :maxlength="maxLength"
       :pattern="pattern"
+      :required="field.required.value"
+      :disabled="field.disabled.value"
+      :aria-invalid="field.invalid.value || undefined"
+      :aria-describedby="field.describedBy.value"
     />
     <input-highlight
       v-if="showHighlight"
       :color="highlightColor"
       :rounded="rounded"
     ></input-highlight>
-    <div
-      :id="`${id}-error`"
-      role="alert"
-      class="ml-3xs peer-valid/validation:hidden peer-invalid/validation:block"
+    <!--
+      Only when the group does not own the region: rendering both would put
+      two elements in the DOM under the same id.
+    -->
+    <field-feedback
+      v-if="!field.feedbackOwnedByGroup"
+      :id="field.errorId"
+      :invalid="field.invalid.value"
+      :text="invalidFeedback"
     >
-      <slot name="invalid-feedback">
-        <span class="text-xs text-danger">{{ invalidFeedback }}</span>
-      </slot>
-    </div>
+      <slot v-if="$slots['invalid-feedback']" name="invalid-feedback" />
+    </field-feedback>
   </div>
 </template>
