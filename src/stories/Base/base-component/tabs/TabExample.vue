@@ -193,7 +193,7 @@ const handleFormSubmit = () => {
             <div class="rounded-md bg-light-3 p-xs md:p-sm">
               <h3 class="h3-md mb-sm text-center">Submit Form</h3>
               <form @submit.prevent="handleFormSubmit" class="mx-auto">
-                <MclFormGroup label-for="bird" label="Favorite Bird">
+                <MclFormGroup field-id="bird" label="Favorite Bird">
                   <MclSelect
                     id="bird"
                     :options="options"
@@ -203,7 +203,7 @@ const handleFormSubmit = () => {
                     rounded
                   ></MclSelect>
                 </MclFormGroup>
-                <MclFormGroup label-for="name" label="Name" class="mb-md">
+                <MclFormGroup field-id="name" label="Name" class="mb-md">
                   <MclInputText
                     id="name"
                     v-model="textRef"

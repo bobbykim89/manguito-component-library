@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { MclFormGroup, MclSelect } from '@/components/mcl-forms/lib'
+import {
+  MclFormGroup,
+  MclSelect,
+  type SelectOptionType,
+} from '@/components/mcl-forms/lib'
 import { ref } from 'vue'
 
 const options = [
@@ -12,63 +16,85 @@ const options = [
   'Cockatiel',
   'Greencheek Conure',
   'Monk Parakeet',
-  'Cockatiel',
 ]
-const selectedVal = ref<string>('')
+const selectedVal = ref<string | number | null>(null)
 const imageUrl =
   'https://res.cloudinary.com/dwgni1x3t/image/upload/f_auto,q_auto/c_scale,w_120/q_auto/v1700694621/ManguitoPage/q2nh4ytkyoghevzyodbo'
+
+/**
+ * The slot hands back the raw option, which is `string | SelectOptionType`
+ * because either shape is allowed. The package does not export a label
+ * helper, so a consumer rendering its own options narrows it here.
+ */
+const optionLabel = (option: string | SelectOptionType): string =>
+  typeof option === 'string' ? option : option.text
 </script>
 
 <template>
   <div class="min-h-[40vh] rounded-md bg-light-2 px-sm py-md">
     <mcl-form-group
-      label-for="mcl-select-example"
+      field-id="mcl-select-custom-slot"
       label="MCL Select with Custom Slot"
+      help-text="Custom option rendering still has to carry the listbox semantics."
     >
-      <mcl-select
-        id="mcl-select-example"
-        :options="options"
-        display-border
-        rounded
-        v-model="selectedVal"
-      >
+      <mcl-select v-model="selectedVal" :options="options" show-border rounded>
+        <!--
+          Taking over option rendering means taking over the combobox
+          semantics with it: `role="option"` and the `optionId(index)` id are
+          what `aria-activedescendant` points at, so omitting them leaves
+          keyboard users with an unannounced list. `optionClick` takes the
+          option alone — it is not an event handler.
+        -->
         <template
-          #dropdown="{ optionClick, options, activeIndex, setRef, hover }"
+          #dropdown="{
+            options,
+            activeIndex,
+            optionClick,
+            setRef,
+            hover,
+            optionId,
+          }"
         >
           <li
             v-for="(item, idx) in options"
-            @click="optionClick($event, item)"
+            :id="optionId(idx)"
+            :key="idx"
+            :ref="(el) => setRef(el, idx)"
+            role="option"
+            :aria-selected="optionLabel(item) === selectedVal"
             class="flex cursor-pointer items-center gap-4 px-2xs py-3xs transition-colors duration-300 ease-linear"
             :class="[activeIndex === idx && 'bg-warning']"
-            :ref="(el) => setRef(el, idx)"
-            @mouseover="hover(idx)"
+            @click="optionClick(item)"
+            @mouseenter="hover(idx)"
           >
             <img
               :src="imageUrl"
-              alt="picture of manguito"
+              alt=""
               class="aspect-square w-lg rounded-full object-cover"
             />
             <span class="font-bold tracking-wider">
-              {{ item }}
+              {{ optionLabel(item) }}
             </span>
           </li>
         </template>
+        <!--
+          The no-match region is a role="status" div, not part of the listbox,
+          so this content is plain markup rather than an <li>.
+        -->
         <template #no-match>
-          <li
-            class="flex cursor-pointer items-center gap-4 px-2xs py-3xs transition-colors duration-300 ease-linear hover:bg-warning"
-          >
+          <div class="flex items-center gap-4 px-2xs py-3xs">
             <img
               :src="imageUrl"
-              alt="picture of manguito"
+              alt=""
               class="aspect-square w-lg rounded-full object-cover"
             />
-            <span class="font-bold tracking-wider"> No results! </span>
-          </li>
+            <span class="font-bold tracking-wider">No results!</span>
+          </div>
         </template>
       </mcl-select>
     </mcl-form-group>
     <div class="mt-sm text-center">
-      <p>Selected Value is: {{ selectedVal }}</p>
+      <p>Selected Value is: {{ selectedVal ?? '(none)' }}</p>
     </div>
   </div>
 </template>

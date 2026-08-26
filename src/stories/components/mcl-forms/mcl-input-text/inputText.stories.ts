@@ -5,8 +5,9 @@ import {
   numberControllers,
   textControllers,
 } from '@/assets/composables'
-import { MclInputText } from '@/components/mcl-forms/lib'
+import { MclFormGroup, MclInputText } from '@/components/mcl-forms/lib'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { ref } from 'vue'
 import MclInputTextWithLabel from './MclInputTextWithLabel.vue'
 
 const meta: Meta<typeof MclInputText> = {
@@ -15,9 +16,37 @@ const meta: Meta<typeof MclInputText> = {
   argTypes: {
     id: textControllers({
       name: 'id',
-      required: true,
-      description: 'assigns id of the input component',
-      category: 'ID',
+      required: false,
+      description:
+        "assigns id of the input. Omit it inside an MclFormGroup and the control inherits the group's id, which is what binds the group label to it.",
+      category: 'Input Block',
+    }),
+    name: textControllers({
+      name: 'name',
+      required: false,
+      description:
+        'submitted field name. Inherited from a surrounding MclFormGroup when omitted; deliberately never falls back to the generated id, so a nameless input posts nothing.',
+      category: 'Input Block',
+    }),
+    type: inputTypeControllers({
+      name: 'type',
+      required: false,
+      description: 'assigns accepted type of input for the component',
+      defaultValue: 'text',
+      category: 'Input Block',
+    }),
+    placeholder: textControllers({
+      name: 'placeholder',
+      required: false,
+      description: 'assigns placeholder text for the input',
+      category: 'Input Block',
+    }),
+    autocomplete: textControllers({
+      name: 'autocomplete',
+      required: false,
+      description:
+        'native autocomplete token, e.g. `email` or `current-password`',
+      category: 'Input Block',
     }),
     showBorder: booleanControllers({
       name: 'show-border',
@@ -27,7 +56,7 @@ const meta: Meta<typeof MclInputText> = {
       category: 'Input Block',
     }),
     borderColor: colorControllers({
-      name: 'borer-color',
+      name: 'border-color',
       required: false,
       description: 'assigns border color of input component',
       defaultValue: 'light-4',
@@ -54,19 +83,6 @@ const meta: Meta<typeof MclInputText> = {
       defaultValue: 'black',
       category: 'Input Block',
     }),
-    placeholder: textControllers({
-      name: 'placeholder',
-      required: false,
-      description: 'assigns placeholder text for the input',
-      category: 'Input Block',
-    }),
-    type: inputTypeControllers({
-      name: 'type',
-      required: false,
-      description: 'assigns accepted type of input for the component',
-      defaultValue: 'text',
-      category: 'Input Block',
-    }),
     showShadow: booleanControllers({
       name: 'show-shadow',
       required: false,
@@ -74,43 +90,57 @@ const meta: Meta<typeof MclInputText> = {
       defaultValue: true,
       category: 'Input Block',
     }),
-    required: booleanControllers({
-      name: 'required',
-      required: false,
-      description:
-        "whether or not to add 'required' attribute in this input component",
-      defaultValue: false,
-      category: 'Input Block',
-    }),
     pattern: textControllers({
       name: 'pattern',
       required: false,
       description: 'assigns patterns to validate input data',
-      category: 'Input Block',
+      category: 'Validation',
     }),
     minLength: numberControllers({
       name: 'min-length',
       required: false,
       description: 'assigns min length to validate input data',
-      category: 'Input Block',
+      category: 'Validation',
     }),
     maxLength: numberControllers({
       name: 'max-length',
       required: false,
       description: 'assigns max length to validate input data',
-      category: 'Input Block',
+      category: 'Validation',
     }),
     invalidFeedback: textControllers({
       name: 'invalid-feedback',
       required: false,
-      description: 'assigns text being displayed when input value is not valid',
-      category: 'Input Block',
+      description:
+        'error text rendered by this control. It only appears while `invalid` resolves true — the region is conditional so `role="alert"` announces on insertion. Ignored when a surrounding MclFormGroup owns the error region.',
+      category: 'Validation',
+    }),
+    invalid: booleanControllers({
+      name: 'invalid',
+      required: false,
+      description:
+        'sets `aria-invalid` and reveals the error region. Leave it unset to inherit from a surrounding MclFormGroup — `false` and "unset" are deliberately different.',
+      category: 'Validation',
+    }),
+    required: booleanControllers({
+      name: 'required',
+      required: false,
+      description:
+        'marks the input required. Unset inherits from a surrounding MclFormGroup.',
+      category: 'Validation',
+    }),
+    disabled: booleanControllers({
+      name: 'disabled',
+      required: false,
+      description:
+        'disables the input. Unset inherits from a surrounding MclFormGroup.',
+      category: 'Validation',
     }),
     showHighlight: booleanControllers({
       name: 'show-highlight',
       required: false,
       description:
-        'whether or not to add highlight at the bottom of input component',
+        'whether or not to add highlight at the bottom of input component. With it off, a focus-visible ring is emitted instead.',
       defaultValue: true,
       category: 'Highlight',
     }),
@@ -134,20 +164,22 @@ const meta: Meta<typeof MclInputText> = {
     placeholder: '',
     type: 'text',
     showShadow: true,
-    required: false,
   },
 }
 
 export default meta
 
 type Story = StoryObj<typeof MclInputText>
+
 export const MclInputTextExample: Story = {
   render: (args) => ({
     components: { 'mcl-input-text': MclInputText },
     setup() {
-      return { args }
+      const value = ref<string>('')
+      return { args, value }
     },
-    template: '<mcl-input-text v-bind="args"></mcl-input-text>',
+    template:
+      '<section><mcl-input-text v-bind="args" v-model="value"></mcl-input-text><div class="mt-xs">Value: {{ value || "(empty)" }}</div></section>',
   }),
 }
 
@@ -160,13 +192,69 @@ export const MclInputTextWithLabelExample: Story = {
   }),
 }
 
+export const MclInputTextInvalidFeedbackExample: Story = {
+  args: {
+    invalidFeedback: 'Enter at least 3 characters.',
+    minLength: 3,
+    // Without this the region does not render at all: FieldFeedback is
+    // conditional on `invalid`, so `invalidFeedback` alone shows nothing.
+    invalid: true,
+  },
+  render: (args) => ({
+    components: { 'mcl-input-text': MclInputText },
+    setup() {
+      return { args }
+    },
+    template: '<mcl-input-text v-bind="args"></mcl-input-text>',
+  }),
+}
+
 export const MclInputTextCustomInvalidFeedback: Story = {
+  args: {
+    invalidFeedback: 'overridden by the slot',
+    invalid: true,
+  },
   render: (args) => ({
     components: { 'mcl-input-text': MclInputText },
     setup() {
       return { args }
     },
     template:
-      '<mcl-input-text v-bind="args"><template #invalid-feedback><div><p class="text-md text-warning font-bold">{{ args.invalidFeedback}}</p></div></template></mcl-input-text>',
+      '<mcl-input-text v-bind="args"><template #invalid-feedback><div><p class="text-md font-bold text-warning">That username is taken.</p></div></template></mcl-input-text>',
+  }),
+}
+
+export const MclInputTextLiveValidationExample: Story = {
+  render: (args) => ({
+    components: {
+      'mcl-input-text': MclInputText,
+      'mcl-form-group': MclFormGroup,
+    },
+    setup() {
+      const email = ref<string>('')
+      // A plain computed is enough: `invalid` is just a boolean the control
+      // resolves, whether it comes from the control or the group.
+      const isInvalid = ref<boolean>(false)
+      const onInput = (): void => {
+        isInvalid.value = email.value !== '' && !email.value.includes('@')
+      }
+      return { args, email, isInvalid, onInput }
+    },
+    template:
+      '<mcl-form-group :field-id="args.id" label="Email address" help-text="Validation runs as you type." invalid-feedback="That does not look like an email address." :invalid="isInvalid"><mcl-input-text v-bind="args" type="email" v-model="email" placeholder="you@example.com" @input="onInput"></mcl-input-text></mcl-form-group>',
+  }),
+}
+
+export const MclInputTextDisabledExample: Story = {
+  args: {
+    disabled: true,
+  },
+  render: (args) => ({
+    components: { 'mcl-input-text': MclInputText },
+    setup() {
+      return { args }
+    },
+    template:
+      '<mcl-input-text v-bind="args" model-value="Cannot edit this"></mcl-input-text>',
   }),
 }
