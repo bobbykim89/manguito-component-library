@@ -15,11 +15,12 @@ npm i @bobbykim/mcl-forms
 
 ## Usage
 
-In your code
-
 ```js
 <script setup lang="ts">
 import { MclInputText } from '@bobbykim/mcl-forms'
+import { ref } from 'vue'
+
+const inputData = ref<string>('')
 </script>
 
 <template>
@@ -35,12 +36,38 @@ import { MclInputText } from '@bobbykim/mcl-forms'
 
 ## Example with mcl-form-group
 
+Inside a group the control needs no `id` — it inherits the group's, which is
+what binds the label to it.
+
 <Canvas of={Stories.MclInputTextWithLabelExample} />
 
-## Custom invalid feedback example
+## Field state
 
+`id`, `name`, `invalid`, `required` and `disabled` are inherited from a
+surrounding [MclFormGroup](?path=/docs/components-form-mclformgroup--docs)
+when omitted. Leaving `invalid` unset is different from setting it `false`:
+unset inherits, `false` overrides.
+
+`name` deliberately has no id fallback: an input with no `name` of its own and
+no group to inherit one from contributes nothing to a form post, rather than
+posting under a generated id.
+
+<Canvas of={Stories.MclInputTextLiveValidationExample} />
+<Canvas of={Stories.MclInputTextDisabledExample} />
+
+## Invalid feedback
+
+This control renders its own error region. It appears only while `invalid`
+resolves true — the region is conditional so that `role="alert"` announces on
+insertion, which means `invalid-feedback` on its own renders nothing.
+
+When a surrounding group owns the error region, this control renders none and
+its `invalid-feedback` is ignored.
+
+<Canvas of={Stories.MclInputTextInvalidFeedbackExample} />
 <Canvas of={Stories.MclInputTextCustomInvalidFeedback} />
 
-## Slot
+## Slots
 
-- `#invalid-feedback`: Slot to add custom invalid feedbacks
+- `#invalid-feedback`: replaces the rendered error text. Still gated on
+  `invalid`.

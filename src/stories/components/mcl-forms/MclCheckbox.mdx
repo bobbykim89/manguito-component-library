@@ -3,7 +3,7 @@ import * as Stories from './mcl-checkbox/checkbox.stories'
 
 <Meta of={Stories} />
 
-# MCL Input Radio
+# MCL Checkbox
 
 Included in `@bobbykim/mcl-forms`
 
@@ -15,32 +15,7 @@ npm i @bobbykim/mcl-forms
 
 ## Usage
 
-### Using Events
-
-```js
-<script setup lang="ts">
-import { MclCheckbox } from '@bobbykim/mcl-forms'
-import { ref } from 'vue'
-
-const valueRef = ref<string>('')
-const isChecked = ref<boolean>(false)
-const sampleData = {
-  id: 'item-1',
-  value: 'first-item',
-}
-
-const setValue = (e: Event, value: string | number, checked: boolean) => {
-  valueRef.value = value
-  isChecked.value = checked
-}
-</script>
-
-<template>
-  <mcl-checkbox :id="sampleData.id" :value="sampleData.value" @checkbox-click="setValue"></mcl-checkbox>
-</template>
-```
-
-### Using v-model
+`v-model` is a **boolean** — one model per checkbox.
 
 ```js
 <script setup lang="ts">
@@ -48,7 +23,6 @@ import { MclCheckbox } from '@bobbykim/mcl-forms'
 import { ref } from 'vue'
 
 const isChecked = ref<boolean>(false)
-
 </script>
 
 <template>
@@ -56,14 +30,36 @@ const isChecked = ref<boolean>(false)
 </template>
 ```
 
-## MCL Checkbox Component Example
-
-<Canvas of={Stories.MclCheckboxEventExample} />
+<Canvas of={Stories.MclCheckboxVModelExample} />
 
 ## Controls
 
-<Controls of={Stories.MclCheckboxEventExample} />
+<Controls of={Stories.MclCheckboxVModelExample} />
 
-## Multiple Checkbox Example
+## Events
+
+- `change` — `(event: Event)`. The native change event. The checked state is
+  not in the payload; read it from the model.
+
+<Canvas of={Stories.MclCheckboxChangeEventExample} />
+
+## Field state
+
+`id`, `name`, `invalid`, `required` and `disabled` are all inherited from a
+surrounding [MclFormGroup](?path=/docs/components-form-mclformgroup--docs)
+when omitted. Leaving `invalid` unset is different from setting it `false`:
+unset inherits, `false` overrides.
+
+This control renders **no error region of its own**, so `invalid` alone only
+sets `aria-invalid`. To show a message, let the group own the region with
+`invalid-feedback`.
+
+<Canvas of={Stories.MclCheckboxInGroupExample} />
+
+## Multiple checkboxes
+
+Because the model is a boolean, a set is held as one boolean per value rather
+than as a single array model. Setting `value` is still worth doing — it is
+what each box submits in a native form post.
 
 <Canvas of={Stories.MultipleMclCheckboxExample} />

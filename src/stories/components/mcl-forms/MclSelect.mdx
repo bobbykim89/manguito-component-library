@@ -15,17 +15,30 @@ npm i @bobbykim/mcl-forms
 
 ## Usage
 
-In your code
+`MclSelect` is a filterable combobox built on the ARIA list-autocomplete
+pattern. `options` is required, and takes either `string[]` or
+`{ text, value }[]` — `text` is displayed, `value` is what the model carries.
 
 ```js
 <script setup lang="ts">
 import { MclSelect } from '@bobbykim/mcl-forms'
+import { ref } from 'vue'
+
+const selected = ref<string | number | null>(null)
+const options = [
+  { text: 'Item 1', value: 'value-1' },
+  { text: 'Item 2', value: 'value-2' },
+]
 </script>
 
 <template>
-  <mcl-select v-model="inputData"></mcl-select>
+  <mcl-select v-model="selected" :options="options"></mcl-select>
 </template>
 ```
+
+Opening the list shows every option with the current selection marked, and
+narrows only once the user types. Arrow keys move the highlight, `Enter`
+commits it, `Escape` closes.
 
 <Canvas of={Stories.MclSelectExample} />
 
@@ -33,53 +46,104 @@ import { MclSelect } from '@bobbykim/mcl-forms'
 
 <Controls of={Stories.MclSelectExample} />
 
-## Example with Options as string array
+## The model holds the value, not the label
+
+The visible input's text is the display label, so the submitted value lives on
+a separate hidden input carrying `value`. That hidden input is rendered only
+when a `name` exists — a select with no name contributes nothing to a form.
+
+## Positioning
+
+The listbox is placed by floating-ui, so it flips above the input rather than
+being clipped when there is no room below.
+
+<Canvas of={Stories.MclSelectExampleFloatingUi} />
+
+## Options as a string array
 
 <Canvas of={Stories.MclSelectExampleStringArrayOptions} />
 
-## Example with Custom Slot Content
+## Field state
 
-<Canvas of={Stories.MclSelectExampleCustomSlotExample} />
+`id`, `name`, `invalid`, `required` and `disabled` are inherited from a
+surrounding [MclFormGroup](?path=/docs/components-form-mclformgroup--docs)
+when omitted. Leaving `invalid` unset is different from setting it `false`:
+unset inherits, `false` overrides. Disabling the control also closes an open
+listbox, so a form that disables itself on submit cannot leave one behind that
+still commits on click.
 
-### Slots
+This control renders its own error region, gated on `invalid` — so
+`invalid-feedback` on its own renders nothing.
 
-#### `#dropdown`: This slot is used to customize the rendering of the dropdown options.
+<Canvas of={Stories.MclSelectInvalidFeedbackExample} />
 
-| Prop        | Type                              | Description                                                                                           |
-| ----------- | --------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| optionClick | `(e, option) => void`             | handles event when option is clicked                                                                  |
-| options     | `Array<string, SelectOptionType>` | returns list of options available in the list                                                         |
-| activeIndex | `number`                          | The index of the currently active (highlighted) option.                                               |
-| setRef      | `(el: Element)`                   | set elements into ref variable                                                                        |
-| hover       | `(index: number) => void`         | A function triggered when an option is hovered. Takes the index of the hovered option as an argument. |
+## Events
 
-##### Example
+| Event     | Payload                   | Fired when                                 |
+| --------- | ------------------------- | ------------------------------------------ |
+| `open`    | —                         | the listbox opens                          |
+| `close`   | —                         | the listbox closes, by any route           |
+| `clear`   | —                         | the clear button empties the selection     |
+| `select`  | `value: string \| number` | an option is committed by click or `Enter` |
+| `changed` | `value: string \| number` | the model changes, including from outside  |
+
+`select` fires only on a user commit; `changed` follows any model change, so a
+parent writing the model programmatically triggers `changed` alone.
+
+<Canvas of={Stories.MclSelectEventsExample} />
+
+## Slots
+
+### `#dropdown`
+
+Replaces the rendering of the option list. Taking this over means taking over
+the combobox semantics with it: `role="option"` and the `optionId(index)` id
+are what `aria-activedescendant` points at, so omitting them leaves keyboard
+users with an unannounced list.
+
+| Prop          | Type                                                                      | Description                                                               |
+| ------------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `options`     | `(string \| SelectOptionType)[]`                                          | the currently visible options, already filtered                           |
+| `activeIndex` | `number`                                                                  | index of the highlighted option, or `-1` for none                         |
+| `optionClick` | `(option: string \| SelectOptionType) => void`                            | commits an option. Takes the option alone — it is not an event handler    |
+| `setRef`      | `(el: Element \| ComponentPublicInstance \| null, index: number) => void` | registers each option element so the active one can be scrolled into view |
+| `hover`       | `(index: number) => void`                                                 | moves the highlight, for pointer hover                                    |
+| `optionId`    | `(index: number) => string`                                               | the element id this option must carry                                     |
+
+#### Example
 
 ```vue
 <template>
-  <MclSelect>
-    <template #dropdown="{ options, optionClick, activeIndex, setRef, hover }">
+  <mcl-select v-model="selected" :options="options">
+    <template
+      #dropdown="{ options, activeIndex, optionClick, setRef, hover, optionId }"
+    >
       <li
         v-for="(option, index) in options"
+        :id="optionId(index)"
         :key="index"
+        :ref="(el) => setRef(el, index)"
+        role="option"
+        :aria-selected="option === selected"
         :class="{ active: index === activeIndex }"
-        ref="el => setRef(el, index)"
-        @click="(e) => optionClick(e, option)"
-        @mouseover="() => hover(index)"
+        @click="optionClick(option)"
+        @mouseenter="hover(index)"
       >
         {{ option }}
       </li>
     </template>
-  </MclSelect>
+  </mcl-select>
 </template>
 ```
 
-#### `#no-match`: This slot is used to customize the rendering of the "no match" state when there are no matching options.
+<Canvas of={Stories.MclSelectExampleCustomSlotExample} />
 
-### Events
+### `#no-match`
 
-- `open` - Event fired on dropdown open
-- `close` - Event fired on dropdown cose
-- `clear` - Event fired clear icon click
-- `changed` - (value: string | number) - Event fired on change of value
-- `select` - (value: string | number) - Event fired on select item in the dropdown list
+Replaces the "no match" content. This region is a `role="status"` element
+outside the listbox, not an option in it, so its content is plain markup
+rather than an `<li>`.
+
+### `#invalid-feedback`
+
+Replaces the rendered error text. Still gated on `invalid`.

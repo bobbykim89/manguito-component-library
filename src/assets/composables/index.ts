@@ -22,7 +22,7 @@ import {
   headingTextSize,
   inputOptions,
   spacingOptions,
-  switchSizeOptions,
+  inputSizeOptions,
   targetOption,
 } from '../options'
 
@@ -67,7 +67,7 @@ interface ControllerCorsType extends ControllerGenericInput {
 interface ControllerInputType extends ControllerGenericInput {
   defaultValue?: InputType
 }
-interface ControllerSwitchSizeType extends ControllerGenericInput {
+interface ControllerInputSizeType extends ControllerGenericInput {
   defaultValue?: 'sm' | 'md' | 'lg'
 }
 interface ControllerFontWeightType extends ControllerGenericInput {
@@ -273,7 +273,7 @@ export const inputTypeControllers = (arg: ControllerInputType): any => {
   }
 }
 
-export const switchSizeControllers = (arg: ControllerSwitchSizeType): any => {
+export const inputSizeControllers = (arg: ControllerInputSizeType): any => {
   const { name, required, description, defaultValue, category } = arg
   return {
     name,
@@ -285,7 +285,7 @@ export const switchSizeControllers = (arg: ControllerSwitchSizeType): any => {
       category,
     },
     control: { type: 'select' },
-    options: Object.values(switchSizeOptions),
+    options: Object.values(inputSizeOptions),
   }
 }
 

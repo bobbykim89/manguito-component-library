@@ -15,36 +15,66 @@ npm i @bobbykim/mcl-forms
 
 ## Usage
 
-In your code
+A radio set is **one shared `v-model` plus a `value` per radio**. There is no
+`checked` prop: the model holds the selected value and each radio compares
+against it.
 
 ```js
 <script setup lang="ts">
-import { MclInputRadio } from '@bobbykim/mcl-forms'
+import { MclFormGroup, MclInputRadio } from '@bobbykim/mcl-forms'
 import { ref } from 'vue'
 
-const valueRef = ref<string>('')
-const sampleData = {
-  id: 'item-1',
-  value: 'first-item',
-}
-
-const setValue = (e: Event, value: string | number) => {
-  valueRef.value = value
-}
+const selected = ref<string | number | null>(null)
+const items = [
+  { value: 'first-item', text: 'First Item' },
+  { value: 'second-item', text: 'Second Item' },
+]
 </script>
 
 <template>
-  <mcl-input-radio :id="sampleData.id" :value="sampleData.value" :checked="valueRef === sampleData.value" @change="setValue"></mcl-input-radio>
+  <mcl-form-group group-label label="Pick one">
+    <label v-for="item in items" :key="item.value">
+      <mcl-input-radio
+        v-model="selected"
+        :value="item.value"
+        name="my-radio-set"
+      ></mcl-input-radio>
+      <span>{{ item.text }}</span>
+    </label>
+  </mcl-form-group>
 </template>
 ```
-
-## MCL Input Radio with MCL Form Group Component
 
 <Canvas of={Stories.MclInputRadioExample} />
 
 ## Controls
 
 <Controls of={Stories.MclInputRadioExample} />
+
+## Events
+
+- `change` — `(event: Event)`. The native change event. The selected value is
+  not in the payload; read it from the model.
+
+<Canvas of={Stories.MclInputRadioChangeEventExample} />
+
+## Field state
+
+`id`, `name`, `invalid`, `required` and `disabled` are inherited from a
+surrounding [MclFormGroup](?path=/docs/components-form-mclformgroup--docs)
+when omitted. Leaving `invalid` unset is different from setting it `false`:
+unset inherits, `false` overrides.
+
+`name` behaves differently here than on the other controls. It is what makes a
+set behave as one group, so it falls back to the resolved element id rather
+than being left empty — the only control that does.
+
+Radios render **no error region of their own**, so a message has to come from
+a group that owns one. Note that `group-label` mode gives each radio its own
+generated id, which is why the control belongs inside its `<label>` rather
+than beside it.
+
+<Canvas of={Stories.MclInputRadioInvalidExample} />
 
 ## Mcl Input Radio Example A
 

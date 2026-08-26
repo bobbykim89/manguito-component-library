@@ -15,15 +15,16 @@ npm i @bobbykim/mcl-forms
 
 ## Usage
 
-In your code
-
 ```js
 <script setup lang="ts">
 import { MclTextArea } from '@bobbykim/mcl-forms'
+import { ref } from 'vue'
+
+const inputData = ref<string>('')
 </script>
 
 <template>
-  <mcl-text-area v-model="inputData"></mcl-text-area>
+  <mcl-text-area v-model="inputData" :rows="4"></mcl-text-area>
 </template>
 ```
 
@@ -36,3 +37,30 @@ import { MclTextArea } from '@bobbykim/mcl-forms'
 ## Example with mcl-form-group
 
 <Canvas of={Stories.MclTextAreaWithLabelExample} />
+
+## Field state
+
+`id`, `name`, `invalid`, `required` and `disabled` are inherited from a
+surrounding [MclFormGroup](?path=/docs/components-form-mclformgroup--docs)
+when omitted. Leaving `invalid` unset is different from setting it `false`:
+unset inherits, `false` overrides.
+
+<Canvas of={Stories.MclTextAreaInGroupExample} />
+
+## Invalid feedback
+
+This control renders its own error region, added in the same rewrite that gave
+the other text-like controls theirs. It appears only while `invalid` resolves
+true — the region is conditional so that `role="alert"` announces on
+insertion, which means `invalid-feedback` on its own renders nothing.
+
+When a surrounding group owns the error region, this control renders none and
+its `invalid-feedback` is ignored.
+
+<Canvas of={Stories.MclTextAreaInvalidFeedbackExample} />
+<Canvas of={Stories.MclTextAreaCustomInvalidFeedback} />
+
+## Slots
+
+- `#invalid-feedback`: replaces the rendered error text. Still gated on
+  `invalid`.
