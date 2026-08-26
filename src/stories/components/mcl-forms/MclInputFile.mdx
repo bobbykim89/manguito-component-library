@@ -15,15 +15,18 @@ npm i @bobbykim/mcl-forms
 
 ## Usage
 
-In your code
+`v-model` holds a single `File`, or `null` when nothing is selected.
 
 ```js
 <script setup lang="ts">
 import { MclInputFile } from '@bobbykim/mcl-forms'
+import { ref } from 'vue'
+
+const file = ref<File | null>(null)
 </script>
 
 <template>
-  <mcl-input-file v-model="inputData"></mcl-input-file>
+  <mcl-input-file v-model="file" show-clear></mcl-input-file>
 </template>
 ```
 
@@ -32,3 +35,35 @@ import { MclInputFile } from '@bobbykim/mcl-forms'
 ## Controls
 
 <Controls of={Stories.MclInputFileExample} />
+
+## Clearing
+
+`show-clear` adds a clear button on the right. It is a `type="button"`, so it
+never submits a surrounding form. Clearing remounts the underlying input,
+which is the only reliable way to reset a file input's value across browsers.
+
+<Canvas of={Stories.MclInputFileClearableExample} />
+
+## Field state
+
+`id`, `name`, `invalid`, `required` and `disabled` are inherited from a
+surrounding [MclFormGroup](?path=/docs/components-form-mclformgroup--docs)
+when omitted. Leaving `invalid` unset is different from setting it `false`:
+unset inherits, `false` overrides. `disabled` reaches the input and both
+buttons.
+
+<Canvas of={Stories.MclInputFileDisabledExample} />
+
+## Invalid feedback
+
+This control renders its own error region, gated on `invalid` — so
+`invalid-feedback` on its own renders nothing. When a surrounding group owns
+the region, this control renders none and its `invalid-feedback` is ignored.
+
+<Canvas of={Stories.MclInputFileInvalidFeedbackExample} />
+<Canvas of={Stories.MclInputFileCustomInvalidFeedback} />
+
+## Slots
+
+- `#invalid-feedback`: replaces the rendered error text. Still gated on
+  `invalid`.

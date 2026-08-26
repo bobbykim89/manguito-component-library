@@ -1,10 +1,10 @@
 import {
   booleanControllers,
   colorControllers,
-  switchSizeControllers,
+  inputSizeControllers,
   textControllers,
 } from '@/assets/composables'
-import { MclCheckbox } from '@/components/mcl-forms/lib'
+import { MclCheckbox, MclFormGroup } from '@/components/mcl-forms/lib'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 import MclCheckboxMultiple from './MclCheckboxMultiple.vue'
@@ -15,25 +15,48 @@ const meta: Meta<typeof MclCheckbox> = {
   argTypes: {
     id: textControllers({
       name: 'id',
-      required: true,
-      description: 'assigns id of input component',
+      required: false,
+      description:
+        "assigns id of the input. Omit it inside an MclFormGroup and the control inherits the group's id, which is what binds the group label to it.",
+      category: 'Input Block',
+    }),
+    name: textControllers({
+      name: 'name',
+      required: false,
+      description:
+        'submitted field name. Inherited from a surrounding MclFormGroup when omitted; never falls back to the generated id.',
       category: 'Input Block',
     }),
     value: textControllers({
       name: 'value',
       required: false,
-      description: 'value of checkbox component',
+      description:
+        'value submitted when checked. Native form behaviour only — `v-model` is a boolean and is unaffected by this.',
       category: 'Input Block',
     }),
-    checked: booleanControllers({
-      name: 'checked',
+    invalid: booleanControllers({
+      name: 'invalid',
       required: false,
-      description: 'whether or not to have checkbox checked in default',
-      defaultValue: false,
-      category: 'Input Block',
+      description:
+        'sets `aria-invalid`. Leave it unset to inherit from a surrounding MclFormGroup — `false` and "unset" are deliberately different. This control renders no error region of its own, so the message has to come from the group.',
+      category: 'Validation',
     }),
-    inputSize: switchSizeControllers({
-      name: 'input-size',
+    required: booleanControllers({
+      name: 'required',
+      required: false,
+      description:
+        'marks the input required. Unset inherits from a surrounding MclFormGroup.',
+      category: 'Validation',
+    }),
+    disabled: booleanControllers({
+      name: 'disabled',
+      required: false,
+      description:
+        'disables the input. Unset inherits from a surrounding MclFormGroup.',
+      category: 'Validation',
+    }),
+    size: inputSizeControllers({
+      name: 'size',
       required: false,
       defaultValue: 'md',
       description: 'size of checkbox',
@@ -53,18 +76,18 @@ const meta: Meta<typeof MclCheckbox> = {
       description: 'background color of checked checkbox',
       category: 'Component Block',
     }),
-    checkColor: colorControllers({
-      name: 'check-color',
+    indicatorColor: colorControllers({
+      name: 'indicator-color',
       required: false,
       defaultValue: 'dark-3',
-      description: 'color of check icon',
+      description: 'color of the check mark',
       category: 'Component Block',
     }),
     borderColor: colorControllers({
       name: 'border-color',
       required: false,
       defaultValue: 'dark-1',
-      description: 'border color of checkbox',
+      description: 'border color of checkbox, and its focus-ring color',
       category: 'Component Block',
     }),
     showShadow: booleanControllers({
@@ -84,52 +107,69 @@ const meta: Meta<typeof MclCheckbox> = {
   },
   args: {
     id: 'my-checkbox',
-    inputSize: 'md',
+    size: 'md',
     bgColor: 'light-1',
     checkedBgColor: 'warning',
-    checkColor: 'dark-3',
+    indicatorColor: 'dark-3',
     borderColor: 'dark-1',
     showShadow: false,
     rounded: false,
     value: 'checkbox-value',
-    checked: false,
   },
 }
 
 export default meta
 
 type Story = StoryObj<typeof MclCheckbox>
-export const MclCheckboxEventExample: Story = {
+
+export const MclCheckboxVModelExample: Story = {
   render: (args) => ({
     components: { 'mcl-checkbox': MclCheckbox },
     setup() {
-      const checkboxVal = ref<string | number>('')
-      const isChecked = ref<boolean>()
-      const handleCheckboxClick = (
-        e: Event,
-        checked: boolean,
-        value: string | number,
-      ) => {
-        e.preventDefault()
-        checkboxVal.value = value
-        isChecked.value = checked
-      }
-      return { args, checkboxVal, handleCheckboxClick, isChecked }
+      const isChecked = ref<boolean>(false)
+      return { args, isChecked }
     },
     template:
-      '<section><div class="flex gap-2"><mcl-checkbox v-bind="args" @checkbox-click="handleCheckboxClick"></mcl-checkbox><label :for="args.id">{{ args.value }}</label></div><div>Checked: {{ isChecked }}</div><div>current value is: {{ checkboxVal }}</div></section>',
+      '<section><div class="flex items-center gap-2"><mcl-checkbox v-bind="args" v-model="isChecked"></mcl-checkbox><label :for="args.id">{{ args.value }}</label></div><div class="mt-xs">Checked: {{ isChecked }}</div></section>',
   }),
 }
 
-export const MclCheckboxVModelExample: Story = {
-  render: (args: Meta<typeof MclCheckbox>['args']) => ({
+export const MclCheckboxChangeEventExample: Story = {
+  render: (args) => ({
     components: { 'mcl-checkbox': MclCheckbox },
     setup() {
-      const modelVal = ref<boolean>()
-      return { args, modelVal }
+      const isChecked = ref<boolean>(false)
+      const changeCount = ref<number>(0)
+      // `change` carries the native Event; the checked state comes from the
+      // model, not from the event payload.
+      const onChange = (event: Event): void => {
+        changeCount.value += 1
+        console.log('native change target:', event.target)
+      }
+      return { args, isChecked, changeCount, onChange }
     },
     template:
-      '<section><div class="flex gap-2"><mcl-checkbox v-bind="args" v-model="modelVal"></mcl-checkbox><label :for="args.id">{{ args.value }}</label></div><div>Checked: {{ modelVal }}</div></section>',
+      '<section><div class="flex items-center gap-2"><mcl-checkbox v-bind="args" v-model="isChecked" @change="onChange"></mcl-checkbox><label :for="args.id">{{ args.value }}</label></div><div class="mt-xs">Checked: {{ isChecked }}</div><div>change fired {{ changeCount }} time(s)</div></section>',
+  }),
+}
+
+export const MclCheckboxInGroupExample: Story = {
+  render: (args) => ({
+    components: {
+      'mcl-checkbox': MclCheckbox,
+      'mcl-form-group': MclFormGroup,
+    },
+    setup() {
+      const accepted = ref<boolean>(false)
+      return { args, accepted }
+    },
+    // group-label so the legend labels the set and the inner <label> labels
+    // the control itself — a single <label for> on the group would collide
+    // with it. The group owns the error region either way: the checkbox
+    // renders none of its own, so the group's `invalid` is what surfaces a
+    // message.
+    template:
+      '<mcl-form-group group-label label="Terms" invalid-feedback="You must accept the terms to continue." :invalid="!accepted"><label class="flex items-center gap-2"><mcl-checkbox v-bind="args" v-model="accepted"></mcl-checkbox><span>I accept the terms</span></label></mcl-form-group>',
   }),
 }
 

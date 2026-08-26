@@ -12,7 +12,7 @@ import type {
 
 type HeadingLevel = 'h1' | 'h2' | 'h3' | 'h4'
 type ColWidth = '25' | '50' | '75' | '100'
-type SwitChSize = 'sm' | 'md' | 'lg'
+type InputSize = 'sm' | 'md' | 'lg'
 type DirectionXClass = {
   [key in DirectionX]: string
 }
@@ -31,8 +31,8 @@ type CorsClass = {
 type InputTypeClass = {
   [key in InputType]: string
 }
-type SwitchSizeClass = {
-  [key in SwitChSize]: string
+type InputSizeClass = {
+  [key in InputSize]: string
 }
 
 export const colors: Record<ColorPalette, ColorPalette> = {
@@ -112,8 +112,12 @@ export const inputOptions: InputTypeClass = {
   text: 'text',
   email: 'email',
   password: 'password',
+  tel: 'tel',
+  url: 'url',
+  search: 'search',
+  number: 'number',
 }
-export const switchSizeOptions: SwitchSizeClass = {
+export const inputSizeOptions: InputSizeClass = {
   sm: 'sm',
   md: 'md',
   lg: 'lg',
