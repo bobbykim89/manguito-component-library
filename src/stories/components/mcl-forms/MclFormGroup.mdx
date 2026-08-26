@@ -3,7 +3,7 @@ import * as Stories from './mcl-form-group/formGroup.stories.ts'
 
 <Meta of={Stories} />
 
-# MCL Input Text
+# MCL Form Group
 
 Included in `@bobbykim/mcl-forms`
 
@@ -15,15 +15,22 @@ npm i @bobbykim/mcl-forms
 
 ## Usage
 
-In your code
+`MclFormGroup` labels a field and publishes shared state to the controls
+inside it. A control placed in a group does not need an `id` — it inherits the
+group's, which is what binds the label to it.
 
 ```js
 <script setup lang="ts">
-import { MclFormGroup } from '@bobbykim/mcl-forms'
+import { MclFormGroup, MclInputText } from '@bobbykim/mcl-forms'
+import { ref } from 'vue'
+
+const name = ref<string>('')
 </script>
 
 <template>
-  <mcl-form-group label-for=""></mcl-form-group>
+  <mcl-form-group field-id="full-name" label="Full name">
+    <mcl-input-text v-model="name"></mcl-input-text>
+  </mcl-form-group>
 </template>
 ```
 
@@ -33,10 +40,75 @@ import { MclFormGroup } from '@bobbykim/mcl-forms'
 
 <Controls of={Stories.MclFormGroupExample} />
 
-## Custom label example
+## Custom label
+
+The `#label` slot replaces the rendered label text while keeping the `for`
+binding intact.
 
 <Canvas of={Stories.MclCustomLabelExample} />
 
-## Slot
+## Two labelling modes
 
-- `#label`: Slot to add custom label
+`group-label` decides the rendered structure, and with it how ids are
+resolved:
+
+| Mode          | Renders                     | Descendant ids                                                  |
+| ------------- | --------------------------- | --------------------------------------------------------------- |
+| default       | `<label for>` + one control | every control reuses the group's id, so the label binds to it   |
+| `group-label` | `<fieldset>` + `<legend>`   | each control generates its own id, so a set can share one label |
+
+Use `group-label` for radio and checkbox sets. Because there is no single
+`for` to point at, put each control **inside** its own `<label>` rather than
+beside it.
+
+<Canvas of={Stories.MclFormGroupRadioSetExample} />
+
+## Cascading state
+
+`invalid`, `required` and `disabled` are inherited by every control in the
+group. Each is `boolean | undefined`, and `undefined` is meaningful: it means
+"inherit". A control that sets the prop itself always wins, so
+`:invalid="false"` on a control stays valid no matter what the group says.
+
+<Canvas of={Stories.MclFormGroupCascadeExample} />
+
+## Help text
+
+`help-text` renders a description under the label and wires it to the control
+through `aria-describedby`. The `#help` slot replaces the rendered content.
+
+<Canvas of={Stories.MclFormGroupHelpTextExample} />
+<Canvas of={Stories.MclFormGroupCustomHelpSlotExample} />
+
+## Error region ownership
+
+Passing `invalid-feedback` — or filling the `#invalid-feedback` slot — makes
+the **group** own the error region. Its controls then render none of their own
+and point `aria-describedby` here instead, so exactly one element carries the
+message.
+
+Two things to know about it:
+
+- Ownership is decided once, at setup, from the _presence_ of the prop or
+  slot rather than from its value. Bind it to a string and use `''` for "no
+  error yet" — `:invalid-feedback="errors.email"` with `errors.email`
+  undefined at mount leaves the group not owning the region, and its message
+  never renders.
+- A group that owns the region **must carry `invalid` itself**. The region
+  renders off the group's own `invalid`, and the controls have already skipped
+  theirs, so an invalid control inside a group with `:invalid="false"` shows no
+  message anywhere.
+
+<Canvas of={Stories.MclFormGroupOwnedFeedbackExample} />
+<Canvas of={Stories.MclFormGroupCustomFeedbackSlotExample} />
+
+## Works with any control
+
+<Canvas of={Stories.MclFormGroupWithSelectExample} />
+
+## Slots
+
+- `#label`: replaces the rendered label text
+- `#help`: replaces the rendered help text
+- `#invalid-feedback`: replaces the rendered error text, and — like the
+  `invalid-feedback` prop — makes the group own the error region

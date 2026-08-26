@@ -12,27 +12,34 @@ const options = [
   'Cockatiel',
   'Greencheek Conure',
   'Monk Parakeet',
-  'Cockatiel',
 ]
-const selectedVal = ref<string>('')
+
+// With `string[]` options the label and the value are the same string, so the
+// model is just the chosen string. It starts as null, not '' — that is what
+// "nothing selected" is.
+const selectedVal = ref<string | number | null>(null)
 </script>
 
 <template>
   <div class="min-h-[40vh] rounded py-md">
+    <!--
+      No `id` on the select: single-label mode hands it the group's, which is
+      what binds this label to the combobox.
+    -->
     <mcl-form-group
-      label-for="mcl-select-example"
+      field-id="mcl-select-example"
       label="MCL Select with String Options"
+      help-text="Options given as a plain string array."
     >
       <mcl-select
-        id="mcl-select-example"
-        :options="options"
-        display-border
-        rounded
         v-model="selectedVal"
+        :options="options"
+        show-border
+        rounded
       ></mcl-select>
     </mcl-form-group>
     <div class="mt-sm text-center">
-      <p>Selected Value is: {{ selectedVal }}</p>
+      <p>Selected Value is: {{ selectedVal ?? '(none)' }}</p>
     </div>
   </div>
 </template>

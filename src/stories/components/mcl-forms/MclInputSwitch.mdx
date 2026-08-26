@@ -15,22 +15,58 @@ npm i @bobbykim/mcl-forms
 
 ## Usage
 
-In your code
+`v-model` is a boolean. The control carries `role="switch"` for you.
 
 ```js
 <script setup lang="ts">
 import { MclInputSwitch } from '@bobbykim/mcl-forms'
+import { ref } from 'vue'
+
+const enabled = ref<boolean>(false)
 </script>
 
 <template>
-  <mcl-input-switch v-model="inputData"></mcl-input-switch>
+  <mcl-input-switch v-model="enabled"></mcl-input-switch>
 </template>
 ```
-
-## MCL Input Switch with MCL Form Group Component
 
 <Canvas of={Stories.MclInputSwitchExample} />
 
 ## Controls
 
 <Controls of={Stories.MclInputSwitchExample} />
+
+## Colors
+
+The three color props name the parts they paint:
+
+| Prop               | Paints                               |
+| ------------------ | ------------------------------------ |
+| `bg-color`         | the track when off                   |
+| `checked-bg-color` | the track when on                    |
+| `indicator-color`  | the sliding knob                     |
+| `border-color`     | the track border, and the focus ring |
+
+`rounded` is `true` by default, giving a full pill with a round knob. Set it
+`false` for a soft rectangle.
+
+<Canvas of={Stories.MclInputSwitchExample2} />
+
+## Events
+
+- `change` — `(event: Event)`. The native change event. The on/off state is
+  not in the payload; read it from the model.
+
+<Canvas of={Stories.MclInputSwitchChangeEventExample} />
+
+## Field state
+
+`id`, `name`, `invalid`, `required` and `disabled` are inherited from a
+surrounding [MclFormGroup](?path=/docs/components-form-mclformgroup--docs)
+when omitted. Leaving `invalid` unset is different from setting it `false`:
+unset inherits, `false` overrides.
+
+This control renders **no error region of its own**, so `invalid` alone only
+sets `aria-invalid`; a message has to come from a group that owns the region.
+
+<Canvas of={Stories.MclInputSwitchDisabledExample} />

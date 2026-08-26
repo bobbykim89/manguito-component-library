@@ -4,8 +4,9 @@ import {
   numberControllers,
   textControllers,
 } from '@/assets/composables'
-import { MclTextArea } from '@/components/mcl-forms/lib'
+import { MclFormGroup, MclTextArea } from '@/components/mcl-forms/lib'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { ref } from 'vue'
 import MclTextAreaWithLabel from './MclTextAreaWithLabel.vue'
 
 const meta: Meta<typeof MclTextArea> = {
@@ -14,9 +15,30 @@ const meta: Meta<typeof MclTextArea> = {
   argTypes: {
     id: textControllers({
       name: 'id',
-      required: true,
-      description: 'assigns id of the input component',
-      category: 'ID',
+      required: false,
+      description:
+        "assigns id of the textarea. Omit it inside an MclFormGroup and the control inherits the group's id, which is what binds the group label to it.",
+      category: 'Input Block',
+    }),
+    name: textControllers({
+      name: 'name',
+      required: false,
+      description:
+        'submitted field name. Inherited from a surrounding MclFormGroup when omitted; deliberately never falls back to the generated id.',
+      category: 'Input Block',
+    }),
+    placeholder: textControllers({
+      name: 'placeholder',
+      required: false,
+      description: 'assigns placeholder text for the input',
+      category: 'Input Block',
+    }),
+    rows: numberControllers({
+      name: 'rows',
+      required: false,
+      description: 'assigns numbers of rows for this component',
+      defaultValue: 5,
+      category: 'Input Block',
     }),
     showBorder: booleanControllers({
       name: 'show-border',
@@ -26,7 +48,7 @@ const meta: Meta<typeof MclTextArea> = {
       category: 'Input Block',
     }),
     borderColor: colorControllers({
-      name: 'borer-color',
+      name: 'border-color',
       required: false,
       description: 'assigns border color of input component',
       defaultValue: 'light-4',
@@ -53,12 +75,6 @@ const meta: Meta<typeof MclTextArea> = {
       defaultValue: 'black',
       category: 'Input Block',
     }),
-    placeholder: textControllers({
-      name: 'placeholder',
-      required: false,
-      description: 'assigns placeholder text for the input',
-      category: 'Input Block',
-    }),
     showShadow: booleanControllers({
       name: 'show-shadow',
       required: false,
@@ -66,26 +82,39 @@ const meta: Meta<typeof MclTextArea> = {
       defaultValue: true,
       category: 'Input Block',
     }),
+    invalidFeedback: textControllers({
+      name: 'invalid-feedback',
+      required: false,
+      description:
+        'error text rendered by this control. It only appears while `invalid` resolves true. Ignored when a surrounding MclFormGroup owns the error region.',
+      category: 'Validation',
+    }),
+    invalid: booleanControllers({
+      name: 'invalid',
+      required: false,
+      description:
+        'sets `aria-invalid` and reveals the error region. Leave it unset to inherit from a surrounding MclFormGroup — `false` and "unset" are deliberately different.',
+      category: 'Validation',
+    }),
     required: booleanControllers({
       name: 'required',
       required: false,
       description:
-        "whether or not to add 'required' attribute in this input component",
-      defaultValue: false,
-      category: 'Input Block',
+        'marks the textarea required. Unset inherits from a surrounding MclFormGroup.',
+      category: 'Validation',
     }),
-    rows: numberControllers({
-      name: 'rows',
+    disabled: booleanControllers({
+      name: 'disabled',
       required: false,
-      description: 'assigns numbers of rows for this component',
-      defaultValue: 5,
-      category: 'Input Block',
+      description:
+        'disables the textarea. Unset inherits from a surrounding MclFormGroup.',
+      category: 'Validation',
     }),
     showHighlight: booleanControllers({
       name: 'show-highlight',
       required: false,
       description:
-        'whether or not to add highlight at the bottom of input component',
+        'whether or not to add highlight at the bottom of input component. With it off, a focus-visible ring is emitted instead.',
       defaultValue: true,
       category: 'Highlight',
     }),
@@ -108,7 +137,6 @@ const meta: Meta<typeof MclTextArea> = {
     textColor: 'black',
     placeholder: '',
     showShadow: true,
-    required: false,
     rows: 5,
   },
 }
@@ -116,7 +144,33 @@ const meta: Meta<typeof MclTextArea> = {
 export default meta
 
 type Story = StoryObj<typeof MclTextArea>
+
 export const MclTextAreaExample: Story = {
+  render: (args) => ({
+    components: { 'mcl-text-area': MclTextArea },
+    setup() {
+      const value = ref<string>('')
+      return { args, value }
+    },
+    template:
+      '<section><mcl-text-area v-bind="args" v-model="value"></mcl-text-area><div class="mt-xs">{{ value.length }} character(s)</div></section>',
+  }),
+}
+
+export const MclTextAreaWithLabelExample: Story = {
+  render: () => ({
+    components: { 'mcl-text-area-with-label': MclTextAreaWithLabel },
+    template: '<mcl-text-area-with-label></mcl-text-area-with-label>',
+  }),
+}
+
+export const MclTextAreaInvalidFeedbackExample: Story = {
+  args: {
+    invalidFeedback: 'Tell us a little more — 20 characters minimum.',
+    // The error region is conditional on `invalid`; `invalidFeedback` alone
+    // renders nothing.
+    invalid: true,
+  },
   render: (args) => ({
     components: { 'mcl-text-area': MclTextArea },
     setup() {
@@ -126,9 +180,34 @@ export const MclTextAreaExample: Story = {
   }),
 }
 
-export const MclTextAreaWithLabelExample: Story = {
-  render: () => ({
-    components: { 'mcl-text-area-with-label': MclTextAreaWithLabel },
-    template: '<mcl-text-area-with-label></mcl-text-area-with-label>',
+export const MclTextAreaCustomInvalidFeedback: Story = {
+  args: {
+    invalidFeedback: 'overridden by the slot',
+    invalid: true,
+  },
+  render: (args) => ({
+    components: { 'mcl-text-area': MclTextArea },
+    setup() {
+      return { args }
+    },
+    template:
+      '<mcl-text-area v-bind="args"><template #invalid-feedback><p class="text-md font-bold text-warning">This field cannot be left blank.</p></template></mcl-text-area>',
+  }),
+}
+
+export const MclTextAreaInGroupExample: Story = {
+  render: (args) => ({
+    components: {
+      'mcl-text-area': MclTextArea,
+      'mcl-form-group': MclFormGroup,
+    },
+    setup() {
+      const notes = ref<string>('')
+      return { args, notes }
+    },
+    // The group owns the error region here, so the textarea renders none of
+    // its own and points aria-describedby at the group's.
+    template:
+      '<mcl-form-group :field-id="args.id" label="Notes" help-text="Markdown is supported." invalid-feedback="Notes cannot be empty." :invalid="notes.length === 0"><mcl-text-area v-bind="args" v-model="notes" :rows="4"></mcl-text-area></mcl-form-group>',
   }),
 }
