@@ -42,18 +42,25 @@ export async function hydrate(render: RenderFn): Promise<HydrationResult> {
   const container = document.getElementById('app') as HTMLElement
 
   const warnings: string[] = []
-  const record = (msg: unknown) => {
-    const text = String(msg)
-    if (/hydrat/i.test(text)) warnings.push(text)
-  }
-
-  const app = createSSRApp({ render })
-  app.config.warnHandler = (msg) => record(msg)
-
   const originalError = console.error
   const originalWarn = console.warn
-  console.error = (...args: unknown[]) => record(args[0])
-  console.warn = (...args: unknown[]) => record(args[0])
+  // `warnings` is hydration-only; everything else is forwarded, never dropped.
+  const isHydration = (msg: unknown) => /hydrat/i.test(String(msg))
+
+  const app = createSSRApp({ render })
+  app.config.warnHandler = (msg, _instance, trace) => {
+    if (isHydration(msg)) warnings.push(msg)
+    else originalWarn(`[Vue warn]: ${msg}${trace}`)
+  }
+
+  console.error = (...args: unknown[]) => {
+    if (isHydration(args[0])) warnings.push(String(args[0]))
+    else originalError(...args)
+  }
+  console.warn = (...args: unknown[]) => {
+    if (isHydration(args[0])) warnings.push(String(args[0]))
+    else originalWarn(...args)
+  }
   try {
     app.mount(container)
     await nextTick()

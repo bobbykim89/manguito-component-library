@@ -1,5 +1,5 @@
-import { h, Teleport } from 'vue'
-import { describe, expect, it } from 'vitest'
+import { h, inject, Teleport } from 'vue'
+import { describe, expect, it, vi } from 'vitest'
 import { hydrate } from './ssr'
 
 describe('hydrate harness', () => {
@@ -20,5 +20,26 @@ describe('hydrate harness', () => {
     )
     expect(r.warnings).toEqual([])
     r.unmount()
+  })
+  it('forwards non-hydration warnings to console instead of dropping them', async () => {
+    const spy = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    try {
+      const Comp = {
+        setup() {
+          inject('missing-key')
+          return () => h('p', 'x')
+        },
+      }
+      const r = await hydrate(() => h(Comp))
+      expect(r.warnings).toEqual([])
+      const forwarded = spy.mock.calls.filter((c) =>
+        String(c[0]).includes('missing-key'),
+      )
+      // once from the server render, once from the client mount
+      expect(forwarded.length).toBeGreaterThanOrEqual(2)
+      r.unmount()
+    } finally {
+      spy.mockRestore()
+    }
   })
 })
