@@ -30,6 +30,7 @@ const emit = defineEmits<{
   (e: 'toggle-drawer', event: Event, open: boolean): void
 }>()
 const navOpen = ref<boolean>(false)
+const mounted = ref<boolean>(false)
 
 const toggleNavButton = (e: Event): void => {
   navOpen.value = !navOpen.value
@@ -45,6 +46,7 @@ const componentWidth = computed(() => {
 })
 
 onMounted(() => {
+  mounted.value = true
   const scrollLock = useScrollLock(document)
 
   watch(navOpen, (val) => {
@@ -75,24 +77,24 @@ defineExpose<{
       </div>
     </nav>
 
-    <!-- mobile menu -->
-    <Teleport to="body">
-      <div class="relative z-40 block lg:hidden">
-        <!-- nav drawer button -->
-        <div
-          v-if="slots['mobile-content']"
-          class="fixed top-0 right-0 z-50 mt-xs mr-xs block lg:hidden"
-        >
-          <NavDrawer
-            :color="drawerBtnColor"
-            :show-border="showDrawerBorder"
-            class="relative block lg:hidden"
-            @hbg-click="toggleNavButton"
-            :toggle="navOpen"
-            :bg-color="bgColor"
-          ></NavDrawer>
-        </div>
+    <!-- nav drawer button: fixed-position, visible on first paint, so it stays in server html -->
+    <div
+      v-if="slots['mobile-content']"
+      class="fixed top-0 right-0 z-50 mt-xs mr-xs block lg:hidden"
+    >
+      <NavDrawer
+        :color="drawerBtnColor"
+        :show-border="showDrawerBorder"
+        class="relative block lg:hidden"
+        @hbg-click="toggleNavButton"
+        :toggle="navOpen"
+        :bg-color="bgColor"
+      ></NavDrawer>
+    </div>
 
+    <!-- mobile drawer: closed on first paint, so it is only teleported once mounted (never server-rendered) -->
+    <Teleport v-if="mounted" to="body">
+      <div class="relative z-40 block lg:hidden">
         <Transition name="slide-down" appear>
           <nav
             class="fixed inset-0 overflow-y-scroll overscroll-contain px-sm py-lg"
