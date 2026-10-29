@@ -1,8 +1,17 @@
 import vue from '@vitejs/plugin-vue'
+import { readFileSync } from 'fs'
 import { resolve } from 'path'
 import { defineConfig } from 'vite'
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
 import dts from 'vite-plugin-dts'
+
+const pkg = JSON.parse(
+  readFileSync(resolve(__dirname, 'package.json'), 'utf-8'),
+)
+// Externalize every dependency (and subpaths) so the build stays Node-importable
+const external = [...Object.keys(pkg.dependencies ?? {}), 'tailwindcss'].map(
+  (name) => new RegExp(`^${name}(/.*)?$`),
+)
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -30,7 +39,7 @@ export default defineConfig({
       formats: ['es', 'cjs'],
     },
     rollupOptions: {
-      external: ['vue', '@vueuse/core', 'tailwindcss'],
+      external,
       output: {
         globals: {
           vue: 'Vue',

@@ -19,7 +19,8 @@
     "package:build": "turbo run build",
     "package:version": "pnpm changeset version",
     "package:publish": "turbo run build && pnpm changeset publish",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:dist": "turbo run build && pnpm --filter @bobbykim/manguito-theme run test:dist"
   },
   "devDependencies": {
     "@changesets/cli": "^2.31.0",
