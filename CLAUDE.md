@@ -22,8 +22,9 @@ pnpm run package:install    # pnpm install across all workspaces
 ### Testing
 
 ```bash
-pnpm test                   # Run all tests once (root vitest config, currently covers manguito-theme only)
+pnpm test                   # Run all tests once (root vitest config: manguito-theme, mcl-forms, mcl-collapse, mcl-header, mcl-tabs, mcl-dropdown)
 pnpm test --watch           # Watch mode
+pnpm test:dist              # turbo build, then check-dist-ssr.mjs: imports every built theme entry in plain Node and server-renders each component from dist
 
 # Per-package (from inside src/components/<package>/)
 pnpm test                   # vitest run
@@ -31,6 +32,8 @@ pnpm run test:watch         # vitest watch
 ```
 
 Tests live alongside source as `lib/**/*.test.ts`. The root `vitest.config.ts` uses Vitest's `projects` API — add new packages there when they gain tests.
+
+SSR test convention: `*.server.test.ts` runs in the node environment (`// @vitest-environment node`, so `document` is undefined) and `*.test.ts` runs in jsdom (the theme default; happy-dom breaks `@vueuse` `useScrollLock(document)`). The harness is `src/components/manguito-theme/lib/__tests__/ssr.ts` (`renderOnServer`, `hydrate`); consumer packages import it through the `'@mcl/ssr-test-utils'` alias.
 
 ### Releases
 

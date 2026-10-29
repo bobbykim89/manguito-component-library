@@ -117,6 +117,10 @@ const panelRefs = ref<InstanceType<typeof Collapse>[]>([])
 
 <Canvas of={Stories.collapseExample} />
 
+## SSR
+
+Collapse content is always rendered in the server HTML. Closed panels are hidden with `display: none`, so the content is present for crawlers and hydration, and the open and close transition runs after hydration.
+
 ---
 
 ## API

@@ -22,11 +22,14 @@ export default defineConfig({
       fileName: 'mcl-carousel',
     },
     rollupOptions: {
-      external: ['vue', '@bobbykim/manguito-theme', '@vueuse/core'],
+      external: ['vue', /^@bobbykim\/manguito-theme(\/.*)?$/, '@vueuse/core'],
       output: {
         globals: {
           vue: 'Vue',
           '@bobbykim/manguito-theme': 'ManguitoTheme',
+          '@bobbykim/manguito-theme/directives': 'ManguitoThemeDirectives',
+          '@bobbykim/manguito-theme/util': 'ManguitoThemeUtil',
+          '@bobbykim/manguito-theme/composable': 'ManguitoThemeComposable',
         },
       },
     },
