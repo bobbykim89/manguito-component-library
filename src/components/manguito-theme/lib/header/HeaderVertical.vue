@@ -77,9 +77,9 @@ defineExpose<{
       </div>
     </nav>
 
-    <!-- nav drawer button: fixed-position, visible on first paint, so it stays in server html -->
+    <!-- nav drawer button before mount: visible on first paint, so it stays in server html -->
     <div
-      v-if="slots['mobile-content']"
+      v-if="slots['mobile-content'] && !mounted"
       class="fixed top-0 right-0 z-50 mt-xs mr-xs block lg:hidden"
     >
       <NavDrawer
@@ -92,9 +92,25 @@ defineExpose<{
       ></NavDrawer>
     </div>
 
-    <!-- mobile drawer: closed on first paint, so it is only teleported once mounted (never server-rendered) -->
+    <!-- mobile menu: teleported only once mounted (never server-rendered); after mount the
+         button moves here so it shares the drawer's z-40 wrapper and always stays above it -->
     <Teleport v-if="mounted" to="body">
       <div class="relative z-40 block lg:hidden">
+        <!-- nav drawer button -->
+        <div
+          v-if="slots['mobile-content']"
+          class="fixed top-0 right-0 z-50 mt-xs mr-xs block lg:hidden"
+        >
+          <NavDrawer
+            :color="drawerBtnColor"
+            :show-border="showDrawerBorder"
+            class="relative block lg:hidden"
+            @hbg-click="toggleNavButton"
+            :toggle="navOpen"
+            :bg-color="bgColor"
+          ></NavDrawer>
+        </div>
+
         <Transition name="slide-down" appear>
           <nav
             class="fixed inset-0 overflow-y-scroll overscroll-contain px-sm py-lg"
