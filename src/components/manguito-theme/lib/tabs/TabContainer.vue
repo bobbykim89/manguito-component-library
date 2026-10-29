@@ -46,7 +46,10 @@ const updateActiveTab = (num: number) => {
  */
 
 const containerHeightVar = computed(() => {
-  return { '--container-hts': `${containerHts.value}px` }
+  // until a real height is measured, leave the body unclamped
+  return containerHts.value > 0
+    ? { '--container-hts': `${containerHts.value}px` }
+    : undefined
 })
 
 defineExpose<{
@@ -99,7 +102,7 @@ watch(
 
 <style scoped lang="scss">
 .container-hts {
-  max-height: var(--container-hts);
+  max-height: var(--container-hts, none);
 }
 /* transition animations */
 .slide-prev-enter-active {
