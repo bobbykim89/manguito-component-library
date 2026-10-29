@@ -54,6 +54,10 @@ const handleMenuClick = (e: Event) => {
 
 <Canvas of={Stories.HeaderVerticalExample} />
 
+## SSR
+
+The menu button is part of the server HTML. The mobile drawer is teleported to `body` and mounts only on the client, because Nuxt supports server-side teleports only to `#teleports`.
+
 ## Controls
 
 <Controls of={Stories.HeaderVerticalExample} />

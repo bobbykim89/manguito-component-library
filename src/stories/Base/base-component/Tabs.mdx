@@ -105,6 +105,10 @@ import { vCollapse } from '@bobbykim/manguito-theme/directives'
 
 <Canvas of={Stories.tabExample2} />
 
+## SSR
+
+The active tab is visible in the server HTML before its height is measured. `--container-hts` is set only once a height greater than 0 is measured, and until then the container has no `max-height` limit.
+
 ### Props
 
 #### TabContainer

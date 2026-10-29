@@ -105,6 +105,10 @@ Pass `title` to use the built-in header instead of the `#header` slot.
 
 <Canvas of={Stories.sidebarExample} />
 
+## SSR
+
+Sidebar server-renders closed, or open when `visible` is set. A sidebar rendered open on the server can be closed after hydration. Scroll lock and focus trap engage after mount and release on unmount.
+
 ---
 
 ## API
