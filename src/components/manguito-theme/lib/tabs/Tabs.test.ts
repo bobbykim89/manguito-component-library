@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { h, nextTick } from 'vue'
 import { hydrate } from '../__tests__/ssr'
 import TabContainer from './TabContainer.vue'
@@ -40,5 +40,75 @@ describe('Tabs (client)', () => {
     expect(panel('t1').style.display).not.toBe('none')
     expect(panel('t0').style.display).toBe('none')
     r.unmount()
+  })
+
+  describe('with measured heights', () => {
+    const heights: Record<string, number> = { t0: 100, t1: 200 }
+    beforeEach(() => {
+      // jsdom has no layout or ResizeObserver; report a fixed content height
+      // for each visible tab panel, the way a browser would after layout
+      class FakeResizeObserver {
+        constructor(private cb: ResizeObserverCallback) {}
+        observe(el: HTMLElement) {
+          setTimeout(() => {
+            const blockSize =
+              el.style.display === 'none' ? 0 : (heights[el.id] ?? 0)
+            this.cb(
+              [{ contentBoxSize: [{ inlineSize: 1, blockSize }] }] as never,
+              this as never,
+            )
+          }, 5)
+        }
+        unobserve() {}
+        disconnect() {}
+      }
+      vi.stubGlobal('ResizeObserver', FakeResizeObserver)
+    })
+
+    afterEach(() => {
+      vi.unstubAllGlobals()
+    })
+
+    it('keeps --container-hts set across tab switches once measured', async () => {
+      const r = await hydrate(render)
+      expect(r.warnings).toEqual([])
+      const root = r.container.firstElementChild as HTMLElement
+      const hts = () => root.style.getPropertyValue('--container-hts')
+
+      // record every style value the container goes through
+      const seen: string[] = []
+      const observer = new MutationObserver((records) => {
+        for (const rec of records) seen.push(rec.oldValue ?? '')
+      })
+      observer.observe(root, {
+        attributes: true,
+        attributeFilter: ['style'],
+        attributeOldValue: true,
+      })
+
+      await settle()
+      expect(hts()).toBe('100px')
+      ;(r.container.querySelector('.b1') as HTMLElement).click()
+      await nextTick()
+      await settle()
+      expect(hts()).toBe('200px')
+      ;(r.container.querySelector('.b0') as HTMLElement).click()
+      await nextTick()
+      await settle()
+      expect(hts()).toBe('100px')
+
+      observer.disconnect()
+      seen.push(root.getAttribute('style') ?? '')
+      const afterFirst = seen.slice(
+        seen.findIndex((s) => s.includes('--container-hts')),
+      )
+      expect(afterFirst.length).toBeGreaterThan(1)
+      for (const style of afterFirst) {
+        expect(style, JSON.stringify(afterFirst)).toMatch(
+          /--container-hts:\s*\d+px/,
+        )
+      }
+      r.unmount()
+    })
   })
 })

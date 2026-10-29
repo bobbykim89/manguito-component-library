@@ -22,9 +22,12 @@ const slots = defineSlots<{
 
 const activeTabIdx = ref<number>(0)
 const containerHts = ref<number>(0)
+// false until a tab reports a real (> 0) height; server render and hydration stay unmeasured
+const measured = ref<boolean>(false)
 const slideDirection = ref<'slide-next' | 'slide-prev'>('slide-next')
 
 const updateHeight = (height: number) => {
+  if (height > 0) measured.value = true
   containerHts.value = height
 }
 
@@ -46,8 +49,9 @@ const updateActiveTab = (num: number) => {
  */
 
 const containerHeightVar = computed(() => {
-  // until a real height is measured, leave the body unclamped
-  return containerHts.value > 0
+  // until the first real height is measured, leave the body unclamped; after that
+  // always emit a px value (including 0px) so max-height animates between tabs
+  return measured.value
     ? { '--container-hts': `${containerHts.value}px` }
     : undefined
 })
