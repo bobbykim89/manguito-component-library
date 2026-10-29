@@ -56,7 +56,7 @@ const handleMenuClick = (e: Event) => {
 
 ## SSR
 
-The menu button is part of the server HTML. The mobile drawer is teleported to `body` and mounts only on the client, because Nuxt supports server-side teleports only to `#teleports`.
+The menu button is part of the server HTML. The mobile drawer is teleported to `body` and mounts only on the client, because Nuxt supports server-side teleports only to `#teleports`. After mount, the menu button moves into the same `body` teleport as the drawer, so it always stays above the open drawer.
 
 ## Controls
 
