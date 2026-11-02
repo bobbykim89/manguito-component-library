@@ -37,6 +37,20 @@ describe('HeaderHorizontal (client)', () => {
     r.unmount()
   })
 
+  it('animates a margin-free wrapper so the mobile menu opens without a jump', async () => {
+    const r = await hydrate(() => h(HeaderHorizontal, null, slots))
+    r.container.querySelector<HTMLElement>('button[aria-label]')!.click()
+    await nextTick()
+    const animated = r.container.querySelector('.overflow-hidden.lg\\:hidden')!
+      .firstElementChild as HTMLElement
+    // Only height is transitioned: vertical margin or padding on the animated
+    // element would appear on insert and vanish on removal in a single frame.
+    expect(animated.className).not.toMatch(/(^|\s)[mp][ytb]?-/)
+    expect(animated.textContent).toContain('MOBILE LINKS')
+    expect(animated.querySelector('.my-2xs.rounded-md')).not.toBeNull()
+    r.unmount()
+  })
+
   it('hydrates with no warnings when the page loads scrolled', async () => {
     // Server html is rendered at scrollY 0 (as on a real server); the client
     // then hydrates in a page that is already scrolled.
