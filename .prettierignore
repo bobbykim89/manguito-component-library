@@ -5,5 +5,3 @@ pnpm-lock.yaml
 storybook-static/
 .turbo/
 .superpowers/
-# Copied byte-for-byte from manguito-cms; its line width differs from ours.
-.github/rulesets/master.json
