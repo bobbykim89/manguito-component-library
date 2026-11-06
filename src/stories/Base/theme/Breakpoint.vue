@@ -1,21 +1,4 @@
 <script lang="ts" setup>
-interface SizeItem {
-  size: string
-  class: string
-}
-
-interface SpacingClass {
-  '3xs': SizeItem
-  '2xs': SizeItem
-  xs: SizeItem
-  sm: SizeItem
-  md: SizeItem
-  lg: SizeItem
-  xl: SizeItem
-  '2xl': SizeItem
-  '3xl': SizeItem
-}
-
 interface BreakpointClass {
   sm: string
   md: string

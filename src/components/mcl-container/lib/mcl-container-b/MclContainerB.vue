@@ -28,7 +28,7 @@ const props = withDefaults(
   },
 )
 
-const slots = defineSlots<{
+defineSlots<{
   content: any
 }>()
 const mainContentElem = ref<HTMLDivElement>()

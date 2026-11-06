@@ -55,6 +55,7 @@ const contentData = [
       <template #content>
         <CarouselContent
           v-for="(item, idx) in contentData"
+          :key="idx"
           :id="`slide-example1-${idx}`"
           :slide-number="idx"
         >

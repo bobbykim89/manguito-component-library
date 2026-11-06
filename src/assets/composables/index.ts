@@ -87,7 +87,7 @@ interface ControllerRangeType extends ControllerGenericInput {
   controlOption: RangeControllerControlOption
 }
 interface ControllerObjectType extends ControllerGenericInput {
-  defaultValue?: {}
+  defaultValue?: object
 }
 interface ControllerArrayType extends ControllerGenericInput {
   defaultValue?: any[]

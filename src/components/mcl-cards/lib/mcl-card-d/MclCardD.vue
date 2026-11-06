@@ -114,7 +114,7 @@ const props = withDefaults(
   },
 )
 
-const slots = defineSlots<{
+defineSlots<{
   default: any
 }>()
 const emit = defineEmits<{
@@ -137,12 +137,14 @@ const btnClass = computed<string>(() => {
   const { ctaButton, ctaButtonColor, ctaButtonBlock } = props
   const classArray: string[] = []
   const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
-  ctaButton
-    ? classArray.push(
-        'btn',
-        generateClass.btnColorVariant({ color: ctaButtonColor }),
-      )
-    : classArray.push('mcl-link')
+  if (ctaButton) {
+    classArray.push(
+      'btn',
+      generateClass.btnColorVariant({ color: ctaButtonColor }),
+    )
+  } else {
+    classArray.push('mcl-link')
+  }
   if (ctaButton && ctaButtonBlock) {
     classArray.push('btn-full')
   }
@@ -162,7 +164,7 @@ const gradientClass = computed<string>(() => {
   const gradientBorerColor: string = fromColorClasses[props.borderColor]
   const gradient1Color: string = viaColorClasses[props.gradient1]
   const gradient2Color: string = toColorClasses[props.gradient2]
-  let classArray: string[] = [
+  const classArray: string[] = [
     generateClass.borderColorVariant({ color: props.borderColor }),
     gradientBorerColor,
     gradient1Color,
@@ -184,7 +186,7 @@ const handleCardClick = (e: Event) => {
     url: ctaLink,
     target: ctaLinkTarget ? ctaLinkTarget : '_self',
   }
-  !ctaAsLink && e.preventDefault()
+  if (!ctaAsLink) e.preventDefault()
   emit('card-click', e, cardEvent)
 }
 </script>

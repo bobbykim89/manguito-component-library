@@ -1,7 +1,5 @@
 <script lang="ts" setup>
 import MclLogo from '@/assets/images/manguito-logo.png'
-import type { ColorPalette } from '@/components/manguito-theme/lib'
-import generateClass from '@/components/manguito-theme/lib'
 
 interface SizeItem {
   size: string
@@ -30,13 +28,6 @@ const spacings: SpacingClass = {
   xl: { size: '64px', class: 'p-xl' },
   '2xl': { size: '96px', class: 'p-2xl' },
   '3xl': { size: '128px', class: 'p-3xl' },
-}
-
-const generateFontColor = (input: ColorPalette): string => {
-  /**
-   * @input - ColorPalette
-   */
-  return generateClass('TEXTCOLOR', input)
 }
 
 const generateRandomBg = (size: string): string => {

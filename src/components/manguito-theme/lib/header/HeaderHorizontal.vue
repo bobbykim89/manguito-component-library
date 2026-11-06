@@ -55,7 +55,7 @@ const onEnter = (el: any) => {
   el.style.height = 'auto'
   const endWidth = getComputedStyle(el).height
   el.style.height = '0px'
-  el.offsetHeight // force repaint
+  void el.offsetHeight // force repaint
   el.style.height = endWidth
 }
 const onAfterEnter = (el: any) => {
@@ -63,7 +63,7 @@ const onAfterEnter = (el: any) => {
 }
 const onLeave = (el: any) => {
   el.style.height = getComputedStyle(el).height
-  el.offsetHeight // force repaint
+  void el.offsetHeight // force repaint
   el.style.height = '0px'
 }
 

@@ -1,7 +1,6 @@
 import {
   booleanControllers,
   colorControllers,
-  corsOptionControllers,
   headingTextControllers,
   rangeControllers,
   textControllers,

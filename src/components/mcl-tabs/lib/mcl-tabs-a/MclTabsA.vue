@@ -88,8 +88,8 @@ const borderClass = computed<string>(() => {
     generateClass.bgColorVariant({ color: bgColor }),
     generateClass.borderColorVariant({ color: borderColor }),
   ]
-  rounded && classArray.push('rounded-xl')
-  showShadow && classArray.push('shadow-xl')
+  if (rounded) classArray.push('rounded-xl')
+  if (showShadow) classArray.push('shadow-xl')
   return classArray.join(' ')
 })
 const tabClass = computed<string>(() => {
@@ -101,7 +101,7 @@ const tabClass = computed<string>(() => {
   const classArray: string[] = [
     generateClass.bgColorVariant({ color: tabColor }),
   ]
-  rounded && classArray.push('rounded-xl')
+  if (rounded) classArray.push('rounded-xl')
   return classArray.join(' ')
 })
 const activeBtnClass = computed<string>(() => {
@@ -117,7 +117,7 @@ const activeBtnClass = computed<string>(() => {
     // 'ring-4 ring-white ring-opacity-60',
     'outline-4 outline-white outline-opacity-60',
   ]
-  showShadow && classArray.push('drop-shadow')
+  if (showShadow) classArray.push('drop-shadow')
   return classArray.join(' ')
 })
 const scrollBtnClass = computed<string>(() => {

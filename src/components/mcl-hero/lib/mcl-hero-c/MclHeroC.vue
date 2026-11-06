@@ -152,12 +152,14 @@ const gradientColorClass = computed<string>(() => {
           :class="labelClass"
         ></span>
       </div>
+      <!-- eslint-disable vue/no-v-text-v-html-on-component -- titleLevel is a HeadingLevel, so <component :is> always renders a native h1-h6 and v-html is safe on it -->
       <component
         :is="titleLevel"
         class="mb-2xs tracking-wide"
         :class="titleClass"
         v-html="title"
       ></component>
+      <!-- eslint-enable vue/no-v-text-v-html-on-component -->
       <div
         v-if="showHighlight"
         class="mb-xs h-3xs w-md md:h-2xs"

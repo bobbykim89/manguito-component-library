@@ -108,7 +108,7 @@ const collapseHighlightClass = computed<string>(() => {
 })
 const childItemColorClass = computed<string>(() => {
   const { textColor, textSize, dHl, hlColor, fontBold, navLocation } = props
-  let childBodyText: BodyText =
+  const childBodyText: BodyText =
     textSize === 'xl'
       ? 'lg'
       : textSize === 'lg'

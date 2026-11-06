@@ -31,7 +31,7 @@ const props = withDefaults(
   },
 )
 
-const slots = defineSlots<{
+defineSlots<{
   'card-body': any
 }>()
 const cardFlipped = ref<boolean>(false)
@@ -70,10 +70,10 @@ const titleClass = computed<string>(() => {
   ]
   if (showHighlight) {
     classArray.push('px-xs py-2xs mb-2xs rounded')
-    ;(classArray.push(generateClass.bgColorVariant({ color: highlightColor })),
-      classArray.push(
-        generateClass.bgOpacityVariant({ opacity: highlightOpacity }),
-      ))
+    classArray.push(generateClass.bgColorVariant({ color: highlightColor }))
+    classArray.push(
+      generateClass.bgOpacityVariant({ opacity: highlightOpacity }),
+    )
   }
   return classArray.join(' ')
 })
