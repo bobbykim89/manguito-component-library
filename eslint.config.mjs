@@ -41,6 +41,7 @@ export default tseslint.config(
       'public/**',
       'storybook-static/**',
       '.turbo/**',
+      '**/coverage/**',
     ],
   },
   {

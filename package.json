@@ -7,7 +7,7 @@
     "url": "https://www.devbobbykim.com/"
   },
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=22.13.0"
   },
   "scripts": {
     "story:dev": "storybook dev -p 6006",
