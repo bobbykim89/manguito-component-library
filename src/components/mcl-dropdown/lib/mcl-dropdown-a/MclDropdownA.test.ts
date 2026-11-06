@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { h } from 'vue'
-import { hydrate } from '@mcl/ssr-test-utils'
+import { hydrate } from '../../../manguito-theme/lib/__tests__/ssr'
 import MclDropdownA from './MclDropdownA.vue'
 
 const render = () =>
