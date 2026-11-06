@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { h } from 'vue'
-import { hydrate } from '../__tests__/ssr'
+import { hydrate } from '@mcl/test-utils/ssr'
 import Card from './Card.vue'
 
 describe('Card (client)', () => {

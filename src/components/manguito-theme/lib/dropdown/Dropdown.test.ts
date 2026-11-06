@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { h, nextTick } from 'vue'
-import { hydrate } from '../__tests__/ssr'
+import { hydrate } from '@mcl/test-utils/ssr'
 import DropdownContainer from './DropdownContainer.vue'
 import DropdownContent from './DropdownContent.vue'
 

@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { h, nextTick } from 'vue'
-import { hydrate } from '../__tests__/ssr'
+import { hydrate } from '@mcl/test-utils/ssr'
 import TabContainer from './TabContainer.vue'
 import TabContent from './TabContent.vue'
 

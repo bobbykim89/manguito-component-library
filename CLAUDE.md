@@ -22,7 +22,7 @@ pnpm run package:install    # pnpm install across all workspaces
 ### Testing
 
 ```bash
-pnpm test                   # Run all tests once (root vitest config: manguito-theme, mcl-forms, mcl-collapse, mcl-header, mcl-tabs, mcl-dropdown)
+pnpm test                   # Run all tests once (root vitest config: test-utils, manguito-theme, mcl-forms, mcl-collapse, mcl-header, mcl-tabs, mcl-dropdown)
 pnpm test --watch           # Watch mode
 pnpm test:dist              # turbo build, then check-dist-ssr.mjs: imports every built theme entry in plain Node and server-renders each component from dist
 
@@ -33,7 +33,7 @@ pnpm run test:watch         # vitest watch
 
 Tests live alongside source as `lib/**/*.test.ts`. The root `vitest.config.ts` uses Vitest's `projects` API — add new packages there when they gain tests.
 
-SSR test convention: `*.server.test.ts` runs in the node environment (`// @vitest-environment node`, so `document` is undefined) and `*.test.ts` runs in jsdom (the theme default; happy-dom breaks `@vueuse` `useScrollLock(document)`). The harness is `src/components/manguito-theme/lib/__tests__/ssr.ts` (`renderOnServer`, `hydrate`); consumer packages import it by relative path (`'../../../manguito-theme/lib/__tests__/ssr'`).
+SSR test convention: `*.server.test.ts` runs in the node environment (`// @vitest-environment node`, so `document` is undefined) and `*.test.ts` runs in jsdom (the theme default; happy-dom breaks `@vueuse` `useScrollLock(document)`). The harness is `src/utils/test/ssr.ts` (`renderOnServer`, `hydrate`), a private workspace package; packages import it as `'@mcl/test-utils/ssr'` after adding `"@mcl/test-utils": "workspace:*"` to their devDependencies.
 
 ### Releases
 
@@ -63,6 +63,8 @@ src/components/             # 10 publishable packages (pnpm workspace)
   mcl-footer/
   mcl-hero/
   mcl-tabs/
+src/utils/                  # Private workspace packages (`"private": true`, never published)
+  test/                     # @mcl/test-utils — SSR test harness (`@mcl/test-utils/ssr`)
 src/stories/                # Storybook stories (not part of any package)
 scripts/                    # Package scaffolding CLI (index.mjs)
 ```

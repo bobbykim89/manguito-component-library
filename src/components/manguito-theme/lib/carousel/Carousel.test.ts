@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { h, nextTick } from 'vue'
-import { hydrate } from '../__tests__/ssr'
+import { hydrate } from '@mcl/test-utils/ssr'
 import CarouselContainer from './CarouselContainer.vue'
 import CarouselContent from './CarouselContent.vue'
 
