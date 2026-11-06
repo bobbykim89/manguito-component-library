@@ -8,7 +8,7 @@ export default defineConfig({
     alias: {
       '@bobbykim/manguito-theme': resolve(
         __dirname,
-        'src/components/manguito-theme/lib/index.ts'
+        'src/components/manguito-theme/lib/index.ts',
       ),
     },
   },

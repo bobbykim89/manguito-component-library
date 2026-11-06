@@ -18,6 +18,7 @@ Apply accessibility fixes to the component at `$ARGUMENTS`.
 ## Fix sets by component type
 
 ### Overlay (Modal, Sidebar, Drawer)
+
 - Add `role="dialog"` to the root overlay element
 - Add `aria-modal="true"` to the same element
 - Add `aria-labelledby="<title-element-id>"` — ensure the title element has a matching `id`
@@ -25,23 +26,27 @@ Apply accessibility fixes to the component at `$ARGUMENTS`.
 - Add `@keydown.esc` handler that calls `closeModal()` / `closeSidebar()`
 
 ### Collapse / Accordion (MclCollapseA, MclCollapseB, nav collapse variants)
+
 - Trigger element must be `<button>`, not a `<div>` or `<a>`
 - Add `:aria-expanded="isOpen"` to the trigger button
 - Add `aria-controls="<content-element-id>"` to the trigger; ensure content element has matching `id`
 - Add `id` to the content wrapper if missing
 
 ### Form inputs (MclInputText, MclTextArea, MclSelect, etc.)
+
 - Ensure `<label>` has `for` matching the input's `id`, or the input has `aria-label`
 - Add `:aria-invalid="!isValid"` to the input element (bound to the component's validation state)
 - Wrap error message in `<span role="alert">` or `<p role="alert">`
 - Fix any `peer-invalid` typos — the correct Tailwind class is `peer-invalid` (one word, no space)
 
 ### Tooltip (vTooltip / MclTooltip)
+
 - Trigger element needs `aria-describedby="<tooltip-id>"`
 - Tooltip element needs matching `id`
 - Tooltip element needs `role="tooltip"`
 
 ### Tab (TabContainer / TabContent)
+
 - Tab list wrapper needs `role="tablist"`
 - Each tab trigger needs `role="tab"` and `:aria-selected="isActive"`
 - Each tab panel needs `role="tabpanel"` and `aria-labelledby="<tab-id>"`
@@ -56,6 +61,7 @@ Apply accessibility fixes to the component at `$ARGUMENTS`.
 ## Output
 
 List each change made:
+
 ```
 Fixed: <ComponentName>
 - Added role="dialog" and aria-modal to overlay wrapper

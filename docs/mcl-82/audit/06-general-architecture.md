@@ -43,6 +43,7 @@ import generateClass, { HeaderHorizontal } from '@bobbykim/manguito-theme'
 If `HeaderHorizontal`'s slot names or behavior change, `MclHeaderA` and `MclHeaderB` break silently (no compile-time slot name checking in Vue 3 without additional tooling).
 
 Similarly, `MclCollapseA` and `MclCollapseB` import the `Collapse` base component:
+
 ```ts
 import generateClass, { Collapse } from '@bobbykim/manguito-theme'
 ```
@@ -76,11 +77,13 @@ The scoped slot props (`close`, `status`) are typed, which is good. But the retu
 ### `InputType` name collision
 
 In `theme.types.ts`:
+
 ```ts
 export type InputType = 'text' | 'email' | 'password'
 ```
 
 In `mcl-theme/index.ts`:
+
 ```ts
 export type InputType<T extends ClassType> = T extends ColorClassType ? ColorPalette : ...
 ```
@@ -135,7 +138,13 @@ import { watch, type Ref } from 'vue'
 
 export const useModalScrollLock = (isOpen: Ref<boolean>) => {
   const scrollLock = useScrollLock(document)
-  watch(isOpen, (val) => { scrollLock.value = val }, { immediate: true })
+  watch(
+    isOpen,
+    (val) => {
+      scrollLock.value = val
+    },
+    { immediate: true },
+  )
 }
 ```
 
@@ -149,7 +158,9 @@ The `ClientSideRender` component in `lib/util/clientSideRender.ts` is a simple m
 export const ClientSideRender = defineComponent({
   setup(_, { slots }) {
     const visible = ref<boolean>(false)
-    onMounted(() => { visible.value = true })
+    onMounted(() => {
+      visible.value = true
+    })
     return () => (visible.value && slots.default ? slots.default() : null)
   },
 })

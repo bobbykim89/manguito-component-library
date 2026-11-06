@@ -130,12 +130,14 @@ Each component keeps one responsibility: its own markup, props and ARIA wiring. 
 Two defects carried forward from plan 1's final review. Both are in `common/`, which every later task depends on, so they land first.
 
 **Files:**
+
 - Modify: `src/components/mcl-forms/lib/common/FieldFeedback.vue`
 - Modify: `src/components/mcl-forms/lib/common/fieldContext.ts` (JSDoc only)
 - Modify: `src/components/mcl-forms/lib/common/FieldFeedback.test.ts`
 - Modify: `docs/superpowers/specs/2026-08-22-mcl-forms-refactor-design.md`
 
 **Interfaces:**
+
 - Consumes: nothing.
 - Produces: `FieldFeedback` renders whenever `invalid` is true, regardless of content — restoring agreement with `useFieldContext`'s `errorRegionExists`.
 
@@ -146,17 +148,17 @@ Two defects carried forward from plan 1's final review. Both are in `common/`, w
 In `src/components/mcl-forms/lib/common/FieldFeedback.test.ts`, replace the case that locks in the empty-region behaviour. Find the test asserting the region is absent when invalid with no text or slot, and replace it with:
 
 ```ts
-  it('renders the region when invalid even with no text or slot', () => {
-    // The region must exist whenever it is an aria-describedby target.
-    // useFieldContext decides errorRegionExists from a static flag at setup and
-    // cannot know whether content is present, so a content-conditional region
-    // produces a dangling IDREF. An empty alert region is inert by comparison.
-    const wrapper = mount(FieldFeedback, {
-      props: { id: 'email-error', invalid: true },
-    })
-    expect(wrapper.find('[role="alert"]').exists()).toBe(true)
-    expect(wrapper.text()).toBe('')
+it('renders the region when invalid even with no text or slot', () => {
+  // The region must exist whenever it is an aria-describedby target.
+  // useFieldContext decides errorRegionExists from a static flag at setup and
+  // cannot know whether content is present, so a content-conditional region
+  // produces a dangling IDREF. An empty alert region is inert by comparison.
+  const wrapper = mount(FieldFeedback, {
+    props: { id: 'email-error', invalid: true },
   })
+  expect(wrapper.find('[role="alert"]').exists()).toBe(true)
+  expect(wrapper.text()).toBe('')
+})
 ```
 
 - [ ] **Step 2: Run the test to verify it fails**
@@ -227,19 +229,22 @@ context, not undefined."
 The keystone component. Every other task's tests mount their control inside it.
 
 **Files:**
+
 - Rewrite: `src/components/mcl-forms/lib/mcl-form-group/MclFormGroup.vue`
 - Test: `src/components/mcl-forms/lib/mcl-form-group/MclFormGroup.test.ts`
 
 **Interfaces:**
+
 - Consumes: `provideFieldContext`, `FieldProviderOptions` from `../common/fieldContext`; `FieldFeedback.vue`; `generateClass` from the theme.
 - Produces: the provided `FieldContext` every control in Tasks 3-10 injects. Props: `fieldId?`, `groupLabel?`, `label?`, `helpText?`, `invalid?`, `invalidFeedback?`, `required?`, `disabled?`, `textColor?`, `textSize?`, `textBold?`. Slots: `default`, `label`, `help`, `invalid-feedback`.
 
 **Breaking change:** `labelFor` (required) becomes `fieldId` (optional). It now drives both the label's `for` and the child's `id`, so `labelFor` no longer describes what it does.
 
 **Three things this component must get right:**
+
 1. **It builds an object literal for `provideFieldContext`** — unavoidable, because `hasHelpText` and `ownsFeedback` come from slot presence rather than props. So the four mutable values MUST be passed as getters (`() => props.invalid`), or they snapshot at setup and no control ever sees a change.
 2. **It must carry `invalid` itself whenever it owns the feedback region.** Its `FieldFeedback` renders off `props.invalid`. A group with `invalidFeedback` set but `invalid` false, wrapping an invalid control, renders no error anywhere — the control has already skipped its own.
-3. **`hasHelpText` / `ownsFeedback` are evaluated once at setup.** Derive them from prop-or-slot *presence*, never from a currently-truthy value, or the flag freezes wrong.
+3. **`hasHelpText` / `ownsFeedback` are evaluated once at setup.** Derive them from prop-or-slot _presence_, never from a currently-truthy value, or the flag freezes wrong.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -348,7 +353,11 @@ describe('MclFormGroup — group (fieldset) mode', () => {
 describe('MclFormGroup — help text', () => {
   it('renders help text with the description id and points controls at it', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { fieldId: 'email', label: 'Email', helpText: 'We never share it.' },
+      props: {
+        fieldId: 'email',
+        label: 'Email',
+        helpText: 'We never share it.',
+      },
       slots: { default: () => h(Probe) },
     })
     const help = wrapper.find('#email-description')
@@ -436,7 +445,9 @@ describe('MclFormGroup — reactivity through the provider', () => {
 
     await wrapper.setProps({ invalid: true })
     expect(ctxOf(wrapper).invalid.value).toBe(true)
-    expect(wrapper.find('input').attributes('aria-describedby')).toBe('email-error')
+    expect(wrapper.find('input').attributes('aria-describedby')).toBe(
+      'email-error',
+    )
     expect(wrapper.find('[role="alert"]').exists()).toBe(true)
   })
 
@@ -455,7 +466,12 @@ describe('MclFormGroup — reactivity through the provider', () => {
 describe('MclFormGroup — label styling', () => {
   it('applies colour and size classes to the label text', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { label: 'Email', textColor: 'primary', textSize: 'lg', textBold: true },
+      props: {
+        label: 'Email',
+        textColor: 'primary',
+        textSize: 'lg',
+        textBold: true,
+      },
       slots: { default: () => h(Probe) },
     })
     const text = wrapper.find('label p')
@@ -634,10 +650,12 @@ BREAKING CHANGE: labelFor is renamed to fieldId and is now optional."
 ### Task 3: `MclCheckbox`
 
 **Files:**
+
 - Rewrite: `src/components/mcl-forms/lib/mcl-checkbox/MclCheckbox.vue`
 - Test: `src/components/mcl-forms/lib/mcl-checkbox/MclCheckbox.test.ts`
 
 **Interfaces:**
+
 - Consumes: `useToggleControl` and `useFieldContext` from `../common/`; `InputSizeType` from `../common/index.types`.
 - Produces: props `size?`, `bgColor?`, `checkedBgColor?`, `indicatorColor?`, `borderColor?`, `showShadow?`, `rounded?`, `value?`, plus `FieldOwnProps` (`id?`, `name?`, `invalid?`, `required?`, `disabled?`). `v-model` is `boolean`. Emits `change(event: Event)`.
 
@@ -718,7 +736,9 @@ describe('MclCheckbox — v-model and change', () => {
     const wrapper = mount(MclCheckbox, {
       props: { id: 'agree', modelValue: true },
     })
-    expect((wrapper.find('input').element as HTMLInputElement).checked).toBe(true)
+    expect((wrapper.find('input').element as HTMLInputElement).checked).toBe(
+      true,
+    )
   })
 
   it('emits change with the native event', async () => {
@@ -752,7 +772,9 @@ describe('MclCheckbox — colours and size', () => {
   })
 
   it('applies the size classes', () => {
-    const span = mount(MclCheckbox, { props: { id: 'agree', size: 'lg' } }).find('span')
+    const span = mount(MclCheckbox, {
+      props: { id: 'agree', size: 'lg' },
+    }).find('span')
     expect(span.classes()).toContain('h-md')
     expect(span.classes()).toContain('w-md')
   })
@@ -767,7 +789,12 @@ describe('MclCheckbox — field context', () => {
 
   it('inherits disabled and required from the group', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { fieldId: 'agree', label: 'Agree', disabled: true, required: true },
+      props: {
+        fieldId: 'agree',
+        label: 'Agree',
+        disabled: true,
+        required: true,
+      },
       slots: { default: () => h(MclCheckbox) },
     })
     const input = wrapper.find('input')
@@ -803,7 +830,9 @@ describe('MclCheckbox — field context', () => {
       },
       slots: { default: () => h(MclCheckbox) },
     })
-    expect(wrapper.find('input').attributes('aria-describedby')).toBe('agree-error')
+    expect(wrapper.find('input').attributes('aria-describedby')).toBe(
+      'agree-error',
+    )
     expect(wrapper.find('#agree-error').exists()).toBe(true)
   })
 
@@ -910,7 +939,7 @@ const onChange = (event: Event): void => {
     />
     <span
       aria-hidden="true"
-      class="relative inline-block border p-3xs transition-colors duration-200 ease-linear before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:opacity-0 before:transition-opacity before:duration-200 peer-checked:before:opacity-100 peer-disabled:opacity-50"
+      class="relative inline-block border p-3xs transition-colors duration-200 ease-linear peer-disabled:opacity-50 before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:opacity-0 before:transition-opacity before:duration-200 peer-checked:before:opacity-100"
       :class="[boxClass, sizeClass]"
     ></span>
   </div>
@@ -945,14 +974,16 @@ changes the rendered colour for anyone using dark-4."
 ### Task 4: `MclInputRadio`
 
 **Files:**
+
 - Rewrite: `src/components/mcl-forms/lib/mcl-input-radio/MclInputRadio.vue`
 - Test: `src/components/mcl-forms/lib/mcl-input-radio/MclInputRadio.test.ts`
 
 **Interfaces:**
+
 - Consumes: `useToggleControl`, `useFieldContext`, `InputSizeType`.
 - Produces: props `size?`, `bgColor?`, `checkedBgColor?`, `indicatorColor?`, `borderColor?`, `showShadow?`, `value?`, plus `FieldOwnProps`. `v-model` is `string | number | null`. Emits `change(event: Event)`.
 
-**`borderColor` is new on this component and is not optional to omit.** `ToggleControlOptions.borderColor` is a *required* field — it colours both the border and the focus ring — so a component without it cannot pass its props proxy, and reaching for `{ ...props, borderColor: 'dark-1' }` instead would snapshot every value at setup. Declare the prop.
+**`borderColor` is new on this component and is not optional to omit.** `ToggleControlOptions.borderColor` is a _required_ field — it colours both the border and the focus ring — so a component without it cannot pass its props proxy, and reaching for `{ ...props, borderColor: 'dark-1' }` instead would snapshot every value at setup. Declare the prop.
 
 **Breaking changes:** `radioSize` → `size`; `bgColor` keeps its name but is now the unchecked track colour; `checkedColor` → `indicatorColor`; the `checked` prop is removed. **It gains `v-model`, which it never had** — radio groups were not buildable before.
 
@@ -1013,14 +1044,18 @@ describe('MclInputRadio — v-model', () => {
     const wrapper = mount(MclInputRadio, {
       props: { id: 'red', value: 'red', modelValue: 'red' },
     })
-    expect((wrapper.find('input').element as HTMLInputElement).checked).toBe(true)
+    expect((wrapper.find('input').element as HTMLInputElement).checked).toBe(
+      true,
+    )
   })
 
   it('is unchecked when the model is a different value', () => {
     const wrapper = mount(MclInputRadio, {
       props: { id: 'red', value: 'red', modelValue: 'blue' },
     })
-    expect((wrapper.find('input').element as HTMLInputElement).checked).toBe(false)
+    expect((wrapper.find('input').element as HTMLInputElement).checked).toBe(
+      false,
+    )
   })
 
   it('emits change with the native event', async () => {
@@ -1034,7 +1069,9 @@ describe('MclInputRadio — grouping by name', () => {
   it('falls back to its own id when no name is given or inherited', () => {
     // This control is the sole exception to the context's no-id-fallback rule,
     // because name is what makes a radio set behave as one.
-    const input = mount(MclInputRadio, { props: { id: 'red', value: 'red' } }).find('input')
+    const input = mount(MclInputRadio, {
+      props: { id: 'red', value: 'red' },
+    }).find('input')
     expect(input.attributes('name')).toBe('red')
   })
 
@@ -1078,13 +1115,20 @@ describe('MclInputRadio — colours, size, context', () => {
   })
 
   it('applies the size classes', () => {
-    const span = mount(MclInputRadio, { props: { id: 'red', size: 'sm' } }).find('span')
+    const span = mount(MclInputRadio, {
+      props: { id: 'red', size: 'sm' },
+    }).find('span')
     expect(span.classes()).toContain('h-xs')
   })
 
   it('inherits disabled from the group', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { groupLabel: true, fieldId: 'colour', label: 'Colour', disabled: true },
+      props: {
+        groupLabel: true,
+        fieldId: 'colour',
+        label: 'Colour',
+        disabled: true,
+      },
       slots: { default: () => h(MclInputRadio, { value: 'red' }) },
     })
     expect(wrapper.find('input').attributes('disabled')).toBeDefined()
@@ -1092,7 +1136,12 @@ describe('MclInputRadio — colours, size, context', () => {
 
   it('does not claim an error region it never renders', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { groupLabel: true, fieldId: 'colour', label: 'Colour', invalid: true },
+      props: {
+        groupLabel: true,
+        fieldId: 'colour',
+        label: 'Colour',
+        invalid: true,
+      },
       slots: { default: () => h(MclInputRadio, { value: 'red' }) },
     })
     expect(wrapper.find('input').attributes('aria-describedby')).toBeUndefined()
@@ -1205,7 +1254,7 @@ const onChange = (event: Event): void => {
     />
     <span
       aria-hidden="true"
-      class="relative inline-block rounded-full border transition-colors duration-200 ease-linear before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-full before:opacity-0 before:transition-opacity before:duration-200 peer-checked:before:opacity-100 peer-disabled:opacity-50"
+      class="relative inline-block rounded-full border transition-colors duration-200 ease-linear peer-disabled:opacity-50 before:absolute before:top-1/2 before:left-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-full before:opacity-0 before:transition-opacity before:duration-200 peer-checked:before:opacity-100"
       :class="[boxClass, sizeClass]"
     ></span>
   </div>
@@ -1238,16 +1287,19 @@ change emit now carries only the native Event."
 ### Task 5: `MclInputSwitch`
 
 **Files:**
+
 - Rewrite: `src/components/mcl-forms/lib/mcl-input-switch/MclInputSwitch.vue`
 - Test: `src/components/mcl-forms/lib/mcl-input-switch/MclInputSwitch.test.ts`
 
 **Interfaces:**
+
 - Consumes: `useToggleControl` (for `switchVars` and `boxClass`), `useFieldContext`, `InputSizeType`.
 - Produces: props `size?`, `bgColor?`, `checkedBgColor?`, `indicatorColor?`, `borderColor?`, `showShadow?`, `rounded?`, plus `FieldOwnProps`. `v-model` is `boolean`. Emits `change(event: Event)`.
 
 **Breaking changes (renames only):** `switchSize` → `size`; `offColor` → `bgColor`; `onColor` → `checkedBgColor`; `sliderColor` → `indicatorColor`.
 
 **Two bugs this fixes:**
+
 1. **A double toggle.** The outer `div` carried `@click="onSwitchClick"` which called `inputRef.click()`. A click landing on the contained input bubbled to that handler and toggled again. The overlay pattern removes both the handler and the ref.
 2. **`:aria-checked` is dropped.** HTML-AAM already maps a checkbox's native `checked` state to `aria-checked`, so a hand-bound copy is redundant and can only desync. `role="switch"` stays.
 
@@ -1266,7 +1318,9 @@ import MclInputSwitch from './MclInputSwitch.vue'
 
 describe('MclInputSwitch — structure and ARIA', () => {
   it('renders a checkbox with role="switch"', () => {
-    const input = mount(MclInputSwitch, { props: { id: 'notify' } }).find('input')
+    const input = mount(MclInputSwitch, { props: { id: 'notify' } }).find(
+      'input',
+    )
     expect(input.attributes('type')).toBe('checkbox')
     expect(input.attributes('role')).toBe('switch')
   })
@@ -1274,7 +1328,9 @@ describe('MclInputSwitch — structure and ARIA', () => {
   it('does not hand-bind aria-checked', () => {
     // HTML-AAM maps a checkbox's native checked state already; a bound copy
     // is redundant and can only desync.
-    const wrapper = mount(MclInputSwitch, { props: { id: 'notify', modelValue: true } })
+    const wrapper = mount(MclInputSwitch, {
+      props: { id: 'notify', modelValue: true },
+    })
     expect(wrapper.find('input').attributes('aria-checked')).toBeUndefined()
   })
 
@@ -1465,7 +1521,7 @@ const onChange = (event: Event): void => {
     />
     <span
       aria-hidden="true"
-      class="slider absolute inset-0 transition-all duration-300 before:absolute before:transition-all before:duration-300 peer-disabled:opacity-50"
+      class="slider absolute inset-0 transition-all duration-300 peer-disabled:opacity-50 before:absolute before:transition-all before:duration-300"
       :class="boxClass"
     ></span>
   </div>
@@ -1522,16 +1578,18 @@ the dark-4 typo changes the rendered colour for anyone using dark-4."
 ### Task 6: `MclInputText`
 
 **Files:**
+
 - Rewrite: `src/components/mcl-forms/lib/mcl-input-text/MclInputText.vue`
 - Test: `src/components/mcl-forms/lib/mcl-input-text/MclInputText.test.ts`
 
 **Interfaces:**
+
 - Consumes: `useInputSurface`, `useFieldContext`, `FieldFeedback.vue`, `InputHighlight.vue`; `InputType` from the theme.
 - Produces: props `id?`, `name?`, `type?`, `placeholder?`, `autocomplete?`, `showBorder?`, `borderColor?`, `rounded?`, `showHighlight?`, `highlightColor?`, `textColor?`, `bgColor?`, `showShadow?`, `invalidFeedback?`, `minLength?`, `maxLength?`, `pattern?`, `invalid?`, `required?`, `disabled?`. `v-model` is `string`. Slot: `invalid-feedback`.
 
 **Breaking changes:** `id` becomes optional; `invalid` no longer defaults to `false`; **the native-validity CSS display is removed**.
 
-**Why the CSS validity display goes.** Today error *visibility* comes from `peer-invalid/validation` CSS while `aria-describedby` comes from the `invalid` prop — two sources of truth that can disagree, so the field can display an error screen readers never learn about. The spec's phase-04 decision chose prop-driven validation for framework-agnosticism; this finishes it. Consumers relying on automatic native display must now bind `:invalid`.
+**Why the CSS validity display goes.** Today error _visibility_ comes from `peer-invalid/validation` CSS while `aria-describedby` comes from the `invalid` prop — two sources of truth that can disagree, so the field can display an error screen readers never learn about. The spec's phase-04 decision chose prop-driven validation for framework-agnosticism; this finishes it. Consumers relying on automatic native display must now bind `:invalid`.
 
 **The error region renders only when the group does not own one.** `field.feedbackOwnedByGroup` decides. Rendering both would produce two regions with the same id.
 
@@ -1554,7 +1612,9 @@ describe('MclInputText — basics', () => {
   })
 
   it('accepts the widened input types', () => {
-    const input = mount(MclInputText, { props: { type: 'search' } }).find('input')
+    const input = mount(MclInputText, { props: { type: 'search' } }).find(
+      'input',
+    )
     expect(input.attributes('type')).toBe('search')
   })
 
@@ -1579,14 +1639,21 @@ describe('MclInputText — basics', () => {
   })
 
   it('updates the model on input', async () => {
-    const wrapper = mount(MclInputText, { props: { id: 'email', modelValue: '' } })
+    const wrapper = mount(MclInputText, {
+      props: { id: 'email', modelValue: '' },
+    })
     await wrapper.find('input').setValue('hello')
     expect(wrapper.emitted('update:modelValue')![0]).toEqual(['hello'])
   })
 
   it('applies the surface classes', () => {
     const input = mount(MclInputText, {
-      props: { id: 'email', bgColor: 'light-1', textColor: 'black', showShadow: true },
+      props: {
+        id: 'email',
+        bgColor: 'light-1',
+        textColor: 'black',
+        showShadow: true,
+      },
     }).find('input')
     expect(input.classes()).toContain('mcl-bg-light-1')
     expect(input.classes()).toContain('text-black')
@@ -1594,15 +1661,23 @@ describe('MclInputText — basics', () => {
   })
 
   it('carries the peer class so the highlight bar reacts to focus', () => {
-    expect(mount(MclInputText, { props: { id: 'email' } }).find('input').classes()).toContain(
-      'peer',
-    )
+    expect(
+      mount(MclInputText, { props: { id: 'email' } })
+        .find('input')
+        .classes(),
+    ).toContain('peer')
   })
 
   it('renders the highlight bar only when showHighlight is true', () => {
-    const withBar = mount(MclInputText, { props: { id: 'email', showHighlight: true } })
-    const withoutBar = mount(MclInputText, { props: { id: 'email', showHighlight: false } })
-    expect(withBar.findAll('div').length).toBeGreaterThan(withoutBar.findAll('div').length)
+    const withBar = mount(MclInputText, {
+      props: { id: 'email', showHighlight: true },
+    })
+    const withoutBar = mount(MclInputText, {
+      props: { id: 'email', showHighlight: false },
+    })
+    expect(withBar.findAll('div').length).toBeGreaterThan(
+      withoutBar.findAll('div').length,
+    )
   })
 
   it('uses a focus-visible ring when the highlight bar is off', () => {
@@ -1660,9 +1735,9 @@ describe('MclInputText — validation', () => {
   it('uses no peer-invalid CSS to drive visibility', () => {
     // Removed on purpose: CSS-driven visibility disagreed with the
     // prop-driven aria wiring, so an error could show with no announcement.
-    expect(mount(MclInputText, { props: { id: 'email' } }).html()).not.toContain(
-      'peer-invalid',
-    )
+    expect(
+      mount(MclInputText, { props: { id: 'email' } }).html(),
+    ).not.toContain('peer-invalid')
   })
 })
 
@@ -1689,7 +1764,9 @@ describe('MclInputText — inside a group', () => {
     const alerts = wrapper.findAll('[role="alert"]')
     expect(alerts).toHaveLength(1)
     expect(alerts[0].text()).toBe('From the group')
-    expect(wrapper.find('input').attributes('aria-describedby')).toBe('email-error')
+    expect(wrapper.find('input').attributes('aria-describedby')).toBe(
+      'email-error',
+    )
   })
 
   it('points describedby at description then error, in that order', () => {
@@ -1710,7 +1787,12 @@ describe('MclInputText — inside a group', () => {
 
   it('inherits disabled and required', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { fieldId: 'email', label: 'Email', disabled: true, required: true },
+      props: {
+        fieldId: 'email',
+        label: 'Email',
+        disabled: true,
+        required: true,
+      },
       slots: { default: () => h(MclInputText) },
     })
     const input = wrapper.find('input')
@@ -1855,10 +1937,12 @@ CSS that showed errors from native validity is removed - bind
 ### Task 7: `MclTextArea`
 
 **Files:**
+
 - Rewrite: `src/components/mcl-forms/lib/mcl-text-area/MclTextArea.vue`
 - Test: `src/components/mcl-forms/lib/mcl-text-area/MclTextArea.test.ts`
 
 **Interfaces:**
+
 - Consumes: `useInputSurface`, `useFieldContext`, `FieldFeedback.vue`, `InputHighlight.vue`.
 - Produces: the same props as `MclInputText` minus `type`/`autocomplete`/`minLength`/`maxLength`/`pattern`, plus `rows?`. `v-model` is `string`. Slot: `invalid-feedback`.
 
@@ -1889,7 +1973,9 @@ describe('MclTextArea — basics', () => {
 
   it('honours an explicit rows value', () => {
     expect(
-      mount(MclTextArea, { props: { rows: 12 } }).find('textarea').attributes('rows'),
+      mount(MclTextArea, { props: { rows: 12 } })
+        .find('textarea')
+        .attributes('rows'),
     ).toBe('12')
   })
 
@@ -1910,12 +1996,20 @@ describe('MclTextArea — basics', () => {
 
   it('carries no dead input__text class', () => {
     // Defined nowhere in the repo; a leftover from before Tailwind v4.
-    expect(mount(MclTextArea, { props: { id: 'bio' } }).html()).not.toContain('input__text')
+    expect(mount(MclTextArea, { props: { id: 'bio' } }).html()).not.toContain(
+      'input__text',
+    )
   })
 
   it('binds name, placeholder, required and disabled', () => {
     const ta = mount(MclTextArea, {
-      props: { id: 'bio', name: 'bio', placeholder: 'About you', required: true, disabled: true },
+      props: {
+        id: 'bio',
+        name: 'bio',
+        placeholder: 'About you',
+        required: true,
+        disabled: true,
+      },
     }).find('textarea')
     expect(ta.attributes('name')).toBe('bio')
     expect(ta.attributes('placeholder')).toBe('About you')
@@ -1967,7 +2061,12 @@ describe('MclTextArea — validation (new in this release)', () => {
 describe('MclTextArea — inside a group', () => {
   it('takes the group id and defers to the group error region', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { fieldId: 'bio', label: 'Bio', invalid: true, invalidFeedback: 'Group' },
+      props: {
+        fieldId: 'bio',
+        label: 'Bio',
+        invalid: true,
+        invalidFeedback: 'Group',
+      },
       slots: { default: () => h(MclTextArea, { invalidFeedback: 'Mine' }) },
     })
     expect(wrapper.find('textarea').attributes('id')).toBe('bio')
@@ -1989,7 +2088,9 @@ describe('MclTextArea — inside a group', () => {
       props: { fieldId: 'bio', label: 'Bio', helpText: 'Keep it short.' },
       slots: { default: () => h(MclTextArea) },
     })
-    expect(wrapper.find('textarea').attributes('aria-describedby')).toBe('bio-description')
+    expect(wrapper.find('textarea').attributes('aria-describedby')).toBe(
+      'bio-description',
+    )
   })
 })
 ```
@@ -2115,14 +2216,17 @@ false (undefined means inherit from MclFormGroup)."
 ### Task 8: `MclInputFile`
 
 **Files:**
+
 - Rewrite: `src/components/mcl-forms/lib/mcl-input-file/MclInputFile.vue`
 - Test: `src/components/mcl-forms/lib/mcl-input-file/MclInputFile.test.ts`
 
 **Interfaces:**
+
 - Consumes: `useInputSurface`, `useFieldContext`, `FieldFeedback.vue`, `XMark.vue` from `../assets/`.
 - Produces: props `id?`, `name?`, `accept?`, `buttonText?`, `buttonTextColor?`, `buttonColor?`, `showBorder?`, `borderColor?`, `rounded?`, `bgColor?`, `textColor?`, `showShadow?`, `showClear?`, `invalidFeedback?`, `invalid?`, `required?`, `disabled?`. `v-model` is `File | null`.
 
 **Two live bugs this fixes:**
+
 1. **The clear button has no `type="button"`.** Inside a `<form>` it submits the form.
 2. **The clear handler is bound twice** — on the wrapping `div` and implicitly through the button inside it — so a click fires it twice.
 
@@ -2180,7 +2284,9 @@ describe('MclInputFile — structure', () => {
   it('renders no clear button unless showClear is set', () => {
     const without = mount(MclInputFile, { props: { id: 'avatar' } })
     expect(without.findAll('button')).toHaveLength(1)
-    const with_ = mount(MclInputFile, { props: { id: 'avatar', showClear: true } })
+    const with_ = mount(MclInputFile, {
+      props: { id: 'avatar', showClear: true },
+    })
     expect(with_.findAll('button')).toHaveLength(2)
   })
 })
@@ -2190,12 +2296,16 @@ describe('MclInputFile — the clear button', () => {
 
   it('is type="button" so it cannot submit a surrounding form', () => {
     // Live bug before this rewrite: no type attribute meant type="submit".
-    const wrapper = mount(MclInputFile, { props: { id: 'avatar', showClear: true } })
+    const wrapper = mount(MclInputFile, {
+      props: { id: 'avatar', showClear: true },
+    })
     expect(clearButton(wrapper).attributes('type')).toBe('button')
   })
 
   it('has an accessible name', () => {
-    const wrapper = mount(MclInputFile, { props: { id: 'avatar', showClear: true } })
+    const wrapper = mount(MclInputFile, {
+      props: { id: 'avatar', showClear: true },
+    })
     expect(clearButton(wrapper).attributes('aria-label')).toBeTruthy()
   })
 
@@ -2255,7 +2365,12 @@ describe('MclInputFile — inside a group', () => {
 
   it('defers to the group error region', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { fieldId: 'avatar', label: 'Avatar', invalid: true, invalidFeedback: 'Group' },
+      props: {
+        fieldId: 'avatar',
+        label: 'Avatar',
+        invalid: true,
+        invalidFeedback: 'Group',
+      },
       slots: { default: () => h(MclInputFile, { invalidFeedback: 'Mine' }) },
     })
     const alerts = wrapper.findAll('[role="alert"]')
@@ -2463,19 +2578,24 @@ false (undefined means inherit from MclFormGroup)."
 Both are pure logic with no DOM access, so they are testable without mounting anything. They come out of `MclSelect` before it is rewritten.
 
 **Files:**
+
 - Create: `src/components/mcl-forms/lib/mcl-select/useSelectFilter.ts`
 - Create: `src/components/mcl-forms/lib/mcl-select/useSelectKeyboard.ts`
 - Test: `src/components/mcl-forms/lib/mcl-select/useSelectFilter.test.ts`
 - Test: `src/components/mcl-forms/lib/mcl-select/useSelectKeyboard.test.ts`
 
 **Interfaces:**
+
 - Consumes: `SelectOptionType`, `SelectOptions` from `./index.types`.
 - Produces:
+
   ```ts
   // useSelectFilter.ts
   export const escapeRegExp: (value: string) => string
   export const optionLabel: (option: string | SelectOptionType) => string
-  export const optionValue: (option: string | SelectOptionType) => string | number
+  export const optionValue: (
+    option: string | SelectOptionType,
+  ) => string | number
   export const useSelectFilter: (
     options: MaybeRefOrGetter<SelectOptions>,
     query: MaybeRefOrGetter<string>,
@@ -2495,7 +2615,9 @@ Both are pure logic with no DOM access, so they are testable without mounting an
     onKeydown: (event: KeyboardEvent) => void
     activeDescendantId: ComputedRef<string | undefined>
   }
-  export const useSelectKeyboard: (options: SelectKeyboardOptions) => SelectKeyboard
+  export const useSelectKeyboard: (
+    options: SelectKeyboardOptions,
+  ) => SelectKeyboard
   ```
 
 **`optionLabel` / `optionValue` exist to kill a repeated ternary.** `typeof option === 'string' ? option : option.text` is currently written inline in five places in `MclSelect`.
@@ -2561,7 +2683,9 @@ describe('useSelectFilter', () => {
   })
 
   it('filters object options on their text', () => {
-    expect(useSelectFilter(objects, 'blu').value).toEqual([{ text: 'Blue', value: 3 }])
+    expect(useSelectFilter(objects, 'blu').value).toEqual([
+      { text: 'Blue', value: 3 },
+    ])
   })
 
   it('returns an empty array when nothing matches', () => {
@@ -2819,8 +2943,9 @@ export const optionLabel = (option: string | SelectOptionType): string =>
  * @param option - a plain string option or a `{ text, value }` option.
  * @returns the value to emit.
  */
-export const optionValue = (option: string | SelectOptionType): string | number =>
-  typeof option === 'string' ? option : option.value
+export const optionValue = (
+  option: string | SelectOptionType,
+): string | number => (typeof option === 'string' ? option : option.value)
 
 /**
  * Filters options by a query, matching case-insensitively on the option's
@@ -3006,16 +3131,19 @@ value; only a second Escape clears."
 ### Task 10: `MclSelect`
 
 **Files:**
+
 - Rewrite: `src/components/mcl-forms/lib/mcl-select/MclSelect.vue`
 - Test: `src/components/mcl-forms/lib/mcl-select/MclSelect.test.ts`
 
 **Interfaces:**
+
 - Consumes: `useSelectFilter`, `useSelectKeyboard`, `optionLabel`, `optionValue` from Task 9; `useInputSurface`, `useFieldContext`, `FieldFeedback.vue`; `CaretDown.vue`, `XMark.vue`; `vClickOutside` from `@bobbykim/manguito-theme/directives`; `useFloating`/`autoUpdate`/`flip`/`offset`/`shift` from `@floating-ui/vue`; `useResizeObserver` from `@vueuse/core`.
 - Produces: props as listed below. `v-model` is `string | number | null`. Emits `open`, `close`, `clear`, `changed`, `select`. Slots: `dropdown`, `no-match`, `invalid-feedback`.
 
 **Breaking changes:** `id` optional; `invalid` no longer defaults to `false`; **Escape no longer wipes the value**.
 
 **Five fixes:**
+
 1. **`required` is finally bound.** It is currently accepted and never used — a dead prop. It becomes `aria-required`.
 2. **The clear and caret controls become real `<button type="button">`.** They are `<div @click>` today: not focusable, no accessible name. Clear is focusable with a label; the caret takes `tabindex="-1"` because the input already owns `aria-expanded`, so a second tab stop for the same action is noise.
 3. **"No match" moves out of the listbox** into a `role="status"` region. An `<li aria-live>` inside `role="listbox"` is announced as a selectable option.
@@ -3060,7 +3188,9 @@ describe('MclSelect — combobox wiring', () => {
   })
 
   it('opens on focus and reports expanded', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     expect(wrapper.find('input').attributes('aria-expanded')).toBe('true')
     const listbox = wrapper.find('[role="listbox"]')
@@ -3081,9 +3211,13 @@ describe('MclSelect — combobox wiring', () => {
   })
 
   it('sets no aria-activedescendant until the user moves', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
-    expect(wrapper.find('input').attributes('aria-activedescendant')).toBeUndefined()
+    expect(
+      wrapper.find('input').attributes('aria-activedescendant'),
+    ).toBeUndefined()
     await wrapper.find('input').trigger('keydown', { key: 'ArrowDown' })
     expect(wrapper.find('input').attributes('aria-activedescendant')).toBe(
       'colour-option-0',
@@ -3091,7 +3225,9 @@ describe('MclSelect — combobox wiring', () => {
   })
 
   it('emits open and close', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     expect(wrapper.emitted('open')).toBeTruthy()
     await wrapper.find('input').trigger('keydown', { key: 'Escape' })
@@ -3103,7 +3239,9 @@ describe('MclSelect — controls are buttons', () => {
   it('renders the caret as a button outside the tab order', async () => {
     // Previously a <div @click>: not focusable, no accessible name. It stays
     // out of the tab order because the input already owns aria-expanded.
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     const caret = wrapper.find('button[data-mcl="caret"]')
     expect(caret.exists()).toBe(true)
     expect(caret.attributes('type')).toBe('button')
@@ -3112,7 +3250,9 @@ describe('MclSelect — controls are buttons', () => {
   })
 
   it('toggles the listbox from the caret', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await wrapper.find('button[data-mcl="caret"]').trigger('click')
     expect(wrapper.find('[role="listbox"]').exists()).toBe(true)
   })
@@ -3140,7 +3280,9 @@ describe('MclSelect — controls are buttons', () => {
 
 describe('MclSelect — selection', () => {
   it('selects on click and emits select and changed', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     await wrapper.findAll('[role="option"]')[1].trigger('click')
     expect(wrapper.emitted('select')![0]).toEqual(['Green'])
@@ -3163,7 +3305,9 @@ describe('MclSelect — selection', () => {
   })
 
   it('selects the active option on Enter', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     await wrapper.find('input').trigger('keydown', { key: 'ArrowDown' })
     await wrapper.find('input').trigger('keydown', { key: 'Enter' })
@@ -3171,7 +3315,9 @@ describe('MclSelect — selection', () => {
   })
 
   it('closes the listbox after selecting', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     await wrapper.findAll('[role="option"]')[0].trigger('click')
     await nextTick()
@@ -3204,14 +3350,18 @@ describe('MclSelect — Escape semantics', () => {
 
 describe('MclSelect — filtering and no-match', () => {
   it('filters as the query is typed', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     await wrapper.find('input').setValue('re')
     expect(wrapper.findAll('[role="option"]')).toHaveLength(2)
   })
 
   it('does not throw on a regex metacharacter', async () => {
-    const wrapper = mount(MclSelect, { props: { id: 'colour', options: OPTIONS } })
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
     await open(wrapper)
     await expect(wrapper.find('input').setValue('(')).resolves.not.toThrow()
   })
@@ -3232,23 +3382,41 @@ describe('MclSelect — filtering and no-match', () => {
 
 describe('MclSelect — field context and validation', () => {
   it('generates an id when none is given', () => {
-    expect(mount(MclSelect, { props: { options: OPTIONS } }).find('input').attributes('id'))
-      .toBeTruthy()
+    expect(
+      mount(MclSelect, { props: { options: OPTIONS } })
+        .find('input')
+        .attributes('id'),
+    ).toBeTruthy()
   })
 
   it('renders its own error region and points at it', () => {
     const wrapper = mount(MclSelect, {
-      props: { id: 'colour', options: OPTIONS, invalid: true, invalidFeedback: 'Pick one' },
+      props: {
+        id: 'colour',
+        options: OPTIONS,
+        invalid: true,
+        invalidFeedback: 'Pick one',
+      },
     })
     expect(wrapper.find('input').attributes('aria-invalid')).toBe('true')
-    expect(wrapper.find('input').attributes('aria-describedby')).toBe('colour-error')
+    expect(wrapper.find('input').attributes('aria-describedby')).toBe(
+      'colour-error',
+    )
     expect(wrapper.find('[role="alert"]').text()).toBe('Pick one')
   })
 
   it('defers to the group error region', () => {
     const wrapper = mount(MclFormGroup, {
-      props: { fieldId: 'colour', label: 'Colour', invalid: true, invalidFeedback: 'Group' },
-      slots: { default: () => h(MclSelect, { options: OPTIONS, invalidFeedback: 'Mine' }) },
+      props: {
+        fieldId: 'colour',
+        label: 'Colour',
+        invalid: true,
+        invalidFeedback: 'Group',
+      },
+      slots: {
+        default: () =>
+          h(MclSelect, { options: OPTIONS, invalidFeedback: 'Mine' }),
+      },
     })
     const alerts = wrapper.findAll('[role="alert"]')
     expect(alerts).toHaveLength(1)
@@ -3261,7 +3429,9 @@ describe('MclSelect — field context and validation', () => {
       slots: { default: () => h(MclSelect, { options: OPTIONS }) },
     })
     expect(wrapper.find('input').attributes('disabled')).toBeDefined()
-    expect(wrapper.find('button[data-mcl="caret"]').attributes('disabled')).toBeDefined()
+    expect(
+      wrapper.find('button[data-mcl="caret"]').attributes('disabled'),
+    ).toBeDefined()
   })
 })
 ```
@@ -3348,7 +3518,10 @@ defineSlots<{
     options: (string | SelectOptionType)[]
     activeIndex: number
     optionClick: (option: string | SelectOptionType) => void
-    setRef: (el: Element | ComponentPublicInstance | null, index: number) => void
+    setRef: (
+      el: Element | ComponentPublicInstance | null,
+      index: number,
+    ) => void
     hover: (index: number) => void
   }): unknown
   'no-match'?: () => unknown
@@ -3448,7 +3621,9 @@ const listboxClass = computed<string>(() => {
 })
 
 const isSelected = (option: string | SelectOptionType): boolean =>
-  model.value !== null && model.value !== '' && optionValue(option) === model.value
+  model.value !== null &&
+  model.value !== '' &&
+  optionValue(option) === model.value
 
 const { floatingStyles } = useFloating(rootRef, dropdownRef, {
   whileElementsMounted: autoUpdate,
@@ -3676,10 +3851,12 @@ defaults to false."
 ### Task 11: Public exports, verification and changeset
 
 **Files:**
+
 - Modify: `src/components/mcl-forms/lib/index.ts`
 - Create: `.changeset/mcl-forms-component-rewrite.md`
 
 **Interfaces:**
+
 - Consumes: every component from Tasks 2-10.
 - Produces: the package's public surface. Adds the `FieldContext` and `FieldOwnProps` types to the existing exports.
 
@@ -3774,12 +3951,12 @@ rewrite."
 
 Plan 3 owns the stories, the `.mdx` docs, the migration guide and the README. It needs:
 
-| Item | Detail |
-|---|---|
-| Prop rename table | Every rename in the Task 11 changeset, per component |
-| The three behaviour breaks | Native-validity display removed from `MclInputText`; `MclSelect` Escape semantics; `checked` removed from checkbox and radio |
-| The `dark-4` visual change | Fixing the typo changes the rendered colour for anyone passing `dark-4` — it belongs in the migration guide, not just the changelog |
-| `MclFormGroup` usage | The coordination pattern: one `fieldId` (or none), `groupLabel` for radio/checkbox sets, help text, and a single group-owned error region |
-| The group-carries-invalid rule | A group with `invalidFeedback` must also carry `invalid`, or no error renders anywhere. Worth stating in the docs, not only in the JSDoc |
-| Broken story files | The list captured in Task 11 Step 4 |
-| Known limitation | The palette-exhaustiveness guard in `manguito-theme` fails `vue-tsc`/`build`, not `pnpm test` |
+| Item                           | Detail                                                                                                                                    |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Prop rename table              | Every rename in the Task 11 changeset, per component                                                                                      |
+| The three behaviour breaks     | Native-validity display removed from `MclInputText`; `MclSelect` Escape semantics; `checked` removed from checkbox and radio              |
+| The `dark-4` visual change     | Fixing the typo changes the rendered colour for anyone passing `dark-4` — it belongs in the migration guide, not just the changelog       |
+| `MclFormGroup` usage           | The coordination pattern: one `fieldId` (or none), `groupLabel` for radio/checkbox sets, help text, and a single group-owned error region |
+| The group-carries-invalid rule | A group with `invalidFeedback` must also carry `invalid`, or no error renders anywhere. Worth stating in the docs, not only in the JSDoc  |
+| Broken story files             | The list captured in Task 11 Step 4                                                                                                       |
+| Known limitation               | The palette-exhaustiveness guard in `manguito-theme` fails `vue-tsc`/`build`, not `pnpm test`                                             |

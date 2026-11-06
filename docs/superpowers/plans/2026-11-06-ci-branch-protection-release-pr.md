@@ -201,7 +201,7 @@ task's dist checks diff against this baseline.
     report, each mapped to its fix in Step 1. Any other hunk means the fix was
     not behavior-neutral: revert it and redo it.
 - [ ] **Step 6:** Commit `fix: resolve eslint findings without behavior
-    changes` and `build: add a turbo typecheck task with vue-tsc`.
+changes` and `build: add a turbo typecheck task with vue-tsc`.
 
 ### Task 4: Storybook build check
 
@@ -303,17 +303,12 @@ task's dist checks diff against this baseline.
   - Doc references point to `RELEASING.md`.
   - A new `coverage_warnings <status-file>` function runs after the `[ -n
 "$changed" ]` guard and before the branch is created. It prints to stderr
-    and never exits non-zero:
-    1. Find the last release commit with
-       `git log --grep '^chore(release)' -1 --format=%H`. If none exists,
-       print `note: no previous chore(release) commit; skipping the coverage check`
-       and return.
-    2. List the directory names that changed since then:
-       `git diff --name-only <sha>..HEAD -- src/components | cut -d/ -f3 | sort -u`.
-    3. Map each to its `package.json` `.name`, skipping private packages.
-    4. Print `warning: <name> changed since <short-sha> but has no pending release`
-       for each name absent from the status file's `.releases[] | select(.type != "none") | .name`.
-
+    and never exits non-zero: 1. Find the last release commit with
+    `git log --grep '^chore(release)' -1 --format=%H`. If none exists,
+    print `note: no previous chore(release) commit; skipping the coverage check`
+    and return. 2. List the directory names that changed since then:
+    `git diff --name-only <sha>..HEAD -- src/components | cut -d/ -f3 | sort -u`. 3. Map each to its `package.json` `.name`, skipping private packages. 4. Print `warning: <name> changed since <short-sha> but has no pending release`
+    for each name absent from the status file's `.releases[] | select(.type != "none") | .name`.
     Keep the result in a variable, and print it again in the summary at the
     end of `prepare`.
 

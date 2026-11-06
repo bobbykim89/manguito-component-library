@@ -16,6 +16,7 @@ Produce a concise audit report for the component at `$ARGUMENTS`.
 ## Checklist
 
 ### Accessibility
+
 - Interactive elements (toggle, close, expand) use `<button>`, not `<div>` or `<a>`
 - Overlay components (`Modal`, `Sidebar`) have `role="dialog"` and `aria-modal="true"`
 - Collapse triggers have `aria-expanded` bound to open state and `aria-controls` pointing to the content element's `id`
@@ -26,12 +27,14 @@ Produce a concise audit report for the component at `$ARGUMENTS`.
 - Icon-only buttons have `aria-label`
 
 ### Prop naming
+
 - Boolean display flags use `show*` prefix (`showBorder`, `showShadow`, `showHighlight`) — not `display*`, `has*`, or bare names
 - Color props are camelCase: `bgColor`, `textColor`, `borderColor`, `titleColor`, `optionHoverColor`
 - No props with negated names (`noShadow`, `hideTitle`)
 - Custom class injection uses `className` (on `manguito-theme` base components)
 
 ### TypeScript
+
 - All props typed via `defineProps<{...}>()` with `withDefaults`
 - No `any` types
 - Emits typed via `defineEmits<{...}>()`
@@ -39,6 +42,7 @@ Produce a concise audit report for the component at `$ARGUMENTS`.
 - Types imported from `@bobbykim/manguito-theme` not re-declared locally
 
 ### Vue 3 best practices
+
 - Uses `<script setup lang="ts">` (not Options API)
 - `generateClass` used as named import namespace — `generateClass.bgColor({ color: ... })` — not the legacy default export
 - `vToggle` / `vCollapse` directives not used — collapse state handled via `useCollapseState` composable
@@ -51,16 +55,20 @@ Produce a concise audit report for the component at `$ARGUMENTS`.
 ## Audit: <ComponentName>
 
 ### Accessibility
+
 - [fail] <finding>
 - [warn] <finding>
 
 ### Prop naming
+
 - [pass] All conventions followed
 
 ### TypeScript
+
 - [warn] <finding>
 
 ### Vue 3 best practices
+
 - [fail] <finding>
 ```
 

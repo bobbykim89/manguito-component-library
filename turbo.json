@@ -5,12 +5,7 @@
     "build": {
       "dependsOn": ["^build"],
       "outputs": ["dist/**"],
-      "inputs": [
-        "lib/**",
-        "vite.config.*",
-        "tsconfig*",
-        "package.json"
-      ]
+      "inputs": ["lib/**", "vite.config.*", "tsconfig*", "package.json"]
     },
     "test": {
       "dependsOn": ["^build"],

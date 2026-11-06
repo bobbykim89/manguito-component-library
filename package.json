@@ -12,6 +12,8 @@
   "scripts": {
     "story:dev": "storybook dev -p 6006",
     "story:build": "turbo run build && storybook build -o dist",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "commit": "cz",
     "changeset": "changeset",
     "package:create": "node ./scripts/index.mjs",

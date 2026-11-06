@@ -1,0 +1,7 @@
+.agents/
+pnpm-lock.yaml
+**/dist/
+**/CHANGELOG.md
+storybook-static/
+.turbo/
+.superpowers/

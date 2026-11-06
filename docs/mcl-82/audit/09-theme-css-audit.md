@@ -12,26 +12,34 @@ The file is the single CSS entry point for `@bobbykim/manguito-theme`. Consumers
 The file is organized into six distinct sections, in this order:
 
 ### 1.1 `@theme {}` block (lines 7–49)
+
 Registers design tokens as CSS custom properties that Tailwind v4 reads to generate utility classes. Contains:
+
 - **14 color tokens** (`--color-primary` through `--color-dark-4`). Each uses a double-variable pattern: `--color-primary: var(--mcl-primary, #ec489a)`. The outer `--color-primary` is what Tailwind uses; the inner `--mcl-primary` is a user-accessible override hook; and `#ec489a` is the fallback default. This deliberately creates two layers of indirection so consumers can override colors at runtime without re-processing Tailwind.
 - **9 spacing tokens** (`--spacing-3xs` through `--spacing-3xl`), following the same double-variable pattern.
 - **5 font-size tokens** (`--text-xs` through `--text-xl`).
 - **5 breakpoint tokens** (`--breakpoint-sm` through `--breakpoint-2xl`), prefaced by `--breakpoint-*: initial` to clear any inherited breakpoint set.
 
 ### 1.2 `@property` rules (lines 52–74)
+
 Four typed custom property declarations used to animate or calculate values:
+
 - `--mcl-bg-opacity` (`<percentage>`, default `100%`) — bridges the Tailwind v3 `bg-opacity-*` utility pattern.
 - `--mcl-outline-opacity` (`<percentage>`, default `100%`) — same pattern for outlines.
 - `--mcl-gm-shadow` (`<number>`, default `10`) — controls glassmorphism shadow glow intensity.
 - `--mcl-depth-color` (`<color>`, default `white`) — controls the glassmorphism highlight/depth color.
 
 ### 1.3 `@layer base {}` (lines 77–118)
+
 Sets global element defaults:
+
 - `body`: `font-size: 1rem`, `line-height: 1.5`
 - `h1`–`h4`: bold, `line-height: 1.2`, with font sizes that increase at the `lg` breakpoint via a `@media` rule inside the layer block.
 
 ### 1.4 `@layer components {}` (lines 120–563)
+
 The largest section. Contains all named component and utility classes:
+
 - **`.container`**: responsive `max-width` container with 5 breakpoint steps.
 - **Heading size variant classes** (`.h1-sm` through `.h4-xl`): 16 classes in groups of 4 (sm/md/lg/xl) for each heading level, each with mobile-first sizes and a responsive override at the `lg` breakpoint.
 - **`.mcl-link`** and hover state.
@@ -41,6 +49,7 @@ The largest section. Contains all named component and utility classes:
 - **`.mcl-glassmorphism`**: a multi-layer `box-shadow` for glass effects using `--mcl-gm-shadow` and `--mcl-depth-color`.
 
 ### 1.5 `@utility` rules (lines 566–604)
+
 Nine functional utility generators using Tailwind v4's `@utility` at-rule:
 | Utility pattern | Effect |
 |---|---|
@@ -55,6 +64,7 @@ Nine functional utility generators using Tailwind v4's `@utility` at-rule:
 | `mcl-depth-*` | Sets `--mcl-gm-shadow` depth level |
 
 ### 1.6 `@layer utilities {}` (lines 607–791)
+
 185 lines of hand-written tooltip caret color overrides. 17 color names × 4 directions = 68 rules, each setting `border-color` on the `.tooltip::after` pseudo-element to match the tooltip's background color class.
 
 ---
@@ -71,6 +81,7 @@ Nine functional utility generators using Tailwind v4's `@utility` at-rule:
 ```
 
 In Tailwind v4, `@utility` definitions with overlapping patterns override built-in utilities. The pattern `bg-*` matches everything that begins with `bg-`, including:
+
 - `bg-transparent`, `bg-inherit`, `bg-current`, `bg-none` — non-color values with no `--color-*` token
 - `bg-gradient-to-r`, `bg-gradient-to-br`, etc. — gradient utilities
 - `bg-cover`, `bg-contain`, `bg-auto` — background-size utilities
@@ -130,6 +141,7 @@ Any element that happens to have a class containing `tooltip-bottom` (even unrel
 ```
 
 All three sizes share the same mobile font size. Similarly for `.h4-md` and `.h4-lg`:
+
 ```css
 .h4-md { font-size: 1rem; /* 16px */ }
 .h4-lg { font-size: 1rem; /* 16px */ }  ← same as h4-md
@@ -165,9 +177,7 @@ This syntax resets all `--breakpoint-*` properties to their initial values befor
 ```css
 /* lines 344–347 */
 .btn:hover {
-  background-color: --alpha(
-    var(--mcl-btn-color, theme(--color-primary)) / 70%
-  );
+  background-color: --alpha(var(--mcl-btn-color, theme(--color-primary)) / 70%);
 }
 ```
 
@@ -179,8 +189,12 @@ In practice, `--alpha()` with `var()` is documented to work in Tailwind v4 throu
 
 ```css
 /* lines 316–320 — component classes in @layer components */
-.mcl-list.mcl-list-sm li::before { font-weight: 500; }
-.mcl-list.mcl-list-lg li::before { font-weight: 900; }
+.mcl-list.mcl-list-sm li::before {
+  font-weight: 500;
+}
+.mcl-list.mcl-list-lg li::before {
+  font-weight: 900;
+}
 
 /* lines 571–573 — @utility rule */
 @utility mcl-list-* {
@@ -211,6 +225,7 @@ The base `.btn.btn-progress::before` uses `transition: width 300ms linear`. The 
 The entire `@layer utilities` section (lines 607–791) is 68 hand-written rules mechanically pairing `bg-{color}` with the corresponding `border-color` for the arrow caret. This can be eliminated using a `--tooltip-bg` CSS variable:
 
 **Current approach:**
+
 ```css
 /* 68 rules like: */
 .tooltip.bg-primary::after {
@@ -223,6 +238,7 @@ The entire `@layer utilities` section (lines 607–791) is 68 hand-written rules
 ```
 
 **Optimized approach:**
+
 ```css
 /* In @layer components */
 .tooltip {
@@ -230,16 +246,23 @@ The entire `@layer utilities` section (lines 607–791) is 68 hand-written rules
 }
 .tooltip::after {
   /* Uses four CSS variables, one per border side */
-  border-color:
-    var(--tooltip-caret-top, transparent)
+  border-color: var(--tooltip-caret-top, transparent)
     var(--tooltip-caret-right, transparent)
     var(--tooltip-caret-bottom, transparent)
     var(--tooltip-caret-left, transparent);
 }
-.tooltip.tooltip-top    { --tooltip-caret-top: var(--tooltip-bg); }
-.tooltip.tooltip-bottom { --tooltip-caret-bottom: var(--tooltip-bg); }
-.tooltip.tooltip-left   { --tooltip-caret-left: var(--tooltip-bg); }
-.tooltip.tooltip-right  { --tooltip-caret-right: var(--tooltip-bg); }
+.tooltip.tooltip-top {
+  --tooltip-caret-top: var(--tooltip-bg);
+}
+.tooltip.tooltip-bottom {
+  --tooltip-caret-bottom: var(--tooltip-bg);
+}
+.tooltip.tooltip-left {
+  --tooltip-caret-left: var(--tooltip-bg);
+}
+.tooltip.tooltip-right {
+  --tooltip-caret-right: var(--tooltip-bg);
+}
 
 /* Replace the entire @layer utilities block with this single @utility */
 @utility tooltip-* {
@@ -256,24 +279,40 @@ Note: This is a **breaking change** for consumers using the current `.tooltip.bg
 All 16 heading size classes repeat `font-weight: bold; line-height: 1.2`. That is 32 duplicated declarations (64 properties total, counting the responsive overrides).
 
 **Current:**
+
 ```css
-.h1-sm { font-size: 1.5rem;  font-weight: bold; line-height: 1.2; }
-.h1-md { font-size: 1.875rem; font-weight: bold; line-height: 1.2; }
+.h1-sm {
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.2;
+}
+.h1-md {
+  font-size: 1.875rem;
+  font-weight: bold;
+  line-height: 1.2;
+}
 /* ... 14 more with identical font-weight and line-height */
 ```
 
 **Optimized — option A (attribute selector):**
+
 ```css
 /* @layer components */
-[class*="h1-"], [class*="h2-"], [class*="h3-"], [class*="h4-"] {
+[class*='h1-'],
+[class*='h2-'],
+[class*='h3-'],
+[class*='h4-'] {
   font-weight: bold;
   line-height: 1.2;
 }
 /* Then each variant only sets font-size */
-.h1-sm { font-size: 1.5rem; }
+.h1-sm {
+  font-size: 1.5rem;
+}
 ```
 
 **Optimized — option B (`@utility`):**
+
 ```css
 @utility mcl-heading {
   font-weight: bold;
@@ -287,6 +326,7 @@ Option A avoids consumer-side changes; option B makes the shared properties expl
 ### 3.3 Button hover opacity — make it configurable
 
 The 70% hover opacity for `.btn` is hardcoded:
+
 ```css
 .btn:hover {
   background-color: --alpha(var(--mcl-btn-color, ...) / 70%);
@@ -294,6 +334,7 @@ The 70% hover opacity for `.btn` is hardcoded:
 ```
 
 Add `--mcl-btn-hover-opacity` as a configurable property:
+
 ```css
 @property --mcl-btn-hover-opacity {
   syntax: '<percentage>';
@@ -301,7 +342,9 @@ Add `--mcl-btn-hover-opacity` as a configurable property:
   initial-value: 70%;
 }
 .btn:hover {
-  background-color: --alpha(var(--mcl-btn-color, ...) / var(--mcl-btn-hover-opacity));
+  background-color: --alpha(
+    var(--mcl-btn-color, ...) / var(--mcl-btn-hover-opacity)
+  );
 }
 ```
 
@@ -321,11 +364,13 @@ This is already using `--alpha()` which maps to `color-mix()` in v4. This is fin
 ### 3.5 `.container` — consider removing in favor of Tailwind's built-in
 
 If the breakpoint tokens in `@theme` match the values used for Tailwind's responsive prefixes (which they do — `--breakpoint-sm` through `--breakpoint-2xl`), Tailwind v4's native `.container` class already implements the same max-width stepping behavior. The 30 lines of `.container` in `@layer components` could be deleted and replaced with:
+
 ```css
 @theme {
   --container-center: true; /* or configure via Tailwind config */
 }
 ```
+
 or simply rely on Tailwind's default container behavior. This would also remove the conflict described in section 2.6.
 
 ### 3.6 Glassmorphism — `--mcl-gm-shadow` syntax is `<number>` but multiplied by `2px`/`1px`
@@ -340,7 +385,9 @@ The `@utility mcl-depth-*` sets `--mcl-gm-shadow` to an integer. The multiplicat
 .mcl-glassmorphism {
   --_blur: calc(var(--mcl-gm-shadow) * 2px);
   --_spread: calc(var(--mcl-gm-shadow) * 1px);
-  box-shadow: ..., inset 0 0 var(--_blur) var(--_spread) ...;
+  box-shadow:
+    ...,
+    inset 0 0 var(--_blur) var(--_spread)...;
 }
 ```
 
@@ -364,7 +411,7 @@ Using `@utility btn-*`, `mcl-list-*`, `mcl-link-*`, `mcl-glass-*`, `mcl-depth-*`
 
 ### 4.4 `bg-opacity-*` polyfill — necessary workaround but implemented dangerously
 
-Tailwind v4 deprecated the v3 `bg-opacity-*` pattern in favor of `bg-{color}/{opacity}` shorthand. The library provides a polyfill via `@utility bg-opacity-*` + `@utility bg-*`. The intent is valid — maintaining backwards compatibility for code that uses `bg-opacity-*` — but the implementation overrides ALL `bg-*` utilities as described in section 2.1. 
+Tailwind v4 deprecated the v3 `bg-opacity-*` pattern in favor of `bg-{color}/{opacity}` shorthand. The library provides a polyfill via `@utility bg-opacity-*` + `@utility bg-*`. The intent is valid — maintaining backwards compatibility for code that uses `bg-opacity-*` — but the implementation overrides ALL `bg-*` utilities as described in section 2.1.
 
 The v4-aligned solution would be to stop using the polyfill internally (update `generateClass` to emit `bg-primary/70` instead of `bg-primary bg-opacity-70`) and let consumers who need the polyfill add it themselves if their codebase still uses the v3 pattern.
 
@@ -399,6 +446,7 @@ The 68-rule `@layer utilities` section is a direct port of a pattern that would 
 The current `@utility bg-*` is too broad. The opacity-modifier functionality it provides should be scoped to only the library's color tokens.
 
 **Before:**
+
 ```css
 @utility bg-* {
   background-color: --alpha(--value(--color-*) / var(--mcl-bg-opacity));
@@ -423,6 +471,7 @@ Regardless of option, this must be resolved before wide consumer adoption of the
 Same problem as `bg-*`. The outline opacity utility should be scoped.
 
 **Before:**
+
 ```css
 @utility outline-* {
   outline-color: --alpha(--value(--color-*) / var(--mcl-outline-opacity));
@@ -437,6 +486,7 @@ Rename to `outline-mcl-*` and update `generateClass` to emit the renamed class. 
 ### P3 — Fix `.tooltip-bottom` missing `.tooltip` qualifier (non-breaking fix)
 
 **Before:**
+
 ```css
 .tooltip-bottom {
   left: 50%;
@@ -446,6 +496,7 @@ Rename to `outline-mcl-*` and update `generateClass` to emit the renamed class. 
 ```
 
 **After:**
+
 ```css
 .tooltip.tooltip-bottom {
   left: 50%;
@@ -465,20 +516,30 @@ See section 3.1 for the full before/after. Summary:
 **Before:** 185 lines in `@layer utilities`, 68 rules.
 
 **After:** 4 rules in `@layer components` + 1 `@utility tooltip-*` declaration:
+
 ```css
 /* @layer components */
-.tooltip { --tooltip-bg: theme(--color-dark-3); }
+.tooltip {
+  --tooltip-bg: theme(--color-dark-3);
+}
 .tooltip::after {
-  border-color:
-    var(--tooltip-caret-top, transparent)
+  border-color: var(--tooltip-caret-top, transparent)
     var(--tooltip-caret-right, transparent)
     var(--tooltip-caret-bottom, transparent)
     var(--tooltip-caret-left, transparent);
 }
-.tooltip.tooltip-top    { --tooltip-caret-top: var(--tooltip-bg); }
-.tooltip.tooltip-bottom { --tooltip-caret-bottom: var(--tooltip-bg); }
-.tooltip.tooltip-left   { --tooltip-caret-left: var(--tooltip-bg); }
-.tooltip.tooltip-right  { --tooltip-caret-right: var(--tooltip-bg); }
+.tooltip.tooltip-top {
+  --tooltip-caret-top: var(--tooltip-bg);
+}
+.tooltip.tooltip-bottom {
+  --tooltip-caret-bottom: var(--tooltip-bg);
+}
+.tooltip.tooltip-left {
+  --tooltip-caret-left: var(--tooltip-bg);
+}
+.tooltip.tooltip-right {
+  --tooltip-caret-right: var(--tooltip-bg);
+}
 
 /* @utility (replaces all 68 color-specific rules) */
 @utility tooltip-* {
@@ -499,21 +560,38 @@ If the full refactor in P4 is deferred, at minimum move the 68 tooltip caret rul
 ### P6 — Extract shared heading properties to reduce repetition (non-breaking)
 
 **Before:**
+
 ```css
-.h1-sm { font-size: 1.5rem;  font-weight: bold; line-height: 1.2; }
-.h1-md { font-size: 1.875rem; font-weight: bold; line-height: 1.2; }
+.h1-sm {
+  font-size: 1.5rem;
+  font-weight: bold;
+  line-height: 1.2;
+}
+.h1-md {
+  font-size: 1.875rem;
+  font-weight: bold;
+  line-height: 1.2;
+}
 /* ... 14 more identical font-weight and line-height */
 ```
 
 **After:**
+
 ```css
 /* In @layer components, before the size variants */
-[class*="h1-"], [class*="h2-"], [class*="h3-"], [class*="h4-"] {
+[class*='h1-'],
+[class*='h2-'],
+[class*='h3-'],
+[class*='h4-'] {
   font-weight: bold;
   line-height: 1.2;
 }
-.h1-sm  { font-size: 1.5rem; }
-.h1-md  { font-size: 1.875rem; }
+.h1-sm {
+  font-size: 1.5rem;
+}
+.h1-md {
+  font-size: 1.875rem;
+}
 /* ... font-size only from here on */
 ```
 
@@ -524,6 +602,7 @@ Saves approximately 32 declarations (32 lines). Non-breaking.
 ### P7 — Clarify `.h3-sm` / `.h3-lg` and `.h4-md` / `.h4-lg` size parity (needs clarification)
 
 The following pairs start at the same mobile font size:
+
 - `.h3-sm` and `.h3-lg`: both `1.125rem`
 - `.h4-md` and `.h4-lg`: both `1rem`
 
@@ -536,6 +615,7 @@ If this is intentional (the sizes only differ above the `lg` breakpoint), it sho
 ### P8 — Fix `btn-progress-r` transition from `all` to explicit properties (non-breaking)
 
 **Before:**
+
 ```css
 .btn.btn-progress.btn-progress-r::before {
   left: 100%;
@@ -544,10 +624,13 @@ If this is intentional (the sizes only differ above the `lg` breakpoint), it sho
 ```
 
 **After:**
+
 ```css
 .btn.btn-progress.btn-progress-r::before {
   left: 100%;
-  transition: width 300ms linear, left 300ms linear;
+  transition:
+    width 300ms linear,
+    left 300ms linear;
 }
 ```
 
@@ -558,6 +641,7 @@ Using `transition: all` is a performance anti-pattern that forces the browser to
 ### P9 — Add `--mcl-btn-hover-opacity` CSS variable for configurable hover opacity (non-breaking enhancement)
 
 **Before:**
+
 ```css
 .btn:hover {
   background-color: --alpha(var(--mcl-btn-color, theme(--color-primary)) / 70%);
@@ -565,6 +649,7 @@ Using `transition: all` is a performance anti-pattern that forces the browser to
 ```
 
 **After:**
+
 ```css
 @property --mcl-btn-hover-opacity {
   syntax: '<percentage>';
@@ -572,7 +657,9 @@ Using `transition: all` is a performance anti-pattern that forces the browser to
   initial-value: 70%;
 }
 .btn:hover {
-  background-color: --alpha(var(--mcl-btn-color, theme(--color-primary)) / var(--mcl-btn-hover-opacity));
+  background-color: --alpha(
+    var(--mcl-btn-color, theme(--color-primary)) / var(--mcl-btn-hover-opacity)
+  );
 }
 ```
 

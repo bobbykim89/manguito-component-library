@@ -15,18 +15,18 @@ its stated intentions were never completed.
 
 ### Accessibility gaps still open
 
-| # | Issue | Components |
-|---|---|---|
-| 1 | Native input is `appearance-none` in normal flow with an `aria-hidden` visual `<span>` carrying the click handler. **No focus indicator of any kind** — WCAG 2.4.7 failure. | checkbox, radio, switch |
-| 2 | `role="alert"` is on a container that is always in the DOM and only CSS-hidden. Alerts fire on **insertion**, so it never announces. | input-text |
-| 3 | No error region at all, despite having `aria-invalid` | text-area, select |
-| 4 | `required` prop is accepted but **never bound to anything** | select |
-| 5 | Clear and caret controls are `<div @click>` — not focusable, no accessible name | select |
-| 6 | `<li aria-live="polite">` inside `role="listbox"` is announced as a selectable option | select |
-| 7 | No `defineModel` and no `name` prop, so radio groups cannot be built and native arrow-key grouping is broken | radio |
-| 8 | Outer `div` `@click` re-fires for clicks originating on the contained input — double toggle | switch |
-| 9 | Clear button has no `type="button"`; inside a `<form>` it submits | input-file |
-| 10 | No `disabled` support anywhere in the package | all |
+| #   | Issue                                                                                                                                                                       | Components              |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| 1   | Native input is `appearance-none` in normal flow with an `aria-hidden` visual `<span>` carrying the click handler. **No focus indicator of any kind** — WCAG 2.4.7 failure. | checkbox, radio, switch |
+| 2   | `role="alert"` is on a container that is always in the DOM and only CSS-hidden. Alerts fire on **insertion**, so it never announces.                                        | input-text              |
+| 3   | No error region at all, despite having `aria-invalid`                                                                                                                       | text-area, select       |
+| 4   | `required` prop is accepted but **never bound to anything**                                                                                                                 | select                  |
+| 5   | Clear and caret controls are `<div @click>` — not focusable, no accessible name                                                                                             | select                  |
+| 6   | `<li aria-live="polite">` inside `role="listbox"` is announced as a selectable option                                                                                       | select                  |
+| 7   | No `defineModel` and no `name` prop, so radio groups cannot be built and native arrow-key grouping is broken                                                                | radio                   |
+| 8   | Outer `div` `@click` re-fires for clicks originating on the contained input — double toggle                                                                                 | switch                  |
+| 9   | Clear button has no `type="button"`; inside a `<form>` it submits                                                                                                           | input-file              |
+| 10  | No `disabled` support anywhere in the package                                                                                                                               | all                     |
 
 ### Maintainability problems
 
@@ -48,12 +48,12 @@ its stated intentions were never completed.
 
 ## 2. Decisions taken
 
-| Decision | Choice | Rationale |
-|---|---|---|
-| Public API freedom | **Breaking changes allowed, one clean bump** | Package is `0.10.x`; repo already has the migration-doc habit (`docs/mcl-82/migration-guide-v1.md`). One disruption instead of a long deprecation tail. |
-| Shared code location | **Split: cva variants to `manguito-theme`, form composables stay in `mcl-forms`** | Colour variants belong with every other colour variant and gain coverage from the existing `generateClass.test.ts`; form-specific logic does not belong in the base package. |
-| Label/error wiring | **`MclFormGroup` coordinates via provide/inject** | Mirrors the existing `useCollapseState` + `AccordionGroup` pattern. Writes the ARIA wiring once instead of eight times — the duplication is exactly why text-area and select never got error regions. |
-| Component internals | **Shared composables + one internal component (`FieldFeedback.vue`)** | Composables keep each SFC readable on its own and are testable unmounted. `FieldFeedback` is a component because the `aria-describedby` contract needs byte-identical markup, and a composable cannot enforce that — markup drift is the observed failure mode. |
+| Decision             | Choice                                                                            | Rationale                                                                                                                                                                                                                                                       |
+| -------------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Public API freedom   | **Breaking changes allowed, one clean bump**                                      | Package is `0.10.x`; repo already has the migration-doc habit (`docs/mcl-82/migration-guide-v1.md`). One disruption instead of a long deprecation tail.                                                                                                         |
+| Shared code location | **Split: cva variants to `manguito-theme`, form composables stay in `mcl-forms`** | Colour variants belong with every other colour variant and gain coverage from the existing `generateClass.test.ts`; form-specific logic does not belong in the base package.                                                                                    |
+| Label/error wiring   | **`MclFormGroup` coordinates via provide/inject**                                 | Mirrors the existing `useCollapseState` + `AccordionGroup` pattern. Writes the ARIA wiring once instead of eight times — the duplication is exactly why text-area and select never got error regions.                                                           |
+| Component internals  | **Shared composables + one internal component (`FieldFeedback.vue`)**             | Composables keep each SFC readable on its own and are testable unmounted. `FieldFeedback` is a component because the `aria-describedby` contract needs byte-identical markup, and a composable cannot enforce that — markup drift is the observed failure mode. |
 
 Rejected: internal base components (`InputSurface.vue` / `ToggleControl.vue`)
 for maximum dedup — leads to leaky base components accumulating props to serve
@@ -69,15 +69,15 @@ the ask (YAGNI).
 
 Added to `lib/theme/index.ts` and to the `generateClass` object:
 
-| Variant | Emits | Replaces |
-|---|---|---|
-| `peerCheckedBgColorVariant` | `peer-checked:bg-*` | the duplicated `peerBgColor` maps |
-| `peerFocusVisibleRingColorVariant` | `peer-focus-visible:ring-*` | nothing — the missing focus indicator for the three toggles |
-| `focusVisibleRingColorVariant` | `focus-visible:ring-*` | `focusRingColorVariant` (`focus:ring-*`) on text/textarea/select |
+| Variant                            | Emits                       | Replaces                                                         |
+| ---------------------------------- | --------------------------- | ---------------------------------------------------------------- |
+| `peerCheckedBgColorVariant`        | `peer-checked:bg-*`         | the duplicated `peerBgColor` maps                                |
+| `peerFocusVisibleRingColorVariant` | `peer-focus-visible:ring-*` | nothing — the missing focus indicator for the three toggles      |
+| `focusVisibleRingColorVariant`     | `focus-visible:ring-*`      | `focusRingColorVariant` (`focus:ring-*`) on text/textarea/select |
 
 The third variant is required by section 6's move from `focus:` to
 `focus-visible:`. The theme has no `focus-visible` variant of any kind today, and
-the peer form does not serve text inputs, where the focused element *is* the
+the peer form does not serve text inputs, where the focused element _is_ the
 styled element rather than a peer. `focusRingColorVariant` is left in place —
 other packages use it and it stays part of the public surface.
 
@@ -125,14 +125,14 @@ mcl-select/
 ```ts
 // common/index.types.ts
 export interface FieldContext {
-  id: string                              // resolved element id
-  name: ComputedRef<string | undefined>   // radio group name; undefined when neither the control nor a group supplies one
-  errorId: string                         // id of the error region this control points at
-  descriptionId: string | undefined       // id of the help-text region, when one exists
+  id: string // resolved element id
+  name: ComputedRef<string | undefined> // radio group name; undefined when neither the control nor a group supplies one
+  errorId: string // id of the error region this control points at
+  descriptionId: string | undefined // id of the help-text region, when one exists
   invalid: ComputedRef<boolean>
   required: ComputedRef<boolean>
   disabled: ComputedRef<boolean>
-  describedBy: ComputedRef<string | undefined>  // description + error ids, in reading order
+  describedBy: ComputedRef<string | undefined> // description + error ids, in reading order
   feedbackOwnedByGroup: boolean
   isGroupLabel: boolean
 }
@@ -146,7 +146,7 @@ child's `id`, so `labelFor` no longer describes what it does — and becomes
 
 `name`, `invalid`, `required` and `disabled` are declared `MaybeRefOrGetter` and
 read through `toValue()`. This is load-bearing, not stylistic: `hasHelpText` and
-`ownsFeedback` derive from *slot presence*, not from props, so the group cannot
+`ownsFeedback` derive from _slot presence_, not from props, so the group cannot
 hand its `props` proxy straight through — it must build an object literal, and a
 literal snapshots plain values at setup. Passing plain values was measured to
 leave the group's `invalid` permanently stuck at its mount-time value, so no
@@ -155,7 +155,7 @@ control in the group ever received `aria-describedby`. `fieldId`, `hasHelpText`,
 construction.
 
 **Consumer.** Each input calls `useFieldContext(props)`, resolving each value as
-*explicit prop -> injected context -> default*. With no provider it falls back
+_explicit prop -> injected context -> default_. With no provider it falls back
 to local props plus `useId()`, so every component still works standalone.
 Controls pass their reactive `props` proxy directly — unlike the group, they
 have no structural reason to build a literal, and a spread literal would
@@ -168,7 +168,7 @@ error id is then omitted from `describedBy` unless the group owns the region,
 because a group carrying `invalid` with no `invalidFeedback` would otherwise
 give every radio in it an `aria-describedby` naming an element nobody renders.
 
-The `name` resolution is *own prop -> group name*, with no id fallback on the
+The `name` resolution is _own prop -> group name_, with no id fallback on the
 control side. An id fallback would apply to all eight controls, making
 text/textarea/select/file emit a generated `name` into native form submissions
 where they previously emitted none — and being never falsy, it could not be
@@ -201,13 +201,13 @@ arrow-key navigation work.
 unique element id, because no `label[for]` exists to match and duplicate ids are
 invalid HTML; in single-label mode the control takes the group's id so `for` and
 `id` agree. This is independent of the region-id rule above: a fieldset control
-gets a unique element id *and* still points at the group's shared error and
+gets a unique element id _and_ still points at the group's shared error and
 description regions, which is correct ARIA for a radio group. The earlier design
 gave every sibling the group's id verbatim — measured as three radios all
 rendering `id="colour"`, with `label[for]` binding only the first.
 
 `feedbackOwnedByGroup` is a plain boolean rather than a `ComputedRef` because it
-is decided at setup from the *presence* of the group's error prop or slot, not
+is decided at setup from the _presence_ of the group's error prop or slot, not
 from its value — presence does not change over the component's life.
 
 **A group that owns the feedback region must carry the `invalid` state itself.**
@@ -230,25 +230,25 @@ its own. One region either way, and ownership is explicit rather than incidental
 
 ### Unified toggle vocabulary (checkbox, radio, switch)
 
-| Concept | Now | After |
-|---|---|---|
-| size | `inputSize` / `radioSize` / `switchSize` | `size` |
-| off / track colour | `bgColor` / `bgColor` / `offColor` | `bgColor` |
-| on / checked colour | `checkedBgColor` / — / `onColor` | `checkedBgColor` |
+| Concept             | Now                                           | After            |
+| ------------------- | --------------------------------------------- | ---------------- |
+| size                | `inputSize` / `radioSize` / `switchSize`      | `size`           |
+| off / track colour  | `bgColor` / `bgColor` / `offColor`            | `bgColor`        |
+| on / checked colour | `checkedBgColor` / — / `onColor`              | `checkedBgColor` |
 | the mark, dot, knob | `checkColor` / `checkedColor` / `sliderColor` | `indicatorColor` |
 
 ### Per component
 
-| Component | Breaking | Added |
-|---|---|---|
-| `MclFormGroup` | `labelFor` -> `fieldId`, now optional | `groupLabel`, `helpText` + `help` slot, `invalid`, `invalidFeedback` + slot, `required`, `disabled` |
-| `MclInputText` | `id` optional; `invalid` no longer defaults to `false`; native-validity CSS display removed | `disabled`, `name`, `autocomplete`, wider `type` |
-| `MclTextArea` | `id` optional; `invalid` default | `disabled`, `name`, `invalidFeedback` + slot (no error region exists today) |
-| `MclSelect` | Esc no longer wipes the value; `id` optional; `invalid` default | `disabled`, `name`, `invalidFeedback` + slot; `required` finally bound |
-| `MclCheckbox` | `checked` removed; `checkbox-click` emit -> `change(event)` | `disabled`, `name` |
-| `MclInputRadio` | `checked` removed; `change` signature -> `change(event)` | **`v-model`**, `disabled`, `name` |
-| `MclInputSwitch` | prop renames only | `disabled`, `name` |
-| `MclInputFile` | clear-button double-fire fixed | `disabled`, `name`, `invalid`, `invalidFeedback` |
+| Component        | Breaking                                                                                    | Added                                                                                               |
+| ---------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `MclFormGroup`   | `labelFor` -> `fieldId`, now optional                                                       | `groupLabel`, `helpText` + `help` slot, `invalid`, `invalidFeedback` + slot, `required`, `disabled` |
+| `MclInputText`   | `id` optional; `invalid` no longer defaults to `false`; native-validity CSS display removed | `disabled`, `name`, `autocomplete`, wider `type`                                                    |
+| `MclTextArea`    | `id` optional; `invalid` default                                                            | `disabled`, `name`, `invalidFeedback` + slot (no error region exists today)                         |
+| `MclSelect`      | Esc no longer wipes the value; `id` optional; `invalid` default                             | `disabled`, `name`, `invalidFeedback` + slot; `required` finally bound                              |
+| `MclCheckbox`    | `checked` removed; `checkbox-click` emit -> `change(event)`                                 | `disabled`, `name`                                                                                  |
+| `MclInputRadio`  | `checked` removed; `change` signature -> `change(event)`                                    | **`v-model`**, `disabled`, `name`                                                                   |
+| `MclInputSwitch` | prop renames only                                                                           | `disabled`, `name`                                                                                  |
+| `MclInputFile`   | clear-button double-fire fixed                                                              | `disabled`, `name`, `invalid`, `invalidFeedback`                                                    |
 
 ### Three deliberate breaks
 
@@ -257,7 +257,7 @@ its own. One region either way, and ownership is explicit rather than incidental
    then the model diverges. `v-model` becomes the only channel and `change`
    emits just the native `Event`.
 2. **Native-validity CSS display removed from `MclInputText`.** Today error
-   *visibility* comes from `peer-invalid` CSS while `aria-describedby` comes from
+   _visibility_ comes from `peer-invalid` CSS while `aria-describedby` comes from
    the `invalid` prop, so an input can display an error screen readers never
    learn about. Phase-04 chose prop-driven validation for framework-agnosticism;
    this finishes that choice. Consumers relying on automatic native display must

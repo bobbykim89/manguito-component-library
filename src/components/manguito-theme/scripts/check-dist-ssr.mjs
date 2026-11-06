@@ -15,7 +15,9 @@ let failed = false
 const pass = (label) => console.log(`PASS ${label}`)
 const fail = (label, err) => {
   failed = true
-  const message = (err && err.message ? err.message : String(err)).split('\n')[0]
+  const message = (err && err.message ? err.message : String(err)).split(
+    '\n',
+  )[0]
   console.log(`FAIL ${label}: ${message}`)
 }
 const check = async (label, fn) => {

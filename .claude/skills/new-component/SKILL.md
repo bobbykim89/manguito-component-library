@@ -45,6 +45,7 @@ const props = withDefaults(defineProps<Props>(), {
 ```
 
 Rules:
+
 - Always `<script setup lang="ts">`
 - Always `withDefaults(defineProps<{...}>(), {...})`
 - Boolean display flags use `show*` prefix
@@ -65,6 +66,7 @@ export { default as ComponentName } from './<kebab-component-name>/<ComponentNam
 Create at `src/stories/<package-name>/<ComponentName>.stories.ts`.
 
 Use the existing story file in the same package as a structural reference. Key conventions:
+
 - `meta.title` follows the pattern already used in that package
 - `argTypes` uses `control: 'select'` for `ColorPalette` props with `options` array
 - Boolean props use `control: 'boolean'`
@@ -73,6 +75,7 @@ Use the existing story file in the same package as a structural reference. Key c
 ## Verification
 
 After creating the files, confirm:
+
 - Component file exists at the correct path
 - Export is present in `lib/index.ts`
 - Story file exists in `src/stories/`
