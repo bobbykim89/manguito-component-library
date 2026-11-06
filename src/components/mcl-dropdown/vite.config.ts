@@ -13,7 +13,8 @@ export default defineConfig({
         return outputChunk.fileName.includes('mcl-dropdown')
       },
     }),
-    dts({ rollupTypes: true }),
+    // tests import the theme's SSR harness, which is outside this package's rootDir
+    dts({ rollupTypes: true, exclude: ['lib/**/*.test.ts'] }),
   ],
   build: {
     lib: {

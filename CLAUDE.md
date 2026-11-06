@@ -33,7 +33,7 @@ pnpm run test:watch         # vitest watch
 
 Tests live alongside source as `lib/**/*.test.ts`. The root `vitest.config.ts` uses Vitest's `projects` API — add new packages there when they gain tests.
 
-SSR test convention: `*.server.test.ts` runs in the node environment (`// @vitest-environment node`, so `document` is undefined) and `*.test.ts` runs in jsdom (the theme default; happy-dom breaks `@vueuse` `useScrollLock(document)`). The harness is `src/components/manguito-theme/lib/__tests__/ssr.ts` (`renderOnServer`, `hydrate`); consumer packages import it through the `'@mcl/ssr-test-utils'` alias.
+SSR test convention: `*.server.test.ts` runs in the node environment (`// @vitest-environment node`, so `document` is undefined) and `*.test.ts` runs in jsdom (the theme default; happy-dom breaks `@vueuse` `useScrollLock(document)`). The harness is `src/components/manguito-theme/lib/__tests__/ssr.ts` (`renderOnServer`, `hydrate`); consumer packages import it by relative path (`'../../../manguito-theme/lib/__tests__/ssr'`).
 
 ### Releases
 

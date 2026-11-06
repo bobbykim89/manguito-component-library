@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { h } from 'vue'
-import { hydrate } from '@mcl/ssr-test-utils'
+import { hydrate } from '../../../manguito-theme/lib/__tests__/ssr'
 import MclHeaderB from './MclHeaderB.vue'
 
 const settle = () => new Promise((r) => setTimeout(r, 50))

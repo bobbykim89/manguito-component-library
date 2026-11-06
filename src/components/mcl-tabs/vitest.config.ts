@@ -19,10 +19,6 @@ export default defineProject({
         __dirname,
         '../manguito-theme/lib/index.ts',
       ),
-      '@mcl/ssr-test-utils': resolve(
-        __dirname,
-        '../manguito-theme/lib/__tests__/ssr.ts',
-      ),
     },
   },
   test: {
