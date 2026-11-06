@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+# A pull request shares one group per ref, so a newer push cancels its older
+# run. A push to master gets a group of its own commit: GitHub cancels a
+# *pending* run whenever another is queued in the same group, even with
+# cancel-in-progress false, so a shared master group would drop the middle
+# run of three quick merges. Per-commit groups give every merge its own result.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  # `ci` is the check name .github/rulesets/master.json requires. Renaming the
+  # job means renaming it there too, or every pull request waits forever on a
+  # check that never reports.
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      # No version input: reads `packageManager` from the root package.json.
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Install
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm lint
+      - name: Format check
+        run: pnpm format:check
+      - name: Build packages
+        run: pnpm run package:build
+      # After the build: consumer packages resolve @bobbykim/manguito-theme
+      # types from its dist/.
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Test
+        run: pnpm test
+      # Calls the package script directly: the root `test:dist` would rebuild.
+      - name: Test dist SSR
+        run: pnpm --filter @bobbykim/manguito-theme run test:dist
+      - name: Build Storybook
+        run: pnpm exec storybook build -o storybook-static --quiet
