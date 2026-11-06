@@ -15,6 +15,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
+    "typecheck": "turbo run typecheck",
     "commit": "cz",
     "changeset": "changeset",
     "package:create": "node ./scripts/index.mjs",

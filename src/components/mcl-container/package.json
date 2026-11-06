@@ -17,7 +17,8 @@
     }
   },
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
   },
   "author": {
     "name": "Bobby Kim",

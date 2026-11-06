@@ -19,7 +19,8 @@
   "scripts": {
     "build": "vite build",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
   },
   "author": {
     "name": "Bobby Kim",
