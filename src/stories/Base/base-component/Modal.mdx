@@ -102,6 +102,10 @@ Pass `title` to use the built-in header instead of `#header` slot.
 
 <Canvas of={Stories.modalExample} />
 
+## SSR
+
+Modal server-renders closed, or open when `visible` is set. A modal rendered open on the server can be closed after hydration. Scroll lock and focus trap engage after mount and release on unmount.
+
 ---
 
 ## API

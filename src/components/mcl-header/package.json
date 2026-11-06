@@ -17,7 +17,9 @@
     }
   },
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "author": {
     "name": "Bobby Kim",

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { toRef, useId, watch } from 'vue'
 import { useCollapseState } from '../composables'
-import { ClientSideRender } from '../util'
 
 const props = withDefaults(
   defineProps<{
@@ -71,22 +70,20 @@ defineExpose<{
 
 <template>
   <div :id="collapseId">
-    <ClientSideRender>
-      <Transition
-        name="collapse"
-        tag="div"
-        @enter="onEnter"
-        @after-enter="onAfterEnter"
-        @leave="onLeave"
-        class="overflow-y-clip"
-      >
-        <div v-show="isOpen">
-          <div :class="customClass">
-            <slot />
-          </div>
+    <Transition
+      name="collapse"
+      tag="div"
+      @enter="onEnter"
+      @after-enter="onAfterEnter"
+      @leave="onLeave"
+      class="overflow-y-clip"
+    >
+      <div v-show="isOpen">
+        <div :class="customClass">
+          <slot />
         </div>
-      </Transition>
-    </ClientSideRender>
+      </div>
+    </Transition>
   </div>
 </template>
 

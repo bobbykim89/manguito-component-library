@@ -105,6 +105,10 @@ import { vCollapse } from '@bobbykim/manguito-theme/directives'
 
 <Canvas of={Stories.tabExample2} />
 
+## SSR
+
+The active tab is visible in the server HTML before its height is measured. The container has no `max-height` limit until the first height greater than 0 is measured. From then on `--container-hts` is always set, so `max-height` animates when you switch tabs.
+
 ### Props
 
 #### TabContainer

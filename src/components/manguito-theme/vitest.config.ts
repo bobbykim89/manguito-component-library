@@ -11,7 +11,7 @@ export default defineProject({
   },
   test: {
     name: 'manguito-theme',
-    environment: 'happy-dom',
+    environment: 'jsdom',
     globals: true,
     include: ['lib/**/*.test.ts'],
   },

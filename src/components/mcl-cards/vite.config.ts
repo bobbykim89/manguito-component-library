@@ -22,11 +22,14 @@ export default defineConfig({
       fileName: 'mcl-cards',
     },
     rollupOptions: {
-      external: ['vue', '@bobbykim/manguito-theme'],
+      external: ['vue', /^@bobbykim\/manguito-theme(\/.*)?$/],
       output: {
         globals: {
           vue: 'Vue',
           '@bobbykim/manguito-theme': 'ManguitoTheme',
+          '@bobbykim/manguito-theme/directives': 'ManguitoThemeDirectives',
+          '@bobbykim/manguito-theme/util': 'ManguitoThemeUtil',
+          '@bobbykim/manguito-theme/composable': 'ManguitoThemeComposable',
         },
       },
     },

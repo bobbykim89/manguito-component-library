@@ -30,6 +30,7 @@ const emit = defineEmits<{
   (e: 'toggle-drawer', event: Event, open: boolean): void
 }>()
 const navOpen = ref<boolean>(false)
+const mounted = ref<boolean>(false)
 
 const toggleNavButton = (e: Event): void => {
   navOpen.value = !navOpen.value
@@ -45,6 +46,7 @@ const componentWidth = computed(() => {
 })
 
 onMounted(() => {
+  mounted.value = true
   const scrollLock = useScrollLock(document)
 
   watch(navOpen, (val) => {
@@ -75,8 +77,24 @@ defineExpose<{
       </div>
     </nav>
 
-    <!-- mobile menu -->
-    <Teleport to="body">
+    <!-- nav drawer button before mount: visible on first paint, so it stays in server html -->
+    <div
+      v-if="slots['mobile-content'] && !mounted"
+      class="fixed top-0 right-0 z-50 mt-xs mr-xs block lg:hidden"
+    >
+      <NavDrawer
+        :color="drawerBtnColor"
+        :show-border="showDrawerBorder"
+        class="relative block lg:hidden"
+        @hbg-click="toggleNavButton"
+        :toggle="navOpen"
+        :bg-color="bgColor"
+      ></NavDrawer>
+    </div>
+
+    <!-- mobile menu: teleported only once mounted (never server-rendered); after mount the
+         button moves here so it shares the drawer's z-40 wrapper and always stays above it -->
+    <Teleport v-if="mounted" to="body">
       <div class="relative z-40 block lg:hidden">
         <!-- nav drawer button -->
         <div

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import { computed, ref, useId, watch } from 'vue'
+import { computed, onMounted, ref, useId, watch } from 'vue'
 import { observeVisibleAttr, useModalScrollLock } from '../composables'
 import { vClickOutside } from '../directives'
 import { generateClass } from '../theme'
@@ -104,6 +104,14 @@ const onAfterEnter = () => {
 const onAfterLeave = () => {
   toggleComplete.value = false
 }
+// A dialog that was server-rendered open is hydrated in place: Vue does not run
+// enter transition hooks for hydrated elements, so `after-enter` never fires.
+// Treat it as fully entered once mounted so it can be closed.
+onMounted(() => {
+  if (toggle.value && !toggleComplete.value) {
+    onAfterEnter()
+  }
+})
 
 // set mutation observer watching `visible` attribute on element
 const handleVisibility = (visible: boolean = false) => {

@@ -5,6 +5,10 @@ export default defineConfig({
     projects: [
       './src/components/manguito-theme',
       './src/components/mcl-forms',
+      './src/components/mcl-collapse',
+      './src/components/mcl-header',
+      './src/components/mcl-tabs',
+      './src/components/mcl-dropdown',
     ],
   },
 })

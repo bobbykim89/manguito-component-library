@@ -1,13 +1,16 @@
 import { useScrollLock } from '@vueuse/core'
-import { watch, type Ref } from 'vue'
+import { onMounted, shallowRef, watch, type Ref } from 'vue'
 
 export const useModalScrollLock = (isOpen: Ref<boolean>): void => {
-  const scrollLock = useScrollLock(document)
-  watch(
-    isOpen,
-    (val) => {
-      scrollLock.value = val
-    },
-    { immediate: true },
-  )
+  // `document` must not be touched during setup (it does not exist on the
+  // server). The target is assigned after mount; until then the lock is inert.
+  const target = shallowRef<HTMLElement | null>(null)
+  const scrollLock = useScrollLock(target)
+  onMounted(() => {
+    target.value = document.documentElement
+    scrollLock.value = isOpen.value
+  })
+  watch(isOpen, (val) => {
+    scrollLock.value = val
+  })
 }

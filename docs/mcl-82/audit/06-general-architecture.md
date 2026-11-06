@@ -157,6 +157,8 @@ export const ClientSideRender = defineComponent({
 
 It is used only once — wrapping the `<Transition>` inside `Collapse.vue`. The purpose is to prevent SSR hydration mismatches caused by the transition animation on initial render. This is a valid pattern, but it could be replaced with Vue 3's built-in `<ClientOnly>` (in Nuxt) or a simple `onMounted`-based approach within `Collapse.vue` itself, without requiring a separate utility component.
 
+> **Update (SSR-friendly manguito-theme):** `ClientSideRender` is no longer used internally. `Collapse.vue` now always renders its content and hides closed panels with `v-show`. The component is still exported from `./util` as a last-resort escape hatch.
+
 ---
 
 ## 7. Hardcoded `console.log` in Production Code

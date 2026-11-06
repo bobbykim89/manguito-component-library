@@ -138,13 +138,15 @@ defineExpose<{
         @after-enter="onAfterEnter"
         @leave="onLeave"
       >
-        <div
-          class="mx-xs my-2xs overflow-hidden rounded-md bg-opacity-80"
-          v-if="navOpen"
-          :class="generateClass.bgColorVariant({ color: mobileMenuBgColor })"
-        >
-          <div v-if="slots['mobile-content']">
-            <slot name="mobile-content" :header-close="closeNav"></slot>
+        <!-- only height is animated, so spacing lives on the inner panel -->
+        <div v-if="navOpen" class="overflow-hidden">
+          <div
+            class="mx-xs my-2xs overflow-hidden rounded-md bg-opacity-80"
+            :class="generateClass.bgColorVariant({ color: mobileMenuBgColor })"
+          >
+            <div v-if="slots['mobile-content']">
+              <slot name="mobile-content" :header-close="closeNav"></slot>
+            </div>
           </div>
         </div>
       </transition>
