@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest'
 import { defineComponent, h, ref } from 'vue'
-import { renderOnServer } from '../../__tests__/ssr'
+import { renderOnServer } from '@mcl/test-utils/ssr'
 import { useModalScrollLock } from '../useModalScrollLock'
 
 describe('useModalScrollLock (server)', () => {

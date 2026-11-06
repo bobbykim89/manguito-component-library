@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest'
 import { h } from 'vue'
-import { renderOnServer } from '../__tests__/ssr'
+import { renderOnServer } from '@mcl/test-utils/ssr'
 import TabContainer from './TabContainer.vue'
 import TabContent from './TabContent.vue'
 

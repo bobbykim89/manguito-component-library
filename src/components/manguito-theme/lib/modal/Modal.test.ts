@@ -1,7 +1,7 @@
 import { mount } from '@vue/test-utils'
 import { afterEach, describe, expect, it } from 'vitest'
 import { h, nextTick, ref } from 'vue'
-import { hydrate } from '../__tests__/ssr'
+import { hydrate } from '@mcl/test-utils/ssr'
 import Modal from './Modal.vue'
 
 const slots = { body: () => 'Body text' }

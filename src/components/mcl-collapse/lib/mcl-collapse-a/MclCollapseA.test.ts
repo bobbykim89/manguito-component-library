@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { h, nextTick } from 'vue'
-import { hydrate } from '../../../manguito-theme/lib/__tests__/ssr'
+import { hydrate } from '@mcl/test-utils/ssr'
 import MclCollapseA from './MclCollapseA.vue'
 
 const settle = () => new Promise((r) => setTimeout(r, 50))

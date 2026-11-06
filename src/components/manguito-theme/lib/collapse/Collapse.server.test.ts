@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest'
 import { h } from 'vue'
-import { renderOnServer } from '../__tests__/ssr'
+import { renderOnServer } from '@mcl/test-utils/ssr'
 import AccordionGroup from './AccordionGroup.vue'
 import Collapse from './Collapse.vue'
 

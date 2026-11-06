@@ -35,6 +35,9 @@ importers:
       '@changesets/cli':
         specifier: ^2.31.0
         version: 2.31.0(@types/node@22.20.1)
+      '@mcl/test-utils':
+        specifier: workspace:*
+        version: link:src/utils/test
       '@storybook/addon-a11y':
         specifier: ^10.5.9
         version: 10.5.9(storybook@10.5.9(@types/react@19.1.2)(prettier@3.8.1)(react@19.1.0))
@@ -496,6 +499,12 @@ importers:
       vue-tsc:
         specifier: 3.2.4
         version: 3.2.4(typescript@5.9.3)
+
+  src/utils/test:
+    devDependencies:
+      vue:
+        specifier: ^3.5.27
+        version: 3.5.27(typescript@5.9.3)
 
 packages:
 

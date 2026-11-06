@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { createSSRApp, h, nextTick } from 'vue'
-import { hydrate, renderOnServer } from '../__tests__/ssr'
+import { hydrate, renderOnServer } from '@mcl/test-utils/ssr'
 import HeaderHorizontal from './HeaderHorizontal.vue'
 
 const settle = () => new Promise((r) => setTimeout(r, 50))

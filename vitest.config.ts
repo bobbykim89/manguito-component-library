@@ -3,6 +3,7 @@ import { defineConfig } from 'vitest/config'
 export default defineConfig({
   test: {
     projects: [
+      './src/utils/test',
       './src/components/manguito-theme',
       './src/components/mcl-forms',
       './src/components/mcl-collapse',
