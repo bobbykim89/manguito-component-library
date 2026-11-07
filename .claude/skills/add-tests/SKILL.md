@@ -17,8 +17,9 @@ Write tests for the file at `$ARGUMENTS`.
 ## Test file location
 
 Place the test file adjacent to the source:
+
 - Source: `src/components/mcl-forms/lib/mcl-input-text/MclInputText.vue`
-- Test:   `src/components/mcl-forms/lib/mcl-input-text/MclInputText.test.ts`
+- Test: `src/components/mcl-forms/lib/mcl-input-text/MclInputText.test.ts`
 
 ## Test file structure
 

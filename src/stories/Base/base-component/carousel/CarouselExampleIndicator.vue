@@ -35,6 +35,7 @@ const contentData = [
       <template #content>
         <CarouselContent
           v-for="(item, idx) in contentData"
+          :key="idx"
           :id="`slide-example2-${idx}`"
           :slide-number="idx"
         >
@@ -72,6 +73,7 @@ const contentData = [
         <div class="flex gap-3">
           <button
             v-for="item in [...Array(numberOfSlides).keys()]"
+            :key="item"
             @click="setActive(item)"
             :disabled="item === activeSlide"
             :class="[

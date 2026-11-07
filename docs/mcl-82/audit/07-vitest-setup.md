@@ -14,6 +14,7 @@ The root `tsconfig.json` has `"**/*.spec.ts"` in its `exclude` array, suggesting
 ### Storybook as a substitute
 
 The Storybook stories serve as the library's primary quality-assurance mechanism today. Stories exist for all major components and form the basis for visual verification. However, Storybook stories are:
+
 - Not run in CI automatically (no `package:test` or similar script in `package.json`).
 - Not assertions — they render components but do not verify behavior, props, events, or ARIA attributes programmatically.
 - Not regression-safe — a change that breaks a component would only be caught if someone manually opens Storybook and looks at every story.
@@ -36,12 +37,11 @@ Vitest natively supports monorepos via its `projects` option (Vitest workspace m
 // vitest.workspace.ts (root)
 import { defineWorkspace } from 'vitest/config'
 
-export default defineWorkspace([
-  'src/components/*/vitest.config.ts',
-])
+export default defineWorkspace(['src/components/*/vitest.config.ts'])
 ```
 
 Each package's `vitest.config.ts` would extend a shared base. This approach:
+
 - Runs all package tests with a single `pnpm test` command at the root.
 - Supports per-package configuration overrides (e.g., `manguito-theme` needs different coverage thresholds than a thin wrapper package).
 - Integrates naturally with the existing Lerna setup — `lerna run test` would also work per-package.
@@ -56,6 +56,7 @@ Each package could add its own `vitest.config.ts` independently and run `pnpm te
 Packages like `mcl-collapse` depend on `@bobbykim/manguito-theme` via `workspace:*`. During testing, Vitest must resolve this to the source under `src/components/manguito-theme/lib/`, not a built `dist/`. Two approaches:
 
 1. **Vitest alias in shared base config**: Add a resolve alias in the shared Vitest config pointing `@bobbykim/manguito-theme` to the source directory. This avoids having to build `manguito-theme` before running tests.
+
    ```ts
    resolve: {
      alias: {
@@ -98,6 +99,7 @@ The `observeVisibleAttr` composable, `vClickOutside`, `vCollapse`, and `vToggle`
 ### Component tests — medium value, medium friction
 
 Vue Test Utils (`@vue/test-utils`) with Vitest is the standard stack for testing Vue 3 SFCs in jsdom or happy-dom. Component tests would verify:
+
 - Props render expected DOM output.
 - Events fire on user interaction.
 - `v-model` bindings update correctly.
@@ -105,6 +107,7 @@ Vue Test Utils (`@vue/test-utils`) with Vitest is the standard stack for testing
 - Keyboard interactions work as expected.
 
 Example for `Modal.vue`:
+
 ```ts
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
@@ -124,6 +127,7 @@ describe('Modal', () => {
 ```
 
 Challenges for component tests in this library:
+
 - **SCSS styles**: Some components use `<style scoped lang="scss">`. Vitest with jsdom does not evaluate CSS. Classes will be present in the DOM but visual effects cannot be asserted. This is acceptable for behavioral tests.
 - **Transitions**: Vue `<Transition>` components behave differently in test environments. `@vue/test-utils` provides `flushPromises()` and `wrapper.vm.$nextTick()` to handle async transitions, but animation-dependent behavior (e.g., `toggleComplete` in Modal/Sidebar that gates `closeModal`) needs care.
 - **MutationObserver**: The `observeVisibleAttr` composable uses `useMutationObserver` from `@vueuse/core`. jsdom supports `MutationObserver` natively, so this should work, but testing the full `vToggle` → DOM attribute → `observeVisibleAttr` → component state chain requires care.
@@ -132,6 +136,7 @@ Challenges for component tests in this library:
 ### Visual regression tests — lower priority for now
 
 Tools like Chromatic (already integrated as `@chromatic-com/storybook` in devDependencies) or Playwright visual comparison can catch unintended visual changes. Chromatic specifically can snapshot all Storybook stories. However, this requires:
+
 - A Chromatic account and project key.
 - Stories that render deterministically (no random data, no date-dependent content).
 
@@ -162,34 +167,34 @@ These run in the actual browser (via `storybook test --watch`) and work well for
 
 These have no browser or Vue dependencies and can be tested with zero extra setup:
 
-| File | What to test |
-|---|---|
-| `theme/static/colors.ts` | `MclColor` properties contain correct Tailwind strings |
-| `theme/validator/index.ts` | All `validate*` methods for valid and invalid inputs |
-| `theme/mcl-theme/index.ts` | `generateClass` dispatches correctly for each type |
-| `directives/shared.fn.ts` | `getTargetId`, `getTargetElem`, `hasVisibleAttr`, `toggleVisibility` |
-| `composables/observeVisible.ts` | Attribute change triggers callback with correct boolean |
+| File                            | What to test                                                         |
+| ------------------------------- | -------------------------------------------------------------------- |
+| `theme/static/colors.ts`        | `MclColor` properties contain correct Tailwind strings               |
+| `theme/validator/index.ts`      | All `validate*` methods for valid and invalid inputs                 |
+| `theme/mcl-theme/index.ts`      | `generateClass` dispatches correctly for each type                   |
+| `directives/shared.fn.ts`       | `getTargetId`, `getTargetElem`, `hasVisibleAttr`, `toggleVisibility` |
+| `composables/observeVisible.ts` | Attribute change triggers callback with correct boolean              |
 
 ### Priority 2: Form components with known bugs
 
 The `peer-inavlid` typo and `MclInputText` validation feedback are confirmed bugs that tests would catch:
 
-| Component | What to test |
-|---|---|
-| `MclInputText` | `invalidFeedback` slot renders when input is invalid |
-| `MclSelect` | Keyboard navigation (arrow keys), ESC clears and closes, `aria-expanded` toggles |
-| `MclCheckbox` | `checkbox-click` event fires with correct value; model updates |
-| `MclInputSwitch` | Model binding; ARIA state |
+| Component        | What to test                                                                     |
+| ---------------- | -------------------------------------------------------------------------------- |
+| `MclInputText`   | `invalidFeedback` slot renders when input is invalid                             |
+| `MclSelect`      | Keyboard navigation (arrow keys), ESC clears and closes, `aria-expanded` toggles |
+| `MclCheckbox`    | `checkbox-click` event fires with correct value; model updates                   |
+| `MclInputSwitch` | Model binding; ARIA state                                                        |
 
 ### Priority 3: Overlay components (Modal, Sidebar)
 
 These are the most complex and have the most critical bugs (accessibility gaps from document [01](./01-accessibility.md)):
 
-| Component | What to test |
-|---|---|
-| `Modal` | Opens/closes on `toggle()`/`open()`/`close()`; emits `open`/`close`; `visible` prop sync; scroll lock |
-| `Sidebar` | Same as Modal + placement-specific behavior |
-| `Collapse` | Toggle works; accordion group closes sibling; `open`/`close` events |
+| Component  | What to test                                                                                          |
+| ---------- | ----------------------------------------------------------------------------------------------------- |
+| `Modal`    | Opens/closes on `toggle()`/`open()`/`close()`; emits `open`/`close`; `visible` prop sync; scroll lock |
+| `Sidebar`  | Same as Modal + placement-specific behavior                                                           |
+| `Collapse` | Toggle works; accordion group closes sibling; `open`/`close` events                                   |
 
 ---
 
@@ -198,6 +203,7 @@ These are the most complex and have the most critical bugs (accessibility gaps f
 ### Vite configs
 
 Every package has a `vite.config.ts` oriented entirely toward library builds (no `test` block). Adding Vitest requires either:
+
 - Adding a `test` block to each package's existing `vite.config.ts` (co-located approach).
 - Creating a separate `vitest.config.ts` per package that extends the existing config (cleaner separation).
 
@@ -240,7 +246,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@bobbykim/manguito-theme': path.resolve(
-        __dirname, 'src/components/manguito-theme/lib/index.ts'
+        __dirname,
+        'src/components/manguito-theme/lib/index.ts',
       ),
     },
   },
@@ -289,6 +296,7 @@ export default mergeConfig(sharedConfig, {
 ```
 
 Or with Turborepo (per document [02](./02-monorepo-tooling.md)):
+
 ```json
 // turbo.json
 {
@@ -309,11 +317,11 @@ The `scripts/index.mjs` package creation tool generates `vite.config.ts` and `pa
 
 ## Vue Test Utils vs. Other Options
 
-| Tool | Verdict |
-|---|---|
-| **`@vue/test-utils`** | **Recommended.** Official Vue testing library, full support for `<script setup>`, `defineExpose`, `v-model`, slots, and directives. Actively maintained. |
-| **`@testing-library/vue`** | An alternative built on `@vue/test-utils` that encourages user-centric queries (by role, label text). Good for accessibility-focused tests (relevant given document [01](./01-accessibility.md)). Can be used alongside `@vue/test-utils`. |
-| **Playwright component testing** | Runs in a real browser; handles CSS, transitions, and layout correctly. Higher setup cost; slower than jsdom-based tests. Best reserved for end-to-end flows once unit/component tests are in place. |
-| **Storybook play functions** | Good complement to unit tests for interaction flows. Already has `@storybook/test` installed. Limited to browser-based execution, no CI coverage reporting. |
+| Tool                             | Verdict                                                                                                                                                                                                                                    |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **`@vue/test-utils`**            | **Recommended.** Official Vue testing library, full support for `<script setup>`, `defineExpose`, `v-model`, slots, and directives. Actively maintained.                                                                                   |
+| **`@testing-library/vue`**       | An alternative built on `@vue/test-utils` that encourages user-centric queries (by role, label text). Good for accessibility-focused tests (relevant given document [01](./01-accessibility.md)). Can be used alongside `@vue/test-utils`. |
+| **Playwright component testing** | Runs in a real browser; handles CSS, transitions, and layout correctly. Higher setup cost; slower than jsdom-based tests. Best reserved for end-to-end flows once unit/component tests are in place.                                       |
+| **Storybook play functions**     | Good complement to unit tests for interaction flows. Already has `@storybook/test` installed. Limited to browser-based execution, no CI coverage reporting.                                                                                |
 
 **Practical recommendation**: Start with `@vue/test-utils` + Vitest for the `manguito-theme` unit tests and form component behavioral tests. Add `@testing-library/vue` queries for accessibility assertions (checking for `role`, `aria-label`, etc.) once the accessibility fixes from document [01](./01-accessibility.md) are applied.

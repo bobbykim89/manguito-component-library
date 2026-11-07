@@ -15,7 +15,7 @@ withDefaults(
   },
 )
 
-const slots = defineSlots<{
+defineSlots<{
   'tab-button'(props: { update: (num: number) => void; activeTab: number }): any
   'tab-content': any
 }>()

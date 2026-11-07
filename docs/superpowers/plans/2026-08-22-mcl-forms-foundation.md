@@ -26,10 +26,10 @@
 - **Boolean props that must distinguish "omitted" from "explicitly false" require
   an explicit `default: undefined`.** Verified against this repo's Vue version:
 
-  | Declaration | Omitted | Passed `false` |
-  |---|---|---|
-  | `{ type: Boolean }` | `false` | `false` |
-  | `{ type: Boolean, default: undefined }` | `undefined` | `false` |
+  | Declaration                             | Omitted     | Passed `false` |
+  | --------------------------------------- | ----------- | -------------- |
+  | `{ type: Boolean }`                     | `false`     | `false`        |
+  | `{ type: Boolean, default: undefined }` | `undefined` | `false`        |
 
   Vue's boolean casting coerces an omitted `Boolean` prop to `false` unless a
   default is explicitly declared. `invalid`, `required` and `disabled` rely on
@@ -43,11 +43,13 @@
 ### Task 1: Three additive cva variants + widened `InputType` in `manguito-theme`
 
 **Files:**
+
 - Modify: `src/components/manguito-theme/lib/theme/index.ts` (add three `cva` blocks after `activeRingColorVariant`, ~line 340; add three entries to the `generateClass` object, ~line 1166)
 - Modify: `src/components/manguito-theme/lib/theme/static/theme.types.ts:68`
 - Test: `src/components/manguito-theme/lib/theme/__tests__/generateClass.test.ts`
 
 **Interfaces:**
+
 - Consumes: nothing.
 - Produces:
   - `peerCheckedBgColorVariant(props: { color: ColorPalette }): string` → `peer-checked:bg-<color>`
@@ -91,9 +93,9 @@ describe('generateClass namespace — peer and focus-visible variants', () => {
     expect(focusVisibleRingColorVariant({ color: 'light-4' })).toBe(
       'focus-visible:ring-light-4',
     )
-    expect(generateClass.focusVisibleRingColorVariant({ color: 'light-4' })).toBe(
-      'focus-visible:ring-light-4',
-    )
+    expect(
+      generateClass.focusVisibleRingColorVariant({ color: 'light-4' }),
+    ).toBe('focus-visible:ring-light-4')
   })
   it('all three cover every ColorPalette member', () => {
     // Keyed by ColorPalette rather than written as a literal list: adding a
@@ -271,12 +273,14 @@ search and number. All additive."
 ---
 
 ### Task 2: `mcl-forms` test harness + `useInputSurface`
+
 > **SUPERSEDED IN PART — read the shipped files, not the code blocks below.**
 > The final fix wave (`c8a38d8`) changed this task's contract after review found
 > that a caller which lacks one of the required fields can only call these
 > composables with a spread literal — which snapshots every value at setup and
 > freezes the classes at mount. The shipped contract differs from the blocks
 > below in three ways:
+>
 > - `InputSurfaceOptions.showHighlight` is **optional**, read as
 >   `options.showHighlight ?? false` (`MclInputFile` has no such prop).
 > - `ToggleControlOptions.rounded` is **optional**, read as
@@ -288,10 +292,10 @@ search and number. All additive."
 > `src/components/mcl-forms/lib/common/useInputSurface.ts` and
 > `useToggleControl.ts`.
 
-
 The vitest wiring is folded into this task because `useInputSurface` is the first deliverable that needs it — a test harness with nothing to test is not independently reviewable.
 
 **Files:**
+
 - Create: `src/components/mcl-forms/vitest.config.ts`
 - Create: `src/components/mcl-forms/lib/common/useInputSurface.ts`
 - Modify: `src/components/mcl-forms/package.json` (add `test` and `test:watch` scripts)
@@ -299,8 +303,10 @@ The vitest wiring is folded into this task because `useInputSurface` is the firs
 - Test: `src/components/mcl-forms/lib/common/useInputSurface.test.ts`
 
 **Interfaces:**
+
 - Consumes: `generateClass` and `ColorPalette` from `@bobbykim/manguito-theme`; `focusVisibleRingColorVariant` from Task 1.
 - Produces:
+
   ```ts
   export interface InputSurfaceOptions {
     bgColor: ColorPalette
@@ -315,6 +321,7 @@ The vitest wiring is folded into this task because `useInputSurface` is the firs
     options: InputSurfaceOptions,
   ) => ComputedRef<string>
   ```
+
   `options` is the component's reactive `props` object, read inside a `computed` so tracking works. Class order is fixed and load-bearing for tests: background, text, border, focus-visible ring, shadow, rounded.
 
 - [ ] **Step 1: Create the vitest config**
@@ -360,10 +367,7 @@ import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
-    projects: [
-      './src/components/manguito-theme',
-      './src/components/mcl-forms',
-    ],
+    projects: ['./src/components/manguito-theme', './src/components/mcl-forms'],
   },
 })
 ```
@@ -407,14 +411,19 @@ describe('useInputSurface', () => {
 
   it('adds border-2 and the border colour when showBorder is true', () => {
     const surface = useInputSurface({ ...base(), showBorder: true })
-    expect(surface.value).toBe('mcl-bg-light-1 text-black border-2 border-light-4')
+    expect(surface.value).toBe(
+      'mcl-bg-light-1 text-black border-2 border-light-4',
+    )
   })
 
   it('adds the focus-visible ring only when showHighlight is false', () => {
     const withHighlight = useInputSurface({ ...base(), showHighlight: true })
     expect(withHighlight.value).not.toContain('focus-visible:ring-light-4')
 
-    const withoutHighlight = useInputSurface({ ...base(), showHighlight: false })
+    const withoutHighlight = useInputSurface({
+      ...base(),
+      showHighlight: false,
+    })
     expect(withoutHighlight.value).toContain('focus-visible:ring-4')
     expect(withoutHighlight.value).toContain('focus-visible:ring-light-4')
   })
@@ -556,12 +565,14 @@ focus: to focus-visible: so mouse users do not get rings."
 ---
 
 ### Task 3: `useToggleControl`
+
 > **SUPERSEDED IN PART — read the shipped files, not the code blocks below.**
 > The final fix wave (`c8a38d8`) changed this task's contract after review found
 > that a caller which lacks one of the required fields can only call these
 > composables with a spread literal — which snapshots every value at setup and
 > freezes the classes at mount. The shipped contract differs from the blocks
 > below in three ways:
+>
 > - `InputSurfaceOptions.showHighlight` is **optional**, read as
 >   `options.showHighlight ?? false` (`MclInputFile` has no such prop).
 > - `ToggleControlOptions.rounded` is **optional**, read as
@@ -573,14 +584,16 @@ focus: to focus-visible: so mouse users do not get rings."
 > `src/components/mcl-forms/lib/common/useInputSurface.ts` and
 > `useToggleControl.ts`.
 
-
 **Files:**
+
 - Create: `src/components/mcl-forms/lib/common/useToggleControl.ts`
 - Test: `src/components/mcl-forms/lib/common/useToggleControl.test.ts`
 
 **Interfaces:**
+
 - Consumes: `peerCheckedBgColorVariant`, `peerFocusVisibleRingColorVariant`, `beforeBgColorVariant`, `bgColorVariant`, `borderColorVariant` from Task 1 and the existing theme; `InputSizeType` from `../common/index.types`.
 - Produces:
+
   ```ts
   export interface ToggleControlOptions {
     size: InputSizeType
@@ -592,12 +605,15 @@ focus: to focus-visible: so mouse users do not get rings."
     rounded: boolean
   }
   export interface ToggleControl {
-    boxClass: ComputedRef<string>       // visual span: colours, shadow, rounding
-    sizeClass: ComputedRef<string>      // visual span: box + indicator dimensions
-    switchVars: ComputedRef<Record<string, string>>  // CSS custom props for MclInputSwitch
+    boxClass: ComputedRef<string> // visual span: colours, shadow, rounding
+    sizeClass: ComputedRef<string> // visual span: box + indicator dimensions
+    switchVars: ComputedRef<Record<string, string>> // CSS custom props for MclInputSwitch
   }
-  export const useToggleControl: (options: ToggleControlOptions) => ToggleControl
+  export const useToggleControl: (
+    options: ToggleControlOptions,
+  ) => ToggleControl
   ```
+
   `boxClass` order is fixed: background, border colour, indicator (`before:bg-*`), checked background, focus-visible ring, shadow, rounding.
 
 - [ ] **Step 1: Write the failing test**
@@ -846,13 +862,16 @@ and adds the peer-focus-visible ring the three toggles never had."
 This is the interface every component in plan 2 leans on, so it gets the most thorough test suite in this plan.
 
 **Files:**
+
 - Modify: `src/components/mcl-forms/lib/common/index.types.ts` (add `FieldContext` and `FieldOwnProps`; delete `ColorMap`)
 - Create: `src/components/mcl-forms/lib/common/fieldContext.ts`
 - Test: `src/components/mcl-forms/lib/common/fieldContext.test.ts`
 
 **Interfaces:**
+
 - Consumes: nothing from earlier tasks.
 - Produces (the shipped contract; the authority is spec section 4, "The `MclFormGroup` context contract"):
+
   ```ts
   // index.types.ts
   export interface FieldOwnProps {
@@ -876,7 +895,9 @@ This is the interface every component in plan 2 leans on, so it gets the most th
   }
 
   // fieldContext.ts
-  export const provideFieldContext: (options: FieldProviderOptions) => FieldContext
+  export const provideFieldContext: (
+    options: FieldProviderOptions,
+  ) => FieldContext
   export const useFieldContext: (
     own: FieldOwnProps,
     options?: FieldConsumerOptions,
@@ -895,12 +916,13 @@ This is the interface every component in plan 2 leans on, so it gets the most th
     rendersOwnFeedback?: boolean
   }
   ```
+
   Naming: `provideFieldContext` matches `provideAccordion` in `manguito-theme`'s `useCollapseState.ts` — one convention for providers across the repo, and `provide*` states plainly that it writes rather than reads.
 
   Five things in that contract are load-bearing, and each was measured rather than guessed:
-  - **`name`/`invalid`/`required`/`disabled` on the provider are `MaybeRefOrGetter`, read through `toValue()`.** `MclFormGroup` cannot forward its `props` proxy, because `hasHelpText`/`ownsFeedback` derive from slot *presence* rather than from props — so it must build an object literal, and a literal snapshots plain values at setup. Passing plain values was measured leaving the group's `invalid` stuck at its mount-time value, so no control in the group ever received `aria-describedby`. Pass `() => props.invalid`.
+  - **`name`/`invalid`/`required`/`disabled` on the provider are `MaybeRefOrGetter`, read through `toValue()`.** `MclFormGroup` cannot forward its `props` proxy, because `hasHelpText`/`ownsFeedback` derive from slot _presence_ rather than from props — so it must build an object literal, and a literal snapshots plain values at setup. Passing plain values was measured leaving the group's `invalid` stuck at its mount-time value, so no control in the group ever received `aria-describedby`. Pass `() => props.invalid`.
   - **`isGroupLabel`** switches the group's wrapper between `<label for>` and `<fieldset>/<legend>`, and decides element ids: in fieldset mode every control generates its own (duplicate ids are invalid HTML and there is no `for` to match), in single-label mode it takes the group's id verbatim. The earlier design gave every sibling the group's id — measured as three radios all rendering `id="colour"`, with `label[for]` binding only the first.
-  - **Region ids follow whoever *renders* the region**, not whoever owns the element id. `errorId` is the group's when `ownsFeedback`, else `${id}-error`; `descriptionId` is the group's whenever it has one. The two flags are independent, so a group may render help text while leaving the error region to the control.
+  - **Region ids follow whoever _renders_ the region**, not whoever owns the element id. `errorId` is the group's when `ownsFeedback`, else `${id}-error`; `descriptionId` is the group's whenever it has one. The two flags are independent, so a group may render help text while leaving the error region to the control.
   - **`FieldConsumerOptions.rendersOwnFeedback`** (default `true`) is how the three toggles declare that they render no `FieldFeedback` at all. The error id is then dropped from `describedBy` unless the group owns the region — otherwise a group carrying `invalid` with no `invalidFeedback` gives every radio in it an `aria-describedby` naming an element nobody renders.
   - **`name` is a `ComputedRef`, and the control side has no id fallback.** Own prop, else the group's name, else `undefined`. An id fallback would apply to all eight controls and put a generated `name` into native form submissions with no way to opt out.
 
@@ -918,8 +940,9 @@ Create `src/components/mcl-forms/lib/common/fieldContext.test.ts`. The shipped s
 - fieldset mode giving siblings distinct element ids while sharing the group's error id and name, vs single-label mode taking the group's id.
 
 Two things about the harness are load-bearing:
+
 - the stand-in child declares `invalid`/`required`/`disabled` as `{ type: Boolean, default: undefined }`. Without it Vue's boolean casting turns an omitted prop into `false` and every inheritance test passes for the wrong reason.
-- the inheritance tests must *mutate* the child's props (`await wrapper.setProps(...)`), not only read them at mount. A suite that only reads is satisfied by an implementation that snapshots `own.invalid` at setup — measured passing 71 of 71 against exactly that defect.
+- the inheritance tests must _mutate_ the child's props (`await wrapper.setProps(...)`), not only read them at mount. A suite that only reads is satisfied by an implementation that snapshots `own.invalid` at setup — measured passing 71 of 71 against exactly that defect.
 
 - [ ] **Step 2: Run the test to verify it fails**
 
@@ -936,7 +959,7 @@ Replace the contents of `src/components/mcl-forms/lib/common/index.types.ts` wit
 
 Create `src/components/mcl-forms/lib/common/fieldContext.ts`. It mirrors `manguito-theme`'s `useCollapseState.ts`: a module-private `Symbol` key, a `provide*` function, and a consumer that injects with a null default and falls back to standalone behaviour. Spec section 4 is the authoritative description and the shipped file is the reference implementation — the code that used to be pasted into this step is what drifted, so the rules it has to satisfy are listed instead:
 
-1. The provider reads `name`/`invalid`/`required`/`disabled` through `toValue()` *inside* computeds, never destructuring them at setup.
+1. The provider reads `name`/`invalid`/`required`/`disabled` through `toValue()` _inside_ computeds, never destructuring them at setup.
 2. Element ids resolve as `own.id` -> the group's id when `!isGroupLabel` -> a generated fallback. One shared helper normalises every candidate, so neither an empty `own.id`, an empty `fieldId` nor a `useId()` returning `undefined` can reach an id slot and produce `aria-describedby="-error"`.
 3. Region ids: `errorId` is the group's when `feedbackOwnedByGroup`, else `${id}-error`; `descriptionId` is the group's whenever it has one.
 4. `describedBy` joins description then error, and omits the error id when no error region is rendered anywhere — `rendersOwnFeedback: false` and the group does not own one either.
@@ -948,7 +971,7 @@ Create `src/components/mcl-forms/lib/common/fieldContext.ts`. It mirrors `mangui
 Run: `cd src/components/mcl-forms && pnpm test fieldContext`
 Expected: PASS, 44 tests.
 
-Note that region ids follow whoever *renders* the region, not whoever owns the element id: a control with its own `id` inside a group that owns the feedback still points at the group's `errorId`, because that region provably exists. What would dangle is pointing at a region nobody renders, and rules 3 and 4 above are what prevent that.
+Note that region ids follow whoever _renders_ the region, not whoever owns the element id: a control with its own `id` inside a group that owns the feedback still points at the group's `errorId`, because that region provably exists. What would dangle is pointing at a region nobody renders, and rules 3 and 4 above are what prevent that.
 
 - [ ] **Step 6: Run the whole suite**
 
@@ -956,6 +979,7 @@ Run: `pnpm test`
 Expected: PASS. `MclCheckbox` and `MclInputSwitch` still import the now-deleted `ColorMap`, but Vitest never loads them, so the suite stays green.
 
 They are **not** invisible to the rest of the tooling, and the earlier claim that "nothing type-checks or builds them" was wrong. Measured: `src/components/mcl-forms/vite.config.ts` runs `dts({ rollupTypes: true })`, which does type-check both SFCs and prints two `TS2305: Module '"../common/index.types"' has no exported member 'ColorMap'` diagnostics; and `pnpm run story:build` runs `turbo run build` first, so it surfaces them too. The saving grace is that those diagnostics are non-fatal — `vite build` exits 0, `dist/` is emitted, and the emitted prop types are intact. So expect to see them, do not read them as something a later change introduced, and do not add a compatibility shim: plan 2's first task rewrites both components.
+
 - [ ] **Step 7: Commit**
 
 ```bash
@@ -975,14 +999,16 @@ now-unused ColorMap type."
 ### Task 5: `FieldFeedback.vue`
 
 **Files:**
+
 - Create: `src/components/mcl-forms/lib/common/FieldFeedback.vue`
 - Test: `src/components/mcl-forms/lib/common/FieldFeedback.test.ts`
 
 **Interfaces:**
+
 - Consumes: nothing from earlier tasks — deliberately prop-driven, not context-driven, so the group and the controls can both render it.
 - Produces: a component with props `{ id: string; invalid?: boolean; text?: string }` and a default slot receiving no bindings. Renders nothing when `invalid` is falsy.
 
-**Why the `v-if` lives inside the component, not in the callers:** `role="alert"` announces on *insertion*, not on becoming visible. `MclInputText` today renders its error container unconditionally and hides it with CSS, so the alert never fires. Putting the conditional inside `FieldFeedback` means the eight callers cannot get this wrong — which is the whole reason this is a component rather than a composable.
+**Why the `v-if` lives inside the component, not in the callers:** `role="alert"` announces on _insertion_, not on becoming visible. `MclInputText` today renders its error container unconditionally and hides it with CSS, so the alert never fires. Putting the conditional inside `FieldFeedback` means the eight callers cannot get this wrong — which is the whole reason this is a component rather than a composable.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -1137,11 +1163,13 @@ always in the DOM and CSS-hidden, so its alert never fires."
 `CaretDown.vue` exists but is unusable by `MclSelect`, which needs a different size, a themed fill and a rotation class — so `MclSelect` inlines its own copy of the same path instead. The X icon is inlined twice, in `MclSelect` and `MclInputFile`. Both need a `className` escape hatch before plan 2 can consume them.
 
 **Files:**
+
 - Modify: `src/components/mcl-forms/lib/assets/CaretDown.vue`
 - Create: `src/components/mcl-forms/lib/assets/XMark.vue`
 - Test: `src/components/mcl-forms/lib/assets/icons.test.ts`
 
 **Interfaces:**
+
 - Consumes: `generateClass` and `ColorPalette` from `@bobbykim/manguito-theme`.
 - Produces: both components take `{ color?: ColorPalette; className?: string }`. `color` defaults to `'dark-4'`. Each renders `aria-hidden="true"` with `focusable="false"`, the themed fill class, and `className`. There is **no default size**: Tailwind utilities of the same property resolve by stylesheet order, not class-attribute order, so appending `className` could not override a built-in `h-md w-md`. Dropping that default is what makes the icon reusable — callers must supply sizing (and any transform) via `className`, or the SVG renders at its intrinsic width.
 
@@ -1206,7 +1234,9 @@ describe.each(icons)('%s', (_name, Icon) => {
 
 describe('icon viewBoxes', () => {
   it('CaretDown uses the Font Awesome caret-down box', () => {
-    expect(mount(CaretDown).find('svg').attributes('viewBox')).toBe('0 0 320 512')
+    expect(mount(CaretDown).find('svg').attributes('viewBox')).toBe(
+      '0 0 320 512',
+    )
   })
   it('XMark uses the Font Awesome xmark box', () => {
     expect(mount(XMark).find('svg').attributes('viewBox')).toBe('0 0 384 512')
@@ -1354,18 +1384,18 @@ They are, however, type-checked — an earlier draft of this plan claimed nothin
 
 Plan 2 consumes, with these exact names:
 
-| From | Name | Shape |
-|---|---|---|
-| `@bobbykim/manguito-theme` | `generateClass.peerCheckedBgColorVariant` | `({ color }) => string` |
-| `@bobbykim/manguito-theme` | `generateClass.peerFocusVisibleRingColorVariant` | `({ color }) => string` |
-| `@bobbykim/manguito-theme` | `generateClass.focusVisibleRingColorVariant` | `({ color }) => string` |
-| `common/index.types` | `FieldContext`, `FieldOwnProps`, `InputSizeType` | types |
-| `common/fieldContext` | `provideFieldContext(options)` | for `MclFormGroup` |
-| `common/fieldContext` | `useFieldContext(own, options?)` | for all eight controls; `{ rendersOwnFeedback: false }` on the three toggles |
-| `common/useInputSurface` | `useInputSurface(props)` | text, textarea, select, file |
-| `common/useToggleControl` | `useToggleControl(props)` | checkbox, radio, switch |
-| `common/FieldFeedback.vue` | props `{ id, invalid, text }` + default slot | text, textarea, select, file, group |
-| `assets/CaretDown.vue`, `assets/XMark.vue` | props `{ color, className }` | select, file |
+| From                                       | Name                                             | Shape                                                                        |
+| ------------------------------------------ | ------------------------------------------------ | ---------------------------------------------------------------------------- |
+| `@bobbykim/manguito-theme`                 | `generateClass.peerCheckedBgColorVariant`        | `({ color }) => string`                                                      |
+| `@bobbykim/manguito-theme`                 | `generateClass.peerFocusVisibleRingColorVariant` | `({ color }) => string`                                                      |
+| `@bobbykim/manguito-theme`                 | `generateClass.focusVisibleRingColorVariant`     | `({ color }) => string`                                                      |
+| `common/index.types`                       | `FieldContext`, `FieldOwnProps`, `InputSizeType` | types                                                                        |
+| `common/fieldContext`                      | `provideFieldContext(options)`                   | for `MclFormGroup`                                                           |
+| `common/fieldContext`                      | `useFieldContext(own, options?)`                 | for all eight controls; `{ rendersOwnFeedback: false }` on the three toggles |
+| `common/useInputSurface`                   | `useInputSurface(props)`                         | text, textarea, select, file                                                 |
+| `common/useToggleControl`                  | `useToggleControl(props)`                        | checkbox, radio, switch                                                      |
+| `common/FieldFeedback.vue`                 | props `{ id, invalid, text }` + default slot     | text, textarea, select, file, group                                          |
+| `assets/CaretDown.vue`, `assets/XMark.vue` | props `{ color, className }`                     | select, file                                                                 |
 
 **Carry this into plan 2** — three ways to break the foundation silently, all of
 them measured during this plan:
@@ -1374,9 +1404,9 @@ them measured during this plan:
    with `default: undefined`** (see Global Constraints). This is the single
    easiest way to break the inheritance contract built in Task 4, and it fails
    silently — the props read `false` and the group is simply never consulted.
-2. **`MclFormGroup` must pass *getters*, not plain values,** for `name`,
+2. **`MclFormGroup` must pass _getters_, not plain values,** for `name`,
    `invalid`, `required` and `disabled`: `provideFieldContext({ invalid: () =>
-   props.invalid, ... })`. It cannot forward its `props` proxy (`hasHelpText`
+props.invalid, ... })`. It cannot forward its `props` proxy (`hasHelpText`
    and `ownsFeedback` come from slot presence), and the object literal it must
    build instead snapshots any plain value at setup. Measured: the group's
    `invalid` stuck at its mount-time value, so no control ever received
@@ -1384,7 +1414,7 @@ them measured during this plan:
    `isGroupLabel` stay plain — they are fixed at setup by construction.
 3. **`useInputSurface`, `useToggleControl` and `useFieldContext` take your
    `props` proxy directly — never a spread literal.** `useInputSurface({
-   ...props, showHighlight: false })` freezes every class at mount. Both
+...props, showHighlight: false })` freezes every class at mount. Both
    composables make the fields their callers lack optional
    (`showHighlight` for `MclInputFile`, `rounded` for `MclInputRadio`) precisely
    so `props` can be handed over as-is, and `useFieldContext` takes its

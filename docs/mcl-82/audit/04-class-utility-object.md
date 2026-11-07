@@ -34,7 +34,7 @@ src/components/manguito-theme/lib/theme/
 // theme/index.ts
 export const generateClass = <T extends ClassType>(
   type: T,
-  value: InputType<T>
+  value: InputType<T>,
 ): string => {
   const mclGenerate = new MclClass(type, value)
   return mclGenerate.generateClass()
@@ -55,6 +55,7 @@ case 'FCBGCOLOR':   return this.getFocusBgColorClass()
 ```
 
 Every private method is identical in structure:
+
 ```ts
 private getBgColorClass(): string {
   if (this.validator.validateColorType(this.classValue)) {
@@ -99,6 +100,7 @@ Each `generateClass('BGCOLOR', 'primary')` call allocates 7 objects. In a compon
 ### 2. Huge lookup tables maintained by hand
 
 The ~750 hardcoded class strings must be manually updated whenever a new color token, spacing level, or Tailwind variant is added. Adding a new pseudo-state (e.g., `group-hover`) requires:
+
 - Adding a new property to `MclColor`.
 - Adding a new case to `typeGroup.colorType`.
 - Adding a new case to `MclClass.generateClass()`.
@@ -160,6 +162,7 @@ const hoverBgColorVariant = cva('', {
 ```
 
 **Strengths:**
+
 - No runtime object allocation — `cva` returns a plain function that does a map lookup.
 - TypeScript-safe: variant keys are typed automatically.
 - Designed specifically for this use case (class resolution from props).
@@ -167,6 +170,7 @@ const hoverBgColorVariant = cva('', {
 - Composable: compound variants allow multi-prop class combinations.
 
 **Weaknesses:**
+
 - Replaces the existing `typeGroup` enum-style dispatch with individual `cva()` instances. The current single-function API (`generateClass(type, value)`) would need to become multiple exported functions or a map of functions.
 - Does not reduce the total number of class string entries — there are still ~750 strings, just organized differently.
 - Migration would be a significant refactor touching every component.
@@ -189,6 +193,7 @@ Instead of mapping color names to Tailwind class strings, define CSS custom prop
 ```
 
 Then components use Tailwind's arbitrary-value syntax:
+
 ```html
 <div class="bg-[var(--color-primary)]">...</div>
 ```
@@ -196,12 +201,14 @@ Then components use Tailwind's arbitrary-value syntax:
 Or define Tailwind theme tokens that map to the CSS variables, making `bg-primary` work natively.
 
 **Strengths:**
+
 - Eliminates all runtime class resolution — classes are static.
 - Enables true runtime theming (change `--color-primary` to change the entire UI).
 - Reduces bundle size (no `MclClass`, `MclColor`, etc.).
 - The existing `mcl-theme-v4.css` file already defines CSS custom properties — this approach would expand what is already there.
 
 **Weaknesses:**
+
 - Tailwind's JIT scanner must see the class strings statically to include them in the output. `bg-[var(--color-primary)]` is an arbitrary value and may or may not be tree-shaken properly depending on Tailwind version.
 - Tailwind v4 (which the root storybook app uses) has better CSS variable support, but `manguito-theme` itself still lists Tailwind v3 as a devDependency. This is a version mismatch that needs resolution first.
 - Reduces the "type-safe color selection" feature — prop validation would need to shift to TypeScript types alone rather than the current runtime validation.

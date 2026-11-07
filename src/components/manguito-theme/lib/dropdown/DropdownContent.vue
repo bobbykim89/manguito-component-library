@@ -13,7 +13,7 @@ withDefaults(
   },
 )
 const { height } = useWindowSize()
-const slots = defineSlots<{
+defineSlots<{
   default(props: { itemClick: () => void }): any
 }>()
 const contentRef = ref<HTMLDivElement>()
@@ -30,6 +30,7 @@ const dropdownDirection = computed<string | undefined>(() => {
   if (height.value - contentRef.value.getBoundingClientRect().bottom < 0) {
     return 'dropup-bottom'
   }
+  return undefined
 })
 </script>
 

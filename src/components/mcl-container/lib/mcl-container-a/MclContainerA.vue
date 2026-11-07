@@ -25,7 +25,7 @@ withDefaults(
     leftColumnWidth: 50,
   },
 )
-const slots = defineSlots<{
+defineSlots<{
   'left-column': any
   'right-column': any
 }>()

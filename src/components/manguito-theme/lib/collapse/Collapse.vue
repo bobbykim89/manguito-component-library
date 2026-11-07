@@ -13,7 +13,7 @@ const props = withDefaults(
     visible: false,
   },
 )
-const slots = defineSlots<{
+defineSlots<{
   default: any
 }>()
 const emit = defineEmits<{
@@ -37,7 +37,7 @@ const onEnter = (el: any) => {
   el.style.opacity = '0'
   const endWidth = getComputedStyle(el).height
   el.style.height = '0px'
-  el.offsetHeight // force repaint
+  void el.offsetHeight // force repaint
   el.style.height = endWidth
   el.style.opacity = '1'
 }
@@ -47,7 +47,7 @@ const onAfterEnter = (el: any) => {
 }
 const onLeave = (el: any) => {
   el.style.height = getComputedStyle(el).height
-  el.offsetHeight // force repaint
+  void el.offsetHeight // force repaint
   el.style.height = '0px'
   el.style.opacity = '0'
 }

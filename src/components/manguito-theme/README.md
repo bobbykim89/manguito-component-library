@@ -151,11 +151,11 @@ The base `Collapse` component provides an animated height/opacity transition for
 
 **Props**
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `id` | `string` | auto-generated | ID used to identify the panel within an `AccordionGroup`; also rendered as the element's `id` attribute |
-| `visible` | `boolean` | `false` | Initial open state; reactive — updating it opens or closes the panel |
-| `class-name` | `string \| string[]` | `''` | CSS class(es) applied to the inner content wrapper |
+| Prop         | Type                 | Default        | Description                                                                                             |
+| ------------ | -------------------- | -------------- | ------------------------------------------------------------------------------------------------------- |
+| `id`         | `string`             | auto-generated | ID used to identify the panel within an `AccordionGroup`; also rendered as the element's `id` attribute |
+| `visible`    | `boolean`            | `false`        | Initial open state; reactive — updating it opens or closes the panel                                    |
+| `class-name` | `string \| string[]` | `''`           | CSS class(es) applied to the inner content wrapper                                                      |
 
 **Exposed methods:** `open()`, `close()`, `toggle()`
 
@@ -241,7 +241,11 @@ const panelRefs = ref<InstanceType<typeof Collapse>[]>([])
     <div v-for="(item, index) in items" :key="item.id">
       <button @click="panelRefs[index]?.toggle()">{{ item.title }}</button>
       <Collapse
-        :ref="(el) => { if (el) panelRefs[index] = el as InstanceType<typeof Collapse> }"
+        :ref="
+          (el) => {
+            if (el) panelRefs[index] = el as InstanceType<typeof Collapse>
+          }
+        "
         :id="item.id"
         class-name="p-4"
       >
@@ -314,10 +318,10 @@ const isOpen = ref(false)
 
 The following directives are deprecated and will be removed in a future release. They remain functional for `Modal` and `Sidebar` during the transition period but **no longer work** with `MclCollapseA` or `MclCollapseB`.
 
-| Directive | Status | Replacement |
-|---|---|---|
-| `v-toggle` | Deprecated, still functional on Modal/Sidebar | `defineExpose` ref or `:visible` prop |
-| `v-collapse` | Deprecated, non-functional on collapse components | `AccordionGroup` wrapper |
+| Directive    | Status                                            | Replacement                           |
+| ------------ | ------------------------------------------------- | ------------------------------------- |
+| `v-toggle`   | Deprecated, still functional on Modal/Sidebar     | `defineExpose` ref or `:visible` prop |
+| `v-collapse` | Deprecated, non-functional on collapse components | `AccordionGroup` wrapper              |
 
 ## Dependencies
 

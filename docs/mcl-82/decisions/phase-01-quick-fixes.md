@@ -11,6 +11,7 @@ These are the five one-liner corrections committed directly to `feature/mcl-82` 
 File: `src/components/mcl-forms/lib/mcl-input-text/MclInputText.vue`
 
 Line 97 in the template:
+
 ```diff
 - class="peer-valid/validation:hidden peer-inavlid/validation:block ml-3xs"
 + class="peer-valid/validation:hidden peer-invalid/validation:block ml-3xs"
@@ -46,6 +47,7 @@ In a browser, render `<MclInputText required />` inside a `<form>` and submit wi
 File: `src/components/manguito-theme/lib/directives/tooltip.directive.ts`
 
 Lines 94–96 inside `mountTooltip()` removed:
+
 ```diff
 -  console.log(
 -    `color: ${tooltipColor}, txt color: ${tooltipTextColor}, width: ${tooltipWidth}`,
@@ -80,6 +82,7 @@ In a browser, open DevTools console, render any element with `v-tooltip`, and co
 File: `src/components/manguito-theme/lib/directives/index.ts`
 
 Line 7 removed:
+
 ```diff
 -export { testExport } from './test-export'
  export { TooltipValueObjectType, vClickOutside, vCollapse, vToggle, vTooltip }
@@ -88,6 +91,7 @@ Line 7 removed:
 File deleted: `src/components/manguito-theme/lib/directives/test-export.ts`
 
 The deleted file contained:
+
 ```ts
 export const testExport = 'pio!'
 ```
@@ -121,6 +125,7 @@ ls src/components/manguito-theme/lib/directives/test-export.ts
 File: `src/components/manguito-theme/lib/dropdown/DropdownContent.vue`
 
 Line 19:
+
 ```diff
 -const contentRef = ref<HTMLAreaElement>()
 +const contentRef = ref<HTMLDivElement>()
@@ -159,6 +164,7 @@ Running `vue-tsc --noEmit` in `src/components/manguito-theme/` should produce no
 File: `src/components/manguito-theme/lib/sidebar/Sidebar.vue`
 
 Line 20 in the `defineProps` block:
+
 ```diff
 -    width?: string | number
 +    width?: number

@@ -30,15 +30,15 @@ State is communicated between a trigger element and a controlled component throu
 
 ### Files involved
 
-| File | Role |
-|---|---|
-| `directives/toggle.directive.ts` | `vToggle` — sets `visible` attribute on click |
-| `directives/collapse.directive.ts` | `vCollapse` — same, with accordion group support |
+| File                                    | Role                                                     |
+| --------------------------------------- | -------------------------------------------------------- |
+| `directives/toggle.directive.ts`        | `vToggle` — sets `visible` attribute on click            |
+| `directives/collapse.directive.ts`      | `vCollapse` — same, with accordion group support         |
 | `directives/click-outside.directive.ts` | `vClickOutside` — fires a callback when clicking outside |
-| `composables/observeVisible.ts` | Wraps `useMutationObserver` to watch `visible` attribute |
-| `modal/Modal.vue` | Uses `observeVisibleAttr` + `vClickOutside` |
-| `sidebar/Sidebar.vue` | Uses `observeVisibleAttr` + `vClickOutside` |
-| `collapse/Collapse.vue` | Uses `observeVisibleAttr` |
+| `composables/observeVisible.ts`         | Wraps `useMutationObserver` to watch `visible` attribute |
+| `modal/Modal.vue`                       | Uses `observeVisibleAttr` + `vClickOutside`              |
+| `sidebar/Sidebar.vue`                   | Uses `observeVisibleAttr` + `vClickOutside`              |
+| `collapse/Collapse.vue`                 | Uses `observeVisibleAttr`                                |
 
 ### `vClickOutside`
 
@@ -102,7 +102,9 @@ The components already accept a `visible` prop and watch it:
 ```ts
 watch(
   () => props.visible,
-  (newValue) => { toggle.value = newValue }
+  (newValue) => {
+    toggle.value = newValue
+  },
 )
 ```
 
@@ -118,9 +120,15 @@ import { ref } from 'vue'
 
 export const useModalState = (id: string) => {
   const state = ref(false)
-  const open = () => { state.value = true }
-  const close = () => { state.value = false }
-  const toggle = () => { state.value = !state.value }
+  const open = () => {
+    state.value = true
+  }
+  const close = () => {
+    state.value = false
+  }
+  const toggle = () => {
+    state.value = !state.value
+  }
   return { state, open, close, toggle }
 }
 ```
@@ -133,13 +141,13 @@ Note: this requires a shared module to hold the state (either a singleton compos
 
 ## What to Keep, What to Replace
 
-| Directive | Recommendation |
-|---|---|
-| `vClickOutside` | **Keep.** Genuine DOM need, well-implemented. |
-| `vToggle` | **Deprecate.** Replace with `defineExpose` refs or the `visible` prop. The directive should remain for backwards compatibility but be marked deprecated in docs. |
-| `vCollapse` | **Partially replace.** The accordion group feature (querying all `[accordion="name"]` elements) is the one capability that doesn't map cleanly to props. However, it could be replaced with a provide/inject accordion context (similar to how `DropdownContainer` provides dropdown state to `DropdownContent`). |
-| `vTooltip` | **Evaluate separately.** It mounts a Vue component into a DOM element, which is a valid use case for a directive. However, the leftover `console.log` and the `innerHTML` injection are bugs that need fixing regardless of whether the directive is kept. |
-| `observeVisibleAttr` | **Remove** once `vToggle` and `vCollapse` are replaced. The MutationObserver is only needed because the directives bypass the reactivity system. |
+| Directive            | Recommendation                                                                                                                                                                                                                                                                                                    |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `vClickOutside`      | **Keep.** Genuine DOM need, well-implemented.                                                                                                                                                                                                                                                                     |
+| `vToggle`            | **Deprecate.** Replace with `defineExpose` refs or the `visible` prop. The directive should remain for backwards compatibility but be marked deprecated in docs.                                                                                                                                                  |
+| `vCollapse`          | **Partially replace.** The accordion group feature (querying all `[accordion="name"]` elements) is the one capability that doesn't map cleanly to props. However, it could be replaced with a provide/inject accordion context (similar to how `DropdownContainer` provides dropdown state to `DropdownContent`). |
+| `vTooltip`           | **Evaluate separately.** It mounts a Vue component into a DOM element, which is a valid use case for a directive. However, the leftover `console.log` and the `innerHTML` injection are bugs that need fixing regardless of whether the directive is kept.                                                        |
+| `observeVisibleAttr` | **Remove** once `vToggle` and `vCollapse` are replaced. The MutationObserver is only needed because the directives bypass the reactivity system.                                                                                                                                                                  |
 
 ---
 
@@ -162,12 +170,14 @@ export const provideAccordion = (name: string) => {
 export const useAccordion = (id: string) => {
   const ctx = inject<{ openId: Ref<string | null>; name: string } | null>(
     ACCORDION_KEY,
-    null
+    null,
   )
   if (!ctx) return { isOpen: ref(false), requestOpen: () => {} }
 
   const isOpen = computed(() => ctx.openId.value === id)
-  const requestOpen = () => { ctx.openId.value = isOpen.value ? null : id }
+  const requestOpen = () => {
+    ctx.openId.value = isOpen.value ? null : id
+  }
 
   return { isOpen, requestOpen }
 }

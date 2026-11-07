@@ -16,8 +16,10 @@ The modal overlay and dialog container have no ARIA roles at all.
 <!-- current -->
 <div :style="handlePlacementVar" :visible="toggle" ref="modalRef">
   ...
-  <div v-if="toggle" class="vertical-placement px-xs fixed z-[110] w-full ...">
-    <div v-click-outside="closeModal" ...>
+  <div v-if="toggle" class="vertical-placement fixed z-[110] w-full px-xs ...">
+    <div v-click-outside="closeModal" ...></div>
+  </div>
+</div>
 ```
 
 - No `role="dialog"` on the dialog container.
@@ -33,7 +35,8 @@ The modal overlay and dialog container have no ARIA roles at all.
 - The close button inside the default header slot has no accessible label:
   ```html
   <button @click="closeModal">
-    <svg ...>...</svg>  <!-- no aria-label -->
+    <svg ...>...</svg>
+    <!-- no aria-label -->
   </button>
   ```
 - The backdrop `<section>` element is interactive (click closes the modal) but has no role or label for assistive technology.
@@ -53,7 +56,8 @@ The sidebar has the same structural issues as the modal.
 - The two close buttons (one for `placement="left"`, one for `placement="right"`) both render an SVG with no accessible label:
   ```html
   <button @click="closeSidebar" v-if="placement === 'right'">
-    <svg ...>...</svg>  <!-- no aria-label -->
+    <svg ...>...</svg>
+    <!-- no aria-label -->
   </button>
   ```
 - Duplicated close-button structure: instead of a single button that conditionally flips position, two separate `<button>` blocks are rendered based on placement. This is a minor redundancy but also means the accessible name fix must be applied in two places.
@@ -69,10 +73,11 @@ Consumer components (`MclCollapseA`, `MclCollapseB`, `NavCollapse`) use the `v-c
 
 ```html
 <!-- MclCollapseA -->
-<div class="py-xs px-sm cursor-pointer ..." v-collapse:[collapseId]>
+<div class="cursor-pointer px-sm py-xs ..." v-collapse:[collapseId]></div>
 ```
 
 Issues:
+
 - The trigger is a `<div>`, not a `<button>`. It is not reachable by keyboard (no `tabindex`, not a native interactive element), and its role is not conveyed to assistive technology.
 - No `aria-expanded` attribute on the trigger to indicate current state.
 - No `aria-controls` linking the trigger to the controlled region.
@@ -102,7 +107,9 @@ However, several problems exist:
 - **No `id` on the tooltip element**: The WAI-ARIA tooltip pattern requires the trigger element to have `aria-describedby` pointing to the tooltip's `id`. Neither the directive nor the component sets an `id` on the tooltip or an `aria-describedby` on the host element.
 - **Debug `console.log`** left in `tooltip.directive.ts` (line 78):
   ```ts
-  console.log(`color: ${tooltipColor}, txt color: ${tooltipTextColor}, width: ${tooltipWidth}`)
+  console.log(
+    `color: ${tooltipColor}, txt color: ${tooltipTextColor}, width: ${tooltipWidth}`,
+  )
   ```
   Not an accessibility issue, but indicates the tooltip directive is not production-ready.
 - The tooltip is only triggered on `group-hover` (CSS). There is no keyboard trigger (`focus`), so keyboard-only users receive no tooltip.
@@ -124,16 +131,17 @@ However, several problems exist:
 `TabContainer` adds `role="tablist"` to the button container div, which is correct:
 
 ```html
-<div :class="btnContainerClass" role="tablist">
+<div :class="btnContainerClass" role="tablist"></div>
 ```
 
 `TabContent` adds `role="tabpanel"` and `tabindex="-1"`, which is also correct:
 
 ```html
-<div ... role="tabpanel" tabindex="-1" v-show="isActive">
+<div ... role="tabpanel" tabindex="-1" v-show="isActive"></div>
 ```
 
 However:
+
 - The tab buttons themselves are provided via a scoped slot. No `role="tab"`, `aria-selected`, or `aria-controls` is enforced or documented on the button items.
 - There is no `aria-labelledby` connecting each `tabpanel` to its corresponding tab button.
 - Keyboard navigation between tabs (arrow keys) is not implemented at the container level. The WAI-ARIA Tabs pattern requires left/right arrow key movement between tabs.
@@ -175,6 +183,7 @@ However:
 ### `MclSelect`
 
 The custom select is the most complex form component:
+
 - The `<input>` element has `role="combobox"`, `aria-autocomplete="list"`, and `aria-expanded` — this is a good start.
 - The `<ul>` has `role="listbox"` and individual `<li>` items have `role="option"` — also correct.
 - However, the combobox input is missing `aria-owns` (or `aria-controls`) pointing to the listbox `id` (the listbox has no `id`).
@@ -185,12 +194,12 @@ The custom select is the most complex form component:
 
 ## Recommended Approaches
 
-| Component | Key Actions |
-|---|---|
-| **Modal / Sidebar** | Add `role="dialog"`, `aria-modal="true"`, `aria-labelledby`, focus trap on open, return focus on close, accessible label on close button |
-| **Collapse triggers** | Use `<button>` (not `<div>`), add `aria-expanded`, `aria-controls` |
-| **Tooltip** | Add unique `id` to tooltip, add `aria-describedby` to host, support `focus` trigger not only hover, sanitize `innerHTML` |
-| **Dropdown** | Add `role="menu"` / `role="listbox"`, arrow-key navigation, `aria-haspopup` on trigger |
-| **Tabs** | Enforce `role="tab"`, `aria-selected`, `aria-controls` on tab buttons; add arrow-key navigation at container level |
-| **Form inputs** | Add `aria-invalid`, `aria-describedby` pointing to error message, `role="alert"` on error container; fix the typo in peer selector |
-| **Custom select** | Add `aria-controls` / `aria-owns` + `id` on listbox, set `aria-activedescendant` on combobox input |
+| Component             | Key Actions                                                                                                                              |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| **Modal / Sidebar**   | Add `role="dialog"`, `aria-modal="true"`, `aria-labelledby`, focus trap on open, return focus on close, accessible label on close button |
+| **Collapse triggers** | Use `<button>` (not `<div>`), add `aria-expanded`, `aria-controls`                                                                       |
+| **Tooltip**           | Add unique `id` to tooltip, add `aria-describedby` to host, support `focus` trigger not only hover, sanitize `innerHTML`                 |
+| **Dropdown**          | Add `role="menu"` / `role="listbox"`, arrow-key navigation, `aria-haspopup` on trigger                                                   |
+| **Tabs**              | Enforce `role="tab"`, `aria-selected`, `aria-controls` on tab buttons; add arrow-key navigation at container level                       |
+| **Form inputs**       | Add `aria-invalid`, `aria-describedby` pointing to error message, `role="alert"` on error container; fix the typo in peer selector       |
+| **Custom select**     | Add `aria-controls` / `aria-owns` + `id` on listbox, set `aria-activedescendant` on combobox input                                       |

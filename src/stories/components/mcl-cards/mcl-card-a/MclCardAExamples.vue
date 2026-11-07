@@ -1,15 +1,10 @@
 <script setup lang="ts">
-import BarcelonaImage from '@/assets/images/barcelona-image.jpg'
 import GrandCanyonImage from '@/assets/images/grandcanyon-image.jpg'
 import { MclCardA } from '@/components/mcl-cards/lib'
 import { computed } from 'vue'
 
 const bgImage = computed(() => {
   return { 'background-image': `url('${GrandCanyonImage}')` }
-})
-
-const barcelonaBgImage = computed(() => {
-  return { 'background-image': `url('${BarcelonaImage}')` }
 })
 
 const polloUrl: string =

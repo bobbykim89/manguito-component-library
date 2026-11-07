@@ -12,6 +12,7 @@ const DIRECTION_CLASS_MAP: Record<Direction, string> = {
 }
 
 export default defineComponent({
+  // eslint-disable-next-line vue/multi-word-component-names -- exported component; renaming it would change its public name
   name: 'Tooltip',
   props: {
     id: {

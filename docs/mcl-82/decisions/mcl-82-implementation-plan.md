@@ -33,13 +33,13 @@ main
 
 These are all one-liners or near-one-liners. Group them in a single commit or PR to get them out of the way before any other work begins. They are also the best candidates for the first Vitest tests written in Phase 3, since they are confirmed bugs with known expected behavior.
 
-| # | File | Fix |
-|---|---|---|
-| 1 | `mcl-forms/lib/.../MclInputText.vue` | Fix `peer-inavlid` typo → `peer-invalid` in peer selector |
-| 2 | `manguito-theme/lib/directives/tooltip.directive.ts` | Remove `console.log` on line ~78 |
-| 3 | `manguito-theme/lib/directives/index.ts` + `test-export.ts` | Remove `testExport` from barrel and delete `test-export.ts` |
-| 4 | `manguito-theme/lib/dropdown/DropdownContent.vue` | Fix `ref<HTMLAreaElement>()` → `ref<HTMLDivElement>()` |
-| 5 | `manguito-theme/lib/sidebar/Sidebar.vue` | Restrict `width` prop type to `number` only |
+| #   | File                                                        | Fix                                                         |
+| --- | ----------------------------------------------------------- | ----------------------------------------------------------- |
+| 1   | `mcl-forms/lib/.../MclInputText.vue`                        | Fix `peer-inavlid` typo → `peer-invalid` in peer selector   |
+| 2   | `manguito-theme/lib/directives/tooltip.directive.ts`        | Remove `console.log` on line ~78                            |
+| 3   | `manguito-theme/lib/directives/index.ts` + `test-export.ts` | Remove `testExport` from barrel and delete `test-export.ts` |
+| 4   | `manguito-theme/lib/dropdown/DropdownContent.vue`           | Fix `ref<HTMLAreaElement>()` → `ref<HTMLDivElement>()`      |
+| 5   | `manguito-theme/lib/sidebar/Sidebar.vue`                    | Restrict `width` prop type to `number` only                 |
 
 ---
 
@@ -49,11 +49,11 @@ These are all one-liners or near-one-liners. Group them in a single commit or PR
 
 These must be resolved before wider consumer adoption of the v4 CSS. Items 1 and 2 are breaking changes and need a changelog entry. Ship them before Phase 3 so tests are never written against the broken CSS behavior.
 
-| # | Location | Fix |
-|---|---|---|
-| 1 | `mcl-theme-v4.css` — `@utility bg-*` | Scope to MCL color tokens only; does not override `bg-cover`, `bg-center`, `bg-gradient-*`, etc. **Breaking change — document in changelog.** |
-| 2 | `mcl-theme-v4.css` — `@utility outline-*` | Same scope fix; does not override `outline-2`, `outline-dashed`, `outline-offset-*`, etc. **Breaking change — document in changelog.** |
-| 3 | `mcl-theme-v4.css` — `.tooltip-bottom` | Add missing `.tooltip` qualifier: `.tooltip.tooltip-bottom { ... }` |
+| #   | Location                                  | Fix                                                                                                                                           |
+| --- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | `mcl-theme-v4.css` — `@utility bg-*`      | Scope to MCL color tokens only; does not override `bg-cover`, `bg-center`, `bg-gradient-*`, etc. **Breaking change — document in changelog.** |
+| 2   | `mcl-theme-v4.css` — `@utility outline-*` | Same scope fix; does not override `outline-2`, `outline-dashed`, `outline-offset-*`, etc. **Breaking change — document in changelog.**        |
+| 3   | `mcl-theme-v4.css` — `.tooltip-bottom`    | Add missing `.tooltip` qualifier: `.tooltip.tooltip-bottom { ... }`                                                                           |
 
 ---
 
@@ -75,15 +75,18 @@ Stand up testing before any accessibility or architecture refactoring. Every sub
 ### Initial test targets (write these as part of this phase)
 
 **Priority 1 — Pure TypeScript, no Vue dependency:**
+
 - `generateClass` — valid inputs return correct Tailwind class strings, invalid inputs return `' '`
 - `ValidateMclClass` — all `validate*` methods for valid and invalid inputs
 - Directive shared functions — `getTargetId`, `toggleVisibility`, `hasVisibleAttr`
 
 **Priority 2 — Confirmed bugs from Phase 1 (assert the fix holds):**
+
 - `MclInputText` — `invalidFeedback` slot renders when input is invalid (catches the `peer-invalid` regression)
 - `MclInputText` — `textcolor` prop (pre-existing bug; test will fail until Phase 6 prop rename)
 
 **Priority 3 — Overlay components:**
+
 - `Modal` — opens/closes via `toggle()`/`open()`/`close()`; emits `open`/`close`; `visible` prop sync
 - `Sidebar` — same as Modal plus placement-specific behavior
 
@@ -210,11 +213,11 @@ Do this last — it changes CI and release workflows, so the codebase should be 
 
 ## Summary
 
-| Phase | Branch | Type | Key deliverable |
-|---|---|---|---|
-| 1 — Quick fixes | direct commit | Bugfix | 5 one-liner corrections |
-| 2 — CSS critical | direct commit | Bugfix + breaking | `bg-*`/`outline-*` scoped, `.tooltip-bottom` fixed |
-| 3 — Vitest | `mcl-82/phase-03-vitest` | Infrastructure | Full test setup + first test suite |
-| 4 — Accessibility | `mcl-82/phase-04-accessibility` | Feature | ARIA, focus traps, keyboard support across all components |
-| 5 — Architecture | `mcl-82/phase-05-architecture` | Refactor | Tailwind v4 confirmed, scroll lock composable, directive replacement |
-| 6 — DX | `mcl-82/phase-06-dx` | Refactor + breaking | Prop renames, `cva` migration, Turborepo + changesets |
+| Phase             | Branch                          | Type                | Key deliverable                                                      |
+| ----------------- | ------------------------------- | ------------------- | -------------------------------------------------------------------- |
+| 1 — Quick fixes   | direct commit                   | Bugfix              | 5 one-liner corrections                                              |
+| 2 — CSS critical  | direct commit                   | Bugfix + breaking   | `bg-*`/`outline-*` scoped, `.tooltip-bottom` fixed                   |
+| 3 — Vitest        | `mcl-82/phase-03-vitest`        | Infrastructure      | Full test setup + first test suite                                   |
+| 4 — Accessibility | `mcl-82/phase-04-accessibility` | Feature             | ARIA, focus traps, keyboard support across all components            |
+| 5 — Architecture  | `mcl-82/phase-05-architecture`  | Refactor            | Tailwind v4 confirmed, scroll lock composable, directive replacement |
+| 6 — DX            | `mcl-82/phase-06-dx`            | Refactor + breaking | Prop renames, `cva` migration, Turborepo + changesets                |

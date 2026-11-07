@@ -31,7 +31,7 @@ import { MclCarouselA } from "@bobbykim/mcl-carousel"
         v-for="(card, i) in cards"
         :key="i"
         :ref="(el) => setRef(el)"
-        class="mr-xs last:mr-0 h-full"
+        class="mr-xs h-full last:mr-0"
       ></card-component>
     </template>
   </mcl-carousel-a>

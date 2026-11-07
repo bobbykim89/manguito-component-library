@@ -68,7 +68,8 @@ const getBorderClass = (
       generateClass.borderLeftColorVariant({ color: hlColor }),
     ]
     borderArray.forEach((item) => {
-      ;(classArray.push(item), classArray.push('border-l-8'))
+      classArray.push(item)
+      classArray.push('border-l-8')
     })
   }
 

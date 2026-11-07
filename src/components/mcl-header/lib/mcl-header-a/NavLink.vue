@@ -48,7 +48,7 @@ const getMenuItemClass = (
 }
 const handleNavLinkClick = (e: Event, item: MenuItemType) => {
   const { asLink } = props
-  !asLink && e.preventDefault()
+  if (!asLink) e.preventDefault()
   emit('nav-link', e, item)
 }
 </script>

@@ -164,9 +164,9 @@ describe('generateClass namespace — peer and focus-visible variants', () => {
     expect(focusVisibleRingColorVariant({ color: 'light-4' })).toBe(
       'focus-visible:ring-light-4',
     )
-    expect(generateClass.focusVisibleRingColorVariant({ color: 'light-4' })).toBe(
-      'focus-visible:ring-light-4',
-    )
+    expect(
+      generateClass.focusVisibleRingColorVariant({ color: 'light-4' }),
+    ).toBe('focus-visible:ring-light-4')
   })
   it('all three cover every ColorPalette member', () => {
     // Keyed by ColorPalette rather than written as a literal list: adding a

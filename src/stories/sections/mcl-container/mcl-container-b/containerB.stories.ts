@@ -2,7 +2,6 @@ import {
   colorControllers,
   headingLevelControllers,
   headingTextControllers,
-  numberControllers,
   textControllers,
 } from '@/assets/composables'
 import { MclContainerB } from '@/components/mcl-container/lib'

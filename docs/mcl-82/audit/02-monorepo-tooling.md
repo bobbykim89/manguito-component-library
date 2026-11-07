@@ -17,6 +17,7 @@ packages:
 ```
 
 Ten packages live under this path:
+
 - `@bobbykim/manguito-theme` (the shared base)
 - `@bobbykim/mcl-cards`, `mcl-carousel`, `mcl-collapse`, `mcl-container`, `mcl-dropdown`, `mcl-footer`, `mcl-forms`, `mcl-header`, `mcl-hero`, `mcl-tabs`
 
@@ -43,14 +44,14 @@ Ten packages live under this path:
 
 ### Root `package.json` scripts
 
-| Script | What it does |
-|---|---|
-| `package:version` | `lerna version --no-private` — bumps versions per conventional commits |
-| `package:publish` | `lerna run build && lerna publish from-git --no-private` |
-| `package:publish:from-package` | `lerna run build && lerna publish from-package --no-private` |
-| `package:build` | `lerna run build` — builds all packages serially |
-| `package:install` | `lerna exec -- pnpm install` |
-| `package:clear` | `lerna clean` |
+| Script                         | What it does                                                           |
+| ------------------------------ | ---------------------------------------------------------------------- |
+| `package:version`              | `lerna version --no-private` — bumps versions per conventional commits |
+| `package:publish`              | `lerna run build && lerna publish from-git --no-private`               |
+| `package:publish:from-package` | `lerna run build && lerna publish from-package --no-private`           |
+| `package:build`                | `lerna run build` — builds all packages serially                       |
+| `package:install`              | `lerna exec -- pnpm install`                                           |
+| `package:clear`                | `lerna clean`                                                          |
 
 ### Dependency pinning strategy
 
@@ -80,6 +81,7 @@ This is a reasonable approach that avoids version drift across packages.
 ### 2. Two `standard-version` and `lerna version` coexist
 
 The root `package.json` has both:
+
 ```json
 "release": "standard-version",
 "package:version": "pnpm lerna version --no-private",
@@ -112,12 +114,14 @@ There is no explicit pipeline configuration that understands the dependency grap
 Turborepo is the most direct replacement for the Lerna build orchestration layer while keeping pnpm workspaces.
 
 **Strengths:**
+
 - Built-in remote caching (Vercel Remote Cache or self-hosted).
 - Topological task execution based on `package.json` dependencies — `manguito-theme` will always build first.
 - Simple `turbo.json` configuration.
 - Works seamlessly with pnpm workspaces (no `lerna exec` needed).
 
 **Weaknesses:**
+
 - No built-in versioning or publishing support. Would need `changesets` alongside it for releases.
 - Adds a configuration file (`turbo.json`) that must be kept in sync.
 
@@ -128,10 +132,12 @@ Turborepo is the most direct replacement for the Lerna build orchestration layer
 Nx is a more opinionated monorepo framework with a plugin ecosystem.
 
 **Strengths:**
+
 - Distributed task execution, affected-project detection, powerful caching.
 - Generators for adding new packages.
 
 **Weaknesses:**
+
 - Heavy: requires `nx.json`, project-level `project.json` files, and plugin configuration. High adoption cost for a library of 10 packages.
 - Less aligned with simple library publishing workflows.
 
@@ -142,12 +148,14 @@ Nx is a more opinionated monorepo framework with a plugin ecosystem.
 Changesets is a publishing and versioning tool designed specifically for monorepos, often paired with Turborepo or raw pnpm workspaces.
 
 **Strengths:**
+
 - Human-readable changeset files that accumulate between releases.
 - Per-package changelogs generated automatically.
 - Supports independent versioning.
 - GitHub Action available for automated releases.
 
 **Weaknesses:**
+
 - Requires a new workflow: contributors must run `pnpm changeset` to describe their change before merging a PR.
 - The existing conventional-commits-based automation in Lerna would be replaced by a manual changeset authoring process.
 

@@ -36,7 +36,7 @@ const props = withDefaults(
   },
 )
 
-const slots = defineSlots<{
+defineSlots<{
   default: any
 }>()
 const emit = defineEmits<{
@@ -83,7 +83,7 @@ const handleCardClick = (e: Event): void => {
    * @param {Event} e
    */
   const { title, ctaLink, ctaTarget, ctaAsLink } = props
-  !ctaAsLink && e.preventDefault()
+  if (!ctaAsLink) e.preventDefault()
   const cardEvent: CardClickEvent = {
     title,
     url: ctaLink,

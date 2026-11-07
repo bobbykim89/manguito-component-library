@@ -77,7 +77,7 @@ const dropdownButtonClick = (e: Event, title: string, state: boolean): void => {
 }
 const navItemClick = (e: Event, item: MenuItemType) => {
   const { asLink } = props
-  !asLink && e.preventDefault()
+  if (!asLink) e.preventDefault()
   emit('child-click', e, item)
 }
 </script>

@@ -52,7 +52,8 @@
     "build": "vite build && cp lib/style/mcl-theme-v4.css dist/mcl-theme-v4.css",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:dist": "node scripts/check-dist-ssr.mjs"
+    "test:dist": "node scripts/check-dist-ssr.mjs",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
     "@vueuse/core": "^12.0.0",

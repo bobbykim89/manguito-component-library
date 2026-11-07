@@ -43,6 +43,7 @@ Check and update every occurrence of the old prop name in:
 ## Output
 
 End with a brief change summary:
+
 ```
 Renamed: oldPropName → newPropName
 - Component: <N> locations updated

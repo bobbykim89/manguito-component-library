@@ -64,10 +64,10 @@ import { MclCollapseA } from '@bobbykim/mcl-collapse'
 
 The `v-collapse` directive and `accordion` prop are deprecated. Components no longer respond to `v-collapse` — state is managed internally.
 
-| Old | New |
-|---|---|
+| Old                            | New                                   |
+| ------------------------------ | ------------------------------------- |
 | `v-collapse:itemId` on trigger | handled internally — no change needed |
-| `:accordion="groupName"` prop | wrap components in `<AccordionGroup>` |
+| `:accordion="groupName"` prop  | wrap components in `<AccordionGroup>` |
 
 ## Dependencies
 

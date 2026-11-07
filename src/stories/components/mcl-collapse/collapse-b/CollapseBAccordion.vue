@@ -37,6 +37,7 @@ const accordionContent = [
     <div>
       <mcl-collapse-b
         v-for="(item, idx) in accordionContent"
+        :key="item.id"
         :collapse-id="item.id"
         :title="item.title"
         :visible="idx === 0 ? true : false"

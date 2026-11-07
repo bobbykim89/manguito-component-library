@@ -54,7 +54,7 @@ const props = withDefaults(
   },
 )
 
-const slots = defineSlots<{
+defineSlots<{
   default: any
 }>()
 const emit = defineEmits<{
@@ -93,13 +93,13 @@ const menuItemClass = computed<string>(() => {
 
 const handleTitleClick = (e: Event) => {
   const { logoAsLink, logoLink, logoLinkTarget } = props
-  !logoAsLink && e.preventDefault()
+  if (!logoAsLink) e.preventDefault()
   emit('logo-click', e, logoLink, logoLinkTarget)
 }
 
 const handleMenuItemClick = (e: Event, item: MenuItemType) => {
   const { menuItemAsLink } = props
-  !menuItemAsLink && e.preventDefault()
+  if (!menuItemAsLink) e.preventDefault()
   emit('menu-click', e, item)
 }
 </script>

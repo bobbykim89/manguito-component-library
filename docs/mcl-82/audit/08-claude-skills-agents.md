@@ -5,6 +5,7 @@
 ### Codebase scope
 
 The repository contains:
+
 - **10 publishable npm packages** under `src/components/*`, each following an identical structure: `lib/`, `dist/`, `vite.config.ts`, `tsconfig.json`, `package.json`.
 - **~80 Vue SFC components** across all packages, plus ~50 TypeScript utility/composable files.
 - **A scaffold script** (`scripts/index.mjs`) that already automates the creation of new packages from templates — demonstrating that the codebase has established patterns worth automating.
@@ -15,14 +16,14 @@ The repository contains:
 
 Reading through the codebase, several categories of work repeat across packages and components with high fidelity:
 
-| Category | Repetition pattern |
-|---|---|
-| **New component creation** | Same file structure, same prop pattern (color, size, boolean display flags), same `generateClass` calls, same barrel export |
-| **Prop API updates** | When a prop is renamed (e.g., `textcolor` → `textColor`), the same change propagates to the prop definition, default values, `computed()` body, template bindings, and the Storybook story args |
-| **Accessibility fixes** | Each component needing a fix follows the same checklist: add `role`, add `aria-*`, fix close buttons, add focus management |
-| **Test file creation** | Each new test file follows the same structure: import component, describe block, mount, assert |
-| **Documentation** | All Storybook stories follow the same shape; the `argTypes` block is especially repetitive across similar props (`colorControllers`, `booleanControllers`, `textControllers`) |
-| **`generateClass` migration** | If/when `MclClass` is replaced with `cva` (see document [04](./04-class-utility-object.md)), each component's `computed()` blocks need to be rewritten in the same way |
+| Category                      | Repetition pattern                                                                                                                                                                              |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **New component creation**    | Same file structure, same prop pattern (color, size, boolean display flags), same `generateClass` calls, same barrel export                                                                     |
+| **Prop API updates**          | When a prop is renamed (e.g., `textcolor` → `textColor`), the same change propagates to the prop definition, default values, `computed()` body, template bindings, and the Storybook story args |
+| **Accessibility fixes**       | Each component needing a fix follows the same checklist: add `role`, add `aria-*`, fix close buttons, add focus management                                                                      |
+| **Test file creation**        | Each new test file follows the same structure: import component, describe block, mount, assert                                                                                                  |
+| **Documentation**             | All Storybook stories follow the same shape; the `argTypes` block is especially repetitive across similar props (`colorControllers`, `booleanControllers`, `textControllers`)                   |
+| **`generateClass` migration** | If/when `MclClass` is replaced with `cva` (see document [04](./04-class-utility-object.md)), each component's `computed()` blocks need to be rewritten in the same way                          |
 
 ---
 
@@ -50,52 +51,59 @@ A `CLAUDE.md` at the repository root should give Claude essential context that i
 # Manguito Component Library
 
 ## Project structure
-- Monorepo: 10 packages under `src/components/`. Each package is an independent 
+
+- Monorepo: 10 packages under `src/components/`. Each package is an independent
   npm package published under `@bobbykim/`.
 - `@bobbykim/manguito-theme` is the shared base. All other packages depend on it.
 - Storybook app lives at the repo root and imports from source (not built dist).
 
 ## Core abstractions
-- `generateClass(type, value)` — resolves a semantic prop value to a Tailwind 
+
+- `generateClass(type, value)` — resolves a semantic prop value to a Tailwind
   class string. Lives in `manguito-theme/lib/theme/`. Called by every component.
-- `ColorPalette`, `SpacingLevel`, `HeadingSize` etc. — shared TypeScript types 
-  from `manguito-theme/lib/theme/static/theme.types.ts`. Always import from 
+- `ColorPalette`, `SpacingLevel`, `HeadingSize` etc. — shared TypeScript types
+  from `manguito-theme/lib/theme/static/theme.types.ts`. Always import from
   `@bobbykim/manguito-theme`.
-- Custom directives: `vToggle`, `vCollapse`, `vClickOutside`, `vTooltip` — 
+- Custom directives: `vToggle`, `vCollapse`, `vClickOutside`, `vTooltip` —
   exported from `@bobbykim/manguito-theme/directives`.
-- `observeVisibleAttr` composable — watches the `visible` DOM attribute; used 
+- `observeVisibleAttr` composable — watches the `visible` DOM attribute; used
   by Modal, Sidebar, Collapse.
 
 ## Known issues (from MCL-82 review)
-- `textcolor` prop (lowercase) in `MclInputText` and `MclSelect` is a bug; 
+
+- `textcolor` prop (lowercase) in `MclInputText` and `MclSelect` is a bug;
   should be `textColor`. Do not copy this pattern.
-- `testExport` in `directives/index.ts` is a committed artifact; do not reference 
+- `testExport` in `directives/index.ts` is a committed artifact; do not reference
   or extend it.
 - `console.log` in `tooltip.directive.ts` line ~78 is a debug artifact.
-- `peer-inavlid` typo in `MclInputText.vue` prevents validation feedback from 
+- `peer-inavlid` typo in `MclInputText.vue` prevents validation feedback from
   ever showing.
 
 ## Prop naming conventions
-- Boolean display flags use `display*` prefix: `displayBorder`, `displayShadow`, 
+
+- Boolean display flags use `display*` prefix: `displayBorder`, `displayShadow`,
   `displayHighlight`. (Note: a future refactor will standardize to `show*`.)
 - Color props are camelCase: `bgColor`, `textColor`, `borderColor`, `titleColor`.
 - Custom CSS class injection uses `className` on manguito-theme base components.
 - Slot-based overrides are always preferred over imperative configuration.
 
 ## Adding a new package
-Run `pnpm package:create`. This scaffolds the directory, `package.json`, 
+
+Run `pnpm package:create`. This scaffolds the directory, `package.json`,
 `tsconfig.json`, `vite.config.ts`, and an empty `lib/index.ts` from templates.
 Templates are in `scripts/templates/`.
 
 ## Building and publishing
+
 - Build all: `pnpm package:build`
 - Version bump: `pnpm package:version`
 - Publish: `pnpm package:publish`
 - Lerna manages versioning in `independent` mode with conventional commits.
 
 ## Tailwind version note
-The repo root uses Tailwind v4; individual packages list v3 in their 
-devDependencies but the pnpm override forces v4 at runtime. The CSS file 
+
+The repo root uses Tailwind v4; individual packages list v3 in their
+devDependencies but the pnpm override forces v4 at runtime. The CSS file
 `manguito-theme/lib/style/mcl-theme-v4.css` uses Tailwind v4 `@theme` syntax.
 ```
 
@@ -110,6 +118,7 @@ This file should live at `/CLAUDE.md` (repository root). Additional package-leve
 **Purpose:** Scaffold a new Vue component inside an existing package following the library's established patterns.
 
 **What it would do:**
+
 1. Accept a package name (e.g., `mcl-forms`) and component name (e.g., `MclInputRange`).
 2. Create the component file inside the correct `lib/` subdirectory.
 3. Add the standard `<script setup lang="ts">` structure with `withDefaults(defineProps<{...}>(), {...})`, `generateClass` import, and `defineEmits`.
@@ -127,6 +136,7 @@ This file should live at `/CLAUDE.md` (repository root). Additional package-leve
 **Purpose:** Write Vitest unit/component tests for a given component or utility function.
 
 **What it would do:**
+
 1. Accept a file path to a component or TypeScript utility.
 2. Read the component's props, emits, exposed methods, and key behaviors.
 3. Write a corresponding `*.test.ts` file covering: props render correctly, events fire, model binding works, exposed methods work, ARIA attributes are present.
@@ -143,6 +153,7 @@ This file should live at `/CLAUDE.md` (repository root). Additional package-leve
 **Purpose:** Apply the standard accessibility fixes documented in [01-accessibility.md](./01-accessibility.md) to a specific component.
 
 **What it would do:**
+
 1. Accept a component name (e.g., `Modal`, `MclCollapseA`).
 2. Read the component's current source.
 3. Apply the relevant fixes for that component type: overlay components get `role="dialog"` + `aria-modal` + focus trap; collapse triggers get `<button>` + `aria-expanded` + `aria-controls`; form components get `aria-invalid` + error `role="alert"`.
@@ -159,6 +170,7 @@ This file should live at `/CLAUDE.md` (repository root). Additional package-leve
 **Purpose:** Rename a prop across a component file and its corresponding Storybook story.
 
 **What it would do:**
+
 1. Accept: component file path, old prop name, new prop name.
 2. Rename the prop in `defineProps`, `withDefaults`, all `computed()` destructuring, all template bindings.
 3. Update the corresponding story's `argTypes` key and `args` key.
@@ -175,6 +187,7 @@ This file should live at `/CLAUDE.md` (repository root). Additional package-leve
 **Purpose:** Produce a concise audit report for a single component covering: accessibility gaps, prop naming issues, TypeScript coverage, and Vue 3 best practices.
 
 **What it would do:**
+
 1. Accept a component file path.
 2. Read the component source.
 3. Check against the checklists from documents [01](./01-accessibility.md), [03](./03-prop-naming.md), and [06](./06-general-architecture.md).
@@ -193,6 +206,7 @@ This file should live at `/CLAUDE.md` (repository root). Additional package-leve
 **Trigger:** After the accessibility fixes from [01-accessibility.md](./01-accessibility.md) are implemented.
 
 **Workflow:**
+
 1. Enumerate all `.vue` files in `src/components/`.
 2. For each file, check for the presence of `role`, `aria-*`, and keyboard event handlers where expected.
 3. Report any component that is missing required attributes for its type (dialog, listbox, tab, tooltip, etc.).
@@ -207,6 +221,7 @@ This is a read-only audit agent — it never modifies files, only reports.
 **Trigger:** After the Vitest setup from [07](./07-vitest-setup.md) is in place.
 
 **Workflow:**
+
 1. Read all `*.vue` and `*.ts` files in `src/components/`.
 2. Check whether a corresponding `*.test.ts` exists.
 3. For files that have tests, identify untested props, emits, or exposed methods by comparing the component's public API against the test file's `describe`/`it` blocks.
@@ -219,6 +234,7 @@ This is a read-only audit agent — it never modifies files, only reports.
 **Trigger:** Before a PR that touches multiple components is merged.
 
 **Workflow:**
+
 1. Read all `defineProps` blocks across the changed files.
 2. Cross-reference against the naming conventions in [03-prop-naming.md](./03-prop-naming.md) and the `CLAUDE.md` conventions section.
 3. Report any prop that deviates: lowercase color names, `display*` vs `show*` inconsistency, negated boolean props, `className` vs `customClass` mismatch.
@@ -231,6 +247,7 @@ This is a read-only audit agent — it never modifies files, only reports.
 **Trigger:** When the `MclClass` → `cva` migration (document [04](./04-class-utility-object.md)) begins.
 
 **Workflow:**
+
 1. Given a single component file as input.
 2. Read all `generateClass(...)` calls in the component's `<script setup>` block.
 3. Rewrite them as `cva`-based computed values using the appropriate variant definition.

@@ -32,6 +32,7 @@ This document records the architectural decisions made before implementing the P
 ### `vToggle` — deprecated, remains functional
 
 **Decision:** Deprecate `vToggle` in Phase 5. Mark it as deprecated in code (JSDoc `@deprecated`) and in documentation. Provide a migration guide pointing to:
+
 - `defineExpose` refs (`modalRef.open()`, `sidebarRef.toggle()`, etc.) for parent-to-child calls
 - `:visible` prop binding for reactive state-driven control
 
@@ -59,12 +60,16 @@ export const useCollapseState = (id: string) => {
   if (ctx) {
     // accordion mode: shared openId from AccordionGroup
     const isOpen = computed(() => ctx.openId.value === id)
-    const toggle = () => { ctx.openId.value = isOpen.value ? null : id }
+    const toggle = () => {
+      ctx.openId.value = isOpen.value ? null : id
+    }
     return { isOpen, toggle }
   } else {
     // standalone mode: local state
     const isOpen = ref(false)
-    const toggle = () => { isOpen.value = !isOpen.value }
+    const toggle = () => {
+      isOpen.value = !isOpen.value
+    }
     return { isOpen, toggle }
   }
 }
@@ -95,12 +100,12 @@ Both `Modal.vue` and `Sidebar.vue` have a comment reading "set **nutation** obse
 
 The following documentation changes are required as part of Phase 5:
 
-| Component / Directive | Update required |
-|---|---|
-| `vCollapse` | Deprecation notice + migration guide to `AccordionGroup` |
-| `vToggle` | Deprecation notice + migration guide to `defineExpose` API and `:visible` prop |
-| `MclCollapseA` / `MclCollapseB` | Update usage examples to show standalone and `AccordionGroup` patterns |
-| `Modal` / `Sidebar` | Add preferred-pattern callout: use `defineExpose` refs or `:visible` prop binding |
+| Component / Directive           | Update required                                                                   |
+| ------------------------------- | --------------------------------------------------------------------------------- |
+| `vCollapse`                     | Deprecation notice + migration guide to `AccordionGroup`                          |
+| `vToggle`                       | Deprecation notice + migration guide to `defineExpose` API and `:visible` prop    |
+| `MclCollapseA` / `MclCollapseB` | Update usage examples to show standalone and `AccordionGroup` patterns            |
+| `Modal` / `Sidebar`             | Add preferred-pattern callout: use `defineExpose` refs or `:visible` prop binding |
 
 ---
 

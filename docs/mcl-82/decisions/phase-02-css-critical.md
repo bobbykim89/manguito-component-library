@@ -9,11 +9,13 @@ These are the seven CSS fixes committed directly to `feature/mcl-82` as defined 
 **What changed**
 
 Files:
+
 - `src/components/manguito-theme/lib/style/mcl-theme-v4.css`
 - `src/components/manguito-theme/lib/theme/static/colors.ts`
 - `src/components/mcl-header/lib/mcl-header-b/NavCollapseVertical.vue`
 
 In `mcl-theme-v4.css`:
+
 ```diff
 -@utility bg-* {
 +@utility mcl-bg-* {
@@ -22,6 +24,7 @@ In `mcl-theme-v4.css`:
 ```
 
 In `colors.ts`, the `bgColor` map — all 17 values updated:
+
 ```diff
   bgColor: {
 -   primary: 'bg-primary',
@@ -35,6 +38,7 @@ In `colors.ts`, the `bgColor` map — all 17 values updated:
 The maps `hoverBgColor`, `focusBgColor`, `beforeBgColor`, `afterBgColor`, and `bgActiveColor` are **not** changed — they generate `hover:bg-*`, `before:bg-*`, etc., which fall through to Tailwind's native utilities and are not paired with `bg-opacity-*` in practice. `@utility bg-opacity-*` is also **not** renamed — it has no Tailwind v4 collision.
 
 In `NavCollapseVertical.vue` (line 101 of `collapseHighlightClass`):
+
 ```diff
 -   'before:absolute before:w-xs before:h-full before:bg-primary before:bg-opacity-70 '
 +   'before:absolute before:w-xs before:h-full before:mcl-bg-primary before:bg-opacity-70 '
@@ -76,10 +80,12 @@ grep -n "before:bg-primary" src/components/mcl-header/lib/mcl-header-b/NavCollap
 **What changed**
 
 Files:
+
 - `src/components/manguito-theme/lib/style/mcl-theme-v4.css`
 - `src/components/manguito-theme/lib/theme/static/colors.ts`
 
 In `mcl-theme-v4.css`:
+
 ```diff
 -@utility outline-* {
 +@utility mcl-outline-* {
@@ -90,6 +96,7 @@ In `mcl-theme-v4.css`:
 `@utility outline-opacity-*` is **not** renamed — it has no Tailwind v4 collision.
 
 In `colors.ts`, the `outlineColor`, `focusOutlineColor`, and `activeOutlineColor` maps — all 17 entries each updated:
+
 ```diff
   outlineColor: {
 -   primary: 'outline-primary',
@@ -151,6 +158,7 @@ File: `src/components/manguito-theme/lib/style/mcl-theme-v4.css`
 **Why**
 
 Every other direction variant is scoped with `.tooltip.tooltip-{direction}`:
+
 - `.tooltip.tooltip-top { … }`
 - `.tooltip.tooltip-left { … }`
 - `.tooltip.tooltip-right { … }`
@@ -179,6 +187,7 @@ grep -n "\.tooltip-bottom" src/components/manguito-theme/lib/style/mcl-theme-v4.
 File: `src/components/manguito-theme/lib/style/mcl-theme-v4.css`
 
 From the `@theme {}` block, removed:
+
 ```diff
 -  /* Container breakpoints */
 -  --breakpoint-*: initial;
@@ -219,6 +228,7 @@ grep -n "breakpoint-\*" src/components/manguito-theme/lib/style/mcl-theme-v4.css
 File: `src/components/manguito-theme/lib/style/mcl-theme-v4.css`
 
 Removed the entire `.container` block from `@layer components` (the base rule plus five `@media` breakpoint overrides):
+
 ```diff
 -@layer components {
 -  /* container class */
@@ -247,6 +257,7 @@ Removed the entire `.container` block from `@layer components` (the base rule pl
 ```
 
 Added after the existing `@utility` block to preserve auto-centering behaviour:
+
 ```diff
  @utility mcl-depth-* {
    --mcl-gm-shadow: --value(integer);
@@ -322,6 +333,7 @@ grep -n "@layer utilities" src/components/manguito-theme/lib/style/mcl-theme-v4.
 File: `src/components/manguito-theme/lib/style/mcl-theme-v4.css`
 
 In the `.btn.btn-progress.btn-progress-r::before` rule:
+
 ```diff
 -.btn.btn-progress.btn-progress-r::before {
 -  left: 100%;

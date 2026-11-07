@@ -30,7 +30,7 @@ const props = withDefaults(
   },
 )
 
-const slots = defineSlots<{
+defineSlots<{
   default: any
 }>()
 const emit = defineEmits<{
@@ -56,7 +56,7 @@ const getBorderClass = (
   rounded: boolean,
   dShadow: boolean,
 ): string => {
-  let borderInfo: string[] = [
+  const borderInfo: string[] = [
     'border',
     generateClass.borderColorVariant({ color: bColor }),
     generateClass.bgColorVariant({ color: bgColor }),

@@ -3,7 +3,7 @@ import { onMounted, provide, ref } from 'vue'
 import { vClickOutside } from '../directives'
 import { dropdownInjectionKey } from './DropdownInjectionKey'
 
-const slots = defineSlots<{
+defineSlots<{
   default: any
   toggler(props: { dropdownState: boolean; toggle: (arg: Event) => void }): any
 }>()

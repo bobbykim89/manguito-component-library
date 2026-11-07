@@ -67,7 +67,9 @@ transition: all 300ms linear;
 to:
 
 ```css
-transition: width 300ms linear, left 300ms linear;
+transition:
+  width 300ms linear,
+  left 300ms linear;
 ```
 
 ---

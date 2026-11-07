@@ -1,0 +1,9 @@
+.agents/
+pnpm-lock.yaml
+**/dist/
+**/CHANGELOG.md
+storybook-static/
+.turbo/
+.superpowers/
+# JSON/TS templates stored with a .md extension; Prettier would mangle them as Markdown
+scripts/templates/

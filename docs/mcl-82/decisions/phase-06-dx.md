@@ -20,12 +20,12 @@ The full audit list is applied — not just the subset in the implementation pla
 
 Standardise on the `show*` prefix across the entire library. `v-show`, Vue's own `showModal()` and the existing `showBackdrop`/`showHeader` names all use this prefix — `display*` is the outlier.
 
-| Current prop | Renamed to | Affected components |
-|---|---|---|
-| `displayBorder` | `showBorder` | `MclInputText`, `MclTextArea`, `MclSelect`, `MclInputFile`, `MclDropdownA` |
-| `displayShadow` | `showShadow` | `MclInputText`, `MclTextArea`, `MclSelect`, `MclInputFile`, `MclDropdownA`, `MclTabsA`, `MclCardA` |
+| Current prop       | Renamed to      | Affected components                                                                                                                                                                   |
+| ------------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `displayBorder`    | `showBorder`    | `MclInputText`, `MclTextArea`, `MclSelect`, `MclInputFile`, `MclDropdownA`                                                                                                            |
+| `displayShadow`    | `showShadow`    | `MclInputText`, `MclTextArea`, `MclSelect`, `MclInputFile`, `MclDropdownA`, `MclTabsA`, `MclCardA`                                                                                    |
 | `displayHighlight` | `showHighlight` | `MclInputText`, `MclTextArea`, `MclSelect`, `MclCollapseA`, `MclCollapseB`, `MclCardA`, `MclCardC`, `MclCardD`, `MclCarouselA`, `MclHeaderB`, `NavLink`, `NavDropdown`, `NavCollapse` |
-| `displayClear` | `showClear` | `MclInputFile` |
+| `displayClear`     | `showClear`     | `MclInputFile`                                                                                                                                                                        |
 
 `displayClear` takes `showClear` (not `clearable`) for consistency with the rest of the `show*` batch. `clearable` would be appropriate in isolation but would be a second naming convention running alongside `show*`.
 
@@ -33,33 +33,33 @@ Standardise on the `show*` prefix across the entire library. `v-show`, Vue's own
 
 `className` is a React convention and conflicts with how contributors familiar with Vue read the prop. `Tooltip` already uses `customClass` — this standardises the rest of the library to match.
 
-| Component | Package |
-|---|---|
-| `Modal.vue` | `manguito-theme` |
-| `Sidebar.vue` | `manguito-theme` |
-| `Collapse.vue` | `manguito-theme` |
-| `DropdownContent.vue` | `manguito-theme` |
-| `NavDropdown.vue` | `mcl-header` |
-| `NavCollapseVertical.vue` | `mcl-header` |
+| Component                 | Package          |
+| ------------------------- | ---------------- |
+| `Modal.vue`               | `manguito-theme` |
+| `Sidebar.vue`             | `manguito-theme` |
+| `Collapse.vue`            | `manguito-theme` |
+| `DropdownContent.vue`     | `manguito-theme` |
+| `NavDropdown.vue`         | `mcl-header`     |
+| `NavCollapseVertical.vue` | `mcl-header`     |
 
 ### `noBackdrop` / `noHeader` → `showBackdrop` / `showHeader`
 
 Negated boolean props make conditional logic harder to read (`v-if="!noBackdrop"` vs. `v-if="showBackdrop"`). Renamed and defaults inverted accordingly.
 
-| Current | Renamed | Default changes from | Affected components |
-|---|---|---|---|
-| `noBackdrop` | `showBackdrop` | `false` → `true` | `Modal.vue`, `Sidebar.vue` |
-| `noHeader` | `showHeader` | `false` → `true` | `Modal.vue`, `Sidebar.vue` |
+| Current      | Renamed        | Default changes from | Affected components        |
+| ------------ | -------------- | -------------------- | -------------------------- |
+| `noBackdrop` | `showBackdrop` | `false` → `true`     | `Modal.vue`, `Sidebar.vue` |
+| `noHeader`   | `showHeader`   | `false` → `true`     | `Modal.vue`, `Sidebar.vue` |
 
 ### `textcolor` → `textColor`
 
 Casing typo fix — all other color props in the library use camelCase.
 
-| Component | Package |
-|---|---|
+| Component          | Package     |
+| ------------------ | ----------- |
 | `MclInputText.vue` | `mcl-forms` |
-| `MclSelect.vue` | `mcl-forms` |
-| `MclTextArea.vue` | `mcl-forms` |
+| `MclSelect.vue`    | `mcl-forms` |
+| `MclTextArea.vue`  | `mcl-forms` |
 
 ### `invalidFeedback` → `noMatchText` (MclSelect only)
 
@@ -69,16 +69,16 @@ Casing typo fix — all other color props in the library use camelCase.
 
 ### Additional renames from audit
 
-| Current prop | Renamed to | Component | Package |
-|---|---|---|---|
-| `modalWidth` | `width` | `Modal.vue` | `manguito-theme` |
-| `selectColor` | `highlightColor` | `MclSelect.vue` | `mcl-forms` |
-| `isRequired` | `required` | `MclInputFile.vue` | `mcl-forms` |
-| `slotBgColor` | `contentBgColor` | `MclCollapseA.vue` | `mcl-collapse` |
-| `btnColor` | `triggerBgColor` | `MclCollapseB.vue` | `mcl-collapse` |
-| `drawerBtnBorder` | `showDrawerBorder` | `MclHeaderA.vue`, `MclHeaderB.vue` | `mcl-header` |
-| `navColor` | `bgColor` | `NavDrawer.vue` | `manguito-theme` |
-| `title` | `content` | `Tooltip` / `tooltip.directive.ts` | `manguito-theme` |
+| Current prop      | Renamed to         | Component                          | Package          |
+| ----------------- | ------------------ | ---------------------------------- | ---------------- |
+| `modalWidth`      | `width`            | `Modal.vue`                        | `manguito-theme` |
+| `selectColor`     | `highlightColor`   | `MclSelect.vue`                    | `mcl-forms`      |
+| `isRequired`      | `required`         | `MclInputFile.vue`                 | `mcl-forms`      |
+| `slotBgColor`     | `contentBgColor`   | `MclCollapseA.vue`                 | `mcl-collapse`   |
+| `btnColor`        | `triggerBgColor`   | `MclCollapseB.vue`                 | `mcl-collapse`   |
+| `drawerBtnBorder` | `showDrawerBorder` | `MclHeaderA.vue`, `MclHeaderB.vue` | `mcl-header`     |
+| `navColor`        | `bgColor`          | `NavDrawer.vue`                    | `manguito-theme` |
+| `title`           | `content`          | `Tooltip` / `tooltip.directive.ts` | `manguito-theme` |
 
 ### Migration guide requirement
 
@@ -136,6 +136,7 @@ export default generateClassLegacy
 ```
 
 This means:
+
 - Consumers using `import generateClass from '@bobbykim/manguito-theme'` (default import) continue to work but see an IDE deprecation warning.
 - Consumers migrating to `import { generateClass } from '@bobbykim/manguito-theme'` (named import) get the new namespace.
 - The old function signature (`generateClass('BGCOLOR', color)`) disappears from the public API; the old default export is a shim kept only for backwards compatibility.
@@ -187,11 +188,11 @@ The new contributor workflow must be documented (in `CONTRIBUTING.md` or the pro
 
 ### Removals
 
-| What | Why |
-|---|---|
-| `lerna.json` | Replaced by Turborepo (builds) + Changesets (versioning) |
-| `lerna` devDependency | No longer needed |
-| `standard-version` devDependency | Replaced by Changesets |
-| `release` script in root `package.json` | Replaced by `changeset version` + `changeset publish` |
+| What                                    | Why                                                      |
+| --------------------------------------- | -------------------------------------------------------- |
+| `lerna.json`                            | Replaced by Turborepo (builds) + Changesets (versioning) |
+| `lerna` devDependency                   | No longer needed                                         |
+| `standard-version` devDependency        | Replaced by Changesets                                   |
+| `release` script in root `package.json` | Replaced by `changeset version` + `changeset publish`    |
 
 Root `package.json` scripts are updated to use `turbo run build test` and the changesets CLI.
