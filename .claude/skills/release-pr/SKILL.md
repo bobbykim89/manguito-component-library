@@ -20,7 +20,7 @@ Runs RELEASING.md section "2. Open the release pull request" through `scripts/re
 
 3. **Ask.** Show the maintainer the commit body, the `git diff --stat` the script printed, every breaking change, every mismatch with a one-line reason (or "no mismatches"), and every coverage warning the script printed (`warning: <package> changed since <sha> but has no pending release`). A warning may be fine (a change that does not ship) or a missing changeset. Ask whether to push the branch and open the pull request. Wait for an explicit yes.
    - **Mismatch to fix, or a changeset to add:** discard the branch (`git checkout master && git branch -D <branch>`). Fix it on a feature branch, merge that, and re-run this skill. A changeset is never edited on the release branch, where it has already been consumed.
-   - **No:** leave the branch local and repeat the script's two commands, resume (`scripts/release-pr.sh open`) and discard.
+   - **No:** leave the branch local and resume with `scripts/release-pr.sh open`, discard with `git checkout master && git branch -D <branch>`.
 
 4. **Open.** On a yes, run `scripts/release-pr.sh open` and give the maintainer the PR URL. The `ci` check must pass before it can merge.
 

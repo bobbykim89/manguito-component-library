@@ -41,7 +41,7 @@ SSR test convention: `*.server.test.ts` runs in the node environment (`// @vites
 pnpm lint                   # ESLint
 pnpm format                 # Prettier, write
 pnpm format:check           # Prettier, check only (CI runs this)
-pnpm typecheck              # turbo run typecheck (build packages first)
+pnpm typecheck              # turbo run typecheck (turbo builds the theme first)
 ```
 
 `master` is protected: every change goes through a pull request with a passing `ci` check; never push to it directly.
@@ -64,7 +64,7 @@ Versioning is managed by [Changesets](https://github.com/changesets/changesets) 
 ### Monorepo layout
 
 ```
-src/components/             # 10 publishable packages (pnpm workspace)
+src/components/             # 11 publishable packages (pnpm workspace)
   manguito-theme/           # Base package — all others depend on this
   mcl-collapse/
   mcl-forms/

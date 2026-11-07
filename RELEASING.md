@@ -70,7 +70,7 @@ The script checks that you are on `master`, the tree is clean, `master` equals
 refuses otherwise, with a message naming the fix. Then it:
 
 1. **Warns** about packages under `src/components/` that changed since the last
-   `chore(release)` commit but have no pending release. A change that does not
+   `chore(release): version packages` commit but have no pending release. A change that does not
    ship may legitimately need no changeset; one that does needs one before you
    continue.
 2. **Creates `release/<date>`** (it adds `-2`, `-3` if that name exists locally
@@ -107,7 +107,7 @@ git push -u origin release/<date>
 gh pr create --base master --title "chore(release): version packages (<date>)" --body "Version Packages"
 ```
 
-Keep the `chore(release)` subject: the coverage check finds the previous release
+Keep the `chore(release): version packages` subject: the coverage check finds the previous release
 by it. CI installs with `--frozen-lockfile`, so commit any lockfile change.
 
 ## 3. Merge it
@@ -210,19 +210,20 @@ pnpm run story:build      # turbo run build, then storybook build -o dist
 
 ## Recovery
 
-| Situation                                                       | What to do                                                                                                                                                                                                |
-| --------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `publish` failed partway, some packages published, some did not | Run `pnpm changeset publish` again. Already-published versions are skipped; only the stragglers go out. Then push tags.                                                                                   |
-| The release PR merged, but publish never ran                    | Do **not** re-run `package:version`; the bump is already on `master`. Start at step 4.                                                                                                                    |
-| `No unpublished projects to publish`                            | Every version in the repo already exists on npm. Nothing to do; the release is complete.                                                                                                                  |
-| OTP expired mid-run                                             | Re-run `pnpm changeset publish --otp=<fresh code>`.                                                                                                                                                       |
-| Published a broken version                                      | Do not unpublish. Fix forward with a new patch release, then mark the bad one: `npm deprecate '@bobbykim/mcl-cards@0.10.1' "Broken release, use 0.10.2"`.                                                 |
-| Tarball is missing `dist/`                                      | Each package's `files` field ships `dist` only, so the build must precede the publish. Run `pnpm run package:build`, check `dist/` exists, then republish.                                                |
-| Suspect a stale Turborepo cache                                 | `pnpm turbo run build --force`.                                                                                                                                                                           |
-| A leftover tag from a failed attempt blocks a retry             | `git tag -d '@bobbykim/mcl-cards@0.10.1'` (delete locally only; never delete a pushed release tag).                                                                                                       |
-| Need a prerelease                                               | `pnpm changeset pre enter next`, then version and publish as usual; packages go out under the `next` dist-tag. Exit with `pnpm changeset pre exit`.                                                       |
-| Push to `master` rejected (`GH013: Repository rule violations`) | You committed on `master` locally. Move the commit to a branch and reset: `git branch <branch> && git reset --hard origin/master && git checkout <branch>`, then push the branch and open a pull request. |
-| CI failed at Install with `ERR_PNPM_OUTDATED_LOCKFILE`          | The lockfile no longer matches a `package.json`. On the branch run `pnpm install`, commit `pnpm-lock.yaml`, and push.                                                                                     |
+| Situation                                                                                            | What to do                                                                                                                                                                                                        |
+| ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `publish` failed partway, some packages published, some did not                                      | Run `pnpm changeset publish` again. Already-published versions are skipped; only the stragglers go out. Then push tags.                                                                                           |
+| The release PR merged, but publish never ran                                                         | Do **not** re-run `package:version`; the bump is already on `master`. Start at step 4.                                                                                                                            |
+| `No unpublished projects to publish`                                                                 | Every version in the repo already exists on npm. Nothing to do; the release is complete.                                                                                                                          |
+| OTP expired mid-run                                                                                  | Re-run `pnpm changeset publish --otp=<fresh code>`.                                                                                                                                                               |
+| Published a broken version                                                                           | Do not unpublish. Fix forward with a new patch release, then mark the bad one: `npm deprecate '@bobbykim/mcl-cards@0.10.1' "Broken release, use 0.10.2"`.                                                         |
+| Tarball is missing `dist/`                                                                           | Each package's `files` field ships `dist` only, so the build must precede the publish. Run `pnpm run package:build`, check `dist/` exists, then republish.                                                        |
+| Suspect a stale Turborepo cache                                                                      | `pnpm turbo run build --force`.                                                                                                                                                                                   |
+| A leftover tag from a failed attempt blocks a retry                                                  | `git tag -d '@bobbykim/mcl-cards@0.10.1'` (delete locally only; never delete a pushed release tag).                                                                                                               |
+| Need a prerelease                                                                                    | `pnpm changeset pre enter next`, then version and publish as usual; packages go out under the `next` dist-tag. Exit with `pnpm changeset pre exit`.                                                               |
+| Push to `master` rejected (`GH013: Repository rule violations`)                                      | You committed on `master` locally. Move the commit to a branch without touching the working tree: `git checkout -b <branch> && git branch -f master origin/master`, then push the branch and open a pull request. |
+| `prepare` failed after creating the release branch (e.g. `package:version` or `pnpm install` failed) | `git checkout -- . && git clean -fd && git checkout master && git branch -D release/<date>`, then fix the cause and re-run.                                                                                       |
+| CI failed at Install with `ERR_PNPM_OUTDATED_LOCKFILE`                                               | The lockfile no longer matches a `package.json`. On the branch run `pnpm install`, commit `pnpm-lock.yaml`, and push.                                                                                             |
 
 ## When CI or the ruleset blocks you
 

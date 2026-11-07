@@ -45,7 +45,7 @@ write_status() {
 # since the last release commit but that have no pending release. $1 = status file.
 coverage_warnings() {
   local sha short dirs dir manifest name pending
-  sha="$(git log --grep '^chore(release)' -1 --format=%H || true)"
+  sha="$(git log --grep '^chore(release): version packages' -1 --format=%H || true)"
   if [ -z "$sha" ]; then
     echo "note: no previous chore(release) commit; skipping the coverage check" >&2
     return 0

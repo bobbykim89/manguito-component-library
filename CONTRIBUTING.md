@@ -23,12 +23,12 @@ pnpm test
 
 ## Making changes
 
-`master` is protected: every change goes through a pull request, and the `ci` check must pass before it merges. Before pushing, run the same checks CI runs:
+`master` is protected: every change goes through a pull request, and the `ci` check must pass before it merges. Before pushing, run the main checks CI runs (CI also runs the build, `test:dist` and the Storybook build):
 
 ```bash
 pnpm lint
 pnpm format:check     # `pnpm format` fixes it
-pnpm typecheck        # needs `pnpm run package:build` first
+pnpm typecheck
 pnpm test
 ```
 
