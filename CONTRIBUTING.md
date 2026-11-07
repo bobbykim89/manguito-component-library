@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Node.js >= 22
+- Node.js >= 22.13 (CI runs Node 24)
 - pnpm >= 10
 
 ## Development
@@ -22,6 +22,15 @@ pnpm test
 ```
 
 ## Making changes
+
+`master` is protected: every change goes through a pull request, and the `ci` check must pass before it merges. Before pushing, run the main checks CI runs (CI also runs the build, `test:dist` and the Storybook build):
+
+```bash
+pnpm lint
+pnpm format:check     # `pnpm format` fixes it
+pnpm typecheck
+pnpm test
+```
 
 ### Commits
 
@@ -57,19 +66,13 @@ This creates a new file under `.changeset/`. Commit it alongside your code chang
 | `minor` | New features, new props/slots with backwards-compatible defaults    |
 | `major` | Breaking changes — removed props, renamed exports, changed defaults |
 
+**Packages below 1.0** (the ten `mcl-*` packages) take breaking changes as `minor`, not `major`. Start the changeset summary by saying it is breaking and list what consumers must change. Only `@bobbykim/manguito-theme` (1.0 and above) uses `major` for breaking changes.
+
 ## Releasing
 
-Releases are handled by the maintainer, from a clean `master`, in two commands:
+Releases are handled by the maintainer. Because `master` is protected, the version bump goes through a release pull request: run `/release-pr` in Claude Code, or `scripts/release-pr.sh`. After it merges, the maintainer publishes from `master` by hand.
 
-```bash
-pnpm run package:version    # consume changesets, bump versions, write CHANGELOGs
-pnpm run package:publish    # build all packages, publish anything new to npm
-```
-
-Those two commands are the happy path only. See **[RELEASING.md](./RELEASING.md)**
-for the full runbook: pre-flight checks, verifying that every merged change has a
-changeset, npm 2FA, pushing tags, post-publish verification, and how to recover
-from a publish that fails partway.
+See **[RELEASING.md](./RELEASING.md)** for the full runbook: the release pull request, publishing with npm 2FA, pushing tags, post-publish verification, recovery, and what to do when CI or the ruleset blocks you.
 
 ## Build caching (Turborepo)
 
@@ -93,7 +96,7 @@ Once linked, `turbo run build` will read and write the remote cache automaticall
 pnpm run package:create
 ```
 
-The interactive CLI scaffolds a new component package under `src/components/`. Ensure the new package lists `@bobbykim/manguito-theme` as a dependency — Turborepo uses this to determine build order.
+The interactive CLI scaffolds a new component package under `src/components/`. Ensure the new package lists `@bobbykim/manguito-theme` as a dependency — Turborepo uses this to determine build order. Then run `pnpm format`: the scaffolding templates emit unformatted JSON, and CI's `format:check` fails on it.
 
 ## Workspace layout
 
@@ -101,6 +104,7 @@ The interactive CLI scaffolds a new component package under `src/components/`. E
 src/components/         # publishable packages
   manguito-theme/       # base package — must build first
   mcl-*/                # component packages
+src/utils/test/         # @mcl/test-utils, private, never published
 src/stories/            # Storybook stories (not published)
 scripts/                # package scaffolding CLI
 .changeset/             # pending changesets (committed with PRs)

@@ -35,7 +35,20 @@ Tests live alongside source as `lib/**/*.test.ts`. The root `vitest.config.ts` u
 
 SSR test convention: `*.server.test.ts` runs in the node environment (`// @vitest-environment node`, so `document` is undefined) and `*.test.ts` runs in jsdom (the theme default; happy-dom breaks `@vueuse` `useScrollLock(document)`). The harness is `src/utils/test/ssr.ts` (`renderOnServer`, `hydrate`), a private workspace package; packages import it as `'@mcl/test-utils/ssr'` after adding `"@mcl/test-utils": "workspace:*"` to their devDependencies.
 
+### Quality checks
+
+```bash
+pnpm lint                   # ESLint
+pnpm format                 # Prettier, write
+pnpm format:check           # Prettier, check only (CI runs this)
+pnpm typecheck              # turbo run typecheck (turbo builds the theme first)
+```
+
+`master` is protected: every change goes through a pull request with a passing `ci` check; never push to it directly.
+
 ### Releases
+
+The `/release-pr` skill (`scripts/release-pr.sh`) opens the version-packages pull request. Publishing is manual from `master`; see `RELEASING.md`.
 
 ```bash
 pnpm commit                 # Commitizen prompt (use this instead of git commit)
@@ -51,7 +64,7 @@ Versioning is managed by [Changesets](https://github.com/changesets/changesets) 
 ### Monorepo layout
 
 ```
-src/components/             # 10 publishable packages (pnpm workspace)
+src/components/             # 11 publishable packages (pnpm workspace)
   manguito-theme/           # Base package — all others depend on this
   mcl-collapse/
   mcl-forms/
