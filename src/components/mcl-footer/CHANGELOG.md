@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.10.5
+
+### Patch Changes
+
+- b6ac4ac: Fix `MclFooterA` ignoring `menuTextBold`: menu items now get `font-bold` when the prop is true.
+
 ## 0.10.4
 
 ### Patch Changes
