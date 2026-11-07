@@ -10,6 +10,8 @@ export default defineConfig({
       './src/components/mcl-header',
       './src/components/mcl-tabs',
       './src/components/mcl-dropdown',
+      './src/components/mcl-footer',
+      './src/components/mcl-cards',
     ],
   },
 })

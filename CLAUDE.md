@@ -22,7 +22,7 @@ pnpm run package:install    # pnpm install across all workspaces
 ### Testing
 
 ```bash
-pnpm test                   # Run all tests once (root vitest config: test-utils, manguito-theme, mcl-forms, mcl-collapse, mcl-header, mcl-tabs, mcl-dropdown)
+pnpm test                   # Run all tests once (root vitest config: test-utils, manguito-theme, mcl-forms, mcl-collapse, mcl-header, mcl-tabs, mcl-dropdown, mcl-footer, mcl-cards)
 pnpm test --watch           # Watch mode
 pnpm test:dist              # turbo build, then check-dist-ssr.mjs: imports every built theme entry in plain Node and server-renders each component from dist
 

@@ -89,7 +89,6 @@ const handleCardClick = (e: Event): void => {
     url: ctaLink,
     target: ctaTarget ? ctaTarget : '_self',
   }
-  console.log(cardEvent)
   emit('card-click', e, cardEvent)
 }
 </script>
