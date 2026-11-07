@@ -201,7 +201,7 @@ service, `DB_URL` and smoke step.
 30`. Keep the comment saying the name is coupled to the ruleset.
 - **Steps, in order:**
   1. `actions/checkout`, `pnpm/action-setup` (no version input; it reads
-     `packageManager`), and `actions/setup-node` with Node 22 and `cache: pnpm`.
+     `packageManager`), and `actions/setup-node` with Node 24 and `cache: pnpm`.
      Use the same action major versions as the CMS file.
   2. `pnpm install --frozen-lockfile`
   3. `pnpm lint`

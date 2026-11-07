@@ -49,7 +49,7 @@ port are `eslint.config.mjs`, `.github/workflows/ci.yml`,
 - **The job name stays `ci`.** The CI job id and name are both `ci`, the
   workflow `name:` is `CI`, there is no `paths` filter, and the ruleset's
   required context is `ci`.
-- **Node 22 in CI;** pnpm comes from `packageManager`, with no version input.
+- **Node 24 in CI;** pnpm comes from `packageManager`, with no version input.
 - **Commits** use `git commit -m "type(scope): subject"` (conventional) and end
   with `Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>`.
 - **Owner checkpoints:** pushing a branch, opening a PR, applying the ruleset
@@ -237,7 +237,7 @@ changes` and `build: add a turbo typecheck task with vue-tsc`.
   - Steps, in this order:
     1. checkout;
     2. pnpm setup;
-    3. setup-node 22 with `cache: pnpm`;
+    3. setup-node 24 with `cache: pnpm`;
     4. `pnpm install --frozen-lockfile`;
     5. `pnpm lint`;
     6. `pnpm format:check`;
