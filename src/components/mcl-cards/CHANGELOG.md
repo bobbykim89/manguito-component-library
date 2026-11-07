@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.10.5
+
+### Patch Changes
+
+- acb23f7: Remove a leftover `console.log` that `MclCardB` printed on every card click.
+
 ## 0.10.4
 
 ### Patch Changes
