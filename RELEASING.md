@@ -31,7 +31,7 @@ For contributor-facing guidance (how to write a changeset for your PR), see
 
 | Requirement                                                   | Check            |
 | ------------------------------------------------------------- | ---------------- |
-| Node.js >= 22.13 (CI runs Node 24)                            | `node -v`        |
+| Node.js >= 24                                                 | `node -v`        |
 | pnpm 10.32.1 (pinned via `packageManager`)                    | `pnpm -v`        |
 | GitHub CLI (`gh`), authenticated, to open the PR and check CI | `gh auth status` |
 | `jq`, used by the release script                              | `jq --version`   |

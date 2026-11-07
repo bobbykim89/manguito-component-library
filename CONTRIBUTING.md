@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Node.js >= 22.13 (CI runs Node 24)
+- Node.js >= 24
 - pnpm >= 10
 
 ## Development
