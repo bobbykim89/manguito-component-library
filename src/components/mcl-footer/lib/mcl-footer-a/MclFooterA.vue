@@ -86,7 +86,7 @@ const menuItemClass = computed<string>(() => {
     generateClass.textColorVariant({ color: menuTextColor }),
   ]
   if (menuTextBold) {
-    classArray.join('font-bold')
+    classArray.push('font-bold')
   }
   return classArray.join(' ')
 })

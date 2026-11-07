@@ -13,7 +13,7 @@ export default defineConfig({
         return outputChunk.fileName.includes('mcl-footer')
       },
     }),
-    dts({ rollupTypes: true }),
+    dts({ rollupTypes: true, exclude: ['lib/**/*.test.ts'] }),
   ],
   build: {
     lib: {
