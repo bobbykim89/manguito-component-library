@@ -37,7 +37,7 @@ import { MclCollapseA, MclCollapseB } from '@bobbykim/mcl-collapse'
 
 ### Accordion group
 
-Wrap components in `AccordionGroup` to ensure only one item is open at a time. `AccordionGroup` is exported from `@bobbykim/manguito-theme`.
+Wrap components in `AccordionGroup` to ensure only one item is open at a time. `AccordionGroup` is exported from `@bobbykim/manguito-theme`. To start with an item open, set `visible` on it; if several are `visible`, the first one opens.
 
 ```vue
 <script setup lang="ts">
@@ -47,7 +47,7 @@ import { MclCollapseA } from '@bobbykim/mcl-collapse'
 
 <template>
   <AccordionGroup>
-    <MclCollapseA collapse-id="item-1" title="Item 1">
+    <MclCollapseA collapse-id="item-1" title="Item 1" visible>
       <template #content>Content 1</template>
     </MclCollapseA>
     <MclCollapseA collapse-id="item-2" title="Item 2">

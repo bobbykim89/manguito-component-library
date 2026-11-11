@@ -151,13 +151,17 @@ The base `Collapse` component provides an animated height/opacity transition for
 
 **Props**
 
-| Prop           | Type                 | Default        | Description                                                                                             |
-| -------------- | -------------------- | -------------- | ------------------------------------------------------------------------------------------------------- |
-| `id`           | `string`             | auto-generated | ID used to identify the panel within an `AccordionGroup`; also rendered as the element's `id` attribute |
-| `visible`      | `boolean`            | `false`        | Initial open state; reactive — updating it opens or closes the panel                                    |
-| `custom-class` | `string \| string[]` | `''`           | CSS class(es) applied to the inner content wrapper                                                      |
+| Prop           | Type                 | Default        | Description                                                                                               |
+| -------------- | -------------------- | -------------- | --------------------------------------------------------------------------------------------------------- |
+| `id`           | `string`             | auto-generated | ID used to identify the panel within an `AccordionGroup`; also rendered as the element's `id` attribute   |
+| `visible`      | `boolean`            | `false`        | Initial open state; reactive — updating it opens or closes the panel. See the `AccordionGroup` note below |
+| `custom-class` | `string \| string[]` | `''`           | CSS class(es) applied to the inner content wrapper                                                        |
 
 **Exposed methods:** `open()`, `close()`, `toggle()`
+
+**Exposed state:** `isOpen` (read-only `boolean`)
+
+Inside an `AccordionGroup`, `visible` works the same way, but only one panel can be open: if several start `visible`, the first one opens. Setting `visible` to `true` later opens that panel and closes the open one.
 
 **Events:** `open(visible: boolean)`, `close(visible: boolean)`
 
@@ -187,7 +191,7 @@ const collapseRef = ref<InstanceType<typeof Collapse>>()
 
 #### Accordion with `AccordionGroup`
 
-Wrap `Collapse` panels in `AccordionGroup` — each panel's `id` prop is how the group tracks which one is open. Triggers call `toggle()` via a template ref on each panel.
+Wrap `Collapse` panels in `AccordionGroup` — each panel's `id` prop is how the group tracks which one is open. Triggers call `toggle()` via a template ref on each panel. To start with a panel open, set `visible` on it; if several are `visible`, the first one opens.
 
 ```vue
 <script setup lang="ts">

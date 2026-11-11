@@ -88,4 +88,33 @@ describe('Collapse (client)', () => {
     expect(display('a')).toBe('none')
     r.unmount()
   })
+
+  // #107: only the first panel that starts `visible` opens, on the server and
+  // after hydration, so the two never disagree.
+  it('AccordionGroup opens only the first visible panel and hydrates cleanly', async () => {
+    const render = () =>
+      h(AccordionGroup, null, {
+        default: () => [
+          h(Collapse, { id: 'a' }, slots),
+          h(Collapse, { id: 'b', visible: true }, slots),
+          h(Collapse, { id: 'c', visible: true }, slots),
+        ],
+      })
+    const { html } = await renderOnServer(render)
+    const server = document.createElement('div')
+    server.innerHTML = html
+    const hiddenOnServer = (id: string) =>
+      /display:\s*none/.test(
+        server.querySelector(`#${id} > div`)!.getAttribute('style') ?? '',
+      )
+    expect(['a', 'b', 'c'].map(hiddenOnServer)).toEqual([true, false, true])
+
+    const r = await hydrate(render)
+    const display = (id: string) =>
+      (document.getElementById(id)!.firstElementChild as HTMLElement).style
+        .display
+    expect(['a', 'b', 'c'].map(display)).toEqual(['none', '', 'none'])
+    expect(r.warnings).toEqual([])
+    r.unmount()
+  })
 })

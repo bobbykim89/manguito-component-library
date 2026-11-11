@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ColorPalette, HeadingSize } from '@bobbykim/manguito-theme'
 import { generateClass, Collapse } from '@bobbykim/manguito-theme'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -42,14 +42,15 @@ const emit = defineEmits<{
 }>()
 
 const collapseRef = ref<InstanceType<typeof Collapse>>()
-const isOpen = ref(props.visible)
+// Read the panel's own state: inside an AccordionGroup, `visible` can lose to
+// an earlier item (#107). Before the panel mounts, fall back to the prop so the
+// server render and the first client render agree.
+const isOpen = computed(() => collapseRef.value?.isOpen ?? props.visible)
 
 const handleOpen = (): void => {
-  isOpen.value = true
   emit('collapse-open', true, props.title)
 }
 const handleClose = (): void => {
-  isOpen.value = false
   emit('collapse-close', false, props.title)
 }
 

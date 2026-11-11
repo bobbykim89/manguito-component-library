@@ -42,6 +42,13 @@ export const useCollapseState = (
     const close = () => {
       if (isOpen.value) ctx.openId.value = null
     }
+    // First panel to start open wins: panels set up in render order, so a
+    // later one can't reopen over a panel already rendered open (SSR-safe).
+    const startOpen = isRef(initialOpen) ? initialOpen.value : initialOpen
+    if (startOpen && ctx.openId.value === null) open()
+    if (isRef(initialOpen)) {
+      watch(initialOpen, (v) => (v ? open() : close()))
+    }
     return { isOpen, toggle, open, close }
   } else {
     const _isOpen = ref(isRef(initialOpen) ? initialOpen.value : initialOpen)
