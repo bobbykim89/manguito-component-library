@@ -54,3 +54,30 @@ describe('MclHeaderB labels', () => {
     w.unmount()
   })
 })
+
+// #115: showDrawerBorder must reach HeaderVertical's menu button.
+describe('MclHeaderB prop pass-through', () => {
+  afterEach(() => {
+    document.body.innerHTML = ''
+  })
+
+  const menuButton = () =>
+    document.body.querySelector('button[aria-expanded]') as HTMLButtonElement
+
+  it('showDrawerBorder: false removes the menu button border', async () => {
+    const w = mount(MclHeaderB, {
+      props: { ...props, showDrawerBorder: false },
+      attachTo: document.body,
+    })
+    await nextTick()
+    expect(menuButton().classList.contains('border')).toBe(false)
+    w.unmount()
+  })
+
+  it('keeps the menu button border by default', async () => {
+    const w = mount(MclHeaderB, { props, attachTo: document.body })
+    await nextTick()
+    expect(menuButton().classList.contains('border')).toBe(true)
+    w.unmount()
+  })
+})

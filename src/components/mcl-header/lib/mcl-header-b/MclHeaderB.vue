@@ -130,7 +130,7 @@ defineExpose({
     :menu-label="menuLabel"
     :bg-color="bgColor"
     :drawer-btn-color="drawerBtnColor"
-    :drawer-btn-border="showDrawerBorder"
+    :show-drawer-border="showDrawerBorder"
     :header-width="headerWidth"
     @toggle-drawer="handleDrawerClick"
     ref="componentRef"
