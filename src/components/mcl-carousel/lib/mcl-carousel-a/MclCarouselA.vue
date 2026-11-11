@@ -152,6 +152,8 @@ const cardsGapClass = computed(() =>
               aria-label="previous"
             >
               <svg
+                aria-hidden="true"
+                focusable="false"
                 class="h-xs w-xs"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 384 512"
@@ -171,6 +173,8 @@ const cardsGapClass = computed(() =>
               aria-label="next"
             >
               <svg
+                aria-hidden="true"
+                focusable="false"
                 class="h-xs w-xs"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 384 512"

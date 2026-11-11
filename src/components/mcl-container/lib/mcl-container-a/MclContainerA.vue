@@ -95,6 +95,7 @@ const getRightColumnWIdth = (
   >
     <div class="relative min-h-9 md:min-h-12 lg:min-h-15">
       <svg
+        focusable="false"
         class="absolute inset-x-0 left-0 block h-full w-full"
         :class="generateClass.svgFillColorVariant({ color: containerBg })"
         viewBox="0 0 100 100"
@@ -122,6 +123,7 @@ const getRightColumnWIdth = (
     </div>
     <div class="relative min-h-9 md:min-h-12 lg:min-h-15">
       <svg
+        focusable="false"
         class="absolute inset-x-0 left-0 block h-full w-full"
         :class="generateClass.svgFillColorVariant({ color: containerBg })"
         viewBox="0 0 100 100"

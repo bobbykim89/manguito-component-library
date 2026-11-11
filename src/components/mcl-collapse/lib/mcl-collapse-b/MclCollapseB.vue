@@ -107,6 +107,8 @@ const getTitleClass = (size: HeadingSize, color: ColorPalette): string => {
         class="ml-xs flex items-center justify-center md:ml-sm lg:ml-md"
       >
         <svg
+          aria-hidden="true"
+          focusable="false"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 448 512"
           class="h-xs transition-transform duration-300 ease-in"
