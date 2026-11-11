@@ -14,7 +14,7 @@ describe('HeaderVertical (server)', () => {
     const { html, teleports } = await renderOnServer(() =>
       h(HeaderVertical, null, slots),
     )
-    expect(html).toContain('aria-label="Open"')
+    expect(html).toContain('aria-label="Menu"')
     expect(html).toContain('aria-expanded="false"')
     expect(teleports.body).toBeFalsy()
   })
@@ -28,6 +28,6 @@ describe('HeaderVertical (server)', () => {
     const { html } = await renderOnServer(() =>
       h(HeaderVertical, null, { content: slots.content }),
     )
-    expect(html).not.toContain('aria-label="Open"')
+    expect(html).not.toContain('aria-label="Menu"')
   })
 })

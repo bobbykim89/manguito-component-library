@@ -58,6 +58,11 @@ const handleMenuClick = (e: Event) => {
 
 <Controls of={Stories.HeaderHorizontalEmptySlots} />
 
+## Accessibility
+
+- `navLabel` (default `"Main"`) names the header's `<nav>` landmark. Give each landmark on a page a different name, for example when it also has a footer nav.
+- `menuLabel` (default `"Menu"`) names the mobile menu button. The name stays the same; `aria-expanded` tells screen readers whether the menu is open.
+
 ## Slot
 
 - `#content`: main content slot on left side of the component

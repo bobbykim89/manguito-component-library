@@ -9,10 +9,13 @@ const props = withDefaults(
     showBorder?: boolean
     toggle: boolean
     bgColor: ColorPalette
+    /** Accessible name; aria-expanded carries the open/closed state. */
+    label?: string
   }>(),
   {
     color: 'dark-2',
     showBorder: true,
+    label: 'Menu',
   },
 )
 
@@ -73,7 +76,7 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
     class="hamburger__button aspect-square rounded-md p-3xs ring-offset-2 transition-all duration-300 ease-linear outline-none hover:opacity-70 focus:opacity-70 focus:ring-4"
     :class="getBorderClass(color, showBorder, bgColor)"
     @click="handleButtonToggle"
-    :aria-label="toggle ? 'Close' : 'Open'"
+    :aria-label="label"
     :aria-expanded="toggle"
   >
     <input

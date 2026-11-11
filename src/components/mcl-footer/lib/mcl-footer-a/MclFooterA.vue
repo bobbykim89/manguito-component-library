@@ -34,6 +34,8 @@ const props = withDefaults(
     bgColor?: ColorPalette
     borderTopColor?: ColorPalette
     headlineColor?: ColorPalette
+    /** aria-label of the footer's nav landmark. */
+    navLabel?: string
   }>(),
   {
     titleSize: 'md',
@@ -51,6 +53,7 @@ const props = withDefaults(
     bgColor: 'dark-3',
     borderTopColor: 'primary',
     headlineColor: 'light-1',
+    navLabel: 'Footer',
   },
 )
 
@@ -147,6 +150,7 @@ const handleMenuItemClick = (e: Event, item: MenuItemType) => {
           </div>
         </div>
         <nav
+          :aria-label="navLabel"
           class="flex grow flex-col items-center justify-between gap-xs text-center text-sm sm:flex-row sm:items-start sm:text-left md:basis-1/2 md:flex-row md:justify-around"
         >
           <ul

@@ -31,28 +31,28 @@ const iconList = computed<IconList[]>(() => {
     iconsList.push({
       url: props.socialLinks.linkedin,
       icon: LinkedinIcon,
-      label: 'linkedin social icon',
+      label: 'LinkedIn (opens in new tab)',
     })
   }
   if (props.socialLinks?.github) {
     iconsList.push({
       url: props.socialLinks.github,
       icon: GithubIcon,
-      label: 'github social icon',
+      label: 'GitHub (opens in new tab)',
     })
   }
   if (props.socialLinks?.instagram) {
     iconsList.push({
       url: props.socialLinks.instagram,
       icon: InstagramIcon,
-      label: 'instagram social icon',
+      label: 'Instagram (opens in new tab)',
     })
   }
   if (props.socialLinks?.twitter) {
     iconsList.push({
       url: props.socialLinks.twitter,
       icon: XIcon,
-      label: 'x/twitter social icon',
+      label: 'X (Twitter) (opens in new tab)',
     })
   }
   return iconsList
@@ -76,10 +76,10 @@ const getIconColor = (color: ColorPalette): string => {
       <a
         :href="item.url"
         target="_blank"
+        rel="noopener noreferrer"
         class="inline-block rounded-md ring-offset-2 ring-offset-transparent transition-all duration-300 ease-linear outline-none hover:opacity-70 hover:ring-2 focus:ring-2"
         :class="getIconColor(iconColor)"
         :aria-label="item.label"
-        role="button"
       >
         <div v-html="item.icon"></div>
       </a>
