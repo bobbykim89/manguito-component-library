@@ -58,10 +58,13 @@ watch(isOpen, (newValue) => {
 })
 
 defineExpose<{
+  /** Whether the panel is open. Read-only; use open/close/toggle to change it. */
+  isOpen: typeof isOpen
   toggle: () => void
   open: () => void
   close: () => void
 }>({
+  isOpen,
   toggle,
   open,
   close,

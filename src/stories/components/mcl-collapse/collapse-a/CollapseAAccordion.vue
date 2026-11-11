@@ -37,10 +37,11 @@ const accordionContent = [
     </div>
     <AccordionGroup>
       <mcl-collapse-a
-        v-for="item in accordionContent"
+        v-for="(item, idx) in accordionContent"
         :key="item.id"
         :collapse-id="item.id"
         :title="item.title"
+        :visible="idx === 0"
         class="mb-xs last:mb-0"
       >
         <template #content>
