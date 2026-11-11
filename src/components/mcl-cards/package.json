@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/mcl-cards",
-  "version": "0.10.6",
+  "version": "0.10.7",
   "description": "card components based on @bobbykim/manguito-theme",
   "type": "module",
   "files": [
