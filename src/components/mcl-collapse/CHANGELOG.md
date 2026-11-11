@@ -1,5 +1,15 @@
 # Change Log
 
+## 0.9.5
+
+### Patch Changes
+
+- c75a690: `Collapse`'s `visible` prop now works inside `AccordionGroup`: a panel that starts `visible` opens (if several do, the first one wins), and changing `visible` later opens or closes it. `Collapse` also exposes its read-only `isOpen` state through its template ref. `MclCollapseA` and `MclCollapseB` now read their header's `aria-expanded` and chevron from it, so the header no longer reports an item as expanded while its panel is closed.
+- Updated dependencies [c75a690]
+- Updated dependencies [33b310c]
+- Updated dependencies [048e61e]
+  - @bobbykim/manguito-theme@1.3.0
+
 ## 0.9.4
 
 ### Patch Changes

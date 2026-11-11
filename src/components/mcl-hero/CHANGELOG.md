@@ -1,5 +1,14 @@
 # Change Log
 
+## 0.9.5
+
+### Patch Changes
+
+- Updated dependencies [c75a690]
+- Updated dependencies [33b310c]
+- Updated dependencies [048e61e]
+  - @bobbykim/manguito-theme@1.3.0
+
 ## 0.9.4
 
 ### Patch Changes

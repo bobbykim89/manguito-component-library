@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.3.0
+
+### Minor Changes
+
+- c75a690: `Collapse`'s `visible` prop now works inside `AccordionGroup`: a panel that starts `visible` opens (if several do, the first one wins), and changing `visible` later opens or closes it. `Collapse` also exposes its read-only `isOpen` state through its template ref. `MclCollapseA` and `MclCollapseB` now read their header's `aria-expanded` and chevron from it, so the header no longer reports an item as expanded while its panel is closed.
+
+### Patch Changes
+
+- 33b310c: Fix `Sidebar` and `Modal` ignoring backdrop clicks after a prop change re-rendered them. `vClickOutside` no longer re-registers its listener on re-renders that pass the same handler, and the dialogs' focus trap now lets outside clicks through while still trapping Tab focus.
+- 048e61e: `vCollapse` now logs a warning once per page when mounted: it no longer works with any collapse component, including the base `Collapse`. It stays exported until the next major release. The README now documents `Collapse`'s `custom-class` prop (it still said `class-name`) and the `v-collapse` migration.
+
 ## 1.2.0
 
 ### Minor Changes
