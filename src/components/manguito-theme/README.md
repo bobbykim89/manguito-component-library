@@ -286,6 +286,23 @@ import { MclCollapseA } from '@bobbykim/mcl-collapse'
 
 ### Modal and Sidebar — preferred usage patterns
 
+**Accessibility.** Both trap Tab focus while open, close on Escape, and return focus to the element that opened them. Each needs an accessible name: pass `title` for the built-in header, put the `titleId` slot prop on your own heading in a custom `#header`, or pass `aria-label`.
+
+```vue
+<Modal ref="modalRef">
+  <template #header="{ close, titleId }">
+    <h2 :id="titleId">Edit plan</h2>
+    <button aria-label="Close" @click="close">✕</button>
+  </template>
+</Modal>
+
+<Sidebar
+  ref="sidebarRef"
+  aria-label="Site menu"
+  :show-header="false"
+>...</Sidebar>
+```
+
 **Imperative control via `defineExpose`:**
 
 ```vue
