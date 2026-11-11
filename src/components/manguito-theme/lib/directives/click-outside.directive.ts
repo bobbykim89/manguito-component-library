@@ -53,6 +53,23 @@ const getOptions = (
 }
 
 /**
+ * Whether two bindings resolve to the same handler, events, and exclusions.
+ * An object binding is a new object on every render, so compare its parts.
+ */
+const sameOptions = (
+  a: ReturnType<typeof getOptions>,
+  b: ReturnType<typeof getOptions>,
+): boolean => {
+  const sameList = <T>(x: T[] = [], y: T[] = []) =>
+    x.length === y.length && x.every((item, i) => item === y[i])
+  return (
+    a.handler === b.handler &&
+    sameList(a.events, b.events) &&
+    sameList(a.excludeElements, b.excludeElements)
+  )
+}
+
+/**
  * creates the event handler function
  */
 const createHandler = (
@@ -93,12 +110,20 @@ export const vClickOutside: Directive<ClickOutsideElement, ClickOutsideValue> =
       })
     },
     updated(el, binding) {
+      const oldOptions = getOptions({
+        ...binding,
+        value: binding.oldValue,
+      } as DirectiveBinding<ClickOutsideValue>)
+      // Re-adding moves our capture listener behind any registered since
+      // mount (e.g. a focus trap's), which can then swallow the click (#104).
+      if (
+        el.__ClickOutsideHandler &&
+        sameOptions(oldOptions, getOptions(binding))
+      ) {
+        return
+      }
       // remove old listeners
       if (el.__ClickOutsideHandler) {
-        const oldOptions = getOptions({
-          ...binding,
-          value: binding.oldValue,
-        } as DirectiveBinding<ClickOutsideValue>)
         oldOptions.events.forEach((evtType) => {
           document.removeEventListener(evtType, el.__ClickOutsideHandler!, true)
         })
