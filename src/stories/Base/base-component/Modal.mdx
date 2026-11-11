@@ -70,7 +70,7 @@ Use named slots to fully customise the modal layout. All slot props expose `clos
 
 ```vue
 <template>
-  <Modal ref="modalRef" id="my-modal" color="light-1" class-name="rounded-md">
+  <Modal ref="modalRef" id="my-modal" color="light-1" custom-class="rounded-md">
     <template #header="{ close }">
       <div class="flex justify-between p-4">
         <h3>Title</h3>
@@ -119,7 +119,7 @@ Modal server-renders closed, or open when `visible` is set. A modal rendered ope
 | `titleColor`     | `ColorPalette`                   | `'dark-3'`  | Color of the default header title text.                               |
 | `visible`        | `boolean`                        | `false`     | Initial open state. Reactive — changing it opens or closes the modal. |
 | `color`          | `ColorPalette`                   | `'light-1'` | Background color of the modal panel.                                  |
-| `class-name`     | `string \| string[]`             | `''`        | Additional CSS class(es) on the modal panel.                          |
+| `custom-class`   | `string \| string[]`             | `''`        | Additional CSS class(es) on the modal panel.                          |
 | `placement`      | `'top' \| 'center' \| 'bottom'`  | `'center'`  | Vertical alignment of the modal on screen.                            |
 | `modal-width`    | `'small' \| 'medium' \| 'large'` | `'small'`   | Width preset for the modal panel.                                     |
 | `no-backdrop`    | `boolean`                        | `false`     | When `true`, renders without the semi-transparent backdrop.           |

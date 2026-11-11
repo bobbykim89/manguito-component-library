@@ -178,7 +178,50 @@ The full list of available `generateClass.*` methods is available via IDE autoco
 
 ---
 
-## 7. Unchanged props (not renamed)
+## 7. `v-collapse` and the `accordion` attribute are sunsetted
+
+`v-collapse` no longer works with any collapse component: the base `Collapse` (`manguito-theme`), `MclCollapseA`, or `MclCollapseB`. They manage state internally with the `useCollapseState` composable and no longer watch the `visible` attribute the directive sets. The `accordion` attribute is ignored too.
+
+`vCollapse` is still exported from `@bobbykim/manguito-theme/directives` so existing imports compile, and it logs a warning once per page when mounted. It will be removed in the next major release.
+
+| Old                                       | New                                                     |
+| ----------------------------------------- | ------------------------------------------------------- |
+| `v-collapse:<id>` on a trigger            | `collapseRef.toggle()` on a template ref, or `:visible` |
+| `accordion="<name>"` on `Collapse` panels | wrap the panels in `<AccordionGroup>`                   |
+
+**Example:**
+
+```vue
+<!-- before -->
+<button v-collapse:item-1>Item 1</button>
+<Collapse id="item-1" accordion="faq">...</Collapse>
+<button v-collapse:item-2>Item 2</button>
+<Collapse id="item-2" accordion="faq">...</Collapse>
+
+<!-- after -->
+<script setup lang="ts">
+import { ref } from 'vue'
+import { AccordionGroup, Collapse } from '@bobbykim/manguito-theme'
+
+const item1 = ref<InstanceType<typeof Collapse>>()
+const item2 = ref<InstanceType<typeof Collapse>>()
+</script>
+
+<template>
+  <AccordionGroup>
+    <button @click="item1?.toggle()">Item 1</button>
+    <Collapse ref="item1" id="item-1">...</Collapse>
+    <button @click="item2?.toggle()">Item 2</button>
+    <Collapse ref="item2" id="item-2">...</Collapse>
+  </AccordionGroup>
+</template>
+```
+
+`MclCollapseA` and `MclCollapseB` toggle themselves from their own header, so they only need the `<AccordionGroup>` wrapper.
+
+---
+
+## 8. Unchanged props (not renamed)
 
 - `MclInputText.invalidFeedback` — the validation feedback prop/slot on `MclInputText` and `MclTextArea` is **not** renamed. Only `MclSelect.invalidFeedback` was renamed to `noMatchText`.
 - `Tooltip` directive value `{ title, color, textColor, width, customClass }` — the directive binding object keys are unchanged. Only the underlying component prop was renamed.

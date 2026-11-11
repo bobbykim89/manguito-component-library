@@ -151,11 +151,11 @@ The base `Collapse` component provides an animated height/opacity transition for
 
 **Props**
 
-| Prop         | Type                 | Default        | Description                                                                                             |
-| ------------ | -------------------- | -------------- | ------------------------------------------------------------------------------------------------------- |
-| `id`         | `string`             | auto-generated | ID used to identify the panel within an `AccordionGroup`; also rendered as the element's `id` attribute |
-| `visible`    | `boolean`            | `false`        | Initial open state; reactive — updating it opens or closes the panel                                    |
-| `class-name` | `string \| string[]` | `''`           | CSS class(es) applied to the inner content wrapper                                                      |
+| Prop           | Type                 | Default        | Description                                                                                             |
+| -------------- | -------------------- | -------------- | ------------------------------------------------------------------------------------------------------- |
+| `id`           | `string`             | auto-generated | ID used to identify the panel within an `AccordionGroup`; also rendered as the element's `id` attribute |
+| `visible`      | `boolean`            | `false`        | Initial open state; reactive — updating it opens or closes the panel                                    |
+| `custom-class` | `string \| string[]` | `''`           | CSS class(es) applied to the inner content wrapper                                                      |
 
 **Exposed methods:** `open()`, `close()`, `toggle()`
 
@@ -177,7 +177,7 @@ const collapseRef = ref<InstanceType<typeof Collapse>>()
 
 <template>
   <button @click="collapseRef?.toggle()">Toggle</button>
-  <Collapse ref="collapseRef" id="panel-1" class-name="p-4">
+  <Collapse ref="collapseRef" id="panel-1" custom-class="p-4">
     Collapsible content here.
   </Collapse>
 </template>
@@ -202,13 +202,13 @@ const panel2 = ref<InstanceType<typeof Collapse>>()
   <AccordionGroup>
     <div>
       <button @click="panel1?.toggle()">Panel 1</button>
-      <Collapse ref="panel1" id="panel-1" class-name="p-4">
+      <Collapse ref="panel1" id="panel-1" custom-class="p-4">
         Content for panel 1.
       </Collapse>
     </div>
     <div>
       <button @click="panel2?.toggle()">Panel 2</button>
-      <Collapse ref="panel2" id="panel-2" class-name="p-4">
+      <Collapse ref="panel2" id="panel-2" custom-class="p-4">
         Content for panel 2.
       </Collapse>
     </div>
@@ -247,7 +247,7 @@ const panelRefs = ref<InstanceType<typeof Collapse>[]>([])
           }
         "
         :id="item.id"
-        class-name="p-4"
+        custom-class="p-4"
       >
         {{ item.content }}
       </Collapse>
@@ -314,14 +314,23 @@ const isOpen = ref(false)
 </template>
 ```
 
-### Deprecated directives
+### Deprecated and sunsetted directives
 
-The following directives are deprecated and will be removed in a future release. They remain functional for `Modal` and `Sidebar` during the transition period but **no longer work** with `MclCollapseA` or `MclCollapseB`.
+Both directives are still exported from `@bobbykim/manguito-theme/directives` and will be removed in the next major release.
 
-| Directive    | Status                                            | Replacement                           |
-| ------------ | ------------------------------------------------- | ------------------------------------- |
-| `v-toggle`   | Deprecated, still functional on Modal/Sidebar     | `defineExpose` ref or `:visible` prop |
-| `v-collapse` | Deprecated, non-functional on collapse components | `AccordionGroup` wrapper              |
+| Directive    | Status                                                                                                                                | Replacement                                                                            |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `v-toggle`   | Deprecated. Still works on `Modal` and `Sidebar`.                                                                                     | `defineExpose` ref or `:visible` prop                                                  |
+| `v-collapse` | **Sunsetted.** No longer works with any collapse component, including the base `Collapse`. Logs a warning once per page when mounted. | `toggle()` on a `Collapse` template ref or `:visible`; `AccordionGroup` for accordions |
+
+**Migrating from `v-collapse`**
+
+| Old                                       | New                                                          |
+| ----------------------------------------- | ------------------------------------------------------------ |
+| `v-collapse:<id>` on a trigger            | `collapseRef.toggle()` on a template ref, or bind `:visible` |
+| `accordion="<name>"` on `Collapse` panels | wrap the panels in `<AccordionGroup>`                        |
+
+See [Standalone collapse](#standalone-collapse) and [Accordion with `AccordionGroup`](#accordion-with-accordiongroup) above for full examples.
 
 ## Dependencies
 

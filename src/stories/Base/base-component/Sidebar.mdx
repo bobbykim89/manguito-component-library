@@ -74,7 +74,7 @@ Use named slots to fully customise the sidebar layout.
     ref="sidebarRef"
     id="my-sidebar"
     placement="right"
-    class-name="bg-light-1 p-sm"
+    custom-class="bg-light-1 p-sm"
     :width="360"
   >
     <template #header="{ close }">
@@ -122,7 +122,7 @@ Sidebar server-renders closed, or open when `visible` is set. A sidebar rendered
 | `titleColor`     | `ColorPalette`       | `'dark-3'`  | Color of the default header title text.                                 |
 | `visible`        | `boolean`            | `false`     | Initial open state. Reactive — changing it opens or closes the sidebar. |
 | `color`          | `ColorPalette`       | `'light-1'` | Background color of the sidebar panel.                                  |
-| `class-name`     | `string \| string[]` | `''`        | Additional CSS class(es) on the sidebar panel.                          |
+| `custom-class`   | `string \| string[]` | `''`        | Additional CSS class(es) on the sidebar panel.                          |
 | `placement`      | `'left' \| 'right'`  | `'left'`    | Which edge of the viewport the sidebar slides in from.                  |
 | `width`          | `number`             | `300`       | Width of the sidebar panel in pixels.                                   |
 | `no-backdrop`    | `boolean`            | `false`     | When `true`, renders without the semi-transparent backdrop.             |

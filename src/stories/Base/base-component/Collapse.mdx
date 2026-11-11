@@ -31,7 +31,7 @@ const collapseRef = ref<InstanceType<typeof Collapse>>()
 
 <template>
   <button @click="collapseRef?.toggle()">Toggle</button>
-  <Collapse ref="collapseRef" id="panel-1" class-name="p-4">
+  <Collapse ref="collapseRef" id="panel-1" custom-class="p-4">
     Collapsible content here.
   </Collapse>
 </template>
@@ -59,15 +59,21 @@ const panel3 = ref<InstanceType<typeof Collapse>>()
   <AccordionGroup>
     <div>
       <button @click="panel1?.toggle()">Panel 1</button>
-      <Collapse ref="panel1" id="panel-1" class-name="p-4">Content 1</Collapse>
+      <Collapse ref="panel1" id="panel-1" custom-class="p-4"
+        >Content 1</Collapse
+      >
     </div>
     <div>
       <button @click="panel2?.toggle()">Panel 2</button>
-      <Collapse ref="panel2" id="panel-2" class-name="p-4">Content 2</Collapse>
+      <Collapse ref="panel2" id="panel-2" custom-class="p-4"
+        >Content 2</Collapse
+      >
     </div>
     <div>
       <button @click="panel3?.toggle()">Panel 3</button>
-      <Collapse ref="panel3" id="panel-3" class-name="p-4">Content 3</Collapse>
+      <Collapse ref="panel3" id="panel-3" custom-class="p-4"
+        >Content 3</Collapse
+      >
     </div>
   </AccordionGroup>
 </template>
@@ -106,7 +112,7 @@ const panelRefs = ref<InstanceType<typeof Collapse>[]>([])
           }
         "
         :id="item.id"
-        class-name="p-4"
+        custom-class="p-4"
       >
         {{ item.content }}
       </Collapse>
@@ -127,11 +133,11 @@ Collapse content is always rendered in the server HTML. Closed panels are hidden
 
 ### Props
 
-| Prop         | Type                 | Default        | Description                                                                                                                            |
-| ------------ | -------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`         | `string`             | auto-generated | Panel identifier used by `AccordionGroup` to track which panel is open. Also set as the element's HTML `id` attribute for ARIA wiring. |
-| `visible`    | `boolean`            | `false`        | Initial open state. Reactive — changing it after mount opens or closes the panel.                                                      |
-| `class-name` | `string \| string[]` | `''`           | CSS class(es) applied to the inner content wrapper.                                                                                    |
+| Prop           | Type                 | Default        | Description                                                                                                                            |
+| -------------- | -------------------- | -------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`           | `string`             | auto-generated | Panel identifier used by `AccordionGroup` to track which panel is open. Also set as the element's HTML `id` attribute for ARIA wiring. |
+| `visible`      | `boolean`            | `false`        | Initial open state. Reactive — changing it after mount opens or closes the panel.                                                      |
+| `custom-class` | `string \| string[]` | `''`           | CSS class(es) applied to the inner content wrapper.                                                                                    |
 
 ### Slots
 

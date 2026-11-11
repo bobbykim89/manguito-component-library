@@ -76,17 +76,37 @@ const createCollapseHandler = (
   }
 }
 
+let sunsetWarned = false
+const warnSunset = (): void => {
+  if (sunsetWarned) return
+  sunsetWarned = true
+  console.warn(
+    '[v-collapse] v-collapse is sunsetted: no collapse component reacts to it, ' +
+      'including the base Collapse. Call toggle() on a Collapse template ref or ' +
+      'bind :visible, and wrap accordions in <AccordionGroup>. It will be ' +
+      'removed in the next major release.',
+  )
+}
+
 /**
  * Vue directive for collapsible elements with accordion support.
  *
- * @deprecated `MclCollapseA` and `MclCollapseB` now manage state internally via the
- * `useCollapseState` composable. This directive no longer has any effect on those
- * components and will be removed in a future release.
+ * @deprecated Sunsetted. No collapse component reacts to this directive,
+ * including the base `Collapse`, `MclCollapseA`, and `MclCollapseB`: they manage
+ * state internally via the `useCollapseState` composable. Mounting it logs a
+ * warning once per page. It will be removed in the next major release.
  *
- * Migrate accordion groups to the `AccordionGroup` wrapper component:
+ * - `v-collapse:<id>` on a trigger → call `toggle()` on a `Collapse` template ref,
+ *   or bind `:visible`.
+ * - `accordion="<name>"` on a panel → wrap the panels in `<AccordionGroup>`.
  *
  * @example
- * // Preferred: AccordionGroup wrapper
+ * // Standalone base Collapse
+ * <button @click="collapseRef?.toggle()">Toggle</button>
+ * <Collapse ref="collapseRef" id="panel-1">...</Collapse>
+ *
+ * @example
+ * // Accordion
  * import { AccordionGroup } from '@bobbykim/manguito-theme'
  * import { MclCollapseA } from '@bobbykim/mcl-collapse'
  *
@@ -94,14 +114,10 @@ const createCollapseHandler = (
  *   <MclCollapseA collapse-id="item1" title="Item 1">...</MclCollapseA>
  *   <MclCollapseA collapse-id="item2" title="Item 2">...</MclCollapseA>
  * </AccordionGroup>
- *
- * @example
- * // Preferred: standalone collapse (no wrapper needed)
- * <MclCollapseA collapse-id="item1" title="Item 1">...</MclCollapseA>
- *
  */
 export const vCollapse: Directive<CollapseElement> = {
   mounted(el, binding) {
+    warnSunset()
     el.__HandleToggler = createCollapseHandler(binding.arg)
     el.addEventListener('click', el.__HandleToggler)
   },
