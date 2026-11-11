@@ -403,8 +403,14 @@
   }
 
   .btn-group .btn {
-    outline: none;
     border-radius: 0;
+  }
+
+  /* Keep the standard focus ring in a group, and lift the focused button so
+     its neighbours don't paint over the ring (#110). */
+  .btn-group .btn:focus {
+    position: relative;
+    z-index: 1;
   }
 
   .btn-group .btn:first-child {

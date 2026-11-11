@@ -9,6 +9,10 @@ import type { HeaderStickyOptionType } from './index.types'
 const props = withDefaults(
   defineProps<{
     bgColor?: ColorPalette
+    /** aria-label of the header's nav landmark(s). */
+    navLabel?: string
+    /** Accessible name of the mobile menu button. */
+    menuLabel?: string
     mobileMenuBgColor?: ColorPalette
     drawerBtnColor?: ColorPalette
     showDrawerBorder?: boolean
@@ -17,6 +21,8 @@ const props = withDefaults(
     sticky?: HeaderStickyOptionType
   }>(),
   {
+    navLabel: 'Main',
+    menuLabel: 'Menu',
     bgColor: 'light-1',
     mobileMenuBgColor: 'light-2',
     drawerBtnColor: 'dark-1',
@@ -110,6 +116,7 @@ defineExpose<{
     :class="[handleFadeInOnScroll, handleHeaderClass]"
   >
     <nav
+      :aria-label="navLabel"
       class="mx-xs flex flex-wrap items-center justify-between py-xs align-middle sm:max-w-[640px] md:mx-sm md:max-w-[768px] md:py-2xs lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px]"
     >
       <div class="min-h-[24px]">
@@ -117,6 +124,7 @@ defineExpose<{
       </div>
       <div class="ml-auto">
         <NavDrawer
+          :label="menuLabel"
           :color="drawerBtnColor"
           :show-border="showDrawerBorder"
           class="block lg:hidden"

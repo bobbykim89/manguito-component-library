@@ -15,7 +15,7 @@ describe('HeaderHorizontal (server)', () => {
     )
     expect(html).toContain('DESKTOP LINKS')
     expect(html).toContain('RIGHT LINKS')
-    expect(html).toContain('aria-label="Open"')
+    expect(html).toContain('aria-label="Menu"')
     expect(html).not.toContain('MOBILE LINKS')
   })
 })

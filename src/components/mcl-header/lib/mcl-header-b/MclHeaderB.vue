@@ -33,6 +33,10 @@ const props = withDefaults(
     showHighlight?: boolean
     highlightColor?: ColorPalette
     bgColor?: ColorPalette
+    /** aria-label of the nav landmark(s). Defaults to "Main". */
+    navLabel?: string
+    /** Accessible name of the mobile menu button. Defaults to "Menu". */
+    menuLabel?: string
     drawerBtnColor?: ColorPalette
     showDrawerBorder?: boolean
     headerWidth?: number
@@ -122,6 +126,8 @@ defineExpose({
 
 <template>
   <HeaderVertical
+    :nav-label="navLabel"
+    :menu-label="menuLabel"
     :bg-color="bgColor"
     :drawer-btn-color="drawerBtnColor"
     :drawer-btn-border="showDrawerBorder"

@@ -33,6 +33,11 @@ import { MclHeaderA } from '@bobbykim/mcl-header'
 
 <Controls of={Stories.MclHeaderAExample} />
 
+## Accessibility
+
+- `navLabel` (default `"Main"`) names the header's `<nav>` landmark. Give each landmark on a page a different name, for example when it also has a footer nav.
+- `menuLabel` (default `"Menu"`) names the mobile menu button. The name stays the same; `aria-expanded` tells screen readers whether the menu is open.
+
 ## Slot
 
 - `#content-right`: slot on the right side of the component

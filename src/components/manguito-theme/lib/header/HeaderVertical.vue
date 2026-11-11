@@ -8,11 +8,17 @@ import NavDrawer from './NavDrawer.vue'
 const props = withDefaults(
   defineProps<{
     bgColor?: ColorPalette
+    /** aria-label of the header's nav landmark(s). */
+    navLabel?: string
+    /** Accessible name of the mobile menu button. */
+    menuLabel?: string
     drawerBtnColor?: ColorPalette
     showDrawerBorder?: boolean
     headerWidth?: number
   }>(),
   {
+    navLabel: 'Main',
+    menuLabel: 'Menu',
     bgColor: 'light-1',
     drawerBtnColor: 'dark-1',
     showDrawerBorder: true,
@@ -64,6 +70,7 @@ defineExpose<{
 <template>
   <header class="relative" :style="componentWidth">
     <nav
+      :aria-label="navLabel"
       class="header-desktop hidden overflow-y-scroll overscroll-contain py-sm lg:sticky lg:top-0 lg:left-0 lg:block lg:h-[100vh]"
       :class="[generateClass.bgColorVariant({ color: bgColor })]"
     >
@@ -83,6 +90,7 @@ defineExpose<{
       class="fixed top-0 right-0 z-50 mt-xs mr-xs block lg:hidden"
     >
       <NavDrawer
+        :label="menuLabel"
         :color="drawerBtnColor"
         :show-border="showDrawerBorder"
         class="relative block lg:hidden"
@@ -102,6 +110,7 @@ defineExpose<{
           class="fixed top-0 right-0 z-50 mt-xs mr-xs block lg:hidden"
         >
           <NavDrawer
+            :label="menuLabel"
             :color="drawerBtnColor"
             :show-border="showDrawerBorder"
             class="relative block lg:hidden"
@@ -113,6 +122,7 @@ defineExpose<{
 
         <Transition name="slide-down" appear>
           <nav
+            :aria-label="navLabel"
             class="fixed inset-0 overflow-y-scroll overscroll-contain px-sm py-lg"
             v-if="navOpen"
             :class="generateClass.bgColorVariant({ color: bgColor })"

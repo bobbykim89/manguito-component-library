@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { createSSRApp, h, nextTick } from 'vue'
+import { mount } from '@vue/test-utils'
 import { hydrate, renderOnServer } from '@mcl/test-utils/ssr'
 import HeaderHorizontal from './HeaderHorizontal.vue'
 
@@ -90,5 +91,55 @@ describe('HeaderHorizontal (client)', () => {
       if (original) Object.defineProperty(window, 'scrollY', original)
       else delete (window as any).scrollY
     }
+  })
+})
+
+// #110 items 5 and 6: unnamed <nav> landmarks, and a hamburger named only
+// "Open"/"Close".
+describe('HeaderHorizontal landmarks and menu button', () => {
+  const headerWith = (props: Record<string, unknown> = {}) =>
+    mount(HeaderHorizontal, { props, slots: slots, attachTo: document.body })
+  const navLabels = () =>
+    [...document.body.querySelectorAll('nav')].map((n) =>
+      n.getAttribute('aria-label'),
+    )
+  const menuButton = () =>
+    document.body.querySelector('button[aria-expanded]') as HTMLButtonElement
+
+  afterEach(() => {
+    document.body.innerHTML = ''
+    document.documentElement.style.overflow = ''
+  })
+
+  it('labels every nav "Main" by default, and with navLabel when set', async () => {
+    const w = headerWith()
+    menuButton().click()
+    await nextTick()
+    expect(navLabels().length).toBeGreaterThan(0)
+    expect(new Set(navLabels())).toEqual(new Set(['Main']))
+    w.unmount()
+
+    const w2 = headerWith({ navLabel: 'Primary' })
+    menuButton().click()
+    await nextTick()
+    expect(new Set(navLabels())).toEqual(new Set(['Primary']))
+    w2.unmount()
+  })
+
+  it('keeps the menu button name constant and reports state with aria-expanded', async () => {
+    const w = headerWith()
+    expect(menuButton().getAttribute('aria-label')).toBe('Menu')
+    expect(menuButton().getAttribute('aria-expanded')).toBe('false')
+    menuButton().click()
+    await nextTick()
+    expect(menuButton().getAttribute('aria-label')).toBe('Menu')
+    expect(menuButton().getAttribute('aria-expanded')).toBe('true')
+    w.unmount()
+  })
+
+  it('takes the menu button name from menuLabel', () => {
+    const w = headerWith({ menuLabel: 'Navigation' })
+    expect(menuButton().getAttribute('aria-label')).toBe('Navigation')
+    w.unmount()
   })
 })

@@ -9,6 +9,8 @@ const props = withDefaults(
     shadow?: boolean
     show?: boolean
     dismissible?: boolean
+    /** Accessible name of the dismiss button. */
+    dismissLabel?: string
   }>(),
   {
     color: 'danger',
@@ -16,6 +18,7 @@ const props = withDefaults(
     shadow: true,
     show: false,
     dismissible: false,
+    dismissLabel: 'Dismiss',
   },
 )
 
@@ -74,6 +77,8 @@ defineExpose<{
       </div>
       <button
         v-if="dismissible"
+        type="button"
+        :aria-label="dismissLabel"
         @click="handleClose"
         class="flex items-center opacity-60 transition-opacity duration-300 ease-linear hover:opacity-40"
       >
@@ -81,6 +86,8 @@ defineExpose<{
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 384 512"
           fill="currentColor"
+          aria-hidden="true"
+          focusable="false"
           class="h-xs"
         >
           <!-- !Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc. -->
