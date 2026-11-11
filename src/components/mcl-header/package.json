@@ -1,6 +1,6 @@
 {
   "name": "@bobbykim/mcl-header",
-  "version": "0.8.5",
+  "version": "0.8.6",
   "description": "header components based on manguito theme",
   "type": "module",
   "files": [

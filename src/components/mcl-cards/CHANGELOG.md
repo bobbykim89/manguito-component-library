@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.10.7
+
+### Patch Changes
+
+- Updated dependencies [2a62c2b]
+- Updated dependencies [3a25bb5]
+  - @bobbykim/manguito-theme@1.4.0
+
 ## 0.10.6
 
 ### Patch Changes
