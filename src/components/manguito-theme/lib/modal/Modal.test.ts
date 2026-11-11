@@ -110,7 +110,17 @@ describe('Modal backdrop click with an active focus trap', () => {
       global: { stubs: { transition: false } },
     })
     ;(w.vm as any).open()
-    await settle()
+    // The trap activates after the enter transition; wait for it to take focus
+    // instead of a fixed delay, which is too short under a loaded test run.
+    await vi.waitFor(
+      () => {
+        const dialog = document.querySelector('[role="dialog"]')
+        if (!dialog?.contains(document.activeElement)) {
+          throw new Error('focus trap not active yet')
+        }
+      },
+      { timeout: 2000 },
+    )
     return w
   }
   const clickBackdrop = (w: Awaited<ReturnType<typeof openWithTrap>>) =>
@@ -149,5 +159,82 @@ describe('Modal backdrop click with an active focus trap', () => {
     expect(onOutsideClick).toHaveBeenCalledTimes(1)
     w.unmount()
     outside.remove()
+  })
+
+  // #110: Escape used to release the focus trap and leave the dialog open.
+  it('Escape closes the dialog and returns focus to the opener', async () => {
+    const opener = document.createElement('button')
+    document.body.appendChild(opener)
+    opener.focus()
+    const w = await openWithTrap()
+    expect(
+      w.find('[role="dialog"]').element.contains(document.activeElement),
+    ).toBe(true)
+    document.activeElement!.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'Escape',
+        bubbles: true,
+        cancelable: true,
+      }),
+    )
+    await settle()
+    expect(w.emitted('close')).toEqual([[false]])
+    expect(document.activeElement).toBe(opener)
+    w.unmount()
+    opener.remove()
+  })
+})
+
+// #110: a dialog must have an accessible name whichever header it uses.
+describe('Modal accessible name', () => {
+  const dialogOf = (props: Record<string, unknown>, header?: (p: any) => any) =>
+    mount(Modal, {
+      props: { visible: true, ...props },
+      slots: header ? { ...slots, header } : slots,
+      attachTo: document.body,
+    })
+
+  it('a custom header names the dialog through the titleId slot prop', () => {
+    const w = dialogOf({}, ({ titleId }) => h('h2', { id: titleId }, 'Custom'))
+    const id = w.find('h2').attributes('id')
+    expect(id).toBeTruthy()
+    expect(w.find('[role="dialog"]').attributes('aria-labelledby')).toBe(id)
+    expect(w.find('[role="dialog"]').attributes('aria-label')).toBeUndefined()
+    w.unmount()
+  })
+
+  it('ariaLabel names a dialog that has no title', () => {
+    const w = dialogOf({ ariaLabel: 'Settings' })
+    const dialog = w.find('[role="dialog"]')
+    expect(dialog.attributes('aria-label')).toBe('Settings')
+    expect(dialog.attributes('aria-labelledby')).toBeUndefined()
+    w.unmount()
+  })
+
+  it('ariaLabel names a dialog whose custom header does not use titleId', () => {
+    const w = dialogOf({ ariaLabel: 'Settings' }, () => h('div', 'Custom'))
+    const dialog = w.find('[role="dialog"]')
+    expect(dialog.attributes('aria-label')).toBe('Settings')
+    expect(dialog.attributes('aria-labelledby')).toBeUndefined()
+    w.unmount()
+  })
+
+  it('ariaLabel names a dialog without a header', () => {
+    const w = dialogOf({
+      ariaLabel: 'Settings',
+      showHeader: false,
+      title: 'Ignored',
+    })
+    const dialog = w.find('[role="dialog"]')
+    expect(dialog.attributes('aria-label')).toBe('Settings')
+    expect(dialog.attributes('aria-labelledby')).toBeUndefined()
+    w.unmount()
+  })
+
+  it('a visible title names the dialog even when ariaLabel is set', () => {
+    const w = dialogOf({ title: 'Hello', ariaLabel: 'Settings' })
+    const id = w.find('h3').attributes('id')
+    expect(w.find('[role="dialog"]').attributes('aria-labelledby')).toBe(id)
+    w.unmount()
   })
 })

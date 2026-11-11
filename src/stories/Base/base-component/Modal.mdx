@@ -66,14 +66,14 @@ const isOpen = ref(false)
 
 ### Custom header, body, and footer
 
-Use named slots to fully customise the modal layout. All slot props expose `close()` and `status`.
+Use named slots to fully customise the modal layout. All slot props expose `close()` and `status`. Put the header's `titleId` on your heading so screen readers announce the dialog by name.
 
 ```vue
 <template>
   <Modal ref="modalRef" id="my-modal" color="light-1" custom-class="rounded-md">
-    <template #header="{ close }">
+    <template #header="{ close, titleId }">
       <div class="flex justify-between p-4">
-        <h3>Title</h3>
+        <h3 :id="titleId">Title</h3>
         <button @click="close" aria-label="Close">✕</button>
       </div>
     </template>
@@ -112,29 +112,30 @@ Modal server-renders closed, or open when `visible` is set. A modal rendered ope
 
 ### Props
 
-| Prop             | Type                             | Default     | Description                                                           |
-| ---------------- | -------------------------------- | ----------- | --------------------------------------------------------------------- |
-| `id`             | `string`                         | —           | HTML `id` on the dialog root. Used for ARIA `aria-labelledby` wiring. |
-| `title`          | `string`                         | —           | Text for the built-in default header. Omit when using `#header` slot. |
-| `titleColor`     | `ColorPalette`                   | `'dark-3'`  | Color of the default header title text.                               |
-| `visible`        | `boolean`                        | `false`     | Initial open state. Reactive — changing it opens or closes the modal. |
-| `color`          | `ColorPalette`                   | `'light-1'` | Background color of the modal panel.                                  |
-| `custom-class`   | `string \| string[]`             | `''`        | Additional CSS class(es) on the modal panel.                          |
-| `placement`      | `'top' \| 'center' \| 'bottom'`  | `'center'`  | Vertical alignment of the modal on screen.                            |
-| `modal-width`    | `'small' \| 'medium' \| 'large'` | `'small'`   | Width preset for the modal panel.                                     |
-| `no-backdrop`    | `boolean`                        | `false`     | When `true`, renders without the semi-transparent backdrop.           |
-| `no-header`      | `boolean`                        | `false`     | When `true`, suppresses the header area entirely.                     |
-| `backdrop-color` | `ColorPalette`                   | `'dark-3'`  | Color of the backdrop overlay.                                        |
+| Prop             | Type                             | Default     | Description                                                                                                                         |
+| ---------------- | -------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `id`             | `string`                         | —           | HTML `id` on the dialog root. Used for ARIA `aria-labelledby` wiring.                                                               |
+| `title`          | `string`                         | —           | Text for the built-in default header. Omit when using `#header` slot.                                                               |
+| `ariaLabel`      | `string`                         | —           | Accessible name when there is no visible title (no `title`, a custom header without `titleId`, or no header). A visible title wins. |
+| `titleColor`     | `ColorPalette`                   | `'dark-3'`  | Color of the default header title text.                                                                                             |
+| `visible`        | `boolean`                        | `false`     | Initial open state. Reactive — changing it opens or closes the modal.                                                               |
+| `color`          | `ColorPalette`                   | `'light-1'` | Background color of the modal panel.                                                                                                |
+| `custom-class`   | `string \| string[]`             | `''`        | Additional CSS class(es) on the modal panel.                                                                                        |
+| `placement`      | `'top' \| 'center' \| 'bottom'`  | `'center'`  | Vertical alignment of the modal on screen.                                                                                          |
+| `modal-width`    | `'small' \| 'medium' \| 'large'` | `'small'`   | Width preset for the modal panel.                                                                                                   |
+| `no-backdrop`    | `boolean`                        | `false`     | When `true`, renders without the semi-transparent backdrop.                                                                         |
+| `no-header`      | `boolean`                        | `false`     | When `true`, suppresses the header area entirely.                                                                                   |
+| `backdrop-color` | `ColorPalette`                   | `'dark-3'`  | Color of the backdrop overlay.                                                                                                      |
 
 ### Slots
 
-All three slots receive `{ close: () => void, status: boolean }` as slot props.
+All three slots receive `{ close: () => void, status: boolean }` as slot props. `#header` also receives `titleId: string`: put it on your heading so it names the dialog, or pass `aria-label` instead.
 
-| Slot      | Slot props          | Description                                                                           |
-| --------- | ------------------- | ------------------------------------------------------------------------------------- |
-| `#header` | `{ close, status }` | Custom header. Omit to use the default header (requires `title` prop) or `no-header`. |
-| `#body`   | `{ close, status }` | Main content area.                                                                    |
-| `#footer` | `{ close, status }` | Footer area below the body.                                                           |
+| Slot      | Slot props                   | Description                                                                                                                                                     |
+| --------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `#header` | `{ close, status, titleId }` | Custom header. Put `titleId` on its heading to name the dialog. Omit to use the default header (requires `title` prop), or hide it with `:show-header="false"`. |
+| `#body`   | `{ close, status }`          | Main content area.                                                                                                                                              |
+| `#footer` | `{ close, status }`          | Footer area below the body.                                                                                                                                     |
 
 ### Exposed Methods
 

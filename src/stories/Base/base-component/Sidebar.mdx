@@ -76,6 +76,7 @@ Use named slots to fully customise the sidebar layout.
     placement="right"
     custom-class="bg-light-1 p-sm"
     :width="360"
+    aria-label="Site menu"
   >
     <template #header="{ close }">
       <div class="mb-4 flex justify-end">
@@ -115,29 +116,30 @@ Sidebar server-renders closed, or open when `visible` is set. A sidebar rendered
 
 ### Props
 
-| Prop             | Type                 | Default     | Description                                                             |
-| ---------------- | -------------------- | ----------- | ----------------------------------------------------------------------- |
-| `id`             | `string`             | —           | HTML `id` on the sidebar root. Used for ARIA `aria-labelledby` wiring.  |
-| `title`          | `string`             | —           | Text for the built-in default header. Omit when using `#header` slot.   |
-| `titleColor`     | `ColorPalette`       | `'dark-3'`  | Color of the default header title text.                                 |
-| `visible`        | `boolean`            | `false`     | Initial open state. Reactive — changing it opens or closes the sidebar. |
-| `color`          | `ColorPalette`       | `'light-1'` | Background color of the sidebar panel.                                  |
-| `custom-class`   | `string \| string[]` | `''`        | Additional CSS class(es) on the sidebar panel.                          |
-| `placement`      | `'left' \| 'right'`  | `'left'`    | Which edge of the viewport the sidebar slides in from.                  |
-| `width`          | `number`             | `300`       | Width of the sidebar panel in pixels.                                   |
-| `no-backdrop`    | `boolean`            | `false`     | When `true`, renders without the semi-transparent backdrop.             |
-| `no-header`      | `boolean`            | `false`     | When `true`, suppresses the header area entirely.                       |
-| `backdrop-color` | `ColorPalette`       | `'dark-3'`  | Color of the backdrop overlay.                                          |
+| Prop             | Type                 | Default     | Description                                                                                                                         |
+| ---------------- | -------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| `id`             | `string`             | —           | HTML `id` on the sidebar root. Used for ARIA `aria-labelledby` wiring.                                                              |
+| `title`          | `string`             | —           | Text for the built-in default header. Omit when using `#header` slot.                                                               |
+| `ariaLabel`      | `string`             | —           | Accessible name when there is no visible title (no `title`, a custom header without `titleId`, or no header). A visible title wins. |
+| `titleColor`     | `ColorPalette`       | `'dark-3'`  | Color of the default header title text.                                                                                             |
+| `visible`        | `boolean`            | `false`     | Initial open state. Reactive — changing it opens or closes the sidebar.                                                             |
+| `color`          | `ColorPalette`       | `'light-1'` | Background color of the sidebar panel.                                                                                              |
+| `custom-class`   | `string \| string[]` | `''`        | Additional CSS class(es) on the sidebar panel.                                                                                      |
+| `placement`      | `'left' \| 'right'`  | `'left'`    | Which edge of the viewport the sidebar slides in from.                                                                              |
+| `width`          | `number`             | `300`       | Width of the sidebar panel in pixels.                                                                                               |
+| `no-backdrop`    | `boolean`            | `false`     | When `true`, renders without the semi-transparent backdrop.                                                                         |
+| `no-header`      | `boolean`            | `false`     | When `true`, suppresses the header area entirely.                                                                                   |
+| `backdrop-color` | `ColorPalette`       | `'dark-3'`  | Color of the backdrop overlay.                                                                                                      |
 
 ### Slots
 
-All three slots receive `{ close: () => void, status: boolean }` as slot props.
+All three slots receive `{ close: () => void, status: boolean }` as slot props. `#header` also receives `titleId: string`: put it on your heading so it names the dialog, or pass `aria-label` instead.
 
-| Slot      | Slot props          | Description                                                                           |
-| --------- | ------------------- | ------------------------------------------------------------------------------------- |
-| `#header` | `{ close, status }` | Custom header. Omit to use the default header (requires `title` prop) or `no-header`. |
-| `#body`   | `{ close, status }` | Main content area.                                                                    |
-| `#footer` | `{ close, status }` | Footer area below the body.                                                           |
+| Slot      | Slot props                   | Description                                                                                                                                                     |
+| --------- | ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `#header` | `{ close, status, titleId }` | Custom header. Put `titleId` on its heading to name the dialog. Omit to use the default header (requires `title` prop), or hide it with `:show-header="false"`. |
+| `#body`   | `{ close, status }`          | Main content area.                                                                                                                                              |
+| `#footer` | `{ close, status }`          | Footer area below the body.                                                                                                                                     |
 
 ### Exposed Methods
 

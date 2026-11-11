@@ -9,6 +9,8 @@ import type { ColorPalette, DirectionX } from '../theme/static/theme.types'
 const props = withDefaults(
   defineProps<{
     title?: string
+    /** Accessible name when there is no visible title. A visible title wins. */
+    ariaLabel?: string
     titleColor?: ColorPalette
     customClass?: string | string[]
     visible?: boolean
@@ -33,7 +35,7 @@ const props = withDefaults(
 )
 
 const slots = defineSlots<{
-  header(props: { close: () => void; status: boolean }): any
+  header?(props: { close: () => void; status: boolean; titleId: string }): any
   body(props: { close: () => void; status: boolean }): any
   footer(props: { close: () => void; status: boolean }): any
 }>()
@@ -48,13 +50,32 @@ const dialogRef = ref<HTMLElement>()
 const headerRef = ref<HTMLElement>()
 const footerRef = ref<HTMLElement>()
 const titleId = useId()
+
+// Name the dialog by a heading it renders, else by `ariaLabel` (#110). A custom
+// header is trusted to put `titleId` on its heading unless `ariaLabel` is set.
+const nameAttrs = (): Record<string, string | undefined> => {
+  const byHeading =
+    props.showHeader && (slots.header ? !props.ariaLabel : !!props.title)
+  return byHeading
+    ? { 'aria-labelledby': titleId }
+    : { 'aria-label': props.ariaLabel }
+}
 let prevFocus: HTMLElement | null = null
 
 const { activate: activateTrap, deactivate: deactivateTrap } = useFocusTrap(
   dialogRef,
   // Trap Tab focus only. Without allowOutsideClick the trap cancels every
   // click outside the dialog, including the backdrop's own @click (#104).
-  { immediate: false, allowOutsideClick: true },
+  // Escape closes the dialog; closing releases the trap and restores focus.
+  // Letting the trap handle Escape itself left the dialog open, untrapped (#110).
+  {
+    immediate: false,
+    allowOutsideClick: true,
+    escapeDeactivates: () => {
+      closeSidebar()
+      return false
+    },
+  },
 )
 
 const toggleSidebar = (): void => {
@@ -167,7 +188,7 @@ defineExpose<{
         ref="dialogRef"
         role="dialog"
         aria-modal="true"
-        :aria-labelledby="title ? titleId : undefined"
+        v-bind="nameAttrs()"
         v-click-outside="closeSidebar"
         class="sidebar-body fixed inset-y-0 z-[110] h-full overflow-hidden shadow"
         :class="[placement === 'left' ? 'left-0' : 'right-0']"
@@ -177,7 +198,12 @@ defineExpose<{
           :class="[generateClass.bgColorVariant({ color }), customClass]"
         >
           <div v-if="showHeader" class="sticky top-0 z-10" ref="headerRef">
-            <slot name="header" :close="closeSidebar" :status="toggle">
+            <slot
+              name="header"
+              :close="closeSidebar"
+              :status="toggle"
+              :title-id="titleId"
+            >
               <div
                 class="flex items-center justify-between p-xs"
                 :class="generateClass.bgColorVariant({ color })"
