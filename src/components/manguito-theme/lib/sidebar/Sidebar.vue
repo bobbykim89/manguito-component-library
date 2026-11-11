@@ -52,7 +52,9 @@ let prevFocus: HTMLElement | null = null
 
 const { activate: activateTrap, deactivate: deactivateTrap } = useFocusTrap(
   dialogRef,
-  { immediate: false },
+  // Trap Tab focus only. Without allowOutsideClick the trap cancels every
+  // click outside the dialog, including the backdrop's own @click (#104).
+  { immediate: false, allowOutsideClick: true },
 )
 
 const toggleSidebar = (): void => {
