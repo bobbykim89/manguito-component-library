@@ -137,9 +137,10 @@ defineExpose({
     :menu-label="menuLabel"
     ref="componentRef"
     :bg-color="bgColor"
-    :drawer-btn-border="showDrawerBorder"
+    :show-drawer-border="showDrawerBorder"
     :drawer-btn-color="drawerBtnColor"
     :fade-in-on-scroll="fadeInOnScroll"
+    :scroll-distance="scrollDistance"
     :mobile-menu-bg-color="mobileMenuBgColor"
   >
     <template #content>
