@@ -62,7 +62,7 @@ import { MclCollapseA } from '@bobbykim/mcl-collapse'
 
 ## Migration from v-collapse
 
-The `v-collapse` directive and `accordion` prop are deprecated. Components no longer respond to `v-collapse` — state is managed internally.
+`v-collapse` is **sunsetted**: it no longer works with any collapse component, including `MclCollapseA`, `MclCollapseB`, and the base `Collapse` from `@bobbykim/manguito-theme`. State is managed internally. The directive is still exported so existing imports don't break, logs a warning once per page when mounted, and will be removed in the next major release. The `accordion` attribute is also ignored.
 
 | Old                            | New                                   |
 | ------------------------------ | ------------------------------------- |

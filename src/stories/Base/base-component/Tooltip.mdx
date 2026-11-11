@@ -101,7 +101,7 @@ Add custom CSS classes for advanced styling.
   <button
     v-tooltip="{
       title: 'Tooltip text',
-      className: 'font-bold shadow-lg',
+      customClass: 'font-bold shadow-lg',
     }"
   >
     Custom styled tooltip
@@ -128,7 +128,7 @@ import { vTooltip } from '@bobbykim/manguito-theme/directives'
         color: 'primary',
         textColor: 'white',
         width: 150,
-        className: 'font-semibold rounded-lg',
+        customClass: 'font-semibold rounded-lg',
       }"
     >
       Fancy tooltip
@@ -173,7 +173,7 @@ When using object notation, all properties are optional except `title`:
   color?: ColorPalette   // Background color
   textColor?: ColorPalette // Text color
   width?: number | string  // Width (number treated as pixels)
-  className?: string     // Additional CSS classes
+  customClass?: string   // Additional CSS classes
 }
 ```
 

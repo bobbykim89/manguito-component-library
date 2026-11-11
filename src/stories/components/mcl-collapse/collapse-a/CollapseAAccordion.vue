@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { AccordionGroup } from '@/components/manguito-theme/lib'
 import { MclCollapseA } from '@/components/mcl-collapse/lib'
 
 const accordionContent = [
@@ -34,20 +35,18 @@ const accordionContent = [
     <div class="mb-md text-center">
       <h2 class="text-danger">MCL Collapse A accordion example</h2>
     </div>
-    <div>
+    <AccordionGroup>
       <mcl-collapse-a
-        v-for="(item, idx) in accordionContent"
+        v-for="item in accordionContent"
         :key="item.id"
         :collapse-id="item.id"
         :title="item.title"
-        :visible="idx === 0 ? true : false"
-        accordion="my-accordion-group-1"
         class="mb-xs last:mb-0"
       >
         <template #content>
           <div v-html="item.content"></div>
         </template>
       </mcl-collapse-a>
-    </div>
+    </AccordionGroup>
   </section>
 </template>

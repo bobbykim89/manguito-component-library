@@ -5,7 +5,7 @@ import * as Stories from './directives/collapse.stories'
 
 # Collapse Directive — `v-collapse`
 
-> **Deprecated.** `v-collapse` no longer has any effect on `MclCollapseA`, `MclCollapseB`, or the base `Collapse` component. Those components now manage state internally via the `useCollapseState` composable. This directive will be removed in a future release.
+> **Sunsetted.** `v-collapse` no longer works with any collapse component: `MclCollapseA`, `MclCollapseB`, or the base `Collapse`. Those components manage state internally via the `useCollapseState` composable. The directive is still exported so existing imports don't break, logs a warning once per page when mounted, and will be removed in the next major release.
 
 ---
 
@@ -16,7 +16,7 @@ import * as Stories from './directives/collapse.stories'
 Replace `v-collapse` + `accordion` prop with `AccordionGroup` wrapper:
 
 ```vue
-<!-- Before (deprecated) -->
+<!-- Before (sunsetted: does nothing) -->
 <button v-collapse:item-1>Item 1</button>
 <Collapse id="item-1" accordion="my-group">...</Collapse>
 
