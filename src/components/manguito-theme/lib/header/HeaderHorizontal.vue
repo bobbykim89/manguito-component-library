@@ -169,4 +169,12 @@ defineExpose<{
 .collapse-leave-active {
   transition: height 0.5s ease-out;
 }
+
+/* Reduced motion: the mobile menu opens and closes instantly. */
+@media (prefers-reduced-motion: reduce) {
+  .collapse-enter-active,
+  .collapse-leave-active {
+    transition: none;
+  }
+}
 </style>

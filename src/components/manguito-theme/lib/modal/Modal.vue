@@ -293,4 +293,17 @@ defineExpose<{
     transform: translateY(calc(-1 * var(--vertical-placement))) translateX(-50%);
   }
 }
+
+/* Reduced motion: fade in place instead of sliding down. */
+@media (prefers-reduced-motion: reduce) {
+  .slide-down-enter-active,
+  .slide-down-leave-active {
+    animation: none;
+    transition: opacity 300ms linear;
+  }
+  .slide-down-enter-from,
+  .slide-down-leave-to {
+    opacity: 0;
+  }
+}
 </style>

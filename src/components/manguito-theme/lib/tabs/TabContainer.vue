@@ -137,4 +137,20 @@ watch(
   transform: translateX(-100%);
   opacity: 0;
 }
+
+/* Reduced motion: crossfade slides in place instead of sliding them. */
+@media (prefers-reduced-motion: reduce) {
+  .slide-prev-enter-active,
+  .slide-prev-leave-active,
+  .slide-next-enter-active,
+  .slide-next-leave-active {
+    transition-property: opacity;
+  }
+  .slide-prev-enter-from,
+  .slide-prev-leave-to,
+  .slide-next-enter-from,
+  .slide-next-leave-to {
+    transform: none;
+  }
+}
 </style>

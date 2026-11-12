@@ -330,4 +330,21 @@ defineExpose<{
     transform: translateX(var(--sidebar-width));
   }
 }
+
+/* Reduced motion: fade in place instead of sliding in from the edge. */
+@media (prefers-reduced-motion: reduce) {
+  .sidebar-left-enter-active,
+  .sidebar-left-leave-active,
+  .sidebar-right-enter-active,
+  .sidebar-right-leave-active {
+    transition-property: opacity;
+  }
+  .sidebar-left-enter-from,
+  .sidebar-left-leave-to,
+  .sidebar-right-enter-from,
+  .sidebar-right-leave-to {
+    transform: none;
+    opacity: 0;
+  }
+}
 </style>
