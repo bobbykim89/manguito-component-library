@@ -1,5 +1,15 @@
 # Change Log
 
+## 0.10.8
+
+### Patch Changes
+
+- fbb2d62: Animated components respect `prefers-reduced-motion: reduce`. `Modal`, `Sidebar`, `DropdownContent`, `CarouselContainer`, `TabContainer`, `HeaderVertical`'s mobile menu and `MclSelect`'s options fade in place instead of sliding. `Collapse` and `HeaderHorizontal`'s mobile menu open and close instantly. `MclCardD`'s spinning border gradient holds still. Nothing changes for users without the setting.
+- Updated dependencies [8a4d9d5]
+- Updated dependencies [54ca461]
+- Updated dependencies [fbb2d62]
+  - @bobbykim/manguito-theme@1.5.0
+
 ## 0.10.7
 
 ### Patch Changes
