@@ -92,7 +92,7 @@ This is the only package with multiple Vite entry points:
 | -------------------------- | ------------ | ----------------------------------------------------------------------------------------- |
 | `lib/index.ts`             | `core`       | Base Vue components + `generateClass` named export + `generateClassLegacy` default export |
 | `lib/directives/index.ts`  | `directives` | `vToggle` (deprecated), `vCollapse` (deprecated), `vClickOutside`, `vTooltip`             |
-| `lib/composables/index.ts` | `composable` | `useModalScrollLock`, `useCollapseState`, `observeVisible`                                |
+| `lib/composables/index.ts` | `composable` | `useModalScrollLock`, `useCollapseState`, `useCollapseTrigger`, `observeVisible`          |
 | `lib/util/index.ts`        | `util`       | `clientSideRender`, `getGlassmorphismClass`                                               |
 
 The CSS theme is shipped separately as `mcl-theme-v4.css` (Tailwind v4 custom utilities and tokens). It is not injected into the JS bundle.
