@@ -1,5 +1,16 @@
 # Change Log
 
+## 1.5.0
+
+### Minor Changes
+
+- 8a4d9d5: New `useCollapseTrigger` composable (from `@bobbykim/manguito-theme/composable`) gives a hand-built trigger for the base `Collapse` its `aria-expanded` and `aria-controls`. Pass it the Collapse's template ref and `id` (and `visible`, if it starts open); bind the returned `attrs` on the button and call `toggle` on click. `aria-expanded` follows the panel, including inside an `AccordionGroup`, and is already correct in server-rendered HTML.
+
+### Patch Changes
+
+- 54ca461: Decorative inline SVGs (chevrons, arrows, close icons, section dividers) now have `aria-hidden="true"` and `focusable="false"`, so screen readers skip them and they never take keyboard focus. Every one sits in a control that is already named, or is pure decoration, so no accessible name changes.
+- fbb2d62: Animated components respect `prefers-reduced-motion: reduce`. `Modal`, `Sidebar`, `DropdownContent`, `CarouselContainer`, `TabContainer`, `HeaderVertical`'s mobile menu and `MclSelect`'s options fade in place instead of sliding. `Collapse` and `HeaderHorizontal`'s mobile menu open and close instantly. `MclCardD`'s spinning border gradient holds still. Nothing changes for users without the setting.
+
 ## 1.4.0
 
 ### Minor Changes

@@ -1,5 +1,15 @@
 # Change Log
 
+## 0.12.7
+
+### Patch Changes
+
+- 54ca461: Decorative inline SVGs (chevrons, arrows, close icons, section dividers) now have `aria-hidden="true"` and `focusable="false"`, so screen readers skip them and they never take keyboard focus. Every one sits in a control that is already named, or is pure decoration, so no accessible name changes.
+- Updated dependencies [8a4d9d5]
+- Updated dependencies [54ca461]
+- Updated dependencies [fbb2d62]
+  - @bobbykim/manguito-theme@1.5.0
+
 ## 0.12.6
 
 ### Patch Changes
