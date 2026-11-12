@@ -460,4 +460,16 @@ watch(model, (value) => {
 .options-leave-active {
   pointer-events: none;
 }
+
+/* Reduced motion: fade the options without the drop. */
+@media (prefers-reduced-motion: reduce) {
+  .options-enter-active,
+  .options-leave-active {
+    transition: opacity 0.3s linear;
+  }
+  .options-enter-from,
+  .options-leave-to {
+    transform: none;
+  }
+}
 </style>

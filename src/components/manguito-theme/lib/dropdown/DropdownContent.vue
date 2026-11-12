@@ -61,4 +61,16 @@ const dropdownDirection = computed<string | undefined>(() => {
   opacity: 0;
   transform: translateY(-10px);
 }
+
+/* Reduced motion: fade without the drop. */
+@media (prefers-reduced-motion: reduce) {
+  .dropdown-content-enter-active,
+  .dropdown-content-leave-active {
+    transition-property: opacity;
+  }
+  .dropdown-content-enter-from,
+  .dropdown-content-leave-to {
+    transform: none;
+  }
+}
 </style>

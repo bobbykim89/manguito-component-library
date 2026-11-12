@@ -97,4 +97,13 @@ defineExpose<{
   transition-duration: 500ms;
   transition-timing-function: ease;
 }
+
+/* Reduced motion: open and close instantly (the JS hooks still run, and Vue
+   finishes the transition at once when there is no duration). */
+@media (prefers-reduced-motion: reduce) {
+  .collapse-enter-active,
+  .collapse-leave-active {
+    transition: none;
+  }
+}
 </style>

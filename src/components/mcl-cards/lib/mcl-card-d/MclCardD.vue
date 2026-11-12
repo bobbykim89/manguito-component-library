@@ -266,4 +266,11 @@ const handleCardClick = (e: Event) => {
   inherits: false;
   initial-value: 0deg;
 }
+
+/* Reduced motion: the border gradient holds still. */
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none;
+  }
+}
 </style>

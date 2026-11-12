@@ -159,4 +159,16 @@ defineExpose<{
   opacity: 0;
   transform: translateY(-100%);
 }
+
+/* Reduced motion: fade the mobile menu in place instead of sliding it down. */
+@media (prefers-reduced-motion: reduce) {
+  .slide-down-enter-active,
+  .slide-down-leave-active {
+    transition: opacity 0.3s ease-in;
+  }
+  .slide-down-enter-from,
+  .slide-down-leave-to {
+    transform: none;
+  }
+}
 </style>
