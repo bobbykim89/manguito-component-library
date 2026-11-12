@@ -169,6 +169,8 @@ defineExpose({
       <div class="relative flex items-center justify-center gap-2">
         <span>{{ menuItem.title }}</span>
         <svg
+          aria-hidden="true"
+          focusable="false"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 448 512"
           class="h-[0.8rem] fill-current"

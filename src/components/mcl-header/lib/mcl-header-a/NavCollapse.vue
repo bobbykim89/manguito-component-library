@@ -86,6 +86,8 @@ const getMenuItemClass = (
           {{ navItem.title }}
         </span>
         <svg
+          aria-hidden="true"
+          focusable="false"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 448 512"
           class="h-[0.8rem] fill-current"

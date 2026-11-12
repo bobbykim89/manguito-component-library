@@ -166,6 +166,7 @@ const getTitleClass = (
         :style="getBgImage(imageSource)"
       >
         <svg
+          focusable="false"
           v-if="imgPosition === 'right'"
           class="absolute inset-y-0 left-0 hidden h-full w-3xl lg:block"
           :class="generateClass.svgFillColorVariant({ color: bgColor })"
@@ -176,6 +177,7 @@ const getTitleClass = (
           <polygon points="0,0 100,0 0,100" />
         </svg>
         <svg
+          focusable="false"
           v-else
           class="absolute inset-y-0 right-0 hidden h-full w-3xl lg:block"
           :class="generateClass.svgFillColorVariant({ color: bgColor })"
