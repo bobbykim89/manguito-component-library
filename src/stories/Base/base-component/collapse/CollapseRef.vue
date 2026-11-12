@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { Collapse } from '@/components/manguito-theme/lib'
+import { useCollapseTrigger } from '@/components/manguito-theme/lib/composables'
 import { ref } from 'vue'
 const collapseRef = ref<InstanceType<typeof Collapse>>()
-
-const handleCollapse = () => {
-  // toggle collapse
-  collapseRef.value!.toggle()
-}
+// aria-expanded and aria-controls for the button, kept in sync with the panel
+const { attrs: triggerAttrs, toggle } = useCollapseTrigger(collapseRef, {
+  id: 'collapse-ref-example',
+})
 </script>
 
 <template>
@@ -16,12 +16,17 @@ const handleCollapse = () => {
     </div>
     <div class="mb-lg rounded-md border-2 border-success bg-white p-2xs">
       <button
-        @click="handleCollapse"
+        v-bind="triggerAttrs"
+        @click="toggle"
         class="btn btn-full btn-no-ring btn-danger"
       >
         Trigger toggle
       </button>
-      <collapse ref="collapseRef" custom-class="bg-light-3 p-xs">
+      <collapse
+        ref="collapseRef"
+        id="collapse-ref-example"
+        custom-class="bg-light-3 p-xs"
+      >
         <div>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Nemo fuga quo
           incidunt a blanditiis mollitia ea est? Fugit voluptate expedita magni

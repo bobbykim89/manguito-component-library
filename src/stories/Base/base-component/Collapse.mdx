@@ -19,23 +19,28 @@ import { AccordionGroup, Collapse } from '@bobbykim/manguito-theme'
 
 ### Standalone
 
-Hold a template ref and call `toggle()`, `open()`, or `close()` directly.
+Hold a template ref and call `toggle()`, `open()`, or `close()` directly. For the button that opens it, `useCollapseTrigger` supplies `aria-expanded` (kept in sync with the panel) and `aria-controls` (pointing at the panel's `id`), so screen readers announce the button as expandable and whether it is open.
 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Collapse } from '@bobbykim/manguito-theme'
+import { useCollapseTrigger } from '@bobbykim/manguito-theme/composable'
 
 const collapseRef = ref<InstanceType<typeof Collapse>>()
+// Destructure: templates only unwrap top-level refs.
+const { attrs, toggle } = useCollapseTrigger(collapseRef, { id: 'panel-1' })
 </script>
 
 <template>
-  <button @click="collapseRef?.toggle()">Toggle</button>
+  <button v-bind="attrs" @click="toggle">Toggle</button>
   <Collapse ref="collapseRef" id="panel-1" custom-class="p-4">
     Collapsible content here.
   </Collapse>
 </template>
 ```
+
+Pass the same `id` to both. If the panel starts open, pass the same `visible` too (`useCollapseTrigger(collapseRef, { id: 'panel-1', visible: true })`): the template ref is empty on the server and until mount, so the trigger reads its starting state from there and the server HTML already has the right `aria-expanded`. In an `AccordionGroup`, give `visible` to one panel only, since only the first opens.
 
 <Canvas of={Stories.collapseRefExample} />
 
@@ -167,3 +172,18 @@ Inside an `AccordionGroup`, `visible` works the same way, but only one panel can
 | ------- | -------------------- | ------------------------------ |
 | `open`  | `(visible: boolean)` | Emitted when the panel opens.  |
 | `close` | `(visible: boolean)` | Emitted when the panel closes. |
+
+### `useCollapseTrigger(collapseRef, options)`
+
+Imported from `@bobbykim/manguito-theme/composable`.
+
+| Option    | Type                        | Default | Description                                                                          |
+| --------- | --------------------------- | ------- | ------------------------------------------------------------------------------------ |
+| `id`      | `string`                    | —       | The `id` given to the `Collapse`. Becomes the trigger's `aria-controls`.             |
+| `visible` | `MaybeRefOrGetter<boolean>` | `false` | The `visible` given to the `Collapse`. Used for `aria-expanded` until it is mounted. |
+
+| Returns  | Type                                                                 | Description                        |
+| -------- | -------------------------------------------------------------------- | ---------------------------------- |
+| `attrs`  | `ComputedRef<{ 'aria-expanded': boolean; 'aria-controls': string }>` | Bind on the trigger with `v-bind`. |
+| `isOpen` | `ComputedRef<boolean>`                                               | Whether the panel is open.         |
+| `toggle` | `() => void`                                                         | Opens or closes the panel.         |
