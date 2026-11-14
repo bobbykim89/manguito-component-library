@@ -80,7 +80,7 @@ const customButtonColor = (idx: number): string => {
           </Collapse>
           <button
             @click="panelRefs[idx]?.toggle()"
-            class="btn btn-invert btn-full btn-no-ring"
+            class="btn btn-invert btn-full"
             :class="customButtonColor(idx)"
           >
             <span>{{ item.title }} Footer</span>

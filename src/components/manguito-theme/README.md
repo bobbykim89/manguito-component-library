@@ -128,6 +128,25 @@ Users can implement theme switching by changing CSS variables dynamically:
 @import '@bobbykim/manguito-theme/mcl-theme-v4.css';
 ```
 
+### Keyboard focus ring
+
+Buttons, form controls and carousel arrows share one keyboard focus ring: a
+3px outline in `--mcl-focus-color` (default `dark-3`) with a 2px halo in
+`--mcl-focus-halo` (default `light-1`) between it and the control. One of the
+two always contrasts with the background. It follows `:focus-visible`, so
+buttons show it for keyboard focus only. Override the variables like any
+other, for example per theme:
+
+```css
+[data-theme='dark'] {
+  --mcl-focus-color: #f1ac18;
+}
+```
+
+Use it on your own controls with the `mcl-focus-ring` utility and a variant,
+e.g. `focus-visible:mcl-focus-ring`. `btn-no-ring` is deprecated and no longer
+hides it.
+
 ## Usage
 
 `import generateClass from '@bobbykim/manguito-theme'`

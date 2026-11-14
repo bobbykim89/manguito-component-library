@@ -13,7 +13,6 @@ const props = withDefaults(
     bgColor?: ColorPalette
     checkedBgColor?: ColorPalette
     indicatorColor?: ColorPalette
-    /** Also the focus-ring colour, via useToggleControl. */
     borderColor?: ColorPalette
     showShadow?: boolean
     value?: string | number

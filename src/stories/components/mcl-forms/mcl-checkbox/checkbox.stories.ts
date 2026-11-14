@@ -87,7 +87,7 @@ const meta: Meta<typeof MclCheckbox> = {
       name: 'border-color',
       required: false,
       defaultValue: 'dark-1',
-      description: 'border color of checkbox, and its focus-ring color',
+      description: 'border color of checkbox',
       category: 'Component Block',
     }),
     showShadow: booleanControllers({

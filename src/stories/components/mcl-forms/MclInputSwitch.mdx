@@ -40,12 +40,12 @@ const enabled = ref<boolean>(false)
 
 The three color props name the parts they paint:
 
-| Prop               | Paints                               |
-| ------------------ | ------------------------------------ |
-| `bg-color`         | the track when off                   |
-| `checked-bg-color` | the track when on                    |
-| `indicator-color`  | the sliding knob                     |
-| `border-color`     | the track border, and the focus ring |
+| Prop               | Paints             |
+| ------------------ | ------------------ |
+| `bg-color`         | the track when off |
+| `checked-bg-color` | the track when on  |
+| `indicator-color`  | the sliding knob   |
+| `border-color`     | the track border   |
 
 `rounded` is `true` by default, giving a full pill with a round knob. Set it
 `false` for a soft rectangle.
@@ -70,3 +70,9 @@ This control renders **no error region of its own**, so `invalid` alone only
 sets `aria-invalid`; a message has to come from a group that owns the region.
 
 <Canvas of={Stories.MclInputSwitchDisabledExample} />
+
+## Keyboard focus
+
+A focused control shows the library's shared two-tone focus ring (see the
+Button docs for `--mcl-focus-color` and `--mcl-focus-halo`). It appears for keyboard focus only. Needs
+`@bobbykim/manguito-theme` 1.6.0 or later CSS.

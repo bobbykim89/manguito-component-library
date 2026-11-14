@@ -87,7 +87,7 @@ const meta: Meta<typeof MclInputRadio> = {
     borderColor: colorControllers({
       name: 'border-color',
       required: false,
-      description: 'border color of the radio, and its focus-ring color',
+      description: 'border color of the radio',
       defaultValue: 'dark-1',
       category: 'Component Block',
     }),

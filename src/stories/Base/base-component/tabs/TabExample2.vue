@@ -166,7 +166,7 @@ const handleFormSubmit = () => {
                 >
                   <button
                     @click="panelRefs[idx]?.toggle()"
-                    class="btn btn-full btn-no-ring"
+                    class="btn btn-full"
                     :class="customButtonColor(idx)"
                   >
                     {{ item.title }} Header

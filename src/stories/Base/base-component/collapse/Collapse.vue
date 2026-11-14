@@ -11,10 +11,7 @@ const collapseRef = ref<InstanceType<typeof Collapse>>()
       <h2 class="text-warning">Custom Collapse Component Example:</h2>
     </div>
     <div class="mb-lg rounded-md border-2 border-success bg-white p-2xs">
-      <button
-        @click="collapseRef?.toggle()"
-        class="btn btn-full btn-no-ring btn-warning"
-      >
+      <button @click="collapseRef?.toggle()" class="btn btn-full btn-warning">
         Tab Button
       </button>
       <collapse
