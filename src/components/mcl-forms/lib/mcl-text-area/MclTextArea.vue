@@ -56,7 +56,7 @@ const surfaceClass = useInputSurface(props)
     <textarea
       :id="field.id"
       v-model="model"
-      class="peer w-full p-2xs outline-none disabled:cursor-not-allowed disabled:opacity-50"
+      class="peer block w-full p-2xs outline-none disabled:cursor-not-allowed disabled:opacity-50"
       :class="surfaceClass"
       :name="field.name.value"
       :rows="rows"
@@ -70,7 +70,6 @@ const surfaceClass = useInputSurface(props)
       v-if="showHighlight"
       :color="highlightColor"
       :rounded="rounded"
-      :offset="2.5"
     ></input-highlight>
     <field-feedback
       v-if="!field.feedbackOwnedByGroup"
