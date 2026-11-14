@@ -98,9 +98,9 @@ export const useToggleControl = (
       generateClass.beforeBgColorVariant({ color: indicatorColor }),
       generateClass.peerCheckedBgColorVariant({ color: checkedBgColor }),
       // The native input is visually transparent, so the focus indicator has to
-      // be projected onto this span. Without it there is none at all.
-      'peer-focus-visible:ring-2 ring-offset-2',
-      generateClass.peerFocusVisibleRingColorVariant({ color: borderColor }),
+      // be projected onto this span. Without it there is none at all. It is the
+      // shared two-tone ring (#122), not the border colour.
+      'peer-focus-visible:mcl-focus-ring',
     ]
     if (showShadow) {
       classArray.push('drop-shadow-md')

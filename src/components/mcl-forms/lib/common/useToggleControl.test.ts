@@ -17,15 +17,14 @@ describe('useToggleControl — boxClass', () => {
     const { boxClass } = useToggleControl(base())
     expect(boxClass.value).toBe(
       'mcl-bg-light-1 border-dark-1 before:bg-dark-3 ' +
-        'peer-checked:bg-warning peer-focus-visible:ring-2 ring-offset-2 ' +
-        'peer-focus-visible:ring-dark-1',
+        'peer-checked:bg-warning peer-focus-visible:mcl-focus-ring',
     )
   })
 
   it('always emits a focus-visible ring — this is the WCAG 2.4.7 fix', () => {
     const { boxClass } = useToggleControl(base())
-    expect(boxClass.value).toContain('peer-focus-visible:ring-2')
-    expect(boxClass.value).toContain('peer-focus-visible:ring-dark-1')
+    expect(boxClass.value).toContain('peer-focus-visible:mcl-focus-ring')
+    expect(boxClass.value).not.toContain('ring-dark-1')
   })
 
   it('maps dark-4 correctly, unlike the hand-written maps it replaces', () => {

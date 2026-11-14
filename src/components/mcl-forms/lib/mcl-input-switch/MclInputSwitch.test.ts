@@ -29,7 +29,7 @@ describe('MclInputSwitch — structure and ARIA', () => {
 
   it('gives the slider a focus-visible ring', () => {
     const span = mount(MclInputSwitch, { props: { id: 'notify' } }).find('span')
-    expect(span.classes().join(' ')).toContain('peer-focus-visible:ring')
+    expect(span.classes()).toContain('peer-focus-visible:mcl-focus-ring')
   })
 
   it('toggles once for a click that bubbles up to the wrapper', async () => {

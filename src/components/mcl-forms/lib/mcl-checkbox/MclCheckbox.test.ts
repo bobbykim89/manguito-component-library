@@ -36,7 +36,7 @@ describe('MclCheckbox — structure', () => {
     // This is the WCAG 2.4.7 fix: before the refactor there was no focus
     // indicator of any kind on this control.
     const span = mount(MclCheckbox, { props: { id: 'agree' } }).find('span')
-    expect(span.classes().join(' ')).toContain('peer-focus-visible:ring')
+    expect(span.classes()).toContain('peer-focus-visible:mcl-focus-ring')
   })
 
   it('leaves the visual box inert — clicking it toggles nothing', async () => {

@@ -80,11 +80,14 @@ describe('MclInputText — basics', () => {
     )
   })
 
-  it('uses a focus-visible ring when the highlight bar is off', () => {
-    const input = mount(MclInputText, {
-      props: { id: 'email', showHighlight: false, borderColor: 'primary' },
-    }).find('input')
-    expect(input.classes()).toContain('focus-visible:ring-primary')
+  it('uses the shared focus ring with and without the highlight bar', () => {
+    for (const showHighlight of [true, false]) {
+      const input = mount(MclInputText, {
+        props: { id: 'email', showHighlight, borderColor: 'primary' },
+      }).find('input')
+      expect(input.classes()).toContain('focus-visible:mcl-focus-ring')
+      expect(input.classes()).not.toContain('focus-visible:ring-primary')
+    }
   })
 })
 
