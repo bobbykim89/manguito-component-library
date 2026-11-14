@@ -105,12 +105,14 @@ const tagLineClass = computed(() => {
   return classes.join(' ')
 })
 
-/** Shared by both navigation buttons; the ring matches the button background. */
+/**
+ * Shared by both navigation buttons. Their keyboard focus ring is the shared
+ * two-tone `mcl-focus-ring` (#122), not the button colour.
+ */
 const navBtnClass = computed(() =>
   [
     generateClass.textColorVariant({ color: props.btnColor }),
     generateClass.bgColorVariant({ color: props.btnBgColor }),
-    generateClass.ringColorVariant({ color: props.btnBgColor }),
   ].join(' '),
 )
 
@@ -145,7 +147,7 @@ const cardsGapClass = computed(() =>
           </div>
           <div class="flex space-x-4">
             <button
-              class="grid place-items-center rounded-full p-xs ring-offset-2 ring-offset-inherit transition-all duration-200 hover:bg-opacity-80 focus:ring-4 focus:outline-none disabled:opacity-50"
+              class="grid place-items-center rounded-full p-xs transition-all duration-200 hover:bg-opacity-80 focus-visible:mcl-focus-ring disabled:opacity-50"
               :class="navBtnClass"
               :disabled="isPrevDisabled"
               @click="handleSlideBtnClick($event, 'prev')"
@@ -166,7 +168,7 @@ const cardsGapClass = computed(() =>
               </svg>
             </button>
             <button
-              class="grid place-items-center rounded-full p-xs ring-offset-2 ring-offset-inherit transition-all duration-200 hover:bg-opacity-80 focus:ring-4 focus:outline-none disabled:opacity-50"
+              class="grid place-items-center rounded-full p-xs transition-all duration-200 hover:bg-opacity-80 focus-visible:mcl-focus-ring disabled:opacity-50"
               :class="navBtnClass"
               :disabled="isNextDisabled"
               @click="handleSlideBtnClick($event, 'next')"
