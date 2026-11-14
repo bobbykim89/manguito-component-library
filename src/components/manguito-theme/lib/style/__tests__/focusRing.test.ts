@@ -6,12 +6,34 @@ import { buildThemeCss } from './compileTheme'
 
 type Rule = { selector: string; body: string }
 
-/** Every innermost `selector { declarations }` block in the compiled CSS. */
-const rules = (css: string): Rule[] =>
-  [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].map((m) => ({
-    selector: m[1].trim(),
-    body: m[2],
-  }))
+/**
+ * Every `selector { … }` block in the CSS, at any depth. A block's body keeps
+ * its nested blocks, so a declaration Tailwind wraps in `@supports` (as it
+ * does for `--alpha()`) still belongs to the rule around it.
+ */
+const rules = (css: string): Rule[] => {
+  const found: Rule[] = []
+  const open: { selector: string; start: number }[] = []
+  let preludeStart = 0
+  for (let i = 0; i < css.length; i++) {
+    const ch = css[i]
+    if (ch === '{') {
+      open.push({ selector: css.slice(preludeStart, i).trim(), start: i + 1 })
+      preludeStart = i + 1
+    } else if (ch === '}') {
+      const block = open.pop()
+      if (block)
+        found.push({
+          selector: block.selector,
+          body: css.slice(block.start, i),
+        })
+      preludeStart = i + 1
+    } else if (ch === ';') {
+      preludeStart = i + 1
+    }
+  }
+  return found
+}
 
 const ruleFor = (css: string, selector: string): string =>
   rules(css)
@@ -34,6 +56,23 @@ const variantRule = (css: string, cls: string, nested: string): string => {
   const start = inner + nested.length + 2
   return css.slice(start, css.indexOf('}', start))
 }
+
+describe('rule scan', () => {
+  // Tailwind compiles --alpha() into a nested @supports block; a colour set
+  // that way must still count as set by the enclosing .btn rule.
+  it('sees declarations inside nested blocks of a rule', () => {
+    const css = `.btn.btn-invert:hover {
+  color: white;
+  @supports (color: color-mix(in lab, red, red)) {
+    outline-color: color-mix(in oklab, red 70%, transparent);
+  }
+}`
+    const found = rulesMatching(css, /^\.btn/).filter((r) =>
+      /outline-color\s*:/.test(r.body),
+    )
+    expect(found.map((r) => r.selector)).toEqual(['.btn.btn-invert:hover'])
+  })
+})
 
 describe('mcl-focus-ring utility', () => {
   it('3px outline at 2px offset in --mcl-focus-color, 2px halo in --mcl-focus-halo', async () => {
