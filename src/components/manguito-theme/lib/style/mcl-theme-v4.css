@@ -286,8 +286,7 @@
     padding: 0.5rem 1rem;
     cursor: pointer;
     font-size: 1rem;
-    transition-property:
-      color, background-color, outline-width, outline-offset, outline-color;
+    transition-property: color, background-color;
     transition-duration: 300ms;
     transition-timing-function: linear;
     overflow: hidden;
@@ -296,7 +295,6 @@
     outline-style: solid;
     outline-width: 0;
     outline-offset: 0;
-    outline-color: var(--mcl-btn-color, theme(--color-primary));
     background-color: var(--mcl-btn-color, theme(--color-primary));
     text-align: center;
     border-radius: theme(--radius-sm);
@@ -305,11 +303,11 @@
     background-color: --alpha(
       var(--mcl-btn-color, theme(--color-primary)) / 70%
     );
-    outline-color: --alpha(var(--mcl-btn-color, theme(--color-primary)) / 70%);
   }
-  .btn:focus {
-    outline-width: 0.25rem; /* 4px */
-    outline-offset: 0.125rem; /* 2px */
+  /* Keyboard focus only (#122): the shared two-tone ring, never the button
+     colour, so it contrasts with whatever is behind the button. */
+  .btn:focus-visible {
+    @apply mcl-focus-ring;
   }
   /* Button variants */
   .btn.btn-round {
@@ -327,9 +325,9 @@
     padding: 0.625rem 1.25rem;
     font-size: 1.125rem;
   }
-  .btn.btn-no-ring {
-    outline: none;
-  }
+  /* .btn-no-ring is deprecated (#122): with no ring after clicks there is
+     nothing left for it to mute, and it must not hide keyboard focus. The
+     class stays valid and does nothing. */
   /* Inverted button */
   .btn.btn-invert {
     border: 2px solid var(--mcl-btn-color, theme(--color-primary));
@@ -338,7 +336,6 @@
   }
   .btn.btn-invert:hover {
     background-color: var(--mcl-btn-color, theme(--color-primary));
-    outline-color: var(--mcl-btn-color, theme(--color-primary));
     color: white;
   }
   /* Progress button */
@@ -372,18 +369,17 @@
   }
 
   .btn.btn-progress:hover,
-  .btn.btn-progress:focus {
+  .btn.btn-progress:focus-visible {
     color: white;
-    outline-color: var(--mcl-btn-color, theme(--color-primary));
   }
 
   .btn.btn-progress:hover::before,
-  .btn.btn-progress:focus::before {
+  .btn.btn-progress:focus-visible::before {
     width: 100%;
   }
 
   .btn.btn-progress.btn-progress-r:hover::before,
-  .btn.btn-progress.btn-progress-r:focus::before {
+  .btn.btn-progress.btn-progress-r:focus-visible::before {
     width: 100%;
     left: 0;
   }
@@ -408,7 +404,7 @@
 
   /* Keep the standard focus ring in a group, and lift the focused button so
      its neighbours don't paint over the ring (#110). */
-  .btn-group .btn:focus {
+  .btn-group .btn:focus-visible {
     position: relative;
     z-index: 1;
   }
@@ -561,6 +557,25 @@
 
 @utility mcl-outline-* {
   outline-color: --alpha(--value(--color-*) / var(--mcl-outline-opacity));
+}
+
+/*
+  Shared keyboard focus ring (#122): a 3px outline in --mcl-focus-color, 2px
+  out from the element, with the 2px gap filled by a halo in --mcl-focus-halo.
+  One of the two always contrasts with the background. The outline carries the
+  contrast because forced-colors mode drops box-shadows. The halo joins
+  Tailwind's shadow stack so shadow-md and friends survive; the fallbacks cover
+  apps whose CSS never defines those variables.
+  Use with a variant: focus-visible:mcl-focus-ring, peer-focus-visible:…
+*/
+@utility mcl-focus-ring {
+  outline: 3px solid var(--mcl-focus-color, var(--color-dark-3));
+  outline-offset: 2px;
+  --tw-ring-offset-shadow: 0 0 0 2px var(--mcl-focus-halo, var(--color-light-1));
+  box-shadow:
+    var(--tw-inset-shadow, 0 0 #0000), var(--tw-inset-ring-shadow, 0 0 #0000),
+    var(--tw-ring-offset-shadow), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow, 0 0 #0000);
 }
 
 /* utility classes for glassmorphism depth */
