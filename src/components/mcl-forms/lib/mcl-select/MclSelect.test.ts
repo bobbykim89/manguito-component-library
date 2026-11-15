@@ -595,3 +595,38 @@ describe('MclSelect — re-focusing an open listbox', () => {
     expect(wrapper.find('[role="listbox"]').exists()).toBe(true)
   })
 })
+
+// #122: the shared keyboard focus ring goes on the visible box when its text
+// input has focus, and on the clear button as its own tab stop.
+describe('MclSelect — focus ring', () => {
+  const box = (wrapper: any) =>
+    wrapper.find('[role="combobox"]').element.parentElement as HTMLElement
+
+  it('rings the visible box when its text input has keyboard focus', () => {
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
+    expect(box(wrapper).className).toContain(
+      'has-[input:focus-visible]:mcl-focus-ring',
+    )
+  })
+
+  it('gives the clear button its own focus ring', async () => {
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
+    await wrapper.find('[role="combobox"]').setValue('re')
+    expect(wrapper.find('[data-mcl="clear"]').classes()).toContain(
+      'focus-visible:mcl-focus-ring',
+    )
+  })
+
+  it('no longer adds a border-coloured ring while open without the highlight bar', async () => {
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS, showHighlight: false },
+    })
+    await open(wrapper)
+    expect(wrapper.find('[role="listbox"]').exists()).toBe(true)
+    expect(box(wrapper).className).not.toMatch(/\bring-4\b|ring-light-4/)
+  })
+})

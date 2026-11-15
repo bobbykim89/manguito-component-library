@@ -12,6 +12,7 @@ export default defineConfig({
       './src/components/mcl-dropdown',
       './src/components/mcl-footer',
       './src/components/mcl-cards',
+      './src/components/mcl-carousel',
     ],
   },
 })

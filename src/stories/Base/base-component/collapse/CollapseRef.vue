@@ -18,7 +18,7 @@ const { attrs: triggerAttrs, toggle } = useCollapseTrigger(collapseRef, {
       <button
         v-bind="triggerAttrs"
         @click="toggle"
-        class="btn btn-full btn-no-ring btn-danger"
+        class="btn btn-full btn-danger"
       >
         Trigger toggle
       </button>

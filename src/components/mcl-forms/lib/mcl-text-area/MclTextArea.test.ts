@@ -134,3 +134,19 @@ describe('MclTextArea — inside a group', () => {
     )
   })
 })
+
+// #122: the highlight bar sat 10px up to make up for the gap browsers leave
+// under an inline textarea, which varies with the surrounding font, so it
+// drifted off the bottom edge. A block textarea has no such gap.
+describe('MclTextArea — highlight alignment', () => {
+  it('renders the textarea as a block so no baseline gap sits under it', () => {
+    expect(mount(MclTextArea).find('textarea').classes()).toContain('block')
+  })
+
+  it('pulls the highlight bar up by the same 4px as text inputs', () => {
+    const bar = mount(MclTextArea).find('textarea').element
+      .nextElementSibling as HTMLElement
+    expect(bar.className).toContain('-top-1')
+    expect(bar.className).not.toContain('-top-2.5')
+  })
+})

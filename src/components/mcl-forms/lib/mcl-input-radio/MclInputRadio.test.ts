@@ -18,7 +18,7 @@ describe('MclInputRadio — structure', () => {
 
   it('gives the visual dot a focus-visible ring', () => {
     const span = mount(MclInputRadio, { props: { id: 'red' } }).find('span')
-    expect(span.classes().join(' ')).toContain('peer-focus-visible:ring')
+    expect(span.classes()).toContain('peer-focus-visible:mcl-focus-ring')
   })
 
   it('stays circular and accepts no rounded prop', () => {
@@ -215,10 +215,12 @@ describe('MclInputRadio — colours, size, context', () => {
     expect(id).not.toBe('colour')
   })
 
-  it('applies the border colour to the focus ring', () => {
+  // #122: the focus ring is the shared two-tone ring, not the border colour.
+  it('uses the shared focus ring whatever the border colour', () => {
     const span = mount(MclInputRadio, {
       props: { id: 'red', borderColor: 'primary' },
     }).find('span')
-    expect(span.classes()).toContain('peer-focus-visible:ring-primary')
+    expect(span.classes()).toContain('peer-focus-visible:mcl-focus-ring')
+    expect(span.classes()).not.toContain('peer-focus-visible:ring-primary')
   })
 })

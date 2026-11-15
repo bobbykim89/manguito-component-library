@@ -75,8 +75,7 @@ const meta: Meta<typeof MclSelect> = {
     borderColor: colorControllers({
       name: 'border-color',
       required: false,
-      description:
-        'assigns color of the border. Also the open-state ring color when `show-highlight` is off.',
+      description: 'assigns color of the border.',
       defaultValue: 'light-4',
       category: 'Component Block',
     }),
@@ -148,7 +147,7 @@ const meta: Meta<typeof MclSelect> = {
       name: 'show-highlight',
       required: false,
       description:
-        'whether or not to display the highlight bar on open. With it off, an open-state ring in `border-color` is emitted instead.',
+        'whether or not to display the highlight bar on open. Keyboard focus always shows the shared focus ring.',
       defaultValue: true,
       category: 'Highlight',
     }),

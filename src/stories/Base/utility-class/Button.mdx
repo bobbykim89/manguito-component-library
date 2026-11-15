@@ -92,11 +92,34 @@ You need to nest text inside a tag such as div, span or text to make text visibl
 </button>
 ```
 
-## Button with no ring on focus
+## Keyboard focus
+
+A button reached with the keyboard (Tab) shows a two-tone focus ring: a 3px
+dark outline with a thin light halo between it and the button. One of the two
+always contrasts with the background, so it works on light and dark pages
+without setup. Mouse clicks and taps show no ring.
+
+Recolour it with two CSS variables. They cascade, so set them on `:root`, in a
+theme selector, on a section or on one button:
+
+```css
+.dark {
+  --mcl-focus-color: #f1ac18; /* the outline; default dark-3 */
+  --mcl-focus-halo: #191919; /* the halo; default light-1 */
+}
+```
+
+The same ring is available as a utility for your own controls:
 
 ```html
-<button class="btn btn-no-ring">Button</button>
+<div tabindex="0" class="focus-visible:mcl-focus-ring">Custom control</div>
 ```
+
+### Deprecated: `btn-no-ring`
+
+`btn-no-ring` no longer does anything. Buttons show no ring after a click, so
+there is nothing left to mute, and the keyboard ring must stay visible. The
+class is still accepted and will be removed in the next major version.
 
 ## Example
 

@@ -140,7 +140,7 @@ const meta: Meta<typeof MclInputText> = {
       name: 'show-highlight',
       required: false,
       description:
-        'whether or not to add highlight at the bottom of input component. With it off, a focus-visible ring is emitted instead.',
+        'whether or not to add highlight at the bottom of input component. Focus always shows the shared focus ring.',
       defaultValue: true,
       category: 'Highlight',
     }),

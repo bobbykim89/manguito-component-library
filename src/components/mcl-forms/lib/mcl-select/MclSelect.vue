@@ -284,14 +284,13 @@ watch(model, (value) => {
 
 <template>
   <div ref="rootRef" v-click-outside="closeList" class="relative">
+    <!--
+      The visible box carries the keyboard focus ring (#122) while its text
+      input has focus; the surface's own focus-visible class is inert on a div.
+    -->
     <div
-      class="relative flex gap-3xs p-2xs"
-      :class="[
-        surfaceClass,
-        !showHighlight &&
-          isOpen &&
-          generateClass.ringColorVariant({ color: borderColor }) + ' ring-4',
-      ]"
+      class="relative flex gap-3xs p-2xs has-[input:focus-visible]:mcl-focus-ring"
+      :class="surfaceClass"
     >
       <input
         :id="field.id"
@@ -320,7 +319,7 @@ watch(model, (value) => {
         data-mcl="clear"
         type="button"
         aria-label="Clear selection"
-        class="flex items-center px-3xs"
+        class="flex items-center px-3xs focus-visible:mcl-focus-ring"
         :disabled="field.disabled.value"
         @click="clear"
       >

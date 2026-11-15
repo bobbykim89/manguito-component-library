@@ -3,31 +3,21 @@ import { computed } from 'vue'
 import { generateClass } from '@bobbykim/manguito-theme'
 import type { ColorPalette } from '@bobbykim/manguito-theme'
 
-type OffsetType = 1 | 2.5
-
 const props = withDefaults(
   defineProps<{
     color?: ColorPalette
     rounded?: boolean
-    offset?: OffsetType
   }>(),
   {
     color: 'primary',
     rounded: false,
-    offset: 1,
   },
 )
-
-const offsetOptions = {
-  1: '-top-1',
-  2.5: '-top-2.5',
-}
 
 const getHighlightClass = computed((): string => {
   /**
    * @param {ColorPalette} color - highlightColor
    * @param {boolean} rounded - rounded
-   * @param {OffsetType} offset
    */
   const classArray: string[] = [
     generateClass.beforeBgColorVariant({ color: props.color }),
@@ -35,7 +25,9 @@ const getHighlightClass = computed((): string => {
   if (props.rounded) {
     classArray.push('rounded-b-md')
   }
-  classArray.push(offsetOptions[props.offset])
+  // Overlaps the control's bottom 4px. Text inputs leave no gap under them and
+  // the textarea is a block (#122), so one offset fits every control.
+  classArray.push('-top-1')
   return classArray.join(' ')
 })
 </script>

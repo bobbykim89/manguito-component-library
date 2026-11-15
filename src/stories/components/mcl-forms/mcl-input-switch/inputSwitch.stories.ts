@@ -78,7 +78,7 @@ const meta: Meta<typeof MclInputSwitch> = {
     borderColor: colorControllers({
       name: 'border-color',
       required: false,
-      description: 'border color of the track, and its focus-ring color',
+      description: 'border color of the track',
       defaultValue: 'dark-1',
       category: 'Switch Block',
     }),
