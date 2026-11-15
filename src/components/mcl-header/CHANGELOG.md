@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.8.9
+
+### Patch Changes
+
+- Updated dependencies [b54519d]
+  - @bobbykim/manguito-theme@1.6.0
+
 ## 0.8.8
 
 ### Patch Changes
