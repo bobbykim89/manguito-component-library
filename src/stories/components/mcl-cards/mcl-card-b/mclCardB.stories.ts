@@ -7,6 +7,8 @@ import {
 } from '@/assets/composables'
 import { MclCardB } from '@/components/mcl-cards/lib'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { expect, fn, waitFor } from 'storybook/test'
+import { hitAt } from '../story-helpers'
 
 const meta: Meta<typeof MclCardB> = {
   title: 'Components/Cards/MclCardB',
@@ -124,4 +126,30 @@ export const MclCardBExample: Story = {
     template:
       '<section class="container"><mcl-card-b v-bind="args"><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></mcl-card-b></section>',
   }),
+}
+
+// Keyboard and pointer contract (#129): keyboard focus on the card's target
+// reveals the title overlay as hover does and draws the ring around the card;
+// plain slot text and the image reach the target.
+export const MclCardBKeyboard: Story = {
+  ...MclCardBExample,
+  name: 'Keyboard',
+  args: { onCardClick: fn() },
+  play: async ({ args, canvas, userEvent }) => {
+    const target = canvas.getByRole('button', { name: 'MCL Card B' })
+    const overlay = target.closest('.peer')!
+    const card = overlay.parentElement!
+
+    await userEvent.tab()
+    await expect(target).toHaveFocus()
+    await waitFor(() => expect(getComputedStyle(overlay).opacity).toBe('1'))
+    await expect(getComputedStyle(card).outlineStyle).toBe('solid')
+    await userEvent.keyboard('{Enter}')
+    await expect(args.onCardClick).toHaveBeenCalledTimes(1)
+
+    await expect(hitAt(canvas.getByText(/^Lorem ipsum/))).toBe(target)
+    await expect(hitAt(canvas.getByRole('img'))).toBe(target)
+    await userEvent.click(hitAt(canvas.getByText(/^Lorem ipsum/)))
+    await expect(args.onCardClick).toHaveBeenCalledTimes(2)
+  },
 }

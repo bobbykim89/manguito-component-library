@@ -2,20 +2,28 @@
 import type {
   ColorPalette,
   CtaTarget,
+  HeadingLevel,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
 import { generateClass } from '@bobbykim/manguito-theme'
 import { computed } from 'vue'
+import {
+  cardFocusRingClass,
+  slotPassThroughClass,
+  stretchedTargetClass,
+} from '../common/a11y'
 import type { CardClickEvent } from '../common/index.types'
 
 const props = withDefaults(
   defineProps<{
     title: string
+    titleLevel?: HeadingLevel
     titleSize?: HeadingSize
     titleColor?: ColorPalette
     titleBlockColor?: ColorPalette
     borderColor?: ColorPalette
     imageSource?: string
+    /** Pass alt text for meaningful images; leave empty only for decorative ones. */
     imageAlt?: string
     showGrayScale?: boolean
     ctaAsLink?: boolean
@@ -24,10 +32,12 @@ const props = withDefaults(
     rounded?: boolean
   }>(),
   {
+    titleLevel: 'h3',
     titleSize: 'md',
     titleColor: 'light-1',
     titleBlockColor: 'dark-4',
     borderColor: 'light-3',
+    imageAlt: '',
     showGrayScale: true,
     ctaAsLink: false,
     ctaLink: '#',
@@ -60,7 +70,7 @@ const hoverEffect = computed<string>(() => {
    */
   const { showGrayScale } = props
   return showGrayScale
-    ? '[@media(hover:hover)]:grayscale peer-hover:grayscale-0'
+    ? '[@media(hover:hover)]:grayscale peer-hover:grayscale-0 peer-focus-within:grayscale-0'
     : ''
 })
 const titleClass = computed<string>(() => {
@@ -78,12 +88,15 @@ const titleClass = computed<string>(() => {
   return classArray.join(' ')
 })
 
+const opensNewTab = computed<boolean>(
+  () => props.ctaAsLink && props.ctaTarget === '_blank',
+)
+
 const handleCardClick = (e: Event): void => {
   /**
    * @param {Event} e
    */
-  const { title, ctaLink, ctaTarget, ctaAsLink } = props
-  if (!ctaAsLink) e.preventDefault()
+  const { title, ctaLink, ctaTarget } = props
   const cardEvent: CardClickEvent = {
     title,
     url: ctaLink,
@@ -96,25 +109,39 @@ const handleCardClick = (e: Event): void => {
 <template>
   <div
     class="xs:w-auto relative w-full max-w-112.5 shrink-0 grow cursor-pointer overflow-hidden border sm:max-w-87.5"
-    :class="borderClass"
+    :class="[borderClass, cardFocusRingClass]"
   >
-    <a :href="ctaLink" :target="ctaTarget" @click="handleCardClick($event)">
-      <div
-        class="peer absolute inset-0 z-15 flex flex-col items-start justify-end p-xs transition-opacity duration-200 hover:opacity-100 [@media(hover:hover)]:opacity-0"
+    <div
+      class="peer absolute inset-0 z-15 flex flex-col items-start justify-end p-xs transition-opacity duration-200 focus-within:opacity-100 hover:opacity-100 [@media(hover:hover)]:opacity-0"
+    >
+      <component
+        :is="titleLevel"
+        class="mb-2xs inline-block px-xs py-2xs tracking-wide"
+        :class="titleClass"
       >
-        <h3
-          v-html="title"
-          class="pointer-events-none mb-2xs inline-block px-xs py-2xs tracking-wide"
-          :class="titleClass"
-        ></h3>
+        <component
+          :is="ctaAsLink ? 'a' : 'button'"
+          data-mcl-card-target
+          :type="ctaAsLink ? undefined : 'button'"
+          :href="ctaAsLink ? ctaLink : undefined"
+          :target="ctaAsLink ? ctaTarget : undefined"
+          :class="stretchedTargetClass"
+          @click="handleCardClick($event)"
+          ><span v-html="title"></span
+          ><span v-if="opensNewTab" class="sr-only">
+            (opens in a new tab)</span
+          ></component
+        >
+      </component>
+      <div class="flex flex-col items-start" :class="slotPassThroughClass">
         <slot></slot>
       </div>
-      <img
-        :src="imageSource"
-        :alt="imageAlt"
-        class="relative z-10 aspect-3/4 h-full w-full object-cover object-center transition-all duration-200"
-        :class="hoverEffect"
-      />
-    </a>
+    </div>
+    <img
+      :src="imageSource"
+      :alt="imageAlt"
+      class="relative z-10 aspect-3/4 h-full w-full object-cover object-center transition-all duration-200"
+      :class="hoverEffect"
+    />
   </div>
 </template>
