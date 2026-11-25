@@ -51,7 +51,7 @@ importers:
         specifier: ^10.5.9
         version: 10.5.9(@types/react@19.1.2)(react@19.1.0)(storybook@10.5.9(@types/react@19.1.2)(prettier@3.8.1)(react@19.1.0))
       '@storybook/addon-vitest':
-        specifier: 10.5.9
+        specifier: ^10.5.9
         version: 10.5.9(@vitest/browser-playwright@4.1.6)(@vitest/browser@4.1.6)(@vitest/runner@4.1.6)(react@19.1.0)(storybook@10.5.9(@types/react@19.1.2)(prettier@3.8.1)(react@19.1.0))(vitest@4.1.6)
       '@storybook/vue3-vite':
         specifier: ^10.5.9
