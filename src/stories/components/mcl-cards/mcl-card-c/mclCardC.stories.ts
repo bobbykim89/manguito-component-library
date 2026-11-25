@@ -13,6 +13,8 @@ import { hitAt } from '../story-helpers'
 const meta: Meta<typeof MclCardC> = {
   title: 'Components/Cards/MclCardC',
   component: MclCardC,
+  // #129: axe violations fail these stories
+  parameters: { a11y: { test: 'error' } },
   argTypes: {
     title: textControllers({
       name: 'title',

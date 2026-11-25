@@ -227,12 +227,9 @@ const handleCardClick = (e: Event): void => {
           :class="labelClass"
           v-html="labelText"
         ></span>
-        <component
-          :is="titleLevel"
-          :id="titleId"
-          :class="titleClass"
-          v-html="title"
-        ></component>
+        <component :is="titleLevel" :id="titleId" :class="titleClass">
+          <span v-html="title"></span>
+        </component>
         <div
           v-if="showHighlight"
           class="mb-xs h-3xs w-md"

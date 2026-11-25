@@ -18,6 +18,8 @@ import MclCardAExamplesVue from './MclCardAExamples.vue'
 const meta: Meta<typeof MclCardA> = {
   title: 'Components/Cards/MclCardA',
   component: MclCardA,
+  // #129: axe violations fail these stories
+  parameters: { a11y: { test: 'error' } },
   argTypes: {
     title: textControllers({
       name: 'title',

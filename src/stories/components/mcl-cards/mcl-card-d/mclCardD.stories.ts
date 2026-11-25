@@ -11,6 +11,8 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 const meta: Meta<typeof MclCardD> = {
   title: 'Components/Cards/MclCardD',
   component: MclCardD,
+  // #129: axe violations fail these stories
+  parameters: { a11y: { test: 'error' } },
   argTypes: {
     title: textControllers({
       name: 'title',
