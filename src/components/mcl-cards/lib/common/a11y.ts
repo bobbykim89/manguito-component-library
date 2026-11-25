@@ -4,10 +4,11 @@
  * Stretches a card's one interactive element (button or link) over the card:
  * its ::after covers the nearest positioned ancestor, so a click anywhere on
  * the card lands on it. The element carries `data-mcl-card-target`, which
- * `cardFocusRingClass` on the card root keys on.
+ * `cardFocusRingClass` on the card root keys on. `text-start` undoes the
+ * button default of centred text, so a wrapped title keeps its alignment.
  */
 export const stretchedTargetClass =
-  "cursor-pointer after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
+  "cursor-pointer text-start after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
 
 /**
  * Draws the #122 focus ring around the whole card while its stretched target

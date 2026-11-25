@@ -148,8 +148,9 @@ const btnClass = computed<string>(() => {
     )
   } else {
     classArray.push('mcl-link')
-    // .mcl-link doesn't set a cursor and buttons default to an arrow
-    if (!ctaAsLink) classArray.push('cursor-pointer')
+    // .mcl-link sets no cursor or alignment; buttons default to an arrow and
+    // centred text
+    if (!ctaAsLink) classArray.push('cursor-pointer', 'text-start')
   }
   if (ctaButton && ctaButtonBlock) {
     classArray.push('btn-full')

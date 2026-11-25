@@ -92,14 +92,21 @@ describe('MclCardB', () => {
   })
 
   describe('structure', () => {
-    it('overlay has focus-within:opacity-100 so keyboard focus reveals the title', () => {
+    // Keyboard focus only: a mouse click also focuses the target, and the
+    // overlay must not stay revealed after the pointer leaves.
+    it('overlay is revealed by keyboard focus (focus-visible inside it), not any focus', () => {
       const wrapper = mountB()
       const overlay = wrapper.get('.peer')
       expect(overlay.classes()).toContain('hover:opacity-100')
-      expect(overlay.classes()).toContain('focus-within:opacity-100')
-      expect(wrapper.get('img').classes()).toContain(
-        'peer-focus-within:grayscale-0',
-      )
+      expect(overlay.classes()).toContain('has-[:focus-visible]:opacity-100')
+      expect(overlay.classes()).not.toContain('focus-within:opacity-100')
+      const img = wrapper.get('img').classes()
+      expect(img).toContain('peer-has-[:focus-visible]:grayscale-0')
+      expect(img).not.toContain('peer-focus-within:grayscale-0')
+    })
+
+    it("the target keeps the heading's start alignment (buttons centre text)", () => {
+      expect(target(mountB()).classes()).toContain('text-start')
     })
 
     it('renders the title with titleLevel and defaults imageAlt to ""', () => {

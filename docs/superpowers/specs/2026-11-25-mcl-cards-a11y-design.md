@@ -80,10 +80,8 @@ My calls, open to correction:
      - **A click on a link or button inside a slot only does what that element does.** It never also emits the card's event, which is consistent with Card A today. On Card C this means slot links now navigate. Today their navigation is cancelled and the card emits instead, so one click never triggers both.
      - **A click on plain slot text still reaches the stretched target**, as "click anywhere" requires. For example, the slot wrapper gets `pointer-events: none`, re-enabled on `a, button, input, select, textarea, [tabindex]` inside it.
    - **Focus stays on the same button** through both steps.
-   - **Accessible name:**
-     - When `showTitle` is on, it is the title heading, via `aria-labelledby` pointing to the heading's `useId()` id.
-     - Otherwise it is `aria-label` set to `title`.
-     - If `title` is empty, the fallback is `imageAlt`, then `"Card"`.
+   - **Accessible name:** `aria-label` set to `title`; if `title` is empty, the fallback is `imageAlt`, then `"Card"`.
+     - Changed during review: this was `aria-labelledby` pointing at the title heading when `showTitle` is on. Before the flip that heading is inside the `inert` content, and Chromium drops an `aria-labelledby` reference into inert content, so the button had no name.
    - **Slot content** is positioned above the button (`relative z-*`), so links and buttons in it stay clickable.
    - **The flip animation** (`rotateY` and its transitions) is turned off under `prefers-reduced-motion: reduce`.
 3. **Card A's whole-card click.**

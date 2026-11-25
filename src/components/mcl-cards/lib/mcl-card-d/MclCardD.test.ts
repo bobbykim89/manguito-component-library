@@ -21,6 +21,8 @@ describe('MclCardD', () => {
       // looks like the link it replaces
       expect(button.classes()).toContain('mcl-link')
       expect(button.classes()).toContain('cursor-pointer')
+      // buttons centre wrapped text; the inline link it replaces didn't
+      expect(button.classes()).toContain('text-start')
 
       await button.trigger('click')
       const [event, item] = wrapper.emitted('card-click')![0]

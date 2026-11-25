@@ -142,6 +142,9 @@ export const MclCardBKeyboard: Story = {
     const overlay = target.closest('.peer')!
     const card = overlay.parentElement!
 
+    // A button centres text by default; a wrapped title must stay start-aligned
+    await expect(getComputedStyle(target).textAlign).toBe('start')
+
     await userEvent.tab()
     await expect(target).toHaveFocus()
     await waitFor(() => expect(getComputedStyle(overlay).opacity).toBe('1'))

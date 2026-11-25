@@ -89,14 +89,12 @@ const titleClass = computed<string>(() => {
   return classArray.join(' ')
 })
 const contentId = useId()
-const titleId = useId()
-// The visible title names the button when there is one; otherwise the title
-// text, the image's alt text, or a generic word, so it is never unnamed.
-const labelledBy = computed<string | undefined>(() =>
-  props.showTitle && props.title ? titleId : undefined,
-)
-const ariaLabel = computed<string | undefined>(() =>
-  labelledBy.value ? undefined : props.title || props.imageAlt || 'Card',
+// Named by the title string, not aria-labelledby: the heading sits in the
+// inert content before the flip, and Chromium drops a reference into inert
+// content, leaving the button unnamed. Falls back to the image's alt text,
+// then a generic word, so it is never unnamed.
+const ariaLabel = computed<string>(
+  () => props.title || props.imageAlt || 'Card',
 )
 // `undefined`, not `false`, once flipped: where `inert` isn't a DOM property
 // (jsdom, older engines) Vue would otherwise write inert="false", which still
@@ -126,7 +124,6 @@ const handleCardClick = (e: Event) => {
       :class="stretchedTargetClass"
       :aria-expanded="cardFlipped"
       :aria-controls="contentId"
-      :aria-labelledby="labelledBy"
       :aria-label="ariaLabel"
       @click="handleCardClick"
     ></button>
@@ -153,7 +150,6 @@ const handleCardClick = (e: Event) => {
         <component
           :is="titleLevel"
           v-if="showTitle"
-          :id="titleId"
           class="relative self-start"
           :class="titleClass"
         >

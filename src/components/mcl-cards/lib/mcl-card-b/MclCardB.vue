@@ -70,7 +70,7 @@ const hoverEffect = computed<string>(() => {
    */
   const { showGrayScale } = props
   return showGrayScale
-    ? '[@media(hover:hover)]:grayscale peer-hover:grayscale-0 peer-focus-within:grayscale-0'
+    ? '[@media(hover:hover)]:grayscale peer-hover:grayscale-0 peer-has-[:focus-visible]:grayscale-0'
     : ''
 })
 const titleClass = computed<string>(() => {
@@ -112,7 +112,7 @@ const handleCardClick = (e: Event): void => {
     :class="[borderClass, cardFocusRingClass]"
   >
     <div
-      class="peer absolute inset-0 z-15 flex flex-col items-start justify-end p-xs transition-opacity duration-200 focus-within:opacity-100 hover:opacity-100 [@media(hover:hover)]:opacity-0"
+      class="peer absolute inset-0 z-15 flex flex-col items-start justify-end p-xs transition-opacity duration-200 hover:opacity-100 has-[:focus-visible]:opacity-100 [@media(hover:hover)]:opacity-0"
     >
       <component
         :is="titleLevel"

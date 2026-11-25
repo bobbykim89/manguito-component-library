@@ -61,16 +61,24 @@ describe('MclCardC', () => {
   })
 
   describe('accessible name', () => {
-    it('names the button from the title heading via aria-labelledby when showTitle is true', () => {
+    // Chromium drops an aria-labelledby reference into inert content, which
+    // left the button unnamed before the flip; the name is the title string.
+    it('names the button with aria-label = title when the title is shown', () => {
       const wrapper = mountC({ showTitle: true })
       const button = wrapper.get('button')
-      const heading = wrapper.get('h3')
-      expect(heading.attributes('id')).toBeTruthy()
-      expect(button.attributes('aria-labelledby')).toBe(
-        heading.attributes('id'),
-      )
-      expect(heading.text()).toBe('Mango')
-      expect(button.attributes('aria-label')).toBeUndefined()
+      expect(wrapper.get('h3').text()).toBe('Mango')
+      expect(button.attributes('aria-label')).toBe('Mango')
+    })
+
+    it('never takes its name from content inside an inert element', () => {
+      const wrapper = mountC({ showTitle: true })
+      const ids = (wrapper.get('button').attributes('aria-labelledby') ?? '')
+        .split(' ')
+        .filter(Boolean)
+      for (const id of ids) {
+        expect(document.getElementById(id)?.closest('[inert]')).toBeNull()
+      }
+      wrapper.unmount()
     })
 
     it('uses aria-label = title when showTitle is false', () => {
@@ -140,18 +148,15 @@ describe('MclCardC', () => {
   })
 
   describe('server render', () => {
-    it('hydrates without warnings and aria-controls/aria-labelledby resolve', async () => {
+    it('hydrates without warnings, aria-controls resolves and the name survives', async () => {
       const { container, warnings, unmount } = await hydrate(() =>
         h(MclCardC, { imageSource: 'x.jpg', title: 'Mango', showTitle: true }),
       )
       expect(warnings).toEqual([])
       const button = container.querySelector('button')!
       const controls = button.getAttribute('aria-controls')!
-      const labelledby = button.getAttribute('aria-labelledby')!
       expect(container.querySelector(`#${controls}`)).not.toBeNull()
-      expect(
-        container.querySelector(`#${labelledby}`)?.textContent?.trim(),
-      ).toBe('Mango')
+      expect(button.getAttribute('aria-label')).toBe('Mango')
       unmount()
     })
   })
