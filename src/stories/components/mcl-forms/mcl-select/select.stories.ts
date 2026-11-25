@@ -6,6 +6,7 @@ import {
 } from '@/assets/composables'
 import { MclFormGroup, MclSelect } from '@/components/mcl-forms/lib'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { expect, screen, waitFor } from 'storybook/test'
 import { ref } from 'vue'
 import MclSelectCustomSlot from './MclSelectCustomSlot.vue'
 import MclSelectExampleVue from './MclSelectExample.vue'
@@ -259,4 +260,14 @@ export const MclSelectExampleCustomSlotExample: Story = {
     components: { 'mcl-select-custom-slot': MclSelectCustomSlot },
     template: '<mcl-select-custom-slot></mcl-select-custom-slot>',
   }),
+}
+
+export const MclSelectOpened: Story = {
+  ...MclSelectExample,
+  name: 'MclSelect Opened',
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('combobox'))
+    const listbox = await screen.findByRole('listbox')
+    await waitFor(() => expect(listbox).toBeVisible())
+  },
 }

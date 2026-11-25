@@ -14,6 +14,7 @@ import type {
 } from '@/components/mcl-header/lib'
 import { MclHeaderB } from '@/components/mcl-header/lib'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { expect, screen, waitFor } from 'storybook/test'
 import HeaderBSlotItem from './HeaderBSlotItem.vue'
 
 const navItems: Array<MenuItemType | MenuCollapseType> = [
@@ -264,4 +265,22 @@ export const MclHeaderBSlotExample: Story = {
     template:
       '<section><mcl-header-b v-bind="args"><template #default><div class="min-h-[100vh] bg-primary"><h3 class="h3-md text-center pt-md">Inside Header Component</h3></div><div class="min-h-[100vh] bg-secondary"><h3 class="h3-md text-center pt-md">Inside Header Component</h3></div></template><template #content-bottom><header-b-slot-item :color="args.highlightColor"></header-b-slot-item></template><template #mobile-bottom><header-b-slot-item :color="args.highlightColor"></header-b-slot-item></template></mcl-header-b></section><div class="min-h-[50vh] bg-success"><h3 class="h3-md text-center pt-md">Outside Header Component</h3></div>',
   }),
+}
+
+// Mobile width so the nav drawer button (lg:hidden) is rendered and opened.
+// The drawer is teleported to <body>, hence `screen`.
+export const MclHeaderBMobileOpened: Story = {
+  ...MclHeaderBExample,
+  name: 'MclHeaderB Mobile Opened',
+  globals: { viewport: { value: 'mobile', isRotated: false } },
+  play: async ({ userEvent }) => {
+    const drawerButton = await screen.findByRole('button', { name: 'Menu' })
+    await expect(drawerButton).toBeVisible()
+    await userEvent.click(drawerButton)
+    await waitFor(() =>
+      expect(drawerButton).toHaveAttribute('aria-expanded', 'true'),
+    )
+    const [link] = await screen.findAllByRole('link')
+    await waitFor(() => expect(link).toBeVisible())
+  },
 }
