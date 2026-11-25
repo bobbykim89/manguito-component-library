@@ -1,17 +1,25 @@
 <script setup lang="ts">
 import type {
   ColorPalette,
+  HeadingLevel,
   HeadingSize,
   OpacityRange,
 } from '@bobbykim/manguito-theme'
 import { generateClass } from '@bobbykim/manguito-theme'
-import { computed, ref } from 'vue'
+import { computed, ref, useId } from 'vue'
+import {
+  cardFocusRingClass,
+  slotPassThroughClass,
+  stretchedTargetClass,
+} from '../common/a11y'
 
 const props = withDefaults(
   defineProps<{
     imageSource: string
+    /** Pass alt text for meaningful images; leave empty only for decorative ones. */
     imageAlt?: string
     title?: string
+    titleLevel?: HeadingLevel
     titleSize?: HeadingSize
     titleColor?: ColorPalette
     showHighlight?: boolean
@@ -21,6 +29,9 @@ const props = withDefaults(
     cardColor?: ColorPalette
   }>(),
   {
+    imageAlt: '',
+    title: '',
+    titleLevel: 'h3',
     titleSize: 'md',
     titleColor: 'dark-3',
     showHighlight: false,
@@ -77,10 +88,25 @@ const titleClass = computed<string>(() => {
   }
   return classArray.join(' ')
 })
+const contentId = useId()
+// Named by the title string, not aria-labelledby: the heading sits in the
+// inert content before the flip, and Chromium drops a reference into inert
+// content, leaving the button unnamed. Falls back to the image's alt text,
+// then a generic word, so it is never unnamed.
+const ariaLabel = computed<string>(
+  () => props.title || props.imageAlt || 'Card',
+)
+// `undefined`, not `false`, once flipped: where `inert` isn't a DOM property
+// (jsdom, older engines) Vue would otherwise write inert="false", which still
+// makes the content inert.
+const contentInert = computed<true | undefined>(() =>
+  cardFlipped.value ? undefined : true,
+)
+// First activation flips the card; every one after that emits card-click.
 const handleCardClick = (e: Event) => {
-  e.preventDefault()
   if (cardFlipped.value) {
     emit('card-click', e)
+    return
   }
   cardFlipped.value = true
 }
@@ -88,30 +114,51 @@ const handleCardClick = (e: Event) => {
 
 <template>
   <div
-    class="card relative aspect-square max-h-100 overflow-hidden transition duration-1600"
-    :class="cardClass"
-    @click="handleCardClick"
+    class="card relative aspect-square max-h-100 overflow-hidden transition duration-1600 motion-reduce:transition-none"
+    :class="[cardClass, cardFocusRingClass]"
   >
-    <img
-      :src="imageSource"
-      :alt="imageAlt"
-      :class="[
-        cardFlipped ? 'opacity-100' : 'opacity-0',
-        'absolute aspect-square h-full w-full object-cover object-center transition-opacity delay-500 duration-800',
-      ]"
-    />
+    <button
+      type="button"
+      data-mcl-card-target
+      class="absolute inset-0"
+      :class="stretchedTargetClass"
+      :aria-expanded="cardFlipped"
+      :aria-controls="contentId"
+      :aria-label="ariaLabel"
+      @click="handleCardClick"
+    ></button>
     <div
-      :class="[
-        cardFlipped ? 'cursor-pointer opacity-100' : 'opacity-0',
-        'relative flex h-full flex-col justify-end p-sm transition delay-500 duration-800',
-      ]"
+      :id="contentId"
+      :inert="contentInert"
+      class="h-full"
+      :class="slotPassThroughClass"
     >
-      <h3 v-if="showTitle" class="relative self-start" :class="titleClass">
-        <span>
-          {{ title }}
-        </span>
-      </h3>
-      <slot name="card-body" />
+      <img
+        :src="imageSource"
+        :alt="imageAlt"
+        :class="[
+          cardFlipped ? 'opacity-100' : 'opacity-0',
+          'absolute aspect-square h-full w-full object-cover object-center transition-opacity delay-500 duration-800 motion-reduce:transition-none',
+        ]"
+      />
+      <div
+        :class="[
+          cardFlipped ? 'opacity-100' : 'opacity-0',
+          'relative flex h-full flex-col justify-end p-sm transition delay-500 duration-800 motion-reduce:transition-none',
+        ]"
+      >
+        <component
+          :is="titleLevel"
+          v-if="showTitle"
+          class="relative self-start"
+          :class="titleClass"
+        >
+          <span>
+            {{ title }}
+          </span>
+        </component>
+        <slot name="card-body" />
+      </div>
     </div>
   </div>
 </template>
@@ -132,5 +179,11 @@ const handleCardClick = (e: Event) => {
 .flip-card {
   -webkit-transform: rotateY(360deg);
   transform: rotateY(360deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .flip-card {
+    -webkit-transform: none;
+    transform: none;
+  }
 }
 </style>

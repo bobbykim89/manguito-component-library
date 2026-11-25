@@ -2,11 +2,12 @@
 import type {
   ColorPalette,
   CtaTarget,
+  HeadingLevel,
   HeadingSize,
   Range,
 } from '@bobbykim/manguito-theme'
 import { generateClass } from '@bobbykim/manguito-theme'
-import { computed } from 'vue'
+import { computed, useId } from 'vue'
 import type { CardClickEvent } from '../common/index.types'
 import type { ColorMap } from './index.types'
 
@@ -73,8 +74,10 @@ const props = withDefaults(
   defineProps<{
     showImage?: boolean
     imageSource?: string
+    /** Pass alt text for meaningful images; leave empty only for decorative ones. */
     imageAlt?: string
     title: string
+    titleLevel?: HeadingLevel
     titleSize?: HeadingSize
     titleColor?: ColorPalette
     bgColor?: ColorPalette
@@ -96,6 +99,7 @@ const props = withDefaults(
   {
     showImage: true,
     imageAlt: '',
+    titleLevel: 'h3',
     titleSize: 'md',
     titleColor: 'dark-4',
     bgColor: 'light-1',
@@ -134,7 +138,7 @@ const titleClass = computed<string>(() => {
   return classArray.join(' ')
 })
 const btnClass = computed<string>(() => {
-  const { ctaButton, ctaButtonColor, ctaButtonBlock } = props
+  const { ctaButton, ctaButtonColor, ctaButtonBlock, ctaAsLink } = props
   const classArray: string[] = []
   const lightColor: string[] = ['light-1', 'light-2', 'light-3', 'light-4']
   if (ctaButton) {
@@ -144,6 +148,9 @@ const btnClass = computed<string>(() => {
     )
   } else {
     classArray.push('mcl-link')
+    // .mcl-link sets no cursor or alignment; buttons default to an arrow and
+    // centred text
+    if (!ctaAsLink) classArray.push('cursor-pointer', 'text-start')
   }
   if (ctaButton && ctaButtonBlock) {
     classArray.push('btn-full')
@@ -174,19 +181,22 @@ const gradientClass = computed<string>(() => {
   return classArray.join(' ')
 })
 
+const titleId = useId()
+const opensNewTab = computed<boolean>(
+  () => props.ctaAsLink && props.ctaLinkTarget === '_blank',
+)
+
 const handleCardClick = (e: Event) => {
   /**
    * @param {Event} e - click event
-   * @param {Boolean} link - ctaAsLink
    */
 
-  const { title, ctaLink, ctaLinkTarget, ctaAsLink } = props
+  const { title, ctaLink, ctaLinkTarget } = props
   const cardEvent: CardClickEvent = {
     title,
     url: ctaLink,
     target: ctaLinkTarget ? ctaLinkTarget : '_self',
   }
-  if (!ctaAsLink) e.preventDefault()
   emit('card-click', e, cardEvent)
 }
 </script>
@@ -208,9 +218,14 @@ const handleCardClick = (e: Event) => {
         class="p-xs"
         :class="generateClass.bgColorVariant({ color: bgColor })"
       >
-        <h3 class="mb-xs" :class="titleClass">
+        <component
+          :is="titleLevel"
+          :id="titleId"
+          class="mb-xs"
+          :class="titleClass"
+        >
           {{ title }}
-        </h3>
+        </component>
         <div
           v-if="showHighlight"
           class="mb-xs h-3xs w-md"
@@ -220,12 +235,18 @@ const handleCardClick = (e: Event) => {
           <slot></slot>
         </div>
         <div class="mt-xs" :class="{ 'mb-2xs': !ctaButton }">
-          <a
-            :href="ctaLink"
-            :target="ctaLinkTarget"
+          <component
+            :is="ctaAsLink ? 'a' : 'button'"
+            :type="ctaAsLink ? undefined : 'button'"
+            :href="ctaAsLink ? ctaLink : undefined"
+            :target="ctaAsLink ? ctaLinkTarget : undefined"
             :class="btnClass"
+            :aria-describedby="titleId"
             @click="handleCardClick"
-            >{{ ctaText }}</a
+            >{{ ctaText
+            }}<span v-if="opensNewTab" class="sr-only">
+              (opens in a new tab)</span
+            ></component
           >
         </div>
       </div>

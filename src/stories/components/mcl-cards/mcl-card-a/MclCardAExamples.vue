@@ -56,7 +56,7 @@ const polloAlt: string = 'Manguito is perching'
           cta-text="Learn more"
           label-text="No Image"
           bg-color="success"
-          :display-image="false"
+          :show-image="false"
         >
           <div>
             <p class="mb-sm">

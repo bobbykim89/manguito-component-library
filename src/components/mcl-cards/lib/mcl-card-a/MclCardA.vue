@@ -3,17 +3,24 @@ import type {
   BodyText,
   ColorPalette,
   CtaTarget,
+  HeadingLevel,
   HeadingSize,
   OpacityRange,
 } from '@bobbykim/manguito-theme'
 import { generateClass } from '@bobbykim/manguito-theme'
 import { getGlassmorphismClass } from '@bobbykim/manguito-theme/util'
-import { computed } from 'vue'
+import { computed, useId } from 'vue'
+import {
+  cardFocusRingClass,
+  slotPassThroughClass,
+  stretchedTargetClass,
+} from '../common/a11y'
 import type { CardClickEvent } from '../common/index.types'
 
 const props = withDefaults(
   defineProps<{
     title: string
+    titleLevel?: HeadingLevel
     titleSize?: HeadingSize
     titleColor?: ColorPalette
     borderColor?: ColorPalette
@@ -24,6 +31,7 @@ const props = withDefaults(
     glassOpacity?: OpacityRange
     showImage?: boolean
     imageSource?: string
+    /** Pass alt text for meaningful images; leave empty only for decorative ones. */
     imageAlt?: string
     showCta?: boolean
     ctaAsLink?: boolean
@@ -42,6 +50,7 @@ const props = withDefaults(
     showShadow?: boolean
   }>(),
   {
+    titleLevel: 'h3',
     titleSize: 'md',
     titleColor: 'dark-3',
     borderColor: 'light-3',
@@ -51,6 +60,7 @@ const props = withDefaults(
     glassBlur: 'sm',
     glassOpacity: 20,
     showImage: true,
+    imageAlt: '',
     showCta: true,
     ctaAsLink: false,
     ctaColor: 'primary',
@@ -105,7 +115,8 @@ const bodyClass = computed<string>(() => {
     generateClass.bgColorVariant({ color: bgColor }),
     !fullWidth && 'max-w-[450px] sm:max-w-[350px]',
     rounded ? 'rounded-lg' : 'rounded-sm',
-    enlargeOnHover && 'hover:scale-105 transition ease-in duration-300',
+    enlargeOnHover &&
+      'hover:scale-105 transition ease-in duration-300 motion-reduce:transition-none motion-reduce:hover:scale-100',
     showShadow && 'drop-shadow-md',
     glass && getGlassmorphismClass(bgColor, glassBlur, glassOpacity),
   ]
@@ -158,14 +169,17 @@ const ctaClass = computed<string>(() => {
     .filter(Boolean)
     .join(' ')
 })
+const titleId = useId()
+const opensNewTab = computed<boolean>(
+  () => props.ctaAsLink && props.ctaTarget === '_blank',
+)
 const handleButtonClick = (e: Event): void => {
-  const { title, ctaLink, ctaTarget, ctaAsLink } = props
+  const { title, ctaLink, ctaTarget } = props
   const cardEvent: CardClickEvent = {
     title,
     url: ctaLink,
     target: ctaTarget ? ctaTarget : '_self',
   }
-  if (!ctaAsLink) e.preventDefault()
   emit('card-btn-click', e, cardEvent)
 }
 const handleCardClick = (e: Event): void => {
@@ -181,11 +195,18 @@ const handleCardClick = (e: Event): void => {
 
 <template>
   <div
-    class="xs:w-auto flex w-full flex-shrink-0 flex-grow cursor-pointer flex-col overflow-hidden border"
-    :class="bodyClass"
-    @click="handleCardClick"
+    class="xs:w-auto relative flex w-full flex-shrink-0 flex-grow flex-col overflow-hidden border"
+    :class="[bodyClass, cardFocusRingClass]"
   >
-    <div class="relative" v-if="showImage">
+    <button
+      type="button"
+      data-mcl-card-target
+      class="absolute inset-0"
+      :class="stretchedTargetClass"
+      :aria-labelledby="titleId"
+      @click="handleCardClick"
+    ></button>
+    <div class="pointer-events-none relative" v-if="showImage">
       <img
         :src="imageSource"
         :alt="imageAlt"
@@ -206,25 +227,33 @@ const handleCardClick = (e: Event): void => {
           :class="labelClass"
           v-html="labelText"
         ></span>
-        <h3 :class="titleClass" v-html="title"></h3>
+        <component :is="titleLevel" :id="titleId" :class="titleClass">
+          <span v-html="title"></span>
+        </component>
         <div
           v-if="showHighlight"
           class="mb-xs h-3xs w-md"
           :class="generateClass.bgColorVariant({ color: highlightColor })"
         ></div>
-        <div class="mb-sm cursor-default" @click.stop>
+        <div class="mb-sm" :class="slotPassThroughClass">
           <slot></slot>
         </div>
       </div>
-      <div class="cursor-default border-0 pb-sm" v-if="showCta" @click.stop>
+      <div class="border-0 pb-sm" :class="slotPassThroughClass" v-if="showCta">
         <div class="w-full px-xs">
-          <a
-            :href="ctaLink"
-            :target="ctaTarget"
+          <component
+            :is="ctaAsLink ? 'a' : 'button'"
+            :type="ctaAsLink ? undefined : 'button'"
+            :href="ctaAsLink ? ctaLink : undefined"
+            :target="ctaAsLink ? ctaTarget : undefined"
             class="btn btn-full"
             :class="ctaClass"
+            :aria-describedby="titleId"
             @click="handleButtonClick($event)"
-            >{{ ctaText }}</a
+            >{{ ctaText
+            }}<span v-if="opensNewTab" class="sr-only">
+              (opens in a new tab)</span
+            ></component
           >
         </div>
       </div>
