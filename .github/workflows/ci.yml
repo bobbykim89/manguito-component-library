@@ -52,3 +52,9 @@ jobs:
         run: pnpm --filter @bobbykim/manguito-theme run test:dist
       - name: Build Storybook
         run: pnpm exec storybook build -o storybook-static --quiet
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      # Every story with an axe check. Violations are recorded, not failed,
+      # until a package's stories set `a11y: { test: 'error' }`.
+      - name: Test stories
+        run: pnpm test:storybook
