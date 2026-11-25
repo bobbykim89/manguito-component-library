@@ -3,6 +3,8 @@ import Button from './Button.vue'
 
 const meta: Meta<typeof Button> = {
   title: 'Base/Utility Class/Button Class',
+  // Utility-class demo, not a component: no axe check.
+  parameters: { a11y: { test: 'off' } },
 }
 export default meta
 

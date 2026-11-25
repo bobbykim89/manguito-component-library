@@ -3,6 +3,8 @@ import ListClass from './List.vue'
 
 const meta: Meta<typeof ListClass> = {
   title: 'Base/Utility Class/List Class',
+  // Utility-class demo, not a component: no axe check.
+  parameters: { a11y: { test: 'off' } },
 }
 export default meta
 
