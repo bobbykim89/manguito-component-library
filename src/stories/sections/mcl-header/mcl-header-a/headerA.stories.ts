@@ -14,6 +14,7 @@ import type {
 } from '@/components/mcl-header/lib'
 import { MclHeaderA } from '@/components/mcl-header/lib'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { expect, waitFor } from 'storybook/test'
 
 const navItems: Array<MenuItemType | MenuCollapseType> = [
   {
@@ -286,4 +287,26 @@ export const MclHeaderScrollExample: Story = {
     template:
       '<section><mcl-header-a v-bind="args"><template #content-right><div class="flex justify-center items-center gap-4"><button class="btn btn-primary" @click="setConsole">Button 1</button><button class="btn btn-secondary" @click="setConsole">Button 2</button></div></template><template #mobile-bottom="{headerClose}"><div class="flex justify-center items-center gap-4"><button class="btn" btn-primary @click="headerClose(), setConsole()">Button 1</button><button class="btn btn-secondary" @click="headerClose(), setConsole()">Button 2</button></div></template></mcl-header-a><div class="h-[1000px] bg-primary"></div><div class="h-[1000px] bg-secondary"></div></section>',
   }),
+}
+
+// Mobile width so the nav drawer button (lg:hidden) is rendered and opened.
+export const MclHeaderAMobileOpened: Story = {
+  ...MclHeaderAExample,
+  name: 'MclHeaderA Mobile Opened',
+  globals: { viewport: { value: 'mobile', isRotated: false } },
+  play: async ({ canvas, userEvent }) => {
+    const drawerButton = canvas.getByRole('button', { name: 'Menu' })
+    await expect(drawerButton).toBeVisible()
+    await userEvent.click(drawerButton)
+    await waitFor(() =>
+      expect(drawerButton).toHaveAttribute('aria-expanded', 'true'),
+    )
+    const home = await canvas.findByRole('link', { name: 'Home' })
+    await waitFor(() => expect(home).toBeVisible())
+    await userEvent.click(canvas.getByRole('button', { name: /Extra Items/ }))
+    const child = await canvas.findByRole('link', {
+      name: 'Extra Items Child Link 1',
+    })
+    await waitFor(() => expect(child).toBeVisible())
+  },
 }

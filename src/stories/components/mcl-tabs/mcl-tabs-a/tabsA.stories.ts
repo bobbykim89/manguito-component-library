@@ -8,6 +8,7 @@ import {
 import type { ContentType } from '@/components/mcl-tabs/lib'
 import { MclTabsA } from '@/components/mcl-tabs/lib'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { expect, waitFor } from 'storybook/test'
 
 const contentInfo: ContentType[] = [
   {
@@ -144,4 +145,16 @@ export const MclTabsAExample: Story = {
     },
     template: '<mcl-tabs-a v-bind="args"></mcl-tabs-a>',
   }),
+}
+
+export const MclTabsASecondActive: Story = {
+  ...MclTabsAExample,
+  name: 'MclTabsA Second Active',
+  play: async ({ canvas, userEvent }) => {
+    const tab = canvas.getByRole('tab', { name: 'Second' })
+    await userEvent.click(tab)
+    await waitFor(() => expect(tab).toHaveAttribute('aria-selected', 'true'))
+    const text = await canvas.findByText(/Quam, accusanti/)
+    await waitFor(() => expect(text).toBeVisible())
+  },
 }

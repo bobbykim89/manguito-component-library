@@ -3,6 +3,8 @@ import Collapse from './Collapse.vue'
 
 const meta: Meta<typeof Collapse> = {
   title: 'Base/Base Component/Directives/Collapse',
+  // Deprecated directive: no axe check (see CLAUDE.md).
+  parameters: { a11y: { test: 'off' } },
 }
 export default meta
 

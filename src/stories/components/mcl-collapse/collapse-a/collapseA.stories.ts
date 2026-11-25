@@ -6,6 +6,7 @@ import {
 } from '@/assets/composables'
 import { MclCollapseA } from '@/components/mcl-collapse/lib'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { expect, waitFor } from 'storybook/test'
 import CollapseAAccordion from './CollapseAAccordion.vue'
 import CollapseATabSlotExample from './CollapseATabSlotExample.vue'
 
@@ -145,4 +146,17 @@ export const AccordionExample: Story = {
     },
     template: '<collapse-a-accordion></collapse-a-accordion>',
   }),
+}
+
+export const MclCollapseAOpened: Story = {
+  ...MclCollapseAExample,
+  name: 'MclCollapseA Opened',
+  play: async ({ canvas, userEvent }) => {
+    const trigger = canvas.getByRole('button', { name: /MCL Collapse A/ })
+    await userEvent.click(trigger)
+    await waitFor(() =>
+      expect(trigger).toHaveAttribute('aria-expanded', 'true'),
+    )
+    await waitFor(() => expect(canvas.getByRole('region')).toBeVisible())
+  },
 }

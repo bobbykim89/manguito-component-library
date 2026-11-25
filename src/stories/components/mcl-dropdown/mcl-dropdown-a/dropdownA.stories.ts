@@ -9,6 +9,7 @@ import {
 import type { DropdownItem } from '@/components/mcl-dropdown/lib'
 import { MclDropdownA } from '@/components/mcl-dropdown/lib'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { expect, waitFor } from 'storybook/test'
 
 const dropdownItems: DropdownItem[] = [
   {
@@ -169,4 +170,18 @@ export const MclDropdownAExample: Story = {
     template:
       '<section class="h-[40vh]"><mcl-dropdown-a v-bind="args"></mcl-dropdown-a></section>',
   }),
+}
+
+export const MclDropdownAOpened: Story = {
+  ...MclDropdownAExample,
+  name: 'MclDropdownA Opened',
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: /MCL Dropdown A/ }),
+    )
+    const item = await canvas.findByRole('button', {
+      name: 'Dropdown item example 1',
+    })
+    await waitFor(() => expect(item).toBeVisible())
+  },
 }

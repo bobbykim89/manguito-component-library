@@ -4,7 +4,11 @@ import Breakpoint from './Breakpoint.vue'
 import HeadingSize from './HeadingSize.vue'
 import BodyText from './BodyText.vue'
 
-export default { title: 'Base/Theme' }
+// Theme token demos, not components: no axe check.
+export default {
+  title: 'Base/Theme',
+  parameters: { a11y: { test: 'off' } },
+}
 
 export const colorPalette = () => ({
   components: { 'color-palette': ColorPalette },

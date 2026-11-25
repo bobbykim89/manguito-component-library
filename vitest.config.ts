@@ -13,6 +13,9 @@ export default defineConfig({
       './src/components/mcl-footer',
       './src/components/mcl-cards',
       './src/components/mcl-carousel',
+      // Browser story tests (axe). Listed here so Storybook's sidebar test
+      // runner finds them; `pnpm test` excludes them with `--project`.
+      './vitest.storybook.config.ts',
     ],
   },
 })

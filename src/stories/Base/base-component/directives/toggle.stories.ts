@@ -4,6 +4,8 @@ import Toggle from './Toggle.vue'
 
 const meta: Meta<typeof Toggle> = {
   title: 'Base/Base Component/Directives/Toggle',
+  // Deprecated directive: no axe check (see CLAUDE.md).
+  parameters: { a11y: { test: 'off' } },
 }
 export default meta
 

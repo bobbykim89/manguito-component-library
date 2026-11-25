@@ -34,6 +34,14 @@ const customViewports = {
 
 const preview: Preview = {
   parameters: {
+    // axe runs after every story in `pnpm test:storybook`. 'todo' reports
+    // violations without failing; set 'error' per story file once a package
+    // is fixed, 'off' for demo stories. Contrast is left to consumers, who
+    // pick colours through props.
+    a11y: {
+      test: 'todo',
+      config: { rules: [{ id: 'color-contrast', enabled: false }] },
+    },
     controls: {
       expanded: true,
       matchers: {
