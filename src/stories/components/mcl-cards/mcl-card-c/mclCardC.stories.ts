@@ -8,6 +8,7 @@ import {
 import { MclCardC } from '@/components/mcl-cards/lib'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { expect, fn, waitFor } from 'storybook/test'
+import { hitAt } from '../story-helpers'
 
 const meta: Meta<typeof MclCardC> = {
   title: 'Components/Cards/MclCardC',
@@ -114,13 +115,6 @@ export const MclCardCExample: Story = {
     template:
       '<section class="container"><mcl-card-c v-bind="args"><template #card-body><div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est tenetur impedit hic iure, consectetur cupiditate nesciunt ullam voluptatum veniam ipsam?</div></template></mcl-card-c></section>',
   }),
-}
-
-// The element the browser's own hit-testing finds at the centre of `el`, which
-// is what a real mouse click there would land on.
-const hitAt = (el: Element): Element => {
-  const r = el.getBoundingClientRect()
-  return document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2)!
 }
 
 // Keyboard and pointer contract (#129): Tab reaches the card, the hidden

@@ -10,7 +10,9 @@ import {
 import GrandCanyonImage from '@/assets/images/grandcanyon-image.jpg'
 import { MclCardA } from '@/components/mcl-cards/lib'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { expect, fn } from 'storybook/test'
 import { computed } from 'vue'
+import { hitAt } from '../story-helpers'
 import MclCardAExamplesVue from './MclCardAExamples.vue'
 
 const meta: Meta<typeof MclCardA> = {
@@ -276,4 +278,36 @@ export const MoreCardExamples = {
     components: { 'mcl-card-a-examples': MclCardAExamplesVue },
     template: '<mcl-card-a-examples></mcl-card-a-examples>',
   }),
+}
+
+// Click areas (#129): plain slot text and the image reach the card button, the
+// CTA emits only card-btn-click, and the card button works from the keyboard.
+export const MclCardAClickAreas: Story = {
+  ...MclCardAExample,
+  name: 'Click Areas',
+  args: { showCta: true, onCardClick: fn(), onCardBtnClick: fn() },
+  play: async ({ args, canvas, userEvent }) => {
+    const cardButton = canvas.getByRole('button', { name: 'MCL Card A' })
+    const cta = canvas.getByRole('button', { name: 'cta text' })
+
+    const text = canvas.getByText(/^Lorem ipsum dolor/)
+    await expect(hitAt(text)).toBe(cardButton)
+    await expect(hitAt(canvas.getByRole('img'))).toBe(cardButton)
+    await userEvent.click(hitAt(text))
+    await expect(args.onCardClick).toHaveBeenCalledTimes(1)
+
+    await expect(hitAt(cta)).toBe(cta)
+    await userEvent.click(cta)
+    await expect(args.onCardBtnClick).toHaveBeenCalledTimes(1)
+    await expect(args.onCardClick).toHaveBeenCalledTimes(1)
+
+    // Tab order from the top: the card button, then the CTA
+    ;(document.activeElement as HTMLElement).blur()
+    await userEvent.tab()
+    await expect(cardButton).toHaveFocus()
+    await userEvent.keyboard('{Enter}')
+    await expect(args.onCardClick).toHaveBeenCalledTimes(2)
+    await userEvent.tab()
+    await expect(cta).toHaveFocus()
+  },
 }
