@@ -23,7 +23,7 @@
     "package:build": "turbo run build",
     "package:version": "pnpm changeset version",
     "package:publish": "turbo run build && pnpm changeset publish",
-    "test": "vitest run",
+    "test": "vitest run --project '!storybook*'",
     "test:storybook": "vitest run --config vitest.storybook.config.ts",
     "test:dist": "turbo run build && pnpm --filter @bobbykim/manguito-theme run test:dist"
   },

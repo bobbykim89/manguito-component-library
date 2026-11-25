@@ -22,7 +22,7 @@ pnpm run package:install    # pnpm install across all workspaces
 ### Testing
 
 ```bash
-pnpm test                   # Run all tests once (root vitest config: test-utils, manguito-theme, mcl-forms, mcl-collapse, mcl-header, mcl-tabs, mcl-dropdown, mcl-footer, mcl-cards, mcl-carousel)
+pnpm test                   # Run all tests once except the browser story project (root vitest config: test-utils, manguito-theme, mcl-forms, mcl-collapse, mcl-header, mcl-tabs, mcl-dropdown, mcl-footer, mcl-cards, mcl-carousel)
 pnpm test --watch           # Watch mode
 pnpm test:dist              # turbo build, then check-dist-ssr.mjs: imports every built theme entry in plain Node and server-renders each component from dist
 pnpm test:storybook         # every Storybook story as a Vitest browser test (headless Chromium) with an axe check; once: pnpm exec playwright install chromium
@@ -35,7 +35,7 @@ pnpm run test:watch         # vitest watch
 
 Tests live alongside source as `lib/**/*.test.ts`. The root `vitest.config.ts` uses Vitest's `projects` API — add new packages there when they gain tests.
 
-Story tests use their own config, `vitest.storybook.config.ts` (it merges `vite.config.ts`), so `pnpm test` never starts a browser. axe levels are set by `parameters.a11y.test`: `'todo'` globally in `.storybook/preview.ts` (violations recorded, test passes; colour contrast is off because consumers choose colours), `'error'` in a story file's `meta` once that package is fixed, `'off'` for demo and deprecated-directive stories.
+Story tests use their own config, `vitest.storybook.config.ts` (it merges `vite.config.ts`). It is also listed in the root `vitest.config.ts` projects so Storybook's sidebar test runner finds it; `pnpm test` runs `vitest run --project '!storybook*'`, so it never starts a browser (a bare `vitest run` would). axe levels are set by `parameters.a11y.test`: `'todo'` globally in `.storybook/preview.ts` (violations recorded, test passes; colour contrast is off because consumers choose colours), `'error'` in a story file's `meta` once that package is fixed, `'off'` for demo and deprecated-directive stories.
 
 SSR test convention: `*.server.test.ts` runs in the node environment (`// @vitest-environment node`, so `document` is undefined) and `*.test.ts` runs in jsdom (the theme default; happy-dom breaks `@vueuse` `useScrollLock(document)`). The harness is `src/utils/test/ssr.ts` (`renderOnServer`, `hydrate`), a private workspace package; packages import it as `'@mcl/test-utils/ssr'` after adding `"@mcl/test-utils": "workspace:*"` to their devDependencies.
 

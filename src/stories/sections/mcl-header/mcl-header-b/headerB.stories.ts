@@ -282,5 +282,10 @@ export const MclHeaderBMobileOpened: Story = {
     )
     const [link] = await screen.findAllByRole('link')
     await waitFor(() => expect(link).toBeVisible())
+    await userEvent.click(screen.getByRole('button', { name: /Extra Items/ }))
+    const child = await screen.findByRole('link', {
+      name: 'Extra Items Child Link 1',
+    })
+    await waitFor(() => expect(child).toBeVisible())
   },
 }
