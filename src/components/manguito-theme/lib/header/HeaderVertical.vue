@@ -43,7 +43,9 @@ const overlayRef = ref<HTMLElement>()
 const mobileNavId = useId()
 
 const drawerButton = (): HTMLElement | null =>
-  overlayRef.value?.querySelector<HTMLElement>('button[aria-expanded]') ?? null
+  overlayRef.value?.querySelector<HTMLElement>(
+    `[aria-controls="${mobileNavId}"]`,
+  ) ?? null
 
 // The open mobile menu is a full-screen modal (#128): focus stays inside the
 // wrapper (button + menu), Escape closes it, and focus returns to the button.

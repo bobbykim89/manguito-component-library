@@ -15,7 +15,7 @@ defineSlots<{
 }>()
 const emit = defineEmits<{
   (e: 'click-outside', event: Event): void
-  (e: 'toggle', event?: Event): void
+  (e: 'toggle', event: Event): void
 }>()
 const dropdownTarget = ref<HTMLElement>()
 const dropdownActive = ref<boolean>(false)
@@ -32,6 +32,25 @@ const findToggler = (): HTMLElement | null =>
         `[aria-controls="${contentId}"]`,
       ) ?? null)
 
+// Focus the toggler; if it can't take focus (a clickable wrapper `div`), try
+// the element wired with `aria-controls`, then a focusable element inside it.
+const focusToggler = (): void => {
+  const candidates = [
+    findToggler(),
+    dropdownTarget.value?.querySelector<HTMLElement>(
+      `[aria-controls="${contentId}"]`,
+    ),
+    toggler?.querySelector<HTMLElement>(
+      'button, a[href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    ),
+  ]
+  for (const el of candidates) {
+    if (!el) continue
+    el.focus()
+    if (document.activeElement === el) return
+  }
+}
+
 const focusInsideContent = (): boolean => {
   const content = document.getElementById(contentId)
   return !!content && content.contains(document.activeElement)
@@ -42,11 +61,10 @@ const closeFromInside = (): void => {
   const hadFocus = focusInsideContent()
   dropdownActive.value = false
   if (hadFocus) {
-    const target = findToggler()
-    target?.focus()
+    focusToggler()
     // the content may still be leaving; make sure focus didn't land in it
     nextTick(() => {
-      if (focusInsideContent()) target?.focus()
+      if (focusInsideContent()) focusToggler()
     })
   }
 }
@@ -60,7 +78,8 @@ provide(dropdownInjectionKey, {
 const toggle = (e?: Event): void => {
   if (e?.currentTarget instanceof HTMLElement) toggler = e.currentTarget
   dropdownActive.value = !dropdownActive.value
-  emit('toggle', e)
+  // `toggle()` may be called without an event; listeners still get one
+  emit('toggle', e ?? new Event('toggle'))
 }
 const onClickOutside = (e: Event): void => {
   dropdownActive.value = false
@@ -74,7 +93,7 @@ const onKeydown = (e: KeyboardEvent): void => {
   const hadFocus =
     focusInsideContent() || !!findToggler()?.contains(document.activeElement)
   dropdownActive.value = false
-  if (hadFocus) findToggler()?.focus()
+  if (hadFocus) focusToggler()
 }
 const attrs = computed<DropdownTogglerAttrs>(() => ({
   'aria-expanded': dropdownActive.value,

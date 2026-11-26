@@ -66,12 +66,16 @@ const attachEscape = (el: TooltipElementType): void => {
     hovered = false
     sync()
   }
-  const onFocusIn = () => {
+  // The tooltip shows on the host's own :focus (group-focus), not on focus
+  // inside it: ignore focus events bubbling up from descendants.
+  const onFocusIn = (e: FocusEvent) => {
+    if (e.target !== el) return
     if (!hovered && !focused) show()
     focused = true
     sync()
   }
-  const onFocusOut = () => {
+  const onFocusOut = (e: FocusEvent) => {
+    if (e.target !== el) return
     focused = false
     sync()
   }

@@ -195,3 +195,31 @@ describe('HeaderHorizontal landmark and focus (#128)', () => {
     w.unmount()
   })
 })
+
+describe('HeaderHorizontal focus return with other expandable buttons (#128 review)', () => {
+  afterEach(() => {
+    document.body.innerHTML = ''
+  })
+
+  it('headerClose focuses the menu button, not a content button with aria-expanded', async () => {
+    const w = mount(HeaderHorizontal, {
+      slots: {
+        content: () =>
+          h('button', { id: 'content-btn', 'aria-expanded': 'false' }, 'More'),
+        'mobile-content': ({ headerClose }: { headerClose: () => void }) =>
+          h('a', { href: '#x', id: 'mlink', onClick: headerClose }, 'M'),
+      },
+      attachTo: document.body,
+    })
+    const menu = w.find('button[aria-controls]').element as HTMLElement
+    menu.click()
+    await nextTick()
+    const link = document.querySelector<HTMLElement>('#mlink')!
+    link.focus()
+    link.click()
+    await nextTick()
+    await settle()
+    expect(document.activeElement).toBe(menu)
+    w.unmount()
+  })
+})

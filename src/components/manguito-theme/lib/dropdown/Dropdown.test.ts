@@ -179,3 +179,54 @@ describe('Dropdown toggler wiring and focus return (#128)', () => {
     r.unmount()
   })
 })
+
+describe('Dropdown focus return edge cases (#128 review)', () => {
+  afterEach(() => {
+    document.body.innerHTML = ''
+  })
+
+  it('a click on a non-focusable wrapper still returns focus to its button', async () => {
+    const r = await hydrate(() =>
+      h(DropdownContainer, null, {
+        toggler: (p: TogglerProps) =>
+          h('div', { id: 'wrap', onClick: p.toggle }, [
+            h('button', { id: 'trigger', ...p.attrs }, 'TOGGLER'),
+          ]),
+        default: () =>
+          h(DropdownContent, null, {
+            default: ({ itemClick }: { itemClick: () => void }) =>
+              h('button', { id: 'item', onClick: itemClick }, 'ITEM'),
+          }),
+      }),
+    )
+    r.container.querySelector<HTMLElement>('#trigger')!.click()
+    await nextTick()
+    const item = r.container.querySelector<HTMLElement>('#item')!
+    item.focus()
+    item.click()
+    await nextTick()
+    await settle()
+    expect(document.activeElement?.id).toBe('trigger')
+    r.unmount()
+  })
+
+  it('toggle() with no event still emits an Event', async () => {
+    const events: unknown[] = []
+    const r = await hydrate(() =>
+      h(
+        DropdownContainer,
+        { onToggle: (e: Event) => events.push(e) },
+        {
+          toggler: (p: TogglerProps) =>
+            h('button', { id: 'trigger', onClick: () => p.toggle() }, 'T'),
+          default: () => h(DropdownContent, null, { default: () => 'M' }),
+        },
+      ),
+    )
+    r.container.querySelector<HTMLElement>('#trigger')!.click()
+    await nextTick()
+    expect(events).toHaveLength(1)
+    expect(events[0]).toBeInstanceOf(Event)
+    r.unmount()
+  })
+})

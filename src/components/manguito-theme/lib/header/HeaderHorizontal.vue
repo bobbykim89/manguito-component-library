@@ -61,7 +61,7 @@ const closeNav = (): void => {
   navOpen.value = false
   if (hadFocus) {
     headerRef.value
-      ?.querySelector<HTMLElement>('button[aria-expanded]')
+      ?.querySelector<HTMLElement>(`[aria-controls="${mobilePanelId}"]`)
       ?.focus()
   }
 }

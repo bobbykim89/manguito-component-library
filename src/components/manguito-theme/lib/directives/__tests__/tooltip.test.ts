@@ -164,3 +164,29 @@ describe('vTooltip Escape (#128)', () => {
     w.unmount()
   })
 })
+
+describe('vTooltip Escape follows the host focus, not a descendant (#128 review)', () => {
+  afterEach(() => {
+    document.body.innerHTML = ''
+  })
+
+  it('Escape with focus in a child of the host is not handled', () => {
+    const Host = defineComponent({
+      setup: () => () =>
+        withDirectives(
+          h('div', { id: 'wrap' }, [h('input', { id: 'inner' })]),
+          [[vTooltip, 'Help']],
+        ),
+    })
+    const w = mount(Host, { attachTo: document.body })
+    const inner = document.getElementById('inner')!
+    inner.focus()
+    expect(escape(inner).defaultPrevented).toBe(false)
+    expect(
+      document
+        .getElementById('wrap')!
+        .hasAttribute('data-mcl-tooltip-dismissed'),
+    ).toBe(false)
+    w.unmount()
+  })
+})
