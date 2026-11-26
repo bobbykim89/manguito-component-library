@@ -1,16 +1,23 @@
 <script setup lang="ts">
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import { computed, onMounted, ref, useId, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, useId, watch } from 'vue'
 import { observeVisibleAttr, useModalScrollLock } from '../composables'
 import { vClickOutside } from '../directives'
 import { generateClass } from '../theme'
-import type { ColorPalette, DirectionX } from '../theme/static/theme.types'
+import { devWarn } from '../util/devWarn'
+import type {
+  ColorPalette,
+  DirectionX,
+  HeadingLevel,
+} from '../theme/static/theme.types'
 
 const props = withDefaults(
   defineProps<{
     title?: string
     /** Accessible name when there is no visible title. A visible title wins. */
     ariaLabel?: string
+    /** Heading element of the default header's title (#128). */
+    titleLevel?: HeadingLevel
     titleColor?: ColorPalette
     customClass?: string | string[]
     visible?: boolean
@@ -23,6 +30,7 @@ const props = withDefaults(
   }>(),
   {
     titleColor: 'dark-3',
+    titleLevel: 'h2',
     customClass: '',
     visible: false,
     showBackdrop: true,
@@ -52,13 +60,28 @@ const footerRef = ref<HTMLElement>()
 const titleId = useId()
 
 // Name the dialog by a heading it renders, else by `ariaLabel` (#110). A custom
-// header is trusted to put `titleId` on its heading unless `ariaLabel` is set.
+// header is trusted to put `titleId` on its heading unless `ariaLabel` is set,
+// until the open dialog shows it didn't (#128): then the dangling
+// `aria-labelledby` is dropped. Server html and the first client render keep
+// the trusting rule, so hydration agrees.
+const titleFound = ref<boolean | undefined>(undefined)
+const namedByHeading = (): boolean =>
+  props.showHeader && (slots.header ? !props.ariaLabel : !!props.title)
 const nameAttrs = (): Record<string, string | undefined> => {
-  const byHeading =
-    props.showHeader && (slots.header ? !props.ariaLabel : !!props.title)
-  return byHeading
+  return namedByHeading() && titleFound.value !== false
     ? { 'aria-labelledby': titleId }
     : { 'aria-label': props.ariaLabel }
+}
+const checkName = (): void => {
+  const dialog = dialogRef.value
+  if (!dialog) return
+  const found = dialog.querySelector(`[id="${titleId}"]`) !== null
+  titleFound.value = found
+  if (!(namedByHeading() && found) && !props.ariaLabel) {
+    devWarn(
+      `[Sidebar] The dialog has no accessible name. Set \`title\`, put the header slot's \`titleId\` on its heading, or pass \`ariaLabel\`.`,
+    )
+  }
 }
 let prevFocus: HTMLElement | null = null
 
@@ -68,11 +91,14 @@ const { activate: activateTrap, deactivate: deactivateTrap } = useFocusTrap(
   // click outside the dialog, including the backdrop's own @click (#104).
   // Escape closes the dialog; closing releases the trap and restores focus.
   // Letting the trap handle Escape itself left the dialog open, untrapped (#110).
+  // The trap checks Escape on document in the bubbling phase, after anything
+  // inside the dialog: an Escape a dropdown or tooltip already acted on
+  // (preventDefault) closes only that, not the dialog (#128).
   {
     immediate: false,
     allowOutsideClick: true,
-    escapeDeactivates: () => {
-      closeSidebar()
+    escapeDeactivates: (e: KeyboardEvent) => {
+      if (!e.defaultPrevented) closeSidebar()
       return false
     },
   },
@@ -124,6 +150,7 @@ onMounted(() => {
   if (toggle.value && !toggleComplete.value) {
     onAfterEnter()
   }
+  if (toggle.value) nextTick(checkName)
 })
 
 // set mutation observer watching `visible` attribute in element
@@ -144,8 +171,10 @@ watch(toggle, (newValue) => {
     if (typeof document !== 'undefined') {
       prevFocus = document.activeElement as HTMLElement | null
     }
+    nextTick(checkName)
     emitOpenEvent()
   } else if (newValue === false) {
+    titleFound.value = undefined
     deactivateTrap()
     prevFocus?.focus()
     prevFocus = null
@@ -231,14 +260,15 @@ defineExpose<{
                     />
                   </svg>
                 </button>
-                <h3
+                <component
                   v-if="title"
+                  :is="titleLevel"
                   :id="titleId"
                   class="h3-md"
                   :class="generateClass.textColorVariant({ color: titleColor })"
                 >
                   {{ title }}
-                </h3>
+                </component>
                 <button
                   type="button"
                   aria-label="Close"
