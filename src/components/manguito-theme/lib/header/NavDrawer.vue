@@ -2,7 +2,7 @@
 import { generateClass } from '../theme'
 import type { ColorPalette } from '../theme/static/theme.types'
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     color?: ColorPalette
     showBorder?: boolean
