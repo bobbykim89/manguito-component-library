@@ -24,4 +24,12 @@ describe('Alert (server)', () => {
     )
     expect(html).not.toContain('ALERT TEXT')
   })
+
+  it('is role=alert by default with no aria-live (#128)', async () => {
+    const { html } = await renderOnServer(() =>
+      h(Alert, { show: true }, { default: () => 'X' }),
+    )
+    expect(html).toContain('role="alert"')
+    expect(html).not.toContain('aria-live')
+  })
 })
