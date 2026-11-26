@@ -4,7 +4,13 @@ import { generateClass } from '@bobbykim/manguito-theme'
 import { vClickOutside } from '@bobbykim/manguito-theme/directives'
 import { autoUpdate, flip, offset, shift, useFloating } from '@floating-ui/vue'
 import { useResizeObserver } from '@vueuse/core'
-import { computed, ref, watch, type ComponentPublicInstance } from 'vue'
+import {
+  computed,
+  nextTick,
+  ref,
+  watch,
+  type ComponentPublicInstance,
+} from 'vue'
 import CaretDown from '../assets/CaretDown.vue'
 import XMark from '../assets/XMark.vue'
 import FieldFeedback from '../common/FieldFeedback.vue'
@@ -72,6 +78,11 @@ const emit = defineEmits<{
 defineSlots<{
   dropdown?(props: {
     options: (string | SelectOptionType)[]
+    /**
+     * The highlighted option, which `aria-activedescendant` names; set
+     * `aria-selected` on the option at this index (#130). When the list opens
+     * it starts at the chosen value.
+     */
     activeIndex: number
     optionClick: (option: string | SelectOptionType) => void
     setRef: (
@@ -218,10 +229,21 @@ const listboxClass = computed<string>(() => {
   return classArray.join(' ')
 })
 
-const isSelected = (option: string | SelectOptionType): boolean =>
-  model.value !== null &&
-  model.value !== '' &&
-  optionValue(option) === model.value
+// The option to start on when the list opens (#130): the chosen value, as a
+// native <select> does, so the highlight, aria-activedescendant and
+// aria-selected all mark it. -1 when nothing is chosen or it isn't listed.
+const chosenIndex = (): number => {
+  if (model.value === null || model.value === '') return -1
+  return filteredOptions.value.findIndex(
+    (option) => optionValue(option) === model.value,
+  )
+}
+
+const startOnChosen = (): void => {
+  const index = chosenIndex()
+  activeIndex.value = index
+  if (index >= 0) nextTick(() => scrollActiveIntoView(index))
+}
 
 const { floatingStyles } = useFloating(rootRef, dropdownRef, {
   whileElementsMounted: autoUpdate,
@@ -239,8 +261,14 @@ useResizeObserver(rootRef, () => {
 // A candidate set that changes under a live highlight leaves `activeIndex`
 // pointing at an option that no longer exists: Enter would commit `undefined`
 // and `aria-activedescendant` would name a missing element.
+//
+// While the list is open and unfiltered the set is the full list again (an
+// open resets the filter, or the options were replaced), so it re-applies the
+// start-on-chosen highlight instead; otherwise the reset from opening would
+// wipe it, whichever of the two watchers runs last.
 watch(filteredOptions, () => {
-  activeIndex.value = -1
+  if (isOpen.value && !isFiltering.value) startOnChosen()
+  else activeIndex.value = -1
 })
 
 // The falling edge is the one place a filter session ends, so every close path
@@ -248,6 +276,7 @@ watch(filteredOptions, () => {
 // the filter without each site having to remember to.
 watch(isOpen, (open) => {
   if (open) {
+    startOnChosen()
     emit('open')
     return
   }
@@ -351,14 +380,14 @@ watch(model, (value) => {
       >
         <caret-down
           :color="iconColor"
-          :class-name="`h-xs transition-transform duration-300 ease-in ${isOpen ? 'rotate-180' : 'rotate-0'}`"
+          :class-name="`h-xs transition-transform duration-300 ease-in motion-reduce:transition-none ${isOpen ? 'rotate-180' : 'rotate-0'}`"
         ></caret-down>
       </button>
     </div>
 
     <div
       v-if="showHighlight"
-      class="relative -top-1 h-3xs overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-full before:transition-[width] before:duration-300 before:ease-linear"
+      class="relative -top-1 h-3xs overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-full before:transition-[width] before:duration-300 before:ease-linear motion-reduce:before:transition-none"
       :class="[isOpen ? 'before:w-full' : 'before:w-0', highlightClass]"
     ></div>
 
@@ -368,6 +397,8 @@ watch(model, (value) => {
         :id="`${field.id}-listbox`"
         ref="dropdownRef"
         role="listbox"
+        :aria-labelledby="controlAttrs['aria-labelledby']"
+        :aria-label="controlAttrs['aria-label']"
         class="max-h-[12.5rem] overflow-y-auto border-2"
         :class="listboxClass"
         :style="{ width: `${dropdownWidth}px`, ...floatingStyles }"
@@ -388,7 +419,7 @@ watch(model, (value) => {
             :ref="(el) => setItemRef(el, index)"
             role="option"
             class="cursor-pointer p-2xs"
-            :aria-selected="isSelected(option)"
+            :aria-selected="activeIndex === index"
             :class="[
               activeIndex === index &&
                 generateClass.bgColorVariant({ color: optionHoverColor }),
@@ -415,18 +446,25 @@ watch(model, (value) => {
       job in the same flush, so it runs after the <ul>'s unmount clears the
       ref.
     -->
-    <div
-      v-if="isOpen && filteredOptions.length === 0"
-      :id="`${field.id}-listbox`"
-      ref="dropdownRef"
-      role="status"
-      class="border-2 p-2xs"
-      :class="listboxClass"
-      :style="{ width: `${dropdownWidth}px`, ...floatingStyles }"
-    >
-      <slot name="no-match">
-        <span>{{ noMatchText }}</span>
-      </slot>
+    <!--
+      Always rendered (#130): a live region created together with its text is
+      often not announced, so the status container exists from mount and the
+      no-match box appears inside it. It has no styling of its own; the box
+      keeps its floating position.
+    -->
+    <div role="status">
+      <div
+        v-if="isOpen && filteredOptions.length === 0"
+        :id="`${field.id}-listbox`"
+        ref="dropdownRef"
+        class="border-2 p-2xs"
+        :class="listboxClass"
+        :style="{ width: `${dropdownWidth}px`, ...floatingStyles }"
+      >
+        <slot name="no-match">
+          <span>{{ noMatchText }}</span>
+        </slot>
+      </div>
     </div>
 
     <!--
