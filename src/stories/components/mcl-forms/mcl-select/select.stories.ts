@@ -22,6 +22,8 @@ const selectOptions = [
 const meta: Meta<typeof MclSelect> = {
   title: 'Components/Form/MclSelect',
   component: MclSelect,
+  // #130: axe violations fail these stories
+  parameters: { a11y: { test: 'error' } },
   argTypes: {
     options: arrayControllers({
       name: 'options',
@@ -34,7 +36,7 @@ const meta: Meta<typeof MclSelect> = {
       name: 'id',
       required: false,
       description:
-        "assigns id of the component. Omit it inside an MclFormGroup and the control inherits the group's id, which is what binds the group label to it.",
+        "assigns id of the component. Inside an MclFormGroup the group's label follows this id; omit it and the control takes the group's id.",
       category: 'Input Block',
     }),
     name: textControllers({
@@ -190,7 +192,7 @@ export const MclSelectExample: Story = {
       return { args, selected }
     },
     template:
-      '<section class="h-[40vh] rounded bg-light-1 p-md"><mcl-form-group :field-id="args.id" label="MCL Select" help-text="Type to filter; arrow keys move the highlight; Enter commits."><mcl-select v-bind="args" v-model="selected"></mcl-select></mcl-form-group><div class="mt-sm">Model value: {{ selected ?? "(none)" }}</div></section>',
+      '<section class="h-[40vh] rounded bg-light-1 p-md"><mcl-form-group label="MCL Select" help-text="Type to filter; arrow keys move the highlight; Enter commits."><mcl-select v-bind="args" v-model="selected"></mcl-select></mcl-form-group><div class="mt-sm">Model value: {{ selected ?? "(none)" }}</div></section>',
   }),
 }
 
@@ -203,7 +205,7 @@ export const MclSelectExampleFloatingUi: Story = {
     // The listbox is positioned by floating-ui, so it flips above the input
     // rather than being clipped when there is no room below.
     template:
-      '<section class="h-[50vh] bg-warning"></section><section class="h-[40vh] rounded bg-light-1 p-md"><mcl-form-group :field-id="args.id" label="MCL Select"><mcl-select v-bind="args"></mcl-select></mcl-form-group></section><section class="h-[50vh] bg-success"></section>',
+      '<section class="h-[50vh] bg-warning"></section><section class="h-[40vh] rounded bg-light-1 p-md"><mcl-form-group label="MCL Select"><mcl-select v-bind="args"></mcl-select></mcl-form-group></section><section class="h-[50vh] bg-success"></section>',
   }),
 }
 
@@ -229,7 +231,7 @@ export const MclSelectEventsExample: Story = {
       }
     },
     template:
-      '<section class="h-[55vh] rounded bg-light-1 p-md"><mcl-form-group :field-id="args.id" label="Events"><mcl-select v-bind="args" v-model="selected" @open="onOpen" @close="onClose" @clear="onClear" @select="onSelect" @changed="onChanged"></mcl-select></mcl-form-group><div class="mt-sm rounded-md bg-light-2 px-sm py-xs text-sm"><div class="font-bold">Event log (newest first):</div><div v-if="log.length === 0">(nothing yet)</div><div v-for="(entry, idx) in log" :key="idx">{{ entry }}</div></div></section>',
+      '<section class="h-[55vh] rounded bg-light-1 p-md"><mcl-form-group label="Events"><mcl-select v-bind="args" v-model="selected" @open="onOpen" @close="onClose" @clear="onClear" @select="onSelect" @changed="onChanged"></mcl-select></mcl-form-group><div class="mt-sm rounded-md bg-light-2 px-sm py-xs text-sm"><div class="font-bold">Event log (newest first):</div><div v-if="log.length === 0">(nothing yet)</div><div v-for="(entry, idx) in log" :key="idx">{{ entry }}</div></div></section>',
   }),
 }
 
@@ -238,13 +240,13 @@ export const MclSelectInvalidFeedbackExample: Story = {
     invalidFeedback: 'Choose an option.',
   },
   render: (args) => ({
-    components: { 'mcl-select': MclSelect },
+    components: { 'mcl-select': MclSelect, 'mcl-form-group': MclFormGroup },
     setup() {
       const selected = ref<string | number | null>(null)
       return { args, selected }
     },
     template:
-      '<section class="h-[40vh] p-md"><mcl-select v-bind="args" v-model="selected" :invalid="selected === null"></mcl-select></section>',
+      '<section class="h-[40vh] p-md"><mcl-form-group label="MCL Select"><mcl-select v-bind="args" v-model="selected" :invalid="selected === null"></mcl-select></mcl-form-group></section>',
   }),
 }
 

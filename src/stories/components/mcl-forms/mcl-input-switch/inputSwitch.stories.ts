@@ -11,12 +11,14 @@ import { ref } from 'vue'
 const meta: Meta<typeof MclInputSwitch> = {
   title: 'Components/Form/MclInputSwitch',
   component: MclInputSwitch,
+  // #130: axe violations fail these stories
+  parameters: { a11y: { test: 'error' } },
   argTypes: {
     id: textControllers({
       name: 'id',
       required: false,
       description:
-        "assigns id of the input. Omit it inside an MclFormGroup and the control inherits the group's id, which is what binds the group label to it.",
+        "assigns id of the input. Inside an MclFormGroup the group's label follows this id; omit it and the control takes the group's id.",
       category: 'Input Block',
     }),
     name: textControllers({
@@ -125,7 +127,7 @@ export const MclInputSwitchExample: Story = {
       return { args, statusRef }
     },
     template:
-      '<mcl-form-group :field-id="args.id" label="MCL Input Switch"><mcl-input-switch v-bind="args" v-model="statusRef"></mcl-input-switch></mcl-form-group>',
+      '<mcl-form-group label="MCL Input Switch"><mcl-input-switch v-bind="args" v-model="statusRef"></mcl-input-switch></mcl-form-group>',
   }),
 }
 
@@ -140,7 +142,7 @@ export const MclInputSwitchExample2: Story = {
       return { args, statusRef }
     },
     template:
-      '<section class="rounded-md bg-light-1 px-sm py-md"><mcl-form-group :field-id="args.id" label="MCL Input Switch Example 2" help-text="The control carries role=switch for you; Space toggles it."><mcl-input-switch v-bind="args" v-model="statusRef"></mcl-input-switch></mcl-form-group><div class="mt-xs">Switch status: {{ statusRef }}</div></section>',
+      '<section class="rounded-md bg-light-1 px-sm py-md"><mcl-form-group label="MCL Input Switch Example 2" help-text="The control carries role=switch for you; Space toggles it."><mcl-input-switch v-bind="args" v-model="statusRef"></mcl-input-switch></mcl-form-group><div class="mt-xs">Switch status: {{ statusRef }}</div></section>',
   }),
 }
 
@@ -159,7 +161,7 @@ export const MclInputSwitchChangeEventExample: Story = {
       return { args, statusRef, changeCount, onChange }
     },
     template:
-      '<section><mcl-form-group :field-id="args.id" label="Change event"><mcl-input-switch v-bind="args" v-model="statusRef" @change="onChange"></mcl-input-switch></mcl-form-group><div class="mt-xs">Status: {{ statusRef }}</div><div>change fired {{ changeCount }} time(s)</div></section>',
+      '<section><mcl-form-group label="Change event"><mcl-input-switch v-bind="args" v-model="statusRef" @change="onChange"></mcl-input-switch></mcl-form-group><div class="mt-xs">Status: {{ statusRef }}</div><div>change fired {{ changeCount }} time(s)</div></section>',
   }),
 }
 
@@ -175,6 +177,6 @@ export const MclInputSwitchDisabledExample: Story = {
     },
     // `disabled` is set on the group, not the control — it cascades down.
     template:
-      '<mcl-form-group :field-id="args.id" label="Disabled by the group" help-text="The switch sets no disabled prop of its own." disabled><mcl-input-switch v-bind="args" v-model="statusRef"></mcl-input-switch></mcl-form-group>',
+      '<mcl-form-group label="Disabled by the group" help-text="The switch sets no disabled prop of its own." disabled><mcl-input-switch v-bind="args" v-model="statusRef"></mcl-input-switch></mcl-form-group>',
   }),
 }

@@ -10,12 +10,14 @@ import { ref } from 'vue'
 const meta: Meta<typeof MclInputFile> = {
   title: 'Components/Form/MclInputFile',
   component: MclInputFile,
+  // #130: axe violations fail these stories
+  parameters: { a11y: { test: 'error' } },
   argTypes: {
     id: textControllers({
       name: 'id',
       required: false,
       description:
-        "assigns id of the input. Omit it inside an MclFormGroup and the control inherits the group's id, which is what binds the group label to it.",
+        "assigns id of the input. Inside an MclFormGroup the group's label follows this id; omit it and the control takes the group's id.",
       category: 'Input Block',
     }),
     name: textControllers({
@@ -163,7 +165,7 @@ export const MclInputFileExample: Story = {
       return { args, fileRef }
     },
     template:
-      '<section><mcl-form-group :field-id="args.id" label="MCL Input File"><mcl-input-file v-bind="args" v-model="fileRef"></mcl-input-file></mcl-form-group><div class="mt-sm">Selected file name: {{ fileRef ? fileRef.name : "(none)" }}</div></section>',
+      '<section><mcl-form-group label="MCL Input File"><mcl-input-file v-bind="args" v-model="fileRef"></mcl-input-file></mcl-form-group><div class="mt-sm">Selected file name: {{ fileRef ? fileRef.name : "(none)" }}</div></section>',
   }),
 }
 
@@ -183,7 +185,7 @@ export const MclInputFileClearableExample: Story = {
     // Clearing remounts the underlying input — the only reliable way to reset
     // a file input's value across browsers.
     template:
-      '<section><mcl-form-group :field-id="args.id" label="Avatar" help-text="JPG or PNG. Use the clear button to reset the field."><mcl-input-file v-bind="args" v-model="fileRef"></mcl-input-file></mcl-form-group><div class="mt-sm">Selected file name: {{ fileRef ? fileRef.name : "(none)" }}</div></section>',
+      '<section><mcl-form-group label="Avatar" help-text="JPG or PNG. Use the clear button to reset the field."><mcl-input-file v-bind="args" v-model="fileRef"></mcl-input-file></mcl-form-group><div class="mt-sm">Selected file name: {{ fileRef ? fileRef.name : "(none)" }}</div></section>',
   }),
 }
 
@@ -193,7 +195,10 @@ export const MclInputFileInvalidFeedbackExample: Story = {
     invalidFeedback: 'A file is required.',
   },
   render: (args) => ({
-    components: { 'mcl-input-file': MclInputFile },
+    components: {
+      'mcl-input-file': MclInputFile,
+      'mcl-form-group': MclFormGroup,
+    },
     setup() {
       const fileRef = ref<File | null>(null)
       return { args, fileRef }
@@ -201,7 +206,7 @@ export const MclInputFileInvalidFeedbackExample: Story = {
     // `invalid` is driven by state rather than being a fixed arg, so the
     // message clears once a file is chosen.
     template:
-      '<mcl-input-file v-bind="args" v-model="fileRef" :invalid="fileRef === null"></mcl-input-file>',
+      '<mcl-form-group label="Attachment"><mcl-input-file v-bind="args" v-model="fileRef" :invalid="fileRef === null"></mcl-input-file></mcl-form-group>',
   }),
 }
 
@@ -211,12 +216,15 @@ export const MclInputFileCustomInvalidFeedback: Story = {
     invalidFeedback: 'overridden by the slot',
   },
   render: (args) => ({
-    components: { 'mcl-input-file': MclInputFile },
+    components: {
+      'mcl-input-file': MclInputFile,
+      'mcl-form-group': MclFormGroup,
+    },
     setup() {
       return { args }
     },
     template:
-      '<mcl-input-file v-bind="args"><template #invalid-feedback><p class="text-md font-bold text-warning">That file is larger than 2&nbsp;MB.</p></template></mcl-input-file>',
+      '<mcl-form-group label="Attachment"><mcl-input-file v-bind="args"><template #invalid-feedback><p class="text-md font-bold text-warning">That file is larger than 2&nbsp;MB.</p></template></mcl-input-file></mcl-form-group>',
   }),
 }
 
@@ -235,6 +243,6 @@ export const MclInputFileDisabledExample: Story = {
     },
     // `disabled` set on the group cascades to the input and both buttons.
     template:
-      '<mcl-form-group :field-id="args.id" label="Attachment" help-text="Disabled by the group, not by the control." disabled><mcl-input-file v-bind="args" v-model="fileRef"></mcl-input-file></mcl-form-group>',
+      '<mcl-form-group label="Attachment" help-text="Disabled by the group, not by the control." disabled><mcl-input-file v-bind="args" v-model="fileRef"></mcl-input-file></mcl-form-group>',
   }),
 }

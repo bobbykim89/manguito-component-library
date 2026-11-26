@@ -12,12 +12,14 @@ import MclCheckboxMultiple from './MclCheckboxMultiple.vue'
 const meta: Meta<typeof MclCheckbox> = {
   title: 'Components/Form/MclCheckbox',
   component: MclCheckbox,
+  // #130: axe violations fail these stories
+  parameters: { a11y: { test: 'error' } },
   argTypes: {
     id: textControllers({
       name: 'id',
       required: false,
       description:
-        "assigns id of the input. Omit it inside an MclFormGroup and the control inherits the group's id, which is what binds the group label to it.",
+        "assigns id of the input. Inside an MclFormGroup the group's label follows this id; omit it and the control takes the group's id.",
       category: 'Input Block',
     }),
     name: textControllers({
