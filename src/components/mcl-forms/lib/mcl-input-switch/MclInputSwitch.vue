@@ -120,7 +120,7 @@ const onChange = (event: Event): void => {
     />
     <span
       aria-hidden="true"
-      class="slider absolute inset-0 transition-all duration-300 peer-disabled:opacity-50 before:absolute before:transition-all before:duration-300"
+      class="slider absolute inset-0 transition-all duration-300 peer-disabled:opacity-50 before:absolute before:transition-all before:duration-300 motion-reduce:transition-none motion-reduce:before:transition-none"
       :class="boxClass"
     ></span>
   </div>

@@ -220,3 +220,11 @@ describe('MclInputSwitch — attribute passthrough (#130)', () => {
     expect(wrapper.get('input').attributes('required')).toBeUndefined()
   })
 })
+
+describe('MclInputSwitch — reduced motion (#130)', () => {
+  it('the slider has motion-reduce:transition-none and motion-reduce:before:transition-none', () => {
+    const slider = mount(MclInputSwitch).get('.slider')
+    expect(slider.classes()).toContain('motion-reduce:transition-none')
+    expect(slider.classes()).toContain('motion-reduce:before:transition-none')
+  })
+})

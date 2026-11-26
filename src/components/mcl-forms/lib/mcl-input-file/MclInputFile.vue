@@ -106,8 +106,15 @@ const clearButtonClass = computed<string>(() => {
   <div v-bind="rootAttrs">
     <div class="flex items-center overflow-hidden" :class="surfaceClass">
       <div class="my-3xs mr-xs ml-3xs shrink-0">
+        <!--
+          A mouse handle only (#130): the labelled native file input is the
+          keyboard and screen-reader control, so this isn't a second tab stop
+          announcing "Browse File" with no field name.
+        -->
         <button
           type="button"
+          tabindex="-1"
+          aria-hidden="true"
           :aria-controls="field.id"
           :disabled="field.disabled.value"
           class="max-w-full px-xs py-2xs transition-all duration-200 ease-linear hover:bg-opacity-70 disabled:cursor-not-allowed disabled:opacity-50"

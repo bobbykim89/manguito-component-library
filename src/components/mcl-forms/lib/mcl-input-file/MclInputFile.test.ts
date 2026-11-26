@@ -170,3 +170,28 @@ describe('MclInputFile — attribute passthrough (#130)', () => {
     ).toBe('grp-label')
   })
 })
+
+// #130: the labelled native input is the one keyboard stop.
+describe('MclInputFile — Browse button (#130)', () => {
+  it('the Browse button is tabindex=-1 and aria-hidden, and still opens the picker on click', async () => {
+    const wrapper = mount(MclInputFile, { props: { id: 'avatar' } })
+    const browse = wrapper.get('button')
+    expect(browse.attributes('tabindex')).toBe('-1')
+    expect(browse.attributes('aria-hidden')).toBe('true')
+    const input = wrapper.get('input[type="file"]').element as HTMLInputElement
+    let clicks = 0
+    input.addEventListener('click', (e) => {
+      clicks++
+      e.preventDefault()
+    })
+    await browse.trigger('click')
+    expect(clicks).toBe(1)
+  })
+
+  it('the clear button keeps its tab stop and accessible name', () => {
+    const wrapper = mount(MclInputFile, { props: { showClear: true } })
+    const clear = wrapper.get('button[aria-label="Clear selected file"]')
+    expect(clear.attributes('tabindex')).toBeUndefined()
+    expect(clear.attributes('aria-hidden')).toBeUndefined()
+  })
+})

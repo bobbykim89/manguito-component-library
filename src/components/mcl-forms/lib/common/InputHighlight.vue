@@ -34,7 +34,7 @@ const getHighlightClass = computed((): string => {
 
 <template>
   <div
-    class="relative h-3xs overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-full before:w-0 before:transition-[width] before:duration-300 before:ease-linear peer-focus:before:w-full"
+    class="relative h-3xs overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-full before:w-0 before:transition-[width] before:duration-300 before:ease-linear peer-focus:before:w-full motion-reduce:before:transition-none"
     :class="getHighlightClass"
   ></div>
 </template>
