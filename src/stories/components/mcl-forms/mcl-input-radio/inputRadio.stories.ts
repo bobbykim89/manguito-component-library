@@ -12,6 +12,8 @@ import InputRadioExampleA from './InputRadioExampleA.vue'
 const meta: Meta<typeof MclInputRadio> = {
   title: 'Components/Form/MclInputRadio',
   component: MclInputRadio,
+  // #130: axe violations fail these stories
+  parameters: { a11y: { test: 'error' } },
   argTypes: {
     id: textControllers({
       name: 'id',

@@ -12,12 +12,14 @@ import MclTextAreaWithLabel from './MclTextAreaWithLabel.vue'
 const meta: Meta<typeof MclTextArea> = {
   title: 'Components/Form/MclTextArea',
   component: MclTextArea,
+  // #130: axe violations fail these stories
+  parameters: { a11y: { test: 'error' } },
   argTypes: {
     id: textControllers({
       name: 'id',
       required: false,
       description:
-        "assigns id of the textarea. Omit it inside an MclFormGroup and the control inherits the group's id, which is what binds the group label to it.",
+        "assigns id of the textarea. Inside an MclFormGroup the group's label follows this id; omit it and the control takes the group's id.",
       category: 'Input Block',
     }),
     name: textControllers({
@@ -147,13 +149,16 @@ type Story = StoryObj<typeof MclTextArea>
 
 export const MclTextAreaExample: Story = {
   render: (args) => ({
-    components: { 'mcl-text-area': MclTextArea },
+    components: {
+      'mcl-text-area': MclTextArea,
+      'mcl-form-group': MclFormGroup,
+    },
     setup() {
       const value = ref<string>('')
       return { args, value }
     },
     template:
-      '<section><mcl-text-area v-bind="args" v-model="value"></mcl-text-area><div class="mt-xs">{{ value.length }} character(s)</div></section>',
+      '<section><mcl-form-group label="MCL Text Area"><mcl-text-area v-bind="args" v-model="value"></mcl-text-area></mcl-form-group><div class="mt-xs">{{ value.length }} character(s)</div></section>',
   }),
 }
 
@@ -172,11 +177,15 @@ export const MclTextAreaInvalidFeedbackExample: Story = {
     invalid: true,
   },
   render: (args) => ({
-    components: { 'mcl-text-area': MclTextArea },
+    components: {
+      'mcl-text-area': MclTextArea,
+      'mcl-form-group': MclFormGroup,
+    },
     setup() {
       return { args }
     },
-    template: '<mcl-text-area v-bind="args"></mcl-text-area>',
+    template:
+      '<mcl-form-group label="Notes"><mcl-text-area v-bind="args"></mcl-text-area></mcl-form-group>',
   }),
 }
 
@@ -186,12 +195,15 @@ export const MclTextAreaCustomInvalidFeedback: Story = {
     invalid: true,
   },
   render: (args) => ({
-    components: { 'mcl-text-area': MclTextArea },
+    components: {
+      'mcl-text-area': MclTextArea,
+      'mcl-form-group': MclFormGroup,
+    },
     setup() {
       return { args }
     },
     template:
-      '<mcl-text-area v-bind="args"><template #invalid-feedback><p class="text-md font-bold text-warning">This field cannot be left blank.</p></template></mcl-text-area>',
+      '<mcl-form-group label="Message"><mcl-text-area v-bind="args"><template #invalid-feedback><p class="text-md font-bold text-warning">This field cannot be left blank.</p></template></mcl-text-area></mcl-form-group>',
   }),
 }
 
@@ -208,6 +220,6 @@ export const MclTextAreaInGroupExample: Story = {
     // The group owns the error region here, so the textarea renders none of
     // its own and points aria-describedby at the group's.
     template:
-      '<mcl-form-group :field-id="args.id" label="Notes" help-text="Markdown is supported." invalid-feedback="Notes cannot be empty." :invalid="notes.length === 0"><mcl-text-area v-bind="args" v-model="notes" :rows="4"></mcl-text-area></mcl-form-group>',
+      '<mcl-form-group label="Notes" help-text="Markdown is supported." invalid-feedback="Notes cannot be empty." :invalid="notes.length === 0"><mcl-text-area v-bind="args" v-model="notes" :rows="4"></mcl-text-area></mcl-form-group>',
   }),
 }

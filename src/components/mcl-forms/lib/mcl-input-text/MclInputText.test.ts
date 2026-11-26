@@ -203,3 +203,34 @@ describe('MclInputText — inside a group', () => {
     expect(input.attributes('required')).toBeDefined()
   })
 })
+
+// #130: attributes reach the focusable element; class and style stay on the wrapper.
+describe('MclInputText — attribute passthrough (#130)', () => {
+  it('forwards aria-label and title to the focusable element and keeps class on the wrapper', () => {
+    const wrapper = mount(MclInputText, {
+      props: {},
+      attrs: {
+        'aria-label': 'Named',
+        title: 'Tip',
+        class: 'w-1/2',
+        'data-testid': 'ctl',
+      },
+    })
+    const control = wrapper.get('input')
+    expect(control.attributes('aria-label')).toBe('Named')
+    expect(control.attributes('title')).toBe('Tip')
+    expect(control.attributes('data-testid')).toBe('ctl')
+    expect(wrapper.classes()).toContain('w-1/2')
+    expect(wrapper.attributes('aria-label')).toBeUndefined()
+    expect(wrapper.attributes('title')).toBeUndefined()
+  })
+
+  it('inside a labelled form group, the control has aria-labelledby = the group label id', () => {
+    const wrapper = mount(MclFormGroup, {
+      props: { fieldId: 'grp', label: 'Group' },
+      slots: { default: () => h(MclInputText, {}) },
+    })
+    expect(wrapper.get('label').attributes('id')).toBe('grp-label')
+    expect(wrapper.get('input').attributes('aria-labelledby')).toBe('grp-label')
+  })
+})

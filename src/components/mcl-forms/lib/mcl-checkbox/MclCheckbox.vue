@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import type { ColorPalette } from '@bobbykim/manguito-theme'
 import { useFieldContext } from '../common/fieldContext'
+import { useControlAttrs } from '../common/useControlAttrs'
 import type { InputSizeType } from '../common/index.types'
 import { useToggleControl } from '../common/useToggleControl'
+
+// #130: attributes go to the focusable element, not the wrapper.
+defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(
   defineProps<{
@@ -45,7 +49,12 @@ const emit = defineEmits<{
 
 // rendersOwnFeedback: false — this control renders no error region, so
 // aria-describedby must not name one unless the group provides it.
-const field = useFieldContext(props, { rendersOwnFeedback: false })
+const field = useFieldContext(props, {
+  rendersOwnFeedback: false,
+  isToggle: true,
+  inheritsFieldsetRequired: false,
+})
+const { rootAttrs, controlAttrs } = useControlAttrs(field)
 // props proxy passed directly: a spread literal would snapshot and freeze.
 const { boxClass, sizeClass } = useToggleControl(props)
 
@@ -55,7 +64,7 @@ const onChange = (event: Event): void => {
 </script>
 
 <template>
-  <div class="relative inline-flex">
+  <div v-bind="rootAttrs" class="relative inline-flex">
     <!--
       The native input is the click and focus target, overlaid transparently
       on the visual box. No JS click forwarding, and keyboard operation comes
@@ -73,6 +82,7 @@ const onChange = (event: Event): void => {
       :aria-invalid="field.invalid.value || undefined"
       :aria-describedby="field.describedBy.value"
       @change="onChange"
+      v-bind="controlAttrs"
     />
     <span
       aria-hidden="true"

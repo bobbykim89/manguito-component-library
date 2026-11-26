@@ -61,7 +61,7 @@ const optionLabel = (option: string | SelectOptionType): string =>
             :key="idx"
             :ref="(el) => setRef(el, idx)"
             role="option"
-            :aria-selected="optionLabel(item) === selectedVal"
+            :aria-selected="activeIndex === idx"
             class="flex cursor-pointer items-center gap-4 px-2xs py-3xs transition-colors duration-300 ease-linear"
             :class="[activeIndex === idx && 'bg-warning']"
             @click="optionClick(item)"

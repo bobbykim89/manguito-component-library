@@ -7,18 +7,21 @@ import {
 } from '@/assets/composables'
 import { MclFormGroup, MclInputText } from '@/components/mcl-forms/lib'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { expect } from 'storybook/test'
 import { ref } from 'vue'
 import MclInputTextWithLabel from './MclInputTextWithLabel.vue'
 
 const meta: Meta<typeof MclInputText> = {
   title: 'Components/Form/MclInputText',
   component: MclInputText,
+  // #130: axe violations fail these stories
+  parameters: { a11y: { test: 'error' } },
   argTypes: {
     id: textControllers({
       name: 'id',
       required: false,
       description:
-        "assigns id of the input. Omit it inside an MclFormGroup and the control inherits the group's id, which is what binds the group label to it.",
+        "assigns id of the input. Inside an MclFormGroup the group's label follows this id; omit it and the control takes the group's id.",
       category: 'Input Block',
     }),
     name: textControllers({
@@ -173,13 +176,16 @@ type Story = StoryObj<typeof MclInputText>
 
 export const MclInputTextExample: Story = {
   render: (args) => ({
-    components: { 'mcl-input-text': MclInputText },
+    components: {
+      'mcl-input-text': MclInputText,
+      'mcl-form-group': MclFormGroup,
+    },
     setup() {
       const value = ref<string>('')
       return { args, value }
     },
     template:
-      '<section><mcl-input-text v-bind="args" v-model="value"></mcl-input-text><div class="mt-xs">Value: {{ value || "(empty)" }}</div></section>',
+      '<section><mcl-form-group label="MCL Input Text"><mcl-input-text v-bind="args" v-model="value"></mcl-input-text></mcl-form-group><div class="mt-xs">Value: {{ value || "(empty)" }}</div></section>',
   }),
 }
 
@@ -201,11 +207,15 @@ export const MclInputTextInvalidFeedbackExample: Story = {
     invalid: true,
   },
   render: (args) => ({
-    components: { 'mcl-input-text': MclInputText },
+    components: {
+      'mcl-input-text': MclInputText,
+      'mcl-form-group': MclFormGroup,
+    },
     setup() {
       return { args }
     },
-    template: '<mcl-input-text v-bind="args"></mcl-input-text>',
+    template:
+      '<mcl-form-group label="Email"><mcl-input-text v-bind="args"></mcl-input-text></mcl-form-group>',
   }),
 }
 
@@ -215,12 +225,15 @@ export const MclInputTextCustomInvalidFeedback: Story = {
     invalid: true,
   },
   render: (args) => ({
-    components: { 'mcl-input-text': MclInputText },
+    components: {
+      'mcl-input-text': MclInputText,
+      'mcl-form-group': MclFormGroup,
+    },
     setup() {
       return { args }
     },
     template:
-      '<mcl-input-text v-bind="args"><template #invalid-feedback><div><p class="text-md font-bold text-warning">That username is taken.</p></div></template></mcl-input-text>',
+      '<mcl-form-group label="Username"><mcl-input-text v-bind="args"><template #invalid-feedback><div><p class="text-md font-bold text-warning">That username is taken.</p></div></template></mcl-input-text></mcl-form-group>',
   }),
 }
 
@@ -241,7 +254,7 @@ export const MclInputTextLiveValidationExample: Story = {
       return { args, email, isInvalid, onInput }
     },
     template:
-      '<mcl-form-group :field-id="args.id" label="Email address" help-text="Validation runs as you type." invalid-feedback="That does not look like an email address." :invalid="isInvalid"><mcl-input-text v-bind="args" type="email" v-model="email" placeholder="you@example.com" @input="onInput"></mcl-input-text></mcl-form-group>',
+      '<mcl-form-group label="Email address" help-text="Validation runs as you type." invalid-feedback="That does not look like an email address." :invalid="isInvalid"><mcl-input-text v-bind="args" type="email" v-model="email" placeholder="you@example.com" @input="onInput"></mcl-input-text></mcl-form-group>',
   }),
 }
 
@@ -250,11 +263,34 @@ export const MclInputTextDisabledExample: Story = {
     disabled: true,
   },
   render: (args) => ({
-    components: { 'mcl-input-text': MclInputText },
+    components: {
+      'mcl-input-text': MclInputText,
+      'mcl-form-group': MclFormGroup,
+    },
     setup() {
       return { args }
     },
     template:
-      '<mcl-input-text v-bind="args" model-value="Cannot edit this"></mcl-input-text>',
+      '<mcl-form-group label="Disabled field"><mcl-input-text v-bind="args" model-value="Cannot edit this"></mcl-input-text></mcl-form-group>',
   }),
+}
+
+// #130: a control's own id inside a group is labelled by the group's label.
+// Clicking the label focuses the input, which only works when the label's
+// `for` matches the input's own id.
+export const MclInputTextLabelClick: Story = {
+  name: 'Label Click',
+  render: () => ({
+    components: {
+      'mcl-form-group': MclFormGroup,
+      'mcl-input-text': MclInputText,
+    },
+    template:
+      '<mcl-form-group label="Email"><mcl-input-text id="email-own"></mcl-input-text></mcl-form-group>',
+  }),
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByText('Email'))
+    await expect(canvas.getByRole('textbox', { name: 'Email' })).toHaveFocus()
+    await expect(canvas.getByRole('textbox')).toHaveAttribute('id', 'email-own')
+  },
 }

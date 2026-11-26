@@ -16,6 +16,8 @@ import FormGroupRadioSet from './FormGroupRadioSet.vue'
 const meta: Meta<typeof MclFormGroup> = {
   title: 'Components/Form/MclFormGroup',
   component: MclFormGroup,
+  // #130: axe violations fail these stories
+  parameters: { a11y: { test: 'error' } },
   argTypes: {
     fieldId: textControllers({
       name: 'field-id',
@@ -136,7 +138,7 @@ export const MclCustomLabelExample: Story = {
       return { args }
     },
     template:
-      '<mcl-form-group v-bind="args"><template #label><p class="btn btn-secondary mb-sm">{{ args.label }}</p></template><mcl-input-text></mcl-input-text></mcl-form-group>',
+      '<mcl-form-group v-bind="args"><template #label><span class="mb-sm inline-block font-bold">{{ args.label }}</span></template><mcl-input-text></mcl-input-text></mcl-form-group>',
   }),
 }
 

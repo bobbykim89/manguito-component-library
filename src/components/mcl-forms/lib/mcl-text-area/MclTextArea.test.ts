@@ -150,3 +150,36 @@ describe('MclTextArea — highlight alignment', () => {
     expect(bar.className).not.toContain('-top-2.5')
   })
 })
+
+// #130: attributes reach the focusable element; class and style stay on the wrapper.
+describe('MclTextArea — attribute passthrough (#130)', () => {
+  it('forwards aria-label and title to the focusable element and keeps class on the wrapper', () => {
+    const wrapper = mount(MclTextArea, {
+      props: {},
+      attrs: {
+        'aria-label': 'Named',
+        title: 'Tip',
+        class: 'w-1/2',
+        'data-testid': 'ctl',
+      },
+    })
+    const control = wrapper.get('textarea')
+    expect(control.attributes('aria-label')).toBe('Named')
+    expect(control.attributes('title')).toBe('Tip')
+    expect(control.attributes('data-testid')).toBe('ctl')
+    expect(wrapper.classes()).toContain('w-1/2')
+    expect(wrapper.attributes('aria-label')).toBeUndefined()
+    expect(wrapper.attributes('title')).toBeUndefined()
+  })
+
+  it('inside a labelled form group, the control has aria-labelledby = the group label id', () => {
+    const wrapper = mount(MclFormGroup, {
+      props: { fieldId: 'grp', label: 'Group' },
+      slots: { default: () => h(MclTextArea, {}) },
+    })
+    expect(wrapper.get('label').attributes('id')).toBe('grp-label')
+    expect(wrapper.get('textarea').attributes('aria-labelledby')).toBe(
+      'grp-label',
+    )
+  })
+})

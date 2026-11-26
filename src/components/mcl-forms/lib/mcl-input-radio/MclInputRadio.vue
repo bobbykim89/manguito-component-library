@@ -2,8 +2,12 @@
 import type { ColorPalette } from '@bobbykim/manguito-theme'
 import { computed } from 'vue'
 import { useFieldContext } from '../common/fieldContext'
+import { useControlAttrs } from '../common/useControlAttrs'
 import type { InputSizeType } from '../common/index.types'
 import { useToggleControl } from '../common/useToggleControl'
+
+// #130: attributes go to the focusable element, not the wrapper.
+defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(
   defineProps<{
@@ -40,7 +44,11 @@ const emit = defineEmits<{
   (e: 'change', event: Event): void
 }>()
 
-const field = useFieldContext(props, { rendersOwnFeedback: false })
+const field = useFieldContext(props, {
+  rendersOwnFeedback: false,
+  isToggle: true,
+})
+const { rootAttrs, controlAttrs } = useControlAttrs(field)
 // No `rounded` prop here, so useToggleControl's optional `rounded` is what
 // lets the props proxy be passed straight through.
 const { boxClass, sizeClass } = useToggleControl(props)
@@ -59,7 +67,7 @@ const onChange = (event: Event): void => {
 </script>
 
 <template>
-  <div class="relative inline-flex">
+  <div v-bind="rootAttrs" class="relative inline-flex">
     <input
       :id="field.id"
       v-model="model"
@@ -72,6 +80,7 @@ const onChange = (event: Event): void => {
       :aria-invalid="field.invalid.value || undefined"
       :aria-describedby="field.describedBy.value"
       @change="onChange"
+      v-bind="controlAttrs"
     />
     <span
       aria-hidden="true"

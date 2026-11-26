@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { h, nextTick } from 'vue'
 import MclFormGroup from '../mcl-form-group/MclFormGroup.vue'
 import type { SelectOptions } from './index.types'
@@ -260,9 +260,8 @@ describe('MclSelect — filtering and no-match', () => {
     expect(wrapper.find('input').attributes('aria-controls')).toBe(
       'colour-listbox',
     )
-    expect(wrapper.find('[role="status"]').attributes('id')).toBe(
-      'colour-listbox',
-    )
+    // The box carries the id inside the always-rendered status region (#130).
+    expect(wrapper.find('[role="status"] #colour-listbox').exists()).toBe(true)
   })
 })
 
@@ -628,5 +627,198 @@ describe('MclSelect — focus ring', () => {
     await open(wrapper)
     expect(wrapper.find('[role="listbox"]').exists()).toBe(true)
     expect(box(wrapper).className).not.toMatch(/\bring-4\b|ring-light-4/)
+  })
+})
+
+// #130: attributes reach the focusable element; class and style stay on the wrapper.
+describe('MclSelect — attribute passthrough (#130)', () => {
+  it('forwards aria-label and title to the focusable element and keeps class on the wrapper', () => {
+    const wrapper = mount(MclSelect, {
+      props: { options: ['a', 'b'] },
+      attrs: {
+        'aria-label': 'Named',
+        title: 'Tip',
+        class: 'w-1/2',
+        'data-testid': 'ctl',
+      },
+    })
+    const control = wrapper.get('[role="combobox"]')
+    expect(control.attributes('aria-label')).toBe('Named')
+    expect(control.attributes('title')).toBe('Tip')
+    expect(control.attributes('data-testid')).toBe('ctl')
+    expect(wrapper.classes()).toContain('w-1/2')
+    expect(wrapper.attributes('aria-label')).toBeUndefined()
+    expect(wrapper.attributes('title')).toBeUndefined()
+  })
+
+  it('inside a labelled form group, the control has aria-labelledby = the group label id', () => {
+    const wrapper = mount(MclFormGroup, {
+      props: { fieldId: 'grp', label: 'Group' },
+      slots: { default: () => h(MclSelect, { options: ['a', 'b'] }) },
+    })
+    expect(wrapper.get('label').attributes('id')).toBe('grp-label')
+    expect(wrapper.get('[role="combobox"]').attributes('aria-labelledby')).toBe(
+      'grp-label',
+    )
+  })
+})
+
+// #130: opening on the chosen option, aria-selected following the highlight,
+// a named popup and an announced no-match.
+describe('MclSelect — opening on the chosen option (#130)', () => {
+  const input = (wrapper: any) => wrapper.find('input')
+  const optionStates = (wrapper: any) =>
+    wrapper
+      .findAll('[role="option"]')
+      .map((o: any) => o.attributes('aria-selected'))
+
+  it('opening on focus with a chosen value highlights that option: activeIndex, aria-activedescendant and aria-selected=true on it only', async () => {
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS, modelValue: 'Green' },
+    })
+    await open(wrapper)
+    await nextTick()
+    expect(input(wrapper).attributes('aria-activedescendant')).toBe(
+      'colour-option-1',
+    )
+    expect(optionStates(wrapper)).toEqual(['false', 'true', 'false'])
+  })
+
+  it('opening with ArrowDown while a value is chosen also starts on the chosen option', async () => {
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS, modelValue: 'Blue' },
+    })
+    await input(wrapper).trigger('keydown', { key: 'ArrowDown' })
+    await nextTick()
+    await nextTick()
+    expect(input(wrapper).attributes('aria-expanded')).toBe('true')
+    expect(input(wrapper).attributes('aria-activedescendant')).toBe(
+      'colour-option-2',
+    )
+  })
+
+  it('reopening after a filter session still starts on the chosen option', async () => {
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS, modelValue: 'Green' },
+    })
+    await open(wrapper)
+    await input(wrapper).setValue('Bl')
+    await input(wrapper).trigger('keydown', { key: 'Escape' })
+    await input(wrapper).trigger('keydown', { key: 'ArrowDown' })
+    await nextTick()
+    await nextTick()
+    expect(wrapper.findAll('[role="option"]')).toHaveLength(3)
+    expect(input(wrapper).attributes('aria-activedescendant')).toBe(
+      'colour-option-1',
+    )
+  })
+
+  it('with no value, opening highlights nothing (aria-activedescendant absent)', async () => {
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS },
+    })
+    await open(wrapper)
+    await nextTick()
+    expect(input(wrapper).attributes('aria-activedescendant')).toBeUndefined()
+    expect(optionStates(wrapper)).toEqual(['false', 'false', 'false'])
+  })
+
+  it('ArrowDown from the chosen option moves to the next one', async () => {
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS, modelValue: 'Red' },
+    })
+    await open(wrapper)
+    await nextTick()
+    await input(wrapper).trigger('keydown', { key: 'ArrowDown' })
+    expect(input(wrapper).attributes('aria-activedescendant')).toBe(
+      'colour-option-1',
+    )
+  })
+
+  it('aria-selected follows the highlighted option as it moves, and is "false" on the rest', async () => {
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS, modelValue: 'Red' },
+    })
+    await open(wrapper)
+    await nextTick()
+    await input(wrapper).trigger('keydown', { key: 'ArrowDown' })
+    await input(wrapper).trigger('keydown', { key: 'ArrowDown' })
+    expect(optionStates(wrapper)).toEqual(['false', 'false', 'true'])
+  })
+})
+
+describe('MclSelect — popup name and status region (#130)', () => {
+  const inGroup = (attrs: Record<string, unknown> = {}) =>
+    mount(MclFormGroup, {
+      props: { fieldId: 'grp', label: 'Colour' },
+      slots: { default: () => h(MclSelect, { options: OPTIONS, ...attrs }) },
+    })
+
+  it('the listbox is named: consumer aria-label > consumer aria-labelledby > group label id', async () => {
+    const byGroup = inGroup()
+    await open(byGroup)
+    expect(byGroup.get('[role="listbox"]').attributes('aria-labelledby')).toBe(
+      'grp-label',
+    )
+
+    const byLabelledBy = inGroup({ 'aria-labelledby': 'mine' })
+    await open(byLabelledBy)
+    expect(
+      byLabelledBy.get('[role="listbox"]').attributes('aria-labelledby'),
+    ).toBe('mine')
+
+    const byLabel = inGroup({ 'aria-label': 'Fruit' })
+    await open(byLabel)
+    const listbox = byLabel.get('[role="listbox"]')
+    expect(listbox.attributes('aria-label')).toBe('Fruit')
+    expect(listbox.attributes('aria-labelledby')).toBeUndefined()
+  })
+
+  it('the no-match box carries no name: it is a generic element, which ARIA does not let be named', async () => {
+    const wrapper = inGroup()
+    await open(wrapper)
+    await wrapper.find('input').setValue('zzz')
+    const box = wrapper.get('#grp-listbox')
+    expect(box.attributes('role')).toBeUndefined()
+    expect(box.attributes('aria-labelledby')).toBeUndefined()
+    expect(box.attributes('aria-label')).toBeUndefined()
+  })
+
+  it('a role=status container exists before the list opens, and the no-match text appears inside it', async () => {
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS, noMatchText: 'Nothing found.' },
+    })
+    const status = wrapper.get('[role="status"]')
+    expect(status.text()).toBe('')
+    await open(wrapper)
+    await wrapper.find('input').setValue('zzz')
+    expect(wrapper.get('[role="status"]').element).toBe(status.element)
+    expect(status.text()).toBe('Nothing found.')
+  })
+
+  it('highlight bar has motion-reduce:before:transition-none and the caret has motion-reduce:transition-none', () => {
+    const wrapper = mount(MclSelect, { props: { options: OPTIONS } })
+    expect(wrapper.get('.relative.-top-1').classes()).toContain(
+      'motion-reduce:before:transition-none',
+    )
+    expect(wrapper.get('[data-mcl="caret"] svg').classes()).toContain(
+      'motion-reduce:transition-none',
+    )
+  })
+})
+
+// Final review (#130): opening on the chosen option must not scroll the page.
+describe('MclSelect — scrolling the highlight into view (#130 review)', () => {
+  it('opening on the chosen option and arrowing never calls scrollIntoView (which also scrolls the page)', async () => {
+    const spy = vi.spyOn(HTMLElement.prototype, 'scrollIntoView')
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS, modelValue: 'Blue' },
+    })
+    await open(wrapper)
+    await nextTick()
+    await wrapper.find('input').trigger('keydown', { key: 'ArrowUp' })
+    await nextTick()
+    expect(spy).not.toHaveBeenCalled()
+    spy.mockRestore()
   })
 })

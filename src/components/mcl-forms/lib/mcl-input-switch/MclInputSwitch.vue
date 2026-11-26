@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ColorPalette } from '@bobbykim/manguito-theme'
 import { useFieldContext } from '../common/fieldContext'
+import { useControlAttrs } from '../common/useControlAttrs'
 import type { InputSizeType } from '../common/index.types'
 import {
   useToggleControl,
@@ -13,6 +14,9 @@ import {
 // appending it in the template would leave two competing radii in the class
 // list, resolved by stylesheet order.
 const SWITCH_ROUNDED_CLASS = 'rounded-full before:rounded-full'
+
+// #130: attributes go to the focusable element, not the wrapper.
+defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(
   defineProps<{
@@ -52,7 +56,12 @@ const emit = defineEmits<{
   (e: 'change', event: Event): void
 }>()
 
-const field = useFieldContext(props, { rendersOwnFeedback: false })
+const field = useFieldContext(props, {
+  rendersOwnFeedback: false,
+  isToggle: true,
+  inheritsFieldsetRequired: false,
+})
+const { rootAttrs, controlAttrs } = useControlAttrs(field)
 
 // Getters rather than a spread: `{ ...props, roundedClass }` would snapshot
 // every value at setup and freeze the classes at their mount-time values, so
@@ -94,7 +103,7 @@ const onChange = (event: Event): void => {
     inputRef.click(), so a click that originated on the contained input
     bubbled up and toggled a second time.
   -->
-  <div class="switch relative" :style="switchVars">
+  <div v-bind="rootAttrs" class="switch relative" :style="switchVars">
     <input
       :id="field.id"
       v-model="model"
@@ -107,10 +116,11 @@ const onChange = (event: Event): void => {
       :aria-invalid="field.invalid.value || undefined"
       :aria-describedby="field.describedBy.value"
       @change="onChange"
+      v-bind="controlAttrs"
     />
     <span
       aria-hidden="true"
-      class="slider absolute inset-0 transition-all duration-300 peer-disabled:opacity-50 before:absolute before:transition-all before:duration-300"
+      class="slider absolute inset-0 transition-all duration-300 peer-disabled:opacity-50 before:absolute before:transition-all before:duration-300 motion-reduce:transition-none motion-reduce:before:transition-none"
       :class="boxClass"
     ></span>
   </div>

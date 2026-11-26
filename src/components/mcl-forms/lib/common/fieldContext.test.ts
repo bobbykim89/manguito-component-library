@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import { defineComponent, h, reactive, type ComputedRef } from 'vue'
+import { defineComponent, h, reactive, ref, type ComputedRef } from 'vue'
 import {
   provideFieldContext,
   useFieldContext,
@@ -608,5 +608,116 @@ describe('provideFieldContext — id resolution', () => {
     const ctx = ctxOf(mount(Parent({ fieldId: '', hasHelpText: true })))
     expect(ctx.descriptionId).toBeTruthy()
     expect(ctx.descriptionId).not.toBe('-description')
+  })
+})
+
+// #130: label-mode naming and the toggle opt-out.
+const LabelToggleChild = defineComponent({
+  props: {
+    id: { type: String, default: undefined },
+    required: { type: Boolean, default: undefined },
+  },
+  setup(props) {
+    const ctx = useFieldContext(props as FieldOwnProps, {
+      rendersOwnFeedback: false,
+      isToggle: true,
+      inheritsFieldsetRequired: false,
+    })
+    return { ctx }
+  },
+  render: () => h('div'),
+})
+
+const ProviderWith = (
+  options: Record<string, unknown>,
+  child: ReturnType<typeof defineComponent> = Child,
+) =>
+  defineComponent({
+    setup() {
+      const ctx = provideFieldContext({
+        fieldId: 'grp',
+        hasHelpText: false,
+        ownsFeedback: false,
+        isGroupLabel: false,
+        hasLabel: true,
+        ...options,
+      } as FieldProviderOptions)
+      return { ctx }
+    },
+    render() {
+      return h(child)
+    },
+  })
+
+describe('provideFieldContext — labelId', () => {
+  it('gives a label-mode group a labelId only while it renders a label', async () => {
+    const hasLabel = ref(true)
+    const wrapper = mount(ProviderWith({ hasLabel: () => hasLabel.value }))
+    const group = (wrapper.vm as unknown as { ctx: FieldContext }).ctx
+    expect(group.labelId.value).toBe('grp-label')
+    hasLabel.value = false
+    expect(group.labelId.value).toBeUndefined()
+
+    const fieldset = mount(ProviderWith({ isGroupLabel: true }))
+    expect(
+      (fieldset.vm as unknown as { ctx: FieldContext }).ctx.labelId.value,
+    ).toBeUndefined()
+  })
+})
+
+describe('useFieldContext — labelledBy and isToggle', () => {
+  it('a non-toggle control in a label-mode group gets labelledBy = the group labelId', () => {
+    const wrapper = mount(ProviderWith({}))
+    expect(ctxOf(wrapper).labelledBy.value).toBe('grp-label')
+  })
+
+  it('a standalone control has no labelledBy', () => {
+    expect(ctxOf(mount(Child)).labelledBy.value).toBeUndefined()
+  })
+
+  it('a toggle control (isToggle) gets no labelledBy', () => {
+    const wrapper = mount(ProviderWith({}, LabelToggleChild))
+    const ctx = wrapper.findComponent(LabelToggleChild).vm.ctx as FieldContext
+    expect(ctx.labelledBy.value).toBeUndefined()
+  })
+
+  it('a checkbox-like toggle (inheritsFieldsetRequired: false) in a fieldset-mode group does not inherit required; its own required prop still applies', () => {
+    const inherited = mount(
+      ProviderWith({ isGroupLabel: true, required: true }, LabelToggleChild),
+    )
+    expect(
+      (inherited.findComponent(LabelToggleChild).vm.ctx as FieldContext)
+        .required.value,
+    ).toBe(false)
+
+    const Own = defineComponent({
+      setup() {
+        provideFieldContext({
+          hasHelpText: false,
+          ownsFeedback: false,
+          isGroupLabel: true,
+          hasLabel: true,
+          required: true,
+        })
+        return () => h(LabelToggleChild, { required: true })
+      },
+    })
+    expect(
+      (mount(Own).findComponent(LabelToggleChild).vm.ctx as FieldContext)
+        .required.value,
+    ).toBe(true)
+  })
+
+  it('a checkbox-like toggle in a label-mode group still inherits required', () => {
+    const wrapper = mount(ProviderWith({ required: true }, LabelToggleChild))
+    expect(
+      (wrapper.findComponent(LabelToggleChild).vm.ctx as FieldContext).required
+        .value,
+    ).toBe(true)
+  })
+
+  it('a radio-like control (no isToggle) in a fieldset-mode group still inherits required', () => {
+    const wrapper = mount(ProviderWith({ isGroupLabel: true, required: true }))
+    expect(ctxOf(wrapper).required.value).toBe(true)
   })
 })

@@ -1,6 +1,7 @@
 import {
   computed,
   inject,
+  onBeforeUnmount,
   provide,
   toValue,
   useId,
@@ -56,6 +57,18 @@ export interface FieldProviderOptions {
    * `useFieldContext`.
    */
   isGroupLabel: boolean
+  /**
+   * Whether the group renders a label element right now (`label` non-empty or
+   * a `label` slot). A getter, because `label` can change after setup and the
+   * label's id must not outlive the element. Defaults to false.
+   */
+  hasLabel?: MaybeRefOrGetter<boolean>
+  /**
+   * Receives the ids of the label-mode controls currently mounted, in report
+   * order, whenever that list changes, so the group's `<label for>` can follow
+   * the control actually rendered, including one with an id of its own.
+   */
+  onControlIdsChange?: (ids: readonly string[]) => void
 }
 
 let fallbackIdCount = 0
@@ -106,6 +119,21 @@ export interface FieldConsumerOptions {
    * `aria-describedby` naming an element nobody renders.
    */
   rendersOwnFeedback?: boolean
+  /**
+   * True for MclCheckbox, MclInputRadio and MclInputSwitch, which render no
+   * text of their own and are named by a consumer's wrapping or adjacent
+   * `<label>`. A toggle never takes the group label as its `aria-labelledby`
+   * (that would replace its own name), and a checkbox or switch passes
+   * `inheritsFieldsetRequired: false` too. Defaults to false.
+   */
+  isToggle?: boolean
+  /**
+   * Whether `required` falls back to a fieldset-mode group's value. False for
+   * checkboxes and switches: a native `required` on every box in a "pick at
+   * least one" set demands they all be checked. Radios keep it, since a
+   * native radio's `required` means "one of the set". Defaults to true.
+   */
+  inheritsFieldsetRequired?: boolean
 }
 
 /**
@@ -122,6 +150,10 @@ export const provideFieldContext = (
   options: FieldProviderOptions,
 ): FieldContext => {
   const id = resolveFieldId(options.fieldId)
+  // Mounted label-mode controls, in report order. A label binds to one
+  // control: the first that is still mounted (#130 review: a v-if swap or an
+  // unmount must not leave `for` pointing at a control that's gone).
+  let controlIds: string[] = []
   const invalid = computed<boolean>(() => toValue(options.invalid) ?? false)
   const errorId = `${id}-error`
   const descriptionId = options.hasHelpText ? `${id}-description` : undefined
@@ -138,6 +170,22 @@ export const provideFieldContext = (
     describedBy: buildDescribedBy(descriptionId, errorId, invalid),
     feedbackOwnedByGroup: options.ownsFeedback,
     isGroupLabel: options.isGroupLabel,
+    labelId: computed<string | undefined>(() =>
+      !options.isGroupLabel && toValue(options.hasLabel)
+        ? `${id}-label`
+        : undefined,
+    ),
+    labelledBy: computed<string | undefined>(() => undefined),
+    reportControlId: (controlId: string) => {
+      controlIds = [...controlIds, controlId]
+      options.onControlIdsChange?.(controlIds)
+    },
+    releaseControlId: (controlId: string) => {
+      const index = controlIds.indexOf(controlId)
+      if (index === -1) return
+      controlIds = controlIds.filter((_, i) => i !== index)
+      options.onControlIdsChange?.(controlIds)
+    },
   }
   provide(FIELD_KEY, context)
   return context
@@ -176,6 +224,8 @@ export const useFieldContext = (
 ): FieldContext => {
   const group = inject<FieldContext | null>(FIELD_KEY, null)
   const rendersOwnFeedback = options?.rendersOwnFeedback ?? true
+  const isToggle = options?.isToggle ?? false
+  const inheritsFieldsetRequired = options?.inheritsFieldsetRequired ?? true
   const fallbackId = resolveFieldId(undefined)
 
   // Resolved once rather than in a computed, because the error and
@@ -190,6 +240,13 @@ export const useFieldContext = (
   const sharedGroupId =
     group !== null && !group.isGroupLabel ? usableId(group.id) : undefined
   const id = ownId ?? sharedGroupId ?? fallbackId
+  // Label mode: tell the group which id its <label for> must point at.
+  if (group !== null && !group.isGroupLabel) {
+    group.reportControlId(id)
+    onBeforeUnmount(() => group.releaseControlId(id))
+  }
+  const inheritsRequired =
+    group !== null && (!group.isGroupLabel || inheritsFieldsetRequired)
 
   // The error region id follows who renders it, not who owns `id`.
   const groupOwnsFeedback = group?.feedbackOwnedByGroup ?? false
@@ -219,7 +276,10 @@ export const useFieldContext = (
     descriptionId,
     invalid,
     required: computed<boolean>(
-      () => own.required ?? group?.required.value ?? false,
+      () =>
+        own.required ??
+        (inheritsRequired ? group!.required.value : undefined) ??
+        false,
     ),
     disabled: computed<boolean>(
       () => own.disabled ?? group?.disabled.value ?? false,
@@ -236,5 +296,11 @@ export const useFieldContext = (
     // fieldset needs to know it — e.g. MclInputRadio renders differently as
     // part of a set than alone. `false` here would be a lie it could act on.
     isGroupLabel: group?.isGroupLabel ?? false,
+    labelId: computed<string | undefined>(() => undefined),
+    labelledBy: computed<string | undefined>(() =>
+      group !== null && !isToggle ? group.labelId.value : undefined,
+    ),
+    reportControlId: () => {},
+    releaseControlId: () => {},
   }
 }
