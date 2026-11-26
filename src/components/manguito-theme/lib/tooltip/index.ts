@@ -46,7 +46,8 @@ export default defineComponent({
   },
   setup(props) {
     const defaultClassList: string =
-      'invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus:visible group-focus:opacity-100 z-[100] tooltip'
+      // `!`: hidden after Escape (#128) whatever the order of the variants
+      'invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus:visible group-focus:opacity-100 group-data-[mcl-tooltip-dismissed]:invisible! group-data-[mcl-tooltip-dismissed]:opacity-0! z-[100] tooltip'
     const colorClass = computed<string>(() => {
       return [
         generateClass.bgColorVariant({ color: props.color }),
