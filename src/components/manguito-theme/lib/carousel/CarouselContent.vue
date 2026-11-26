@@ -16,7 +16,7 @@ const props = withDefaults(
   },
 )
 
-const { activeIdx, setSlide } = inject(
+const { activeIdx, setSlide, total } = inject(
   carouselInjectionKey,
 ) as CarouselInjectionType
 
@@ -25,6 +25,12 @@ setSlide(props.slideNumber)
 defineSlots<{
   default: any
 }>()
+
+const slideLabel = computed<string | undefined>(() =>
+  total.value === undefined
+    ? undefined
+    : `${props.slideNumber + 1} of ${total.value}`,
+)
 
 const isActive = computed<boolean>(() => {
   const { slideNumber } = props
@@ -42,7 +48,9 @@ const isActive = computed<boolean>(() => {
     :id="id"
     :class="slideClass"
     class="w-full"
-    role="tabpanel"
+    role="group"
+    aria-roledescription="slide"
+    :aria-label="slideLabel"
     tabindex="-1"
   >
     <slot></slot>

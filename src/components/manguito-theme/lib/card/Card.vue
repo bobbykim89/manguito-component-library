@@ -4,6 +4,7 @@ import { generateClass } from '../theme'
 import type {
   BodyText,
   ColorPalette,
+  HeadingLevel,
   HeadingSize,
   OpacityRange,
 } from '../theme/static/theme.types'
@@ -20,6 +21,10 @@ const props = withDefaults(
     glassBlur?: BodyText
     glassOpacity?: OpacityRange
     imageSrc?: string
+    /**
+     * Alt text of the image. Defaults to `''` (decorative); set it whenever
+     * the image carries information (#128).
+     */
     imageAlt?: string
     noImage?: boolean
     noBody?: boolean
@@ -28,6 +33,8 @@ const props = withDefaults(
     title?: string
     titleVariant?: ColorPalette
     titleSize?: HeadingSize
+    /** Heading element of the title (#128). */
+    titleLevel?: HeadingLevel
     cardClass?: string | string[]
   }>(),
   {
@@ -39,10 +46,12 @@ const props = withDefaults(
     glass: false,
     glassBlur: 'sm',
     glassOpacity: 10,
+    imageAlt: '',
     noImage: false,
     noBody: false,
     titleVariant: 'dark-4',
     titleSize: 'md',
+    titleLevel: 'h3',
     cardClass: '',
   },
 )
@@ -128,7 +137,13 @@ const footerClass = computed<string>(() => {
     </template>
     <template v-if="!noBody">
       <div class="flex-1 px-xs pt-xs pb-2xs">
-        <h3 :class="[titleClass]" class="mb-xs">{{ title }}</h3>
+        <component
+          :is="titleLevel"
+          v-if="title"
+          :class="[titleClass]"
+          class="mb-xs"
+          >{{ title }}</component
+        >
         <template v-if="slots.body">
           <slot name="body"></slot>
         </template>

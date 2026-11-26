@@ -20,4 +20,15 @@ describe('Modal (server)', () => {
     expect(html).toContain('aria-modal="true"')
     expect(html).toContain('Body text')
   })
+
+  it('server html keeps the trusting naming rule and the h2 title (#128)', async () => {
+    const titled = await renderOnServer(() =>
+      h(Modal, { visible: true, title: 'Hello' }, slots),
+    )
+    expect(titled.html).toMatch(/<h2[^>]*id="([^"]+)"/)
+    const custom = await renderOnServer(() =>
+      h(Modal, { visible: true }, { ...slots, header: () => h('p', 'Hi') }),
+    )
+    expect(custom.html).toContain('aria-labelledby=')
+  })
 })

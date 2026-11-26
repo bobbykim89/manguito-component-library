@@ -17,7 +17,32 @@ const render = () =>
     ],
   })
 
+const renderBound = () =>
+  h(TabContainer, null, {
+    'tab-button': ({
+      tabAttrs,
+    }: {
+      tabAttrs: (n: number) => Record<string, unknown>
+    }) => [0, 1].map((i) => h('button', tabAttrs(i), `tab ${i}`)),
+    'tab-content': () => [
+      h(TabContent, { tabNumber: 0, id: 't0' }, () => 'A'),
+      h(TabContent, { tabNumber: 1, id: 't1' }, () => 'B'),
+    ],
+  })
+
 describe('Tabs (server)', () => {
+  it('server html carries the tab and panel wiring (#128)', async () => {
+    const { html } = await renderOnServer(renderBound)
+    expect(html).toContain('role="tab"')
+    expect(html).toContain('aria-selected="true"')
+    const tabId = html.match(
+      /role="tab"[^>]*\sid="([^"]+)"|id="([^"]+)"[^>]*role="tab"/,
+    )
+    const id = tabId?.[1] ?? tabId?.[2]
+    expect(id).toBeTruthy()
+    expect(html).toContain(`aria-labelledby="${id}"`)
+  })
+
   it('active tab content is in server html and not clamped', async () => {
     const { html } = await renderOnServer(render)
     expect(html).toContain('A')

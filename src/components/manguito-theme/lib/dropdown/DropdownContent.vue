@@ -17,7 +17,7 @@ defineSlots<{
   default(props: { itemClick: () => void }): any
 }>()
 const contentRef = ref<HTMLDivElement>()
-const { active, buttonHeight, closeDropdown } = inject(
+const { active, buttonHeight, closeDropdown, contentId } = inject(
   dropdownInjectionKey,
 ) as DropdownInjectType
 const btnHeight = computed(() => {
@@ -38,6 +38,7 @@ const dropdownDirection = computed<string | undefined>(() => {
   <Transition name="dropdown-content">
     <div
       v-if="active"
+      :id="contentId"
       ref="contentRef"
       class="absolute my-2xs w-max max-w-[14rem] overflow-hidden"
       :class="[dropdownDirection, customClass]"

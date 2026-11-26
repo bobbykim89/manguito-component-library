@@ -3,6 +3,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { h, nextTick, ref } from 'vue'
 import { hydrate } from '@mcl/test-utils/ssr'
 import Sidebar from './Sidebar.vue'
+import DropdownContainer from '../dropdown/DropdownContainer.vue'
+import DropdownContent from '../dropdown/DropdownContent.vue'
 
 const slots = { body: () => 'Body text' }
 const settle = () => new Promise((r) => setTimeout(r, 50))
@@ -74,13 +76,13 @@ describe('Sidebar (client)', () => {
     w2.unmount()
   })
 
-  it('aria-labelledby equals the h3 id when title is set', () => {
+  it('aria-labelledby equals the title heading id when title is set', () => {
     const w = mount(Sidebar, {
       props: { visible: true, title: 'Hello' },
       slots,
       attachTo: document.body,
     })
-    const id = w.find('h3').attributes('id')
+    const id = w.find('h2').attributes('id')
     expect(id).toBeTruthy()
     expect(w.find('[role="dialog"]').attributes('aria-labelledby')).toBe(id)
     w.unmount()
@@ -233,8 +235,181 @@ describe('Sidebar accessible name', () => {
 
   it('a visible title names the dialog even when ariaLabel is set', () => {
     const w = dialogOf({ title: 'Hello', ariaLabel: 'Settings' })
-    const id = w.find('h3').attributes('id')
+    const id = w.find('h2').attributes('id')
     expect(w.find('[role="dialog"]').attributes('aria-labelledby')).toBe(id)
+    w.unmount()
+  })
+})
+
+// #128: a component inside the dialog that acts on Escape marks it handled
+// (preventDefault); the dialog then leaves it alone.
+describe('Sidebar Escape order (#128)', () => {
+  beforeEach(() => {
+    vi.spyOn(Element.prototype, 'getClientRects').mockReturnValue([
+      {},
+    ] as unknown as DOMRectList)
+  })
+  afterEach(() => {
+    vi.restoreAllMocks()
+    document.body.innerHTML = ''
+    document.documentElement.style.overflow = ''
+  })
+
+  const escape = (el: Element) =>
+    el.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'Escape',
+        bubbles: true,
+        cancelable: true,
+      }),
+    )
+
+  const openWith = async (body: () => unknown) => {
+    const w = mount(Sidebar, {
+      props: { title: 'Hello' },
+      slots: { body },
+      attachTo: document.body,
+      global: { stubs: { transition: false } },
+    })
+    ;(w.vm as any).open()
+    await vi.waitFor(
+      () => {
+        const dialog = document.querySelector('[role="dialog"]')
+        if (!dialog?.contains(document.activeElement)) {
+          throw new Error('focus trap not active yet')
+        }
+      },
+      { timeout: 2000 },
+    )
+    return w
+  }
+
+  it('a bare Escape closes the dialog', async () => {
+    const w = await openWith(() => h('button', 'inside'))
+    escape(document.activeElement!)
+    await settle()
+    expect(w.emitted('close')).toEqual([[false]])
+    w.unmount()
+  })
+
+  it('Escape inside an open dropdown closes the dropdown first', async () => {
+    const w = await openWith(() =>
+      h(DropdownContainer, null, {
+        toggler: (p: any) =>
+          h('button', { id: 'dd-trigger', ...p.attrs, onClick: p.toggle }, 'T'),
+        default: () =>
+          h(DropdownContent, null, {
+            default: () => h('button', { id: 'dd-item' }, 'ITEM'),
+          }),
+      }),
+    )
+    document.querySelector<HTMLElement>('#dd-trigger')!.click()
+    await nextTick()
+    document.querySelector<HTMLElement>('#dd-item')!.focus()
+    escape(document.activeElement!)
+    await settle()
+    expect(document.querySelector('#dd-item')).toBeNull()
+    expect(document.activeElement?.id).toBe('dd-trigger')
+    expect(w.emitted('close')).toBeUndefined()
+    escape(document.activeElement!)
+    await settle()
+    expect(w.emitted('close')).toEqual([[false]])
+    w.unmount()
+  })
+
+  it('an Escape already handled by a child is ignored', async () => {
+    const w = await openWith(() =>
+      h('button', {
+        id: 'eats-escape',
+        onKeydown: (e: KeyboardEvent) => e.preventDefault(),
+      }),
+    )
+    document.querySelector<HTMLElement>('#eats-escape')!.focus()
+    escape(document.activeElement!)
+    await settle()
+    expect(w.emitted('close')).toBeUndefined()
+    w.unmount()
+  })
+})
+
+describe('Sidebar title level and naming fallback (#128)', () => {
+  afterEach(() => {
+    vi.restoreAllMocks()
+    document.body.innerHTML = ''
+    document.documentElement.style.overflow = ''
+  })
+  const dialogOf = (props: Record<string, unknown>, header?: (p: any) => any) =>
+    mount(Sidebar, {
+      props: { visible: true, ...props },
+      slots: header ? { ...slots, header } : slots,
+      attachTo: document.body,
+    })
+
+  it('default title renders at titleLevel, h2 by default', () => {
+    const a = dialogOf({ title: 'T' })
+    const h2 = a.find('h2')
+    expect(h2.exists()).toBe(true)
+    expect(a.find('[role="dialog"]').attributes('aria-labelledby')).toBe(
+      h2.attributes('id'),
+    )
+    const cls = h2.attributes('class')
+    a.unmount()
+    const b = dialogOf({ title: 'T', titleLevel: 'h4' })
+    expect(b.find('h4').exists()).toBe(true)
+    expect(b.find('h4').attributes('class')).toBe(cls)
+    b.unmount()
+  })
+
+  it('custom header without a titleId heading falls back to ariaLabel', async () => {
+    const w = dialogOf({ ariaLabel: 'Settings' }, () => h('p', 'Hi'))
+    await nextTick()
+    const dialog = w.find('[role="dialog"]')
+    expect(dialog.attributes('aria-label')).toBe('Settings')
+    expect(dialog.attributes('aria-labelledby')).toBeUndefined()
+    w.unmount()
+  })
+
+  it('custom header that renders the titleId heading keeps aria-labelledby', async () => {
+    const w = dialogOf({}, ({ titleId }) => h('h2', { id: titleId }, 'Mine'))
+    await nextTick()
+    expect(w.find('[role="dialog"]').attributes('aria-labelledby')).toBe(
+      w.find('h2').attributes('id'),
+    )
+    w.unmount()
+  })
+
+  it('drops a dangling aria-labelledby and warns when the dialog has no name', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const w = dialogOf({}, () => h('p', 'Hi'))
+    await nextTick()
+    await nextTick()
+    expect(
+      w.find('[role="dialog"]').attributes('aria-labelledby'),
+    ).toBeUndefined()
+    const calls = warn.mock.calls.map((c) => String(c[0]))
+    expect(
+      calls.filter((m) => m.includes('Sidebar') && m.includes('ariaLabel')),
+    ).toHaveLength(1)
+    w.unmount()
+  })
+
+  it('warns for a dialog with no title and no ariaLabel', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const w = dialogOf({})
+    await nextTick()
+    await nextTick()
+    expect(warn.mock.calls.some((c) => String(c[0]).includes('Sidebar'))).toBe(
+      true,
+    )
+    w.unmount()
+  })
+
+  it('does not warn for a named dialog', async () => {
+    const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
+    const w = dialogOf({ title: 'T' })
+    await nextTick()
+    await nextTick()
+    expect(warn).not.toHaveBeenCalled()
     w.unmount()
   })
 })

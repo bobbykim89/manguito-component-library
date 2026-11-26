@@ -256,7 +256,12 @@
   .mcl-link:hover {
     color: --alpha(var(--mcl-link-color, theme(--color-primary)) / 60%);
   }
-  /* MCL List */
+  /*
+    MCL List. Bullets are drawn with li::before, so the list sets
+    list-style: none, and WebKit/VoiceOver then stop announcing it as a list.
+    Add role="list" to the <ul> or <ol> (#128):
+    <ul class="mcl-list" role="list">…</ul>
+  */
   .mcl-list {
     list-style-position: inside;
     padding: 0;

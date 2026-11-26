@@ -19,4 +19,10 @@ describe('Card (server)', () => {
     )
     expect(html).toContain('DEFAULT TEXT')
   })
+
+  it('renders alt="" and no empty heading (#128)', async () => {
+    const { html } = await renderOnServer(() => h(Card, { imageSrc: '/x.png' }))
+    expect(html).toContain('alt=""')
+    expect(html).not.toMatch(/<h[1-4]/)
+  })
 })

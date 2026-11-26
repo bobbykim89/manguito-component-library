@@ -10,6 +10,89 @@ import type {
 
 let _tooltipCount = 0
 
+const DISMISSED = 'data-mcl-tooltip-dismissed'
+
+/** The host's `aria-describedby` ids, as a list. */
+const describedByIds = (el: HTMLElement): string[] =>
+  (el.getAttribute('aria-describedby') ?? '').split(/\s+/).filter(Boolean)
+
+// The host may already be described by something else (a field's hint or
+// error): add the tooltip's id to the list instead of replacing it (#128).
+const addDescribedBy = (el: HTMLElement, id: string): void => {
+  const ids = describedByIds(el)
+  if (!ids.includes(id))
+    el.setAttribute('aria-describedby', [...ids, id].join(' '))
+}
+
+// Remove only the tooltip's id; drop the attribute only when nothing is left.
+const removeDescribedBy = (el: HTMLElement, id: string): void => {
+  const ids = describedByIds(el).filter((x) => x !== id)
+  if (ids.length) el.setAttribute('aria-describedby', ids.join(' '))
+  else el.removeAttribute('aria-describedby')
+}
+
+/**
+ * Escape hides a showing tooltip without moving the pointer or focus (WCAG
+ * 1.4.13, #128). The tooltip shows while its host is hovered or focused; the
+ * document listener exists only then. It runs in the capture phase, so it
+ * sees Escape first even inside a Modal, and marks it handled
+ * (`preventDefault`) so the Modal stays open.
+ */
+const attachEscape = (el: TooltipElementType): void => {
+  let hovered = false
+  let focused = false
+  const onKeydown = (e: KeyboardEvent): void => {
+    if (e.key !== 'Escape' || e.defaultPrevented) return
+    if (el.hasAttribute(DISMISSED)) return
+    el.setAttribute(DISMISSED, '')
+    e.preventDefault()
+  }
+  const sync = (): void => {
+    if (hovered || focused) {
+      document.addEventListener('keydown', onKeydown, true)
+    } else {
+      document.removeEventListener('keydown', onKeydown, true)
+    }
+  }
+  const show = (): void => {
+    el.removeAttribute(DISMISSED)
+  }
+  const onEnter = () => {
+    if (!hovered && !focused) show()
+    hovered = true
+    sync()
+  }
+  const onLeave = () => {
+    hovered = false
+    sync()
+  }
+  // The tooltip shows on the host's own :focus (group-focus), not on focus
+  // inside it: ignore focus events bubbling up from descendants.
+  const onFocusIn = (e: FocusEvent) => {
+    if (e.target !== el) return
+    if (!hovered && !focused) show()
+    focused = true
+    sync()
+  }
+  const onFocusOut = (e: FocusEvent) => {
+    if (e.target !== el) return
+    focused = false
+    sync()
+  }
+  el.addEventListener('mouseenter', onEnter)
+  el.addEventListener('mouseleave', onLeave)
+  el.addEventListener('focusin', onFocusIn)
+  el.addEventListener('focusout', onFocusOut)
+  el.__DetachTooltipEscape = () => {
+    el.removeEventListener('mouseenter', onEnter)
+    el.removeEventListener('mouseleave', onLeave)
+    el.removeEventListener('focusin', onFocusIn)
+    el.removeEventListener('focusout', onFocusOut)
+    document.removeEventListener('keydown', onKeydown, true)
+    el.removeAttribute(DISMISSED)
+  }
+}
+
 /**
  * Extracts a value from either element attributes or binding value object
  */
@@ -110,12 +193,13 @@ const mountTooltip = (
   })
 
   render(vnode, el)
-  el.setAttribute('aria-describedby', tooltipId)
+  addDescribedBy(el, tooltipId)
 }
 
 const unmountTooltip = (el: TooltipElementType): void => {
   render(null, el)
-  el.removeAttribute('aria-describedby')
+  if (el.__TooltipId) removeDescribedBy(el, el.__TooltipId)
+  el.__DetachTooltipEscape?.()
   delete el.__TooltipId
 }
 
@@ -131,6 +215,7 @@ export const vTooltip: Directive<TooltipElementType, TooltipValueType> = {
     el.__UnmountTooltip = () => unmountTooltip(el)
     // initial mount
     el.__HandleTooltip(binding)
+    attachEscape(el)
   },
   updated(
     el: TooltipElementType,
@@ -159,6 +244,10 @@ export const vTooltip: Directive<TooltipElementType, TooltipValueType> = {
     // 3. Re-render if the value OR the argument/direction has changed
     if (valueChanged || argChanged) {
       el.__HandleTooltip(binding)
+    } else if (el.__TooltipId) {
+      // The host's own re-render may have rewritten `aria-describedby`
+      // (a reactive binding); put the tooltip's id back (#128).
+      addDescribedBy(el, el.__TooltipId)
     }
   },
   unmounted(el) {

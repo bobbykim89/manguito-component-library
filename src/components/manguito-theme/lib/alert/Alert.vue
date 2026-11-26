@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { generateClass } from '../theme'
 import type { ColorPalette } from '../theme/static/theme.types'
 const props = withDefaults(
@@ -11,6 +11,18 @@ const props = withDefaults(
     dismissible?: boolean
     /** Accessible name of the dismiss button. */
     dismissLabel?: string
+    /**
+     * Where focus goes when the dismiss button removes the alert, as a CSS
+     * selector or an element. Without it, focus moves to the next focusable
+     * element after the alert, else the one before it (#128). A `close`
+     * handler that moves focus itself wins over both.
+     */
+    returnFocus?: string | HTMLElement
+    /**
+     * How urgently screen readers announce the alert: `'assertive'` renders
+     * `role="alert"`, `'polite'` renders `role="status"`.
+     */
+    live?: 'assertive' | 'polite'
   }>(),
   {
     color: 'danger',
@@ -19,6 +31,7 @@ const props = withDefaults(
     show: false,
     dismissible: false,
     dismissLabel: 'Dismiss',
+    live: 'assertive',
   },
 )
 
@@ -42,9 +55,58 @@ const componentClass = computed<string>(() => {
   }
   return classArray.join(' ')
 })
+const rootRef = ref<HTMLElement>()
+
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
+// The focusable elements just after and just before the alert, in document
+// order, found while the alert is still in the page.
+const neighbours = (): {
+  next: HTMLElement | null
+  prev: HTMLElement | null
+} => {
+  const root = rootRef.value
+  if (!root) return { next: null, prev: null }
+  const all = Array.from(document.querySelectorAll<HTMLElement>(FOCUSABLE))
+  const outside = all.filter((el) => !root.contains(el))
+  const follows = (el: HTMLElement) =>
+    !!(root.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING)
+  return {
+    next: outside.find(follows) ?? null,
+    prev: outside.filter((el) => !follows(el)).pop() ?? null,
+  }
+}
+
+const resolveReturnFocus = (): HTMLElement | null => {
+  const target = props.returnFocus
+  if (!target) return null
+  return typeof target === 'string'
+    ? document.querySelector<HTMLElement>(target)
+    : target
+}
+
+// The dismiss button removes the whole alert while it has focus. Emit first,
+// so a `close` handler can move focus; if focus is still in the alert after
+// that, move it to `returnFocus`, else the next, else the previous focusable
+// element, instead of letting it fall to <body> (#128).
 const handleClose = (e: Event) => {
-  showAlert.value = false
+  const root = rootRef.value
+  const { next, prev } = neighbours()
   emit('close', e)
+  const stillInside = !!root?.contains(document.activeElement)
+  showAlert.value = false
+  if (!stillInside) return
+  nextTick(() => {
+    const active = document.activeElement
+    if (active && active !== document.body && active.isConnected) return
+    for (const el of [resolveReturnFocus(), next, prev]) {
+      if (el?.isConnected) {
+        el.focus()
+        if (document.activeElement === el) return
+      }
+    }
+  })
 }
 const closeAlert = () => {
   showAlert.value = false
@@ -65,8 +127,8 @@ defineExpose<{
 <template>
   <div
     v-if="showAlert"
-    role="alert"
-    aria-live="polite"
+    ref="rootRef"
+    :role="live === 'polite' ? 'status' : 'alert'"
     aria-atomic="true"
     class="relative px-[1.25rem] py-[0.75rem]"
     :class="[componentClass]"

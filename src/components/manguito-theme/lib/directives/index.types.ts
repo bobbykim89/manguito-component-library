@@ -62,4 +62,6 @@ export interface TooltipElementType extends HTMLElement {
   __HandleTooltip: (binding: DirectiveBinding<TooltipValueType>) => void
   __UnmountTooltip: () => void
   __TooltipId?: string
+  /** Removes the Escape-to-dismiss listeners (#128). */
+  __DetachTooltipEscape?: () => void
 }

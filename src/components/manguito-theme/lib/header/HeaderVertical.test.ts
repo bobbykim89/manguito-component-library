@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { h, nextTick, ref } from 'vue'
 import { mount } from '@vue/test-utils'
 import { hydrate } from '@mcl/test-utils/ssr'
@@ -147,6 +147,101 @@ describe('HeaderVertical landmarks and menu button', () => {
   it('takes the menu button name from menuLabel', () => {
     const w = headerWith({ menuLabel: 'Navigation' })
     expect(menuButton().getAttribute('aria-label')).toBe('Navigation')
+    w.unmount()
+  })
+})
+
+describe('HeaderVertical mobile menu as a modal (#128)', () => {
+  beforeEach(() => {
+    // jsdom has no layout; report a box so focus-trap sees tabbable nodes
+    vi.spyOn(Element.prototype, 'getClientRects').mockReturnValue([
+      {},
+    ] as unknown as DOMRectList)
+  })
+  afterEach(() => {
+    vi.restoreAllMocks()
+    document.body.innerHTML = ''
+    document.documentElement.style.overflow = ''
+  })
+
+  const open = async () => {
+    const w = mount(HeaderVertical, {
+      slots: {
+        content,
+        'mobile-content': ({ headerClose }: { headerClose: () => void }) => [
+          h('a', { href: '#a', id: 'first' }, 'A'),
+          h('a', { href: '#b', id: 'last', onClick: headerClose }, 'B'),
+        ],
+      },
+      attachTo: document.body,
+      global: { stubs: { transition: false } },
+    })
+    await settle()
+    button(document).focus()
+    button(document).click()
+    await nextTick()
+    await settle()
+    return w
+  }
+  const wrapper = () => button(document).closest('.z-40') as HTMLElement
+
+  it('open menu is a labelled modal dialog', async () => {
+    const w = await open()
+    expect(wrapper().getAttribute('role')).toBe('dialog')
+    expect(wrapper().getAttribute('aria-modal')).toBe('true')
+    expect(wrapper().getAttribute('aria-label')).toBe('Main')
+    button(document).click()
+    await nextTick()
+    await settle()
+    expect(wrapper().hasAttribute('role')).toBe(false)
+    expect(wrapper().hasAttribute('aria-modal')).toBe(false)
+    w.unmount()
+  })
+
+  it('Escape closes the menu and focuses the drawer button', async () => {
+    const w = await open()
+    document.querySelector<HTMLElement>('#first')!.focus()
+    document.activeElement!.dispatchEvent(
+      new KeyboardEvent('keydown', {
+        key: 'Escape',
+        bubbles: true,
+        cancelable: true,
+      }),
+    )
+    await nextTick()
+    await settle()
+    expect(drawer()).toBeNull()
+    expect(document.activeElement).toBe(button(document))
+    w.unmount()
+  })
+
+  it('headerClose from inside returns focus to the drawer button', async () => {
+    const w = await open()
+    const last = document.querySelector<HTMLElement>('#last')!
+    last.focus()
+    last.click()
+    await nextTick()
+    await settle()
+    expect(drawer()).toBeNull()
+    expect(document.activeElement).toBe(button(document))
+    w.unmount()
+  })
+
+  it('traps focus inside the open menu', async () => {
+    const w = await open()
+    const outside = document.createElement('button')
+    document.body.appendChild(outside)
+    outside.focus()
+    await settle()
+    expect(wrapper().contains(document.activeElement)).toBe(true)
+    w.unmount()
+  })
+
+  it('the drawer button controls the mobile nav', async () => {
+    const w = await open()
+    const id = button(document).getAttribute('aria-controls')
+    expect(id).toBeTruthy()
+    expect(drawer()!.id).toBe(id)
     w.unmount()
   })
 })

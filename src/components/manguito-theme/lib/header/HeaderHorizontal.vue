@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useWindowScroll } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed, ref, useId } from 'vue'
 import { generateClass } from '../theme'
 import type { ColorPalette } from '../theme/static/theme.types'
 import NavDrawer from './NavDrawer.vue'
@@ -18,6 +18,12 @@ const props = withDefaults(
     showDrawerBorder?: boolean
     fadeInOnScroll?: boolean
     scrollDistance?: number
+    /**
+     * Where the header sticks to the top. A sticky header can cover the
+     * element that has keyboard focus when tabbing backwards (WCAG 2.4.11):
+     * set `scroll-padding-top` on `html` to the header's height, e.g.
+     * `html { scroll-padding-top: 4rem }`.
+     */
     sticky?: HeaderStickyOptionType
   }>(),
   {
@@ -44,8 +50,20 @@ const emit = defineEmits<{
   (e: 'toggle-drawer', event: Event, open: boolean): void
 }>()
 
+const headerRef = ref<HTMLElement>()
+const mobilePanelId = useId()
+
+// Closing from inside the panel (a link calling headerClose) would remove the
+// focused element; hand focus back to the drawer button instead (#128).
 const closeNav = (): void => {
+  const panel = document.getElementById(mobilePanelId)
+  const hadFocus = !!panel?.contains(document.activeElement)
   navOpen.value = false
+  if (hadFocus) {
+    headerRef.value
+      ?.querySelector<HTMLElement>(`[aria-controls="${mobilePanelId}"]`)
+      ?.focus()
+  }
 }
 
 const toggleNavButton = (e: Event): void => {
@@ -112,53 +130,62 @@ defineExpose<{
 
 <template>
   <header
+    ref="headerRef"
     class="z-50 w-full items-center transition delay-150 duration-500 ease-in"
     :class="[handleFadeInOnScroll, handleHeaderClass]"
   >
-    <nav
-      :aria-label="navLabel"
-      class="mx-xs flex flex-wrap items-center justify-between py-xs align-middle sm:max-w-[640px] md:mx-sm md:max-w-[768px] md:py-2xs lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px]"
-    >
-      <div class="min-h-[24px]">
-        <slot name="content"></slot>
-      </div>
-      <div class="ml-auto">
-        <NavDrawer
-          :label="menuLabel"
-          :color="drawerBtnColor"
-          :show-border="showDrawerBorder"
-          class="block lg:hidden"
-          @hbg-click="toggleNavButton"
-          :toggle="navOpen"
-          :bg-color="bgColor"
-        ></NavDrawer>
-        <div v-if="slots['content-right']" class="hidden lg:block">
-          <slot name="content-right"></slot>
-        </div>
-      </div>
-    </nav>
-    <!-- mobile menu -->
-
-    <div class="overflow-hidden lg:hidden">
-      <transition
-        name="collapse"
-        @enter="onEnter"
-        @after-enter="onAfterEnter"
-        @leave="onLeave"
+    <!--
+      One navigation landmark holds both the bar and the mobile panel (#128),
+      so the mobile links are inside it too.
+    -->
+    <nav :aria-label="navLabel">
+      <div
+        class="mx-xs flex flex-wrap items-center justify-between py-xs align-middle sm:max-w-[640px] md:mx-sm md:max-w-[768px] md:py-2xs lg:max-w-[1024px] xl:max-w-[1280px] 2xl:max-w-[1536px]"
       >
-        <!-- only height is animated, so spacing lives on the inner panel -->
-        <div v-if="navOpen" class="overflow-hidden">
-          <div
-            class="mx-xs my-2xs overflow-hidden rounded-md bg-opacity-80"
-            :class="generateClass.bgColorVariant({ color: mobileMenuBgColor })"
-          >
-            <div v-if="slots['mobile-content']">
-              <slot name="mobile-content" :header-close="closeNav"></slot>
-            </div>
+        <div class="min-h-[24px]">
+          <slot name="content"></slot>
+        </div>
+        <div class="ml-auto">
+          <NavDrawer
+            :label="menuLabel"
+            :color="drawerBtnColor"
+            :show-border="showDrawerBorder"
+            class="block lg:hidden"
+            @hbg-click="toggleNavButton"
+            :toggle="navOpen"
+            :bg-color="bgColor"
+            :controls="mobilePanelId"
+          ></NavDrawer>
+          <div v-if="slots['content-right']" class="hidden lg:block">
+            <slot name="content-right"></slot>
           </div>
         </div>
-      </transition>
-    </div>
+      </div>
+      <!-- mobile menu -->
+
+      <div class="overflow-hidden lg:hidden">
+        <transition
+          name="collapse"
+          @enter="onEnter"
+          @after-enter="onAfterEnter"
+          @leave="onLeave"
+        >
+          <!-- only height is animated, so spacing lives on the inner panel -->
+          <div v-if="navOpen" :id="mobilePanelId" class="overflow-hidden">
+            <div
+              class="mx-xs my-2xs overflow-hidden rounded-md bg-opacity-80"
+              :class="
+                generateClass.bgColorVariant({ color: mobileMenuBgColor })
+              "
+            >
+              <div v-if="slots['mobile-content']">
+                <slot name="mobile-content" :header-close="closeNav"></slot>
+              </div>
+            </div>
+          </div>
+        </transition>
+      </div>
+    </nav>
   </header>
 </template>
 

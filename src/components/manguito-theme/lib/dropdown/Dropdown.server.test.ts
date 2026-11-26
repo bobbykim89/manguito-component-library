@@ -17,4 +17,17 @@ describe('Dropdown (server)', () => {
     expect(html).toContain('TOGGLER')
     expect(html).not.toContain('MENU ITEMS')
   })
+
+  it('server html carries the toggler aria-expanded and aria-controls (#128)', async () => {
+    const { html } = await renderOnServer(() =>
+      h(DropdownContainer, null, {
+        toggler: (p: { attrs: Record<string, unknown> }) =>
+          h('button', p.attrs, 'TOGGLER'),
+        default: () =>
+          h(DropdownContent, null, { default: () => 'MENU ITEMS' }),
+      }),
+    )
+    expect(html).toContain('aria-expanded="false"')
+    expect(html).toMatch(/aria-controls="[^"]+"/)
+  })
 })
