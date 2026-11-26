@@ -29,3 +29,38 @@ export const DropdownOpened: Story = {
     await waitFor(() => expect(item).toBeVisible())
   },
 }
+
+// Keyboard (#128): open from the keyboard, Tab into the menu, and Escape
+// closes it and returns focus to the toggler.
+export const DropdownKeyboard: Story = {
+  ...dropdownExample,
+  name: 'Dropdown Keyboard',
+  play: async ({ canvas, userEvent }) => {
+    const toggler = canvas.getByRole('button', { name: 'Dropdown Button' })
+    await expect(toggler).toHaveAttribute('aria-expanded', 'false')
+
+    await userEvent.tab()
+    await expect(toggler).toHaveFocus()
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() =>
+      expect(toggler).toHaveAttribute('aria-expanded', 'true'),
+    )
+    const item = await canvas.findByRole('button', {
+      name: 'Dropdown item example 1',
+    })
+    await waitFor(() => expect(item).toBeVisible())
+    await expect(toggler).toHaveAttribute(
+      'aria-controls',
+      item.closest('[id]')?.id,
+    )
+
+    await userEvent.tab()
+    await expect(item).toHaveFocus()
+
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() =>
+      expect(toggler).toHaveAttribute('aria-expanded', 'false'),
+    )
+    await expect(toggler).toHaveFocus()
+  },
+}
