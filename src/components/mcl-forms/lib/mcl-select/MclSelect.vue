@@ -146,9 +146,22 @@ const setItemRef = (
   itemRefs.value[index] = el
 }
 
+// Scrolls the listbox only (#130 review). `scrollIntoView` also scrolls every
+// scrollable ancestor, so opening on the chosen option (or arrowing) jumped
+// the page, before floating-ui had even placed the list. The listbox is
+// absolutely positioned, so it is its options' offsetParent.
 const scrollActiveIntoView = (index: number): void => {
-  const el = itemRefs.value[index] as HTMLElement | undefined
-  el?.scrollIntoView?.({ block: 'nearest' })
+  const ref = itemRefs.value[index]
+  const el = (
+    ref && '$el' in ref ? (ref as ComponentPublicInstance).$el : ref
+  ) as HTMLElement | null | undefined
+  const list = dropdownRef.value
+  if (!el || !list || !(el instanceof HTMLElement)) return
+  const top = el.offsetTop
+  const bottom = top + el.offsetHeight
+  if (top < list.scrollTop) list.scrollTop = top
+  else if (bottom > list.scrollTop + list.clientHeight)
+    list.scrollTop = bottom - list.clientHeight
 }
 
 // Every entry point routes through these two rather than repeating the state

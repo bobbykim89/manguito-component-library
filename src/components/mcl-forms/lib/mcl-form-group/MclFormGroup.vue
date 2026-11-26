@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
 import { generateClass } from '@bobbykim/manguito-theme'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, shallowRef } from 'vue'
 import FieldFeedback from '../common/FieldFeedback.vue'
 import { provideFieldContext } from '../common/fieldContext'
 
@@ -70,22 +70,27 @@ const ownsFeedback = props.invalidFeedback !== undefined || hasFeedbackSlot
 // how a fieldset ends up with every control claiming the same element id.
 const isGroupLabel = props.groupLabel
 
+// The label's `for` follows the id its control reports (#130), so a control's
+// own `id` is labelled. It tracks the first control still mounted, so a v-if
+// swap or an unmount doesn't leave it stale. Applied only after mount: the
+// server render and the client's first render must agree on `for`, and the
+// group renders its label before the control's setup runs. Until then the
+// label points at the group's id and the control names itself through
+// `aria-labelledby`.
+const mountedControlIds = shallowRef<readonly string[]>([])
+const isMounted = ref<boolean>(false)
+onMounted(() => {
+  isMounted.value = true
+})
+// Read only once mounted, so the first render never depends on (or re-renders
+// for) the ids controls report during it.
+const controlId = computed<string | undefined>(() =>
+  isMounted.value ? mountedControlIds.value[0] : undefined,
+)
+
 // Getters, not values. This is an object literal — it has to be, because the
 // three flags above are not props — and a literal of plain values would
 // snapshot at setup, so no control would ever see a change.
-// The label's `for` follows the id its control reports (#130), so a control's
-// own `id` is labelled. Applied only after mount: the server render and the
-// client's first render must agree on `for`, and the group renders its label
-// before the control's setup runs. Until then the label points at the group's
-// id and the control names itself through `aria-labelledby`.
-const controlId = ref<string>()
-let heldControlId: string | undefined
-let isMounted = false
-onMounted(() => {
-  isMounted = true
-  if (heldControlId !== undefined) controlId.value = heldControlId
-})
-
 const field = provideFieldContext({
   fieldId: props.fieldId,
   invalid: () => props.invalid,
@@ -95,9 +100,8 @@ const field = provideFieldContext({
   ownsFeedback,
   isGroupLabel,
   hasLabel: () => !!props.label || slots.label !== undefined,
-  onControlId: (id) => {
-    if (isMounted) controlId.value = id
-    else heldControlId = id
+  onControlIdsChange: (ids) => {
+    mountedControlIds.value = ids
   },
 })
 

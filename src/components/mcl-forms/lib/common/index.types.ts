@@ -71,8 +71,10 @@ export interface FieldContext {
    */
   labelledBy: ComputedRef<string | undefined>
   /**
-   * Group context: records the element id of the control the label binds to
-   * (first report wins). Control context: a no-op.
+   * Group context: records a mounted label-mode control's element id. The
+   * label binds to the first one still mounted. Control context: a no-op.
    */
   reportControlId: (id: string) => void
+  /** Group context: forgets an unmounting control's id. Control context: a no-op. */
+  releaseControlId: (id: string) => void
 }

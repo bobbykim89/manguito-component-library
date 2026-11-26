@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import { h, nextTick } from 'vue'
 import MclFormGroup from '../mcl-form-group/MclFormGroup.vue'
 import type { SelectOptions } from './index.types'
@@ -804,5 +804,21 @@ describe('MclSelect — popup name and status region (#130)', () => {
     expect(wrapper.get('[data-mcl="caret"] svg').classes()).toContain(
       'motion-reduce:transition-none',
     )
+  })
+})
+
+// Final review (#130): opening on the chosen option must not scroll the page.
+describe('MclSelect — scrolling the highlight into view (#130 review)', () => {
+  it('opening on the chosen option and arrowing never calls scrollIntoView (which also scrolls the page)', async () => {
+    const spy = vi.spyOn(HTMLElement.prototype, 'scrollIntoView')
+    const wrapper = mount(MclSelect, {
+      props: { id: 'colour', options: OPTIONS, modelValue: 'Blue' },
+    })
+    await open(wrapper)
+    await nextTick()
+    await wrapper.find('input').trigger('keydown', { key: 'ArrowUp' })
+    await nextTick()
+    expect(spy).not.toHaveBeenCalled()
+    spy.mockRestore()
   })
 })

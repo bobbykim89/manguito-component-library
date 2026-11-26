@@ -273,3 +273,28 @@ export const MclSelectOpened: Story = {
     await waitFor(() => expect(listbox).toBeVisible())
   },
 }
+
+// #130 review: opening a select that has a value starts on the chosen option
+// and scrolls it into view inside the list only, never the page.
+const FRUITS = Array.from({ length: 40 }, (_, i) => `Option ${i + 1}`)
+export const MclSelectOpenNearBottom: Story = {
+  name: 'Open Near Bottom',
+  render: () => ({
+    components: { 'mcl-select': MclSelect, 'mcl-form-group': MclFormGroup },
+    setup() {
+      const selected = ref<string | number | null>('Option 35')
+      return { options: FRUITS, selected }
+    },
+    template:
+      '<section style="height: 80vh"></section><mcl-form-group label="Choice"><mcl-select :options="options" v-model="selected"></mcl-select></mcl-form-group><section style="height: 40vh"></section>',
+  }),
+  play: async ({ canvas, userEvent }) => {
+    window.scrollTo(0, 0)
+    await userEvent.tab()
+    const listbox = await canvas.findByRole('listbox')
+    const chosen = canvas.getByRole('option', { name: 'Option 35' })
+    await expect(chosen).toHaveAttribute('aria-selected', 'true')
+    await waitFor(() => expect(listbox.scrollTop).toBeGreaterThan(0))
+    await expect(window.scrollY).toBe(0)
+  },
+}

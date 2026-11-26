@@ -1,6 +1,7 @@
 import {
   computed,
   inject,
+  onBeforeUnmount,
   provide,
   toValue,
   useId,
@@ -63,10 +64,11 @@ export interface FieldProviderOptions {
    */
   hasLabel?: MaybeRefOrGetter<boolean>
   /**
-   * Receives the element id the first label-mode control reports, so the
-   * group's `<label for>` can follow a control that has an id of its own.
+   * Receives the ids of the label-mode controls currently mounted, in report
+   * order, whenever that list changes, so the group's `<label for>` can follow
+   * the control actually rendered, including one with an id of its own.
    */
-  onControlId?: (id: string) => void
+  onControlIdsChange?: (ids: readonly string[]) => void
 }
 
 let fallbackIdCount = 0
@@ -148,8 +150,10 @@ export const provideFieldContext = (
   options: FieldProviderOptions,
 ): FieldContext => {
   const id = resolveFieldId(options.fieldId)
-  // First report wins: a label binds to one control.
-  let reported = false
+  // Mounted label-mode controls, in report order. A label binds to one
+  // control: the first that is still mounted (#130 review: a v-if swap or an
+  // unmount must not leave `for` pointing at a control that's gone).
+  let controlIds: string[] = []
   const invalid = computed<boolean>(() => toValue(options.invalid) ?? false)
   const errorId = `${id}-error`
   const descriptionId = options.hasHelpText ? `${id}-description` : undefined
@@ -173,9 +177,14 @@ export const provideFieldContext = (
     ),
     labelledBy: computed<string | undefined>(() => undefined),
     reportControlId: (controlId: string) => {
-      if (reported) return
-      reported = true
-      options.onControlId?.(controlId)
+      controlIds = [...controlIds, controlId]
+      options.onControlIdsChange?.(controlIds)
+    },
+    releaseControlId: (controlId: string) => {
+      const index = controlIds.indexOf(controlId)
+      if (index === -1) return
+      controlIds = controlIds.filter((_, i) => i !== index)
+      options.onControlIdsChange?.(controlIds)
     },
   }
   provide(FIELD_KEY, context)
@@ -232,7 +241,10 @@ export const useFieldContext = (
     group !== null && !group.isGroupLabel ? usableId(group.id) : undefined
   const id = ownId ?? sharedGroupId ?? fallbackId
   // Label mode: tell the group which id its <label for> must point at.
-  if (group !== null && !group.isGroupLabel) group.reportControlId(id)
+  if (group !== null && !group.isGroupLabel) {
+    group.reportControlId(id)
+    onBeforeUnmount(() => group.releaseControlId(id))
+  }
   const inheritsRequired =
     group !== null && (!group.isGroupLabel || inheritsFieldsetRequired)
 
@@ -289,5 +301,6 @@ export const useFieldContext = (
       group !== null && !isToggle ? group.labelId.value : undefined,
     ),
     reportControlId: () => {},
+    releaseControlId: () => {},
   }
 }

@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import { defineComponent, h, nextTick } from 'vue'
+import { defineComponent, h, nextTick, ref } from 'vue'
 import { useFieldContext } from '../common/fieldContext'
 import type { FieldContext } from '../common/index.types'
 import MclInputText from '../mcl-input-text/MclInputText.vue'
@@ -406,5 +406,47 @@ describe('MclFormGroup — required marker', () => {
       })
       expect(wrapper.find('label [aria-hidden="true"]').exists()).toBe(false)
     }
+  })
+})
+
+// Final review (#130): the label follows the control that is rendered now.
+describe('MclFormGroup — label follows a swapped control (#130 review)', () => {
+  it('label for follows a v-if/v-else swap between controls with their own ids', async () => {
+    const showFirst = ref(true)
+    const wrapper = mount(
+      defineComponent({
+        setup: () => () =>
+          h(MclFormGroup, { fieldId: 'grp', label: 'Field' }, () =>
+            showFirst.value
+              ? h(MclInputText, { id: 'one', key: 'one' })
+              : h(MclInputText, { id: 'two', key: 'two' }),
+          ),
+      }),
+    )
+    await nextTick()
+    expect(wrapper.find('label').attributes('for')).toBe('one')
+    showFirst.value = false
+    await nextTick()
+    await nextTick()
+    expect(wrapper.find('input').attributes('id')).toBe('two')
+    expect(wrapper.find('label').attributes('for')).toBe('two')
+  })
+
+  it('label for falls back to the group id when its control unmounts', async () => {
+    const show = ref(true)
+    const wrapper = mount(
+      defineComponent({
+        setup: () => () =>
+          h(MclFormGroup, { fieldId: 'grp', label: 'Field' }, () =>
+            show.value ? h(MclInputText, { id: 'one' }) : null,
+          ),
+      }),
+    )
+    await nextTick()
+    expect(wrapper.find('label').attributes('for')).toBe('one')
+    show.value = false
+    await nextTick()
+    await nextTick()
+    expect(wrapper.find('label').attributes('for')).toBe('grp')
   })
 })
