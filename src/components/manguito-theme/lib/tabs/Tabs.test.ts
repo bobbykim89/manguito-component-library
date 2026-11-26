@@ -151,14 +151,10 @@ describe('Tabs (client)', () => {
     it('handled keys call preventDefault and ArrowDown is ignored', async () => {
       const r = await hydrate(renderBound())
       tab(r.container, 0).focus()
-      expect(key(tab(r.container, 0), 'ArrowDown').defaultPrevented).toBe(
-        false,
-      )
+      expect(key(tab(r.container, 0), 'ArrowDown').defaultPrevented).toBe(false)
       await nextTick()
       expect(document.activeElement).toBe(tab(r.container, 0))
-      expect(key(tab(r.container, 0), 'ArrowRight').defaultPrevented).toBe(
-        true,
-      )
+      expect(key(tab(r.container, 0), 'ArrowRight').defaultPrevented).toBe(true)
       r.unmount()
     })
 

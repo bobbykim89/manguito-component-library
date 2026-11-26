@@ -35,7 +35,9 @@ describe('Tabs (server)', () => {
     const { html } = await renderOnServer(renderBound)
     expect(html).toContain('role="tab"')
     expect(html).toContain('aria-selected="true"')
-    const tabId = html.match(/role="tab"[^>]*\sid="([^"]+)"|id="([^"]+)"[^>]*role="tab"/)
+    const tabId = html.match(
+      /role="tab"[^>]*\sid="([^"]+)"|id="([^"]+)"[^>]*role="tab"/,
+    )
     const id = tabId?.[1] ?? tabId?.[2]
     expect(id).toBeTruthy()
     expect(html).toContain(`aria-labelledby="${id}"`)
