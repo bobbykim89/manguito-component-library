@@ -91,6 +91,7 @@ const sidebarRight2Ref = ref<InstanceType<typeof Sidebar>>()
         <div class="px-xs py-sm">
           <img
             src="https://res.cloudinary.com/dwgni1x3t/image/upload/c_scale,w_1200/q_auto/v1685840063/ManguitoPage/xl0fo7vevr5nhxpnnztq.jpg"
+            alt="Manguito the lovebird"
             class="mb-sm"
           />
           <p>
@@ -119,12 +120,14 @@ const sidebarRight2Ref = ref<InstanceType<typeof Sidebar>>()
     <sidebar
       ref="sidebarLeftRef"
       id="sidebar-left"
+      aria-label="Sidebar Left"
       custom-class="bg-light-1 px-xs overflow-scroll"
     >
       <template #header="{ close }">
         <div class="flex justify-end bg-light-1 pt-xs pb-md">
-          <button @click="close">
+          <button type="button" aria-label="Close" @click="close">
             <svg
+              aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               height="1em"
               viewBox="0 0 384 512"
@@ -176,13 +179,14 @@ const sidebarRight2Ref = ref<InstanceType<typeof Sidebar>>()
       </template>
       <template #footer>
         <div class="bg-light-1 py-xs">
-          <h4 class="h4-md">This is Footer content</h4>
+          <h3 class="h4-md">This is Footer content</h3>
         </div>
       </template>
     </sidebar>
     <sidebar
       ref="sidebarRightRef"
       id="sidebar-right"
+      aria-label="Sidebar Right"
       placement="right"
       :show-backdrop="false"
       :width="450"
@@ -190,8 +194,9 @@ const sidebarRight2Ref = ref<InstanceType<typeof Sidebar>>()
     >
       <template #header="{ close }">
         <div class="mb-md flex justify-start">
-          <button @click="close">
+          <button type="button" aria-label="Close" @click="close">
             <svg
+              aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               height="1em"
               viewBox="0 0 384 512"

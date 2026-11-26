@@ -17,8 +17,8 @@ import { DropdownContainer, DropdownContent } from '@bobbykim/manguito-theme'
 <template>
   <div>
     <dropdown-container>
-      <template #toggler="{ toggle, dropdownState }">
-        <button @click="toggle">
+      <template #toggler="{ toggle, attrs }">
+        <button type="button" v-bind="attrs" @click="toggle">
           <span> {{ button name }} </span>
         </button>
       </template>
@@ -41,3 +41,15 @@ import { DropdownContainer, DropdownContent } from '@bobbykim/manguito-theme'
 ### Example
 
 <Canvas of={Stories.dropdownExample} />
+
+## Accessibility
+
+- Bind `v-bind="attrs"` on the toggler. It gives the button `aria-expanded` and `aria-controls`, pointing at the menu (`DropdownContent` renders with a matching id).
+- Escape closes the menu while it's open and returns focus to the toggler, and so does an item calling `itemClick()`. A click outside closes the menu and leaves focus where the click put it.
+- Escape is handled on `keydown` and calls `preventDefault()`, so inside a Modal, Sidebar or HeaderVertical menu the first Escape closes only the menu and the next one closes the overlay.
+- `DropdownTogglerAttrs` is exported as a type from `@bobbykim/manguito-theme`.
+
+## Slots
+
+- `DropdownContainer` `#toggler(props: { toggle: (e?: Event) => void; dropdownState: boolean; attrs: DropdownTogglerAttrs })`: the button that opens the menu
+- `DropdownContent` `#default(props: { itemClick: () => void })`: the menu items; call `itemClick()` from an item to close the menu

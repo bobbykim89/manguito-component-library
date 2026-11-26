@@ -14,6 +14,7 @@ import CardExamplesVue from './CardExamples.vue'
 
 const meta: Meta<typeof Card> = {
   title: 'Base/Base Component/Card Component',
+  parameters: { a11y: { test: 'error' } },
   component: Card,
   argTypes: {
     variant: colorControllers({

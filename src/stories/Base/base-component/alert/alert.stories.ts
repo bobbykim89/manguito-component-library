@@ -4,6 +4,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 const meta: Meta<typeof Alert> = {
   title: 'Base/Base Component/Alert Component',
+  parameters: { a11y: { test: 'error' } },
   component: Alert,
 }
 

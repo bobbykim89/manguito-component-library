@@ -160,34 +160,63 @@ const toggleMenu = () => {
 </template>
 ```
 
-### Modal Dialog
+### Non-modal panel
+
+A click outside is only one way to close something. Keyboard users need Escape, and focus has to move into the panel when it opens and back to the opener when it closes. For a real modal dialog (focus trapped, page behind it inert), use the `Modal` component instead.
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
 import { vClickOutside } from '@bobbykim/manguito-theme/directives'
 
-const showModal = ref(false)
+const isOpen = ref(false)
+const panelRef = ref<HTMLElement>()
+const openerRef = ref<HTMLButtonElement>()
 
-const closeModal = () => {
-  showModal.value = false
+const open = async () => {
+  isOpen.value = true
+  await nextTick()
+  panelRef.value?.focus()
+}
+const close = () => {
+  isOpen.value = false
+}
+const closeAndReturnFocus = () => {
+  close()
+  openerRef.value?.focus()
+}
+const toggle = () => (isOpen.value ? closeAndReturnFocus() : open())
+const onEscape = (e: KeyboardEvent) => {
+  e.preventDefault()
+  closeAndReturnFocus()
 }
 </script>
 
 <template>
-  <button @click="showModal = true">Open Modal</button>
+  <button ref="openerRef" type="button" :aria-expanded="isOpen" @click="toggle">
+    Open panel
+  </button>
 
-  <Teleport to="body">
-    <div v-if="showModal" class="modal-overlay">
-      <div v-click-outside="closeModal" class="modal-content">
-        <h2>Modal Title</h2>
-        <p>Modal content</p>
-        <button @click="closeModal">Close</button>
-      </div>
-    </div>
-  </Teleport>
+  <div
+    v-if="isOpen"
+    ref="panelRef"
+    v-click-outside="{
+      handler: close,
+      excludeElements: openerRef ? [openerRef] : [],
+    }"
+    role="region"
+    aria-labelledby="panel-title"
+    tabindex="-1"
+    @keydown.esc="onEscape"
+  >
+    <h2 id="panel-title">Panel title</h2>
+    <p>Panel content</p>
+    <button type="button" @click="closeAndReturnFocus">Close</button>
+  </div>
 </template>
 ```
+
+The opener is in `excludeElements` so its own click isn't also an outside click; otherwise clicking it while the panel is open would close and immediately reopen it.
 
 ### Searchable Select
 
@@ -308,29 +337,10 @@ const excludedRef = ref<HTMLElement>()
 
 When using this directive for interactive components:
 
-- Ensure keyboard users can close elements with `Escape` key
-- Maintain proper focus management
-- Add appropriate ARIA attributes
+- Let keyboard users close the element with Escape, and call `preventDefault()` so an overlay around it doesn't also close.
+- Move focus into the element when it opens if it holds controls, and back to the opener when it closes by Escape or a close button. After a click outside, leave focus where the click put it.
+- Put `aria-expanded` on the button that opens the element, not on the element itself. Don't add `role="menu"` unless the content is a real menu with menu items and arrow-key navigation.
 
-```vue
-<script setup lang="ts">
-const handleEscape = (event: KeyboardEvent) => {
-  if (event.key === 'Escape') {
-    isOpen.value = false
-  }
-}
-</script>
-
-<template>
-  <div
-    v-click-outside="closeMenu"
-    @keydown="handleEscape"
-    role="menu"
-    :aria-expanded="isOpen"
-  >
-    Content
-  </div>
-</template>
-```
+See the non-modal panel example above for all three.
 
 <Canvas of={Stories.clickOutsideExample} />

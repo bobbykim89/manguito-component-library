@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
-import { expect, screen, waitFor } from 'storybook/test'
+import { expect, screen, waitFor, within } from 'storybook/test'
 import Sidebar from './Sidebar.vue'
 
 const meta: Meta<typeof Sidebar> = {
   title: 'Base/Base Component/Sidebar Component',
+  parameters: { a11y: { test: 'error' } },
 }
 export default meta
 
@@ -29,3 +30,21 @@ export const SidebarOpened: Story = {
     await waitFor(() => expect(dialog).toBeVisible())
   },
 }
+
+// Custom-header sidebars open (#128), so axe checks their `aria-label` names
+// and their icon-only close buttons.
+const customHeaderOpened = (opener: string): Story => ({
+  ...sidebarExample,
+  name: `${opener} Opened`,
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: opener }))
+    const dialog = await screen.findByRole('dialog', { name: opener })
+    await waitFor(() => expect(dialog).toBeVisible())
+    await expect(
+      within(dialog).getByRole('button', { name: 'Close' }),
+    ).toBeVisible()
+  },
+})
+
+export const SidebarLeftOpened = customHeaderOpened('Sidebar Left')
+export const SidebarRightOpened = customHeaderOpened('Sidebar Right')

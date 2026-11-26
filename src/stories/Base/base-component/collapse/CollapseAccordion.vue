@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { AccordionGroup, Collapse } from '@/components/manguito-theme/lib'
-import { ref } from 'vue'
+import { useCollapseTrigger } from '@/components/manguito-theme/lib/composables'
+import { computed, ref } from 'vue'
 
 const collapseContent = [
   {
@@ -29,7 +30,16 @@ const collapseContent = [
   },
 ]
 
-const panelRefs = ref<InstanceType<typeof Collapse>[]>([])
+const panelRefs = collapseContent.map(() =>
+  ref<InstanceType<typeof Collapse>>(),
+)
+// One trigger per panel: aria-expanded and aria-controls for both its header
+// and footer buttons, kept in sync with the panel.
+const triggers = collapseContent.map((item, idx) =>
+  useCollapseTrigger(panelRefs[idx], { id: item.id, visible: idx === 0 }),
+)
+// A top-level ref, so the template unwraps it.
+const triggerAttrs = computed(() => triggers.map((t) => t.attrs.value))
 
 const customButtonColor = (idx: number): string => {
   switch (idx) {
@@ -60,7 +70,8 @@ const customButtonColor = (idx: number): string => {
           class="mb-md last:mb-0"
         >
           <button
-            @click="panelRefs[idx]?.toggle()"
+            v-bind="triggerAttrs[idx]"
+            @click="triggers[idx].toggle()"
             class="btn btn-full"
             :class="customButtonColor(idx)"
           >
@@ -69,7 +80,9 @@ const customButtonColor = (idx: number): string => {
           <Collapse
             :ref="
               (el) => {
-                if (el) panelRefs[idx] = el as InstanceType<typeof Collapse>
+                panelRefs[idx].value = (el ?? undefined) as
+                  | InstanceType<typeof Collapse>
+                  | undefined
               }
             "
             :id="item.id"
@@ -79,7 +92,8 @@ const customButtonColor = (idx: number): string => {
             <div>{{ item.content }}</div>
           </Collapse>
           <button
-            @click="panelRefs[idx]?.toggle()"
+            v-bind="triggerAttrs[idx]"
+            @click="triggers[idx].toggle()"
             class="btn btn-invert btn-full"
             :class="customButtonColor(idx)"
           >

@@ -32,44 +32,12 @@ import {
       'overflow-hidden',
     ]"
   >
-    <template #tab-button="{ update, activeTab }">
+    <template #tab-button="{ tabAttrs }">
       <div class="flex justify-start">
-        <button
-          role="tab"
-          :tabindex="activeTab === 0 ? -1 : 0"
-          aria-controls="tab-0"
-          :aria-selected="activeTab === 0"
-          @click="update(0)"
-        >
-          Tab 0
-        </button>
-        <button
-          role="tab"
-          :tabindex="activeTab === 1 ? -1 : 0"
-          aria-controls="tab-1"
-          :aria-selected="activeTab === 1"
-          @click="update(1)"
-        >
-          Tab 1
-        </button>
-        <button
-          role="tab"
-          :tabindex="activeTab === 2 ? -1 : 0"
-          aria-controls="tab-2"
-          :aria-selected="activeTab === 2"
-          @click="update(2)"
-        >
-          Tab 2
-        </button>
-        <button
-          role="tab"
-          :tabindex="activeTab === 3 ? -1 : 0"
-          aria-controls="tab-3"
-          :aria-selected="activeTab === 3"
-          @click="update(3)"
-        >
-          Tab 3
-        </button>
+        <button v-bind="tabAttrs(0)">Tab 0</button>
+        <button v-bind="tabAttrs(1)">Tab 1</button>
+        <button v-bind="tabAttrs(2)">Tab 2</button>
+        <button v-bind="tabAttrs(3)">Tab 3</button>
       </div>
     </template>
     <template #tab-content>
@@ -104,6 +72,18 @@ import {
 
 <Canvas of={Stories.tabExample2} />
 
+## Accessibility
+
+Bind `v-bind="tabAttrs(i)"` on each tab in the `tab-button` slot. It gives the tab:
+
+- an id, `role="tab"`, `aria-selected`, and `aria-controls` pointing at the `TabContent` with the same `tabNumber`
+- a roving `tabindex`, so the whole tab set is one Tab stop (the selected tab)
+- click selection, and the keyboard: Arrow Left/Right move to the previous/next tab (wrapping), Home and End to the first and last
+
+Each `TabContent` is then labelled by its tab, and has `tabindex="0"` so a panel with nothing focusable in it can still be reached with Tab. The container already wraps the slot in `role="tablist"`. A tab set that renders its own tabs without `tabAttrs` gets none of this, and its panels aren't labelled.
+
+`TabAttrs` is exported as a type from `@bobbykim/manguito-theme`.
+
 ## SSR
 
 The active tab is visible in the server HTML before its height is measured. The container has no `max-height` limit until the first height greater than 0 is measured. From then on `--container-hts` is always set, so `max-height` animates when you switch tabs.
@@ -126,7 +106,7 @@ The active tab is visible in the server HTML before its height is measured. The 
 
 #### TabContainer
 
-- `#tab-button(props: { update: (num: number) => void; activeTab: number })` - slot for tab buttons
+- `#tab-button(props: { update: (num: number) => void; activeTab: number; tabAttrs: (index: number) => TabAttrs })` - slot for tab buttons. Bind `tabAttrs(i)` on each tab (see Accessibility).
 - `#tab-content` - slot for tab contents
 
 #### TabContent

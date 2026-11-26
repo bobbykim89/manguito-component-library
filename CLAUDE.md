@@ -125,7 +125,7 @@ Shared types (`ColorPalette`, `SpacingLevel`, `HeadingSize`, etc.) are still re-
 `vToggle` and `vCollapse` are **deprecated**. They manipulate DOM attributes directly, bypassing Vue's reactivity system. Do not use them in new components. The preferred patterns are:
 
 - **Collapse / accordion state:** Use the `useCollapseState` composable and wrap groups in `AccordionGroup`. See `mcl-collapse` and `mcl-header` for examples.
-- **Modal / sidebar open state:** Use a template ref and call the component's exposed `openModal()` / `closeModal()` methods directly.
+- **Modal / sidebar open state:** Use a template ref and call the component's exposed `open()` / `close()` / `toggle()` methods directly (e.g. `modalRef.value?.open()`).
 
 `observeVisibleAttr` (composable) is still used internally by `Modal`, `Sidebar`, and `Collapse` base components — do not remove it, but do not add new usages.
 

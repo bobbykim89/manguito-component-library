@@ -6,6 +6,7 @@ import CollapseRef from './CollapseRef.vue'
 
 const meta: Meta<typeof Collapse> = {
   title: 'Base/Base Component/Collapse Component',
+  parameters: { a11y: { test: 'error' } },
 }
 export default meta
 
@@ -31,14 +32,18 @@ export const collapseAccordionExample: Story = {
   }),
 }
 
-// a11y: the story's own trigger button has no aria-expanded / aria-controls,
-// so the open state is asserted on the panel only.
 export const CollapseOpened: Story = {
   ...collapseExample,
   name: 'Collapse Opened',
   play: async ({ canvas, canvasElement, userEvent }) => {
-    await userEvent.click(canvas.getByRole('button', { name: 'Tab Button' }))
+    const trigger = canvas.getByRole('button', { name: 'Tab Button' })
+    await userEvent.click(trigger)
     const panel = canvasElement.querySelector('#my-collapse-component')
     await waitFor(() => expect(panel).toBeVisible())
+    await expect(trigger).toHaveAttribute('aria-expanded', 'true')
+    await expect(trigger).toHaveAttribute(
+      'aria-controls',
+      'my-collapse-component',
+    )
   },
 }
