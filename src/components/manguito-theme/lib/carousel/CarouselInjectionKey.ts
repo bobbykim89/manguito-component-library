@@ -10,6 +10,12 @@ import type { InjectionKey, Ref } from 'vue'
 export interface CarouselInjectionType {
   activeIdx: Ref<number>
   setSlide: (arg: number) => void
+  /**
+   * Number of slides, for each slide's "n of m" label. Undefined until the
+   * container has mounted: slides register one by one while rendering, so
+   * a count read earlier (and on the server) would be short (#128).
+   */
+  total: Ref<number | undefined>
 }
 
 export const carouselInjectionKey =

@@ -22,4 +22,18 @@ describe('Carousel (server)', () => {
     expect(html).toContain('CONTROLS')
     expect(html).toContain('id="s0"')
   })
+
+  it('server html carries the carousel roles, with no wrong slide totals (#128)', async () => {
+    const { html } = await renderOnServer(() =>
+      h(CarouselContainer, null, { content: slides }),
+    )
+    expect(html).toContain('role="region"')
+    expect(html).toContain('aria-roledescription="carousel"')
+    expect(html).toContain('aria-live="polite"')
+    expect(html).toContain('role="group"')
+    expect(html).toContain('aria-roledescription="slide"')
+    expect(html).not.toContain('role="tabpanel"')
+    // the total is known only once every slide has registered
+    expect(html).not.toMatch(/aria-label="\d+ of \d+"/)
+  })
 })

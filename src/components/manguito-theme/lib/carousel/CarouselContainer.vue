@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, provide, watch } from 'vue'
+import { computed, onMounted, provide, ref, watch } from 'vue'
 import { carouselInjectionKey } from './CarouselInjectionKey'
 
 const props = withDefaults(
@@ -9,6 +9,8 @@ const props = withDefaults(
     controllerTopClass?: string | string[]
     controllerBottomClass?: string | string[]
     loop?: boolean
+    /** Accessible name of the carousel region (#128). */
+    ariaLabel?: string
   }>(),
   {
     bodyClass: '',
@@ -16,6 +18,7 @@ const props = withDefaults(
     controllerTopClass: '',
     controllerBottomClass: '',
     loop: false,
+    ariaLabel: 'Carousel',
   },
 )
 
@@ -57,9 +60,17 @@ const setActive = (idx: number) => {
 /**
  * @summary provide injection key
  */
+const mounted = ref<boolean>(false)
+onMounted(() => {
+  mounted.value = true
+})
+const total = computed<number | undefined>(() =>
+  mounted.value ? slideLen.value : undefined,
+)
 provide(carouselInjectionKey, {
   activeIdx,
   setSlide,
+  total,
 })
 
 /**
@@ -112,7 +123,14 @@ defineExpose({
 </script>
 
 <template>
-  <div :class="bodyClass" class="relative overflow-x-hidden">
+  <!-- APG carousel pattern (#128): a labelled region of slide groups -->
+  <div
+    :class="bodyClass"
+    class="relative overflow-x-hidden"
+    role="region"
+    aria-roledescription="carousel"
+    :aria-label="ariaLabel"
+  >
     <div :class="controllerTopClass" v-if="slots['controller-top']">
       <slot
         name="controller-top"
@@ -123,7 +141,15 @@ defineExpose({
         :number-of-slides="slideLen"
       ></slot>
     </div>
-    <div class="grid grid-cols-1 grid-rows-1" :class="contentContainerClass">
+    <!--
+      The live region is this stable wrapper, not the keyed slide below: a
+      live region must exist before its content changes to be announced.
+    -->
+    <div
+      class="grid grid-cols-1 grid-rows-1"
+      :class="contentContainerClass"
+      aria-live="polite"
+    >
       <Transition :name="slideDirection">
         <div
           :key="activeIdx"

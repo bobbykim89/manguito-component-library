@@ -10,7 +10,9 @@ const slides = () =>
     h(CarouselContent, { slideNumber: n, id: `s${n}` }, () => `SLIDE ${n}`),
   )
 const visible = (root: ParentNode) =>
-  Array.from(root.querySelectorAll<HTMLElement>('[role="tabpanel"]'))
+  Array.from(
+    root.querySelectorAll<HTMLElement>('[aria-roledescription="slide"]'),
+  )
     .filter((el) => el.style.display !== 'none')
     .map((el) => el.id)
 
@@ -61,6 +63,58 @@ describe('Carousel (client)', () => {
     }
     await settle()
     expect(r.container.textContent).toContain('ACTIVE 0')
+    r.unmount()
+  })
+})
+
+describe('Carousel semantics (#128)', () => {
+  afterEach(() => {
+    document.body.innerHTML = ''
+  })
+
+  it('container is a labelled carousel region', async () => {
+    const a = render()
+    const r = await hydrate(a.fn)
+    const region = r.container.querySelector('[role="region"]')!
+    expect(region.getAttribute('aria-roledescription')).toBe('carousel')
+    expect(region.getAttribute('aria-label')).toBe('Carousel')
+    r.unmount()
+    const b = render({ ariaLabel: 'Featured' })
+    const r2 = await hydrate(b.fn)
+    expect(
+      r2.container.querySelector('[role="region"]')!.getAttribute('aria-label'),
+    ).toBe('Featured')
+    r2.unmount()
+  })
+
+  it('slides are groups labelled n of m', async () => {
+    const r = await hydrate(render().fn)
+    await nextTick()
+    const groups = Array.from(r.container.querySelectorAll('[id^="s"]'))
+    expect(groups.map((g) => g.getAttribute('aria-label'))).toEqual([
+      '1 of 3',
+      '2 of 3',
+      '3 of 3',
+    ])
+    for (const g of groups) {
+      expect(g.getAttribute('role')).toBe('group')
+      expect(g.getAttribute('aria-roledescription')).toBe('slide')
+      expect(g.getAttribute('tabindex')).toBe('-1')
+    }
+    expect(r.container.querySelector('[role="tabpanel"]')).toBeNull()
+    r.unmount()
+  })
+
+  it('live region wraps the keyed slide and survives a slide change', async () => {
+    const a = render()
+    const r = await hydrate(a.fn)
+    const live = r.container.querySelector('[aria-live="polite"]')
+    expect(live).not.toBeNull()
+    expect(live!.querySelector('#s0')).not.toBeNull()
+    a.controls().next()
+    await nextTick()
+    await settle()
+    expect(r.container.querySelector('[aria-live="polite"]')).toBe(live)
     r.unmount()
   })
 })
