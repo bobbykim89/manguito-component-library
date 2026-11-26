@@ -9,6 +9,15 @@ import HeaderHorizontalExample from './HeaderHorizontalExample.vue'
 
 const meta: Meta<typeof HeaderHorizontal> = {
   title: 'Base/Base Component/Header (Horizontal)',
+  parameters: {
+    a11y: { test: 'error' },
+    docs: {
+      description: {
+        component:
+          'With `sticky` set, the header stays over the top of the page, so it can cover an element that keyboard focus scrolls to. Give the page `scroll-padding-top` equal to the header height, e.g. `html { scroll-padding-top: 4rem }`.',
+      },
+    },
+  },
   component: HeaderHorizontal,
   argTypes: {
     bgColor: colorControllers({
@@ -86,7 +95,7 @@ export const HeaderHorizontalEmptySlots: Story = {
       return { args }
     },
     template:
-      '<section><header-horizontal v-bind="args"><template #content><div><h2>Main Content</h2></div></template><template #content-right><div><h4>Content Right</h4></div></template><template #mobile-content><div class="p-md text-center">Mobile Content</div></template></header-horizontal></section>',
+      '<section><header-horizontal v-bind="args"><template #content><div><h2>Main Content</h2></div></template><template #content-right><div>Content Right</div></template><template #mobile-content><div class="p-md text-center">Mobile Content</div></template></header-horizontal></section>',
   }),
 }
 

@@ -8,6 +8,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 
 const meta: Meta<typeof HeaderVertical> = {
   title: 'Base/Base Component/Header (Vertical)',
+  parameters: { a11y: { test: 'error' } },
   component: HeaderVertical,
   argTypes: {
     bgColor: colorControllers({

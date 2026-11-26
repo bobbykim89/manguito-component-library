@@ -3,6 +3,7 @@ import ClickOutside from './ClickOutside.vue'
 
 const meta: Meta<typeof ClickOutside> = {
   title: 'Base/Base Component/Directives/Click Outside',
+  parameters: { a11y: { test: 'error' } },
 }
 export default meta
 

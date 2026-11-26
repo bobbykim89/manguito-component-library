@@ -33,8 +33,13 @@ const dropdownSelectEvent = (item: string): void => {
     </div>
     <div class="rounded-md border-2 border-success bg-white p-sm">
       <dropdown-container>
-        <template #toggler="{ toggle }">
-          <button @click="toggle" class="btn btn-progress btn-danger">
+        <template #toggler="{ toggle, attrs }">
+          <button
+            type="button"
+            v-bind="attrs"
+            @click="toggle"
+            class="btn btn-progress btn-danger"
+          >
             <span> Dropdown Button </span>
           </button>
         </template>

@@ -5,6 +5,7 @@ import CarouselExampleIndicatorTop from './CarouselExampleIndicatorTop.vue'
 
 const meta: Meta<typeof CarouselExample> = {
   title: 'Base/Base Component/Carousel Component',
+  parameters: { a11y: { test: 'error' } },
 }
 export default meta
 

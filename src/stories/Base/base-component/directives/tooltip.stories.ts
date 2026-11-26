@@ -4,6 +4,7 @@ import Tooltip from './Tooltip.vue'
 
 const meta: Meta<typeof Tooltip> = {
   title: 'Base/Base Component/Directives/Tooltip',
+  parameters: { a11y: { test: 'error' } },
 }
 export default meta
 

@@ -4,6 +4,7 @@ import Sidebar from './Sidebar.vue'
 
 const meta: Meta<typeof Sidebar> = {
   title: 'Base/Base Component/Sidebar Component',
+  parameters: { a11y: { test: 'error' } },
 }
 export default meta
 

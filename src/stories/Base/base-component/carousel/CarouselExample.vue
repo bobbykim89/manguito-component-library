@@ -36,10 +36,13 @@ const contentData = [
     >
       <template #controller-top="{ prev }">
         <button
+          type="button"
+          aria-label="Previous slide"
           @click="prev"
           class="pl-3xs text-dark-1 transition-opacity duration-300 hover:opacity-60 md:pl-2xs"
         >
           <svg
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 320 512"
             fill="currentColor"
@@ -67,10 +70,13 @@ const contentData = [
       </template>
       <template #controller-bottom="{ next }">
         <button
+          type="button"
+          aria-label="Next slide"
           @click="next"
           class="pr-3xs text-dark-1 transition-opacity duration-300 hover:opacity-60 md:pr-2xs"
         >
           <svg
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 320 512"
             fill="currentColor"

@@ -4,6 +4,7 @@ import Dropdown from './Dropdown.vue'
 
 const meta: Meta<typeof Dropdown> = {
   title: 'Base/Base Component/Dropdown Component',
+  parameters: { a11y: { test: 'error' } },
 }
 export default meta
 

@@ -4,6 +4,7 @@ import Modal from './Modal.vue'
 
 const meta: Meta<typeof Modal> = {
   title: 'Base/Base Component/Modal Component',
+  parameters: { a11y: { test: 'error' } },
 }
 export default meta
 

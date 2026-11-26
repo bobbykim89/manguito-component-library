@@ -10,7 +10,8 @@ import {
   MclInputText,
   MclSelect,
 } from '@/components/mcl-forms/lib'
-import { ref } from 'vue'
+import { useCollapseTrigger } from '@/components/manguito-theme/lib/composables'
+import { computed, ref } from 'vue'
 
 const collapseContent = [
   {
@@ -54,7 +55,16 @@ const customButtonColor = (idx: number): string => {
   }
 }
 
-const panelRefs = ref<InstanceType<typeof Collapse>[]>([])
+const panelRefs = collapseContent.map(() =>
+  ref<InstanceType<typeof Collapse>>(),
+)
+// One trigger per panel: aria-expanded and aria-controls, kept in sync with
+// the panel.
+const triggers = collapseContent.map((item, idx) =>
+  useCollapseTrigger(panelRefs[idx], { id: item.id, visible: idx === 0 }),
+)
+// A top-level ref, so the template unwraps it.
+const triggerAttrs = computed(() => triggers.map((t) => t.attrs.value))
 
 const textRef = ref<string>('')
 const options = [
@@ -91,45 +101,29 @@ const handleFormSubmit = () => {
         'overflow-hidden',
       ]"
     >
-      <template #tab-button="{ update, activeTab }">
+      <template #tab-button="{ tabAttrs }">
         <div class="flex justify-start gap-[2px]">
           <button
-            role="tab"
-            :tabindex="activeTab === 0 ? -1 : 0"
-            aria-controls="tab-0"
-            :aria-selected="activeTab === 0"
+            v-bind="tabAttrs(0)"
             class="rounded-tl-md bg-light-4 px-xs py-2xs font-bold transition-all duration-300 hover:bg-opacity-70"
-            @click="update(0)"
           >
             Tab 0
           </button>
           <button
-            role="tab"
-            :tabindex="activeTab === 1 ? -1 : 0"
-            aria-controls="tab-1"
-            :aria-selected="activeTab === 1"
+            v-bind="tabAttrs(1)"
             class="bg-light-4 px-xs py-2xs font-bold transition-all duration-300 hover:bg-opacity-70"
-            @click="update(1)"
           >
             Tab 1
           </button>
           <button
-            role="tab"
-            :tabindex="activeTab === 2 ? -1 : 0"
-            aria-controls="tab-2"
-            :aria-selected="activeTab === 2"
+            v-bind="tabAttrs(2)"
             class="bg-light-4 px-xs py-2xs font-bold transition-all duration-300 hover:bg-opacity-70"
-            @click="update(2)"
           >
             Tab 2
           </button>
           <button
-            role="tab"
-            :tabindex="activeTab === 3 ? -1 : 0"
-            aria-controls="tab-3"
-            :aria-selected="activeTab === 3"
+            v-bind="tabAttrs(3)"
             class="rounded-tr-md bg-light-4 px-xs py-2xs font-bold transition-all duration-300 hover:bg-opacity-70"
-            @click="update(3)"
           >
             Tab 3
           </button>
@@ -164,7 +158,8 @@ const handleFormSubmit = () => {
                   class="mb-sm last:mb-0"
                 >
                   <button
-                    @click="panelRefs[idx]?.toggle()"
+                    v-bind="triggerAttrs[idx]"
+                    @click="triggers[idx].toggle()"
                     class="btn btn-full"
                     :class="customButtonColor(idx)"
                   >
@@ -173,8 +168,9 @@ const handleFormSubmit = () => {
                   <Collapse
                     :ref="
                       (el) => {
-                        if (el)
-                          panelRefs[idx] = el as InstanceType<typeof Collapse>
+                        panelRefs[idx].value = (el ?? undefined) as
+                          | InstanceType<typeof Collapse>
+                          | undefined
                       }
                     "
                     :id="item.id"

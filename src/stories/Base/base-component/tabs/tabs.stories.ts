@@ -6,6 +6,7 @@ import TabExample2 from './TabExample2.vue'
 
 const meta: Meta<typeof TabExample> = {
   title: 'Base/Base Component/Tab Component',
+  parameters: { a11y: { test: 'error' } },
 }
 export default meta
 

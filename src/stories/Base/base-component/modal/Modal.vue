@@ -93,13 +93,14 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
         custom-class="px-xs rounded-md"
         color="light-1"
       >
-        <template #header="{ close }">
+        <template #header="{ close, titleId }">
           <div
             class="flex justify-between border-b-2 border-b-light-4 bg-light-1 py-xs"
           >
-            <h3 class="h3-md">Modal 1</h3>
-            <button @click="close">
+            <h3 :id="titleId" class="h3-md">Modal 1</h3>
+            <button type="button" aria-label="Close" @click="close">
               <svg
+                aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 height="1em"
                 viewBox="0 0 384 512"
@@ -146,6 +147,7 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
       <modal
         ref="modal2Ref"
         id="modal-2"
+        aria-label="Modal 2"
         :show-backdrop="false"
         color="warning"
         custom-class="border shadow-xl"
@@ -153,8 +155,9 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
       >
         <template #header="{ close }">
           <div class="flex justify-end bg-light-1 p-xs">
-            <button @click="close">
+            <button type="button" aria-label="Close" @click="close">
               <svg
+                aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 height="1em"
                 viewBox="0 0 384 512"
@@ -216,13 +219,14 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
         color="light-1"
         width="medium"
       >
-        <template #header="{ close }">
+        <template #header="{ close, titleId }">
           <div
             class="flex justify-between border-b-2 border-b-light-4 bg-light-1 py-xs"
           >
-            <h3 class="h3-md">Medium Modal</h3>
-            <button @click="close">
+            <h3 :id="titleId" class="h3-md">Medium Modal</h3>
+            <button type="button" aria-label="Close" @click="close">
               <svg
+                aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 height="1em"
                 viewBox="0 0 384 512"
@@ -274,13 +278,14 @@ const modalLargeRef = ref<InstanceType<typeof Modal>>()
         width="large"
         placement="top"
       >
-        <template #header="{ close }">
+        <template #header="{ close, titleId }">
           <div
             class="flex justify-between border-b-2 border-b-light-4 bg-light-1 py-xs"
           >
-            <h3 class="h3-md">Large Modal</h3>
-            <button @click="close">
+            <h3 :id="titleId" class="h3-md">Large Modal</h3>
+            <button type="button" aria-label="Close" @click="close">
               <svg
+                aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 height="1em"
                 viewBox="0 0 384 512"

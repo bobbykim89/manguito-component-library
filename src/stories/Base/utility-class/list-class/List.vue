@@ -3,7 +3,7 @@
     <div class="mb-2xs bg-white px-xs py-sm md:px-sm md:py-md">
       <div class="mb-sm">
         <div>Default</div>
-        <ul class="mcl-list">
+        <ul role="list" class="mcl-list">
           <li>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit
             sapiente repudiandae ullam? Voluptas esse rerum quaerat adipisci
@@ -24,7 +24,7 @@
       </div>
       <div class="mb-sm">
         <div class="text-primary">Primary</div>
-        <ul class="mcl-list mcl-list-primary">
+        <ul role="list" class="mcl-list mcl-list-primary">
           <li>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit
             sapiente repudiandae ullam? Voluptas esse rerum quaerat adipisci
@@ -45,7 +45,7 @@
       </div>
       <div class="mb-sm">
         <div class="text-secondary">Secondary</div>
-        <ul class="mcl-list mcl-list-secondary">
+        <ul role="list" class="mcl-list mcl-list-secondary">
           <li>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit
             sapiente repudiandae ullam? Voluptas esse rerum quaerat adipisci
@@ -66,7 +66,7 @@
       </div>
       <div class="mb-sm">
         <div class="text-success">Success Small</div>
-        <ul class="mcl-list mcl-list-sm mcl-list-success">
+        <ul role="list" class="mcl-list mcl-list-sm mcl-list-success">
           <li>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit
             sapiente repudiandae ullam? Voluptas esse rerum quaerat adipisci
@@ -87,7 +87,7 @@
       </div>
       <div class="mb-sm">
         <div class="text-warning">Warning Large</div>
-        <ul class="mcl-list mcl-list-lg mcl-list-warning">
+        <ul role="list" class="mcl-list mcl-list-lg mcl-list-warning">
           <li>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit
             sapiente repudiandae ullam? Voluptas esse rerum quaerat adipisci
