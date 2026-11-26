@@ -58,4 +58,21 @@ export interface FieldContext {
    * bound to one control, which must reuse the group's id verbatim.
    */
   isGroupLabel: boolean
+  /**
+   * The group's own label element id, `${id}-label`, while a label-mode group
+   * renders a label; `undefined` in fieldset mode, without a label, and on a
+   * control's own context.
+   */
+  labelId: ComputedRef<string | undefined>
+  /**
+   * The id a control names itself by (`aria-labelledby`): the group's
+   * `labelId` for a non-toggle control in a label-mode group, else
+   * `undefined`. Always `undefined` on the group's own context.
+   */
+  labelledBy: ComputedRef<string | undefined>
+  /**
+   * Group context: records the element id of the control the label binds to
+   * (first report wins). Control context: a no-op.
+   */
+  reportControlId: (id: string) => void
 }

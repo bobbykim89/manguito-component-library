@@ -1,8 +1,9 @@
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import { defineComponent, h } from 'vue'
+import { defineComponent, h, nextTick } from 'vue'
 import { useFieldContext } from '../common/fieldContext'
 import type { FieldContext } from '../common/index.types'
+import MclInputText from '../mcl-input-text/MclInputText.vue'
 import MclFormGroup from './MclFormGroup.vue'
 
 /** A minimal control that reports the context it injected. */
@@ -312,6 +313,98 @@ describe('MclFormGroup — groupLabel is frozen consistently with the context', 
     if (isFieldset) {
       const ids = wrapper.findAll('input').map((i) => i.attributes('id'))
       expect(new Set(ids).size).toBe(ids.length)
+    }
+  })
+})
+
+// #130: the label follows the control's own id, and names it.
+describe('MclFormGroup — label binding to a control with its own id', () => {
+  it('label for follows a child control that has its own id (after nextTick)', async () => {
+    const wrapper = mount(MclFormGroup, {
+      props: { label: 'Email' },
+      slots: { default: () => h(MclInputText, { id: 'email' }) },
+    })
+    await nextTick()
+    expect(wrapper.find('input').attributes('id')).toBe('email')
+    expect(wrapper.find('label').attributes('for')).toBe('email')
+  })
+
+  it('label for is the group id when the child has no id of its own', async () => {
+    const wrapper = mount(MclFormGroup, {
+      props: { fieldId: 'grp', label: 'Email' },
+      slots: { default: () => h(MclInputText) },
+    })
+    await nextTick()
+    expect(wrapper.find('label').attributes('for')).toBe('grp')
+    expect(wrapper.find('input').attributes('id')).toBe('grp')
+  })
+
+  it('the child input has aria-labelledby = the label id, and the label has that id', () => {
+    const wrapper = mount(MclFormGroup, {
+      props: { fieldId: 'grp', label: 'Email' },
+      slots: { default: () => h(MclInputText, { id: 'email' }) },
+    })
+    expect(wrapper.find('label').attributes('id')).toBe('grp-label')
+    expect(wrapper.find('input').attributes('aria-labelledby')).toBe(
+      'grp-label',
+    )
+  })
+
+  it('removing the label (label → "") removes the child aria-labelledby', async () => {
+    const wrapper = mount(MclFormGroup, {
+      props: { label: 'Email' },
+      slots: { default: () => h(MclInputText, { id: 'email' }) },
+    })
+    await wrapper.setProps({ label: '' })
+    expect(wrapper.find('label').exists()).toBe(false)
+    expect(wrapper.find('input').attributes('aria-labelledby')).toBeUndefined()
+  })
+})
+
+describe('MclFormGroup — required marker', () => {
+  it('required group in label mode renders the aria-hidden " *" marker inside the label, with no sr-only text', () => {
+    const wrapper = mount(MclFormGroup, {
+      props: { label: 'Email', required: true },
+      slots: { default: () => h(Probe) },
+    })
+    const marker = wrapper.get('label [aria-hidden="true"]')
+    expect(marker.element.textContent).toBe(' *')
+    expect(wrapper.find('label .sr-only').exists()).toBe(false)
+  })
+
+  it('required group in fieldset mode renders " *" (aria-hidden) and sr-only " (required)" in the legend', () => {
+    const wrapper = mount(MclFormGroup, {
+      props: { label: 'Plan', groupLabel: true, required: true },
+      slots: { default: () => h(Probe) },
+    })
+    expect(wrapper.get('legend [aria-hidden="true"]').element.textContent).toBe(
+      ' *',
+    )
+    expect(wrapper.get('legend .sr-only').element.textContent).toBe(
+      ' (required)',
+    )
+  })
+
+  it('required marker follows a custom label slot', () => {
+    const wrapper = mount(MclFormGroup, {
+      props: { required: true },
+      slots: {
+        label: () => h('span', { class: 'custom' }, 'Custom'),
+        default: () => h(Probe),
+      },
+    })
+    const label = wrapper.get('label').element
+    expect(label.textContent).toBe('Custom *')
+    expect(label.lastElementChild!.getAttribute('aria-hidden')).toBe('true')
+  })
+
+  it('no marker when required is false or undefined', () => {
+    for (const required of [false, undefined]) {
+      const wrapper = mount(MclFormGroup, {
+        props: { label: 'Email', required },
+        slots: { default: () => h(Probe) },
+      })
+      expect(wrapper.find('label [aria-hidden="true"]').exists()).toBe(false)
     }
   })
 })

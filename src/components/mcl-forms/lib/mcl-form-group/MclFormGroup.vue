@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
 import { generateClass } from '@bobbykim/manguito-theme'
-import { computed } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import FieldFeedback from '../common/FieldFeedback.vue'
 import { provideFieldContext } from '../common/fieldContext'
 
@@ -73,6 +73,19 @@ const isGroupLabel = props.groupLabel
 // Getters, not values. This is an object literal — it has to be, because the
 // three flags above are not props — and a literal of plain values would
 // snapshot at setup, so no control would ever see a change.
+// The label's `for` follows the id its control reports (#130), so a control's
+// own `id` is labelled. Applied only after mount: the server render and the
+// client's first render must agree on `for`, and the group renders its label
+// before the control's setup runs. Until then the label points at the group's
+// id and the control names itself through `aria-labelledby`.
+const controlId = ref<string>()
+let heldControlId: string | undefined
+let isMounted = false
+onMounted(() => {
+  isMounted = true
+  if (heldControlId !== undefined) controlId.value = heldControlId
+})
+
 const field = provideFieldContext({
   fieldId: props.fieldId,
   invalid: () => props.invalid,
@@ -81,7 +94,14 @@ const field = provideFieldContext({
   hasHelpText,
   ownsFeedback,
   isGroupLabel,
+  hasLabel: () => !!props.label || slots.label !== undefined,
+  onControlId: (id) => {
+    if (isMounted) controlId.value = id
+    else heldControlId = id
+  },
 })
+
+const showRequired = computed<boolean>(() => props.required === true)
 
 const labelTextClass = computed<string>(() => {
   const classArray: string[] = [
@@ -103,9 +123,21 @@ const labelTextClass = computed<string>(() => {
   -->
   <fieldset v-if="isGroupLabel" class="m-0 min-w-0 border-0 p-0">
     <legend v-if="label || $slots.label" class="inline-block">
+      <!--
+        Required marker (#130): visible "*" for sighted users. A fieldset's
+        checkboxes and switches carry no native required, so the legend also
+        says it to screen readers.
+      -->
       <slot name="label">
-        <span class="mb-2xs block" :class="labelTextClass">{{ label }}</span>
+        <span class="mb-2xs block" :class="labelTextClass"
+          >{{ label }}<span v-if="showRequired" aria-hidden="true"> *</span
+          ><span v-if="showRequired" class="sr-only"> (required)</span></span
+        >
       </slot>
+      <template v-if="showRequired && $slots.label"
+        ><span aria-hidden="true"> *</span
+        ><span class="sr-only"> (required)</span></template
+      >
     </legend>
     <p v-if="hasHelpText" :id="field.descriptionId" class="mb-2xs text-xs">
       <slot name="help">{{ helpText }}</slot>
@@ -127,10 +159,23 @@ const labelTextClass = computed<string>(() => {
   </fieldset>
 
   <div v-else>
-    <label v-if="label || $slots.label" :for="field.id" class="inline-block">
+    <label
+      v-if="label || $slots.label"
+      :id="field.labelId.value"
+      :for="controlId ?? field.id"
+      class="inline-block"
+    >
+      <!--
+        Required marker (#130): visible only. The single control's own
+        required (or aria-required) already tells screen readers.
+      -->
       <slot name="label">
-        <span class="mb-2xs block" :class="labelTextClass">{{ label }}</span>
+        <span class="mb-2xs block" :class="labelTextClass"
+          >{{ label
+          }}<span v-if="showRequired" aria-hidden="true"> *</span></span
+        >
       </slot>
+      <span v-if="showRequired && $slots.label" aria-hidden="true"> *</span>
     </label>
     <p v-if="hasHelpText" :id="field.descriptionId" class="mb-2xs text-xs">
       <slot name="help">{{ helpText }}</slot>

@@ -74,6 +74,7 @@ const surfaceClass = useInputSurface(props)
       :disabled="field.disabled.value"
       :aria-invalid="field.invalid.value || undefined"
       :aria-describedby="field.describedBy.value"
+      :aria-labelledby="field.labelledBy.value"
     />
     <input-highlight
       v-if="showHighlight"
