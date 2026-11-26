@@ -94,3 +94,140 @@ describe('MclDropdownA accessibility (#135)', () => {
     r.unmount()
   })
 })
+
+const key = (el: Element, k: string): KeyboardEvent => {
+  const e = new KeyboardEvent('keydown', {
+    key: k,
+    bubbles: true,
+    cancelable: true,
+  })
+  el.dispatchEvent(e)
+  return e
+}
+
+describe('MclDropdownA arrow keys (#135)', () => {
+  afterEach(() => {
+    document.body.innerHTML = ''
+  })
+
+  it('ArrowDown from the open toggle focuses the first item and prevents default', async () => {
+    const r = await hydrate(renderA11y())
+    await open(r.container)
+    const toggle = toggleOf(r.container)
+    toggle.focus()
+    const e = key(toggle, 'ArrowDown')
+    expect(e.defaultPrevented).toBe(true)
+    expect(document.activeElement).toBe(itemOf(r.container, 'Item One'))
+    r.unmount()
+  })
+
+  it('ArrowDown and ArrowUp move one item and stop at the ends', async () => {
+    const r = await hydrate(renderA11y())
+    await open(r.container)
+    const [one, two, three] = ['Item One', 'Item Two', 'Item Three'].map((t) =>
+      itemOf(r.container, t),
+    )
+    one.focus()
+    const steps: [string, HTMLElement][] = [
+      ['ArrowDown', two],
+      ['ArrowDown', three],
+      ['ArrowDown', three],
+      ['ArrowUp', two],
+      ['ArrowUp', one],
+      ['ArrowUp', one],
+    ]
+    for (const [k, expected] of steps) {
+      const e = key(document.activeElement!, k)
+      expect(e.defaultPrevented).toBe(true)
+      expect(document.activeElement).toBe(expected)
+    }
+    r.unmount()
+  })
+
+  it('arrows follow focus moved by Tab', async () => {
+    const r = await hydrate(renderA11y())
+    await open(r.container)
+    const two = itemOf(r.container, 'Item Two')
+    two.focus()
+    key(two, 'ArrowDown')
+    expect(document.activeElement).toBe(itemOf(r.container, 'Item Three'))
+    r.unmount()
+  })
+
+  it('ArrowUp from the open toggle prevents default and leaves focus on the toggle', async () => {
+    const r = await hydrate(renderA11y())
+    await open(r.container)
+    const toggle = toggleOf(r.container)
+    toggle.focus()
+    const e = key(toggle, 'ArrowUp')
+    expect(e.defaultPrevented).toBe(true)
+    expect(document.activeElement).toBe(toggle)
+    r.unmount()
+  })
+
+  it('arrows with the list closed are not handled', async () => {
+    const r = await hydrate(renderA11y())
+    const toggle = toggleOf(r.container)
+    toggle.focus()
+    let e!: KeyboardEvent
+    expect(() => (e = key(toggle, 'ArrowDown'))).not.toThrow()
+    expect(e.defaultPrevented).toBe(false)
+    expect(document.activeElement).toBe(toggle)
+    // closed again while the content may still be leaving
+    await open(r.container)
+    toggle.click()
+    await nextTick()
+    expect(key(toggle, 'ArrowDown').defaultPrevented).toBe(false)
+    expect(key(toggle, 'ArrowUp').defaultPrevented).toBe(false)
+    r.unmount()
+  })
+
+  it('other keys are not prevented', async () => {
+    const r = await hydrate(renderA11y())
+    await open(r.container)
+    const one = itemOf(r.container, 'Item One')
+    one.focus()
+    expect(key(one, 'Tab').defaultPrevented).toBe(false)
+    expect(key(one, 'a').defaultPrevented).toBe(false)
+    r.unmount()
+  })
+
+  it('with no items, ArrowDown from the open toggle does not throw', async () => {
+    const r = await hydrate(renderA11y({ dropdownItems: [] }))
+    await open(r.container)
+    const toggle = toggleOf(r.container)
+    toggle.focus()
+    expect(() => key(toggle, 'ArrowDown')).not.toThrow()
+    expect(document.activeElement).toBe(toggle)
+    r.unmount()
+  })
+
+  it('two dropdowns: arrows move only within their own items', async () => {
+    const r = await hydrate(() =>
+      h('div', [
+        h('div', { id: 'a' }, [
+          h(MclDropdownA, {
+            title: 'A',
+            dropdownItems: [{ title: 'A1' }, { title: 'A2' }],
+          }),
+        ]),
+        h('div', { id: 'b' }, [
+          h(MclDropdownA, {
+            title: 'B',
+            dropdownItems: [{ title: 'B1' }, { title: 'B2' }],
+          }),
+        ]),
+      ]),
+    )
+    const a = r.container.querySelector('#a')!
+    const b = r.container.querySelector('#b')!
+    await open(a)
+    await open(b)
+    itemOf(b, 'B1').focus()
+    key(document.activeElement!, 'ArrowDown')
+    expect(document.activeElement).toBe(itemOf(b, 'B2'))
+    key(document.activeElement!, 'ArrowDown')
+    expect(document.activeElement).toBe(itemOf(b, 'B2'))
+    r.unmount()
+  })
+})
