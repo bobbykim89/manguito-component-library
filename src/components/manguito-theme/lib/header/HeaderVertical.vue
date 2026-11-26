@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useScrollLock } from '@vueuse/core'
-import { computed, onMounted, ref, watch } from 'vue'
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
+import { computed, nextTick, onMounted, ref, useId, watch } from 'vue'
 import { generateClass } from '../theme'
 import type { ColorPalette } from '../theme/static/theme.types'
 import NavDrawer from './NavDrawer.vue'
@@ -37,6 +38,29 @@ const emit = defineEmits<{
 }>()
 const navOpen = ref<boolean>(false)
 const mounted = ref<boolean>(false)
+// The teleported wrapper holding the drawer button and the mobile menu.
+const overlayRef = ref<HTMLElement>()
+const mobileNavId = useId()
+
+const drawerButton = (): HTMLElement | null =>
+  overlayRef.value?.querySelector<HTMLElement>('button[aria-expanded]') ?? null
+
+// The open mobile menu is a full-screen modal (#128): focus stays inside the
+// wrapper (button + menu), Escape closes it, and focus returns to the button.
+// The trap checks Escape on document in the bubbling phase, so an Escape a
+// component inside the menu already handled (preventDefault) is left alone.
+const { activate: activateTrap, deactivate: deactivateTrap } = useFocusTrap(
+  overlayRef,
+  {
+    immediate: false,
+    allowOutsideClick: true,
+    returnFocusOnDeactivate: false,
+    escapeDeactivates: (e: KeyboardEvent) => {
+      if (!e.defaultPrevented) closeNav()
+      return false
+    },
+  },
+)
 
 const toggleNavButton = (e: Event): void => {
   navOpen.value = !navOpen.value
@@ -44,8 +68,16 @@ const toggleNavButton = (e: Event): void => {
 }
 
 const closeNav = (): void => {
+  const hadFocus = !!overlayRef.value?.contains(document.activeElement)
   navOpen.value = false
+  if (hadFocus) drawerButton()?.focus()
 }
+
+const overlayAttrs = computed<Record<string, string | undefined>>(() =>
+  navOpen.value
+    ? { role: 'dialog', 'aria-modal': 'true', 'aria-label': props.navLabel }
+    : {},
+)
 
 const componentWidth = computed(() => {
   return { '--header-width': `${props.headerWidth}px` }
@@ -57,6 +89,17 @@ onMounted(() => {
 
   watch(navOpen, (val) => {
     scrollLock.value = val
+    if (val) {
+      nextTick(() => {
+        try {
+          activateTrap()
+        } catch {
+          // no tabbable node yet (empty menu): leave the menu untrapped
+        }
+      })
+    } else {
+      deactivateTrap()
+    }
   })
 })
 
@@ -97,13 +140,18 @@ defineExpose<{
         @hbg-click="toggleNavButton"
         :toggle="navOpen"
         :bg-color="bgColor"
+        :controls="mobileNavId"
       ></NavDrawer>
     </div>
 
     <!-- mobile menu: teleported only once mounted (never server-rendered); after mount the
          button moves here so it shares the drawer's z-40 wrapper and always stays above it -->
     <Teleport v-if="mounted" to="body">
-      <div class="relative z-40 block lg:hidden">
+      <div
+        ref="overlayRef"
+        class="relative z-40 block lg:hidden"
+        v-bind="overlayAttrs"
+      >
         <!-- nav drawer button -->
         <div
           v-if="slots['mobile-content']"
@@ -117,11 +165,13 @@ defineExpose<{
             @hbg-click="toggleNavButton"
             :toggle="navOpen"
             :bg-color="bgColor"
+            :controls="mobileNavId"
           ></NavDrawer>
         </div>
 
         <Transition name="slide-down" appear>
           <nav
+            :id="mobileNavId"
             :aria-label="navLabel"
             class="fixed inset-0 overflow-y-scroll overscroll-contain px-sm py-lg"
             v-if="navOpen"

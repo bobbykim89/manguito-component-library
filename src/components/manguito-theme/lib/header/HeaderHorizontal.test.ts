@@ -143,3 +143,55 @@ describe('HeaderHorizontal landmarks and menu button', () => {
     w.unmount()
   })
 })
+
+describe('HeaderHorizontal landmark and focus (#128)', () => {
+  afterEach(() => {
+    document.body.innerHTML = ''
+  })
+  const open = async () => {
+    const w = mount(HeaderHorizontal, {
+      slots: {
+        content: () => h('span', 'DESKTOP LINKS'),
+        'mobile-content': ({ headerClose }: { headerClose: () => void }) =>
+          h('a', { href: '#x', id: 'mlink', onClick: headerClose }, 'M'),
+      },
+      attachTo: document.body,
+    })
+    const btn = w.find('button').element as HTMLElement
+    btn.focus()
+    btn.click()
+    await nextTick()
+    return { w, btn }
+  }
+
+  it('mobile panel sits inside the one nav landmark', async () => {
+    const { w } = await open()
+    const link = document.querySelector('#mlink')!
+    const navs = w.element.querySelectorAll('nav')
+    expect(navs).toHaveLength(1)
+    expect(link.closest('nav')).toBe(navs[0])
+    expect(w.find('button').element.closest('nav')).toBe(navs[0])
+    w.unmount()
+  })
+
+  it('headerClose from inside returns focus to the drawer button', async () => {
+    const { w, btn } = await open()
+    const link = document.querySelector<HTMLElement>('#mlink')!
+    link.focus()
+    link.click()
+    await nextTick()
+    await settle()
+    expect(document.activeElement).toBe(btn)
+    w.unmount()
+  })
+
+  it('the drawer button controls the mobile panel', async () => {
+    const { w, btn } = await open()
+    const id = btn.getAttribute('aria-controls')
+    expect(id).toBeTruthy()
+    expect(
+      document.getElementById(id!)!.contains(document.querySelector('#mlink')),
+    ).toBe(true)
+    w.unmount()
+  })
+})

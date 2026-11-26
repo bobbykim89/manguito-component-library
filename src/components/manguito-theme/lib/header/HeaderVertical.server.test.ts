@@ -30,4 +30,15 @@ describe('HeaderVertical (server)', () => {
     )
     expect(html).not.toContain('aria-label="Menu"')
   })
+
+  it('the drawer button is type=button with aria-controls in server html (#128)', async () => {
+    const { html } = await renderOnServer(() =>
+      h(HeaderVertical, null, {
+        content: () => h('span', 'C'),
+        'mobile-content': () => h('span', 'M'),
+      }),
+    )
+    expect(html).toMatch(/<button[^>]*type="button"/)
+    expect(html).toMatch(/<button[^>]*aria-controls="[^"]+"/)
+  })
 })

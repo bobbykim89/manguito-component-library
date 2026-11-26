@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { generateClass } from '../theme'
 import type { ColorPalette } from '../theme/static/theme.types'
 
@@ -11,6 +10,8 @@ const props = withDefaults(
     bgColor: ColorPalette
     /** Accessible name; aria-expanded carries the open/closed state. */
     label?: string
+    /** Id of the menu this button opens, rendered as `aria-controls` (#128). */
+    controls?: string
   }>(),
   {
     color: 'dark-2',
@@ -25,31 +26,10 @@ const handleButtonToggle = (e: Event): void => {
   emit('hbg-click', e)
 }
 
-const hamburgetButtonState = computed({
-  get() {
-    return props.toggle
-  },
-  set(value) {
-    return value
-  },
-})
-
-const getBorderClass = (
-  bColor: ColorPalette,
-  border: boolean,
-  nColor: ColorPalette,
-): string => {
-  /**
-   * @bColor - color
-   * @border - showBorder
-   * @nColor - bgColor
-   */
-
-  const classArray: string[] = [
-    generateClass.ringColorVariant({ color: bColor }),
-    generateClass.ringOffsetColorVariant({ color: nColor }),
-  ]
-
+// The focus indicator is the shared ring (#128), so the header background
+// (`bgColor`) no longer feeds a ring offset; the prop stays for compatibility.
+const getBorderClass = (bColor: ColorPalette, border: boolean): string => {
+  const classArray: string[] = []
   if (border) {
     classArray.push(generateClass.borderColorVariant({ color: bColor }))
     classArray.push('border')
@@ -72,21 +52,26 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
 </script>
 
 <template>
+  <!--
+    #128: a real type="button" with the shared focus ring (#122), which
+    forced-colors mode keeps; the icon's open state comes from `toggle`, not
+    from a checkbox nested in the button.
+  -->
   <button
-    class="hamburger__button aspect-square rounded-md p-3xs ring-offset-2 transition-all duration-300 ease-linear outline-none hover:opacity-70 focus:opacity-70 focus:ring-4"
-    :class="getBorderClass(color, showBorder, bgColor)"
+    type="button"
+    class="hamburger__button aspect-square rounded-md p-3xs transition-all duration-300 ease-linear hover:opacity-70 focus:opacity-70 focus-visible:mcl-focus-ring"
+    :class="getBorderClass(color, showBorder)"
     @click="handleButtonToggle"
     :aria-label="label"
     :aria-expanded="toggle"
+    :aria-controls="controls"
   >
-    <input
-      type="checkbox"
-      v-model="hamburgetButtonState"
-      class="hamburger__checkbox hidden"
-    />
     <div
       class="hamburger__icon relative h-[3px] w-sm transition-all duration-300 ease-linear before:h-[3px] before:w-sm after:h-[3px] after:w-sm"
-      :class="getHamburgerButtonClass(color)"
+      :class="[
+        getHamburgerButtonClass(color),
+        { 'hamburger__icon--open': toggle },
+      ]"
     ></div>
   </button>
 </template>
@@ -112,14 +97,14 @@ const getHamburgerButtonClass = (color: ColorPalette): string => {
     scale: 1.05;
   }
 }
-.hamburger__checkbox:checked + .hamburger__icon {
+.hamburger__icon--open {
   background-color: transparent;
 }
-.hamburger__checkbox:checked + .hamburger__icon::before {
+.hamburger__icon--open::before {
   top: 0;
   transform: rotate(135deg);
 }
-.hamburger__checkbox:checked + .hamburger__icon::after {
+.hamburger__icon--open::after {
   top: 0;
   transform: rotate(-135deg);
 }
