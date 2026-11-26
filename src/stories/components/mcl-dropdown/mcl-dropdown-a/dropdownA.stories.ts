@@ -33,6 +33,7 @@ const dropdownItems: DropdownItem[] = [
 const meta: Meta<typeof MclDropdownA> = {
   title: 'Components/Dropdown/MclDropdownA',
   component: MclDropdownA,
+  parameters: { a11y: { test: 'error' } },
   argTypes: {
     title: textControllers({
       name: 'title',
@@ -183,5 +184,41 @@ export const MclDropdownAOpened: Story = {
       name: 'Dropdown item example 1',
     })
     await waitFor(() => expect(item).toBeVisible())
+  },
+}
+
+// Keyboard (#135): open with Enter, move with the arrows, choose with Enter;
+// focus returns to the toggle.
+export const MclDropdownAKeyboard: Story = {
+  ...MclDropdownAExample,
+  name: 'MclDropdownA Keyboard',
+  play: async ({ canvas, userEvent }) => {
+    const toggle = canvas.getByRole('button', { name: /MCL Dropdown A/ })
+    await userEvent.tab()
+    await expect(toggle).toHaveFocus()
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false')
+
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() => expect(toggle).toHaveAttribute('aria-expanded', 'true'))
+    const item1 = await canvas.findByRole('button', {
+      name: 'Dropdown item example 1',
+    })
+    const item2 = canvas.getByRole('button', {
+      name: 'Dropdown item example 2',
+    })
+    await waitFor(() => expect(item1).toBeVisible())
+
+    await userEvent.keyboard('{ArrowDown}')
+    await expect(item1).toHaveFocus()
+    await userEvent.keyboard('{ArrowDown}')
+    await expect(item2).toHaveFocus()
+    await userEvent.keyboard('{ArrowUp}')
+    await expect(item1).toHaveFocus()
+
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() =>
+      expect(toggle).toHaveAttribute('aria-expanded', 'false'),
+    )
+    await expect(toggle).toHaveFocus()
   },
 }
