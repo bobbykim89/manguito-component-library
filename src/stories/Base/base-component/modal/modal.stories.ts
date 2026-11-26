@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
-import { expect, screen, waitFor } from 'storybook/test'
+import { expect, screen, waitFor, within } from 'storybook/test'
 import {
   DropdownContainer,
   DropdownContent,
@@ -36,6 +36,32 @@ export const ModalOpened: Story = {
     await waitFor(() => expect(dialog).toBeVisible())
   },
 }
+
+// Custom-header dialogs open (#128), so axe checks their names and close
+// buttons: Modal 1, Medium and Large are named by their heading through the
+// slot's `titleId`; Modal 2 has no heading and takes `aria-label`.
+const customHeaderOpened = (opener: string, dialogName: string): Story => ({
+  ...modalExample,
+  name: `${opener} Opened`,
+  play: async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: opener }))
+    const dialog = await screen.findByRole('dialog', { name: dialogName })
+    await waitFor(() => expect(dialog).toBeVisible())
+    // The icon-only header button; the footer has a text "Close" button too.
+    const closeButtons = within(dialog).getAllByRole('button', {
+      name: 'Close',
+    })
+    await expect(closeButtons[0]).toBeVisible()
+  },
+})
+
+export const Modal1Opened = customHeaderOpened('Modal 1', 'Modal 1')
+export const Modal2Opened = customHeaderOpened('Modal 2', 'Modal 2')
+export const MediumModalOpened = customHeaderOpened(
+  'Medium Modal',
+  'Medium Modal',
+)
+export const LargeModalOpened = customHeaderOpened('Large Modal', 'Large Modal')
 
 // Escape order (#128): with a Dropdown open inside the dialog, the first
 // Escape closes only the menu (focus back on its toggler) and the second

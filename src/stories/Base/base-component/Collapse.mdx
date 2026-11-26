@@ -48,34 +48,44 @@ Pass the same `id` to both. If the panel starts open, pass the same `visible` to
 
 ### Accordion with `AccordionGroup`
 
-Wrap panels in `AccordionGroup` — only one panel can be open at a time. Each panel's `id` prop identifies it within the group.
+Wrap panels in `AccordionGroup` — only one panel can be open at a time. Each panel's `id` prop identifies it within the group. Give each panel's button its own `useCollapseTrigger`, so screen readers hear which panel is open.
 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
 import { AccordionGroup, Collapse } from '@bobbykim/manguito-theme'
+import { useCollapseTrigger } from '@bobbykim/manguito-theme/composable'
 
 const panel1 = ref<InstanceType<typeof Collapse>>()
 const panel2 = ref<InstanceType<typeof Collapse>>()
 const panel3 = ref<InstanceType<typeof Collapse>>()
+const { attrs: attrs1, toggle: toggle1 } = useCollapseTrigger(panel1, {
+  id: 'panel-1',
+})
+const { attrs: attrs2, toggle: toggle2 } = useCollapseTrigger(panel2, {
+  id: 'panel-2',
+})
+const { attrs: attrs3, toggle: toggle3 } = useCollapseTrigger(panel3, {
+  id: 'panel-3',
+})
 </script>
 
 <template>
   <AccordionGroup>
     <div>
-      <button @click="panel1?.toggle()">Panel 1</button>
+      <button v-bind="attrs1" @click="toggle1">Panel 1</button>
       <Collapse ref="panel1" id="panel-1" custom-class="p-4"
         >Content 1</Collapse
       >
     </div>
     <div>
-      <button @click="panel2?.toggle()">Panel 2</button>
+      <button v-bind="attrs2" @click="toggle2">Panel 2</button>
       <Collapse ref="panel2" id="panel-2" custom-class="p-4"
         >Content 2</Collapse
       >
     </div>
     <div>
-      <button @click="panel3?.toggle()">Panel 3</button>
+      <button v-bind="attrs3" @click="toggle3">Panel 3</button>
       <Collapse ref="panel3" id="panel-3" custom-class="p-4"
         >Content 3</Collapse
       >
@@ -90,38 +100,52 @@ const panel3 = ref<InstanceType<typeof Collapse>>()
 
 ### Accordion with `v-for`
 
-Store refs in an array when panels are generated from data.
+When panels are generated from data, put one panel and its button in a small component. Each instance then has its own template ref and its own `useCollapseTrigger`, and the list can change length.
+
+```vue
+<!-- AccordionItem.vue -->
+<script setup lang="ts">
+import { ref } from 'vue'
+import { Collapse } from '@bobbykim/manguito-theme'
+import { useCollapseTrigger } from '@bobbykim/manguito-theme/composable'
+
+const props = defineProps<{ id: string; title: string }>()
+const panel = ref<InstanceType<typeof Collapse>>()
+const { attrs, toggle } = useCollapseTrigger(panel, { id: props.id })
+</script>
+
+<template>
+  <div>
+    <button v-bind="attrs" @click="toggle">{{ title }}</button>
+    <Collapse ref="panel" :id="id" custom-class="p-4">
+      <slot />
+    </Collapse>
+  </div>
+</template>
+```
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
-import { AccordionGroup, Collapse } from '@bobbykim/manguito-theme'
+import { AccordionGroup } from '@bobbykim/manguito-theme'
+import AccordionItem from './AccordionItem.vue'
 
 const items = [
   { id: 'panel-1', title: 'Section 1', content: 'Content for section 1.' },
   { id: 'panel-2', title: 'Section 2', content: 'Content for section 2.' },
   { id: 'panel-3', title: 'Section 3', content: 'Content for section 3.' },
 ]
-
-const panelRefs = ref<InstanceType<typeof Collapse>[]>([])
 </script>
 
 <template>
   <AccordionGroup>
-    <div v-for="(item, index) in items" :key="item.id">
-      <button @click="panelRefs[index]?.toggle()">{{ item.title }}</button>
-      <Collapse
-        :ref="
-          (el) => {
-            if (el) panelRefs[index] = el as InstanceType<typeof Collapse>
-          }
-        "
-        :id="item.id"
-        custom-class="p-4"
-      >
-        {{ item.content }}
-      </Collapse>
-    </div>
+    <AccordionItem
+      v-for="item in items"
+      :key="item.id"
+      :id="item.id"
+      :title="item.title"
+    >
+      {{ item.content }}
+    </AccordionItem>
   </AccordionGroup>
 </template>
 ```

@@ -100,11 +100,28 @@ export const HeaderVerticalMobileKeyboard: Story = {
     await userEvent.tab()
     await expect(button).toHaveFocus()
 
+    // Escape from inside the menu, so focus has somewhere to come back from.
+    await userEvent.tab({ shift: true })
+    await expect(about).toHaveFocus()
     await userEvent.keyboard('{Escape}')
     await waitFor(() =>
       expect(button).toHaveAttribute('aria-expanded', 'false'),
     )
     await expect(button).toHaveFocus()
     await expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+  },
+}
+
+// The mobile menu left open, so axe checks the open dialog (#128).
+export const HeaderVerticalMobileOpened: Story = {
+  ...HeaderVerticalMobileKeyboard,
+  name: 'Header Vertical Mobile Opened',
+  play: async ({ userEvent }) => {
+    await userEvent.click(screen.getByRole('button', { name: 'Menu' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Main' })
+    await waitFor(() => expect(dialog).toBeVisible())
+    await waitFor(() =>
+      expect(screen.getByRole('link', { name: 'About' })).toBeVisible(),
+    )
   },
 }

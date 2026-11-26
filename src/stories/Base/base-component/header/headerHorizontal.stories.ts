@@ -9,15 +9,7 @@ import HeaderHorizontalExample from './HeaderHorizontalExample.vue'
 
 const meta: Meta<typeof HeaderHorizontal> = {
   title: 'Base/Base Component/Header (Horizontal)',
-  parameters: {
-    a11y: { test: 'error' },
-    docs: {
-      description: {
-        component:
-          'With `sticky` set, the header stays over the top of the page, so it can cover an element that keyboard focus scrolls to. Give the page `scroll-padding-top` equal to the header height, e.g. `html { scroll-padding-top: 4rem }`.',
-      },
-    },
-  },
+  parameters: { a11y: { test: 'error' } },
   component: HeaderHorizontal,
   argTypes: {
     bgColor: colorControllers({
@@ -65,7 +57,8 @@ const meta: Meta<typeof HeaderHorizontal> = {
     sticky: {
       name: 'sticky',
       type: { name: 'string', required: false },
-      description: 'assign what screen size to trigger sticky effect',
+      description:
+        "screen sizes on which the header sticks to the top ('none' turns it off). While it sticks it can cover an element that keyboard focus scrolls to, so give the page `scroll-padding-top` equal to the header height, e.g. `html { scroll-padding-top: 4rem }`.",
       table: {
         type: { summary: 'String' },
         defaultValue: { summary: 'all' },

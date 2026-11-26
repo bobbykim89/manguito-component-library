@@ -29,10 +29,13 @@ import {
   >
     <template #controller-top="{ prev }">
       <button
+        type="button"
+        aria-label="Previous slide"
         @click="prev"
         class="pl-3xs md:pl-2xs text-dark-1 hover:opacity-60 transition-opacity duration-300"
       >
         <svg
+          aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 320 512"
           fill="currentColor"
@@ -59,10 +62,13 @@ import {
     </template>
     <template #controller-bottom="{ next }">
       <button
+        type="button"
+        aria-label="Next slide"
         @click="next"
         class="pr-3xs md:pr-2xs text-dark-1 hover:opacity-60 transition-opacity duration-300"
       >
         <svg
+          aria-hidden="true"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 320 512"
           fill="currentColor"
@@ -76,6 +82,26 @@ import {
       </button>
     </template>
   </CarouselContainer>
+</template>
+```
+
+## Accessibility
+
+- `CarouselContainer` is a region announced as a carousel. Name it with `ariaLabel` (default `'Carousel'`), and give each carousel on a page a different name.
+- Each `CarouselContent` is a group announced as a slide, labelled "1 of 4" and so on.
+- Controller buttons are yours, so name them: icon-only arrows need `aria-label` ("Previous slide", "Next slide") and `aria-hidden="true"` on the icon.
+- For indicator dots, name each one and mark the current one with `aria-current` rather than `disabled`, so it stays reachable and announced:
+
+```vue
+<template #controller-bottom="{ numberOfSlides, setActive, activeSlide }">
+  <button
+    v-for="item in [...Array(numberOfSlides).keys()]"
+    :key="item"
+    type="button"
+    :aria-label="`Slide ${item + 1}`"
+    :aria-current="item === activeSlide ? 'true' : undefined"
+    @click="setActive(item)"
+  ></button>
 </template>
 ```
 

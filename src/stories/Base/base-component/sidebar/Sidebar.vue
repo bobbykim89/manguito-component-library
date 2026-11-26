@@ -120,7 +120,7 @@ const sidebarRight2Ref = ref<InstanceType<typeof Sidebar>>()
     <sidebar
       ref="sidebarLeftRef"
       id="sidebar-left"
-      aria-label="Sidebar left"
+      aria-label="Sidebar Left"
       custom-class="bg-light-1 px-xs overflow-scroll"
     >
       <template #header="{ close }">
@@ -179,14 +179,14 @@ const sidebarRight2Ref = ref<InstanceType<typeof Sidebar>>()
       </template>
       <template #footer>
         <div class="bg-light-1 py-xs">
-          <h4 class="h4-md">This is Footer content</h4>
+          <h3 class="h4-md">This is Footer content</h3>
         </div>
       </template>
     </sidebar>
     <sidebar
       ref="sidebarRightRef"
       id="sidebar-right"
-      aria-label="Sidebar right"
+      aria-label="Sidebar Right"
       placement="right"
       :show-backdrop="false"
       :width="450"
