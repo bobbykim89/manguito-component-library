@@ -222,8 +222,13 @@ describe('MclDropdownA arrow keys (#135)', () => {
     const a = r.container.querySelector('#a')!
     const b = r.container.querySelector('#b')!
     await open(a)
+    // Opening B closes A by click-outside; A's items stay in the DOM while
+    // they fade out, so a lookup that isn't scoped to B would reach them.
     await open(b)
+    expect(itemOf(a, 'A2')).toBeTruthy()
     itemOf(b, 'B1').focus()
+    key(document.activeElement!, 'ArrowUp')
+    expect(document.activeElement).toBe(itemOf(b, 'B1'))
     key(document.activeElement!, 'ArrowDown')
     expect(document.activeElement).toBe(itemOf(b, 'B2'))
     key(document.activeElement!, 'ArrowDown')
