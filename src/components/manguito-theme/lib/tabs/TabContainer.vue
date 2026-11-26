@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, provide, ref, watch } from 'vue'
+import { computed, nextTick, provide, reactive, ref, useId, watch } from 'vue'
 import { tabInjectionKey } from './InjectionKey'
+import type { TabAttrs } from './index.types'
 
 withDefaults(
   defineProps<{
@@ -16,7 +17,12 @@ withDefaults(
 )
 
 defineSlots<{
-  'tab-button'(props: { update: (num: number) => void; activeTab: number }): any
+  'tab-button'(props: {
+    update: (num: number) => void
+    activeTab: number
+    /** Bind on each tab: `v-bind="tabAttrs(i)"` (#128). */
+    tabAttrs: (index: number) => TabAttrs
+  }): any
   'tab-content': any
 }>()
 
@@ -31,6 +37,77 @@ const updateHeight = (height: number) => {
   containerHts.value = height
 }
 
+const updateActiveTab = (num: number) => {
+  activeTabIdx.value = num
+}
+
+// Tab semantics for consumer-rendered tabs (#128). Ids are SSR-stable.
+const baseId = useId()
+const tabId = (index: number): string => `${baseId}-tab-${index}`
+
+// The panel id registered for each tabNumber. Each registration gets its own
+// token: the keyed slide transition mounts the new panels before the leaving
+// ones unmount, so a leaving panel's withdrawal must not drop its successor.
+const panels = reactive(new Map<number, { id: string; token: symbol }>())
+const registerPanel = (tabNumber: number, id: string): (() => void) => {
+  const token = Symbol()
+  panels.set(tabNumber, { id, token })
+  return () => {
+    if (panels.get(tabNumber)?.token === token) panels.delete(tabNumber)
+  }
+}
+
+// Indexes whose tab bound `tabAttrs`. Filled while the `tab-button` slot
+// renders, which is before `tab-content` in the same pass, on the server too.
+// A panel points `aria-labelledby` only at a tab that exists with that id, so
+// a consumer that renders its own tabs gets no dangling reference.
+const boundTabs = new Set<number>()
+const labelledBy = (tabNumber: number): string | undefined =>
+  boundTabs.has(tabNumber) ? tabId(tabNumber) : undefined
+
+const focusTab = (index: number): void => {
+  updateActiveTab(index)
+  nextTick(() => document.getElementById(tabId(index))?.focus())
+}
+
+const onTabKeydown = (index: number, e: KeyboardEvent): void => {
+  const count = panels.size
+  if (count === 0) return
+  let target: number
+  switch (e.key) {
+    case 'ArrowRight':
+      target = (index + 1) % count
+      break
+    case 'ArrowLeft':
+      target = (index - 1 + count) % count
+      break
+    case 'Home':
+      target = 0
+      break
+    case 'End':
+      target = count - 1
+      break
+    default:
+      return
+  }
+  e.preventDefault()
+  focusTab(target)
+}
+
+const tabAttrs = (index: number): TabAttrs => {
+  boundTabs.add(index)
+  const selected = activeTabIdx.value === index
+  return {
+    id: tabId(index),
+    role: 'tab',
+    'aria-selected': selected,
+    'aria-controls': panels.get(index)?.id,
+    tabindex: selected ? 0 : -1,
+    onClick: () => updateActiveTab(index),
+    onKeydown: (e: KeyboardEvent) => onTabKeydown(index, e),
+  }
+}
+
 /**
  * @summary init injection key, shared with TabContent component
  */
@@ -38,11 +115,9 @@ provide(tabInjectionKey, {
   activeTabIdx,
   containerHeight: containerHts,
   updateHeight,
+  registerPanel,
+  labelledBy,
 })
-
-const updateActiveTab = (num: number) => {
-  activeTabIdx.value = num
-}
 
 /**
  * @summary fetch containerHts value updated from child component and update var(--container-hts) accordingly
@@ -85,6 +160,7 @@ watch(
         name="tab-button"
         :update="updateActiveTab"
         :activeTab="activeTabIdx"
+        :tab-attrs="tabAttrs"
       ></slot>
     </div>
     <div :class="contentContainerClass">

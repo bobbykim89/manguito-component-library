@@ -19,6 +19,7 @@ import TabContent from './tabs/TabContent.vue'
 
 // types
 export * from './header/index.types'
+export type { TabAttrs } from './tabs/index.types'
 export * from './theme/static/theme.types'
 
 // export components
