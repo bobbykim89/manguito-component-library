@@ -155,8 +155,10 @@ const dropdownItemKeyUp = (direction: KeyDirection): void => {
     @keyup.up="dropdownItemKeyUp('up')"
   >
     <dropdown-container>
-      <template #toggler="{ toggle, dropdownState }">
+      <template #toggler="{ toggle, dropdownState, attrs }">
         <button
+          type="button"
+          v-bind="attrs"
           @click="(toggle($event), dropdownButtonClick($event))"
           class="btn flex items-center justify-between gap-2xs"
           :class="dropdownButtonClass"
@@ -189,6 +191,7 @@ const dropdownItemKeyUp = (direction: KeyDirection): void => {
         <button
           v-for="(item, idx) in dropdownItems"
           :key="idx"
+          type="button"
           class="block w-full px-xs py-2xs text-left first:pt-xs last:pb-xs"
           :class="dropDownItemClass"
           @click="(itemClick(), dropdownItemClick($event, item))"
