@@ -9,10 +9,14 @@ import CaretDown from '../assets/CaretDown.vue'
 import XMark from '../assets/XMark.vue'
 import FieldFeedback from '../common/FieldFeedback.vue'
 import { useFieldContext } from '../common/fieldContext'
+import { useControlAttrs } from '../common/useControlAttrs'
 import { useInputSurface } from '../common/useInputSurface'
 import type { SelectOptionType, SelectOptions } from './index.types'
 import { optionLabel, optionValue, useSelectFilter } from './useSelectFilter'
 import { useSelectKeyboard } from './useSelectKeyboard'
+
+// #130: attributes go to the focusable element, not the wrapper.
+defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(
   defineProps<{
@@ -82,6 +86,7 @@ defineSlots<{
 }>()
 
 const field = useFieldContext(props)
+const { rootAttrs, controlAttrs } = useControlAttrs(field)
 const surfaceClass = useInputSurface(props)
 
 const rootRef = ref<HTMLElement>()
@@ -283,7 +288,12 @@ watch(model, (value) => {
 </script>
 
 <template>
-  <div ref="rootRef" v-click-outside="closeList" class="relative">
+  <div
+    v-bind="rootAttrs"
+    ref="rootRef"
+    v-click-outside="closeList"
+    class="relative"
+  >
     <!--
       The visible box carries the keyboard focus ring (#122) while its text
       input has focus; the surface's own focus-visible class is inert on a div.
@@ -312,6 +322,7 @@ watch(model, (value) => {
         @focus="openList"
         @input="isFiltering = true"
         @keydown="onKeydown"
+        v-bind="controlAttrs"
       />
       <!-- A real button now: the old <div @click> was neither focusable nor named. -->
       <button

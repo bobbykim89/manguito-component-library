@@ -137,3 +137,36 @@ describe('MclInputFile — inside a group', () => {
     expect(alerts[0].text()).toBe('Group')
   })
 })
+
+// #130: attributes reach the focusable element; class and style stay on the wrapper.
+describe('MclInputFile — attribute passthrough (#130)', () => {
+  it('forwards aria-label and title to the focusable element and keeps class on the wrapper', () => {
+    const wrapper = mount(MclInputFile, {
+      props: {},
+      attrs: {
+        'aria-label': 'Named',
+        title: 'Tip',
+        class: 'w-1/2',
+        'data-testid': 'ctl',
+      },
+    })
+    const control = wrapper.get('input[type="file"]')
+    expect(control.attributes('aria-label')).toBe('Named')
+    expect(control.attributes('title')).toBe('Tip')
+    expect(control.attributes('data-testid')).toBe('ctl')
+    expect(wrapper.classes()).toContain('w-1/2')
+    expect(wrapper.attributes('aria-label')).toBeUndefined()
+    expect(wrapper.attributes('title')).toBeUndefined()
+  })
+
+  it('inside a labelled form group, the control has aria-labelledby = the group label id', () => {
+    const wrapper = mount(MclFormGroup, {
+      props: { fieldId: 'grp', label: 'Group' },
+      slots: { default: () => h(MclInputFile, {}) },
+    })
+    expect(wrapper.get('label').attributes('id')).toBe('grp-label')
+    expect(
+      wrapper.get('input[type="file"]').attributes('aria-labelledby'),
+    ).toBe('grp-label')
+  })
+})

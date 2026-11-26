@@ -3,7 +3,11 @@ import type { ColorPalette } from '@bobbykim/manguito-theme'
 import FieldFeedback from '../common/FieldFeedback.vue'
 import InputHighlight from '../common/InputHighlight.vue'
 import { useFieldContext } from '../common/fieldContext'
+import { useControlAttrs } from '../common/useControlAttrs'
 import { useInputSurface } from '../common/useInputSurface'
+
+// #130: attributes go to the focusable element, not the wrapper.
+defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(
   defineProps<{
@@ -48,11 +52,12 @@ defineSlots<{
 }>()
 
 const field = useFieldContext(props)
+const { rootAttrs, controlAttrs } = useControlAttrs(field)
 const surfaceClass = useInputSurface(props)
 </script>
 
 <template>
-  <div>
+  <div v-bind="rootAttrs">
     <textarea
       :id="field.id"
       v-model="model"
@@ -65,6 +70,7 @@ const surfaceClass = useInputSurface(props)
       :disabled="field.disabled.value"
       :aria-invalid="field.invalid.value || undefined"
       :aria-describedby="field.describedBy.value"
+      v-bind="controlAttrs"
     />
     <input-highlight
       v-if="showHighlight"

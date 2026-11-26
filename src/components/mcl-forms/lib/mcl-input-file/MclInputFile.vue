@@ -5,7 +5,11 @@ import { computed, ref } from 'vue'
 import XMark from '../assets/XMark.vue'
 import FieldFeedback from '../common/FieldFeedback.vue'
 import { useFieldContext } from '../common/fieldContext'
+import { useControlAttrs } from '../common/useControlAttrs'
 import { useInputSurface } from '../common/useInputSurface'
+
+// #130: attributes go to the focusable element, not the wrapper.
+defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(
   defineProps<{
@@ -52,6 +56,7 @@ defineSlots<{
 }>()
 
 const field = useFieldContext(props)
+const { rootAttrs, controlAttrs } = useControlAttrs(field)
 // This component has no showHighlight prop, which is why the option is
 // optional on InputSurfaceOptions. Pass the proxy, never a spread literal.
 const surfaceClass = useInputSurface(props)
@@ -98,7 +103,7 @@ const clearButtonClass = computed<string>(() => {
 </script>
 
 <template>
-  <div>
+  <div v-bind="rootAttrs">
     <div class="flex items-center overflow-hidden" :class="surfaceClass">
       <div class="my-3xs mr-xs ml-3xs shrink-0">
         <button
@@ -125,6 +130,7 @@ const clearButtonClass = computed<string>(() => {
         :aria-invalid="field.invalid.value || undefined"
         :aria-describedby="field.describedBy.value"
         @change="onChangeFile"
+        v-bind="controlAttrs"
       />
       <!--
         The handler lives on the button alone. It used to sit on this wrapper

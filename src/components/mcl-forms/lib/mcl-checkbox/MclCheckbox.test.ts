@@ -206,3 +206,41 @@ describe('MclCheckbox — field context', () => {
     expect(mount(MclCheckbox).find('input').attributes('name')).toBeUndefined()
   })
 })
+
+// #130: attributes reach the focusable element; class and style stay on the wrapper.
+describe('MclCheckbox — attribute passthrough (#130)', () => {
+  it('forwards aria-label and title to the focusable element and keeps class on the wrapper', () => {
+    const wrapper = mount(MclCheckbox, {
+      props: {},
+      attrs: {
+        'aria-label': 'Named',
+        title: 'Tip',
+        class: 'w-1/2',
+        'data-testid': 'ctl',
+      },
+    })
+    const control = wrapper.get('input')
+    expect(control.attributes('aria-label')).toBe('Named')
+    expect(control.attributes('title')).toBe('Tip')
+    expect(control.attributes('data-testid')).toBe('ctl')
+    expect(wrapper.classes()).toContain('w-1/2')
+    expect(wrapper.attributes('aria-label')).toBeUndefined()
+    expect(wrapper.attributes('title')).toBeUndefined()
+  })
+
+  it('inside a labelled form group, the toggle gets no aria-labelledby', () => {
+    const wrapper = mount(MclFormGroup, {
+      props: { label: 'Group' },
+      slots: { default: () => h(MclCheckbox, {}) },
+    })
+    expect(wrapper.get('input').attributes('aria-labelledby')).toBeUndefined()
+  })
+
+  it('a required fieldset group does not make the toggle required', () => {
+    const wrapper = mount(MclFormGroup, {
+      props: { label: 'Group', groupLabel: true, required: true },
+      slots: { default: () => h(MclCheckbox, {}) },
+    })
+    expect(wrapper.get('input').attributes('required')).toBeUndefined()
+  })
+})
