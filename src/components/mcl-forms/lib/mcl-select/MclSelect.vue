@@ -98,6 +98,13 @@ defineSlots<{
 
 const field = useFieldContext(props)
 const { rootAttrs, controlAttrs } = useControlAttrs(field)
+// The listbox takes the combobox's name (#130).
+const listboxLabelledBy = computed<string | undefined>(
+  () => controlAttrs.value['aria-labelledby'] as string | undefined,
+)
+const listboxLabel = computed<string | undefined>(
+  () => controlAttrs.value['aria-label'] as string | undefined,
+)
 const surfaceClass = useInputSurface(props)
 
 const rootRef = ref<HTMLElement>()
@@ -397,8 +404,8 @@ watch(model, (value) => {
         :id="`${field.id}-listbox`"
         ref="dropdownRef"
         role="listbox"
-        :aria-labelledby="controlAttrs['aria-labelledby']"
-        :aria-label="controlAttrs['aria-label']"
+        :aria-labelledby="listboxLabelledBy"
+        :aria-label="listboxLabel"
         class="max-h-[12.5rem] overflow-y-auto border-2"
         :class="listboxClass"
         :style="{ width: `${dropdownWidth}px`, ...floatingStyles }"
