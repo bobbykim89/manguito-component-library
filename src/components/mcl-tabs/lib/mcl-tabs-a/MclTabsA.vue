@@ -81,12 +81,22 @@ const updateScrollButtons = (): void => {
       buttonContainerRef.value.clientWidth + buttonContainerRef.value.scrollLeft
   }
 }
+const scrollBehavior = (): ScrollBehavior =>
+  /**
+   * @summary 'auto' (instant) when the user prefers reduced motion. Read at click time so server rendering never touches window.
+   */
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ? 'auto'
+    : 'smooth'
 const scrollLeft = () => {
   /**
    * @summary scroll tab container to left by 100px
    */
   if (buttonContainerRef.value) {
-    buttonContainerRef.value.scrollBy({ left: -100, behavior: 'smooth' })
+    buttonContainerRef.value.scrollBy({
+      left: -100,
+      behavior: scrollBehavior(),
+    })
   }
 }
 const scrollRight = () => {
@@ -94,7 +104,7 @@ const scrollRight = () => {
    * @summary scroll tab container to right by 100px
    */
   if (buttonContainerRef.value) {
-    buttonContainerRef.value.scrollBy({ left: 100, behavior: 'smooth' })
+    buttonContainerRef.value.scrollBy({ left: 100, behavior: scrollBehavior() })
   }
 }
 const borderClass = computed<string>(() => {
@@ -186,9 +196,12 @@ watch(width, updateScrollButtons)
     <template #tab-button="{ activeTab, tabAttrs }">
       <button
         v-if="showScrollButtons && canScrollLeft"
-        class="absolute top-1/2 left-0 z-10 h-full -translate-y-1/2 transform px-3xs lg:hidden"
+        type="button"
+        aria-hidden="true"
+        tabindex="-1"
+        class="absolute top-1/2 left-0 z-10 h-full min-w-[24px] -translate-y-1/2 transform px-3xs lg:hidden"
         :class="[rounded && 'rounded-l-lg', scrollBtnClass]"
-        aria-label="scroll left"
+        @mousedown.prevent
         @click="scrollLeft"
       >
         <svg
@@ -207,7 +220,10 @@ watch(width, updateScrollButtons)
       </button>
       <div
         ref="buttonContainerRef"
-        :class="['flex flex-nowrap space-x-1 overflow-x-auto p-3xs', tabClass]"
+        :class="[
+          'flex scroll-px-6 flex-nowrap space-x-1 overflow-x-auto p-3xs lg:scroll-px-0',
+          tabClass,
+        ]"
         @scroll="updateScrollButtons"
       >
         <button
@@ -234,9 +250,12 @@ watch(width, updateScrollButtons)
       </div>
       <button
         v-if="showScrollButtons && canScrollRight"
-        class="absolute top-1/2 right-0 z-10 h-full -translate-y-1/2 transform px-3xs lg:hidden"
+        type="button"
+        aria-hidden="true"
+        tabindex="-1"
+        class="absolute top-1/2 right-0 z-10 h-full min-w-[24px] -translate-y-1/2 transform px-3xs lg:hidden"
         :class="[rounded && 'rounded-r-lg', scrollBtnClass]"
-        aria-label="scroll right"
+        @mousedown.prevent
         @click="scrollRight"
       >
         <svg

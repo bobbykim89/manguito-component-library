@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mount, type VueWrapper } from '@vue/test-utils'
 import { generateClass } from '@bobbykim/manguito-theme'
 import { h, nextTick } from 'vue'
@@ -200,5 +200,117 @@ describe('MclTabsA accessibility (#132)', () => {
       expect(tab.classList).toContain('focus-visible:mcl-focus-ring')
       expect(tab.classList).not.toContain('focus:outline-none')
     })
+  })
+})
+
+describe('MclTabsA scroll buttons (#132)', () => {
+  let wrapper: VueWrapper | undefined
+  let reduceMotion = false
+  const originalMatchMedia = window.matchMedia
+
+  const root = () => wrapper!.element as HTMLElement
+  const strip = () => root().querySelector<HTMLElement>('.overflow-x-auto')!
+  const scrollButtons = () =>
+    Array.from(
+      root().querySelectorAll<HTMLButtonElement>('button:not([role="tab"])'),
+    )
+  // Make the strip overflow in jsdom, then report a scroll so the buttons update.
+  const overflow = async (scrollLeft: number) => {
+    const el = strip()
+    Object.defineProperty(el, 'scrollWidth', { value: 500, configurable: true })
+    Object.defineProperty(el, 'clientWidth', { value: 100, configurable: true })
+    Object.defineProperty(el, 'scrollLeft', {
+      value: scrollLeft,
+      configurable: true,
+    })
+    el.scrollBy = vi.fn()
+    el.dispatchEvent(new Event('scroll'))
+    await nextTick()
+    return el
+  }
+  const mountTabs = () => {
+    wrapper = mount(MclTabsA, {
+      props: { tabName: 'demo', content },
+      attachTo: document.body,
+    })
+  }
+
+  beforeEach(() => {
+    reduceMotion = false
+    window.matchMedia = vi.fn((query: string) => ({
+      matches: query === '(prefers-reduced-motion: reduce)' && reduceMotion,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    })) as unknown as typeof window.matchMedia
+  })
+  afterEach(() => {
+    wrapper?.unmount()
+    wrapper = undefined
+    window.matchMedia = originalMatchMedia
+    document.body.innerHTML = ''
+  })
+
+  it('scroll buttons are hidden from assistive tech and out of the Tab order', async () => {
+    mountTabs()
+    await overflow(50)
+    const buttons = scrollButtons()
+    expect(buttons).toHaveLength(2)
+    buttons.forEach((b) => {
+      expect(b.getAttribute('aria-hidden')).toBe('true')
+      expect(b.getAttribute('tabindex')).toBe('-1')
+      expect(b.hasAttribute('aria-label')).toBe(false)
+      expect(b.getAttribute('type')).toBe('button')
+    })
+  })
+
+  it('pressing a scroll button does not take focus', async () => {
+    mountTabs()
+    await overflow(0)
+    const first = root().querySelector<HTMLElement>('[role="tab"]')!
+    first.focus()
+    const right = scrollButtons()[0]
+    const down = new MouseEvent('mousedown', {
+      bubbles: true,
+      cancelable: true,
+    })
+    right.dispatchEvent(down)
+    expect(down.defaultPrevented).toBe(true)
+    right.click()
+    expect(document.activeElement).toBe(first)
+  })
+
+  it('scroll buttons are at least 24px wide', async () => {
+    mountTabs()
+    await overflow(50)
+    scrollButtons().forEach((b) => {
+      expect(b.classList).toContain('min-w-[24px]')
+    })
+  })
+
+  it("the strip reserves the scroll buttons' width when scrolling a tab into view", () => {
+    mountTabs()
+    expect(strip().classList).toContain('scroll-px-6')
+    expect(strip().classList).toContain('lg:scroll-px-0')
+  })
+
+  it('scroll buttons scroll smoothly, or instantly with reduced motion', async () => {
+    for (const reduce of [false, true]) {
+      reduceMotion = reduce
+      mountTabs()
+      const el = await overflow(50)
+      const [left, right] = scrollButtons()
+      const behavior = reduce ? 'auto' : 'smooth'
+      right.click()
+      expect(el.scrollBy).toHaveBeenLastCalledWith({ left: 100, behavior })
+      left.click()
+      expect(el.scrollBy).toHaveBeenLastCalledWith({ left: -100, behavior })
+      wrapper!.unmount()
+      wrapper = undefined
+    }
   })
 })
