@@ -17,4 +17,20 @@ export interface MclCarouselASlotProps {
    * `:ref="(el) => setRef(el)"` bindings are harmless and can be removed.
    */
   setRef: (el: ComponentPublicInstance | Element | null) => void
+  /**
+   * Bind on each card root, `v-bind="slideAttrs(i)"`, to label it as slide
+   * "i + 1 of total" for screen readers (#133). Optional.
+   */
+  slideAttrs: (index: number) => SlideAttrs
+}
+
+/**
+ * Slide semantics from the `carousel` slot's `slideAttrs(index)` (#133):
+ * the APG carousel pattern's labelled group per slide.
+ */
+export interface SlideAttrs {
+  role: 'group'
+  'aria-roledescription': 'slide'
+  /** `${index + 1} of ${total}` */
+  'aria-label': string
 }

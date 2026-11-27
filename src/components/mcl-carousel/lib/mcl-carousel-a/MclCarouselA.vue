@@ -2,17 +2,20 @@
 import type {
   BodyText,
   ColorPalette,
+  HeadingLevel,
   HeadingSize,
   SpacingLevel,
 } from '@bobbykim/manguito-theme'
 import { generateClass } from '@bobbykim/manguito-theme'
-import { computed, ref } from 'vue'
-import type { BtnNav, MclCarouselASlotProps } from './index.types'
+import { computed, ref, useId } from 'vue'
+import type { BtnNav, MclCarouselASlotProps, SlideAttrs } from './index.types'
 import { useCarouselSlide } from './useCarouselSlide'
 
 const props = withDefaults(
   defineProps<{
     title: string
+    /** Heading element for the title (#133). The look comes from `titleSize`. */
+    titleLevel?: HeadingLevel
     titleSize?: HeadingSize
     titleColor?: ColorPalette
     bgColor?: ColorPalette
@@ -30,6 +33,7 @@ const props = withDefaults(
     cardsGap?: SpacingLevel
   }>(),
   {
+    titleLevel: 'h2',
     titleSize: 'md',
     titleColor: 'dark-3',
     bgColor: 'light-1',
@@ -61,17 +65,79 @@ defineSlots<{
 const slideContainer = ref<HTMLElement | null>(null)
 /** The clipping section; "in view" is measured against it (#133). */
 const sectionRef = ref<HTMLElement | null>(null)
-const { isPrevDisabled, isNextDisabled, goTo } = useCarouselSlide(
-  slideContainer,
-  sectionRef,
-)
+const { isPrevDisabled, isNextDisabled, goTo, reveal, visibleRange } =
+  useCarouselSlide(slideContainer, sectionRef)
+
+// --- accessibility (#133) ---
+
+const titleId = useId()
+const rowId = useId()
+
+/**
+ * What a screen reader hears after a button move. Empty on load so nothing is
+ * announced then; a follow move is already announced through the focused card.
+ */
+const statusText = ref('')
+const updateStatus = (): void => {
+  const range = visibleRange()
+  if (!range) return
+  const total = props.content.length
+  statusText.value =
+    range.first === range.last
+      ? `Card ${range.first + 1} of ${total}`
+      : `Cards ${range.first + 1} to ${range.last + 1} of ${total}`
+}
+
+const slideAttrs = (index: number): SlideAttrs => ({
+  role: 'group',
+  'aria-roledescription': 'slide',
+  'aria-label': `${index + 1} of ${props.content.length}`,
+})
 
 const handleSlideBtnClick = (e: Event, btn: BtnNav): void => {
+  // The buttons stay focusable at the ends (aria-disabled, not disabled), so
+  // a press there must do nothing.
+  if (btn === 'prev' ? isPrevDisabled.value : isNextDisabled.value) return
   // Emit only once the move is accepted, preserving the previous behaviour
   // where a click landing mid-transition was ignored outright.
   if (!goTo(btn)) return
+  updateStatus()
   if (btn === 'prev') emit('btn-prev', e)
   else emit('btn-next', e)
+}
+
+/**
+ * A pointer press focuses on mousedown, before click. Sliding then would move
+ * another card under the pointer and lose the click, so focus that comes from
+ * a pointer press inside the row doesn't trigger a follow move.
+ */
+let pointerFocus = false
+const onRowPointerdown = (): void => {
+  pointerFocus = true
+}
+const clearPointerFocus = (): void => {
+  pointerFocus = false
+}
+
+/** Focus follow: a card that gets keyboard focus slides fully into view. */
+const onRowFocusin = (e: FocusEvent): void => {
+  if (pointerFocus) return
+  const row = slideContainer.value
+  if (!row || !(e.target instanceof Node)) return
+  const index = Array.from(row.children).findIndex((card) =>
+    card.contains(e.target as Node),
+  )
+  if (index !== -1) reveal(index)
+}
+
+/**
+ * Focusing a clipped element makes the browser scroll the nearest scroll
+ * container, this overflow-hidden section, which fights the transform.
+ */
+const onSectionScroll = (): void => {
+  if (sectionRef.value && sectionRef.value.scrollLeft !== 0) {
+    sectionRef.value.scrollLeft = 0
+  }
 }
 
 /**
@@ -130,6 +196,9 @@ const cardsGapClass = computed(() =>
     ref="sectionRef"
     class="overflow-hidden py-lg lg:py-xl"
     :class="sectionBgClass"
+    aria-roledescription="carousel"
+    :aria-labelledby="titleId"
+    @scroll="onSectionScroll"
   >
     <div class="container px-xs text-center sm:px-md sm:text-left">
       <div class="relative">
@@ -145,7 +214,13 @@ const cardsGapClass = computed(() =>
             :class="tagLineClass"
             v-html="tagLine"
           ></span>
-          <h2 class="tracking-wide" :class="titleClass" v-html="title"></h2>
+          <component
+            :is="titleLevel"
+            :id="titleId"
+            class="tracking-wide"
+            :class="titleClass"
+            ><span v-html="title"></span
+          ></component>
         </div>
         <div
           class="relative flex flex-wrap items-center justify-center space-y-4 space-x-4 sm:flex-nowrap sm:justify-start"
@@ -155,11 +230,13 @@ const cardsGapClass = computed(() =>
           </div>
           <div class="flex space-x-4">
             <button
-              class="grid place-items-center rounded-full p-xs transition-all duration-200 hover:bg-opacity-80 focus-visible:mcl-focus-ring disabled:opacity-50"
+              type="button"
+              class="grid place-items-center rounded-full p-xs transition-all duration-200 hover:bg-opacity-80 focus-visible:mcl-focus-ring aria-disabled:opacity-50"
               :class="navBtnClass"
-              :disabled="isPrevDisabled"
+              :aria-disabled="isPrevDisabled"
+              :aria-controls="rowId"
+              aria-label="Previous cards"
               @click="handleSlideBtnClick($event, 'prev')"
-              aria-label="previous"
             >
               <svg
                 aria-hidden="true"
@@ -176,11 +253,13 @@ const cardsGapClass = computed(() =>
               </svg>
             </button>
             <button
-              class="grid place-items-center rounded-full p-xs transition-all duration-200 hover:bg-opacity-80 focus-visible:mcl-focus-ring disabled:opacity-50"
+              type="button"
+              class="grid place-items-center rounded-full p-xs transition-all duration-200 hover:bg-opacity-80 focus-visible:mcl-focus-ring aria-disabled:opacity-50"
               :class="navBtnClass"
-              :disabled="isNextDisabled"
+              :aria-disabled="isNextDisabled"
+              :aria-controls="rowId"
+              aria-label="Next cards"
               @click="handleSlideBtnClick($event, 'next')"
-              aria-label="next"
             >
               <svg
                 aria-hidden="true"
@@ -202,12 +281,25 @@ const cardsGapClass = computed(() =>
     </div>
     <div class="container mt-md sm:mt-lg lg:mt-xl">
       <div
-        class="flex gap-xs px-xs transition-transform duration-500"
+        :id="rowId"
+        class="flex gap-xs px-xs transition-transform duration-500 motion-reduce:transition-none"
         :class="cardsGapClass"
         ref="slideContainer"
+        @pointerdown="onRowPointerdown"
+        @click="clearPointerFocus"
+        @keydown="clearPointerFocus"
+        @focusin="onRowFocusin"
       >
-        <slot name="carousel" :cards="content" :set-ref="setCarouselRef"></slot>
+        <slot
+          name="carousel"
+          :cards="content"
+          :set-ref="setCarouselRef"
+          :slide-attrs="slideAttrs"
+        ></slot>
       </div>
+      <p class="sr-only" aria-live="polite" aria-atomic="true">
+        {{ statusText }}
+      </p>
     </div>
   </section>
 </template>
