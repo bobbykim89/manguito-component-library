@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { h, nextTick } from 'vue'
 import { generateClass } from '@bobbykim/manguito-theme'
@@ -287,5 +287,225 @@ describe('MclHeaderA top-level links (#131)', () => {
     const home = linkByText(document.body, 'Home')
     expect(home.classList.contains('focus-visible:mcl-focus-ring')).toBe(true)
     expect(home.classList.contains('outline-none')).toBe(false)
+  })
+})
+
+const key = (el: Element, k: string): KeyboardEvent => {
+  const e = new KeyboardEvent('keydown', {
+    key: k,
+    bubbles: true,
+    cancelable: true,
+  })
+  el.dispatchEvent(e)
+  return e
+}
+const dropdownItems = [
+  {
+    title: 'More',
+    children: [
+      { title: 'C1', url: '/c1', current: true },
+      { title: 'C2', url: '/c2' },
+      { title: 'C3', url: 'https://c3.test', target: '_blank' as const },
+    ],
+  },
+]
+const c3 = (root: ParentNode = document.body) =>
+  Array.from(root.querySelectorAll('a')).find((a) =>
+    a.textContent?.includes('C3'),
+  )!
+
+describe('MclHeaderA desktop dropdown (#131)', () => {
+  let w: ReturnType<typeof mount> | undefined
+  // Real <Transition>s (mount stubs them by default), so closing content
+  // stays in the DOM while it leaves, as in a browser.
+  const mountA = (extra: Record<string, unknown> = {}) => {
+    w = mount(MclHeaderA, {
+      props: { ...props, menuItems: dropdownItems, ...extra },
+      attachTo: document.body,
+      global: { stubs: { transition: false } },
+    })
+  }
+  const toggle = () => buttonByText(document.body, 'More')
+  const open = async () => {
+    toggle().click()
+    await nextTick()
+  }
+  afterEach(() => {
+    w?.unmount()
+    w = undefined
+    document.body.innerHTML = ''
+  })
+
+  it('the dropdown toggle exposes aria-expanded and aria-controls and is type="button"', async () => {
+    mountA()
+    expect(toggle().getAttribute('type')).toBe('button')
+    expect(toggle().getAttribute('aria-expanded')).toBe('false')
+    const controls = toggle().getAttribute('aria-controls')
+    expect(controls).toBeTruthy()
+    await open()
+    expect(toggle().getAttribute('aria-expanded')).toBe('true')
+    expect(
+      document
+        .getElementById(controls!)!
+        .contains(linkByText(document.body, 'C1')),
+    ).toBe(true)
+  })
+
+  it('choosing a dropdown link closes it and returns focus to its toggle', async () => {
+    mountA()
+    await open()
+    const c2 = linkByText(document.body, 'C2')
+    c2.focus()
+    c2.click()
+    await nextTick()
+    await settle()
+    expect(linkByText(document.body, 'C2')).toBeUndefined()
+    expect(document.activeElement).toBe(toggle())
+  })
+
+  it('collapse-click still reports the state from before the click', async () => {
+    const onCollapseClick = vi.fn()
+    mountA({ onCollapseClick })
+    await open()
+    expect(onCollapseClick).toHaveBeenCalledTimes(1)
+    expect(onCollapseClick).toHaveBeenCalledWith(
+      expect.any(Event),
+      'More',
+      false,
+    )
+  })
+
+  it('ArrowDown from the open toggle focuses the first link and prevents default', async () => {
+    mountA()
+    await open()
+    toggle().focus()
+    const e = key(toggle(), 'ArrowDown')
+    expect(e.defaultPrevented).toBe(true)
+    expect(document.activeElement).toBe(linkByText(document.body, 'C1'))
+  })
+
+  it('ArrowDown and ArrowUp move one link and stop at the ends', async () => {
+    mountA()
+    await open()
+    const one = linkByText(document.body, 'C1')
+    const two = linkByText(document.body, 'C2')
+    const three = c3()
+    one.focus()
+    const steps: [string, HTMLElement][] = [
+      ['ArrowDown', two],
+      ['ArrowDown', three],
+      ['ArrowDown', three],
+      ['ArrowUp', two],
+      ['ArrowUp', one],
+      ['ArrowUp', one],
+    ]
+    for (const [k, expected] of steps) {
+      const e = key(document.activeElement!, k)
+      expect(e.defaultPrevented).toBe(true)
+      expect(document.activeElement).toBe(expected)
+    }
+  })
+
+  it('arrows follow focus moved by Tab', async () => {
+    mountA()
+    await open()
+    linkByText(document.body, 'C2').focus()
+    key(document.activeElement!, 'ArrowDown')
+    expect(document.activeElement).toBe(c3())
+  })
+
+  it('ArrowUp from the open toggle prevents default and keeps focus on it', async () => {
+    mountA()
+    await open()
+    toggle().focus()
+    const e = key(toggle(), 'ArrowUp')
+    expect(e.defaultPrevented).toBe(true)
+    expect(document.activeElement).toBe(toggle())
+  })
+
+  it('arrows with the dropdown closed are not handled', async () => {
+    mountA()
+    toggle().focus()
+    let e!: KeyboardEvent
+    expect(() => (e = key(toggle(), 'ArrowDown'))).not.toThrow()
+    expect(e.defaultPrevented).toBe(false)
+    expect(key(toggle(), 'ArrowUp').defaultPrevented).toBe(false)
+    expect(document.activeElement).toBe(toggle())
+    // closed again while the links may still be leaving
+    await open()
+    toggle().click()
+    await nextTick()
+    expect(key(toggle(), 'ArrowDown').defaultPrevented).toBe(false)
+    expect(key(toggle(), 'ArrowUp').defaultPrevented).toBe(false)
+  })
+
+  it('other keys are not prevented', async () => {
+    mountA()
+    await open()
+    const one = linkByText(document.body, 'C1')
+    one.focus()
+    expect(key(one, 'Tab').defaultPrevented).toBe(false)
+    expect(key(one, 'a').defaultPrevented).toBe(false)
+  })
+
+  it('two dropdowns: arrows move only within their own links', async () => {
+    mountA({
+      menuItems: [
+        {
+          title: 'A',
+          children: [
+            { title: 'A1', url: '/a1' },
+            { title: 'A2', url: '/a2' },
+          ],
+        },
+        {
+          title: 'B',
+          children: [
+            { title: 'B1', url: '/b1' },
+            { title: 'B2', url: '/b2' },
+          ],
+        },
+      ],
+    })
+    buttonByText(document.body, 'A').click()
+    await nextTick()
+    // Opening B closes A by click-outside; A's links stay in the DOM while
+    // they fade out, so a lookup that isn't scoped to B would reach them.
+    buttonByText(document.body, 'B').click()
+    await nextTick()
+    expect(linkByText(document.body, 'A2')).toBeTruthy()
+    const b1 = linkByText(document.body, 'B1')
+    const b2 = linkByText(document.body, 'B2')
+    b1.focus()
+    key(document.activeElement!, 'ArrowUp')
+    expect(document.activeElement).toBe(b1)
+    key(document.activeElement!, 'ArrowDown')
+    expect(document.activeElement).toBe(b2)
+    key(document.activeElement!, 'ArrowDown')
+    expect(document.activeElement).toBe(b2)
+  })
+
+  it('dropdown links: current has aria-current and the highlight background, _blank has new-tab text', async () => {
+    mountA()
+    await open()
+    const one = linkByText(document.body, 'C1')
+    const two = linkByText(document.body, 'C2')
+    const highlightBg = generateClass.bgColorVariant({ color: 'primary' })
+    expect(one.getAttribute('aria-current')).toBe('page')
+    expect(hasClasses(one, highlightBg)).toBe(true)
+    expect(two.hasAttribute('aria-current')).toBe(false)
+    expect(hasClasses(two, highlightBg)).toBe(false)
+    expect(c3().querySelector('.sr-only')?.textContent?.trim()).toBe(
+      '(opens in a new tab)',
+    )
+    expect(two.querySelector('.sr-only')).toBeNull()
+  })
+
+  it('the dropdown toggle uses the shared focus ring', () => {
+    mountA()
+    expect(toggle().classList.contains('focus-visible:mcl-focus-ring')).toBe(
+      true,
+    )
+    expect(toggle().classList.contains('outline-none')).toBe(false)
   })
 })

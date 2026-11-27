@@ -94,10 +94,6 @@ const linkByText = (root: ParentNode, text: string) =>
   Array.from(root.querySelectorAll<HTMLAnchorElement>('a')).find(
     (a) => a.textContent?.trim() === text,
   )!
-const buttonByText = (root: ParentNode, text: string) =>
-  Array.from(root.querySelectorAll<HTMLButtonElement>('button')).find(
-    (b) => b.textContent?.trim() === text,
-  )!
 const hasClasses = (el: Element, classString: string) =>
   classString
     .split(' ')
