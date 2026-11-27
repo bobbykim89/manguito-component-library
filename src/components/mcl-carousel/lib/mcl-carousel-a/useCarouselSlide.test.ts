@@ -30,6 +30,8 @@ const rect = (left: number, right: number) =>
 let api: UseCarouselSlideReturn
 let wrapper: VueWrapper | undefined
 let transitionDuration = ''
+let transitionProperty = 'all'
+let sectionScroll = 0
 let observerCallback: IntersectionObserverCallback | undefined
 
 const Harness = defineComponent({
@@ -65,11 +67,16 @@ const mountWithLayout = async (view = 250) => {
       configurable: true,
     })
     card.getBoundingClientRect = () => {
-      const left = i * (CARD + GAP) + translateOf(row)
+      // the browser may scroll the clipping section, which shifts every card
+      const left = i * (CARD + GAP) + translateOf(row) - sectionScroll
       return rect(left, left + CARD)
     }
   })
   section.getBoundingClientRect = () => rect(0, view)
+  Object.defineProperty(section, 'scrollLeft', {
+    get: () => sectionScroll,
+    configurable: true,
+  })
   await nextTick()
   return { section, row }
 }
@@ -78,12 +85,15 @@ describe('useCarouselSlide (#133)', () => {
   const originalGetComputedStyle = window.getComputedStyle
   beforeEach(() => {
     transitionDuration = ''
+    transitionProperty = 'all'
+    sectionScroll = 0
     observerCallback = undefined
     window.getComputedStyle = ((el: Element) => {
       const real = originalGetComputedStyle(el)
       return new Proxy(real, {
         get(target, prop) {
           if (prop === 'transitionDuration') return transitionDuration
+          if (prop === 'transitionProperty') return transitionProperty
           if (prop === 'transform')
             return (el as HTMLElement).style.transform || 'none'
           const value = Reflect.get(target, prop)
@@ -159,6 +169,41 @@ describe('useCarouselSlide (#133)', () => {
     expect(api.isNextDisabled.value).toBe(true)
     expect(api.reveal(7)).toBe(true)
     expect(api.currentIndex.value).toBe(6)
+    expect(api.isNextDisabled.value).toBe(true)
+  })
+
+  it('moves on every press when transition-property is none (motion-reduce:transition-none)', async () => {
+    await mountWithLayout()
+    // Tailwind's motion-reduce:transition-none keeps duration-500's 0.5s
+    transitionProperty = 'none'
+    transitionDuration = '0.5s'
+    expect(api.goTo('next')).toBe(true)
+    expect(api.goTo('next')).toBe(true)
+    expect(api.goTo('next')).toBe(true)
+    expect(api.currentIndex.value).toBe(3)
+  })
+
+  it('reveal measures correctly while the browser has scrolled the section', async () => {
+    await mountWithLayout()
+    // Chromium scrolls the overflow-hidden section to the focused card
+    // before focusin fires
+    sectionScroll = 500
+    expect(api.reveal(7)).toBe(true)
+    expect(api.currentIndex.value).toBe(6)
+  })
+
+  it('Next stays disabled when Prev returns to where Next stopped after a follow move', async () => {
+    await mountWithLayout(300)
+    for (let i = 0; i < 5; i++) api.goTo('next')
+    observerCallback!(
+      [{ isIntersecting: true } as IntersectionObserverEntry],
+      {} as IntersectionObserver,
+    )
+    api.reveal(7)
+    expect(api.currentIndex.value).toBe(6)
+    // the last card never drops below 75% in view, so the observer stays quiet
+    api.goTo('prev')
+    expect(api.currentIndex.value).toBe(5)
     expect(api.isNextDisabled.value).toBe(true)
   })
 

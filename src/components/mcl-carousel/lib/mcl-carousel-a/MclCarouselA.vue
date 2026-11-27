@@ -7,6 +7,7 @@ import type {
   SpacingLevel,
 } from '@bobbykim/manguito-theme'
 import { generateClass } from '@bobbykim/manguito-theme'
+import { useEventListener } from '@vueuse/core'
 import { computed, ref, useId } from 'vue'
 import type { BtnNav, MclCarouselASlotProps, SlideAttrs } from './index.types'
 import { useCarouselSlide } from './useCarouselSlide'
@@ -118,9 +119,18 @@ const onRowPointerdown = (): void => {
 const clearPointerFocus = (): void => {
   pointerFocus = false
 }
+// Any key press anywhere ends the pointer gesture, so a press dragged off the
+// row (its click lands elsewhere) can't suppress later keyboard focus follow.
+// Not cleared on pointerup: on touch, focus arrives after pointerup.
+useEventListener('keydown', clearPointerFocus, { capture: true })
 
 /** Focus follow: a card that gets keyboard focus slides fully into view. */
 const onRowFocusin = (e: FocusEvent): void => {
+  // Chromium has already scrolled the clipping section to the focused card;
+  // undo it first, for pointer focus too.
+  if (sectionRef.value && sectionRef.value.scrollLeft !== 0) {
+    sectionRef.value.scrollLeft = 0
+  }
   if (pointerFocus) return
   const row = slideContainer.value
   if (!row || !(e.target instanceof Node)) return
@@ -287,7 +297,7 @@ const cardsGapClass = computed(() =>
         ref="slideContainer"
         @pointerdown="onRowPointerdown"
         @click="clearPointerFocus"
-        @keydown="clearPointerFocus"
+        @pointercancel="clearPointerFocus"
         @focusin="onRowFocusin"
       >
         <slot

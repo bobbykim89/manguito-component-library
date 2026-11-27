@@ -220,6 +220,45 @@ describe('MclCarouselA accessibility (#133)', () => {
     expect(row().style.transform).toBe('')
   })
 
+  it('a pointer press that never becomes a click does not suppress keyboard follow', async () => {
+    mountCarousel()
+    layout()
+    // a press dragged off the row: pointerdown inside, click lands elsewhere
+    cardLink(3).dispatchEvent(new Event('pointerdown', { bubbles: true }))
+    document.body.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Tab', bubbles: true }),
+    )
+    cardLink(5).focus()
+    await nextTick()
+    expect(row().style.transform).toBe('translateX(-330px)')
+  })
+
+  it('a cancelled pointer press (touch pan) does not suppress keyboard follow', async () => {
+    mountCarousel()
+    layout()
+    cardLink(3).dispatchEvent(new Event('pointerdown', { bubbles: true }))
+    cardLink(3).dispatchEvent(new Event('pointercancel', { bubbles: true }))
+    cardLink(5).focus()
+    await nextTick()
+    expect(row().style.transform).toBe('translateX(-330px)')
+  })
+
+  it('focus resets a section the browser scrolled, before measuring', async () => {
+    mountCarousel()
+    layout()
+    let scrollLeft = 0
+    Object.defineProperty(section(), 'scrollLeft', {
+      get: () => scrollLeft,
+      set: (v: number) => {
+        scrollLeft = v
+      },
+      configurable: true,
+    })
+    section().scrollLeft = 1680
+    cardLink(8).focus()
+    expect(section().scrollLeft).toBe(0)
+  })
+
   it('the clipping section is never left scrolled', async () => {
     mountCarousel()
     let scrollLeft = 0

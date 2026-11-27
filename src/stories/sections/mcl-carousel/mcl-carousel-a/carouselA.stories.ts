@@ -376,3 +376,93 @@ export const MclCarouselPointerClick: Story = {
     await expect(row.style.transform).toBe(transform)
   },
 }
+
+// A focusable element after the carousel, for entering it backwards.
+const withButtonAfter: Story['render'] = (args) => ({
+  components: { 'mcl-carousel-a': MclCarouselA, 'mcl-card-a': MclCardA },
+  setup() {
+    return { args }
+  },
+  template: `<div>${(MclCarouselExampleA.render as any)(args).template}<button type="button">After the carousel</button></div>`,
+})
+
+/** The card holding focus, once it has settled fully in view. */
+const expectFocusedCardInView = async (
+  cards: HTMLElement[],
+  section: HTMLElement,
+) => {
+  const i = cards.findIndex((card) => card.contains(document.activeElement))
+  await expect(i).not.toBe(-1)
+  await expectFullyInView(cards[i], section)
+}
+
+// Shift+Tab into the carousel from below lands on the last card, far out of
+// view; Chromium scrolls the clipping section before focusin fires.
+export const MclCarouselShiftTabIn: Story = {
+  ...MclCarouselExampleA,
+  name: 'Mcl Carousel Shift Tab In',
+  render: withButtonAfter,
+  globals: { viewport: { value: 'desktop', isRotated: false } },
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    const { section, row, cards } = carouselParts(canvasElement)
+    await expectOverflow(row, section)
+    canvas.getByRole('button', { name: 'After the carousel' }).focus()
+    for (let i = 0; i < 3; i++) {
+      await userEvent.tab({ shift: true })
+      await expectFocusedCardInView(cards, section)
+      await waitFor(() => expect(section.scrollLeft).toBe(0))
+    }
+  },
+}
+
+// A script focusing a card far out of view (spec: any focus but a pointer's).
+export const MclCarouselFocusFromScript: Story = {
+  ...MclCarouselExampleA,
+  name: 'Mcl Carousel Focus From Script',
+  globals: { viewport: { value: 'desktop', isRotated: false } },
+  play: async ({ canvasElement }) => {
+    const { section, row, cards } = carouselParts(canvasElement)
+    await expectOverflow(row, section)
+    cards[cards.length - 1]
+      .querySelector<HTMLElement>('[data-mcl-card-target]')!
+      .focus()
+    await expectFocusedCardInView(cards, section)
+    await waitFor(() => expect(section.scrollLeft).toBe(0))
+  },
+}
+
+// Holding Tab: presses arrive faster than the slide.
+export const MclCarouselRapidTab: Story = {
+  ...MclCarouselExampleA,
+  name: 'Mcl Carousel Rapid Tab',
+  globals: { viewport: { value: 'desktop', isRotated: false } },
+  play: async ({ canvasElement, userEvent }) => {
+    const { section, next, row, cards } = carouselParts(canvasElement)
+    await expectOverflow(row, section)
+    next.focus()
+    await userEvent.keyboard('{Tab}{Tab}{Tab}{Tab}{Tab}{Tab}{Tab}{Tab}{Tab}')
+    await expectFocusedCardInView(cards, section)
+    await waitFor(() => expect(section.scrollLeft).toBe(0))
+  },
+}
+
+// motion-reduce:transition-none leaves transition-property: none with the
+// 0.5s duration still set. Applied inline here, as the media query would.
+export const MclCarouselReducedMotion: Story = {
+  ...MclCarouselExampleA,
+  name: 'Mcl Carousel Reduced Motion',
+  globals: { viewport: { value: 'desktop', isRotated: false } },
+  play: async ({ canvasElement, userEvent }) => {
+    const { section, next, row } = carouselParts(canvasElement)
+    await expectOverflow(row, section)
+    row.style.transitionProperty = 'none'
+    await expect(getComputedStyle(row).transitionDuration).toBe('0.5s')
+    next.focus()
+    const seen = new Set<string>()
+    for (let i = 0; i < 3; i++) {
+      await userEvent.keyboard('{Enter}')
+      seen.add(row.style.transform)
+    }
+    await expect(seen.size).toBe(3)
+  },
+}

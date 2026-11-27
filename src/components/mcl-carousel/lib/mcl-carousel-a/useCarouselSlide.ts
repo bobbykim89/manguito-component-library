@@ -145,16 +145,26 @@ export const useCarouselSlide = (
     const first = cardAt(0)
     const view = viewport.value
     if (!row || !first || !view) return null
-    const origin = first.getBoundingClientRect().left - currentTranslate(row)
+    // Chromium scrolls the overflow-hidden section to a focused card before
+    // focusin fires; that scroll shifts every card rect, so add it back.
+    const origin =
+      first.getBoundingClientRect().left -
+      currentTranslate(row) +
+      view.scrollLeft
     const rect = view.getBoundingClientRect()
     return { start: rect.left - origin, end: rect.right - origin }
   }
 
   /** True when the row has a transition that will fire `transitionend`. */
-  const hasTransition = (row: HTMLElement): boolean =>
-    (getComputedStyle(row).transitionDuration ?? '')
+  const hasTransition = (row: HTMLElement): boolean => {
+    const style = getComputedStyle(row)
+    // Tailwind's motion-reduce:transition-none sets transition-property: none
+    // but leaves the duration from duration-500 in place.
+    if ((style.transitionProperty ?? '').trim() === 'none') return false
+    return (style.transitionDuration ?? '')
       .split(',')
       .some((d) => parseFloat(d) > 0)
+  }
 
   const applyTransform = (): void => {
     const row = container.value
@@ -164,9 +174,17 @@ export const useCarouselSlide = (
 
     appliedShift = target.offsetLeft - first.offsetLeft
     row.style.transform = `translateX(-${appliedShift}px)`
-    // Re-enable `next`; the observer disables it again if the last card is
-    // still in view once this move settles.
-    isNextDisabled.value = false
+    // Decide `next` from the layout at the new position. The observer only
+    // fires when the last card crosses its threshold, so a move between two
+    // positions where it stays in view (possible after a follow move) would
+    // otherwise leave `next` wrong. The observer still covers load and resize.
+    const cards = cardSpans()
+    const view = viewSpan()
+    const shift = cards[currentIndex.value]?.start
+    isNextDisabled.value =
+      !!view &&
+      shift !== undefined &&
+      lastCardFraction(cards, shift, view) >= LAST_CARD_VISIBILITY_THRESHOLD
   }
 
   const goTo = (direction: BtnNav): boolean => {
@@ -197,12 +215,6 @@ export const useCarouselSlide = (
     currentIndex.value = target
     syncLastCard()
     applyTransform()
-    // The observer only fires when the last card crosses its threshold, so a
-    // follow move that keeps it in view would leave Next re-enabled by
-    // applyTransform. Decide from the layout instead.
-    isNextDisabled.value =
-      lastCardFraction(cards, cards[target].start, view) >=
-      LAST_CARD_VISIBILITY_THRESHOLD
     if (container.value && !hasTransition(container.value)) isMoving = false
     return true
   }
