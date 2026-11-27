@@ -6,7 +6,7 @@ import {
   TabContent,
 } from '@bobbykim/manguito-theme'
 import { useElementSize } from '@vueuse/core'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import type { ContentType } from './index.types'
 
 const props = withDefaults(
@@ -45,9 +45,30 @@ const emit = defineEmits<{
   (e: 'tab-click', event: Event, title: string): void
 }>()
 
-const hadleTabClick = (e: Event, title: string): void => {
-  e.preventDefault()
-  emit('tab-click', e, title)
+const onTabClick = (e: MouseEvent, idx: number, activeTab: number): void => {
+  /**
+   * @summary emit tab-click for a click (or Enter/Space) that changes the selection.
+   * `activeTab` is the slot value from this render, so it is still the previous selection.
+   */
+  if (idx === activeTab) return
+  emit('tab-click', e, props.content[idx].title)
+}
+const onTabKeydown = async (e: KeyboardEvent): Promise<void> => {
+  /**
+   * @summary emit tab-click when the base tab keys (arrows, Home, End) change the selection.
+   * The base handler prevents the keys it handles and focuses the new tab in a nextTick;
+   * read where focus landed instead of repeating its key logic.
+   */
+  if (!e.defaultPrevented || !buttonContainerRef.value) return
+  const tabEls = Array.from(
+    buttonContainerRef.value.querySelectorAll<HTMLElement>('[role="tab"]'),
+  )
+  const from = tabEls.indexOf(e.currentTarget as HTMLElement)
+  await nextTick()
+  await nextTick()
+  const to = tabEls.indexOf(document.activeElement as HTMLElement)
+  if (to === -1 || to === from) return
+  emit('tab-click', e, props.content[to].title)
 }
 const updateScrollButtons = (): void => {
   /**
@@ -162,7 +183,7 @@ watch(width, updateScrollButtons)
       'mt-2xs relative p-xs lg:px-sm whitespace-pre-line',
     ]"
   >
-    <template #tab-button="{ update, activeTab }">
+    <template #tab-button="{ activeTab, tabAttrs }">
       <button
         v-if="showScrollButtons && canScrollLeft"
         class="absolute top-1/2 left-0 z-10 h-full -translate-y-1/2 transform px-3xs lg:hidden"
@@ -192,20 +213,23 @@ watch(width, updateScrollButtons)
         <button
           v-for="(item, idx) in content"
           :key="idx"
-          role="tab"
-          :aria-selected="activeTab === idx"
-          :tabindex="activeTab === idx ? -1 : 0"
+          type="button"
+          v-bind="tabAttrs(idx)"
+          :aria-controls="generateTabId(idx)"
           :class="[
             activeTab === idx ? activeBtnClass : inactiveBtnClass,
             rounded && 'rounded-lg',
-            'w-full min-w-[50%] py-2.5 text-center focus:outline-none md:min-w-[33%] lg:min-w-fit',
+            'w-full min-w-[50%] py-2.5 text-center focus-visible:mcl-focus-ring md:min-w-[33%] lg:min-w-fit',
           ]"
-          :disabled="activeTab === idx"
-          @click="(hadleTabClick($event, item.title), update(idx))"
+          @click="onTabClick($event, idx, activeTab)"
+          @keydown="onTabKeydown"
         >
-          <h3 :class="generateClass.h3Variant({ size: titleSize })">
+          <span
+            class="block"
+            :class="generateClass.h3Variant({ size: titleSize })"
+          >
             {{ item.title }}
-          </h3>
+          </span>
         </button>
       </div>
       <button
