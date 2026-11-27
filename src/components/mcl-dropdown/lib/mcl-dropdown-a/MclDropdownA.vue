@@ -51,8 +51,7 @@ const emit = defineEmits<{
   (e: 'button-click', event: Event): void
   (e: 'item-click', event: Event, item: DropdownItem): void
 }>()
-const contentIndexRef = ref<number>(-1)
-const contentItemRef = ref<HTMLButtonElement[]>()
+const togglerRef = ref<HTMLButtonElement>()
 
 const dropdownButtonClass = computed(() => {
   /**
@@ -126,37 +125,46 @@ const dropDownItemClass = computed<string>(() => {
   return classArray.join(' ')
 })
 const dropdownButtonClick = (e: Event): void => {
-  // resets index
-  contentIndexRef.value = -1
   emit('button-click', e)
 }
 const dropdownItemClick = (e: Event, item: DropdownItem): void => {
   emit('item-click', e, item)
 }
-type KeyDirection = 'up' | 'down'
-const dropdownItemKeyUp = (direction: KeyDirection): void => {
-  const itemLength: number = props.dropdownItems.length
-  if (contentItemRef.value === undefined) {
-    return
+// Up/Down while the list is open and focus is on the toggle or an item (#135):
+// the position comes from the focused item, so Tab and the arrows agree.
+// Moves one item, stops at the ends, never scrolls the page.
+const onArrowKey = (e: KeyboardEvent): void => {
+  if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return
+  const toggler = togglerRef.value
+  if (!toggler || toggler.getAttribute('aria-expanded') !== 'true') return
+  const contentId = toggler.getAttribute('aria-controls')
+  const content = contentId ? document.getElementById(contentId) : null
+  const items = content
+    ? Array.from(content.querySelectorAll<HTMLButtonElement>(':scope > button'))
+    : []
+  const active = document.activeElement
+  const index = items.indexOf(active as HTMLButtonElement)
+  if (active !== toggler && index === -1) return
+  e.preventDefault()
+  const last = items.length - 1
+  let target: HTMLButtonElement | undefined
+  if (e.key === 'ArrowDown') {
+    target = index === -1 ? items[0] : items[Math.min(index + 1, last)]
+  } else if (index !== -1) {
+    target = items[Math.max(index - 1, 0)]
   }
-  if (direction === 'down' && contentIndexRef.value < itemLength - 1) {
-    contentIndexRef.value++
-  }
-  if (direction === 'up' && contentIndexRef.value > 0) {
-    contentIndexRef.value--
-  }
-  contentItemRef.value[contentIndexRef.value].focus()
+  target?.focus()
 }
 </script>
 
 <template>
-  <div
-    @keyup.down="dropdownItemKeyUp('down')"
-    @keyup.up="dropdownItemKeyUp('up')"
-  >
+  <div @keydown="onArrowKey">
     <dropdown-container>
-      <template #toggler="{ toggle, dropdownState }">
+      <template #toggler="{ toggle, dropdownState, attrs }">
         <button
+          ref="togglerRef"
+          type="button"
+          v-bind="attrs"
           @click="(toggle($event), dropdownButtonClick($event))"
           class="btn flex items-center justify-between gap-2xs"
           :class="dropdownButtonClass"
@@ -189,10 +197,10 @@ const dropdownItemKeyUp = (direction: KeyDirection): void => {
         <button
           v-for="(item, idx) in dropdownItems"
           :key="idx"
+          type="button"
           class="block w-full px-xs py-2xs text-left first:pt-xs last:pb-xs"
           :class="dropDownItemClass"
           @click="(itemClick(), dropdownItemClick($event, item))"
-          ref="contentItemRef"
         >
           {{ item.title }}
         </button>

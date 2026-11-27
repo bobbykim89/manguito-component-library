@@ -3,7 +3,7 @@ import * as Stories from './mcl-dropdown-a/dropdownA.stories'
 
 <Meta of={Stories} />
 
-# MCL Container B
+# MCL Dropdown A
 
 Included in `@bobbykim/mcl-dropdown`
 
@@ -19,7 +19,7 @@ In your code
 
 ```js
 <script setup lang="ts">
-import { MclDropdown } from '@bobbykim/mcl-dropdown'
+import { MclDropdownA } from '@bobbykim/mcl-dropdown'
 </script>
 
 <template>
@@ -41,11 +41,14 @@ import { MclDropdown } from '@bobbykim/mcl-dropdown'
 
 ## Keyboard accessibility
 
--`escape`: closes dropdown
+- `Tab` / `Shift+Tab`: move between the button and the items.
+- `Enter` / `Space` on the button: open or close the list.
+- `Arrow Down`: from the button (list open), focus the first item; on an item, focus the next item (no effect on the last item).
+- `Arrow Up`: focus the previous item (no effect on the first item or the button).
+- `Escape`: close the list and return focus to the button.
+- Choosing an item closes the list and returns focus to the button.
 
--`arrow up`: focus dropdown item below (no effect if the last dropdown item is selected)
-
--`arrow down`: focus dropdown item above (no effect if the first dropdown item is focused)
+The button exposes `aria-expanded` (whether the list is open) and `aria-controls` (the list's id) to screen readers.
 
 ## types
 
