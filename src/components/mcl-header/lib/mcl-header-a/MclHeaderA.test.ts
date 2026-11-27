@@ -42,7 +42,7 @@ describe('MclHeaderA labels', () => {
       attachTo: document.body,
     })
     const button = document.body.querySelector(
-      'button[aria-expanded]',
+      'button[aria-label="Navigation"]',
     ) as HTMLButtonElement
     expect(button.getAttribute('aria-label')).toBe('Navigation')
     button.click()
@@ -63,7 +63,9 @@ describe('MclHeaderA prop pass-through', () => {
   })
 
   const menuButton = () =>
-    document.body.querySelector('button[aria-expanded]') as HTMLButtonElement
+    document.body.querySelector(
+      'button[aria-label="Menu"]',
+    ) as HTMLButtonElement
 
   it('showDrawerBorder: false removes the menu button border', () => {
     const w = mount(MclHeaderA, {
@@ -103,5 +105,111 @@ describe('MclHeaderA prop pass-through', () => {
       if (original) Object.defineProperty(window, 'scrollY', original)
       else delete (window as any).scrollY
     }
+  })
+})
+
+// #131: shared helpers for the accessibility tests below.
+const menuButton = () =>
+  document.body.querySelector<HTMLButtonElement>('button[aria-label="Menu"]')!
+const mobilePanel = () =>
+  document.getElementById(menuButton().getAttribute('aria-controls')!)!
+const linkByText = (root: ParentNode, text: string) =>
+  Array.from(root.querySelectorAll<HTMLAnchorElement>('a')).find(
+    (a) => a.textContent?.trim() === text,
+  )!
+const buttonByText = (root: ParentNode, text: string) =>
+  Array.from(root.querySelectorAll<HTMLButtonElement>('button')).find(
+    (b) => b.textContent?.trim() === text,
+  )!
+const hasClasses = (el: Element, classString: string) =>
+  classString
+    .split(' ')
+    .filter(Boolean)
+    .every((c) => el.classList.contains(c))
+const openDrawer = async () => {
+  menuButton().click()
+  await nextTick()
+}
+const titleEl = () =>
+  Array.from(document.body.querySelectorAll<HTMLElement>('header *')).find(
+    (el) => el.children.length === 0 && el.textContent === 'SITE-TITLE',
+  )!.parentElement!
+
+describe('MclHeaderA accessibility (#131)', () => {
+  let w: ReturnType<typeof mount> | undefined
+  const mountA = (extra: Record<string, unknown> = {}) => {
+    w = mount(MclHeaderA, {
+      props: { ...props, ...extra },
+      attachTo: document.body,
+    })
+    return w
+  }
+  afterEach(() => {
+    w?.unmount()
+    w = undefined
+    document.body.innerHTML = ''
+  })
+
+  it('title is a span by default, with no heading in the header', () => {
+    mountA()
+    expect(
+      document.querySelectorAll('header h1, header h2, header h3, header h4')
+        .length,
+    ).toBe(0)
+    expect(titleEl().tagName).toBe('SPAN')
+  })
+
+  it('titleLevel renders the title as that heading with the same classes', () => {
+    mountA()
+    const spanClass = titleEl().className
+    w!.unmount()
+    mountA({ titleLevel: 'h1' })
+    const h1 = document.querySelector('header h1')!
+    expect(h1.textContent).toBe('SITE-TITLE')
+    expect(h1.className).toBe(spanClass)
+  })
+
+  it('the logo link is out of the tab order and hidden from assistive tech', () => {
+    mountA()
+    const logoLinks = Array.from(document.querySelectorAll('a')).filter((a) =>
+      a.querySelector('img'),
+    )
+    expect(logoLinks.length).toBeGreaterThan(0)
+    for (const a of logoLinks) {
+      expect(a.getAttribute('tabindex')).toBe('-1')
+      expect(a.getAttribute('aria-hidden')).toBe('true')
+    }
+  })
+
+  it('the title link says it opens a new tab only when its target is _blank', () => {
+    mountA({ titleBlockLinkTarget: '_blank' })
+    const sr = titleEl().closest('a')!.querySelector('.sr-only')
+    expect(sr?.textContent?.trim()).toBe('(opens in a new tab)')
+    w!.unmount()
+    mountA()
+    expect(titleEl().closest('a')!.querySelector('.sr-only')).toBeNull()
+  })
+
+  it('showHighlight: false reaches the nav parts', () => {
+    mountA({ showHighlight: false })
+    expect(document.querySelectorAll('.nav__decorator').length).toBe(0)
+    expect(document.querySelector('[display-highlight]')).toBeNull()
+    w!.unmount()
+    mountA()
+    expect(document.querySelectorAll('.nav__decorator').length).toBeGreaterThan(
+      0,
+    )
+    expect(document.querySelector('[display-highlight]')).toBeNull()
+  })
+
+  it('choosing a top-level link in the mobile menu returns focus to the drawer button', async () => {
+    mountA()
+    await openDrawer()
+    const home = linkByText(mobilePanel(), 'Home')
+    home.focus()
+    home.click()
+    await nextTick()
+    await settle()
+    expect(document.activeElement).toBe(menuButton())
   })
 })
