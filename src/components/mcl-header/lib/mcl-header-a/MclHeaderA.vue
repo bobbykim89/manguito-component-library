@@ -248,7 +248,6 @@ defineExpose({
               ></nav-link>
               <nav-collapse
                 v-else
-                :nav-id="item.title"
                 :nav-item="item as MenuCollapseType"
                 :menu-text-color="menuTextColor"
                 :menu-text-size="menuTextSize"

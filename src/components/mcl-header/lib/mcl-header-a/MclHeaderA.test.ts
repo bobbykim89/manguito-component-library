@@ -509,3 +509,111 @@ describe('MclHeaderA desktop dropdown (#131)', () => {
     expect(toggle().classList.contains('outline-none')).toBe(false)
   })
 })
+
+describe('MclHeaderA mobile collapse (#131)', () => {
+  let w: ReturnType<typeof mount> | undefined
+  const mountA = async (extra: Record<string, unknown> = {}) => {
+    w = mount(MclHeaderA, {
+      props: { ...props, menuItems: dropdownItems, ...extra },
+      attachTo: document.body,
+    })
+    await openDrawer()
+  }
+  const toggles = (title = 'More') =>
+    Array.from(mobilePanel().querySelectorAll('button')).filter(
+      (b) => b.textContent?.trim() === title,
+    )
+  afterEach(() => {
+    w?.unmount()
+    w = undefined
+    document.body.innerHTML = ''
+  })
+
+  it('the mobile collapse toggle exposes aria-expanded and aria-controls and is type="button"', async () => {
+    await mountA()
+    const [toggle] = toggles()
+    expect(toggle.getAttribute('type')).toBe('button')
+    expect(toggle.getAttribute('aria-expanded')).toBe('false')
+    const controls = toggle.getAttribute('aria-controls')!
+    expect(controls).toBeTruthy()
+    expect(
+      document
+        .getElementById(controls)!
+        .contains(linkByText(mobilePanel(), 'C1')),
+    ).toBe(true)
+    toggle.click()
+    await nextTick()
+    await settle()
+    expect(toggle.getAttribute('aria-expanded')).toBe('true')
+    expect(toggle.querySelector('svg')!.classList.contains('rotate-180')).toBe(
+      true,
+    )
+  })
+
+  it('two mobile collapses with the same title control different panels', async () => {
+    await mountA({
+      menuItems: [
+        { title: 'More', children: [{ title: 'X1', url: '/x1' }] },
+        { title: 'More', children: [{ title: 'Y1', url: '/y1' }] },
+      ],
+    })
+    const [first, second] = toggles()
+    const a = first.getAttribute('aria-controls')!
+    const b = second.getAttribute('aria-controls')!
+    expect(a).not.toBe(b)
+    expect(document.getElementById(a)!.textContent).toContain('X1')
+    expect(document.getElementById(a)!.textContent).not.toContain('Y1')
+    expect(document.getElementById(b)!.textContent).toContain('Y1')
+  })
+
+  it('no id is built from the item title', async () => {
+    await mountA()
+    expect(document.getElementById('nav-more')).toBeNull()
+  })
+
+  it('mobile collapse-click still reports the state from before the click', async () => {
+    const onCollapseClick = vi.fn()
+    await mountA({ onCollapseClick })
+    toggles()[0].click()
+    await nextTick()
+    expect(onCollapseClick).toHaveBeenCalledTimes(1)
+    expect(onCollapseClick).toHaveBeenCalledWith(
+      expect.any(Event),
+      'More',
+      false,
+    )
+  })
+
+  it('choosing a mobile collapse link returns focus to the drawer button', async () => {
+    await mountA()
+    toggles()[0].click()
+    await nextTick()
+    const c1 = linkByText(mobilePanel(), 'C1')
+    c1.focus()
+    c1.click()
+    await nextTick()
+    await settle()
+    expect(document.activeElement).toBe(menuButton())
+  })
+
+  it('mobile collapse links: current is underlined with aria-current, _blank has new-tab text', async () => {
+    await mountA()
+    const one = linkByText(mobilePanel(), 'C1')
+    const two = linkByText(mobilePanel(), 'C2')
+    expect(one.getAttribute('aria-current')).toBe('page')
+    expect(one.classList.contains('underline')).toBe(true)
+    expect(two.hasAttribute('aria-current')).toBe(false)
+    expect(two.classList.contains('underline')).toBe(false)
+    expect(
+      c3(mobilePanel()).querySelector('.sr-only')?.textContent?.trim(),
+    ).toBe('(opens in a new tab)')
+    expect(two.querySelector('.sr-only')).toBeNull()
+  })
+
+  it('the mobile collapse toggle uses the shared focus ring', async () => {
+    await mountA()
+    const [toggle] = toggles()
+    expect(toggle.classList.contains('focus-visible:mcl-focus-ring')).toBe(true)
+    expect(toggle.classList.contains('outline-none')).toBe(false)
+  })
+})
