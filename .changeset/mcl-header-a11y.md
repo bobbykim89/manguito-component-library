@@ -11,7 +11,7 @@ Keyboard and screen-reader fixes for `MclHeaderA` and `MclHeaderB` (#131).
 - **Submenu buttons** (desktop dropdown, mobile and sidebar collapses) have `aria-expanded`, `aria-controls` and `type="button"`. Panel ids are generated per instance (`useId()`), no longer built from the item title.
 - **Focus is no longer lost** when a choice closes what held it:
   - The desktop dropdown returns focus to its button.
-  - A `MclHeaderB` sidebar submenu moves focus to its button.
+  - A `MclHeaderB` sidebar submenu moves focus to its button. After a mouse click on a child, that button keeps its focus highlight until the next click, as the sidebar links already do.
   - Both mobile menus return focus to the menu button (also covered by tests now).
 - **Desktop dropdown arrow keys** (`MclHeaderA`): Up and Down are handled on `keydown` (was `keyup`), only while the dropdown is open and focus is on its button or a link. They call `preventDefault()`, no longer throw, follow the focused link, and stop at the first and last link.
 - **New-tab links** (`target: '_blank'`) include hidden "(opens in a new tab)" text.
