@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { h, nextTick } from 'vue'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { hydrate } from '@mcl/test-utils/ssr'
 import MclHeaderA from './MclHeaderA.vue'
 
@@ -211,5 +212,80 @@ describe('MclHeaderA accessibility (#131)', () => {
     await nextTick()
     await settle()
     expect(document.activeElement).toBe(menuButton())
+  })
+})
+
+const linkItems = [
+  { title: 'Home', url: '/', current: true },
+  { title: 'Ext', url: 'https://x.test', target: '_blank' as const },
+  { title: 'Fancy <em>One</em>', url: '/f' },
+]
+
+const extLink = () =>
+  Array.from(document.querySelectorAll('a')).find((a) =>
+    a.textContent?.includes('Ext'),
+  )!
+
+describe('MclHeaderA top-level links (#131)', () => {
+  let w: ReturnType<typeof mount> | undefined
+  const mountA = (extra: Record<string, unknown> = {}) => {
+    w = mount(MclHeaderA, {
+      props: { ...props, menuItems: linkItems, ...extra },
+      attachTo: document.body,
+    })
+  }
+  afterEach(() => {
+    w?.unmount()
+    w = undefined
+    document.body.innerHTML = ''
+  })
+
+  it('a current top-level link has aria-current="page"; others have none', () => {
+    mountA()
+    expect(linkByText(document.body, 'Home').getAttribute('aria-current')).toBe(
+      'page',
+    )
+    expect(extLink().hasAttribute('aria-current')).toBe(false)
+  })
+
+  it('with showHighlight off, the current link is underlined and others are not', () => {
+    mountA({ showHighlight: false })
+    expect(
+      linkByText(document.body, 'Home').classList.contains('underline'),
+    ).toBe(true)
+    expect(extLink().classList.contains('underline')).toBe(false)
+  })
+
+  it('with showHighlight on, the current link is not underlined', () => {
+    mountA()
+    expect(
+      linkByText(document.body, 'Home').classList.contains('underline'),
+    ).toBe(false)
+  })
+
+  it('a top-level link with target _blank has the hidden new-tab text', () => {
+    mountA()
+    const ext = Array.from(document.querySelectorAll('a')).find((a) =>
+      a.textContent?.includes('Ext'),
+    )!
+    expect(ext.querySelector('.sr-only')?.textContent?.trim()).toBe(
+      '(opens in a new tab)',
+    )
+    expect(
+      linkByText(document.body, 'Home').querySelector('.sr-only'),
+    ).toBeNull()
+  })
+
+  it('a top-level title with HTML still renders its markup', () => {
+    mountA()
+    const fancy = linkByText(document.body, 'Fancy One')
+    expect(fancy.querySelector('em')?.textContent).toBe('One')
+  })
+
+  it('top-level links use the shared focus ring instead of outline-none', () => {
+    mountA()
+    const home = linkByText(document.body, 'Home')
+    expect(home.classList.contains('focus-visible:mcl-focus-ring')).toBe(true)
+    expect(home.classList.contains('outline-none')).toBe(false)
   })
 })

@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { h, nextTick } from 'vue'
+import { generateClass } from '@bobbykim/manguito-theme'
 import { hydrate } from '@mcl/test-utils/ssr'
 import MclHeaderB from './MclHeaderB.vue'
 
@@ -203,5 +204,82 @@ describe('MclHeaderB accessibility (#131)', () => {
     await nextTick()
     await settle()
     expect(document.activeElement).toBe(menuButton())
+  })
+})
+
+const linkItems = [
+  { title: 'Home', url: '/', current: true },
+  { title: 'Ext', url: 'https://x.test', target: '_blank' as const },
+]
+
+describe('MclHeaderB top-level links (#131)', () => {
+  let w: ReturnType<typeof mount> | undefined
+  const mountB = async (extra: Record<string, unknown> = {}) => {
+    w = mount(MclHeaderB, {
+      props: {
+        ...props,
+        menuItems: linkItems,
+        menuTextColor: 'dark-3',
+        highlightColor: 'primary',
+        ...extra,
+      },
+      attachTo: document.body,
+    })
+    await nextTick()
+  }
+  afterEach(() => {
+    w?.unmount()
+    w = undefined
+    document.body.innerHTML = ''
+  })
+
+  it('a current top-level link has aria-current="page" and its highlight drawn', async () => {
+    await mountB()
+    const home = linkByText(document.body, 'Home')
+    const ext = Array.from(document.querySelectorAll('a')).find((a) =>
+      a.textContent?.includes('Ext'),
+    )!
+    expect(home.getAttribute('aria-current')).toBe('page')
+    expect(ext.hasAttribute('aria-current')).toBe(false)
+    expect(home.classList.contains('before:w-full')).toBe(true)
+    expect(ext.classList.contains('before:w-full')).toBe(false)
+    expect(
+      hasClasses(home, generateClass.textColorVariant({ color: 'dark-3' })),
+    ).toBe(true)
+    expect(
+      hasClasses(home, generateClass.textColorVariant({ color: 'primary' })),
+    ).toBe(false)
+    expect(
+      hasClasses(ext, generateClass.textColorVariant({ color: 'primary' })),
+    ).toBe(true)
+  })
+
+  it('with showHighlight off, the current top-level link is underlined', async () => {
+    await mountB({ showHighlight: false })
+    const home = linkByText(document.body, 'Home')
+    const ext = Array.from(document.querySelectorAll('a')).find((a) =>
+      a.textContent?.includes('Ext'),
+    )!
+    expect(home.classList.contains('underline')).toBe(true)
+    expect(ext.classList.contains('underline')).toBe(false)
+    expect(
+      hasClasses(home, generateClass.textColorVariant({ color: 'primary' })),
+    ).toBe(true)
+    expect(
+      hasClasses(ext, generateClass.textColorVariant({ color: 'dark-3' })),
+    ).toBe(true)
+  })
+
+  it('a top-level link with target _blank has the hidden new-tab text', async () => {
+    await mountB()
+    const ext = Array.from(document.querySelectorAll('a')).find((a) =>
+      a.textContent?.includes('Ext'),
+    )!
+    expect(ext.querySelector('.sr-only')?.textContent?.trim()).toBe(
+      '(opens in a new tab)',
+    )
+    expect(
+      linkByText(document.body, 'Home').querySelector('.sr-only'),
+    ).toBeNull()
   })
 })

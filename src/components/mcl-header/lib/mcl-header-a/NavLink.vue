@@ -58,11 +58,18 @@ const handleNavLinkClick = (e: Event, item: MenuItemType) => {
     <a
       :href="navItem.url"
       :target="navItem.target"
-      v-html="navItem.title"
-      class="nav__text tracking-wider outline-none"
-      :class="getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)"
+      :aria-current="navItem.current ? 'page' : undefined"
+      class="nav__text tracking-wider focus-visible:mcl-focus-ring"
+      :class="[
+        getMenuItemClass(menuTextSize, menuTextColor, menuTextBold),
+        { underline: navItem.current && !showHighlight },
+      ]"
       @click="handleNavLinkClick($event, navItem)"
-    ></a>
+      ><span v-html="navItem.title"></span
+      ><span v-if="navItem.target === '_blank'" class="sr-only">
+        (opens in a new tab)</span
+      ></a
+    >
     <div
       v-if="showHighlight"
       class="nav__decorator relative -top-0.5 h-1.5"
@@ -85,7 +92,8 @@ const handleNavLinkClick = (e: Event, item: MenuItemType) => {
 }
 
 .nav__text:focus + .nav__decorator::before,
-.nav__text:hover + .nav__decorator::before {
+.nav__text:hover + .nav__decorator::before,
+.nav__text[aria-current='page'] + .nav__decorator::before {
   width: 100%;
 }
 </style>
