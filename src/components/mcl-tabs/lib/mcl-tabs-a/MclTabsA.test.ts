@@ -181,6 +181,25 @@ describe('MclTabsA accessibility (#132)', () => {
     expect(only.getAttribute('aria-selected')).toBe('true')
   })
 
+  it('a tab reached by an arrow key is scrolled clear of the scroll buttons', async () => {
+    // scrollIntoView honours the strip's scroll-padding; focus() alone does not.
+    const scrollIntoView = vi.fn()
+    Element.prototype.scrollIntoView = scrollIntoView
+    try {
+      mountTabs()
+      await nextTick()
+      tabs()[0].focus()
+      await press('ArrowRight')
+      expect(scrollIntoView).toHaveBeenCalledWith({
+        block: 'nearest',
+        inline: 'nearest',
+      })
+      expect(scrollIntoView.mock.contexts.at(-1)).toBe(tabs()[1])
+    } finally {
+      delete (Element.prototype as Partial<Element>).scrollIntoView
+    }
+  })
+
   it('tab titles are spans with the h3 classes, not headings', async () => {
     mountTabs()
     await nextTick()

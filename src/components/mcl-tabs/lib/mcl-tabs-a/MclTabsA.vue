@@ -67,7 +67,12 @@ const onTabKeydown = async (e: KeyboardEvent): Promise<void> => {
   await nextTick()
   await nextTick()
   const to = tabEls.indexOf(document.activeElement as HTMLElement)
-  if (to === -1 || to === from) return
+  if (to === -1) return
+  // focus() treats a tab under a scroll button as already in view;
+  // scrollIntoView honours the strip's scroll-padding and moves it clear.
+  // Optional call: jsdom has no scrollIntoView.
+  tabEls[to].scrollIntoView?.({ block: 'nearest', inline: 'nearest' })
+  if (to === from) return
   emit('tab-click', e, props.content[to].title)
 }
 const updateScrollButtons = (): void => {
