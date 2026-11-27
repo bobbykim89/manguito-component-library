@@ -15,6 +15,10 @@ export default defineProject({
         __dirname,
         '../manguito-theme/lib/directives/index.ts',
       ),
+      '@bobbykim/manguito-theme/composable': resolve(
+        __dirname,
+        '../manguito-theme/lib/composables/index.ts',
+      ),
       '@bobbykim/manguito-theme': resolve(
         __dirname,
         '../manguito-theme/lib/index.ts',

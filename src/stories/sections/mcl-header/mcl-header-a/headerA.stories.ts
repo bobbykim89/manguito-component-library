@@ -3,6 +3,7 @@ import {
   bodyTextControllers,
   booleanControllers,
   colorControllers,
+  headingLevelControllers,
   headingTextControllers,
   numberControllers,
   targetOptionControllers,
@@ -77,7 +78,15 @@ const navItems: Array<MenuItemType | MenuCollapseType> = [
 const meta: Meta<typeof MclHeaderA> = {
   title: 'Sections/Header/MclHeaderA',
   component: MclHeaderA,
+  parameters: { a11y: { test: 'error' } },
   argTypes: {
+    titleLevel: headingLevelControllers({
+      name: 'title-level',
+      required: false,
+      description:
+        'heading element for the title; leave unset for plain text (not a heading)',
+      category: 'Title Block',
+    }),
     logo: textControllers({
       name: 'logo',
       required: true,
@@ -301,12 +310,54 @@ export const MclHeaderAMobileOpened: Story = {
     await waitFor(() =>
       expect(drawerButton).toHaveAttribute('aria-expanded', 'true'),
     )
-    const home = await canvas.findByRole('link', { name: 'Home' })
+    const home = await canvas.findByRole('link', { name: /^Home/ })
     await waitFor(() => expect(home).toBeVisible())
     await userEvent.click(canvas.getByRole('button', { name: /Extra Items/ }))
     const child = await canvas.findByRole('link', {
       name: 'Extra Items Child Link 1',
     })
     await waitFor(() => expect(child).toBeVisible())
+  },
+}
+
+// Desktop width so the dropdowns (hidden below lg) are rendered (#131).
+export const MclHeaderAKeyboard: Story = {
+  ...MclHeaderAExample,
+  name: 'MclHeaderA Keyboard',
+  globals: { viewport: { value: 'desktop', isRotated: false } },
+  play: async ({ canvas, userEvent }) => {
+    const toggle = canvas.getByRole('button', { name: 'Extra Items' })
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    toggle.focus()
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() => expect(toggle).toHaveAttribute('aria-expanded', 'true'))
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}')
+    const second = canvas.getByRole('link', {
+      name: 'Extra Items Child Link 2',
+    })
+    await waitFor(() => expect(second).toHaveFocus())
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() => expect(toggle).toHaveFocus())
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false')
+  },
+}
+
+// The current-page marker on its own: Gallery is the page being shown, so its
+// link has aria-current="page" and keeps its highlight on (#131). Desktop width
+// so the desktop nav is the one rendered and checked.
+export const MclHeaderACurrentPage: Story = {
+  ...MclHeaderAExample,
+  name: 'MclHeaderA Current Page',
+  args: {
+    menuItems: navItems.map((item) =>
+      item.title === 'Gallery' ? { ...item, current: true } : item,
+    ),
+  },
+  globals: { viewport: { value: 'desktop', isRotated: false } },
+  play: async ({ canvas }) => {
+    const gallery = canvas.getByRole('link', { name: /^Gallery/ })
+    await expect(gallery).toHaveAttribute('aria-current', 'page')
+    const home = canvas.getByRole('link', { name: /^Home/ })
+    await expect(home).not.toHaveAttribute('aria-current')
   },
 }

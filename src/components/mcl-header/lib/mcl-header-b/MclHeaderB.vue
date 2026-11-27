@@ -3,6 +3,7 @@ import type {
   BodyText,
   ColorPalette,
   CtaTarget,
+  HeadingLevel,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
 import {
@@ -21,6 +22,8 @@ const props = withDefaults(
     logoAlt?: string
     title: string
     titleSize?: HeadingSize
+    /** Heading element for the title. Unset (default): a `<span>`, not a heading. */
+    titleLevel?: HeadingLevel
     titleColor?: ColorPalette
     titleBlockAsLink?: boolean
     titleBlockLinkTarget?: CtaTarget
@@ -145,6 +148,8 @@ defineExpose({
           <a
             :href="titleBlockLink"
             :target="titleBlockLinkTarget"
+            tabindex="-1"
+            aria-hidden="true"
             @click="handleTitleClick"
           >
             <img
@@ -161,11 +166,14 @@ defineExpose({
             :target="titleBlockLinkTarget"
             @click="handleTitleClick"
           >
-            <h3
+            <component
+              :is="titleLevel ?? 'span'"
               :class="titleTextClass"
-              class="mb-md text-center"
-              v-html="title"
-            ></h3>
+              class="mb-md block text-center"
+              ><span v-html="title"></span></component
+            ><span v-if="titleBlockLinkTarget === '_blank'" class="sr-only">
+              (opens in a new tab)</span
+            >
           </a>
         </div>
         <!-- menu item block -->
@@ -186,7 +194,6 @@ defineExpose({
               <NavCollapseVertical
                 v-else
                 ref="collapseRef"
-                :nav-id="item.title"
                 nav-location="desktop"
                 :menu-item="item as MenuCollapseType"
                 :as-link="menuItemAsLink"
@@ -217,6 +224,8 @@ defineExpose({
             <a
               :href="titleBlockLink"
               :target="titleBlockLinkTarget"
+              tabindex="-1"
+              aria-hidden="true"
               @click="handleTitleClick"
             >
               <img
@@ -233,11 +242,14 @@ defineExpose({
               :target="titleBlockLinkTarget"
               @click="handleTitleClick"
             >
-              <h3
+              <component
+                :is="titleLevel ?? 'span'"
                 :class="titleTextClass"
-                class="mb-md text-center"
-                v-html="title"
-              ></h3>
+                class="mb-md block text-center"
+                ><span v-html="title"></span></component
+              ><span v-if="titleBlockLinkTarget === '_blank'" class="sr-only">
+                (opens in a new tab)</span
+              >
             </a>
           </div>
           <!-- menu item block -->
@@ -257,7 +269,6 @@ defineExpose({
                 />
                 <NavCollapseVertical
                   v-else
-                  :nav-id="item.title"
                   nav-location="mobile"
                   :menu-item="item as MenuCollapseType"
                   :as-link="menuItemAsLink"

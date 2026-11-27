@@ -37,6 +37,20 @@ import { MclHeaderB } from '@bobbykim/mcl-header'
 
 - `navLabel` (default `"Main"`) names the header's `<nav>` landmark. Give each landmark on a page a different name, for example when it also has a footer nav.
 - `menuLabel` (default `"Menu"`) names the mobile menu button. The name stays the same; `aria-expanded` tells screen readers whether the menu is open.
+- **Title.** It is plain text by default, not a heading, so the header doesn't add a heading to every page before the page's own `<h1>`. Set `titleLevel` (`'h1'`–`'h4'`) to render it as that heading; the look is the same either way (size comes from `titleSize`).
+- **Logo.** The logo links to the same place as the title, so it is left out of the tab order and hidden from screen readers; the title link carries the name. Mouse clicks are unchanged.
+- **Current page.** Set `current: true` on a menu item or a submenu child. Its link gets `aria-current="page"` and keeps its highlight on (hover colour and underline when `showHighlight` is off).
+- **New tab.** Links with `target: '_blank'` (menu items and the title) include hidden "(opens in a new tab)" text.
+- **Submenu buttons** have `aria-expanded` and `aria-controls`.
+
+<Canvas of={Stories.MclHeaderBCurrentPage} />
+
+### Keyboard
+
+- **Tab** moves through the title, the menu links and the submenu buttons.
+- **Enter / Space** on a submenu button opens or closes it.
+- **After choosing a submenu link** in the sidebar, the submenu closes and focus moves to its button.
+- **Mobile menu:** it is a modal dialog. **Escape** closes it; choosing a link or the title closes it and returns focus to the menu button.
 
 ## Slot
 

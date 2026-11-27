@@ -3,6 +3,7 @@ import type {
   BodyText,
   ColorPalette,
   CtaTarget,
+  HeadingLevel,
   HeadingSize,
 } from '@bobbykim/manguito-theme'
 import {
@@ -23,6 +24,8 @@ const props = withDefaults(
     logoAlt?: string
     title: string
     titleSize?: HeadingSize
+    /** Heading element for the title. Unset (default): a `<span>`, not a heading. */
+    titleLevel?: HeadingLevel
     titleColor?: ColorPalette
     titleBlockAsLink?: boolean
     titleBlockLinkTarget?: CtaTarget
@@ -149,6 +152,8 @@ defineExpose({
           <a
             :href="titleBlockLink"
             :target="titleBlockLinkTarget"
+            tabindex="-1"
+            aria-hidden="true"
             @click="handleTitleClick"
           >
             <img
@@ -171,11 +176,14 @@ defineExpose({
             :target="titleBlockLinkTarget"
             @click="handleTitleClick"
           >
-            <h2
+            <component
+              :is="titleLevel ?? 'span'"
               class="inline-block align-middle tracking-wider"
               :class="getTitleClass(titleSize, titleColor)"
-              v-html="title"
-            ></h2>
+              ><span v-html="title"></span></component
+            ><span v-if="titleBlockLinkTarget === '_blank'" class="sr-only">
+              (opens in a new tab)</span
+            >
           </a>
           <!-- desktop nav menu -->
           <ul class="hidden flex-wrap lg:flex">
@@ -190,7 +198,7 @@ defineExpose({
                 :menu-text-color="menuTextColor"
                 :menu-text-size="menuTextSize"
                 :menu-text-bold="menuTextBold"
-                :display-highlight="showHighlight"
+                :show-highlight="showHighlight"
                 :highlight-color="highlightColor"
                 :as-link="menuItemAsLink"
                 @nav-link="handleMenuItemClick"
@@ -201,7 +209,7 @@ defineExpose({
                 :menu-text-color="menuTextColor"
                 :menu-text-size="menuTextSize"
                 :menu-text-bold="menuTextBold"
-                :display-highlight="showHighlight"
+                :show-highlight="showHighlight"
                 :highlight-color="highlightColor"
                 :bg-color="bgColor"
                 :as-link="menuItemAsLink"
@@ -233,19 +241,18 @@ defineExpose({
                 :menu-text-color="menuTextColor"
                 :menu-text-size="menuTextSize"
                 :menu-text-bold="menuTextBold"
-                :display-highlight="showHighlight"
+                :show-highlight="showHighlight"
                 :highlight-color="highlightColor"
                 :as-link="menuItemAsLink"
                 @nav-link="handleMenuItemClick"
               ></nav-link>
               <nav-collapse
                 v-else
-                :nav-id="item.title"
                 :nav-item="item as MenuCollapseType"
                 :menu-text-color="menuTextColor"
                 :menu-text-size="menuTextSize"
                 :menu-text-bold="menuTextBold"
-                :display-highlight="showHighlight"
+                :show-highlight="showHighlight"
                 :highlight-color="highlightColor"
                 :as-link="menuItemAsLink"
                 @child-click="handleMenuItemClick"

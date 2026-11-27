@@ -33,27 +33,32 @@ const handleLinkClick = (e: Event, item: MenuItemType) => {
   emit('menu-click', e, item)
 }
 const colorClass = computed<string>(() => {
-  const { textColor, textSize, dHl, hlColor, fontBold } = props
+  const { textColor, textSize, dHl, hlColor, fontBold, menuItem } = props
+  // The current page keeps its hover look permanently (#131).
+  const current = !!menuItem.current
   const classArray: string[] = [
     generateClass.bodyTextVariant({ size: textSize }),
   ]
   if (!dHl) {
     const nonHlTextClass: string[] = [
-      generateClass.textColorVariant({ color: textColor }),
+      generateClass.textColorVariant({ color: current ? hlColor : textColor }),
       generateClass.hoverTextColorVariant({ color: hlColor }),
       generateClass.focusTextColorVariant({ color: hlColor }),
     ]
+    if (current) nonHlTextClass.push('underline')
     classArray.push(nonHlTextClass.join(' '))
   }
   if (dHl) {
     const highlightColor: string = generateClass.beforeBgColorVariant({
       color: hlColor,
     })
+    // The current page shows the bar fully drawn, as on hover.
     const hlClass: string =
-      'before:inset-y-0 before:left-0 before:transition-[width] before:duration-300 before:ease-linear before:w-0 hover:before:w-full focus:before:w-full '
+      'before:inset-y-0 before:left-0 before:transition-[width] before:duration-300 before:ease-linear hover:before:w-full focus:before:w-full ' +
+      (current ? 'before:w-full ' : 'before:w-0 ')
     classArray.push(hlClass + highlightColor)
     const hlTextClass: string[] = [
-      generateClass.textColorVariant({ color: hlColor }),
+      generateClass.textColorVariant({ color: current ? textColor : hlColor }),
       generateClass.hoverTextColorVariant({ color: textColor }),
       generateClass.focusTextColorVariant({ color: textColor }),
     ]
@@ -72,8 +77,12 @@ const colorClass = computed<string>(() => {
     class="relative block w-full px-xs py-2xs text-center transition-colors duration-300 ease-linear before:absolute"
     :href="menuItem.url"
     :target="menuItem.target ? menuItem.target : '_self'"
+    :aria-current="menuItem.current ? 'page' : undefined"
     @click="handleLinkClick($event, menuItem)"
   >
-    <span class="relative">{{ menuItem.title }}</span>
+    <span class="relative">{{ menuItem.title }}</span
+    ><span v-if="menuItem.target === '_blank'" class="sr-only">
+      (opens in a new tab)</span
+    >
   </a>
 </template>

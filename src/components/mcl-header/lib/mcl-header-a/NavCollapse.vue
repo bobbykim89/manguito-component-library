@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
 import { generateClass, Collapse } from '@bobbykim/manguito-theme'
-import { computed, ref } from 'vue'
+import { useCollapseTrigger } from '@bobbykim/manguito-theme/composable'
+import { ref, useId } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 
 const props = withDefaults(
   defineProps<{
-    navId: string
     navItem: MenuCollapseType
     bgColor?: ColorPalette
     hoverBgColor?: ColorPalette
@@ -33,19 +33,19 @@ const emit = defineEmits<{
   (e: 'child-click', event: Event, item: MenuItemType): void
   (e: 'label-click', event: Event, title: string, open: boolean): void
 }>()
+// Before-click state for the label-click payload: synced from the panel's
+// open/close events, which fire after the click has emitted (#131).
 const toggle = ref<boolean>(false)
-const handleNavId = computed<string>(() => {
-  const { navId } = props
-  const navLower = navId.toLowerCase()
-  const navKebab = navLower.replaceAll(' ', '-')
-  return `nav-${navKebab}`
-})
 const collapseRef = ref<InstanceType<typeof Collapse>>()
+const panelId = useId()
+const { attrs, toggle: toggleCollapse } = useCollapseTrigger(collapseRef, {
+  id: panelId,
+})
 const toggleAction = (visible: boolean): void => {
   toggle.value = visible
 }
 const handleCollapseLabelClick = (e: Event, title: string) => {
-  collapseRef.value?.toggle()
+  toggleCollapse()
   emit('label-click', e, title, toggle.value)
 }
 const navItemClick = (e: Event, item: MenuItemType) => {
@@ -78,7 +78,9 @@ const getMenuItemClass = (
   <div class="flex w-full flex-col">
     <div class="self-center">
       <button
-        class="nav__text flex items-center gap-3xs align-middle tracking-wider outline-none"
+        type="button"
+        v-bind="attrs"
+        class="nav__text flex items-center gap-3xs align-middle tracking-wider focus-visible:mcl-focus-ring"
         :class="getMenuItemClass(menuTextSize, menuTextColor, menuTextBold)"
         @click="handleCollapseLabelClick($event, navItem.title)"
       >
@@ -110,7 +112,7 @@ const getMenuItemClass = (
     </div>
     <collapse
       ref="collapseRef"
-      :id="handleNavId"
+      :id="panelId"
       @open="toggleAction"
       @close="toggleAction"
     >
@@ -127,13 +129,18 @@ const getMenuItemClass = (
             :target="item.target"
             class="w-full pb-2xs last:pb-0"
             :key="idx"
+            :aria-current="item.current ? 'page' : undefined"
             :class="[
               generateClass.textColorVariant({ color: menuTextColor }),
               generateClass.bodyTextVariant({ size: menuTextSize }),
+              { underline: item.current },
             ]"
             @click="navItemClick($event, item)"
           >
-            {{ item.title }}
+            {{ item.title
+            }}<span v-if="item.target === '_blank'" class="sr-only">
+              (opens in a new tab)</span
+            >
           </a>
         </div>
       </div>
