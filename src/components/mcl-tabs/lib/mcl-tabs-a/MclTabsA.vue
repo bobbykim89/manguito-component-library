@@ -53,27 +53,34 @@ const onTabClick = (e: MouseEvent, idx: number, activeTab: number): void => {
   if (idx === activeTab) return
   emit('tab-click', e, props.content[idx].title)
 }
-const onTabKeydown = async (e: KeyboardEvent): Promise<void> => {
+const onTabKeydown = async (
+  e: KeyboardEvent,
+  activeTab: number,
+): Promise<void> => {
   /**
    * @summary emit tab-click when the base tab keys (arrows, Home, End) change the selection.
-   * The base handler prevents the keys it handles and focuses the new tab in a nextTick;
-   * read where focus landed instead of repeating its key logic.
+   * The base handler prevents the keys it handles, selects, and focuses the new tab in a
+   * nextTick; read the result instead of repeating its key logic. `activeTab` is the slot
+   * value from this render, so it is still the previous selection. Compare selection, not
+   * focus: a tab can be focused without being selected (programmatic focus, or a mousedown
+   * dragged off before release).
    */
   if (!e.defaultPrevented || !buttonContainerRef.value) return
   const tabEls = Array.from(
     buttonContainerRef.value.querySelectorAll<HTMLElement>('[role="tab"]'),
   )
-  const from = tabEls.indexOf(e.currentTarget as HTMLElement)
   await nextTick()
   await nextTick()
-  const to = tabEls.indexOf(document.activeElement as HTMLElement)
-  if (to === -1) return
+  const selected = tabEls.findIndex(
+    (tab) => tab.getAttribute('aria-selected') === 'true',
+  )
+  if (selected === -1) return
   // focus() treats a tab under a scroll button as already in view;
   // scrollIntoView honours the strip's scroll-padding and moves it clear.
   // Optional call: jsdom has no scrollIntoView.
-  tabEls[to].scrollIntoView?.({ block: 'nearest', inline: 'nearest' })
-  if (to === from) return
-  emit('tab-click', e, props.content[to].title)
+  tabEls[selected].scrollIntoView?.({ block: 'nearest', inline: 'nearest' })
+  if (selected === activeTab) return
+  emit('tab-click', e, props.content[selected].title)
 }
 const updateScrollButtons = (): void => {
   /**
@@ -243,7 +250,7 @@ watch(width, updateScrollButtons)
             'w-full min-w-[50%] py-2.5 text-center focus-visible:mcl-focus-ring md:min-w-[33%] lg:min-w-fit',
           ]"
           @click="onTabClick($event, idx, activeTab)"
-          @keydown="onTabKeydown"
+          @keydown="onTabKeydown($event, activeTab)"
         >
           <span
             class="block"

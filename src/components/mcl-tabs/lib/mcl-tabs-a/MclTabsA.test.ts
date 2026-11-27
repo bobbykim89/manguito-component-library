@@ -167,6 +167,24 @@ describe('MclTabsA accessibility (#132)', () => {
     expect(shown(0)).toBe(true)
   })
 
+  it('tab-click does not fire when a key moves back to the already-selected tab', async () => {
+    // Focus and selection can differ: a mousedown that is dragged off before
+    // release, or programmatic focus, focuses a tab without selecting it.
+    const onTabClick = vi.fn()
+    mountTabs({ onTabClick })
+    await nextTick()
+    tabs()[1].focus()
+    await press('ArrowLeft')
+    expect(document.activeElement).toBe(tabs()[0])
+    await press('Home')
+    expect(onTabClick).not.toHaveBeenCalled()
+    expect(tabs().map((t) => t.getAttribute('aria-selected'))).toEqual([
+      'true',
+      'false',
+      'false',
+    ])
+  })
+
   it('a single tab: arrows, Home and End do not throw and emit nothing', async () => {
     const onTabClick = vi.fn()
     mountTabs({ onTabClick }, [content3[0]])
