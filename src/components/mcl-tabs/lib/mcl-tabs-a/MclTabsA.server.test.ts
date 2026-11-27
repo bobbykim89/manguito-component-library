@@ -23,3 +23,19 @@ describe('MclTabsA (server)', () => {
     expect(html).not.toContain('--container-hts:0px')
   })
 })
+
+describe('MclTabsA (server) accessibility (#132)', () => {
+  it('tabs are server-rendered with tab semantics and aria-controls pointing at their panels', async () => {
+    const { html } = await renderOnServer(render)
+    const openTags = html.match(/<button[^>]*role="tab"[^>]*>/g) ?? []
+    expect(openTags).toHaveLength(2)
+    openTags.forEach((tag, i) => {
+      expect(tag).toContain('type="button"')
+      expect(tag).toContain(`aria-controls="demo-tab-${i}"`)
+      expect(tag).toContain(`aria-selected="${i === 0}"`)
+      expect(tag).toContain(`tabindex="${i === 0 ? 0 : -1}"`)
+      expect(tag).not.toMatch(/\sdisabled/)
+    })
+    expect(html).not.toContain('<h3')
+  })
+})

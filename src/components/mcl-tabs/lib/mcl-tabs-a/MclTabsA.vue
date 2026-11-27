@@ -6,7 +6,7 @@ import {
   TabContent,
 } from '@bobbykim/manguito-theme'
 import { useElementSize } from '@vueuse/core'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import type { ContentType } from './index.types'
 
 const props = withDefaults(
@@ -45,9 +45,42 @@ const emit = defineEmits<{
   (e: 'tab-click', event: Event, title: string): void
 }>()
 
-const hadleTabClick = (e: Event, title: string): void => {
-  e.preventDefault()
-  emit('tab-click', e, title)
+const onTabClick = (e: MouseEvent, idx: number, activeTab: number): void => {
+  /**
+   * @summary emit tab-click for a click (or Enter/Space) that changes the selection.
+   * `activeTab` is the slot value from this render, so it is still the previous selection.
+   */
+  if (idx === activeTab) return
+  emit('tab-click', e, props.content[idx].title)
+}
+const onTabKeydown = async (
+  e: KeyboardEvent,
+  activeTab: number,
+): Promise<void> => {
+  /**
+   * @summary emit tab-click when the base tab keys (arrows, Home, End) change the selection.
+   * The base handler prevents the keys it handles, selects, and focuses the new tab in a
+   * nextTick; read the result instead of repeating its key logic. `activeTab` is the slot
+   * value from this render, so it is still the previous selection. Compare selection, not
+   * focus: a tab can be focused without being selected (programmatic focus, or a mousedown
+   * dragged off before release).
+   */
+  if (!e.defaultPrevented || !buttonContainerRef.value) return
+  const tabEls = Array.from(
+    buttonContainerRef.value.querySelectorAll<HTMLElement>('[role="tab"]'),
+  )
+  await nextTick()
+  await nextTick()
+  const selected = tabEls.findIndex(
+    (tab) => tab.getAttribute('aria-selected') === 'true',
+  )
+  if (selected === -1) return
+  // focus() treats a tab under a scroll button as already in view;
+  // scrollIntoView honours the strip's scroll-padding and moves it clear.
+  // Optional call: jsdom has no scrollIntoView.
+  tabEls[selected].scrollIntoView?.({ block: 'nearest', inline: 'nearest' })
+  if (selected === activeTab) return
+  emit('tab-click', e, props.content[selected].title)
 }
 const updateScrollButtons = (): void => {
   /**
@@ -60,12 +93,22 @@ const updateScrollButtons = (): void => {
       buttonContainerRef.value.clientWidth + buttonContainerRef.value.scrollLeft
   }
 }
+const scrollBehavior = (): ScrollBehavior =>
+  /**
+   * @summary 'auto' (instant) when the user prefers reduced motion. Read at click time so server rendering never touches window.
+   */
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ? 'auto'
+    : 'smooth'
 const scrollLeft = () => {
   /**
    * @summary scroll tab container to left by 100px
    */
   if (buttonContainerRef.value) {
-    buttonContainerRef.value.scrollBy({ left: -100, behavior: 'smooth' })
+    buttonContainerRef.value.scrollBy({
+      left: -100,
+      behavior: scrollBehavior(),
+    })
   }
 }
 const scrollRight = () => {
@@ -73,7 +116,7 @@ const scrollRight = () => {
    * @summary scroll tab container to right by 100px
    */
   if (buttonContainerRef.value) {
-    buttonContainerRef.value.scrollBy({ left: 100, behavior: 'smooth' })
+    buttonContainerRef.value.scrollBy({ left: 100, behavior: scrollBehavior() })
   }
 }
 const borderClass = computed<string>(() => {
@@ -162,12 +205,15 @@ watch(width, updateScrollButtons)
       'mt-2xs relative p-xs lg:px-sm whitespace-pre-line',
     ]"
   >
-    <template #tab-button="{ update, activeTab }">
+    <template #tab-button="{ activeTab, tabAttrs }">
       <button
         v-if="showScrollButtons && canScrollLeft"
-        class="absolute top-1/2 left-0 z-10 h-full -translate-y-1/2 transform px-3xs lg:hidden"
+        type="button"
+        aria-hidden="true"
+        tabindex="-1"
+        class="absolute top-1/2 left-0 z-10 h-full min-w-[24px] -translate-y-1/2 transform px-3xs lg:hidden"
         :class="[rounded && 'rounded-l-lg', scrollBtnClass]"
-        aria-label="scroll left"
+        @mousedown.prevent
         @click="scrollLeft"
       >
         <svg
@@ -186,33 +232,42 @@ watch(width, updateScrollButtons)
       </button>
       <div
         ref="buttonContainerRef"
-        :class="['flex flex-nowrap space-x-1 overflow-x-auto p-3xs', tabClass]"
+        :class="[
+          'flex scroll-px-6 flex-nowrap space-x-1 overflow-x-auto p-3xs lg:scroll-px-0',
+          tabClass,
+        ]"
         @scroll="updateScrollButtons"
       >
         <button
           v-for="(item, idx) in content"
           :key="idx"
-          role="tab"
-          :aria-selected="activeTab === idx"
-          :tabindex="activeTab === idx ? -1 : 0"
+          type="button"
+          v-bind="tabAttrs(idx)"
+          :aria-controls="generateTabId(idx)"
           :class="[
             activeTab === idx ? activeBtnClass : inactiveBtnClass,
             rounded && 'rounded-lg',
-            'w-full min-w-[50%] py-2.5 text-center focus:outline-none md:min-w-[33%] lg:min-w-fit',
+            'w-full min-w-[50%] py-2.5 text-center focus-visible:mcl-focus-ring md:min-w-[33%] lg:min-w-fit',
           ]"
-          :disabled="activeTab === idx"
-          @click="(hadleTabClick($event, item.title), update(idx))"
+          @click="onTabClick($event, idx, activeTab)"
+          @keydown="onTabKeydown($event, activeTab)"
         >
-          <h3 :class="generateClass.h3Variant({ size: titleSize })">
+          <span
+            class="block"
+            :class="generateClass.h3Variant({ size: titleSize })"
+          >
             {{ item.title }}
-          </h3>
+          </span>
         </button>
       </div>
       <button
         v-if="showScrollButtons && canScrollRight"
-        class="absolute top-1/2 right-0 z-10 h-full -translate-y-1/2 transform px-3xs lg:hidden"
+        type="button"
+        aria-hidden="true"
+        tabindex="-1"
+        class="absolute top-1/2 right-0 z-10 h-full min-w-[24px] -translate-y-1/2 transform px-3xs lg:hidden"
         :class="[rounded && 'rounded-r-lg', scrollBtnClass]"
-        aria-label="scroll right"
+        @mousedown.prevent
         @click="scrollRight"
       >
         <svg

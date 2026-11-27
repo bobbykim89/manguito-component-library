@@ -41,6 +41,9 @@ const contentInfo: ContentType[] = [
 const meta: Meta<typeof MclTabsA> = {
   title: 'Components/Tabs/MclTabsA',
   component: MclTabsA,
+  parameters: {
+    a11y: { test: 'error' },
+  },
   argTypes: {
     tabName: textControllers({
       name: 'tab-name',
@@ -156,5 +159,85 @@ export const MclTabsASecondActive: Story = {
     await waitFor(() => expect(tab).toHaveAttribute('aria-selected', 'true'))
     const text = await canvas.findByText(/Quam, accusanti/)
     await waitFor(() => expect(text).toBeVisible())
+  },
+}
+
+// Arrow keys, Home and End move focus and selection together (#132). Desktop
+// width, where every tab fits and the scroll buttons are hidden.
+export const MclTabsAKeyboard: Story = {
+  ...MclTabsAExample,
+  name: 'MclTabsA Keyboard',
+  globals: { viewport: { value: 'desktop', isRotated: false } },
+  play: async ({ canvas, userEvent }) => {
+    const tab = (name: string) => canvas.getByRole('tab', { name })
+    const expectSelected = async (name: string) => {
+      await waitFor(() => expect(tab(name)).toHaveFocus())
+      await expect(tab(name)).toHaveAttribute('aria-selected', 'true')
+      await waitFor(() =>
+        expect(canvas.getByRole('tabpanel', { name })).toBeVisible(),
+      )
+    }
+    await userEvent.tab()
+    await expectSelected('First')
+    await userEvent.keyboard('{ArrowRight}')
+    await expectSelected('Second')
+    await userEvent.keyboard('{End}')
+    await expectSelected('Fifth')
+    await userEvent.keyboard('{Home}')
+    await expectSelected('First')
+  },
+}
+
+// At mobile width the strip scrolls and the scroll buttons overlay its edges.
+// A tab reached by keyboard must stop beside a scroll button, not under it (#132).
+export const MclTabsAKeyboardMobile: Story = {
+  ...MclTabsAExample,
+  name: 'MclTabsA Keyboard Mobile',
+  globals: { viewport: { value: 'mobile', isRotated: false } },
+  play: async ({ canvas, canvasElement, userEvent }) => {
+    const strip = canvasElement.querySelector<HTMLElement>(
+      '[role="tablist"] .overflow-x-auto',
+    )!
+    const scrollButton = (side: 'left' | 'right') =>
+      canvasElement.querySelector<HTMLElement>(
+        `[role="tablist"] > button.${side}-0`,
+      )
+    const expectClear = async (name: string) => {
+      const focused = canvas.getByRole('tab', { name })
+      await waitFor(() => expect(focused).toHaveFocus())
+      // Wait until the buttons have caught up with the strip's scroll position.
+      await waitFor(() => {
+        const max = strip.scrollWidth - strip.clientWidth
+        expect(!!scrollButton('left')).toBe(strip.scrollLeft > 0)
+        expect(!!scrollButton('right')).toBe(strip.scrollLeft < max - 1)
+      })
+      const tabRect = focused.getBoundingClientRect()
+      const left = scrollButton('left')
+      const right = scrollButton('right')
+      if (left) {
+        await expect(tabRect.left).toBeGreaterThanOrEqual(
+          left.getBoundingClientRect().right - 1,
+        )
+      }
+      if (right) {
+        await expect(tabRect.right).toBeLessThanOrEqual(
+          right.getBoundingClientRect().left + 1,
+        )
+      }
+    }
+    await userEvent.tab()
+    await expectClear('First')
+    for (const name of ['Second', 'Third', 'Fourth', 'Fifth']) {
+      await userEvent.keyboard('{ArrowRight}')
+      await expectClear(name)
+    }
+    for (const name of ['Fourth', 'Third', 'Second', 'First']) {
+      await userEvent.keyboard('{ArrowLeft}')
+      await expectClear(name)
+    }
+    await userEvent.keyboard('{End}')
+    await expectClear('Fifth')
+    await userEvent.keyboard('{Home}')
+    await expectClear('First')
   },
 }
