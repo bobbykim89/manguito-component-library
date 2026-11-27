@@ -28,7 +28,6 @@ const navItems: Array<MenuItemType | MenuCollapseType> = [
     title: 'Gallery',
     url: 'https://manguitopage.herokuapp.com/gallery',
     target: '_blank',
-    current: true,
   },
   {
     title: 'Extra Items',
@@ -320,5 +319,25 @@ export const MclHeaderBKeyboard: Story = {
     await waitFor(() =>
       expect(toggle).toHaveAttribute('aria-expanded', 'false'),
     )
+  },
+}
+
+// The current-page marker on its own: Gallery is the page being shown, so its
+// link has aria-current="page" and keeps its highlight on (#131). Desktop width
+// so the desktop nav is the one rendered and checked.
+export const MclHeaderBCurrentPage: Story = {
+  ...MclHeaderBExample,
+  name: 'MclHeaderB Current Page',
+  args: {
+    menuItems: navItems.map((item) =>
+      item.title === 'Gallery' ? { ...item, current: true } : item,
+    ),
+  },
+  globals: { viewport: { value: 'desktop', isRotated: false } },
+  play: async ({ canvas }) => {
+    const gallery = canvas.getByRole('link', { name: /^Gallery/ })
+    await expect(gallery).toHaveAttribute('aria-current', 'page')
+    const home = canvas.getByRole('link', { name: /^Home/ })
+    await expect(home).not.toHaveAttribute('aria-current')
   },
 }
