@@ -19,21 +19,21 @@ In your code
 
 ```js
 <script setup lang="ts">
-import { MclCollapseA } from '@bobbykim/mcl-carousel'
+import { MclCarouselA } from '@bobbykim/mcl-carousel'
 </script>
 
 <template>
-  <carousel-alpha>
+  <mcl-carousel-a title="Featured" :content="cards">
     <!-- adding nested card-components -->
-    <template #carousel="{ setRef, cards }">
+    <template #carousel="{ cards, slideAttrs }">
       <card-component
         v-for="(card, i) in cards"
         :key="i"
-        :ref="(el) => setRef(el)"
-        class="mr-xs last:mr-0 h-full"
+        v-bind="slideAttrs(i)"
+        class="h-full"
       ></card-component>
     </template>
-  </carousel-alpha>
+  </mcl-carousel-a>
 </template>
 ```
 
@@ -45,13 +45,35 @@ import { MclCollapseA } from '@bobbykim/mcl-carousel'
 
 ## Events
 
-- `btn-prev` - \$event - Emitted on clicking prev button
-- `btn-next` - \$event - Emitted on clicking next button
+- `btn-prev` - \$event - Emitted when the previous button moves the carousel (not when it is dimmed at the start)
+- `btn-next` - \$event - Emitted when the next button moves the carousel (not when it is dimmed at the end)
+
+When keyboard focus moves to a card out of view, the carousel slides to show it. That move emits no event.
 
 ## Slots
 
 - `#description`: slot in the text section
-- `#carousel`: default card slider-section at the bottom of the component
+- `#carousel({ cards, slideAttrs })`: the card row at the bottom of the component.
+  - `cards` is the `content` prop.
+  - Bind `slideAttrs(i)` on each card's root element (`v-bind="slideAttrs(i)"`) to label it as slide "i + 1 of total" for screen readers. It is optional but recommended.
+  - `setRef` is still passed but deprecated and does nothing; remove `:ref="(el) => setRef(el)"` bindings.
+
+## Accessibility
+
+- **Carousel region.** The section is a carousel (`aria-roledescription="carousel"`) named by its title.
+- **Title.** It renders as an `<h2>` by default. Set `titleLevel` (`'h1'`–`'h4'`) to match your page's outline; the look comes from `titleSize`.
+- **Slides.** With `slideAttrs` bound, each card is announced as a slide, for example "3 of 8".
+- **Buttons.** They are named "Previous cards" and "Next cards" and point at the card row with `aria-controls`. At either end the button is dimmed and marked `aria-disabled`, but it keeps focus, so keyboard users don't lose their place.
+- **Status.** After a button press, screen readers hear which cards are in view, for example "Cards 2 to 4 of 8". Nothing is announced on page load.
+- **Reduced motion.** When the user prefers reduced motion, the cards move instantly instead of sliding.
+
+<Canvas of={Stories.MclCarouselKeyboard} />
+
+### Keyboard
+
+- **Tab / Shift+Tab** move through the buttons and then through every card. When a card out of view gets focus, the carousel slides so it is fully visible.
+- **Enter / Space** on a button move the carousel one card.
+- Mouse and touch behave as before: clicking a card that is partly visible doesn't slide the carousel.
 
 ## Examples
 
