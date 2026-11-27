@@ -59,8 +59,12 @@ defineSlots<{
 
 /** The translated flex row. Its children are the cards. */
 const slideContainer = ref<HTMLElement | null>(null)
-const { isPrevDisabled, isNextDisabled, goTo } =
-  useCarouselSlide(slideContainer)
+/** The clipping section; "in view" is measured against it (#133). */
+const sectionRef = ref<HTMLElement | null>(null)
+const { isPrevDisabled, isNextDisabled, goTo } = useCarouselSlide(
+  slideContainer,
+  sectionRef,
+)
 
 const handleSlideBtnClick = (e: Event, btn: BtnNav): void => {
   // Emit only once the move is accepted, preserving the previous behaviour
@@ -122,7 +126,11 @@ const cardsGapClass = computed(() =>
 </script>
 
 <template>
-  <section class="overflow-hidden py-lg lg:py-xl" :class="sectionBgClass">
+  <section
+    ref="sectionRef"
+    class="overflow-hidden py-lg lg:py-xl"
+    :class="sectionBgClass"
+  >
     <div class="container px-xs text-center sm:px-md sm:text-left">
       <div class="relative">
         <div
