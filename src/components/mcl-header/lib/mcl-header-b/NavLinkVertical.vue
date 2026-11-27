@@ -52,10 +52,11 @@ const colorClass = computed<string>(() => {
     const highlightColor: string = generateClass.beforeBgColorVariant({
       color: hlColor,
     })
+    // The current page shows the bar fully drawn, as on hover.
     const hlClass: string =
-      'before:inset-y-0 before:left-0 before:transition-[width] before:duration-300 before:ease-linear before:w-0 hover:before:w-full focus:before:w-full '
+      'before:inset-y-0 before:left-0 before:transition-[width] before:duration-300 before:ease-linear hover:before:w-full focus:before:w-full ' +
+      (current ? 'before:w-full ' : 'before:w-0 ')
     classArray.push(hlClass + highlightColor)
-    if (current) classArray.push('before:w-full')
     const hlTextClass: string[] = [
       generateClass.textColorVariant({ color: current ? textColor : hlColor }),
       generateClass.hoverTextColorVariant({ color: textColor }),

@@ -194,7 +194,6 @@ defineExpose({
               <NavCollapseVertical
                 v-else
                 ref="collapseRef"
-                :nav-id="item.title"
                 nav-location="desktop"
                 :menu-item="item as MenuCollapseType"
                 :as-link="menuItemAsLink"
@@ -270,7 +269,6 @@ defineExpose({
                 />
                 <NavCollapseVertical
                   v-else
-                  :nav-id="item.title"
                   nav-location="mobile"
                   :menu-item="item as MenuCollapseType"
                   :as-link="menuItemAsLink"

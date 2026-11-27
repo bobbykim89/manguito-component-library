@@ -27,3 +27,14 @@ describe('MclHeaderB (server)', () => {
     expect(html).toMatch(/<button[^>]*aria-label/)
   })
 })
+
+describe('MclHeaderB sidebar collapse (server, #131)', () => {
+  it('the sidebar collapse toggle is server-rendered with aria-expanded="false" and type="button"', async () => {
+    const { html } = await renderOnServer(render)
+    const tags = html.match(/<button[^>]*>(?:(?!<\/button>)[\s\S])*?More/g)
+    expect(tags).not.toBeNull()
+    const openTag = tags![tags!.length - 1].match(/<button[^>]*>/g)!.pop()!
+    expect(openTag).toContain('aria-expanded="false"')
+    expect(openTag).toContain('type="button"')
+  })
+})

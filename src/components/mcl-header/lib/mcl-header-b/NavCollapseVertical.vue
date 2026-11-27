@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { BodyText, ColorPalette } from '@bobbykim/manguito-theme'
 import { generateClass, Collapse } from '@bobbykim/manguito-theme'
-import { computed, ref } from 'vue'
+import { useCollapseTrigger } from '@bobbykim/manguito-theme/composable'
+import { computed, ref, useId } from 'vue'
 import type { MenuCollapseType, MenuItemType } from '../common/index.types'
 type NavLocationType = 'desktop' | 'mobile'
 const props = withDefaults(
   defineProps<{
-    navId: string
     navLocation: NavLocationType
     menuItem: MenuCollapseType
     textColor?: ColorPalette
@@ -25,8 +25,15 @@ const props = withDefaults(
     asLink: true,
   },
 )
+// Before-click state for the label-click payload: synced from the panel's
+// open/close events, which fire after the click has emitted (#131).
 const toggle = ref<boolean>(false)
 const collapseRef = ref<InstanceType<typeof Collapse>>()
+const toggleButtonRef = ref<HTMLButtonElement>()
+const panelId = useId()
+const { attrs, toggle: toggleCollapsePanel } = useCollapseTrigger(collapseRef, {
+  id: panelId,
+})
 const emit = defineEmits<{
   (e: 'label-click', event: Event, title: string, open: boolean): void
   (e: 'child-click', event: Event, item: MenuItemType): void
@@ -34,29 +41,30 @@ const emit = defineEmits<{
 const toggleCollapse = (visible: boolean): void => {
   toggle.value = visible
 }
+// Never moves focus: MclHeaderB calls it on every collapse after any choice.
 const closeCollapse = () => {
   collapseRef.value?.close()
 }
 const handleCollapseLabelClick = (e: Event, title: string) => {
-  collapseRef.value?.toggle()
+  toggleCollapsePanel()
   emit('label-click', e, title, toggle.value)
 }
+// Choosing a link closes the panel that holds it. If focus is still inside
+// (desktop sidebar), hand it to the toggle so it isn't lost (#131). In the
+// mobile drawer, MclHeaderB has already moved focus to the drawer button
+// while handling child-click, so it is left there.
 const handleChildClick = (e: Event, item: MenuItemType) => {
   const { asLink } = props
   if (!asLink) {
     e.preventDefault()
   }
   emit('child-click', e, item)
-  collapseRef.value?.close()
+  const hadFocus = !!document
+    .getElementById(panelId)
+    ?.contains(document.activeElement)
   closeCollapse()
+  if (hadFocus) toggleButtonRef.value?.focus()
 }
-const getNavId = computed<string>(() => {
-  const { navId, navLocation } = props
-  const navIdLower = navId.toLowerCase()
-  const navIdKebab = navIdLower.replaceAll(' ', '-')
-  return `nav-${navLocation}-${navIdKebab}`
-})
-
 const colorClass = computed<string>(() => {
   const { textColor, textSize, dHl, hlColor, fontBold } = props
   const classArray: string[] = [
@@ -106,7 +114,8 @@ const collapseHighlightClass = computed<string>(() => {
   )
   return classArray.join(' ')
 })
-const childItemColorClass = computed<string>(() => {
+// A current child keeps its hover look permanently (#131).
+const childItemClass = (current: boolean): string => {
   const { textColor, textSize, dHl, hlColor, fontBold, navLocation } = props
   const childBodyText: BodyText =
     textSize === 'xl'
@@ -117,33 +126,40 @@ const childItemColorClass = computed<string>(() => {
           ? 'sm'
           : 'xs'
   const classArray: string[] = [
-    generateClass.textColorVariant({ color: textColor }),
     generateClass.bodyTextVariant({ size: childBodyText }),
   ]
+  // A current child without highlight takes the hovered colour instead.
+  if (!(current && !dHl)) {
+    classArray.push(generateClass.textColorVariant({ color: textColor }))
+  }
   if (navLocation === 'mobile') {
     classArray.push('text-end')
   }
   if (!dHl) {
     const nonHlTextClass: string[] = [
-      generateClass.textColorVariant({ color: textColor }),
+      generateClass.textColorVariant({ color: current ? hlColor : textColor }),
       generateClass.hoverTextColorVariant({ color: hlColor }),
       generateClass.focusTextColorVariant({ color: hlColor }),
     ]
+    if (current) nonHlTextClass.push('underline')
     classArray.push(nonHlTextClass.join(' '))
   }
   if (dHl) {
     const highlightColor: string = generateClass.beforeBgColorVariant({
       color: hlColor,
     })
+    // A current child shows the bar fully drawn, as on hover.
     const hlClass: string =
-      'before:inset-y-0 before:duration-300 before:ease-linear before:w-0 hover:before:w-full focus:before:w-full before:bg-opacity-70 '
+      'before:inset-y-0 before:duration-300 before:ease-linear hover:before:w-full focus:before:w-full before:bg-opacity-70 ' +
+      (current ? 'before:w-full ' : 'before:w-0 ')
     const hlLocation: string =
       navLocation === 'desktop'
         ? 'before:left-0 before:transition-[width] '
-        : 'before:left-full hover:before:left-0 focus:before:left-0 before:transition-[all] '
+        : (current ? 'before:left-0 ' : 'before:left-full ') +
+          'hover:before:left-0 focus:before:left-0 before:transition-[all] '
     classArray.push(hlClass + hlLocation + highlightColor)
     const hlTextClass: string[] = [
-      generateClass.textColorVariant({ color: hlColor }),
+      generateClass.textColorVariant({ color: current ? textColor : hlColor }),
       generateClass.hoverTextColorVariant({ color: textColor }),
       generateClass.focusTextColorVariant({ color: textColor }),
     ]
@@ -153,7 +169,7 @@ const childItemColorClass = computed<string>(() => {
     classArray.push('font-bold')
   }
   return classArray.join(' ')
-})
+}
 defineExpose({
   closeCollapse: closeCollapse,
 })
@@ -162,6 +178,9 @@ defineExpose({
 <template>
   <div>
     <button
+      ref="toggleButtonRef"
+      type="button"
+      v-bind="attrs"
       class="relative block w-full px-xs py-2xs text-center transition-colors duration-300 ease-linear before:absolute"
       @click="handleCollapseLabelClick($event, menuItem.title)"
       :class="[colorClass]"
@@ -188,7 +207,7 @@ defineExpose({
     </button>
     <Collapse
       ref="collapseRef"
-      :id="getNavId"
+      :id="panelId"
       @open="toggleCollapse"
       @close="toggleCollapse"
     >
@@ -201,13 +220,15 @@ defineExpose({
           <a
             :href="item.url"
             :target="item.target"
+            :aria-current="item.current ? 'page' : undefined"
             @click="handleChildClick($event, item)"
             class="relative block w-full overflow-x-hidden px-2xs py-3xs transition-colors duration-300 ease-linear before:absolute"
-            :class="[childItemColorClass]"
+            :class="childItemClass(!!item.current)"
           >
-            <span class="relative">
-              {{ item.title }}
-            </span>
+            <span class="relative"> {{ item.title }} </span
+            ><span v-if="item.target === '_blank'" class="sr-only">
+              (opens in a new tab)</span
+            >
           </a>
         </li>
       </ul>
