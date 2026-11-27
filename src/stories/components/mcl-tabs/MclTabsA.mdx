@@ -37,6 +37,23 @@ import { MclTabsA } from '@bobbykim/mcl-tabs'
 
 <Controls of={Stories.MclTabsAExample} />
 
+## Accessibility
+
+- **Tabs and panels.** Each tab has `role="tab"`, `aria-selected` and `aria-controls` pointing at its panel, and each panel (`role="tabpanel"`) is labelled by its tab. The ids come from `tabName`, so give each tab set on a page its own `tabName`.
+- **Tab titles** are plain text, not headings, so the tab set doesn't add headings to the page outline. The look is unchanged (size comes from `titleSize`).
+- **Focus ring.** Tabs show the shared focus ring when focused from the keyboard.
+- **Scroll buttons** (below `lg`, when the tabs overflow) are for mouse and touch only. They are hidden from screen readers, left out of the Tab order and never take focus. Keyboard users don't need them: moving between tabs scrolls the focused tab into view, clear of the buttons.
+- **Reduced motion.** When the user prefers reduced motion, the scroll buttons scroll instantly instead of smoothly.
+
+<Canvas of={Stories.MclTabsAKeyboard} />
+
+### Keyboard
+
+- **Tab** moves to the selected tab; the tab set is a single Tab stop. The next **Tab** moves into the selected panel.
+- **Arrow Right / Arrow Left** move to the next or previous tab and select it, wrapping at the ends.
+- **Home / End** move to the first or last tab and select it.
+- **Enter / Space** on a tab select it (the focused tab is already the selected one).
+
 ## Events
 
--`tab-click` - (event: Event, title: string) - Emitted on tab title button click
+- `tab-click` - (event: Event, title: string) - Emitted when the selected tab changes: on a click, with the mouse event, and on keyboard selection (arrow keys, Home, End), with the keyboard event. `title` is the newly selected tab's title. Not emitted for the tab that is already selected.
